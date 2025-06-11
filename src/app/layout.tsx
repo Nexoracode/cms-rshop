@@ -1,4 +1,4 @@
-import "@styles/globals.css";
+import "../styles/globals.css";
 import { Toaster } from 'react-hot-toast';
 import GetThemeSite from "@comp_global/GetThemeSite";
 import AuthProvider from "@/components/auth/modules/AuthProvider";
