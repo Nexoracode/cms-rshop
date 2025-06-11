@@ -1,0 +1,189 @@
+@import "tailwindcss";
+@import './variables.css';
+@import './packages.css';
+
+@theme {
+  --breakpoint-320: 320px;
+  --breakpoint-xs: 575px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-1280: 1280px;
+  --breakpoint-xxl: 1400px;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--background)] font-bold text-[var(--foreground)] m-0 p-0 box-border overflow-x-hidden;
+  }
+
+  ::selection {
+    @apply bg-gray-400;
+  }
+
+  svg {
+    @apply cursor-pointer;
+  }
+
+  textarea {
+    @apply outline-none shadow-md focus:shadow-lg p-3 rounded-lg bg-[var(--background)];
+  }
+
+  ul {
+    @apply m-0;
+  }
+
+  li {
+    @apply list-none;
+  }
+
+  button:not(:disabled):hover,
+  a :not(.route-list-active):hover {
+    @apply opacity-70;
+  }
+
+  button, a {
+    @apply transition-all duration-300;
+  }
+
+  button:disabled {
+    @apply opacity-60;
+  }
+
+  select {
+    @apply outline-none cursor-pointer bg-[var(--background)];
+  }
+
+  option {
+    @apply font-bold;
+  }
+
+  textarea,
+  input {
+    @apply shadow-[0_1px_4px_lightgray] text-[var(--foreground)] bg-[var(--background)] transition duration-300;
+  }  
+  
+  input:focus,
+  textarea:focus {
+    @apply shadow-[0_1px_10px_#c9c9c9] !text-gray-500 outline-0;
+  }
+
+  input::placeholder, 
+  textarea::placeholder
+  {
+    @apply !text-gray-500;
+  }
+
+  /* hidden flash in browser */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    @apply appearance-none m-0;
+    -webkit-appearance: none;
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+  }
+
+  input[type='checkbox'] {
+    @apply appearance-none !rounded-md w-5 h-5 border border-[var(--primary)];
+  }
+  input[type='checkbox']:checked {
+    @apply block w-5 h-5 bg-[var(--light-primary)];
+  }
+
+  /*? Customize Scrollbar */
+  /* Track */
+  ::-webkit-scrollbar {
+    width: 7px !important;
+    height: 9px;
+    z-index: 50;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-[#f1f1f1] rounded-full;
+    z-index: 50;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[var(--primary)] rounded-full;
+  }
+}
+
+@layer components {
+
+  /* Table Row */
+
+  .table_row {
+    @apply text-2xl hover:text-[var(--foreground)] transition-all duration-300
+  }
+
+  .ellipsis {
+    @apply whitespace-nowrap overflow-hidden text-ellipsis
+  }
+
+  .transition-global {
+    @apply transition-all duration-300
+  }
+
+  .route-list {
+    @apply rounded p-3 text-[var(--foreground)] my-4 w-auto cursor-pointer transition-all duration-300
+  }
+
+  .route-list:not(.route-list-active) {
+    @apply hover:shadow-md hover:bg-[var(--light-primary)]
+  }
+
+  .route-list-active {
+    @apply text-[var(--primary)] bg-[var(--light-primary)]
+  }
+
+  .svg-panel {
+    @apply text-[1.3rem] sm:text-2xl xl:text-[26px] select-none rounded-md w-9 h-9 p-1 hover:text-[var(--primary)] hover:bg-[var(--light-primary)] transition-all duration-300
+  }
+
+  .img-flag {
+    @apply w-5 h-5 md:w-6 md:h-6 xl:w-[26px] xl:h-[26px]
+  }
+
+  .toast-btn {
+    @apply py-2 px-4 mx-2 text-black bg-gray-50 shadow-md rounded-md hover:opacity-85
+  }
+
+  .moon {
+    @apply !text-white bg-slate-950 rounded-full rotate-[360deg] transition-all duration-1000
+  }
+
+  .sun {
+    @apply !text-yellow-500 bg-yellow-200 rounded-full rotate-[360deg] transition-all duration-1000
+  }
+
+  .menu-box {
+    @apply bg-transparent rounded-full shadow-[0_8px_10px_var(--light-primary)]
+  }
+
+  .theme-bar {
+    @apply shadow-[0_1px_12px_var(--shadow-light-gray)]
+  }
+
+  .box-inp {
+    @apply shadow-[0_1px_4px_lightgray] text-[var(--foreground)] bg-[var(--background)] transition duration-300;
+  }
+
+  .disable-item {
+    @apply text-2xl opacity-50 cursor-default
+  }
+
+  .box-panel {
+    @apply bg-[var(--bg-light-gray)] p-4 1280:rounded-lg shadow-[0px_0px_30px_20px_var(--bg-light-gray)]
+  }
+
+  .is-deleted {
+    @apply flex items-center justify-center mt-4 -mb-10 w-full bg-[rgba(241,166,166,0.3)] pt-3 pb-6 px-2 rounded-t-3xl
+  }
+
+}

@@ -1,0 +1,24 @@
+:root {
+  --background: rgb(241, 241, 241);
+  --foreground: #353535;
+  --primary: #ff8c00;
+  --light-primary: rgba(255, 140, 0, 0.3);
+  --secondary: skyblue;
+  --gray: rgb(131, 131, 131);
+  --light-gray: rgba(131, 131, 131, .5);
+  --bg-light-gray: rgba(221, 221, 221, .4);
+  --shadow-light-gray: rgba(211, 211, 211, .5);
+  --light-red: rgb(255, 230, 230);
+  --menu-size: 80px;
+  --menu-secondary-size: 227px;
+}
+
+.dark-mode {
+  --background: rgb(42, 42, 42);
+  --foreground: rgb(241, 241, 241);
+  --light-primary: rgba(255, 140, 0, 0.2);
+  --light-gray: rgba(131, 131, 131, .8);
+  --bg-light-gray: rgba(92, 92, 92, .3);
+  --shadow-light-gray: rgba(211, 211, 211, .3);
+  --light-red: rgba(83, 31, 31, 0.5);
+}

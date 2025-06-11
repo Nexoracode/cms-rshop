@@ -1,0 +1,19 @@
+/* Swiper */
+.swiper-pagination-bullet-active {
+  @apply bg-white;
+}
+
+/* SweetAlert2 */
+.swal2-container {
+  background-color: #f0f8ff; 
+}
+
+.swal2-popup {
+  background-color: var(--background);
+  color: var(--forground);
+}
+
+.swal2-confirm {
+  background-color: var(--primary);
+  color: white;
+}
