@@ -3,12 +3,12 @@
 import fetcher from "@/utils/fetcher";
 import { cookies } from "next/headers"
 
-export async function signinUser(email: string, password: string) {
+export async function signinUser(phone: string, otp?: string) {
 
     const res = await fetcher({
         route: "/auth/signin",
         method: "POST",
-        body: { email, password },
+        body: { phone, otp },
     });
 
     if ("success" in res && !res.success) {

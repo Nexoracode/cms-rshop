@@ -2,59 +2,45 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { toast } from "react-hot-toast"
 import { signinUser } from "./actions" // import function server
-import InputEmail from "@comp_auth/modules/InputEmail"
-import InputPassword from "@comp_auth/modules/InputPassword"
 import AuthButton from "@comp_auth/modules/AuthButton"
 import { isOnline } from "@/utils/helper"
 
 const Form = () => {
     const router = useRouter()
-    const [infos, setInfos] = useState({ email: "", password: "" })
-    const [isValid, setIsValid] = useState({ email: false, password: false })
+    const [infos, setInfos] = useState({
+        phone: "",
+        otp: "",
+    })
 
     const handleSubmit = async () => {
-        const { email, password } = infos
         isOnline()
+        const { otp, phone } = infos
+        if (!otp) {
+            const toastPhone = toast.loading("درحال ارسال کد به تلفن همراه...")
+            const resPhone = await signinUser(phone, otp) // call to action
+            toast.dismiss(toastPhone)
+            if (resPhone.success) {
+                toast.success(resPhone.message)
+                router.push("/")
+            } else toast.error(resPhone.message)
+        } else {
 
-        const toastId = toast.loading("Logging in...")
-        const res = await signinUser(email, password) // call to action
-        toast.dismiss(toastId)
-
-        if (res.success) {
-            toast.success(res.message)
-            router.push("/admin/home")
-        } else toast.error(res.message)
+        }
     }
 
     return (
-        <div>
-            <form className="mt-5 2xl:mt-7">
-                <InputEmail
-                    defaultValue={infos.email}
-                    onIsCorrectEmail={(value, isValid) => {
-                        setInfos(prev => ({ ...prev, email: value }))
-                        setIsValid(prev => ({ ...prev, email: isValid }))
-                    }}
-                />
-                <InputPassword
-                    condition={true}
-                    onIsCorrectPassword={(value, isValid) => {
-                        setInfos(prev => ({ ...prev, password: value }))
-                        setIsValid(prev => ({ ...prev, password: isValid }))
-                    }}
-                    disableRegex
-                />
-                <div className="mt-5 text-center">
-                    <Link href="/forget-password" className="flex-none text-sm text-[var(--primary)] font-bold">
-                        رمز عبور را فراموش کرده‌اید؟
-                    </Link>
-                </div>
-            </form>
-            <AuthButton onClickHandler={handleSubmit} title="ورود" disable={isValid.email && isValid.password ? false : true} />
-        </div>
+        infos.otp ?
+            <div>
+
+            </div>
+            :
+            <div>
+                <form className="mt-5 2xl:mt-7">
+                </form>
+                <AuthButton onClickHandler={handleSubmit} title="ارسال کد" disable={infos.phone.length ? false : true} />
+            </div>
     )
 }
 
