@@ -1,13 +1,15 @@
-import Logo from "@comp_global/Logo"
-import Header from "@comp_auth/modules/Header"
-import Form from "@pages/auth/signin/Form"
+import Header from "@/components/auth/modules/Header";
+import Form from "@pages/auth/signin/Form";
 
-export default function Signin() {
-    return (
-        <div className="w-full absolute">
-            <Logo to="/" />
-            <Header title="Welcome back 👋" subTitle="Enter the information you entered while registering." />
-            <Form />
-        </div>
-    )
-}
+const SignIn = () => {
+  return (
+    <>
+      <div>
+        <Header title="خوش آمدید" subTitle="وارد حساب کاربری خود شوید" />
+        <Form />
+      </div>
+    </>
+  );
+};
+
+export default SignIn;

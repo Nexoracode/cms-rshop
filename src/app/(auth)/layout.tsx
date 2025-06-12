@@ -1,27 +1,30 @@
-import ShowElementInDom from "@comp_global/ShowElementInDom"
-import SliderImage from "@comp_global/SliderImage"
+import DarkMode from "@/components/global/DarkMode";
+import SliderImage from "@/components/global/SliderImage";
+import Logo from "../../components/global/Logo";
 
 type AuthLayoutParams = {
-    children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const AuthLayout = ({ children }: AuthLayoutParams) => {
+  return (
+    <section>
 
-    return (
-        <section className="flex items-center justify-center" dir="ltr">
-            <ShowElementInDom>
-                <section className="w-1/2 px-3 flex items-center justify-center">
-                    <SliderImage />
-                </section>
-            </ShowElementInDom>
-            
-            <section className="w-full lg:w-1/2 px-3 flex justify-center">
-                <div className="w-screen sm:w-auto sm:min-w-[400px] lg:w-[480px] relative h-[100vh] flex flex-col justify-center">
-                    {children}
-                </div>
-            </section>
-        </section>
-    )
-}
+      <div className="flex items-center justify-center px-5">
+        <div className="flex !w-screen justify-center lg:w-2/3 xl:w-1/2">
+          <div className="flex min-h-[100vh] w-screen flex-col justify-center !px-4 py-8 sm:w-auto sm:min-w-[480px] lg:!px-0">
+            <Logo to="/" />
+            {children}
+          </div>
+        </div>
+        <SliderImage />
+      </div>
 
-export default AuthLayout
+      <div className="absolute top-10 right-10 !z-50">
+        <DarkMode />
+      </div>
+    </section>
+  );
+};
+
+export default AuthLayout;

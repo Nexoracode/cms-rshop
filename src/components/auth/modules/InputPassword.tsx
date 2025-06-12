@@ -14,7 +14,7 @@ type InputPasswordProps = {
     disableRegex?: boolean;
 }
 
-const InputPassword = ({ onIsCorrectPassword, disableRegex = false, activeTextValidation = true, clearInp = false, label = "password", title = "Password", condition }: InputPasswordProps) => {
+const InputPassword = ({ onIsCorrectPassword, disableRegex = false, activeTextValidation = true, clearInp = false, label = "password", title = "رمز عبور", condition }: InputPasswordProps) => {
 
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
     const passwordRef = useRef<HTMLInputElement>(null)

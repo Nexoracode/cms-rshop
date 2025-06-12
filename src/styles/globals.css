@@ -13,9 +13,26 @@
   --breakpoint-xxl: 1400px;
 }
 
+@font-face {
+  font-family: Lalezar;
+  src: url('/fonts/Lalezar/Lalezar-Regular.ttf') format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSans;
+  src: url('/fonts/IRANSans/IRANSansWeb.woff') format("woff");
+  font-display: swap;
+}
+
 @layer base {
   body {
-    @apply bg-[--background] font-bold text-[--foreground] m-0 p-0 box-border overflow-x-hidden;
+    @apply font-bold text-(--foreground) m-0 p-0 box-border overflow-x-hidden font-[IRANSans];
+    background: var(--background) no-repeat center/cover;
+  }
+
+  label {
+    direction: rtl;
   }
 
   ::selection {
@@ -27,7 +44,7 @@
   }
 
   textarea {
-    @apply outline-none shadow-md focus:shadow-lg p-3 rounded-lg bg-[--background];
+    @apply outline-none shadow-md focus:shadow-lg p-3 rounded-lg bg-(--background);
   }
 
   ul {
@@ -52,7 +69,7 @@
   }
 
   select {
-    @apply outline-none cursor-pointer bg-[--background];
+    @apply outline-none cursor-pointer bg-(--background);
   }
 
   option {
@@ -61,7 +78,7 @@
 
   textarea,
   input {
-    @apply shadow-[0_1px_4px_--light-gray] text-[--foreground] bg-[--background] transition duration-300;
+    @apply shadow-[0_1px_4px_var(--light-gray)] text-(--foreground) bg-(--background) transition duration-300;
   }  
 
   input:focus,
@@ -87,10 +104,10 @@
   }
 
   input[type='checkbox'] {
-    @apply appearance-none !rounded-md w-5 h-5 border border-[--primary];
+    @apply appearance-none !rounded-md w-5 h-5 border border-(--primary);
   }
   input[type='checkbox']:checked {
-    @apply block w-5 h-5 bg-[--light-primary];
+    @apply block w-5 h-5 bg-(--light-primary);
   }
 
   ::-webkit-scrollbar {
@@ -105,13 +122,13 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-[--primary] rounded-full;
+    @apply bg-(--primary) rounded-full;
   }
 }
 
 @layer components {
   .table_row {
-    @apply text-2xl hover:text-[--foreground] transition-all duration-300;
+    @apply text-2xl hover:text-(--foreground) transition-all duration-300;
   }
 
   .ellipsis {
@@ -127,15 +144,15 @@
   }
 
   .route-list:not(.route-list-active) {
-    @apply hover:shadow-md hover:bg-[--light-primary];
+    @apply hover:shadow-md hover:bg-(--light-primary);
   }
 
   .route-list-active {
-    @apply text-[--primary] bg-[--light-primary];
+    @apply text-(--primary) bg-(--light-primary);
   }
 
   .svg-panel {
-    @apply text-[1.3rem] sm:text-2xl xl:text-[26px] select-none rounded-md w-9 h-9 p-1 hover:text-[--primary] hover:bg-[--light-primary] transition-all duration-300;
+    @apply text-[1.3rem] sm:text-2xl xl:text-[26px] select-none rounded-md w-9 h-9 p-1 hover:text-(--primary) hover:bg-(--light-primary) transition-all duration-300;
   }
 
   .img-flag {
@@ -163,7 +180,7 @@
   }
 
   .box-inp {
-    @apply shadow-[0_1px_4px_--light-gray] text-[--foreground] bg-[--background] transition duration-300;
+    @apply shadow-[0_1px_4px_var(--light-gray)] text-(--foreground) bg-(--background) transition duration-300;
   }
 
   .disable-item {
@@ -171,10 +188,28 @@
   }
 
   .box-panel {
-    @apply bg-[--bg-light-gray] p-4 1280:rounded-lg shadow-[0px_0px_30px_20px_--bg-light-gray];
+    @apply bg-(--bg-light-gray) p-4 1280:rounded-lg shadow-[0px_0px_30px_20px_var(--bg-light-gray)];
   }
 
   .is-deleted {
     @apply flex items-center justify-center mt-4 -mb-10 w-full bg-[rgba(241,166,166,0.3)] pt-3 pb-6 px-2 rounded-t-3xl;
+  }
+}
+
+@layer utilities {
+  .font-title {
+    @apply font-[Lalezar];
+    font-weight: 100 !important;
+  }
+  .bg-splash-screen {
+    background: linear-gradient(
+      110deg,
+      #000000 0%,
+      #1A1A1A 20%,
+      #612E6C 45%,
+      #733381 70%,
+      #700CAA 90%,
+      #A000FF 100%
+    );
   }
 }

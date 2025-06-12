@@ -99,7 +99,7 @@ const InputEmail = ({ onIsCorrectEmail, defaultValue = "", clearInp = false, dis
         <div className="mt-6 h-full">
             <div className="relative">
                 <label className="block tracking-wide text-[var(--black-color)] font-bold mb-2" htmlFor="email">
-                    Email
+                    ایمیل
                 </label>
                 <input
                     disabled={disabled}

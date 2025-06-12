@@ -14,7 +14,7 @@ const Slide = ({ priority, path }: SlideProps) => {
             height={800}
             priority={priority}
             rel="preload"
-            className="rounded-md w-full h-[65vh] object-cover"
+            className="w-full h-[65vh] object-cover"
         />
     )
 }

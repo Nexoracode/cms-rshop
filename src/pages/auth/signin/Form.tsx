@@ -49,11 +49,11 @@ const Form = () => {
                 />
                 <div className="mt-5 text-center">
                     <Link href="/forget-password" className="flex-none text-sm text-[var(--primary)] font-bold">
-                        Forget Password?
+                        رمز عبور را فراموش کرده‌اید؟
                     </Link>
                 </div>
             </form>
-            <AuthButton onClickHandler={handleSubmit} title="Sign In" disable={isValid.email && isValid.password ? false : true} />
+            <AuthButton onClickHandler={handleSubmit} title="ورود" disable={isValid.email && isValid.password ? false : true} />
         </div>
     )
 }

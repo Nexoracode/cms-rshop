@@ -4,14 +4,12 @@ type HeaderProps = {
 }
 
 const Header = ({ title, subTitle }: HeaderProps) => {
-
     return (
-        <div>
-            <div className="mt-6 2xl:mt-8 text-2xl xxl:text-3xl font-extrabold">
+        <div className="font-title mb-14 mt-10 text-center" style={{direction: "rtl"}}>
+            <div className="mt-6 2xl:mt-8 text-2xl xxl:text-5xl">
                 {title}
             </div>
-
-            <div className="2xl:text-lg mt-4 xxl:mt-5 leading-6 text-[var(--primary)]">
+            <div className="xxl:text-3xl mt-4 xxl:mt-5 leading-8 text-(--primary)">
                 {subTitle}
             </div>
         </div>
