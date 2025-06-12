@@ -13,6 +13,8 @@
   --breakpoint-xxl: 1400px;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @font-face {
   font-family: Lalezar;
   src: url('/fonts/Lalezar/Lalezar-Regular.ttf') format("truetype");
@@ -22,6 +24,12 @@
 @font-face {
   font-family: IRANSans;
   src: url('/fonts/IRANSans/IRANSansWeb.woff') format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IRANSansLight;
+  src: url('/fonts/IRANSans/IRANSansWeb_Light.woff') format("woff");
   font-display: swap;
 }
 

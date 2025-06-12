@@ -13,14 +13,19 @@ const DarkMode = () => {
     }, [])
 
     useEffect(() => {
+        const html = document.documentElement;
+    
         if (!statusDarkMode) {
-            localStorage.setItem("theme", "light")
+            localStorage.setItem("theme", "light");
             document.body.classList.remove("dark-mode");
+            html.classList.remove("dark");
         } else {
-            localStorage.setItem("theme", "dark")
+            localStorage.setItem("theme", "dark");
             document.body.classList.add("dark-mode");
+            html.classList.add("dark");
         }
-    }, [statusDarkMode])
+    }, [statusDarkMode]);
+    
 
     return (
         <div onClick={() => setStatusDarkMode(prev => !prev)}>

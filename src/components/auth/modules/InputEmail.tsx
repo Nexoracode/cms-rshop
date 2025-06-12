@@ -114,10 +114,11 @@ const InputEmail = ({ onIsCorrectEmail, defaultValue = "", clearInp = false, dis
                     onBlur={handleBlur}
                     ref={emailRef}
                     className={`${email.length && (isValidEmail(email) ? "!shadow !shadow-green-600" : "!shadow !shadow-red-300")} w-full h-12 px-3 rounded-lg`}
+                    dir="ltr"
                 />
                 {
                     isShowListEmail &&
-                    <div className="rounded-md bg-[var(--background)] overflow-y-auto shadow-[0_0_10px_#c9c9c9] p-2 leading-9 w-full max-h-56 absolute top-[86px] z-10">
+                    <div className="rounded-md bg-gray-300 dark:bg-gray-800 overflow-y-auto shadow-[0_0_10px_#c9c9c9] p-2 leading-9 w-full max-h-56 absolute top-[86px] z-10" dir="ltr">
                         <div tabIndex={-1} onBlur={handleBlur} className="h-[200px]">
 
                             {
@@ -150,8 +151,8 @@ const InputEmail = ({ onIsCorrectEmail, defaultValue = "", clearInp = false, dis
                     </div>
                 }
             </div>
-            <div className={`text-red-500 text-[.9rem] mt-2 ml-4 select-none ${email.length && (!isValidEmail(email) ? 'block' : 'hidden') || 'hidden'}`}>
-                ╚ The entered value is wrong.
+            <div className={`text-red-500 text-[.9rem] font-[IRANSansLight] mt-2 ml-4 select-none ${email.length && (!isValidEmail(email) ? 'block' : 'hidden') || 'hidden'}`} dir="rtl">
+                ╝ ایمیل وارد شده معتبر نمی باشد
             </div>
         </div>
     )

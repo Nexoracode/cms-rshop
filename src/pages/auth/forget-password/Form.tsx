@@ -58,7 +58,7 @@ const Form = () => {
             ) : (
                 <AuthButton
                     onClickHandler={handleForgetPassword}
-                    title="Recovery Password"
+                    title="بازیابی رمز عبور"
                     disable={!isValid}
                 />
             )}

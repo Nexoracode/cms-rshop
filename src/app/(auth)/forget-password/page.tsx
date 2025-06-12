@@ -1,18 +1,18 @@
-import TextLink from "@/ui/components/auth/modules/TextLink";
-import Header from "@/ui/components/auth/modules/Header";
+import TextLink from "@/components/global/TextLink";
+import Header from "@/components/auth/modules/Header";
 import Form from "@pages/auth/forget-password/Form";
 
 const ForgetPassword = () => {
   return (
     <>
       <div>
-        <Header title="Forget Password" subTitle="Please enter your email" />
+        <Header title="فراموشی رمز" subTitle="لطفاً ایمیل خود را وارد کنید" />
         <Form />
       </div>
       <TextLink
         link="/signin"
-        text="Forget it. Send me back to "
-        textLink="SignIn"
+        text="رمز عبور را به یاد آوردید؟ بازگشت به "
+        textLink="ورود"
       />
     </>
   );
