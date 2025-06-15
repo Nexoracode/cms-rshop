@@ -11,7 +11,7 @@
   );
   --foreground: #353535;
   --primary: #700CAA;
-  --light-primary: rgba(255, 140, 0, 0.3);
+  --light-primary: rgba(112, 12, 170, .3);
   --secondary: skyblue;
   --gray: rgb(131, 131, 131);
   --light-gray: rgba(131, 131, 131, .5);
@@ -33,7 +33,6 @@
     #28293D 100%
   );
   --foreground: rgb(241, 241, 241);
-  --light-primary: rgba(255, 140, 0, 0.2);
   --light-gray: rgba(131, 131, 131, .8);
   --bg-light-gray: rgba(92, 92, 92, .3);
   --shadow-light-gray: rgba(211, 211, 211, .3);
