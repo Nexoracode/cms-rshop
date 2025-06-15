@@ -180,7 +180,7 @@
   }
 
   .menu-box {
-    @apply bg-transparent rounded-full shadow-[0_8px_10px_--light-primary];
+    @apply bg-transparent rounded-full shadow-[0_8px_10px_var(--light-primary)];
   }
 
   .theme-bar {

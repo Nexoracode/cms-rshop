@@ -58,14 +58,14 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
         {
           id: 1,
           to: "home",
-          title: "Home",
+          title: "خانه",
           icon: <TbHome className="!min-h-6 !min-w-6" />,
           active: false
         },
         {
           id: 2,
           to: "profile",
-          title: "Profile",
+          title: "پروفایل",
           icon: <TbUserShield className="!min-h-6 !min-w-6" />,
           active: false
         },

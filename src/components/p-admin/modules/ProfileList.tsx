@@ -58,8 +58,8 @@ const ProfileList = () => {
                 }
             </div>
 
-            <div onMouseLeave={() => !isSignout && setIsShowProfile(false)} className={`menu-box bg-[var(--background)] absolute top-[5rem] right-0 rounded-md p-3 w-[240px] transition-global ${isShowProfile ? "visible opacity-100" : "invisible opacity-0"}`}>
-                <div className="flex items-center border-b border-[var(--primary)] pb-3">
+            <div onMouseLeave={() => !isSignout && setIsShowProfile(false)} className={`menu-box bg-(--background) absolute top-[5rem] right-0 rounded-md p-3 w-[240px] transition-global ${isShowProfile ? "visible opacity-100" : "invisible opacity-0"}`}>
+                <div className="flex items-center border-b border-(--primary) pb-3">
                     {
                         !fileData?.url
                             ?
@@ -80,12 +80,12 @@ const ProfileList = () => {
                 </div>
 
                 <div className="cursor-pointer">
-                    <ProfileItem title="Profile" to="/admin/profile" children={<TbUserShield className="text-2xl" />} />
+                    <ProfileItem title="پروفایل" to="/admin/profile" children={<TbUserShield className="text-2xl" />} />
                     <div onClick={() => {
                         setIsSignout(true)
                         signOutUserHandler()
                     }}>
-                        <ProfileItem title="Log Out" children={<RiShutDownLine className="text-2xl" />} />
+                        <ProfileItem title="خروج" children={<RiShutDownLine className="text-2xl" />} />
                     </div>
                 </div>
             </div>
