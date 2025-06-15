@@ -339,7 +339,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
       <header className={`flex justify-end relative z-50`}>
         <div
           style={{ width: `calc(100% - var(--menu-size))` }}
-          className={`fixed transition-all duration-500 bg-(--background) shadow-[10px_1px_12px_var(--shadow-light-gray)] flex items-center justify-between p-3`}
+          className={`fixed transition-all duration-500 bg-(--background) shadow-[-10px_1px_12px_var(--shadow-light-gray)] flex items-center justify-between p-3`}
         >
           <div className="flex items-center">
             <div className={`inline-flex 1280:hidden me-2 transition-all duration-500 ${!isAsideOpen ? "flex" : "hidden"}`}>

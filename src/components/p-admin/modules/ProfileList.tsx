@@ -20,7 +20,7 @@ const ProfileList = () => {
 
     useEffect(() => {
         //let infos = JSON.parse(getCookie("infos") || "");
-        let infos = {full_name: "mohmmad hossein", email: "khadem@gmail.com"}
+        let infos = { full_name: "محدحسین", email: "khadem@gmail.com" }
         const { full_name, email } = infos;
         setUserInfos({ full_name, email })
         //getFile(infos.profile_photo).then(res => setFileData({ type: res?.type || "", url: res?.url || "" }))
@@ -58,7 +58,7 @@ const ProfileList = () => {
                 }
             </div>
 
-            <div onMouseLeave={() => !isSignout && setIsShowProfile(false)} className={`menu-box bg-(--background) absolute top-[5rem] right-0 rounded-md p-3 w-[240px] transition-global ${isShowProfile ? "visible opacity-100" : "invisible opacity-0"}`}>
+            <div onMouseLeave={() => !isSignout && setIsShowProfile(false)} className={`menu-box bg-(--background) absolute top-[5rem] left-0 rounded-md p-3 w-[240px] transition-global ${isShowProfile ? "visible opacity-100" : "invisible opacity-0"}`}>
                 <div className="flex items-center border-b border-(--primary) pb-3">
                     {
                         !fileData?.url
@@ -73,7 +73,7 @@ const ProfileList = () => {
                                 alt="profile"
                             />
                     }
-                    <div className="ps-2 pr-8 cursor-default">
+                    <div className="ps-2 cursor-default">
                         <p className="w-44 ellipsis">{userInfos.full_name}</p>
                         <p className="text-sm w-40 ellipsis">{userInfos.email}</p>
                     </div>

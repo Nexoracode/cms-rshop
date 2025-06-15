@@ -11,7 +11,7 @@ type AdminLayoutParams = {
 const AdminLayout = ({ children }: AdminLayoutParams) => {
     const [blurChildren, setBlurChildren] = useState<boolean>(false)
     return (
-        <div dir="ltr">
+        <div dir="rtl">
             <NotificationManager />
             <MenuBar onBlur={blur => setBlurChildren(blur)} />
             <main className={`${blurChildren ? "blur-sm" : "blur-none"} flex items-center justify-end mt-28`}>
