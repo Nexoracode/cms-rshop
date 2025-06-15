@@ -372,7 +372,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
 
           <div className="flex items-center justify-between pb-6">
             <div className="flex items-center">
-              <Logo to="/" style="w-14"/>
+              <Logo to="/" style="w-15" />
             </div>
           </div>
 
@@ -389,7 +389,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
                         setDynamicSize(311)
                         selectionItemHandle(item.id, false)
                       }}>
-                        <div className={`route-list ${item.active ? "route-list-active" : ""}`}>
+                        <div className={`route-list flex items-center justify-center ${item.active ? "route-list-active" : ""}`}>
                           {item.icon}
                         </div>
                       </div>
@@ -399,7 +399,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
                         setDynamicSize(84)
                         selectionItemHandle(item.id, true)
                       }}>
-                        <div className={`route-list flex items-center ${item.active ? "route-list-active" : ""}`}>
+                        <div className={`route-list flex items-center justify-center ${item.active ? "route-list-active" : ""}`}>
                           {item.icon}
                         </div>
                       </Link>
@@ -408,7 +408,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
               ))
             }
 
-            <div className="route-list hover:!bg-red-400 hover:text-white" onClick={signOutUserHandler}>
+            <div className="route-list hover:!bg-red-400 hover:text-white flex items-center justify-center" onClick={signOutUserHandler}>
               <RiShutDownLine className="w-7 h-7" />
             </div>
 
@@ -418,7 +418,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
 
         <div style={{ width: "var(--menu-secondary-size)" }} className={`${isAsideTwoOpen && isAsideOpen ? "translate-x-[0] opacity-100 visible" : "translate-x-[-227px] opacity-0 invisible"} bg-(--background) w-[227px] shadow-[1px_0_12px_var(--shadow-light-gray)] px-4 pb-3 pt-6 transition-all duration-500`}>
           <div className="flex items-center justify-between">
-            <p className="text-xl drop-shadow-lg">Dashboard</p>
+            <p className="text-xl drop-shadow-lg">داشبورد</p>
 
             {
               !isScreenBig ?
@@ -438,16 +438,12 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
               !isRouteAside &&
               sidebarItems.map(item => (
                 item.active && item.subItems?.map(subitem => (
-                  <div key={subitem.id}>
-
-                    <Link key={subitem.id} href={`/admin/${subitem.to}`}>
-                      <div className={`route-list flex items-center ${item.active && pathname === `/admin/${subitem.to}` ? "route-list-active" : ""}`}>
-                        {subitem.icon}
-                        <p className="ps-2 min-w-max">{subitem.title}</p>
-                      </div>
-                    </Link>
-
-                  </div>
+                  <Link key={subitem.id} href={`/admin/${subitem.to}`}>
+                    <div className={`route-list flex items-center ${item.active && pathname === `/admin/${subitem.to}` ? "route-list-active" : ""}`}>
+                      {subitem.icon}
+                      <p className="ps-2 min-w-max">{subitem.title}</p>
+                    </div>
+                  </Link>
                 ))
               ))
             }

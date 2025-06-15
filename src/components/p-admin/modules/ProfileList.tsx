@@ -58,7 +58,7 @@ const ProfileList = () => {
                 }
             </div>
 
-            <div onMouseLeave={() => !isSignout && setIsShowProfile(false)} className={`menu-box bg-(--background) absolute top-[5rem] left-0 rounded-md p-3 w-[240px] transition-global ${isShowProfile ? "visible opacity-100" : "invisible opacity-0"}`}>
+            <div onMouseLeave={() => !isSignout && setIsShowProfile(false)} className={`menu-box bg-(--background) absolute top-[5rem] left-0 rounded-2xl p-3 w-[240px] transition-global ${isShowProfile ? "visible opacity-100" : "invisible opacity-0"}`}>
                 <div className="flex items-center border-b border-(--primary) pb-3">
                     {
                         !fileData?.url

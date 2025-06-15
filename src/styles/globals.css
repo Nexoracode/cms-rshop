@@ -148,7 +148,7 @@
   }
 
   .route-list {
-    @apply rounded p-3 text-[--foreground] my-4 w-auto cursor-pointer transition-all duration-300;
+    @apply rounded p-3 text-(--foreground) my-4 w-auto cursor-pointer transition-all duration-300;
   }
 
   .route-list:not(.route-list-active) {
