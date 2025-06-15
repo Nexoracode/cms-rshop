@@ -39,7 +39,7 @@ const OtpBox = ({ onValue, colNumber, isFocus }: Props) => {
       onChange={() => {}}
       onKeyDown={(e) => keyDownHandler(e)}
       style={{ padding: "0 !important" }}
-      className={`mx-2 h-[56px] w-[52px] rounded-2xl !p-0 text-center text-2xl font-bold shadow sm:h-[68px] sm:w-[64px] ${val.length ? "shadow-green-400" : ""}`}
+      className={`mx-2 h-[56px] w-[52px] rounded-xl !p-0 text-center text-2xl font-bold dark:focus:shadow-[0_0_10px_lightgray] focus:shadow-[0_0_10px_gray] dark:shadow-[0_0_10px_gray] sm:h-[68px] sm:w-[64px] ${val.length ? "shadow-green-500" : ""}`}
     />
   );
 };

@@ -1,9 +1,10 @@
-import getCookie from "./getCookie";
+//import getCookie from "./getCookie";
 
 export const refreshAccessToken = async () => {
     try {
 
-        const refreshToken = getCookie("refresh_token")
+        //const refreshToken = getCookie("refresh_token")
+        const refreshToken = "refresh_token"
 
         if (refreshToken) {
 

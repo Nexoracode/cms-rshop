@@ -53,7 +53,7 @@ const OtpVerification = ({
   };
 
   return (
-    <section className="flex flex-wrap items-center justify-center gap-3 sm:justify-between sm:gap-0">
+    <section dir="ltr" className="flex flex-wrap items-center justify-center gap-3 sm:gap-0">
       {arrayFill.map((item, index) => (
         <div key={index + 1}>
           <OtpBox
