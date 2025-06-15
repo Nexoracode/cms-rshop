@@ -43,13 +43,6 @@ const fetcher = async ({
       res.json()
     );
 
-    if (response.error) {
-      return {
-        success: false,
-        ...response,
-      };
-    }
-
     return response;
   } catch (error) {
     return { success: false, message: "خطایی رخ داد. لطفاً دوباره تلاش کنید." };

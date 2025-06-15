@@ -9,11 +9,12 @@ export const deleteCookie = (name: string) => {
 
 export const isOnline = () => {
     if (!window?.navigator?.onLine) {
-        toast.error("You are offline. Please try again later", {
+        toast.error("شما آفلاین هستید. لطفا بعدا دوباره تلاش کنید", {
             duration: 4000,
         });
-        return;
+        return true;
     }
+    return false
 };
 
 /* export const getFile = async (profile_picture: string) => {

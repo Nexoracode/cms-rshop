@@ -1,13 +1,13 @@
 "use client"
 
-import Header from "@/components/auth/modules/Header";
-//
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-hot-toast"
-import { signinUser } from "@/pages/auth/signin/actions";
-import AuthButton from "@comp_auth/modules/AuthButton"
+import { sendVerificationCode, verifyCode } from "@/app/(auth)/signin/actions";
 import { isOnline } from "@/utils/helper"
+// Components
+import Header from "@/components/auth/modules/Header";
+import AuthButton from "@comp_auth/modules/AuthButton"
 import PhoneInput from "@/components/auth/modules/PhoneInput"
 
 const SignIn = () => {
@@ -19,18 +19,16 @@ const SignIn = () => {
   })
 
   const handleSubmit = async () => {
-    isOnline()
+    if (isOnline()) return
     const { otp, phone } = infos
     if (!otp) {
       const toastPhone = toast.loading("درحال ارسال کد به تلفن همراه...")
-      const resPhone = await signinUser(phone, otp) // call to action
+      const resPhone = await sendVerificationCode(phone) // call to action
       toast.dismiss(toastPhone)
-      if (resPhone.success) {
-        toast.success(resPhone.message)
-        router.push("/")
-      } else toast.error(resPhone.message)
     } else {
-
+      const toastVerify = toast.loading("در حال بررسی کد...")
+      const resVerify = await verifyCode(phone, otp) // call to action
+      toast.dismiss(toastVerify)
     }
   }
 
@@ -44,7 +42,7 @@ const SignIn = () => {
         <Header title="خوش آمدید" subTitle="شماره تلفن خود را وارد نمایید" />
         <form className="mt-5 2xl:mt-7">
           <PhoneInput
-            onValidPhoneChange={(phone) => console.log(phone)}
+            onValidPhoneChange={phone => setInfos(prev => ({ ...prev, phone: phone }))}
           />
         </form>
         <AuthButton onClickHandler={handleSubmit} title="ارسال کد" disable={infos.phone.length ? false : true} />
