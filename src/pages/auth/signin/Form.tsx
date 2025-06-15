@@ -41,8 +41,7 @@ const Form = () => {
                 <form className="mt-5 2xl:mt-7">
                     <div className="p-4 max-w-md mx-auto">
                         <IranianPhoneInput
-                            title="شماره همراه"
-                            label="mobile"
+                            onValidPhoneChange={(phone) => console.log(phone)}
                         />
                     </div>
                 </form>
