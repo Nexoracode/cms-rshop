@@ -13,7 +13,7 @@ export default function RootLayout({ children }: RootLayoutParams) {
   return (
     <html lang="fa" dir="rtl">
       <head>
-        <title>Cms ArShop</title>
+        <title>پنل مدیریتی آرشاپ</title>
         <meta name="description" content="This is the main page" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -30,6 +30,8 @@ export default function RootLayout({ children }: RootLayoutParams) {
           type="font/woff"
           crossOrigin="anonymous"
         />
+        <link rel="icon" href="/icons/logo.png" sizes="any" />
+        <link rel="apple-touch-icon" href="/icons/logo.png" />
         <link rel="manifest" href="/manifest.json" />
         <script src="/sw-register.js" />
       </head>
