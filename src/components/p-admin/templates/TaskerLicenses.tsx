@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 ////? Components
-import AcceptCheckbox from "@comp_auth/modules/AcceptCheckbox"
+import AcceptCheckbox from "@/components/auth/AcceptCheckbox"
 // Utils
 import { sendRequestWithLoading } from "@utils/configs/axios"
 import { getFile, scrollToTop } from "@utils/helper"

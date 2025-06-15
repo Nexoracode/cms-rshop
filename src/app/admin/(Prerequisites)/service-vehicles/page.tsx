@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import { scrollToTop } from "@utils/helper";
 import { sendRequestWithLoading } from "@utils/configs/axios";
 ////? Components
-import AcceptCheckbox from "@comp_auth/modules/AcceptCheckbox";
+import AcceptCheckbox from "@/components/auth/AcceptCheckbox";
 // Globals
 import LoadingContent from "@comp_global/LoadingContent";
 import SelectBox from "@comp_global/SelectBox";

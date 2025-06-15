@@ -6,9 +6,9 @@ import { toast } from "react-hot-toast"
 import { sendVerificationCode, verifyCode } from "@/app/(auth)/signin/actions";
 import { isOnline } from "@/utils/helper"
 // Components
-import Header from "@/components/auth/modules/Header";
-import AuthButton from "@comp_auth/modules/AuthButton"
-import PhoneInput from "@/components/auth/modules/PhoneInput"
+import Header from "@/components/auth/Header";
+import AuthButton from "@/components/auth/AuthButton"
+import PhoneInput from "@/components/auth/PhoneInput"
 
 const SignIn = () => {
 

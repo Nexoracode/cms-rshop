@@ -10,8 +10,8 @@ import { sendRequestWithLoading } from '@utils/configs/axios';
 // Aauth
 import InputEmail from "@comp_auth/modules/InputEmail";
 import InputPassword from "@comp_auth/modules/InputPassword";
-import AuthButton from "@comp_auth/modules/AuthButton";
-import InputPhone from "@/components/auth/modules/PhoneInput";
+import AuthButton from "@/components/auth/AuthButton";
+import InputPhone from "@/components/auth/PhoneInput";
 // Global
 import SelectBox from "@comp_global/SelectBox";
 import Input from "@comp_global/Input";

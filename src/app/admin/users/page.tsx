@@ -8,10 +8,10 @@ import { objectToFormData, scrollToTop } from "@utils/helper";
 import CountryFlag from "react-country-flag";
 ////? Components
 // Auth
-import AcceptCheckbox from "@comp_auth/modules/AcceptCheckbox";
+import AcceptCheckbox from "@/components/auth/AcceptCheckbox";
 import InputPassword from "@comp_auth/modules/InputPassword";
 import InputEmail from "@comp_auth/modules/InputEmail";
-import InputPhone from "@/components/auth/modules/PhoneInput";
+import InputPhone from "@/components/auth/PhoneInput";
 // Globals
 import CustomDatePicker from "@comp_global/CustomDatePicker";
 import UploaderPhoto from "@comp_global/UploaderPhoto";
