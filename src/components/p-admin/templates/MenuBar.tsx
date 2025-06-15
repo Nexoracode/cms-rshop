@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { signOutUser } from "@utils/helper";
 import DarkMode from "@comp_global/DarkMode";
 import Logo from "@comp_global/Logo";
 import ClickTracker from "@comp_global/ClickTracker";
@@ -45,7 +44,7 @@ type SidebarItem = {
 
 const MenuBar = ({ onBlur }: MenuBarProps) => {
   const pathname = usePathname();
-  const refMenu = useRef<HTMLAnchorElement | null>(null);
+  const refMenu = useRef<any>(null);
   //
   const [isScreenBig, setIsScreenBig] = useState<boolean>(false);
   const [widthScreen, setWidthScreen] = useState<number>(1);
@@ -311,7 +310,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
       reverseButtons: true
     }).then(async result => {
       if (result.isConfirmed) {
-        signOutUser()
+        //signOutUser()
       }
     });
   }
@@ -340,11 +339,11 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
       <header className={`flex justify-end relative z-50`}>
         <div
           style={{ width: `calc(100% - var(--menu-size))` }}
-          className={`fixed transition-all duration-500 bg-[var(--background)] shadow-[10px_1px_12px_var(--shadow-light-gray)] flex items-center justify-between p-3`}
+          className={`fixed transition-all duration-500 bg-(--background) shadow-[10px_1px_12px_var(--shadow-light-gray)] flex items-center justify-between p-3`}
         >
           <div className="flex items-center">
             <div className={`inline-flex 1280:hidden me-2 transition-all duration-500 ${!isAsideOpen ? "flex" : "hidden"}`}>
-              <Logo to="/" customStyle="size-10" />
+              <Logo to="/" style="w-14" />
             </div>
             <div
               className={`transition-all duration-500 ${isScreenBig && isRouteAside || !isScreenBig && isAsideTwoOpen ? "opacity-0 invisible" : "opacity-100 visible"}`}
@@ -369,11 +368,11 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
 
       <aside className={`${!isAsideOpen && !isAsideTwoOpen ? "translate-x-[-311px]" : "translate-x-0"} z-40 min-h-full flex fixed top-0 transition-all duration-500`} ref={refMenu}>
 
-        <div className={`${isAsideOpen ? "translate-x-[0px] opacity-100 visible" : "translate-x-[-84px] opacity-0 invisible"} bg-[var(--background)] border-r-4 border-[var(--light-primary)] p-3 transition-all duration-500`}>
+        <div className={`${isAsideOpen ? "translate-x-[0px] opacity-100 visible" : "translate-x-[-84px] opacity-0 invisible"} bg-(--background) border-r-4 border-(--light-primary) p-3 transition-all duration-500`}>
 
           <div className="flex items-center justify-between pb-6">
             <div className="flex items-center">
-              <Logo to="/" />
+              <Logo to="/" style="w-14"/>
             </div>
           </div>
 
@@ -417,7 +416,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
 
         </div>
 
-        <div style={{ width: "var(--menu-secondary-size)" }} className={`${isAsideTwoOpen && isAsideOpen ? "translate-x-[0] opacity-100 visible" : "translate-x-[-227px] opacity-0 invisible"} bg-[var(--background)] w-[227px] shadow-[1px_0_12px_var(--shadow-light-gray)] px-4 pb-3 pt-6 transition-all duration-500`}>
+        <div style={{ width: "var(--menu-secondary-size)" }} className={`${isAsideTwoOpen && isAsideOpen ? "translate-x-[0] opacity-100 visible" : "translate-x-[-227px] opacity-0 invisible"} bg-(--background) w-[227px] shadow-[1px_0_12px_var(--shadow-light-gray)] px-4 pb-3 pt-6 transition-all duration-500`}>
           <div className="flex items-center justify-between">
             <p className="text-xl drop-shadow-lg">Dashboard</p>
 
@@ -426,7 +425,7 @@ const MenuBar = ({ onBlur }: MenuBarProps) => {
                 <div onClick={() => {
                   setIsAsideTwoOpen(false)
                   setDynamicSize(84)
-                }} className="bg-[var(--bg-light-gray)] rounded-l-xl absolute right-0 top-5">
+                }} className="bg-(--bg-light-gray) rounded-l-xl absolute right-0 top-5">
                   <IoIosArrowBack className="svg-panel" />
                 </div>
                 : ""

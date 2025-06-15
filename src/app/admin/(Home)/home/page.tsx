@@ -1,7 +1,7 @@
 const Admin_Home = () => {
 
     return(
-        <section>
+        <section className="h-[100vh]">
             Home Page
         </section>
     )

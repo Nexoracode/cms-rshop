@@ -1,8 +1,8 @@
 "use client"
 import { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
-import getCookie from "@utils/getCookie";
-import { getFile, signOutUser } from "@utils/helper";
+//import getCookie from "@utils/getCookie";
+//import { getFile, signOutUser } from "@utils/helper";
 import ProfileItem from "./ProfileItem";
 import ClickTracker from "@comp_global/ClickTracker";
 //
@@ -14,15 +14,16 @@ const ProfileList = () => {
 
     const [isShowProfile, setIsShowProfile] = useState<boolean>(false)
     const [isSignout, setIsSignout] = useState<boolean>(false)
-    const profileRef = useRef<HTMLDivElement>(null)
+    const profileRef = useRef<any>(null)
     const [userInfos, setUserInfos] = useState({ full_name: "", email: "" })
     const [fileData, setFileData] = useState<{ url: string; type: string } | null>(null);
 
     useEffect(() => {
-        let infos = JSON.parse(getCookie("infos") || "");
+        //let infos = JSON.parse(getCookie("infos") || "");
+        let infos = {full_name: "mohmmad hossein", email: "khadem@gmail.com"}
         const { full_name, email } = infos;
         setUserInfos({ full_name, email })
-        getFile(infos.profile_photo).then(res => setFileData({ type: res?.type || "", url: res?.url || "" }))
+        //getFile(infos.profile_photo).then(res => setFileData({ type: res?.type || "", url: res?.url || "" }))
     }, []);
 
     const signOutUserHandler = () => {
@@ -33,7 +34,7 @@ const ProfileList = () => {
             reverseButtons: true
         }).then(async result => {
             if (result.isConfirmed) {
-                signOutUser()
+                //signOutUser()
             } else {
                 setIsSignout(false)
             }
