@@ -94,7 +94,7 @@ const PhoneInput = ({ onValidPhoneChange }: Props) => {
             </label>
 
             <div className="relative">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-700">
                     98+
                 </div>
                 <input

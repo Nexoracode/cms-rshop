@@ -14,7 +14,7 @@ const SliderImage = () => {
     ]
 
     return (
-        <Swiper pagination={{ clickable: true }} loop modules={[Pagination, Autoplay]} autoplay={{ delay: 5000 }} className="!w-full !max-h-[80vh] rounded-3xl">
+        <Swiper pagination={{ clickable: true }} loop modules={[Pagination, Autoplay]} autoplay={{ delay: 5000 }} className="!w-full !hidden lg:!block !max-h-[80vh] rounded-3xl">
             {slides.map(slide => {
                 const { id, path, priority } = slide
                 return (

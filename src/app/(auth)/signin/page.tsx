@@ -43,11 +43,9 @@ const SignIn = () => {
       <div>
         <Header title="خوش آمدید" subTitle="شماره تلفن خود را وارد نمایید" />
         <form className="mt-5 2xl:mt-7">
-          <div className="p-4 max-w-md mx-auto">
-            <PhoneInput
-              onValidPhoneChange={(phone) => console.log(phone)}
-            />
-          </div>
+          <PhoneInput
+            onValidPhoneChange={(phone) => console.log(phone)}
+          />
         </form>
         <AuthButton onClickHandler={handleSubmit} title="ارسال کد" disable={infos.phone.length ? false : true} />
       </div>
