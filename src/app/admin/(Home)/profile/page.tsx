@@ -11,7 +11,7 @@ import { sendRequestWithLoading } from '@utils/configs/axios';
 import InputEmail from "@comp_auth/modules/InputEmail";
 import InputPassword from "@comp_auth/modules/InputPassword";
 import AuthButton from "@comp_auth/modules/AuthButton";
-import InputPhone from "@comp_auth/modules/InputPhone";
+import InputPhone from "@/components/auth/modules/PhoneInput";
 // Global
 import SelectBox from "@comp_global/SelectBox";
 import Input from "@comp_global/Input";

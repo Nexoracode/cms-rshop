@@ -11,7 +11,7 @@ import CountryFlag from "react-country-flag";
 import AcceptCheckbox from "@comp_auth/modules/AcceptCheckbox";
 import InputPassword from "@comp_auth/modules/InputPassword";
 import InputEmail from "@comp_auth/modules/InputEmail";
-import InputPhone from "@comp_auth/modules/InputPhone";
+import InputPhone from "@/components/auth/modules/PhoneInput";
 // Globals
 import CustomDatePicker from "@comp_global/CustomDatePicker";
 import UploaderPhoto from "@comp_global/UploaderPhoto";

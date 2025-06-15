@@ -1,16 +1,12 @@
+"use client"
+
 import React, { useState, useRef, useEffect } from 'react';
 
-interface IranianPhoneInputProps {
-    title?: string;
-    label?: string;
+interface Props {
     onValidPhoneChange?: (phone: string) => void;
 }
 
-const IranianPhoneInput = ({
-    title = "شماره همراه",
-    label = "phone",
-    onValidPhoneChange
-}: IranianPhoneInputProps) => {
+const PhoneInput = ({ onValidPhoneChange }: Props) => {
     const [phone, setPhone] = useState('');
     const [formattedPhone, setFormattedPhone] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -93,8 +89,8 @@ const IranianPhoneInput = ({
 
     return (
         <div className="h-full mt-6">
-            <label htmlFor={label} className="block tracking-wide text-[var(--black-color)] font-bold mb-2">
-                {title}
+            <label htmlFor={'phone'} className="block tracking-wide text-(--black-color) font-bold mb-2">
+                شماره همراه
             </label>
 
             <div className="relative">
@@ -105,13 +101,18 @@ const IranianPhoneInput = ({
                     ref={inputRef}
                     type="text"
                     placeholder="9xx xxx xxxx"
-                    id={label}
+                    id={'phone'}
                     value={formattedPhone}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
                     className={`${phone.length ? (isValidPhone(phone) ? "!shadow !shadow-green-600" : "!shadow !shadow-red-300") : ""} w-full h-12 px-3 pl-12 rounded-lg`}
                     maxLength={12} // 3 بخش + 2 فاصله
                     dir='ltr'
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                    name="manual-phone"
                 />
             </div>
 
@@ -122,4 +123,4 @@ const IranianPhoneInput = ({
     );
 };
 
-export default IranianPhoneInput;
+export default PhoneInput;
