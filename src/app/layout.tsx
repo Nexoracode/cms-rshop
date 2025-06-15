@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import { Toaster } from 'react-hot-toast';
 import GetThemeSite from "@comp_global/GetThemeSite";
-import AuthProvider from "@/components/auth/modules/AuthProvider";
+import AuthProvider from "@/components/auth/AuthProvider";
 import SplashScreen from "@/components/global/SplashScreen/SplashScreen";
 import ContentScreen from "@/components/global/SplashScreen/ContentScreen";
 
