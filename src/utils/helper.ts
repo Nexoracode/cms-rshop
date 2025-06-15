@@ -1,11 +1,6 @@
-import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
 
 export const scrollToTop = () => scrollTo({ top: 0, behavior: "smooth" })
-
-export const deleteCookie = (name: string) => {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
 
 export const isOnline = () => {
     if (!window?.navigator?.onLine) {
@@ -16,36 +11,6 @@ export const isOnline = () => {
     }
     return false
 };
-
-/* export const getFile = async (profile_picture: string) => {
-    const response = await sendRequestWithLoading(`/admin/files/${profile_picture}`, {}, "get", "Get Picture", false, false, false, "application/json", 'blob');
-
-    if (response?.data) {
-        if (response.headers && typeof response.headers.get === 'function') {
-            const contentType = response.headers.get('content-type') || "";
-
-            if (
-                contentType === 'image/png' ||
-                contentType === 'image/jpeg' ||
-                contentType === 'image/jpg' ||
-                contentType === 'video/mp4' ||
-                contentType === 'application/pdf'
-            ) {
-                const fileUrl = URL.createObjectURL(response.data);
-                return { url: fileUrl, type: contentType };
-            }
-        }
-    }
-
-    return null;
-}; */
-
-export const signOutUser = () => {
-    deleteCookie("access_token");
-    deleteCookie("refresh_token");
-    deleteCookie("infos");
-    redirect("/signin")
-}
 
 export function objectToFormData(
     obj: Record<string, any>,
