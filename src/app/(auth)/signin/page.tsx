@@ -9,6 +9,9 @@ import { isOnline } from "@/utils/helper"
 import Header from "@/components/auth/Header";
 import AuthButton from "@/components/auth/AuthButton"
 import PhoneInput from "@/components/auth/PhoneInput"
+import useTimer from "@/hooks/useTimer";
+import ResendCode from "@/components/auth/ResendCode";
+import OtpVerification from "@/components/auth/Otp/OtpVerification";
 
 const SignIn = () => {
 
@@ -18,12 +21,14 @@ const SignIn = () => {
     phone: "",
     otp: "",
   })
+  const { time, isRunning, startTimer } = useTimer(120);
 
-  const handleSendVerificationCode = async () => {
+  const handleSendVerificationCode = async (isResend: boolean = false) => {
     if (isOnline()) return
     const toastPhone = toast.loading("درحال ارسال کد به تلفن همراه...")
     const resPhone = await sendVerificationCode(infos.phone) // call to action
     toast.dismiss(toastPhone)
+    isResend && startTimer();
   }
 
   const handleVerifyCode = async () => {
@@ -38,6 +43,17 @@ const SignIn = () => {
     isShowOtp ?
       <div>
         <Header title="خوش آمدید" subTitle="کد ارسال شده را وارد نمایید" />
+        <OtpVerification
+          lengthCode={4}
+          onIsCompleteCode={(value) =>
+            setInfos((prev) => ({ ...prev, otp: value }))
+          }
+        />
+        <ResendCode
+          time={time}
+          isRunning={isRunning}
+          onResend={() => handleSendVerificationCode(true)}
+        />
         <AuthButton onClickHandler={handleVerifyCode} title="بررسی کد" disable={infos.otp.length ? false : true} />
       </div>
       :
@@ -48,7 +64,7 @@ const SignIn = () => {
             onValidPhoneChange={phone => setInfos(prev => ({ ...prev, phone: phone }))}
           />
         </form>
-        <AuthButton onClickHandler={handleSendVerificationCode} title="ارسال کد" disable={infos.phone.length ? false : true} />
+        <AuthButton onClickHandler={() => handleSendVerificationCode()} title="ارسال کد" disable={infos.phone.length ? false : true} />
       </div>
   );
 };
