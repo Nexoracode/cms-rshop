@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast"
 import { signinUser } from "./actions" // import function server
 import AuthButton from "@comp_auth/modules/AuthButton"
 import { isOnline } from "@/utils/helper"
+import IranianPhoneInput from "@/components/auth/modules/InputPhone"
 
 const Form = () => {
     const router = useRouter()
@@ -38,6 +39,12 @@ const Form = () => {
             :
             <div>
                 <form className="mt-5 2xl:mt-7">
+                    <div className="p-4 max-w-md mx-auto">
+                        <IranianPhoneInput
+                            title="شماره همراه"
+                            label="mobile"
+                        />
+                    </div>
                 </form>
                 <AuthButton onClickHandler={handleSubmit} title="ارسال کد" disable={infos.phone.length ? false : true} />
             </div>

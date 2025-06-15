@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { sendRequestWithLoading } from "./configs/axios";
 import toast from "react-hot-toast";
 
 export const scrollToTop = () => scrollTo({ top: 0, behavior: "smooth" })
@@ -17,7 +16,7 @@ export const isOnline = () => {
     }
 };
 
-export const getFile = async (profile_picture: string) => {
+/* export const getFile = async (profile_picture: string) => {
     const response = await sendRequestWithLoading(`/admin/files/${profile_picture}`, {}, "get", "Get Picture", false, false, false, "application/json", 'blob');
 
     if (response?.data) {
@@ -38,7 +37,7 @@ export const getFile = async (profile_picture: string) => {
     }
 
     return null;
-};
+}; */
 
 export const signOutUser = () => {
     deleteCookie("access_token");

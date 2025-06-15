@@ -5,7 +5,7 @@ const SignIn = () => {
   return (
     <>
       <div>
-        <Header title="خوش آمدید" subTitle="وارد حساب کاربری خود شوید" />
+        <Header title="خوش آمدید" subTitle="شماره تلفن خود را وارد نمایید" />
         <Form />
       </div>
     </>
