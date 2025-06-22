@@ -1,26 +1,20 @@
-import "@/styles/globals.css";
-import { Viewport } from "next";
-
+import "../styles/globals.css";
 import { Providers } from "./providers";
+import { ThemeToggle } from "../components/theme-switch";
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+export const metadata = {
+  title: "پنل مدیریتی آرشاپ",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html suppressHydrationWarning lang="fa">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>پنل مدیریتی آرشاپ</title>
-      </head>
-
-      <body>
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+    <html lang="fa">
+      <head />
+      <body cz-shortcut-listen="false" className="bg-white text-black dark:bg-gray-900 dark:text-white">
+        <Providers>
+          <header className="p-4 flex justify-end">
+            <ThemeToggle />
+          </header>
           {children}
         </Providers>
       </body>
