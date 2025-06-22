@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import { Tabs, Tab, Card, CardBody, InputOtp, Input } from "@heroui/react";
+import BreakpointWatcher from "@/components/Helper/BreakpointWatcher";
 
 type auth = "phone" | "otp"
 
 export default function App() {
     const [selected, setSelected] = useState<auth>("phone");
+    const [isPhone, setIsPhone] = useState(false);
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -22,11 +24,12 @@ export default function App() {
             <Card className="max-w-[450px] w-full">
                 <CardBody className="overflow-hidden">
                     <Tabs
-                        isVertical={true}
+                        isVertical={isPhone}
                         aria-label="Tabs form"
                         selectedKey={selected}
                         size="md"
                         onSelectionChange={(key) => setSelected(key as auth)}
+                        className={`flex ${!isPhone ? "justify-center" : ""}`}
                     >
                         <Tab key="phone" title="شماره تماس" className="flex items-center justify-center w-full">
                             <Input
@@ -43,6 +46,8 @@ export default function App() {
                         </Tab>
                     </Tabs>
                 </CardBody>
+
+                <BreakpointWatcher onBreakpointChange={(status) => setIsPhone(status)}/>
             </Card>
         </div>
     );
