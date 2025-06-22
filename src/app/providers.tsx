@@ -3,7 +3,6 @@
 import * as React from "react";
 import { HeroUIProvider } from "@heroui/system";
 import { useRouter } from "next/navigation";
-import { Alert } from "@heroui/react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
