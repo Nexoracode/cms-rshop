@@ -37,15 +37,17 @@ export const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-
-export function ThemeToggle() {
+export function DarkMode() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    let isDark = theme === "light" ? false : true
-    document.documentElement.classList.toggle("dark", isDark);
-    setIsDark(isDark);
+    const saved = localStorage.getItem("theme");
+    const shouldDark =
+      saved === "dark" ||
+      (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    document.documentElement.classList.toggle("dark", shouldDark);
+    setIsDark(shouldDark);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,8 +63,13 @@ export function ThemeToggle() {
       onChange={handleChange}
       size="lg"
       color="success"
-      startContent={<SunIcon />}
-      endContent={<MoonIcon />}
+      thumbIcon={({ isSelected, className }) =>
+        isSelected ? (
+          <SunIcon className={className} />
+        ) : (
+          <MoonIcon className={className} />
+        )
+      }
     />
   );
 }
