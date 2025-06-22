@@ -1,0 +1,33 @@
+{
+  "name": "next-app-template",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@react-aria/ssr": "3.9.9",
+    "@react-aria/visually-hidden": "3.8.24",
+    "clsx": "2.1.1",
+    "framer-motion": "11.13.1",
+    "intl-messageformat": "10.7.16",
+    "next": "15.3.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@react-types/shared": "3.30.0",
+    "@types/node": "22.15.3",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.21",
+    "globals": "16.0.0",
+    "postcss": "8.5.3",
+    "prettier": "3.5.3",
+    "tailwind-variants": "0.3.0",
+    "tailwindcss": "3.4.16",
+    "typescript": "5.6.3"
+  }
+}
