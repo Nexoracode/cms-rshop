@@ -9,6 +9,6 @@
 
 @layer base {
   body {
-    @apply max-w-[1400px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans];
+    @apply max-w-[1200px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans];
   }
 }
