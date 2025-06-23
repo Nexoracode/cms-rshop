@@ -4,15 +4,14 @@ import { FiPlus, FiSearch } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
-import { Button } from "@heroui/react"
+import { Button, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/products/OptionBox";
 import ProductBox from "@/components/Admin/products/ProductBox";
 import Actions from "@/components/Admin/products/Modals/Actions";
-import { useState } from "react";
 
 const Products = () => {
 
-    const [isOpenEditModal, setIsOpenEditModal] = useState(false)
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
         <>
@@ -47,16 +46,12 @@ const Products = () => {
                         pathImg="/images/logo.png"
                         price={30000000}
                         varientsCount={400}
-                        onMoreDetail={() => setIsOpenEditModal(true)}
+                        onMoreDetail={onOpen}
                         onShowMore={() => { }}
                     />
                 </section>
             </div>
-            {
-                isOpenEditModal
-                    ? <Actions />
-                    : ""
-            }
+            <Actions isOpen={isOpen} onOpenChange={onOpenChange} />
         </>
     )
 }
