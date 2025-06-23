@@ -8,8 +8,11 @@
 }
 
 @layer base {
+  html {
+    @apply !bg-stone-100
+  }
   body {
-    @apply max-w-[1200px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans];
+    @apply max-w-[1200px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans] !bg-stone-100;
   }
   input:focus {
     @apply outline-none

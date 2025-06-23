@@ -49,7 +49,7 @@ const ProductBox: React.FC<Props> = ({title, onShowMore, price, varientsCount, p
                         <Image
                             alt="productr cover"
                             className="object-cover h-[110px]"
-                            shadow="md"
+                            shadow="sm"
                             src={pathImg}
                             width="150px"
                         />
