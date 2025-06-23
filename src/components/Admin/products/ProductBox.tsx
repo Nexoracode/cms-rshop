@@ -4,7 +4,16 @@ import React from "react";
 import { Card, CardBody, Image, Button } from "@heroui/react";
 import { IoMdMore } from "react-icons/io";
 
-const ProductBox = () => {
+type Props = {
+    title: string,
+    pathImg: string,
+    onShowMore: () => void,
+    onMoreDetail: () => void,
+    price: string | number,
+    varientsCount: string | number,
+}
+
+const ProductBox: React.FC<Props> = ({title, onShowMore, price, varientsCount, pathImg, onMoreDetail}) => {
 
     return (
         <Card
@@ -20,20 +29,20 @@ const ProductBox = () => {
                                 isIconOnly
                                 className="-translate-y-2"
                                 variant="light"
-                                onPress={() => { }}
+                                onPress={onMoreDetail}
                             >
                                 <IoMdMore className="text-lg" />
                             </Button>
-                            <p className="text-sm">مانیتور 24 اینچ</p>
+                            <p className="text-sm">{title}</p>
                         </div>
 
                         <div className="mt-3 text-end">
-                            <Button variant="flat" size="sm" color="success">نمایش</Button>
+                            <Button variant="flat" size="sm" color="success" onPress={onShowMore}>نمایش</Button>
                         </div>
 
                         <div className="flex w-full items-center justify-between mt-1.5">
-                           <small>از 50000 <span className="text-gray-500">تومان</span></small>
-                           <small className="text-gray-500">موجودی تنوع ها 6000 تا</small>
+                           <small>از {price.toLocaleString()} <span className="text-gray-500">تومان</span></small>
+                           <small className="text-gray-500">موجودی تنوع ها {varientsCount} تا</small>
                         </div>
                     </div>
                     <div className="w-fit">
@@ -41,7 +50,7 @@ const ProductBox = () => {
                             alt="productr cover"
                             className="object-cover h-[110px]"
                             shadow="md"
-                            src="https://heroui.com/images/album-cover.png"
+                            src={pathImg}
                             width="150px"
                         />
                     </div>

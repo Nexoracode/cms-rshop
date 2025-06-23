@@ -38,8 +38,14 @@ const Products = () => {
                 <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={() => { }} />
             </section>
             <section className="flex flex-col gap-3">
-                <ProductBox />
-                <ProductBox />
+                <ProductBox
+                    title="کفش آسیاتک"
+                    pathImg="/images/logo.png"
+                    price={30000000}
+                    varientsCount={400}
+                    onMoreDetail={() => { }}
+                    onShowMore={() => { }}
+                />
             </section>
         </div>
     )
