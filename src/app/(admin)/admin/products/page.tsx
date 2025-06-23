@@ -10,10 +10,21 @@ import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
+import Filter from "@/components/Admin/products/Modals/Filter";
 
 const Products = () => {
 
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const {
+        isOpen: isActionsOpen,
+        onOpen: onOpenActions,
+        onOpenChange: onActionsOpenChange,
+    } = useDisclosure();
+
+    const {
+        isOpen: isFilterOpen,
+        onOpen: onOpenFilter,
+        onOpenChange: onFilterOpenChange,
+    } = useDisclosure();
 
     return (
         <>
@@ -39,7 +50,7 @@ const Products = () => {
                 </section>
                 <section className="flex items-center justify-between px-8 my-3">
                     <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={() => { }} />
-                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={() => { }} />
+                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenFilter} />
                     <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={() => { }} />
                 </section>
                 <section className="flex flex-col gap-3">
@@ -48,15 +59,19 @@ const Products = () => {
                         pathImg="/images/logo.png"
                         price={30000000}
                         varientsCount={400}
-                        onMoreDetail={onOpen}
+                        onMoreDetail={onOpenActions}
                         onShowMore={() => { }}
                     />
                 </section>
             </div>
             <Actions
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                isOpen={isActionsOpen}
+                onOpenChange={onActionsOpenChange}
                 productName="کفش آسیاتک"
+            />
+            <Filter
+                isOpen={isFilterOpen}
+                onOpenChange={onFilterOpenChange}
             />
         </>
     )
