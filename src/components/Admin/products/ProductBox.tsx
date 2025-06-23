@@ -36,11 +36,11 @@ const ProductBox: React.FC<Props> = ({title, onShowMore, price, varientsCount, p
                             <p className="text-sm">{title}</p>
                         </div>
 
-                        <div className="mt-3 text-end">
+                        <div className="mb-2.5 mt-2 text-end">
                             <Button variant="flat" size="sm" color="success" onPress={onShowMore}>نمایش</Button>
                         </div>
 
-                        <div className="flex w-full items-center justify-between mt-1.5">
+                        <div className="flex w-full items-center justify-between">
                            <small>از {price.toLocaleString()} <span className="text-gray-500">تومان</span></small>
                            <small className="text-gray-500">موجودی تنوع ها {varientsCount} تا</small>
                         </div>
