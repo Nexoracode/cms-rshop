@@ -1,10 +1,22 @@
 "use client"
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Listbox, ListboxItem } from "@heroui/react";
+import { AiOutlineControl } from "react-icons/ai";
+import { BsShopWindow } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
+import { LuCopyPlus } from "react-icons/lu";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-const Actions: React.FC<any> = ({ isOpen, onOpenChange }) => {
+type Props = {
+    isOpen: boolean,
+    onOpenChange: () => void,
+    productName: string,
+}
+
+const Actions: React.FC<Props> = ({ isOpen, onOpenChange, productName }) => {
     return (
         <Modal
+            dir="rtl"
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             placement="auto"    // uses Hero UI auto: bottom on mobile, center on larger screens
@@ -12,18 +24,49 @@ const Actions: React.FC<any> = ({ isOpen, onOpenChange }) => {
             <ModalContent>
                 {onClose => (
                     <>
-                        <ModalHeader>تنظیمات محصول</ModalHeader>
+                        <ModalHeader><p className="font-normal text-[16px]">{productName}</p></ModalHeader>
                         <ModalBody>
-                            <p>اینجا متن مدال شما قرار می‌گیرد.</p>
+                            <Listbox aria-label="Listbox menu with descriptions" variant="flat">
+                                <ListboxItem
+                                    key="edit"
+                                    description="ویرایش جزئیات محصول"
+                                    startContent={<FiEdit className="text-2xl" />}
+                                >
+                                    ویرایش
+                                </ListboxItem>
+                                <ListboxItem
+                                    key="copy"
+                                    description="ساخت کپی از این محصول"
+                                    startContent={<LuCopyPlus className="text-2xl" />}
+                                >
+                                    ساخت کپی
+                                </ListboxItem>
+                                <ListboxItem
+                                    key="show"
+                                    description="هدایت به صفحه محصول"
+                                    startContent={<BsShopWindow className="text-2xl" />}
+                                >
+                                    نمایش در فروشگاه
+                                </ListboxItem>
+                                <ListboxItem
+                                    key="status"
+                                    description="وضعیت فعلی محصول"
+                                    showDivider
+                                    startContent={<AiOutlineControl className="text-2xl" />}
+                                >
+                                    وضعیت  (فعال)
+                                </ListboxItem>
+                                <ListboxItem
+                                    key="delete"
+                                    className="text-danger"
+                                    color="danger"
+                                    description="حذف کردن محصول از فروشگاه"
+                                    startContent={<RiDeleteBin6Line className="text-2xl" />}
+                                >
+                                    حذف محصول
+                                </ListboxItem>
+                            </Listbox>
                         </ModalBody>
-                        <ModalFooter className="flex gap-2">
-                            <Button color="danger" variant="light" onPress={onClose}>
-                                بستن
-                            </Button>
-                            <Button color="primary" onPress={onClose}>
-                                ذخیره
-                            </Button>
-                        </ModalFooter>
                     </>
                 )}
             </ModalContent>

@@ -1,13 +1,15 @@
 "use client"
 
-import { FiPlus, FiSearch } from "react-icons/fi";
-import { IoMdMore } from "react-icons/io";
-import { IoFilter } from "react-icons/io5";
-import { BiSortAlt2 } from "react-icons/bi";
+// Other
 import { Button, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/products/OptionBox";
 import ProductBox from "@/components/Admin/products/ProductBox";
 import Actions from "@/components/Admin/products/Modals/Actions";
+// Icons
+import { FiPlus, FiSearch, } from "react-icons/fi";
+import { IoMdMore } from "react-icons/io";
+import { IoFilter } from "react-icons/io5";
+import { BiSortAlt2 } from "react-icons/bi";
 
 const Products = () => {
 
@@ -51,7 +53,11 @@ const Products = () => {
                     />
                 </section>
             </div>
-            <Actions isOpen={isOpen} onOpenChange={onOpenChange} />
+            <Actions
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                productName="کفش آسیاتک"
+            />
         </>
     )
 }
