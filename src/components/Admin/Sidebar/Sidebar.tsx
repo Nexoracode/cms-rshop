@@ -21,6 +21,7 @@ export default function Sidebar() {
                     routeName="home"
                     parentStyle="text-green-700 hover:text-green-700 hover:bg-green-700/5"
                     iconStyle="bg-green-700/10"
+                    active="bg-green-700/5"
                 />
                 <Item
                     title="سفارشات"
@@ -28,6 +29,7 @@ export default function Sidebar() {
                     routeName="orders"
                     parentStyle="text-blue-700 hover:text-blue-700 hover:bg-blue-700/5"
                     iconStyle="bg-blue-700/10"
+                    active="bg-blue-700/5"
                 />
                 <Item
                     title="محصولات"
@@ -35,6 +37,7 @@ export default function Sidebar() {
                     routeName="products"
                     parentStyle="text-orange-700 hover:text-orange-700 hover:bg-orange-700/5"
                     iconStyle="bg-orange-700/10"
+                    active="bg-orange-700/5"
                 />
                 <Item
                     title="تنظیمات"
@@ -42,6 +45,7 @@ export default function Sidebar() {
                     routeName="settings"
                     parentStyle="text-sky-700 hover:text-sky-700 hover:bg-sky-700/5"
                     iconStyle="bg-sky-700/10"
+                    active="bg-sky-700/5"
                 />
             </nav>
         </aside>
