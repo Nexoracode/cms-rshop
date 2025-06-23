@@ -11,6 +11,7 @@ import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import Filter from "@/components/Admin/products/Modals/Filter";
+import Sorting from "@/components/Admin/products/Modals/Sorting";
 
 const Products = () => {
 
@@ -18,6 +19,12 @@ const Products = () => {
         isOpen: isActionsOpen,
         onOpen: onOpenActions,
         onOpenChange: onActionsOpenChange,
+    } = useDisclosure();
+
+    const {
+        isOpen: isSortOpen,
+        onOpen: onOpenSort,
+        onOpenChange: onSortOpenChange,
     } = useDisclosure();
 
     const {
@@ -50,8 +57,8 @@ const Products = () => {
                 </section>
                 <section className="flex items-center justify-between px-8 my-3">
                     <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={() => { }} />
-                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenFilter} />
-                    <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={() => { }} />
+                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
+                    <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
                 </section>
                 <section className="flex flex-col gap-3">
                     <ProductBox
@@ -68,6 +75,10 @@ const Products = () => {
                 isOpen={isActionsOpen}
                 onOpenChange={onActionsOpenChange}
                 productName="کفش آسیاتک"
+            />
+            <Sorting
+                isOpen={isSortOpen}
+                onOpenChange={onSortOpenChange}
             />
             <Filter
                 isOpen={isFilterOpen}
