@@ -12,6 +12,7 @@ import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import Filter from "@/components/Admin/products/Modals/Filter";
 import Sorting from "@/components/Admin/products/Modals/Sorting";
+import MoreFeatures from "@/components/Admin/products/Modals/MoreFeatures";
 
 const Products = () => {
 
@@ -31,6 +32,12 @@ const Products = () => {
         isOpen: isFilterOpen,
         onOpen: onOpenFilter,
         onOpenChange: onFilterOpenChange,
+    } = useDisclosure();
+
+    const {
+        isOpen: isFeatureOpen,
+        onOpen: onOpenFeature,
+        onOpenChange: onFeatureOpenChange,
     } = useDisclosure();
 
     return (
@@ -56,7 +63,7 @@ const Products = () => {
                     </div>
                 </section>
                 <section className="flex items-center justify-between px-8 my-3">
-                    <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={() => { }} />
+                    <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
                     <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
                     <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
                 </section>
@@ -83,6 +90,10 @@ const Products = () => {
             <Filter
                 isOpen={isFilterOpen}
                 onOpenChange={onFilterOpenChange}
+            />
+            <MoreFeatures
+                isOpen={isFeatureOpen}
+                onOpenChange={onFeatureOpenChange}
             />
         </>
     )
