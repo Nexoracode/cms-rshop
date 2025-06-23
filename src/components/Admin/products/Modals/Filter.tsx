@@ -1,19 +1,18 @@
 "use client"
 
-import { Modal, ModalContent, ModalHeader, ModalBody, Listbox, ListboxItem } from "@heroui/react";
-import { AiOutlineControl } from "react-icons/ai";
-import { BsShopWindow } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
-import { LuCopyPlus } from "react-icons/lu";
-import { RiDeleteBin6Line } from "react-icons/ri";
-//
-import { TbShoppingBagHeart, TbShoppingBagPlus, TbShoppingCartDollar, TbShoppingCartDown, TbShoppingCartExclamation, TbShoppingCartHeart, TbShoppingCartUp } from "react-icons/tb";
-import { TbShoppingCartBolt } from "react-icons/tb";
+import { NumberInput, Select, SelectItem } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 
 type Props = {
     isOpen: boolean,
     onOpenChange: () => void,
 }
+
+export const animals = [
+    { key: "cat", label: "جدید" },
+    { key: "dog", label: "قدیمی" },
+    { key: "elephant", label: "تازه" },
+];
 
 const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     return (
@@ -26,46 +25,57 @@ const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             <ModalContent>
                 {onClose => (
                     <>
-                        <ModalHeader><p className="font-normal text-[16px]">مرتب سازی</p></ModalHeader>
+                        <ModalHeader><p className="font-normal text-[16px]">فیلتر</p></ModalHeader>
                         <ModalBody>
-                            <Listbox aria-label="Listbox menu with descriptions" variant="faded">
-                                <ListboxItem
-                                    key="new"
-                                    startContent={<TbShoppingCartBolt className="text-2xl" />}
-                                >
-                                    جدیدترین
-                                </ListboxItem>
-                                <ListboxItem
-                                    key="past"
-                                    startContent={<TbShoppingCartExclamation className="text-2xl" />}
-                                >
-                                    قدیمی ترین
-                                </ListboxItem>
-                                <ListboxItem
-                                    key="high-price"
-                                    startContent={<TbShoppingCartUp className="text-2xl" />}
-                                >
-                                    بیشترین قیمت
-                                </ListboxItem>
-                                <ListboxItem
-                                    key="low-price"
-                                    startContent={<TbShoppingCartDown className="text-2xl" />}
-                                >
-                                    کمترین قیمت
-                                </ListboxItem>
-                                <ListboxItem
-                                    key="more-sales"
-                                    startContent={<TbShoppingCartDollar className="text-2xl" />}
-                                >
-                                    پرفروش ترین
-                                </ListboxItem>
-                                <ListboxItem
-                                    key="more-favorited"
-                                    startContent={<TbShoppingCartHeart className="text-2xl" />}
-                                >
-                                    محبوب ترین
-                                </ListboxItem>
-                            </Listbox>
+                            <Select
+                                dir="rtl"
+                                items={animals}
+                                labelPlacement={"outside"}
+                                label="وضعیت"
+                                placeholder="انتخاب وضعیت محصول"
+                            >
+                                {(animal) => <SelectItem>{animal.label}</SelectItem>}
+                            </Select>
+                            <NumberInput
+                                minValue={1}
+                                label="موجودی"
+                                labelPlacement={"outside"}
+                                placeholder="تعداد موجودی..."
+                            />
+                            <Select
+                                dir="rtl"
+                                items={animals}
+                                labelPlacement={"outside"}
+                                label="دسته بندی"
+                                placeholder="انتخاب دسته بندی"
+                            >
+                                {(animal) => <SelectItem>{animal.label}</SelectItem>}
+                            </Select>
+                            <div className="flex flex-col gap-4">
+                                <p className="-mb-2 text-black/80">قیمت</p>
+                                <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                    <NumberInput
+                                        label="از"
+                                        placeholder="0.00"
+                                        labelPlacement={"outside-left"}
+                                        endContent={
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">تومان</span>
+                                            </div>
+                                        }
+                                    />
+                                    <NumberInput
+                                        label="تا"
+                                        labelPlacement={"outside-left"}
+                                        placeholder="0.00"
+                                        endContent={
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">تومان</span>
+                                            </div>
+                                        }
+                                    />
+                                </div>
+                            </div>
                         </ModalBody>
                     </>
                 )}
