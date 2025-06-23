@@ -11,4 +11,13 @@
   body {
     @apply max-w-[1200px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans];
   }
+  input:focus {
+    @apply outline-none
+  }
+}
+
+@layer components {
+  .shadow-box {
+    @apply shadow-[0_0_10px_lightgray]
+  }
 }
