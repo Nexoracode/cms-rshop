@@ -1,9 +1,11 @@
 "use client"
 
 import { Modal, ModalContent, ModalHeader, ModalBody, Listbox, ListboxItem } from "@heroui/react";
-//
-import { TbShoppingCartDollar, TbShoppingCartDown, TbShoppingCartExclamation, TbShoppingCartHeart, TbShoppingCartUp } from "react-icons/tb";
-import { TbShoppingCartBolt } from "react-icons/tb";
+import { AiOutlinePercentage } from "react-icons/ai";
+import { BiCategory } from "react-icons/bi";
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { TbBrandCupra, TbEdit } from "react-icons/tb";
+import { GrWorkshop } from "react-icons/gr";
 
 type Props = {
     isOpen: boolean,
@@ -21,44 +23,44 @@ const MoreFeatures: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             <ModalContent>
                 {onClose => (
                     <>
-                        <ModalHeader><p className="font-normal text-[16px]">مرتب سازی</p></ModalHeader>
+                        <ModalHeader><p className="font-normal text-[16px]">امکانات بیشتر</p></ModalHeader>
                         <ModalBody>
                             <Listbox aria-label="Listbox menu with descriptions" variant="faded">
                                 <ListboxItem
-                                    key="new"
-                                    startContent={<TbShoppingCartBolt className="text-2xl" />}
+                                    key="group"
+                                    startContent={<TbEdit className="text-2xl text-[var(--primary)]" />}
                                 >
-                                    جدیدترین
+                                    ویرایش گروهی
                                 </ListboxItem>
                                 <ListboxItem
-                                    key="past"
-                                    startContent={<TbShoppingCartExclamation className="text-2xl" />}
+                                    key="category"
+                                    startContent={<BiCategory className="text-2xl text-[var(--primary)]" />}
                                 >
-                                    قدیمی ترین
+                                    دسته بندی
                                 </ListboxItem>
                                 <ListboxItem
-                                    key="high-price"
-                                    startContent={<TbShoppingCartUp className="text-2xl" />}
+                                    key="brands"
+                                    startContent={<TbBrandCupra className="text-2xl text-[var(--primary)]" />}
                                 >
-                                    بیشترین قیمت
+                                    برندها
                                 </ListboxItem>
                                 <ListboxItem
-                                    key="low-price"
-                                    startContent={<TbShoppingCartDown className="text-2xl" />}
+                                    key="off"
+                                    startContent={<AiOutlinePercentage className="text-2xl text-[var(--primary)]" />}
                                 >
-                                    کمترین قیمت
+                                    تخفیف
                                 </ListboxItem>
                                 <ListboxItem
-                                    key="more-sales"
-                                    startContent={<TbShoppingCartDollar className="text-2xl" />}
+                                    key="excel"
+                                    startContent={<PiMicrosoftExcelLogoFill className="text-2xl text-[var(--primary)]" />}
                                 >
-                                    پرفروش ترین
+                                    خروجی گروهی محصول با اکسل
                                 </ListboxItem>
                                 <ListboxItem
-                                    key="more-favorited"
-                                    startContent={<TbShoppingCartHeart className="text-2xl" />}
+                                    key="manage"
+                                    startContent={<GrWorkshop className="text-2xl text-[var(--primary)]" />}
                                 >
-                                    محبوب ترین
+                                    مدیریت ویژگی های محصولات
                                 </ListboxItem>
                             </Listbox>
                         </ModalBody>

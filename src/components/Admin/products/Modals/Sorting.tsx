@@ -24,37 +24,37 @@ const Sorting: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                             <Listbox aria-label="Listbox menu with descriptions" variant="faded">
                                 <ListboxItem
                                     key="new"
-                                    startContent={<TbShoppingCartBolt className="text-2xl" />}
+                                    startContent={<TbShoppingCartBolt className="text-2xl text-[var(--primary)]" />}
                                 >
                                     جدیدترین
                                 </ListboxItem>
                                 <ListboxItem
                                     key="past"
-                                    startContent={<TbShoppingCartExclamation className="text-2xl" />}
+                                    startContent={<TbShoppingCartExclamation className="text-2xl text-[var(--primary)]" />}
                                 >
                                     قدیمی ترین
                                 </ListboxItem>
                                 <ListboxItem
                                     key="high-price"
-                                    startContent={<TbShoppingCartUp className="text-2xl" />}
+                                    startContent={<TbShoppingCartUp className="text-2xl text-[var(--primary)]" />}
                                 >
                                     بیشترین قیمت
                                 </ListboxItem>
                                 <ListboxItem
                                     key="low-price"
-                                    startContent={<TbShoppingCartDown className="text-2xl" />}
+                                    startContent={<TbShoppingCartDown className="text-2xl text-[var(--primary)]" />}
                                 >
                                     کمترین قیمت
                                 </ListboxItem>
                                 <ListboxItem
                                     key="more-sales"
-                                    startContent={<TbShoppingCartDollar className="text-2xl" />}
+                                    startContent={<TbShoppingCartDollar className="text-2xl text-[var(--primary)]" />}
                                 >
                                     پرفروش ترین
                                 </ListboxItem>
                                 <ListboxItem
                                     key="more-favorited"
-                                    startContent={<TbShoppingCartHeart className="text-2xl" />}
+                                    startContent={<TbShoppingCartHeart className="text-2xl text-[var(--primary)]" />}
                                 >
                                     محبوب ترین
                                 </ListboxItem>

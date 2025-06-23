@@ -7,6 +7,10 @@
     src: url("/fonts/IRANSans/IRANSansWeb_Medium.woff");
 }
 
+:root {
+  --primary: #C58AF9;
+}
+
 @layer base {
   html {
     @apply !bg-stone-100
