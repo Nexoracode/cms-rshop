@@ -6,6 +6,7 @@ import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import { Button } from "@heroui/react"
 import OptionBox from "@/components/Admin/products/OptionBox";
+import ProductBox from "@/components/Admin/products/ProductBox";
 
 
 const Products = () => {
@@ -19,7 +20,7 @@ const Products = () => {
                 <p>محصول (1)</p>
             </header>
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
-            <div className="w-full mt-5">
+            <section className="w-full mt-5">
                 <div className="relative">
                     <FiSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-xl text-black/50 dark:text-white/60 pointer-events-none" />
                     <input
@@ -30,12 +31,16 @@ const Products = () => {
                         className={`w-full pr-12 pl-4 py-3 rounded-lg shadow-box placeholder-default-700/50 text-black/70 text-right transition`}
                     />
                 </div>
-            </div>
-            <div className="flex items-center justify-between px-8 mt-3">
-                <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]"/>} onClick={() => {}}/>
-                <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]"/>} onClick={() => {}}/>
-                <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]"/>} onClick={() => {}}/>
-            </div>
+            </section>
+            <section className="flex items-center justify-between px-8 my-3">
+                <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={() => { }} />
+                <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={() => { }} />
+                <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={() => { }} />
+            </section>
+            <section className="flex flex-col gap-3">
+                <ProductBox />
+                <ProductBox />
+            </section>
         </div>
     )
 }
