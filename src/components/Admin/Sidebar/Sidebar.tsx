@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 import { HiOutlineHome } from "react-icons/hi";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
