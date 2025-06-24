@@ -1,5 +1,6 @@
 "use client"
 
+import ImageCropper from "@/components/Helper/ImageCropper";
 import { Alert, Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react"
 import Link from "next/link"
 import { FaRegImages } from "react-icons/fa6";
@@ -16,9 +17,8 @@ const ImagesProducts = () => {
                 </div>
             </CardHeader>
             <CardBody>
-                <p>Make beautiful websites regardless of your design experience.</p>
+                <ImageCropper />
             </CardBody>
-            <Divider />
             <CardFooter>
                 <div className="w-full flex items-center my-3">
                     <Alert className="h-[40px] flex items-center p-0 bg-transparent" variant="flat" radius="full" color="secondary" dir="rtl" title={<p className="text-[12px]" dir="rtl">حداکثر حجم فایل تصویر 5.5 و ویدئو 50MB است. برای هر محصول 20 تصویر و 5 ویدئو میتوانید بارگذاری کنید.</p>} />
