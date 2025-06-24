@@ -20,10 +20,6 @@ const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
     })
 
     useEffect(() => {
-        console.log(">>>>>>>>>>>>", typeof discount);
-    }, [discount])
-
-    useEffect(() => {
         onIsPriceExist(infos.price ? true : false)
     }, [infos.price])
 
