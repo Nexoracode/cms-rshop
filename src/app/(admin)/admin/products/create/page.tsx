@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link"
 import ImagesProducts from "@/components/Admin/products/NewProduct/ImagesProducts";
 import InitInformation from "@/components/Admin/products/NewProduct/InitInformation";
@@ -12,6 +12,14 @@ const CreateNewProduct = () => {
 
     const [discount, setDiscount] = useState(0)
     const [isPriceExist, setIsPriceExist] = useState(false)
+
+    /*   useEffect(() => {
+          console.log("discount =>", discount);
+      }, [discount])
+  */
+    useEffect(() => {
+        console.log("isPriceExist => ", isPriceExist);
+    }, [isPriceExist])
 
     return (
         <div>
@@ -26,8 +34,11 @@ const CreateNewProduct = () => {
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
             <section className="flex flex-col gap-6 py-6">
                 <ImagesProducts />
-                <InitInformation discount={discount} onIsPriceExist={setIsPriceExist} />
-                <AdditionalInformation isDisabled={!isPriceExist} onDiscount={value => setDiscount(value)} />
+                <InitInformation discount={discount} onIsPriceExist={(val) => {
+                    console.log(val);
+                    setIsPriceExist(val)
+                }} />
+                <AdditionalInformation isDisabled={!isPriceExist} onDiscount={(value: any) => setDiscount(value)} />
             </section>
         </div>
     )

@@ -25,13 +25,14 @@ const AdditionalInformation: React.FC<Props> = ({ isDisabled, onDiscount }) => {
                         label="تخفیف"
                         labelPlacement={"outside"}
                         placeholder="10"
-                        minValue={3}
+                        minValue={1}
+                        maxValue={99}
                         endContent={
                             <div className="pointer-events-none flex items-center">
                                 <span className="text-default-400 text-small">%</span>
                             </div>
                         }
-                        onChange={(e) => onDiscount(e.toString())}
+                        onValueChange={(value: any) => onDiscount(value)}
                     />
                     {
                         isDisabled

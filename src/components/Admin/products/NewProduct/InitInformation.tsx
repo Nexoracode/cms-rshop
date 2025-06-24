@@ -20,17 +20,11 @@ const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
     })
 
     useEffect(() => {
-        console.log(discount);
-
+        console.log(">>>>>>>>>>>>", typeof discount);
     }, [discount])
 
     useEffect(() => {
-        console.log(infos);
-        if (infos.price.length) {
-            onIsPriceExist(true)
-        } else {
-            onIsPriceExist(false)
-        }
+        onIsPriceExist(infos.price ? true : false)
     }, [infos.price])
 
     return (
@@ -55,19 +49,17 @@ const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
                             label="قیمت"
                             labelPlacement={"outside"}
                             placeholder="0.00"
-                            minValue={10000}
+                            min={1}
                             isRequired
                             endContent={
                                 <div className="pointer-events-none flex items-center">
                                     <span className="text-default-400 text-small">تومان</span>
                                 </div>
                             }
-                            onChange={(e) => {
-                                setInfos(prev => ({ ...prev, price: e?.target?.value || infos.price }))
-                            }}
+                            onValueChange={(value: any) => setInfos(prev => ({ ...prev, price: value }))}
                         />
                         {
-                            discount
+                            discount && infos.price
                                 ? <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف: {(+infos.price * (1 - (+discount / 100))).toFixed(0)} تومان</p>
                                 : ""
                         }
