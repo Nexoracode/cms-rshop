@@ -14,7 +14,7 @@ export const animals = [
     { key: "elephant", label: "تازه" },
 ];
 
-const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     return (
         <Modal
             dir="rtl"
@@ -206,4 +206,4 @@ const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
         </Modal>
     );
 }
-export default Filter
+export default FilterModal

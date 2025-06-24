@@ -12,7 +12,7 @@ type Props = {
     onOpenChange: () => void,
 }
 
-const MoreFeatures: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const MoreFeaturesModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     return (
         <Modal
             dir="rtl"
@@ -70,4 +70,4 @@ const MoreFeatures: React.FC<Props> = ({ isOpen, onOpenChange }) => {
         </Modal>
     );
 }
-export default MoreFeatures
+export default MoreFeaturesModal

@@ -13,7 +13,7 @@ type Props = {
     productName: string,
 }
 
-const Actions: React.FC<Props> = ({ isOpen, onOpenChange, productName }) => {
+const ActionsModal: React.FC<Props> = ({ isOpen, onOpenChange, productName }) => {
     return (
         <Modal
             dir="rtl"
@@ -73,4 +73,4 @@ const Actions: React.FC<Props> = ({ isOpen, onOpenChange, productName }) => {
         </Modal>
     );
 }
-export default Actions
+export default ActionsModal

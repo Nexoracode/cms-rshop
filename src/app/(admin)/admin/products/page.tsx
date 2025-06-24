@@ -1,19 +1,19 @@
 "use client"
 
 // Other
+import Link from "next/link";
 import { Button, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/products/OptionBox";
 import ProductBox from "@/components/Admin/products/ProductBox";
-import Actions from "@/components/Admin/products/Modals/Actions";
+import ActionsModal from "@/components/Admin/products/Modals/ActionsModal";
+import FilterModal from "@/components/Admin/products/Modals/FilterModal";
+import SortingModal from "@/components/Admin/products/Modals/SortingModal";
+import MoreFeaturesModal from "@/components/Admin/products/Modals/MoreFeaturesModal";
 // Icons
 import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
-import Filter from "@/components/Admin/products/Modals/Filter";
-import Sorting from "@/components/Admin/products/Modals/Sorting";
-import MoreFeatures from "@/components/Admin/products/Modals/MoreFeatures";
-import Link from "next/link";
 
 const Products = () => {
 
@@ -81,20 +81,20 @@ const Products = () => {
                     />
                 </section>
             </div>
-            <Actions
+            <ActionsModal
                 isOpen={isActionsOpen}
                 onOpenChange={onActionsOpenChange}
                 productName="کفش آسیاتک"
             />
-            <Sorting
+            <SortingModal
                 isOpen={isSortOpen}
                 onOpenChange={onSortOpenChange}
             />
-            <Filter
+            <FilterModal
                 isOpen={isFilterOpen}
                 onOpenChange={onFilterOpenChange}
             />
-            <MoreFeatures
+            <MoreFeaturesModal
                 isOpen={isFeatureOpen}
                 onOpenChange={onFeatureOpenChange}
             />
