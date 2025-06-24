@@ -1,6 +1,6 @@
 "use client"
 
-import { Checkbox, NumberInput, Select, SelectItem } from "@heroui/react";
+import { Button, Checkbox, DateRangePicker, ModalFooter, NumberInput, Select, SelectItem } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 
 type Props = {
@@ -22,11 +22,11 @@ const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             onOpenChange={onOpenChange}
             placement="auto"    // uses Hero UI auto: bottom on mobile, center on larger screens
         >
-            <ModalContent>
+            <ModalContent className="max-w-[700px] w-full">
                 {onClose => (
                     <>
                         <ModalHeader><p className="font-normal text-[16px]">فیلتر</p></ModalHeader>
-                        <ModalBody>
+                        <ModalBody className="overflow-y-auto">
                             <Select
                                 dir="rtl"
                                 items={animals}
@@ -34,7 +34,8 @@ const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                                 label="وضعیت"
                                 placeholder="انتخاب وضعیت محصول"
                             >
-                                {(animal) => <SelectItem>{animal.label}</SelectItem>}
+                                <SelectItem>نمایش - در فروشگاه نمایش داده میشود</SelectItem>
+                                <SelectItem>عدم نمایش - در فروشگاه نمایش داده  نمی میشود</SelectItem>
                             </Select>
                             <NumberInput
                                 minValue={1}
@@ -51,28 +52,96 @@ const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                             >
                                 {(animal) => <SelectItem>{animal.label}</SelectItem>}
                             </Select>
+                            <DateRangePicker label="تاریخ ثبت" labelPlacement="outside" />
+                            <div className="flex flex-col gap-4">
+                                <p className="-mb-2 text-black/80">وزن</p>
+                                <div className="flex w-full flex-wrap justify-between md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                    <NumberInput
+                                        hideStepper
+                                        label="از"
+                                        placeholder="50"
+                                        minValue={1}
+                                        labelPlacement={"outside-left"}
+                                        endContent={
+                                            <div className="flex items-center">
+                                                <label className="sr-only" htmlFor="currency">
+                                                    Currency
+                                                </label>
+                                                <select
+                                                    aria-label="Select currency"
+                                                    className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                                    defaultValue="USD"
+                                                    id="currency"
+                                                    name="currency"
+                                                >
+                                                    <option aria-label="US Dollar" value="USD">
+                                                        کیلوگرم
+                                                    </option>
+                                                    <option aria-label="Argentine Peso" value="ARS">
+                                                        گرم
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        }
+                                        className="justify-center"
+                                    />
+                                    <NumberInput
+                                        hideStepper
+                                        label="تا"
+                                        placeholder="10"
+                                        minValue={2}
+                                        labelPlacement={"outside-left"}
+                                        endContent={
+                                            <div className="flex items-center">
+                                                <label className="sr-only" htmlFor="currency">
+                                                    Currency
+                                                </label>
+                                                <select
+                                                    aria-label="Select currency"
+                                                    className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                                    defaultValue="USD"
+                                                    id="currency"
+                                                    name="currency"
+                                                >
+                                                    <option aria-label="Argentine Peso" value="ARS">
+                                                        گرم
+                                                    </option>
+                                                    <option aria-label="US Dollar" value="USD">
+                                                        کیلوگرم
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        }
+                                        className="justify-center"
+                                    />
+                                </div>
+                            </div>
                             <div className="flex flex-col gap-4">
                                 <p className="-mb-2 text-black/80">قیمت</p>
                                 <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                                     <NumberInput
                                         label="از"
-                                        placeholder="0.00"
-                                        labelPlacement={"outside-left"}
-                                        startContentContent={
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">تومان</span>
-                                            </div>
-                                        }
-                                    />
-                                    <NumberInput
-                                        label="تا"
                                         labelPlacement={"outside-left"}
                                         placeholder="0.00"
+                                        minValue={10000}
                                         endContent={
                                             <div className="pointer-events-none flex items-center">
                                                 <span className="text-default-400 text-small">تومان</span>
                                             </div>
                                         }
+                                        className="justify-center"
+                                    />
+                                    <NumberInput
+                                        label="تا"
+                                        labelPlacement={"outside-left"}
+                                        placeholder="0.00"
+                                        minValue={20000}
+                                        endContent={
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">تومان</span>
+                                            </div>
+                                        }
+                                        className="justify-center"
                                     />
                                 </div>
                             </div>
@@ -81,90 +150,56 @@ const Filter: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                                 <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                                     <NumberInput
                                         label="از"
-                                        placeholder="0.00"
+                                        placeholder="1"
                                         labelPlacement={"outside-left"}
+                                        minValue={1}
                                         endContent={
                                             <div className="pointer-events-none flex items-center">
                                                 <span className="text-default-400 text-small">%</span>
                                             </div>
                                         }
+                                        className="justify-center"
                                     />
                                     <NumberInput
                                         label="تا"
                                         labelPlacement={"outside-left"}
-                                        placeholder="0.00"
+                                        placeholder="3"
+                                        minValue={3}
                                         endContent={
                                             <div className="pointer-events-none flex items-center">
                                                 <span className="text-default-400 text-small">%</span>
                                             </div>
                                         }
+                                        className="justify-center"
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-4">
-                                <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                                    <NumberInput
-                                        hideStepper
-                                        label="حداقل از وزن"
-                                        placeholder="0.5"
-                                        labelPlacement={"outside"}
-                                        endContent={
-                                            <div className="flex items-center">
-                                                <label className="sr-only" htmlFor="currency">
-                                                    Currency
-                                                </label>
-                                                <select
-                                                    aria-label="Select currency"
-                                                    className="outline-none border-0 bg-transparent text-default-400 text-small"
-                                                    defaultValue="USD"
-                                                    id="currency"
-                                                    name="currency"
-                                                >
-                                                    <option aria-label="Argentine Peso" value="ARS">
-                                                        گرم
-                                                    </option>
-                                                    <option aria-label="US Dollar" value="USD">
-                                                        کیلوگرم
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        }
-                                    />
-                                    <NumberInput
-                                        hideStepper
-                                        endContent={
-                                            <div className="flex items-center">
-                                                <label className="sr-only" htmlFor="currency">
-                                                    Currency
-                                                </label>
-                                                <select
-                                                    aria-label="Select currency"
-                                                    className="outline-none border-0 bg-transparent text-default-400 text-small"
-                                                    defaultValue="USD"
-                                                    id="currency"
-                                                    name="currency"
-                                                >
-                                                    <option aria-label="Argentine Peso" value="ARS">
-                                                        گرم
-                                                    </option>
-                                                    <option aria-label="US Dollar" value="USD">
-                                                        کیلوگرم
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        }
-
-                                        labelPlacement={"outside"}
-                                        label="حداکثر تا وزن"
-                                        placeholder="10"
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 pt-4">
-                                <Checkbox defaultSelected>انتخاب محصولات بدون وزن</Checkbox>
-                                <Checkbox defaultSelected>انتخاب محصولات متصل به دیوار</Checkbox>
-                            </div>
+                            <NumberInput
+                                label="زمان آماده سازی"
+                                placeholder="3"
+                                minValue={1}
+                                endContent={
+                                    <div className="pointer-events-none flex items-center">
+                                        <span className="text-default-400 text-small">روز</span>
+                                    </div>
+                                }
+                                labelPlacement={"outside"}
+                            />
+                            <Select
+                                dir="rtl"
+                                items={animals}
+                                labelPlacement={"outside"}
+                                label="برند"
+                                placeholder="انتخاب برند محصول"
+                            >
+                                <SelectItem>اپل</SelectItem>
+                                <SelectItem>آیفون</SelectItem>
+                            </Select>
                         </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger">حذف فیلتر</Button>
+                            <Button>اعمال</Button>
+                        </ModalFooter>
                     </>
                 )}
             </ModalContent>

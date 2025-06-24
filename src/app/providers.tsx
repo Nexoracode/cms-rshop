@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   return (
-    <HeroUIProvider navigate={router.push}>
+    <HeroUIProvider navigate={router.push} locale="fa-IR">
       {children}
     </HeroUIProvider>
   );
