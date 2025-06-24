@@ -5,14 +5,33 @@ import { LuTextCursorInput } from "react-icons/lu"
 import { FiSearch } from "react-icons/fi";
 import { TiPlusOutline } from "react-icons/ti";
 import AddNewCategoryModal from "./Modal/AddNewCategoryModal";
+import { useEffect, useState } from "react";
 
 type Props = {
-    price?: number | string
+    discount?: number | string,
+    onIsPriceExist: (val: boolean) => void
 }
 
-const InitInformation: React.FC<Props> = ({ price }) => {
+const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [infos, setInfos] = useState({
+        price: ""
+    })
+
+    useEffect(() => {
+        console.log(discount);
+
+    }, [discount])
+
+    useEffect(() => {
+        console.log(infos);
+        if (infos.price.length) {
+            onIsPriceExist(true)
+        } else {
+            onIsPriceExist(false)
+        }
+    }, [infos.price])
 
     return (
         <>
@@ -43,10 +62,13 @@ const InitInformation: React.FC<Props> = ({ price }) => {
                                     <span className="text-default-400 text-small">تومان</span>
                                 </div>
                             }
+                            onChange={(e) => {
+                                setInfos(prev => ({ ...prev, price: e?.target?.value || infos.price }))
+                            }}
                         />
                         {
-                            price
-                                ? <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف: {price.toLocaleString()}</p>
+                            discount
+                                ? <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف: {(+infos.price * (1 - (+discount / 100))).toFixed(0)} تومان</p>
                                 : ""
                         }
                     </div>
