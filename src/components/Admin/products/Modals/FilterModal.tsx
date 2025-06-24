@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Checkbox, DateRangePicker, ModalFooter, NumberInput, Select, SelectItem } from "@heroui/react";
+import { Button, DateRangePicker, ModalFooter, NumberInput, Select, SelectItem } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 
 type Props = {
