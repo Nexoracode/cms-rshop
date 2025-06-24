@@ -1,5 +1,6 @@
 "use client"
 
+import ImagesProducts from "@/components/Admin/products/NewProduct/ImagesProducts";
 import { Button } from "@heroui/react";
 import Link from "next/link"
 import { MdOutlineArrowBackIos } from "react-icons/md";
@@ -16,6 +17,9 @@ const CreateNewProduct = () => {
                 </Button>
             </header>
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
+            <div className="py-6">
+                <ImagesProducts />
+            </div>
         </div>
     )
 }
