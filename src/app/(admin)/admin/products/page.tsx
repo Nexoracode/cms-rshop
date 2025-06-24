@@ -13,6 +13,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import Filter from "@/components/Admin/products/Modals/Filter";
 import Sorting from "@/components/Admin/products/Modals/Sorting";
 import MoreFeatures from "@/components/Admin/products/Modals/MoreFeatures";
+import Link from "next/link";
 
 const Products = () => {
 
@@ -44,8 +45,10 @@ const Products = () => {
         <>
             <div>
                 <header className="flex items-center justify-between">
-                    <Button color="secondary" variant="light" endContent={<FiPlus />}>
-                        محصول جدید
+                    <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
+                        <Link href={'/admin/products/create'}>
+                            محصول جدید
+                        </Link>
                     </Button>
                     <p>محصول (1)</p>
                 </header>
