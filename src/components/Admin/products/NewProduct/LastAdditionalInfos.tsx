@@ -19,6 +19,7 @@ const LastAdditionalInfos = () => {
             </Card>
 
             <AddNewPropertyModal
+                onSubmit={(title, description) => console.log(title, description)}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
             />
