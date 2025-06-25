@@ -28,7 +28,7 @@ const AddNewPropertyModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                                 name="title"
                                 placeholder="عنوان را وارد کنید"
                             />
-                            <Textarea label="توضیحات" placeholder="توضیح خود را وارد کنید" />;
+                            <Textarea labelPlacement="outside" isRequired label="توضیحات" placeholder="توضیح خود را وارد کنید" maxLength={300}/>
                         </ModalBody>
                         <ModalFooter>
                             <Button className="w-full" variant="solid" color="secondary">ثبت مشخصه</Button>
