@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import AddNewPropertyModal from "./Modal/AddNewPropertyModal";
+import { TiDeleteOutline } from "react-icons/ti";
+import { TbEdit } from "react-icons/tb";
 
 type Property = {
     title: string;
@@ -28,11 +30,21 @@ const LastAdditionalInfos = () => {
                         properties.map((prop, index) => (
                             <Card key={index} className="shadow-md border">
                                 <CardBody className="w-full flex flex-row items-center text-start">
-                                    <div className="w-2/12">
-                                        <p>{prop.title}</p>
+                                    <div className="w-full flex flex-row items-center">
+                                        <div className="w-2/12">
+                                            <p>{prop.title}</p>
+                                        </div>
+                                        <div className="w-10/12">
+                                            <p className="text-gray-600">{prop.description}</p>
+                                        </div>
                                     </div>
-                                    <div className="w-10/12">
-                                        <p className="text-gray-600">{prop.description}</p>
+                                    <div className="flex items-center gap-2">
+                                        <Button className="text-xl bg-green-100 text-green-600" size="sm">
+                                            <TbEdit />
+                                        </Button>
+                                        <Button className="text-xl bg-danger-100 text-danger-600" size="sm">
+                                            <TiDeleteOutline />
+                                        </Button>
                                     </div>
                                 </CardBody>
                             </Card>
