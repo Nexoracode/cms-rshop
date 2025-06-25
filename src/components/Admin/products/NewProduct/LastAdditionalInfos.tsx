@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react";
 import AddNewPropertyModal from "./Modal/AddNewPropertyModal";

@@ -11,6 +11,7 @@ import InitInfos from "@/components/Admin/products/NewProduct/InitInfos";
 import FirstAdditionalInfos from "@/components/Admin/products/NewProduct/FirstAdditionalInfos";
 import MiddAdditionalInfos from "@/components/Admin/products/NewProduct/MiddAdditionalInfos";
 import LastAdditionalInfos from "@/components/Admin/products/NewProduct/LastAdditionalInfos";
+import FeatureProducts from "@/components/Admin/products/NewProduct/FeatureProducts";
 
 const CreateNewProduct = () => {
 
@@ -34,6 +35,8 @@ const CreateNewProduct = () => {
                 <FirstAdditionalInfos isDisabled={!isPriceExist} onDiscount={(value: any, type: Stock) => setDiscount({ value, type })} />
                 <MiddAdditionalInfos />
                 <LastAdditionalInfos />
+                <FeatureProducts />
+                <Button color="secondary">ثبت محصول</Button>
             </section>
         </div>
     )
