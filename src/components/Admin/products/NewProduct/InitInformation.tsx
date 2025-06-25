@@ -6,9 +6,10 @@ import { FiSearch } from "react-icons/fi";
 import { TiPlusOutline } from "react-icons/ti";
 import AddNewCategoryModal from "./Modal/AddNewCategoryModal";
 import { useEffect, useState } from "react";
+import { Stock } from "@/types";
 
 type Props = {
-    discount?: number | string,
+    discount?: { value: number, type: Stock },
     onIsPriceExist: (val: boolean) => void
 }
 
@@ -55,8 +56,16 @@ const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
                             onValueChange={(value: any) => setInfos(prev => ({ ...prev, price: value }))}
                         />
                         {
-                            discount && infos.price
-                                ? <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف: {(+infos.price * (1 - (+discount / 100))).toFixed(0)} تومان</p>
+                            discount?.value && (discount.type === "percent" && discount.value < 100) || (discount?.type === "money" && discount.value < +infos.price) && infos.price
+                                ?
+                                <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف:
+                                    {
+                                        discount.type === "percent"
+                                            ? (+infos.price * (1 - (+discount.value / 100))).toFixed(0)
+                                            : (+infos.price - discount.value).toFixed(0)
+                                    }
+                                    تومان
+                                </p>
                                 : ""
                         }
                     </div>

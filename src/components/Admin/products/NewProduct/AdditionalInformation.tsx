@@ -1,14 +1,18 @@
 "use client"
 
 import { Card, CardBody, CardHeader, NumberInput, Checkbox } from "@heroui/react"
+import { useState } from "react"
 import { TbRosetteDiscount } from "react-icons/tb"
+import { Stock } from "@/types"
 
 type Props = {
     isDisabled: boolean,
-    onDiscount: (value: string) => void
+    onDiscount: (value: string, type: Stock) => void,
 }
 
 const AdditionalInformation: React.FC<Props> = ({ isDisabled, onDiscount }) => {
+
+    const [selectStock, setSelectStock] = useState<Stock>("percent")
 
     return (
         <Card className="w-full shadow-md">
@@ -26,13 +30,32 @@ const AdditionalInformation: React.FC<Props> = ({ isDisabled, onDiscount }) => {
                         labelPlacement={"outside"}
                         placeholder="10"
                         minValue={1}
-                        maxValue={99}
                         endContent={
-                            <div className="pointer-events-none flex items-center">
-                                <span className="text-default-400 text-small">%</span>
+                            <div className="flex items-center">
+                                <label className="sr-only" htmlFor="stock">
+                                    stock
+                                </label>
+                                <select
+                                    aria-label="Select stock"
+                                    className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                    defaultValue="percent"
+                                    id="stock"
+                                    name="stock"
+                                    onChange={(e: any) => setSelectStock(e.target.value)}
+                                >
+                                    <option aria-label="percent" value="percent">
+                                        درصد
+                                    </option>
+                                    <option aria-label="money" value="money">
+                                        مبلغ ثابت (تومان)
+                                    </option>
+                                </select>
                             </div>
                         }
-                        onValueChange={(value: any) => onDiscount(value)}
+                        onValueChange={(value: any) => {
+                            console.log(value, selectStock);
+                            onDiscount(value, selectStock)
+                        }}
                     />
                     {
                         isDisabled
