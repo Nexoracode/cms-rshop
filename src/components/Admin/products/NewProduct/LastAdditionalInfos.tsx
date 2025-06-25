@@ -5,6 +5,7 @@ import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDis
 import AddNewPropertyModal from "./Modal/AddNewPropertyModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
+import SizeGuideList from "./SizeGuideList";
 
 type Property = {
     title: string;
@@ -117,17 +118,7 @@ const LastAdditionalInfos = () => {
                         }
                     </div>
 
-                    <div>
-                        <div className="w-full flex items-center justify-between">
-                            <span>راهنما سایز</span>
-                            <Button
-                                color="secondary"
-                                variant="light"
-                            >
-                                + افزودن راهنما
-                            </Button>
-                        </div>
-                    </div>
+                    <SizeGuideList />
 
                     <div>
                         <div className="w-full flex items-center justify-between">
