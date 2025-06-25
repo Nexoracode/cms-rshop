@@ -6,89 +6,92 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
 import AddNewSizeGuideModal from "./Modal/AddNewSizeGuideModal";
 
-type Property = {
+type SizeGuide = {
     title: string;
     description: string;
+    imageFile: File | null;
 };
 
-const SizeGuideList = () => {
-    const [properties, setProperties] = useState<Property[]>([]);
-    const [editIndex, setEditIndex] = useState<number | null>(null);
+const SizeGuide = () => {
+    const [sizeGuide, setSizeGuide] = useState<SizeGuide | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const handleAddOrUpdate = (title: string, description: string) => {
-        if (editIndex !== null) {
-            setProperties(prev => {
-                const updated = [...prev];
-                updated[editIndex] = { title, description };
-                return updated;
-            });
-            setEditIndex(null);
-        } else {
-            setProperties(prev => [...prev, { title, description }]);
-        }
+    const handleSave = (title: string, description: string, imageFile: File | null) => {
+        setSizeGuide({ title, description, imageFile });
+        setIsEditing(false);
     };
 
-    const handleDelete = (index: number) => {
-        setProperties(prev => prev.filter((_, i) => i !== index));
+    const handleDelete = () => {
+        setSizeGuide(null);
     };
 
-    const handleEdit = (index: number) => {
-        setEditIndex(index);
+    const handleEdit = () => {
+        setIsEditing(true);
         onOpen();
     };
 
     return (
         <>
             <div dir="rtl" className="flex flex-col gap-4 text-start">
-                <div>
-                    <div className="w-full flex items-center justify-between">
-                        <span>راهنما سایز</span>
-                        <Button
-                            color="secondary"
-                            variant="light"
-                            onPress={onOpen}
-                        >
-                            + افزودن راهنما
-                        </Button>
-                    </div>
+                <div className="w-full flex items-center justify-between">
+                    <span>راهنمای سایز</span>
+                    <Button
+                        color="secondary"
+                        variant="light"
+                        onPress={() => {
+                            setIsEditing(false);
+                            onOpen();
+                        }}
+                        isDisabled={!!sizeGuide}
+                    >
+                        + افزودن راهنما
+                    </Button>
                 </div>
 
-                {properties.length > 0 ?
-                    properties.map((prop, index) => (
-                        <Card key={index} className="shadow-md border">
-                            <CardBody className="w-full flex flex-row items-center text-start">
-                                <div className="w-full flex flex-row items-center">
-                                    <div className="w-2/12">
-                                        <p>{prop.title}</p>
-                                    </div>
-                                    <div className="w-10/12">
-                                        <p className="text-gray-600">{prop.description}</p>
-                                    </div>
+                {sizeGuide ? (
+                    <Card className="shadow-md border">
+                        <CardBody className="flex flex-col gap-4">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <p className="font-bold">{sizeGuide.title}</p>
+                                    <p className="text-gray-600">{sizeGuide.description}</p>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <Button className="text-xl bg-green-100 text-green-600" size="sm" onPress={() => handleEdit(index)}>
+                                <div className="flex gap-2">
+                                    <Button size="sm" className="text-xl bg-green-100 text-green-600" onPress={handleEdit}>
                                         <TbEdit />
                                     </Button>
-                                    <Button className="text-xl bg-danger-100 text-danger-600" size="sm" onPress={() => handleDelete(index)}>
+                                    <Button size="sm" className="text-xl bg-danger-100 text-danger-600" onPress={handleDelete}>
                                         <TiDeleteOutline />
                                     </Button>
                                 </div>
-                            </CardBody>
-                        </Card>
-                    ))
-                    : ""
-                }
+                            </div>
+                            {sizeGuide.imageFile && (
+                                <img
+                                    src={URL.createObjectURL(sizeGuide.imageFile)}
+                                    alt="پیش‌نمایش تصویر"
+                                    className="mt-2 rounded-md max-h-48 object-contain border"
+                                />
+                            )}
+                        </CardBody>
+                    </Card>
+                ) : (
+                    <p className="text-gray-500">هنوز راهنمای سایزی تعریف نشده است.</p>
+                )}
             </div>
 
             <AddNewSizeGuideModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                onSubmit={handleAddOrUpdate}
-                defaultValues={editIndex !== null ? properties[editIndex] : undefined}
+                onSubmit={handleSave}
+                defaultValues={isEditing && sizeGuide ? {
+                    title: sizeGuide.title,
+                    description: sizeGuide.description,
+                    imageFile: sizeGuide.imageFile
+                } : undefined}
             />
         </>
     );
 };
 
-export default SizeGuideList;
+export default SizeGuide;

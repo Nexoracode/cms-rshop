@@ -8,8 +8,12 @@ import { LuImage } from "react-icons/lu";
 type Props = {
     isOpen: boolean;
     onOpenChange: () => void;
-    onSubmit: (title: string, description: string) => void;
-    defaultValues?: { title: string; description: string };
+    onSubmit: (title: string, description: string, image: File | null) => void;
+    defaultValues?: {
+        title: string;
+        description: string;
+        imageFile?: File | null;
+    };
 };
 
 const AddNewSizeGuideModal: React.FC<Props> = ({
@@ -18,39 +22,43 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     onSubmit,
     defaultValues
 }) => {
-    const [title, setTitle] = useState(defaultValues?.title || "");
-    const [description, setDescription] = useState(defaultValues?.description || "");
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
 
-    // ✅ Sync with parent defaultValues
     useEffect(() => {
         setTitle(defaultValues?.title || "");
         setDescription(defaultValues?.description || "");
+        setImageFile(defaultValues?.imageFile || null);
     }, [defaultValues]);
 
     const isDisabled = !title.trim() || !description.trim();
 
     const handleSubmit = () => {
         if (!isDisabled) {
-            onSubmit(title.trim(), description.trim());
+            onSubmit(title.trim(), description.trim(), imageFile);
             setTitle("");
             setDescription("");
+            setImageFile(null);
             onOpenChange();
         }
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file && file.size <= 5 * 1024 * 1024) {
+            setImageFile(file);
+        }
+    };
+
     return (
-        <Modal
-            dir="rtl"
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            placement="auto"
-        >
+        <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent className="max-w-[700px] w-full">
                 {(onClose) => (
                     <>
                         <ModalHeader>
                             <p className="font-normal text-[16px]">
-                                {defaultValues ? "ویرایش راهنما سایز" : "راهنما سایز"}
+                                {defaultValues ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
                             </p>
                         </ModalHeader>
                         <ModalBody>
@@ -58,24 +66,54 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                                 isRequired
                                 label="عنوان"
                                 labelPlacement="outside"
-                                name="title"
-                                placeholder="عنوان را وارد کنید"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
+
                             <div>
                                 <p className="pb-2">تصویر</p>
-                                <Button color="secondary" variant="light" className={"w-full border border-dashed border-[var(--primary)] h-[79px] rounded-md flex-col-reverse"} endContent={<LuImage className="text-2xl" />}>
-                                    افزودن تصویر
-                                </Button>
-                                <div className="w-full flex items-center my-3">
-                                    <Alert className="h-[40px] flex items-center p-0 bg-transparent" variant="flat" radius="full" color="warning" dir="rtl" title={<p className="text-[12px]" dir="rtl">حداکثر حجم فایل تصویر 5MB</p>}/>
+                                <label className="w-full">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleImageChange}
+                                    />
+                                    <Button
+                                        as="span"
+                                        color="secondary"
+                                        variant="light"
+                                        className="w-full border border-dashed border-[var(--primary)] h-[79px] rounded-md flex-col-reverse"
+                                        endContent={<LuImage className="text-2xl" />}
+                                    >
+                                        {imageFile ? "تغییر تصویر" : "افزودن تصویر"}
+                                    </Button>
+                                </label>
+
+                                {imageFile && (
+                                    <img
+                                        src={URL.createObjectURL(imageFile)}
+                                        alt="پیش‌نمایش"
+                                        className="mt-3 rounded-md max-h-40 object-contain border"
+                                    />
+                                )}
+
+                                <div className="my-3">
+                                    <Alert
+                                        className="h-[40px] flex items-center p-0 bg-transparent"
+                                        variant="flat"
+                                        radius="full"
+                                        color="warning"
+                                        title={<p className="text-[12px]">حداکثر حجم فایل تصویر 5MB</p>}
+                                    />
                                 </div>
                             </div>
+
                             <Textarea
                                 labelPlacement="outside"
+                                isRequired
                                 label="توضیحات"
-                                placeholder="اگر توضیحی در مورد سایز بندی محصول دارید اینجا وارد کنید."
+                                placeholder="اگر توضیحی دارید اینجا وارد کنید"
                                 maxLength={300}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
@@ -87,7 +125,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                                 variant="solid"
                                 color="secondary"
                                 isDisabled={isDisabled}
-                                onPress={handleSubmit}
+                                onClick={handleSubmit}
                             >
                                 تایید و ثبت
                             </Button>
