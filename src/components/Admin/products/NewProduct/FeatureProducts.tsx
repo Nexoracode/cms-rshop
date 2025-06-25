@@ -14,17 +14,16 @@ const FeatureProducts = () => {
                         <TbBookmarks className="text-3xl" />
                     </div>
                 </CardHeader>
-                <p className="text-gray-500 pr-2">■ این محصول تنوع رنگ‌بندی و سایزبندی و ... دارد؟ از این بخش می‌تونید آنها را اضافه کنید.</p>
                 <div className="w-full flex items-center justify-between">
-                    <span>مشخصات</span>
+                    <span>ویژگی ها</span>
                     <Button
                         color="secondary"
                         variant="light"
                     >
-                        + افزودن مشخصات جدید
+                        + افزودن ویژگی
                     </Button>
                 </div>
-
+                <p className="text-gray-500 pr-2">■ این محصول تنوع رنگ‌بندی و سایزبندی و ... دارد؟ از این بخش می‌تونید آنها را اضافه کنید.</p>
             </CardBody>
         </Card>
     );

@@ -88,6 +88,7 @@ const LastAdditionalInfos = () => {
                         labelPlacement={"outside"}
                         label="وضعیت نمایش در وبسایت"
                         placeholder="انتخاب وضعیت محصول"
+                        className="!mt-8"
                     >
                         <SelectItem>نمایش - در فروشگاه نمایش داده میشود</SelectItem>
                         <SelectItem>عدم نمایش - در فروشگاه نمایش داده  نمی میشود</SelectItem>
@@ -114,6 +115,30 @@ const LastAdditionalInfos = () => {
                                 />
                                 : ""
                         }
+                    </div>
+
+                    <div>
+                        <div className="w-full flex items-center justify-between">
+                            <span>راهنما سایز</span>
+                            <Button
+                                color="secondary"
+                                variant="light"
+                            >
+                                + افزودن راهنما
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="w-full flex items-center justify-between">
+                            <span>برند</span>
+                            <Button
+                                color="secondary"
+                                variant="light"
+                            >
+                                + افزودن برند
+                            </Button>
+                        </div>
                     </div>
                 </CardBody>
             </Card>
