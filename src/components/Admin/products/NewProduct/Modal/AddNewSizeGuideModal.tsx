@@ -63,13 +63,13 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                         </ModalHeader>
                         <ModalBody>
                             <Input
+                                labelPlacement="outside"
                                 isRequired
                                 label="عنوان"
-                                labelPlacement="outside"
+                                placeholder="عنوان را وارد کنید"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-
                             <div>
                                 <p className="pb-2">تصویر</p>
                                 <label className="w-full">
@@ -83,20 +83,22 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                                         as="span"
                                         color="secondary"
                                         variant="light"
-                                        className="w-full border border-dashed border-[var(--primary)] h-[79px] rounded-md flex-col-reverse"
-                                        endContent={<LuImage className="text-2xl" />}
+                                        className={`w-full border border-dashed border-[var(--primary)] ${imageFile ? "h-56" : "h-[79px]"} rounded-md flex-col-reverse`}
+                                        endContent={
+                                            imageFile ?
+                                                <img
+                                                    src={URL.createObjectURL(imageFile)}
+                                                    alt="preview"
+                                                    className="mt-3 rounded-md h-40 border"
+                                                />
+                                                :
+                                                <LuImage className="text-2xl" />
+                                        }
                                     >
                                         {imageFile ? "تغییر تصویر" : "افزودن تصویر"}
                                     </Button>
                                 </label>
 
-                                {imageFile && (
-                                    <img
-                                        src={URL.createObjectURL(imageFile)}
-                                        alt="پیش‌نمایش"
-                                        className="mt-3 rounded-md max-h-40 object-contain border"
-                                    />
-                                )}
 
                                 <div className="my-3">
                                     <Alert

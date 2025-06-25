@@ -53,31 +53,31 @@ const SizeGuide = () => {
                     <Card className="shadow-md border">
                         <CardBody className="flex flex-col gap-4">
                             <div className="flex justify-between items-center">
-                                <div>
-                                    <p className="font-bold">{sizeGuide.title}</p>
-                                    <p className="text-gray-600">{sizeGuide.description}</p>
+                                <div className="flex items-center gap-3 text-start">
+                                    {sizeGuide.imageFile && (
+                                        <img
+                                            src={URL.createObjectURL(sizeGuide.imageFile)}
+                                            alt="preview"
+                                            className="rounded-lg w-32 object-contain border"
+                                        />
+                                    )}
+                                    <div>
+                                        <p>{sizeGuide.title}</p>
+                                        <p className="text-gray-600 mt-2">{sizeGuide.description}</p>
+                                    </div>
                                 </div>
-                                <div className="flex gap-2">
-                                    <Button size="sm" className="text-xl bg-green-100 text-green-600" onPress={handleEdit}>
-                                        <TbEdit />
-                                    </Button>
+                                <div className="flex flex-col gap-2">
                                     <Button size="sm" className="text-xl bg-danger-100 text-danger-600" onPress={handleDelete}>
                                         <TiDeleteOutline />
                                     </Button>
+                                    <Button size="sm" className="text-xl bg-green-100 text-green-600" onPress={handleEdit}>
+                                        <TbEdit />
+                                    </Button>
                                 </div>
                             </div>
-                            {sizeGuide.imageFile && (
-                                <img
-                                    src={URL.createObjectURL(sizeGuide.imageFile)}
-                                    alt="پیش‌نمایش تصویر"
-                                    className="mt-2 rounded-md max-h-48 object-contain border"
-                                />
-                            )}
                         </CardBody>
                     </Card>
-                ) : (
-                    <p className="text-gray-500">هنوز راهنمای سایزی تعریف نشده است.</p>
-                )}
+                ) : ""}
             </div>
 
             <AddNewSizeGuideModal
