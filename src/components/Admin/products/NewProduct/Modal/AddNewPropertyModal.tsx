@@ -1,20 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 
 type Props = {
     isOpen: boolean;
     onOpenChange: () => void;
-    onSubmit: (title: string, description: string) => void,
+    onSubmit: (title: string, description: string) => void;
     defaultValues?: { title: string; description: string };
 };
 
-const AddNewPropertyModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit, defaultValues }) => {
+const AddNewPropertyModal: React.FC<Props> = ({
+    isOpen,
+    onOpenChange,
+    onSubmit,
+    defaultValues
+}) => {
     const [title, setTitle] = useState(defaultValues?.title || "");
     const [description, setDescription] = useState(defaultValues?.description || "");
 
+    // ✅ Sync with parent defaultValues
+    useEffect(() => {
+        setTitle(defaultValues?.title || "");
+        setDescription(defaultValues?.description || "");
+    }, [defaultValues]);
 
     const isDisabled = !title.trim() || !description.trim();
 
@@ -38,7 +48,9 @@ const AddNewPropertyModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit, 
                 {(onClose) => (
                     <>
                         <ModalHeader>
-                            <p className="font-normal text-[16px]">مشخصه جدید</p>
+                            <p className="font-normal text-[16px]">
+                                {defaultValues ? "ویرایش مشخصه" : "مشخصه جدید"}
+                            </p>
                         </ModalHeader>
                         <ModalBody>
                             <p className="text-gray-500">
@@ -71,7 +83,7 @@ const AddNewPropertyModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit, 
                                 isDisabled={isDisabled}
                                 onClick={handleSubmit}
                             >
-                                ثبت مشخصه
+                                {defaultValues ? "ذخیره تغییرات" : "ثبت مشخصه"}
                             </Button>
                         </ModalFooter>
                     </>
