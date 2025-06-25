@@ -3,7 +3,7 @@
 import { Card, CardBody, NumberInput, Switch } from "@heroui/react"
 import { useState } from "react"
 
-const AdditionalInformationMiddle = () => {
+const MiddAdditionalInfos = () => {
 
     const [selectItem, setSelectItem] = useState<"today" | "time-ready">("time-ready")
 
@@ -78,4 +78,4 @@ const AdditionalInformationMiddle = () => {
     )
 }
 
-export default AdditionalInformationMiddle
+export default MiddAdditionalInfos

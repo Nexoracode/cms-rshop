@@ -13,7 +13,7 @@ type Props = {
     onIsPriceExist: (val: boolean) => void
 }
 
-const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
+const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [infos, setInfos] = useState({
@@ -118,4 +118,4 @@ const InitInformation: React.FC<Props> = ({ discount, onIsPriceExist }) => {
     )
 }
 
-export default InitInformation
+export default InitInfos

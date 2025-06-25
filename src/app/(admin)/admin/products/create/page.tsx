@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link"
-import ImagesProducts from "@/components/Admin/products/NewProduct/ImagesProducts";
-import InitInformation from "@/components/Admin/products/NewProduct/InitInformation";
-import AdditionalInformation from "@/components/Admin/products/NewProduct/AdditionalInformation";
 import { Button } from "@heroui/react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Stock } from "@/types"
-import AdditionalInformationMiddle from "@/components/Admin/products/NewProduct/AdditionalInformationMiddle";
+//
+import ImagesProducts from "@/components/Admin/products/NewProduct/ImagesProducts";
+import InitInfos from "@/components/Admin/products/NewProduct/InitInfos";
+import FirstAdditionalInfos from "@/components/Admin/products/NewProduct/FirstAdditionalInfos";
+import MiddAdditionalInfos from "@/components/Admin/products/NewProduct/MiddAdditionalInfos";
+import LastAdditionalInfos from "@/components/Admin/products/NewProduct/LastAdditionalInfos";
 
 const CreateNewProduct = () => {
 
@@ -28,9 +30,10 @@ const CreateNewProduct = () => {
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
             <section className="flex flex-col gap-6 py-6">
                 <ImagesProducts />
-                <InitInformation discount={discount} onIsPriceExist={(val) => setIsPriceExist(val)} />
-                <AdditionalInformation isDisabled={!isPriceExist} onDiscount={(value: any, type: Stock) => setDiscount({ value, type })} />
-                <AdditionalInformationMiddle />
+                <InitInfos discount={discount} onIsPriceExist={(val) => setIsPriceExist(val)} />
+                <FirstAdditionalInfos isDisabled={!isPriceExist} onDiscount={(value: any, type: Stock) => setDiscount({ value, type })} />
+                <MiddAdditionalInfos />
+                <LastAdditionalInfos />
             </section>
         </div>
     )

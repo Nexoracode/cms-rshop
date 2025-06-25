@@ -2,23 +2,23 @@
 
 import { Card, CardBody, CardHeader, NumberInput, Checkbox } from "@heroui/react"
 import { useState } from "react"
-import { TbRosetteDiscount } from "react-icons/tb"
 import { Stock } from "@/types"
+import { FiShoppingBag } from "react-icons/fi"
 
 type Props = {
     isDisabled: boolean,
     onDiscount: (value: string, type: Stock) => void,
 }
 
-const AdditionalInformation: React.FC<Props> = ({ isDisabled, onDiscount }) => {
+const FirstAdditionalInfos: React.FC<Props> = ({ isDisabled, onDiscount }) => {
 
     const [selectStock, setSelectStock] = useState<Stock>("percent")
 
     return (
         <Card className="w-full shadow-md">
             <CardHeader className="flex gap-3">
-                <div className="w-full rounded-md bg-yellow-700/10 text-yellow-700 p-2 flex items-center justify-between">
-                    <TbRosetteDiscount className="text-3xl" />
+                <div className="w-full rounded-md bg-green-700/10 text-green-700 p-2 flex items-center justify-between">
+                    <FiShoppingBag className="text-3xl" />
                     <p>اطلاعات تکمیلی محصول</p>
                 </div>
             </CardHeader>
@@ -72,4 +72,4 @@ const AdditionalInformation: React.FC<Props> = ({ isDisabled, onDiscount }) => {
     )
 }
 
-export default AdditionalInformation
+export default FirstAdditionalInfos
