@@ -81,7 +81,7 @@ const AddNewPropertyModal: React.FC<Props> = ({
                                 variant="solid"
                                 color="secondary"
                                 isDisabled={isDisabled}
-                                onClick={handleSubmit}
+                                onPress={handleSubmit}
                             >
                                 {defaultValues ? "ذخیره تغییرات" : "ثبت مشخصه"}
                             </Button>

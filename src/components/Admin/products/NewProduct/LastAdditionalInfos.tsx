@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
+import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react";
 import AddNewPropertyModal from "./Modal/AddNewPropertyModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
@@ -13,6 +13,7 @@ const LastAdditionalInfos = () => {
     const [properties, setProperties] = useState<Property[]>([]);
     const [editIndex, setEditIndex] = useState<number | null>(null);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectItem, setSelectItem] = useState<"limit" | "unlimit">("unlimit")
 
     const handleAddOrUpdate = (title: string, description: string) => {
         if (editIndex !== null) {
@@ -79,6 +80,39 @@ const LastAdditionalInfos = () => {
                         ))
                         : <p className="text-gray-500">با تعریف مشخصات محصول، ویژگی‌های محصول خود را معرفی و به تصمیم گیری سریعتر مشتریان به خرید کمک کنید.</p>
                     }
+
+                    <Select
+                        dir="rtl"
+                        labelPlacement={"outside"}
+                        label="وضعیت نمایش در وبسایت"
+                        placeholder="انتخاب وضعیت محصول"
+                    >
+                        <SelectItem>نمایش - در فروشگاه نمایش داده میشود</SelectItem>
+                        <SelectItem>عدم نمایش - در فروشگاه نمایش داده  نمی میشود</SelectItem>
+                    </Select>
+
+                    <div className={`flex flex-col justify-between ${selectItem === "limit" ? "bg-stone-50 rounded-xl p-2" : ""}`}>
+                        <div className="flex items-center justify-between mb-4 text-gray-700">
+                            <p>محدودیت تعداد برای هر سفارش</p>
+                            <Switch isSelected={selectItem === "limit" ? true : false} onValueChange={() => setSelectItem(prev => prev === "limit" ? "unlimit" : "limit")} aria-label="Automatic updates" size="sm" />
+                        </div>
+                        {
+                            selectItem === "limit"
+                                ?
+                                <NumberInput
+                                    label="حداکثر تعداد قابل سفارش"
+                                    placeholder="3"
+                                    minValue={1}
+                                    endContent={
+                                        <div className="pointer-events-none flex items-center">
+                                            <span className="text-default-400 text-small">عدد</span>
+                                        </div>
+                                    }
+                                    labelPlacement={"outside"}
+                                />
+                                : ""
+                        }
+                    </div>
                 </CardBody>
             </Card>
 
