@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import AddNewPropertyModal from "./Modal/AddNewPropertyModal";
@@ -13,20 +11,50 @@ type Property = {
 
 const LastAdditionalInfos = () => {
     const [properties, setProperties] = useState<Property[]>([]);
+    const [editIndex, setEditIndex] = useState<number | null>(null);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const handleAddOrUpdate = (title: string, description: string) => {
+        if (editIndex !== null) {
+            setProperties(prev => {
+                const updated = [...prev];
+                updated[editIndex] = { title, description };
+                return updated;
+            });
+            setEditIndex(null);
+        } else {
+            setProperties(prev => [...prev, { title, description }]);
+        }
+    };
+
+    const handleDelete = (index: number) => {
+        setProperties(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const handleEdit = (index: number) => {
+        setEditIndex(index);
+        onOpen();
+    };
 
     return (
         <>
             <Card className="w-full shadow-md">
                 <CardBody dir="rtl" className="flex flex-col gap-4 text-start">
-                    <div className="w-full px-2 flex items-center justify-between">
+                    <div className="w-full flex items-center justify-between">
                         <span>مشخصات</span>
-                        <Button color="secondary" variant="light" onPress={onOpen}>
+                        <Button
+                            color="secondary"
+                            variant="light"
+                            onPress={() => {
+                                setEditIndex(null);
+                                onOpen();
+                            }}
+                        >
                             + افزودن مشخصات جدید
                         </Button>
                     </div>
 
-                    {properties.length > 0 && (
+                    {properties.length > 0 ?
                         properties.map((prop, index) => (
                             <Card key={index} className="shadow-md border">
                                 <CardBody className="w-full flex flex-row items-center text-start">
@@ -39,24 +67,26 @@ const LastAdditionalInfos = () => {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <Button className="text-xl bg-green-100 text-green-600" size="sm">
+                                        <Button className="text-xl bg-green-100 text-green-600" size="sm" onPress={() => handleEdit(index)}>
                                             <TbEdit />
                                         </Button>
-                                        <Button className="text-xl bg-danger-100 text-danger-600" size="sm">
+                                        <Button className="text-xl bg-danger-100 text-danger-600" size="sm" onPress={() => handleDelete(index)}>
                                             <TiDeleteOutline />
                                         </Button>
                                     </div>
                                 </CardBody>
                             </Card>
                         ))
-                    )}
+                        : <p className="text-gray-500">با تعریف مشخصات محصول، ویژگی‌های محصول خود را معرفی و به تصمیم گیری سریعتر مشتریان به خرید کمک کنید.</p>
+                    }
                 </CardBody>
             </Card>
 
             <AddNewPropertyModal
-                onSubmit={(title, description) => setProperties(prev => [...prev, { title, description }])}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
+                onSubmit={handleAddOrUpdate}
+                defaultValues={editIndex !== null ? properties[editIndex] : undefined}
             />
         </>
     );

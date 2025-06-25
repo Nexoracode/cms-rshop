@@ -7,12 +7,14 @@ import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 type Props = {
     isOpen: boolean;
     onOpenChange: () => void;
-    onSubmit: (title: string, description: string) => void
+    onSubmit: (title: string, description: string) => void,
+    defaultValues?: { title: string; description: string };
 };
 
-const AddNewPropertyModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+const AddNewPropertyModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit, defaultValues }) => {
+    const [title, setTitle] = useState(defaultValues?.title || "");
+    const [description, setDescription] = useState(defaultValues?.description || "");
+
 
     const isDisabled = !title.trim() || !description.trim();
 
