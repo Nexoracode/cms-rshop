@@ -8,6 +8,7 @@ import AdditionalInformation from "@/components/Admin/products/NewProduct/Additi
 import { Button } from "@heroui/react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Stock } from "@/types"
+import AdditionalInformationMiddle from "@/components/Admin/products/NewProduct/AdditionalInformationMiddle";
 
 const CreateNewProduct = () => {
 
@@ -29,6 +30,7 @@ const CreateNewProduct = () => {
                 <ImagesProducts />
                 <InitInformation discount={discount} onIsPriceExist={(val) => setIsPriceExist(val)} />
                 <AdditionalInformation isDisabled={!isPriceExist} onDiscount={(value: any, type: Stock) => setDiscount({ value, type })} />
+                <AdditionalInformationMiddle />
             </section>
         </div>
     )
