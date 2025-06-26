@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Alert, Button, Input, ModalFooter } from "@heroui/react";
+import { Alert, Button, Chip, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { LuImage } from "react-icons/lu";
+import { TbCategoryPlus } from "react-icons/tb";
 
 type Props = {
     isOpen: boolean;
@@ -81,49 +81,52 @@ const AddNewBrandModal: React.FC<Props> = ({
                                 onChange={(e) => setBrandEn(e.target.value)}
                             />
                             <div>
-                                <p className="pb-2">تصویر</p>
-                                <label className="w-full">
+                                <div className="w-full px-2 flex items-center justify-between my-3">
+                                    <span>تصویر لوگو</span>
                                     <input
                                         type="file"
                                         accept="image/*"
-                                        className="hidden"
+                                        id="logo-upload"
                                         onChange={handleImageChange}
+                                        className="bg-black z-50 h-10 absolute left-0 opacity-0"
                                     />
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="hidden"
-                                        onChange={handleImageChange}
-                                    />
-                                    <Button
-                                        as="span"
-                                        color="secondary"
-                                        variant="light"
-                                        className={`w-full border border-dashed border-[var(--primary)] ${imageFile ? "h-56" : "h-[79px]"} rounded-md flex-col-reverse`}
-                                        endContent={
-                                            imageFile ?
-                                                <img
-                                                    src={URL.createObjectURL(imageFile)}
-                                                    alt="preview"
-                                                    className="mt-3 rounded-md h-40 border"
-                                                />
-                                                :
-                                                <LuImage className="text-2xl" />
-                                        }
-                                    >
-                                        {imageFile ? "تغییر تصویر" : "افزودن تصویر"}
-                                    </Button>
-                                </label>
+                                    <label htmlFor="logo-upload">
+                                        <p className="ml-2 text-[var(--primary)] transition">
+                                            {imageFile ? "تغییر لوگو" : "+ افزودن لوگو"}
+                                        </p>
+                                    </label>
+                                </div>
 
-
-                                <div className="my-3">
-                                    <Alert
-                                        className="h-[40px] flex items-center p-0 bg-transparent"
-                                        variant="flat"
-                                        radius="full"
-                                        color="warning"
-                                        title={<p className="text-[12px]">حداکثر حجم فایل تصویر 5MB</p>}
-                                    />
+                                <div className="flex items-start gap-3">
+                                    <div className="w-[80px] h-[80px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                                        <div className={`${!imageFile ? "p-3 bg-gray-100 rounded-lg" : ""}`}>
+                                            {
+                                                imageFile ?
+                                                    <img
+                                                        src={URL.createObjectURL(imageFile)}
+                                                        alt="preview"
+                                                        className="rounded-2xl w-[80px] h-[80px] p-2 object-cover"
+                                                    />
+                                                    :
+                                                    <TbCategoryPlus className="text-4xl text-gray-500" />
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col text-[12px] gap-1 text-gray-500">
+                                        <p>نمایش تصویر پیش فرض به این شکل است.</p>
+                                        <div>فرمت تصویر:
+                                            <Chip color="secondary" variant="flat" size="sm" radius="sm">
+                                                <small>JPEG</small>
+                                            </Chip>  ,
+                                            <Chip color="success" variant="flat" size="sm" radius="sm">
+                                                <small>JPG</small>
+                                            </Chip>  ,
+                                            <Chip color="warning" variant="flat" size="sm" radius="sm">
+                                                <small>PNG</small>
+                                            </Chip>
+                                        </div>
+                                        <p>سایز تصویر: 160x160</p>
+                                    </div>
                                 </div>
                             </div>
                         </ModalBody>

@@ -9,6 +9,7 @@
 
 :root {
   --primary: #C58AF9;
+  --light-primary: rgba(197, 138, 249, .5);
 }
 
 @layer base {
