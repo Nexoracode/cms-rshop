@@ -32,7 +32,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
         setImageFile(defaultValues?.imageFile || null);
     }, [defaultValues]);
 
-    const isDisabled = !title.trim() || !description.trim();
+    const isDisabled = !title.trim() || !description.trim() || !imageFile;
 
     const handleSubmit = () => {
         if (!isDisabled) {

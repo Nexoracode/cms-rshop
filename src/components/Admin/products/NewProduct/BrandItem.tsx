@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react";
-import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
-import { TiDeleteOutline } from "react-icons/ti";
-import { TbEdit } from "react-icons/tb";
+import { useDisclosure } from "@heroui/react";
 import AddNewBrandModal from "./Modal/AddNewBrandModal";
+import HeaderAction from "./HeaderAction";
+import CardBox from "./CardBox";
 
 type Brand = {
     brandNameFa: string;
@@ -34,50 +34,26 @@ const BrandItem = () => {
     return (
         <>
             <div dir="rtl" className="flex flex-col gap-4 text-start">
-                <div className="w-full flex items-center justify-between">
-                    <span>برند</span>
-                    <Button
-                        color="secondary"
-                        variant="light"
-                        onPress={() => {
-                            setIsEditing(false);
-                            onOpen();
-                        }}
-                        isDisabled={!!brand}
-                    >
-                        + افزودن برند
-                    </Button>
-                </div>
-
-                {brand ? (
-                    <Card className="shadow-md border">
-                        <CardBody className="flex flex-col gap-4">
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center gap-3 text-start">
-                                    {brand.imageFile && (
-                                        <img
-                                            src={URL.createObjectURL(brand.imageFile)}
-                                            alt="preview"
-                                            className="rounded-lg w-24 h-16 object-cover border"
-                                        />
-                                    )}
-                                    <div>
-                                        <p>{brand.brandNameFa}</p>
-                                        <p className="text-gray-600 mt-2">{brand.brandNameEn}</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Button size="sm" className="text-xl bg-danger-100 text-danger-600" onPress={handleDelete}>
-                                        <TiDeleteOutline />
-                                    </Button>
-                                    <Button size="sm" className="text-xl bg-green-100 text-green-600" onPress={handleEdit}>
-                                        <TbEdit />
-                                    </Button>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
-                ) : ""}
+                <HeaderAction
+                    title="برند"
+                    textBtn="+ افزودن برند"
+                    isDisabled={!!brand}
+                    onPress={() => {
+                        setIsEditing(false);
+                        onOpen();
+                    }}
+                />
+                {
+                    brand ?
+                        <CardBox
+                            title={brand.brandNameFa}
+                            description={brand.brandNameEn}
+                            imageFile={brand.imageFile}
+                            onDelete={handleDelete}
+                            onEdit={handleEdit}
+                        />
+                        : ""
+                }
             </div>
 
             <AddNewBrandModal

@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react";
-import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
-import { TiDeleteOutline } from "react-icons/ti";
-import { TbEdit } from "react-icons/tb";
+import { useDisclosure } from "@heroui/react";
 import AddNewSizeGuideModal from "./Modal/AddNewSizeGuideModal";
+import CardBox from "./CardBox";
+import HeaderAction from "./HeaderAction";
 
 type SizeGuide = {
     title: string;
@@ -34,50 +34,26 @@ const SizeGuide = () => {
     return (
         <>
             <div dir="rtl" className="flex flex-col gap-4 text-start">
-                <div className="w-full flex items-center justify-between">
-                    <span>راهنمای سایز</span>
-                    <Button
-                        color="secondary"
-                        variant="light"
-                        onPress={() => {
-                            setIsEditing(false);
-                            onOpen();
-                        }}
-                        isDisabled={!!sizeGuide}
-                    >
-                        + افزودن راهنما
-                    </Button>
-                </div>
-
-                {sizeGuide ? (
-                    <Card className="shadow-md border">
-                        <CardBody className="flex flex-col gap-4">
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center gap-3 text-start">
-                                    {sizeGuide.imageFile && (
-                                        <img
-                                            src={URL.createObjectURL(sizeGuide.imageFile)}
-                                            alt="preview"
-                                            className="rounded-lg w-24 h-16 object-cover border"
-                                        />
-                                    )}
-                                    <div>
-                                        <p>{sizeGuide.title}</p>
-                                        <p className="text-gray-600 mt-2">{sizeGuide.description}</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-2">
-                                    <Button size="sm" className="text-xl bg-danger-100 text-danger-600" onPress={handleDelete}>
-                                        <TiDeleteOutline />
-                                    </Button>
-                                    <Button size="sm" className="text-xl bg-green-100 text-green-600" onPress={handleEdit}>
-                                        <TbEdit />
-                                    </Button>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
-                ) : ""}
+                <HeaderAction
+                    title="راهنمای سایز"
+                    textBtn="+ افزودن راهنما"
+                    isDisabled={!!sizeGuide}
+                    onPress={() => {
+                        setIsEditing(false);
+                        onOpen();
+                    }}
+                />
+                {
+                    sizeGuide ?
+                        <CardBox
+                            title={sizeGuide.title}
+                            description={sizeGuide.description}
+                            imageFile={sizeGuide.imageFile}
+                            onDelete={handleDelete}
+                            onEdit={handleEdit}
+                        />
+                        : ""
+                }
             </div>
 
             <AddNewSizeGuideModal
