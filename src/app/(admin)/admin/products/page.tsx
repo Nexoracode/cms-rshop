@@ -45,12 +45,12 @@ const Products = () => {
         <>
             <div>
                 <header className="flex items-center justify-between">
+                    <p>محصول (1)</p>
                     <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
                         <Link href={'/admin/products/create'}>
                             محصول جدید
                         </Link>
                     </Button>
-                    <p>محصول (1)</p>
                 </header>
                 <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
                 <section className="w-full mt-5">
@@ -59,16 +59,15 @@ const Products = () => {
                         <input
                             id="search"
                             type="text"
-                            dir="rtl"
                             placeholder="جستجو در محصول ها..."
                             className={`w-full pr-12 pl-4 py-3 rounded-lg shadow-box placeholder-default-700/50 text-black/70 text-right transition`}
                         />
                     </div>
                 </section>
                 <section className="flex items-center justify-between px-8 my-3">
-                    <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
-                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
                     <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
+                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
+                    <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
                 </section>
                 <section className="flex flex-col gap-3">
                     <ProductBox

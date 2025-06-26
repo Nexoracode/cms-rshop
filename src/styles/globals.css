@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: IRANSans;
-    src: url("/fonts/IRANSans/IRANSansWeb_Medium.woff");
+  font-family: IRANSans;
+  src: url("/fonts/IRANSans/IRANSansWeb_Medium.woff");
 }
 
 :root {
@@ -16,9 +16,15 @@
   html {
     @apply !bg-stone-100
   }
+
+  * {
+    direction: rtl
+  }
+
   body {
     @apply max-w-[1080px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans] !bg-stone-100 text-sm;
   }
+
   input:focus {
     @apply outline-none
   }
