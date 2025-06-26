@@ -7,6 +7,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
 import SizeGuide from "./temps/SizeGuide";
 import BrandItem from "./temps/BrandItem";
+import HeaderAction from "./helpers/HeaderAction";
 
 type Property = {
     title: string;
@@ -45,20 +46,15 @@ const LastAdditionalInfos = () => {
         <>
             <Card className="w-full shadow-md">
                 <CardBody dir="rtl" className="flex flex-col gap-4 text-start">
-                    <div className="w-full flex items-center justify-between">
-                        <span>مشخصات</span>
-                        <Button
-                            color="secondary"
-                            variant="light"
-                            onPress={() => {
-                                setEditIndex(null);
-                                onOpen();
-                            }}
-                        >
-                            + افزودن مشخصات جدید
-                        </Button>
-                    </div>
-
+                    <HeaderAction
+                        title="مشخصات"
+                        textBtn="+ افزودن مشخصه"
+                        onPress={() => {
+                            setEditIndex(null);
+                            onOpen();
+                        }}
+                    />
+                    
                     {properties.length > 0 ?
                         properties.map((prop, index) => (
                             <Card key={index} className="shadow-md border">

@@ -1,9 +1,10 @@
 "use client"
 
-import { Card, CardBody, CardHeader, NumberInput, Checkbox } from "@heroui/react"
+import { Card, CardBody, NumberInput, Checkbox } from "@heroui/react"
 import { useState } from "react"
 import { Stock } from "@/types"
 import { FiShoppingBag } from "react-icons/fi"
+import BoxHeader from "./helpers/BoxHeader"
 
 type Props = {
     isDisabled: boolean,
@@ -16,12 +17,11 @@ const FirstAdditionalInfos: React.FC<Props> = ({ isDisabled, onDiscount }) => {
 
     return (
         <Card className="w-full shadow-md">
-            <CardHeader className="flex gap-3">
-                <div className="w-full rounded-md bg-green-700/10 text-green-700 p-2 flex items-center justify-between">
-                    <FiShoppingBag className="text-3xl" />
-                    <p>اطلاعات تکمیلی محصول</p>
-                </div>
-            </CardHeader>
+            <BoxHeader
+                title="اطلاعات تکمیلی محصول"
+                color="bg-green-700/10 text-green-700"
+                icon={<FiShoppingBag className="text-3xl" />}
+            />
             <CardBody dir="rtl" className="flex flex-col gap-6">
                 <div className="flex flex-col gap-2 text-start">
                     <NumberInput
@@ -59,8 +59,7 @@ const FirstAdditionalInfos: React.FC<Props> = ({ isDisabled, onDiscount }) => {
                     />
                     {
                         isDisabled
-                            ?
-                            <p className="text-gray-500 text-[13px]">برای تعریف تخفیف ابتدا قیمت را وارد کنید.</p>
+                            ? <p className="text-gray-500 text-[13px]">برای تعریف تخفیف ابتدا قیمت را وارد کنید.</p>
                             : ""
                     }
                 </div>

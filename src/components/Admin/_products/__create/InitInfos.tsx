@@ -1,12 +1,13 @@
 "use client"
 
-import { Card, CardBody, CardHeader, Checkbox, Input, NumberInput, Select, SelectItem, useDisclosure } from "@heroui/react"
+import { Card, CardBody, Checkbox, Input, NumberInput, Select, SelectItem, useDisclosure } from "@heroui/react"
 import { LuTextCursorInput } from "react-icons/lu"
 import { FiSearch } from "react-icons/fi";
 import { TiPlusOutline } from "react-icons/ti";
 import AddNewCategoryModal from "./modals/AddNewCategoryModal";
 import { useEffect, useState } from "react";
 import { Stock } from "@/types";
+import BoxHeader from "./helpers/BoxHeader";
 
 type Props = {
     discount?: { value: number, type: Stock },
@@ -27,12 +28,11 @@ const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
     return (
         <>
             <Card className="w-full shadow-md">
-                <CardHeader className="flex gap-3">
-                    <div className="w-full rounded-md bg-orange-700/10 text-orange-700 p-2 flex items-center justify-between">
-                        <LuTextCursorInput className="text-3xl" />
-                        <p>اطلاعات اولیه محصول</p>
-                    </div>
-                </CardHeader>
+                <BoxHeader
+                    title="اطلاعات اولیه محصول"
+                    color="bg-orange-700/10 text-orange-700"
+                    icon={<LuTextCursorInput className="text-3xl" />}
+                />
                 <CardBody dir="rtl" className="flex flex-col gap-6">
                     <Input
                         isRequired

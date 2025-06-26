@@ -1,19 +1,19 @@
 "use client"
 
 import ImageCropper from "@/components/Helper/ImageCropper";
-import { Alert, Card, CardBody, CardFooter, CardHeader } from "@heroui/react"
+import { Alert, Card, CardBody, CardFooter } from "@heroui/react"
 import { FaRegImages } from "react-icons/fa6";
+import BoxHeader from "./helpers/BoxHeader";
 
 const ImagesProducts = () => {
 
     return (
         <Card className="w-full shadow-md">
-            <CardHeader className="flex gap-3">
-                <div className="w-full rounded-md bg-blue-700/10 text-blue-700 p-2 flex items-center justify-between">
-                    <FaRegImages className="text-3xl" />
-                    <p>تصویر و ویدئو محصول</p>
-                </div>
-            </CardHeader>
+            <BoxHeader
+                title="تصویر و ویدیو محصول"
+                color="bg-blue-700/10 text-blue-700"
+                icon={<FaRegImages className="text-3xl" />}
+            />
             <CardBody>
                 <ImageCropper />
             </CardBody>
