@@ -6,6 +6,7 @@ import AddNewPropertyModal from "./Modal/AddNewPropertyModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
 import SizeGuideList from "./SizeGuideList";
+import BrandItem from "./BrandItem";
 
 type Property = {
     title: string;
@@ -119,18 +120,7 @@ const LastAdditionalInfos = () => {
                     </div>
 
                     <SizeGuideList />
-
-                    <div>
-                        <div className="w-full flex items-center justify-between">
-                            <span>برند</span>
-                            <Button
-                                color="secondary"
-                                variant="light"
-                            >
-                                + افزودن برند
-                            </Button>
-                        </div>
-                    </div>
+                    <BrandItem />
                 </CardBody>
             </Card>
 
