@@ -100,8 +100,8 @@ const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
                     >
                         <SelectItem>
                             <div className="flex items-center gap-2">
-                                <span>افزودن دسته بندی جدید</span>
                                 <TiPlusOutline className="text-lg" />
+                                <span>افزودن دسته بندی جدید</span>
                             </div>
                         </SelectItem>
                         <SelectItem>اپل</SelectItem>
@@ -113,6 +113,7 @@ const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
             <AddNewCategoryModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
+                onSubmit={() => {}}
             />
         </>
     )

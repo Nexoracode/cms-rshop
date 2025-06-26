@@ -1,15 +1,32 @@
 "use client"
 
-import { Button, Chip, Input, ModalFooter } from "@heroui/react";
+import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { TbCategoryPlus } from "react-icons/tb";
+import ImageBoxUploader from "../helpers/ImageBoxUploader";
+import { useState } from "react";
 
 type Props = {
     isOpen: boolean,
     onOpenChange: () => void,
+    onSubmit: (title: string, image: File | null) => void;
 }
 
-const AddNewCategoryModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const AddNewCategoryModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
+
+    const [title, setTitle] = useState("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
+    const isDisabled = !title.trim() || !imageFile;
+
+    const handleSubmit = () => {
+        if (!isDisabled) {
+            onSubmit(title.trim(), imageFile);
+            setTitle("");
+            setImageFile(null);
+            onOpenChange();
+        }
+    };
+
     return (
         <Modal
             dir="rtl"
@@ -26,38 +43,25 @@ const AddNewCategoryModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                                 isRequired
                                 label="عنوان دسته بندی"
                                 labelPlacement="outside"
-                                name="title"
+                                value={title}
                                 placeholder="نام دسته بندی را وارد کنید"
+                                onChange={(e) => setTitle(e.target.value)}
                             />
-                            <div className="w-full px-2 flex items-center justify-between">
-                                <span>تصویر دسته بندی</span>
-                                <Button color="secondary" variant="light">+ افزودن تصویر</Button>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <div className="w-[80px] h-[80px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                                    <div className="p-3 bg-gray-100 rounded-lg">
-                                        <TbCategoryPlus className="text-4xl text-gray-500" />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col text-[12px] gap-1 text-gray-500">
-                                    <p>نمایش تصویر پیش فرض به این شکل است.</p>
-                                    <div>فرمت تصویر:
-                                        <Chip color="secondary" variant="flat" size="sm" radius="sm">
-                                            <small>JPEG</small>
-                                        </Chip>  ,
-                                        <Chip color="success" variant="flat" size="sm" radius="sm">
-                                            <small>JPG</small>
-                                        </Chip>  ,
-                                        <Chip color="warning" variant="flat" size="sm" radius="sm">
-                                            <small>PNG</small>
-                                        </Chip>
-                                    </div>
-                                    <p>سایز تصویر: 160x160</p>
-                                </div>
-                            </div>
+                            <ImageBoxUploader
+                                textBtn="+ افزودن تصویر"
+                                title="تصویر دسته بندی"
+                                changeStatusFile={imageFile}
+                                onFile={(file) => setImageFile(file)}
+                            />
                         </ModalBody>
                         <ModalFooter>
-                            <Button className="w-full" variant="solid" color="secondary">افزودن دسته بندی</Button>
+                            <Button
+                                isDisabled={isDisabled}
+                                className="w-full"
+                                variant="solid"
+                                color="secondary"
+                                onClick={handleSubmit}
+                            >افزودن دسته بندی</Button>
                         </ModalFooter>
                     </>
                 )}

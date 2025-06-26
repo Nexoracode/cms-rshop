@@ -37,7 +37,7 @@ const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatu
                     accept="image/*"
                     id="logo-upload"
                     onChange={handleImageChange}
-                    className="bg-black z-50 h-10 absolute left-0 opacity-0"
+                    className="bg-black z-50 h-10 absolute left-0 opacity-0 cursor-pointer"
                 />
                 <label htmlFor="logo-upload">
                     <p className="ml-2 text-[var(--primary)] transition">
