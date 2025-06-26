@@ -20,11 +20,11 @@ const CreateNewProduct = () => {
 
     return (
         <div>
-            <header className="flex items-center justify-end">
+            <header className="flex items-center justify-start">
                 <Button variant="flat" type="button">
                     <Link href={'/admin/products'} className="flex items-center gap-2">
-                        <span>تعریف محصول</span>
                         <MdOutlineArrowBackIos className="text-lg rotate-180" />
+                        <span>تعریف محصول</span>
                     </Link>
                 </Button>
             </header>

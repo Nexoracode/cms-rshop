@@ -9,11 +9,11 @@ const ImageCropper = () => {
 
     return (
         <div className="w-full flex items-center justify-center gap-8">
-            <Button color="secondary" variant="ghost" className={style} endContent={<LuVideo className="text-2xl" />}>
-                افزودن ویدیو
-            </Button>
             <Button color="secondary" variant="ghost" className={style} endContent={<LuImage className="text-2xl" />}>
                 افزودن تصویر
+            </Button>
+            <Button color="secondary" variant="ghost" className={style} endContent={<LuVideo className="text-2xl" />}>
+                افزودن ویدیو
             </Button>
         </div>
     )
