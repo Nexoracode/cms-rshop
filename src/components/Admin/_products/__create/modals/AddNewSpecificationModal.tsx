@@ -11,7 +11,7 @@ type Props = {
     defaultValues?: { title: string; description: string };
 };
 
-const AddNewPropertyModal: React.FC<Props> = ({
+const AddNewSpecificationModal: React.FC<Props> = ({
     isOpen,
     onOpenChange,
     onSubmit,
@@ -93,4 +93,4 @@ const AddNewPropertyModal: React.FC<Props> = ({
     );
 };
 
-export default AddNewPropertyModal;
+export default AddNewSpecificationModal;

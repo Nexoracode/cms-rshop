@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react";
-import AddNewPropertyModal from "./modals/AddNewPropertyModal";
+import AddNewSpecificationModal from "./modals/AddNewSpecificationModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
 import SizeGuide from "./temps/SizeGuide";
@@ -120,7 +120,7 @@ const LastAdditionalInfos = () => {
                 </CardBody>
             </Card>
 
-            <AddNewPropertyModal
+            <AddNewSpecificationModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 onSubmit={handleAddOrUpdate}
