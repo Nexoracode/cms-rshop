@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Alert, Button, Input, ModalFooter, Textarea } from "@heroui/react";
+import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { LuImage } from "react-icons/lu";
+import ImageBoxUploader from "../ImageBoxUploader";
 
 type Props = {
     isOpen: boolean;
@@ -44,13 +44,6 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
         }
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file && file.size <= 5 * 1024 * 1024) {
-            setImageFile(file);
-        }
-    };
-
     return (
         <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent className="max-w-[700px] w-full">
@@ -70,47 +63,6 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-                            <div>
-                                <p className="pb-2">تصویر</p>
-                                <label className="w-full">
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="hidden"
-                                        onChange={handleImageChange}
-                                    />
-                                    <Button
-                                        as="span"
-                                        color="secondary"
-                                        variant="light"
-                                        className={`w-full border border-dashed border-[var(--primary)] ${imageFile ? "h-56" : "h-[79px]"} rounded-md flex-col-reverse`}
-                                        endContent={
-                                            imageFile ?
-                                                <img
-                                                    src={URL.createObjectURL(imageFile)}
-                                                    alt="preview"
-                                                    className="mt-3 rounded-md h-40 border"
-                                                />
-                                                :
-                                                <LuImage className="text-2xl" />
-                                        }
-                                    >
-                                        {imageFile ? "تغییر تصویر" : "افزودن تصویر"}
-                                    </Button>
-                                </label>
-
-
-                                <div className="my-3">
-                                    <Alert
-                                        className="h-[40px] flex items-center p-0 bg-transparent"
-                                        variant="flat"
-                                        radius="full"
-                                        color="warning"
-                                        title={<p className="text-[12px]">حداکثر حجم فایل تصویر 5MB</p>}
-                                    />
-                                </div>
-                            </div>
-
                             <Textarea
                                 labelPlacement="outside"
                                 isRequired
@@ -119,6 +71,13 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                                 maxLength={300}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                            />
+                            <ImageBoxUploader
+                                textBtn={imageFile ? "تغییر تصویر" : "افزودن تصویر"}
+                                title="تصویر"
+                                changeStatusFile={imageFile}
+                                onFile={(file) => setImageFile(file)}
+                                sizeText="سایز تصویر: 540x540"
                             />
                         </ModalBody>
                         <ModalFooter>

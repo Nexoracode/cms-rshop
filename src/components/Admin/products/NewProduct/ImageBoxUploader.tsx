@@ -8,10 +8,11 @@ type Props = {
     title: string,
     textBtn: string,
     onFile: (file: File) => void,
-    changeStatusFile?: any
+    changeStatusFile?: any,
+    sizeText?: string,
 }
 
-const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatusFile }) => {
+const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatusFile, sizeText }) => {
 
     const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -73,7 +74,7 @@ const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatu
                             <small>PNG</small>
                         </Chip>
                     </div>
-                    <p>سایز تصویر: 160x160</p>
+                    <p>{sizeText ? sizeText : "سایز تصویر: 160x160"}</p>
                 </div>
             </div>
         </section>

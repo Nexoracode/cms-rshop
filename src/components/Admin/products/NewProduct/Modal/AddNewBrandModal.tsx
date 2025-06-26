@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Chip, Input, ModalFooter } from "@heroui/react";
+import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { TbCategoryPlus } from "react-icons/tb";
 import ImageBoxUploader from "../ImageBoxUploader";
 
 type Props = {
