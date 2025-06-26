@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react";
-import AddNewPropertyModal from "./Modals/AddNewPropertyModal";
+import AddNewPropertyModal from "./modals/AddNewPropertyModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
-import SizeGuide from "./Sections/SizeGuide";
-import BrandItem from "./Sections/BrandItem";
+import SizeGuide from "./temps/SizeGuide";
+import BrandItem from "./temps/BrandItem";
 
 type Property = {
     title: string;

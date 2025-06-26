@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useDisclosure } from "@heroui/react";
-import AddNewBrandModal from "../Modals/AddNewBrandModal";
-import HeaderAction from "../Helpers/HeaderAction";
-import CardBox from "../Helpers/CardBox";
+import AddNewBrandModal from "../modals/AddNewBrandModal";
+import HeaderAction from "../helpers/HeaderAction";
+import CardBox from "../helpers/CardBox";
 
 type Brand = {
     brandNameFa: string;

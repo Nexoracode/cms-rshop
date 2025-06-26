@@ -3,12 +3,12 @@
 // Other
 import Link from "next/link";
 import { Button, useDisclosure } from "@heroui/react"
-import OptionBox from "@/components/Admin/products/OptionBox";
-import ProductBox from "@/components/Admin/products/ProductBox";
-import ActionsModal from "@/components/Admin/products/Modals/ActionsModal";
-import FilterModal from "@/components/Admin/products/Modals/FilterModal";
-import SortingModal from "@/components/Admin/products/Modals/SortingModal";
-import MoreFeaturesModal from "@/components/Admin/products/Modals/MoreFeaturesModal";
+import OptionBox from "@/components/Admin/_products/OptionBox";
+import ProductBox from "@/components/Admin/_products/ProductBox";
+import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
+import FilterModal from "@/components/Admin/_products/modals/FilterModal";
+import SortingModal from "@/components/Admin/_products/modals/SortingModal";
+import MoreFeaturesModal from "@/components/Admin/_products/modals/MoreFeaturesModal";
 // Icons
 import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";

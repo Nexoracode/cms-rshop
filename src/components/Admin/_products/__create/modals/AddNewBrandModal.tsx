@@ -1,44 +1,44 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
+import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import ImageBoxUploader from "../Helpers/ImageBoxUploader";
+import ImageBoxUploader from "../helpers/ImageBoxUploader";
 
 type Props = {
     isOpen: boolean;
     onOpenChange: () => void;
-    onSubmit: (title: string, description: string, image: File | null) => void;
+    onSubmit: (brandNameFa: string, brandNameEn: string, image: File | null) => void;
     defaultValues?: {
-        title: string;
-        description: string;
+        brandNameFa: string;
+        brandNameEn: string;
         imageFile?: File | null;
     };
 };
 
-const AddNewSizeGuideModal: React.FC<Props> = ({
+const AddNewBrandModal: React.FC<Props> = ({
     isOpen,
     onOpenChange,
     onSubmit,
     defaultValues
 }) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    const [brandFa, setBrandFa] = useState("");
+    const [brandEn, setBrandEn] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
 
     useEffect(() => {
-        setTitle(defaultValues?.title || "");
-        setDescription(defaultValues?.description || "");
+        setBrandFa(defaultValues?.brandNameFa || "");
+        setBrandEn(defaultValues?.brandNameEn || "");
         setImageFile(defaultValues?.imageFile || null);
     }, [defaultValues]);
 
-    const isDisabled = !title.trim() || !description.trim() || !imageFile;
+    const isDisabled = !brandFa.trim() || !brandEn.trim() || !imageFile;
 
     const handleSubmit = () => {
         if (!isDisabled) {
-            onSubmit(title.trim(), description.trim(), imageFile);
-            setTitle("");
-            setDescription("");
+            onSubmit(brandFa.trim(), brandEn.trim(), imageFile);
+            setBrandFa("");
+            setBrandEn("");
             setImageFile(null);
             onOpenChange();
         }
@@ -51,33 +51,33 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                     <>
                         <ModalHeader>
                             <p className="font-normal text-[16px]">
-                                {defaultValues ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
+                                {defaultValues ? "ویرایش برند" : "افزودن برند"}
                             </p>
                         </ModalHeader>
                         <ModalBody>
                             <Input
                                 labelPlacement="outside"
                                 isRequired
-                                label="عنوان"
+                                label="عنوان برند (فارسی)"
                                 placeholder="عنوان را وارد کنید"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                value={brandFa}
+                                onChange={(e) => setBrandFa(e.target.value)}
+                                className="mb-2"
                             />
-                            <Textarea
+                            <Input
+                                dir="ltr"
                                 labelPlacement="outside"
                                 isRequired
-                                label="توضیحات"
-                                placeholder="اگر توضیحی دارید اینجا وارد کنید"
-                                maxLength={300}
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                label="عنوان برند (انگلیسی)"
+                                placeholder="title"
+                                value={brandEn}
+                                onChange={(e) => setBrandEn(e.target.value)}
                             />
                             <ImageBoxUploader
-                                textBtn={imageFile ? "تغییر تصویر" : "افزودن تصویر"}
-                                title="تصویر"
+                                textBtn={imageFile ? "تغییر لوگو" : "+ افزودن لوگو"}
+                                title="تصویر لوگو"
                                 changeStatusFile={imageFile}
                                 onFile={(file) => setImageFile(file)}
-                                sizeText="سایز تصویر: 540x540"
                             />
                         </ModalBody>
                         <ModalFooter>
@@ -98,4 +98,4 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     );
 };
 
-export default AddNewSizeGuideModal;
+export default AddNewBrandModal;

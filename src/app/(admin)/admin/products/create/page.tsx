@@ -6,12 +6,12 @@ import { Button } from "@heroui/react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { Stock } from "@/types"
 //
-import ImagesProducts from "@/components/Admin/products/NewProduct/ImagesProducts";
-import InitInfos from "@/components/Admin/products/NewProduct/InitInfos";
-import FirstAdditionalInfos from "@/components/Admin/products/NewProduct/FirstAdditionalInfos";
-import MiddAdditionalInfos from "@/components/Admin/products/NewProduct/MiddAdditionalInfos";
-import LastAdditionalInfos from "@/components/Admin/products/NewProduct/LastAdditionalInfos";
-import FeatureProducts from "@/components/Admin/products/NewProduct/FeatureProducts";
+import ImagesProducts from "@/components/Admin/_products/__create/ImagesProducts";
+import InitInfos from "@/components/Admin/_products/__create/InitInfos";
+import FirstAdditionalInfos from "@/components/Admin/_products/__create/FirstAdditionalInfos";
+import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAdditionalInfos";
+import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
+import FeatureProducts from "@/components/Admin/_products/__create/FeatureProducts";
 
 const CreateNewProduct = () => {
 

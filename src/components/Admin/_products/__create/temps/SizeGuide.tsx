@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useDisclosure } from "@heroui/react";
-import AddNewSizeGuideModal from "../Modals/AddNewSizeGuideModal";
-import CardBox from "../Helpers/CardBox";
-import HeaderAction from "../Helpers/HeaderAction";
+import AddNewSizeGuideModal from "../modals/AddNewSizeGuideModal";
+import CardBox from "../helpers/CardBox";
+import HeaderAction from "../helpers/HeaderAction";
 
 type SizeGuide = {
     title: string;
