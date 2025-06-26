@@ -11,7 +11,7 @@ type SizeGuide = {
     description: string;
     imageFile: File | null;
 };
-
+ 
 const SizeGuide = () => {
     const [sizeGuide, setSizeGuide] = useState<SizeGuide | null>(null);
     const [isEditing, setIsEditing] = useState(false);
