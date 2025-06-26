@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react";
-import AddNewPropertyModal from "./Modal/AddNewPropertyModal";
+import AddNewPropertyModal from "./Modals/AddNewPropertyModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
-import SizeGuideList from "./SizeGuideList";
-import BrandItem from "./BrandItem";
+import SizeGuide from "./Sections/SizeGuide";
+import BrandItem from "./Sections/BrandItem";
 
 type Property = {
     title: string;
@@ -119,7 +119,7 @@ const LastAdditionalInfos = () => {
                         }
                     </div>
 
-                    <SizeGuideList />
+                    <SizeGuide />
                     <BrandItem />
                 </CardBody>
             </Card>
