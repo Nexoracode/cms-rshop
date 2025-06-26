@@ -58,7 +58,7 @@ const BrandItem = () => {
                                         <img
                                             src={URL.createObjectURL(brand.imageFile)}
                                             alt="preview"
-                                            className="rounded-lg w-32 object-contain border"
+                                            className="rounded-lg w-24 h-16 object-cover border"
                                         />
                                     )}
                                     <div>
