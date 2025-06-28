@@ -44,12 +44,12 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                             <div className="flex items-center">
                                 <div className="flex h-7 items-center space-x-2 gap-2">
                                     <Link href={'/admin/home'}>
-                                        <TbSettings className="text-xl text-[var(--primary)]" />
+                                        <TbSettings className="text-2xl text-[var(--primary)]" />
                                     </Link>
                                     <Divider className="px-[0.1rem]" orientation="vertical" />
                                 </div>
-                                <Button variant="flat" color="secondary" size="sm" onClick={() => {}}>
-                                    افزودن ویژگی
+                                <Button variant="flat" color="secondary" onClick={() => { }}>
+                                    + افزودن ویژگی
                                 </Button>
                             </div>
                         </ModalHeader>
