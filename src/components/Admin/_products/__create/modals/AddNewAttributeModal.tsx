@@ -28,10 +28,14 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
     const [title, setTitle] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
     //
+    const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState("");
     //
+    const [selectedtTypeAttribute, setSelectedtTypeAttribute] = useState("");
+    //
     const isDisabled = !title.trim() || !imageFile;
+    const isDisabledAcc = (!selectedKey && !inputValue.length) || !selectedtTypeAttribute;
 
     const handleSubmit = () => {
         if (!isDisabled) {
@@ -54,8 +58,13 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
 
 
     const handleAddAttr = () => {
-
-    }
+        // منطق افزودن ویژگی جدید
+        setSelectedKeys((prev) => {
+            const newSelectedKeys = new Set(prev);
+            newSelectedKeys.delete("1"); // فرض بر اینکه کلید آیتم مورد نظر "1" است
+            return newSelectedKeys;
+        });
+    };
 
     return (
         <Modal
@@ -75,7 +84,11 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                         </ModalHeader>
 
                         <ModalBody>
-                            <Accordion variant="splitted">
+                            <Accordion
+                                variant="splitted"
+                                selectedKeys={selectedKeys}
+                                onSelectionChange={(keys: any) => setSelectedKeys(keys)}
+                            >
                                 <AccordionItem
                                     key="1"
                                     className="shadow-md"
@@ -97,19 +110,18 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                         {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
                                     </Autocomplete>
 
-                                    <div className="mt-4 flex w-full flex-wrap md:flex-nowrap gap-4">
-                                        <Select label="نوع ویژگی" placeholder="انتخاب کنید" labelPlacement="outside">
+                                    <div className="mt-10">
+                                        <Select label="نوع ویژگی" placeholder="انتخاب کنید" labelPlacement="outside" onChange={(e) => setSelectedtTypeAttribute(e.target.value)}>
                                             {productInputTypes.map((item) => (
                                                 <SelectItem key={item.key} startContent={item.icon}>
                                                     {item.label}
                                                 </SelectItem>
                                             ))}
                                         </Select>
-
                                     </div>
 
                                     <div className="w-full text-end">
-                                        <Button size="sm" variant="flat" color="secondary" className="mt-4">
+                                        <Button size="sm" variant="flat" color="secondary" className="mt-4" isDisabled={isDisabledAcc} onClick={handleAddAttr}>
                                             + افزودن ویژگی
                                         </Button>
                                     </div>
