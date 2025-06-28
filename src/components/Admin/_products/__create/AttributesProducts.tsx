@@ -5,7 +5,7 @@ import { TbBookmarks } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import { useState } from "react";
-import AddNewAttributeModal from "./modals/AddNewAttributeModal";
+import AddNewAttributeModal from "./modals/AddNewAttributeModal/AddNewAttributeModal";
 
 const AttributesProducts = () => {
 

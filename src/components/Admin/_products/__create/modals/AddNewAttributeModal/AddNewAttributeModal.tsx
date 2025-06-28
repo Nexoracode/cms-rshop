@@ -4,7 +4,7 @@ import { Accordion, AccordionItem, Button, ModalFooter, Select, SelectItem, Swit
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { TbSettings } from "react-icons/tb";
-import AttributeVarient from "../temps/AttributeVarient";
+import AttributeVarient from "../../temps/AttributeVarient";
 //
 import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
 import { BsPalette } from "react-icons/bs";
