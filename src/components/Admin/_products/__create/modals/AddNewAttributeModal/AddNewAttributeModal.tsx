@@ -1,24 +1,37 @@
-"use client"
+"use client";
 
+import { useState } from "react";
 import { Button, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
-import AttributeVarient from "../../temps/AttributeVarient";
+import AddNewSubAttribute from "./AddNewSubAttribute";
 import AddNewAttribute from "./AddNewAttribute";
 
+type AttributeData = {
+    name: string;
+    type: string;
+    isVariable: boolean;
+    isNew: boolean;
+};
+
 type Props = {
-    isOpen: boolean,
-    onOpenChange: () => void,
+    isOpen: boolean;
+    onOpenChange: () => void;
     onSubmit: () => void;
-}
+};
 
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
+    const [attributes, setAttributes] = useState<AttributeData[]>([]);
 
-    const isDisabled = true
+    const isDisabled = true;
 
     const handleSubmit = () => {
         onSubmit();
         onOpenChange();
+    };
+
+    const handleAddAttribute = (data: AttributeData) => {
+        setAttributes((prev) => [...prev, data]);
     };
 
     return (
@@ -26,7 +39,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
             dir="rtl"
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            placement="auto"    // uses Hero UI auto: bottom on mobile, center on larger screens
+            placement="auto"
         >
             <ModalContent className="max-w-[700px] w-full">
                 {onClose => (
@@ -38,8 +51,11 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                             </Button>
                         </ModalHeader>
                         <ModalBody>
-                            <AddNewAttribute onNewAttribute={(data) => console.log(data)} />
-                            <AttributeVarient />
+                            <AddNewAttribute onNewAttribute={handleAddAttribute} />
+                            <AddNewSubAttribute
+                                attributeList={attributes}
+                                onNewAttribute={() => { }}
+                            />
                         </ModalBody>
                         <ModalFooter>
                             <Button
@@ -48,12 +64,15 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                 variant="solid"
                                 color="secondary"
                                 onClick={handleSubmit}
-                            >ثبت تغیرات</Button>
+                            >
+                                ثبت تغیرات
+                            </Button>
                         </ModalFooter>
                     </>
                 )}
             </ModalContent>
         </Modal>
     );
-}
-export default AddNewAttributeModal
+};
+
+export default AddNewAttributeModal;
