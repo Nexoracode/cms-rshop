@@ -7,12 +7,12 @@ import {
     AutocompleteItem,
     Button,
     Card,
-    CardBody
+    CardBody,
+    Divider
 } from "@heroui/react";
 import { useState } from "react";
 
 import { MdOutlineCategory } from "react-icons/md";
-import BoxHeader from "../../helpers/BoxHeader";
 
 type AttributeData = {
     name: string;
@@ -31,9 +31,8 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
     const [keyAttribute, setKeyAttribute] = useState<string | null>(null);
     const [accordionKeys, setAccordionKeys] = useState<any>([]); // ← پیش‌فرض بسته
     const [selectedTypeAttribute, setSelectedTypeAttribute] = useState<string | null>(null);
-    const [isChecked, setIsChecked] = useState<boolean>(false);
 
-    const isDisabledAcc = (!keyAttribute && !inputValue) || !selectedTypeAttribute;
+    const isDisabledAcc = !keyAttribute && !inputValue;
 
     const attributes = [
         { label: "Cat", key: "cat", description: "The second most popular pet in the world" },
@@ -41,19 +40,17 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
     ];
 
     const handleAddNewAttribute = () => {
-        const data: AttributeData = {
+       /*  const data = {
             name: inputValue || attributes.find((a) => a.key === keyAttribute!)?.label || "",
-            type: selectedTypeAttribute!,
-            isVariable: isChecked,
+            type: selectedTypeAttribute!
             isNew: !attributes.some((a) => a.key === keyAttribute),
         };
 
-        onNewAttribute(data);
+        onNewAttribute(data) */;
 
         setInputValue("");
         setKeyAttribute(null);
         setSelectedTypeAttribute(null);
-        setIsChecked(false);
         setAccordionKeys([]);
     };
 
@@ -74,34 +71,48 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
                 aria-label="Accordion 1"
                 title={attribute.name}
                 startContent={
-                    <MdOutlineCategory className="text-xl text-gray-500" />
+                    attribute.isVariable ? <MdOutlineCategory className="text-xl text-gray-500" /> : ""
                 }
             >
-                <Autocomplete
-                    allowsCustomValue
-                    labelPlacement="outside"
-                    defaultItems={attributes}
-                    label="نام"
-                    placeholder="نام جدید را وارد کنید یا جستجو کنید"
-                    variant="flat"
-                    selectedKey={keyAttribute}
-                    onSelectionChange={(key) => setKeyAttribute(key as string)}
-                    onInputChange={setInputValue}
-                >
-                    {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
-                </Autocomplete>
+                <Card>
+                    <CardBody>
+                        <Autocomplete
+                            allowsCustomValue
+                            labelPlacement="outside"
+                            defaultItems={attributes}
+                            label="نام"
+                            placeholder="نام جدید را وارد کنید یا جستجو کنید"
+                            variant="flat"
+                            selectedKey={keyAttribute}
+                            onSelectionChange={(key) => setKeyAttribute(key as string)}
+                            onInputChange={setInputValue}
+                        >
+                            {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+                        </Autocomplete>
 
-                <div className="w-full text-end">
-                    <Button
-                        size="sm"
-                        variant="flat"
-                        color="secondary"
-                        className="mt-4"
-                        isDisabled={isDisabledAcc}
-                        onClick={handleAddNewAttribute}
-                    >
-                        + افزودن ویژگی
-                    </Button>
+                        <div className="w-full text-end">
+                            <Button
+                                size="sm"
+                                variant="flat"
+                                color="secondary"
+                                className="mt-4"
+                                isDisabled={isDisabledAcc}
+                                onClick={handleAddNewAttribute}
+                            >
+                                + افزودن
+                            </Button>
+                        </div>
+                    </CardBody>
+                </Card>
+                <Divider className="mt-6" />
+                <div className="mt-4">
+                    <p className="text-start pb-4">زیر مجموعه ها</p>
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li>4</li>
+                    </ul>
                 </div>
             </AccordionItem>
         </Accordion>
