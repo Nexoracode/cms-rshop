@@ -11,11 +11,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 
-// Icons
-import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
-import { BsPalette } from "react-icons/bs";
-import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
-import { MdDateRange, MdOutlineCategory } from "react-icons/md";
+import { MdOutlineCategory } from "react-icons/md";
 import BoxHeader from "../../helpers/BoxHeader";
 
 type AttributeData = {
@@ -27,10 +23,10 @@ type AttributeData = {
 
 type Props = {
     onNewAttribute: (data: AttributeData) => void;
-    attributeList: AttributeData[];
+    attribute: AttributeData;
 };
 
-const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attributeList }) => {
+const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
     const [inputValue, setInputValue] = useState<string>("");
     const [keyAttribute, setKeyAttribute] = useState<string | null>(null);
     const [accordionKeys, setAccordionKeys] = useState<any>([]); // ← پیش‌فرض بسته
@@ -63,63 +59,52 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attributeList }) 
 
 
     return (
-        <Card className="bg-green-100/20 mx-2">
-            <BoxHeader
-                title="ویژگی های اضافه شده"
-                color="bg-green-700/10 text-green-700"
-                icon={<MdOutlineCategory className="text-3xl" />}
-            />
-            <CardBody>
-                <Accordion
-                    variant="splitted"
-                    selectedKeys={accordionKeys}
-                    onSelectionChange={(keys) => {
-                        if (keys === "all") return;
-                        const keyArray = Array.isArray(keys) ? keys : Array.from(keys as Set<string>);
-                        setAccordionKeys(keyArray);
-                    }}
+        <Accordion
+            variant="splitted"
+            selectedKeys={accordionKeys}
+            onSelectionChange={(keys) => {
+                if (keys === "all") return;
+                const keyArray = Array.isArray(keys) ? keys : Array.from(keys as Set<string>);
+                setAccordionKeys(keyArray);
+            }}
+        >
+            <AccordionItem
+                key="1"
+                className="shadow-md"
+                aria-label="Accordion 1"
+                title={attribute.name}
+                startContent={
+                    <MdOutlineCategory className="text-xl text-gray-500" />
+                }
+            >
+                <Autocomplete
+                    allowsCustomValue
+                    labelPlacement="outside"
+                    defaultItems={attributes}
+                    label="نام"
+                    placeholder="نام جدید را وارد کنید یا جستجو کنید"
+                    variant="flat"
+                    selectedKey={keyAttribute}
+                    onSelectionChange={(key) => setKeyAttribute(key as string)}
+                    onInputChange={setInputValue}
                 >
-                    <AccordionItem
-                        key="1"
-                        className="shadow-md"
-                        aria-label="Accordion 1"
-                        subtitle={
-                            <p className="mt-1 text-gray-500">
-                                نام مورد نظر را وارد کرده یا در لیست جستجو کنید.
-                            </p>
-                        }
-                        title="افزودن مقدار ویژگی"
-                    >
-                        <Autocomplete
-                            allowsCustomValue
-                            labelPlacement="outside"
-                            defaultItems={attributes}
-                            label="نام"
-                            placeholder="نام جدید را وارد کنید یا جستجو کنید"
-                            variant="flat"
-                            selectedKey={keyAttribute}
-                            onSelectionChange={(key) => setKeyAttribute(key as string)}
-                            onInputChange={setInputValue}
-                        >
-                            {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
-                        </Autocomplete>
+                    {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+                </Autocomplete>
 
-                        <div className="w-full text-end">
-                            <Button
-                                size="sm"
-                                variant="flat"
-                                color="secondary"
-                                className="mt-4"
-                                isDisabled={isDisabledAcc}
-                                onClick={handleAddNewAttribute}
-                            >
-                                + افزودن ویژگی
-                            </Button>
-                        </div>
-                    </AccordionItem>
-                </Accordion>
-            </CardBody>
-        </Card>
+                <div className="w-full text-end">
+                    <Button
+                        size="sm"
+                        variant="flat"
+                        color="secondary"
+                        className="mt-4"
+                        isDisabled={isDisabledAcc}
+                        onClick={handleAddNewAttribute}
+                    >
+                        + افزودن ویژگی
+                    </Button>
+                </div>
+            </AccordionItem>
+        </Accordion>
     );
 };
 

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Button, ModalFooter } from "@heroui/react";
+import { Button, Card, CardBody, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
 import AddNewSubAttribute from "./AddNewSubAttribute";
 import AddNewAttribute from "./AddNewAttribute";
+import BoxHeader from "../../helpers/BoxHeader";
+import { MdOutlineCategory } from "react-icons/md";
 
 type AttributeData = {
     name: string;
@@ -55,10 +57,26 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                             {
                                 attributes.length
                                     ?
-                                    <AddNewSubAttribute
-                                        attributeList={attributes}
-                                        onNewAttribute={() => { }}
-                                    />
+                                    <>
+                                        <Card>
+                                            <BoxHeader
+                                                title="ویژگی های اضافه شده"
+                                                color="bg-green-700/10 text-green-700"
+                                                icon={<MdOutlineCategory className="text-3xl" />}
+                                            />
+                                            <CardBody className="flex flex-col gap-4 bg-green-100/20">
+                                                {
+                                                    attributes.map((item, index) => (
+                                                        <AddNewSubAttribute
+                                                            key={index}
+                                                            attribute={item}
+                                                            onNewAttribute={() => { }}
+                                                        />
+                                                    ))
+                                                }
+                                            </CardBody>
+                                        </Card>
+                                    </>
                                     : ""
                             }
                         </ModalBody>
