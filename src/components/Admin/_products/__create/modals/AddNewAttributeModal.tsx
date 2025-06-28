@@ -32,7 +32,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
     const [inputValue, setInputValue] = useState("");
     //
-    const [selectedtTypeAttribute, setSelectedtTypeAttribute] = useState("");
+    const [selectedtTypeAttribute, setSelectedtTypeAttribute] = useState<any>(null);
     //
     const isDisabled = !title.trim() || !imageFile;
     const isDisabledAcc = (!selectedKey && !inputValue.length) || !selectedtTypeAttribute;
@@ -111,7 +111,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                     </Autocomplete>
 
                                     <div className="mt-10">
-                                        <Select label="نوع ویژگی" placeholder="انتخاب کنید" labelPlacement="outside" onChange={(e) => setSelectedtTypeAttribute(e.target.value)}>
+                                        <Select label="نوع ویژگی" placeholder="انتخاب کنید" labelPlacement="outside" selectedKeys={selectedtTypeAttribute} onSelectionChange={(keys: any) => setSelectedtTypeAttribute(keys)}>
                                             {productInputTypes.map((item) => (
                                                 <SelectItem key={item.key} startContent={item.icon}>
                                                     {item.label}
