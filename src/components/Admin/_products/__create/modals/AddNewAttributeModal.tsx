@@ -1,15 +1,12 @@
 "use client"
 
-import { Accordion, AccordionItem, Button, Card, CardBody, CardHeader, Divider, ModalFooter } from "@heroui/react";
+import { Accordion, AccordionItem, Button, ModalFooter, Select, SelectItem } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { useState } from "react";
 import { TbSettings } from "react-icons/tb";
 import AttributeVarient from "../temps/AttributeVarient";
-import Link from "next/link";
 //
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
-import BoxHeader from "../helpers/BoxHeader";
-import { MdOutlineCategory } from "react-icons/md";
 
 type Props = {
     isOpen: boolean,
@@ -20,37 +17,16 @@ type Props = {
 export const animals = [
     { label: "Cat", key: "cat", description: "The second most popular pet in the world" },
     { label: "Dog", key: "dog", description: "The most popular pet in the world" },
-    { label: "Elephant", key: "elephant", description: "The largest land animal" },
-    { label: "Lion", key: "lion", description: "The king of the jungle" },
-    { label: "Tiger", key: "tiger", description: "The largest cat species" },
-    { label: "Giraffe", key: "giraffe", description: "The tallest land animal" },
-    {
-        label: "Dolphin",
-        key: "dolphin",
-        description: "A widely distributed and diverse group of aquatic mammals",
-    },
-    { label: "Penguin", key: "penguin", description: "A group of aquatic flightless birds" },
-    { label: "Zebra", key: "zebra", description: "A several species of African equids" },
-    {
-        label: "Shark",
-        key: "shark",
-        description: "A group of elasmobranch fish characterized by a cartilaginous skeleton",
-    },
-    {
-        label: "Whale",
-        key: "whale",
-        description: "Diverse group of fully aquatic placental marine mammals",
-    },
-    { label: "Otter", key: "otter", description: "A carnivorous mammal in the subfamily Lutrinae" },
-    { label: "Crocodile", key: "crocodile", description: "A large semiaquatic reptile" },
 ];
-
 
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
 
     const [title, setTitle] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
-
+    //
+    const [selectedKey, setSelectedKey] = useState<string | null>(null);
+    const [inputValue, setInputValue] = useState("");
+    //
     const isDisabled = !title.trim() || !imageFile;
 
     const handleSubmit = () => {
@@ -61,6 +37,21 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
             onOpenChange();
         }
     };
+
+    const productInputTypes = [
+        { key: "text", label: "متن (text)" },
+        { key: "number", label: "عدد (number)" },
+        { key: "color", label: "رنگ (color)" },
+        { key: "date", label: "تاریخ (date)" },
+        { key: "checkbox", label: "چک‌باکس (checkbox)" },
+        { key: "radio", label: "دکمه انتخابی (radio)" },
+        { key: "file", label: "فایل / تصویر (file)" },
+    ];
+
+
+    const handleAddAttr = () => {
+
+    }
 
     return (
         <Modal
@@ -74,9 +65,9 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                     <>
                         <ModalHeader className="w-full px-8 flex items-center justify-between">
                             <p className="font-normal text-[16px]">ویژگی های محصول</p>
-                                <Button variant="flat" color="secondary" onClick={() => { }}>
-                                    تنظیمات ویژگی ها
-                                </Button>
+                            <Button variant="flat" className="text-xl" size="sm" onClick={() => { }}>
+                                <TbSettings />
+                            </Button>
                         </ModalHeader>
 
                         <ModalBody>
@@ -95,9 +86,31 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                         label="نام ویژگی"
                                         placeholder="نام جدید را وارد کنید یا جستجو کنید"
                                         variant="flat"
+                                        selectedKey={selectedKey}
+                                        onSelectionChange={(key) => setSelectedKey(key as string)}
+                                        onInputChange={setInputValue}
                                     >
                                         {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
                                     </Autocomplete>
+
+                                    <div className="mt-4 flex w-full flex-wrap md:flex-nowrap gap-4">
+                                        <Select
+                                            size="md"
+                                            labelPlacement="outside"
+                                            label="نوع ویژگی"
+                                            placeholder="انتخاب نوع ویژگس"
+                                        >
+                                            {productInputTypes.map((form) => (
+                                                <SelectItem key={form.key}>{form.label}</SelectItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+
+                                    <div className="w-full text-end">
+                                        <Button size="sm" variant="flat" color="secondary" className="mt-4">
+                                            + افزودن ویژگی
+                                        </Button>
+                                    </div>
                                 </AccordionItem>
                             </Accordion>
                             <AttributeVarient />
