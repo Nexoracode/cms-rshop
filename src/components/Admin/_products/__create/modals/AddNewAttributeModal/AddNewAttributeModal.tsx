@@ -38,7 +38,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                             </Button>
                         </ModalHeader>
                         <ModalBody>
-                            <AddNewAttribute onNewAttribute={() => {}}/>
+                            <AddNewAttribute onNewAttribute={(data) => console.log(data)} />
                             <AttributeVarient />
                         </ModalBody>
                         <ModalFooter>
