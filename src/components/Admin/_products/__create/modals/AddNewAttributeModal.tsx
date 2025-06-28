@@ -1,8 +1,8 @@
 "use client"
 
-import { Accordion, AccordionItem, Button, ModalFooter, Select, SelectItem } from "@heroui/react";
+import { Accordion, AccordionItem, Button, ModalFooter, Select, SelectItem, Switch } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbSettings } from "react-icons/tb";
 import AttributeVarient from "../temps/AttributeVarient";
 //
@@ -33,6 +33,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
     const [inputValue, setInputValue] = useState("");
     //
     const [selectedtTypeAttribute, setSelectedtTypeAttribute] = useState<any>(null);
+    const [isChecked, setIsChecked] = useState<any>(false);
     //
     const isDisabled = !title.trim() || !imageFile;
     const isDisabledAcc = (!selectedKey && !inputValue.length) || !selectedtTypeAttribute;
@@ -45,6 +46,11 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
             onOpenChange();
         }
     };
+
+    useEffect(() => {
+        console.log(isChecked);
+        
+    }, [isChecked])
 
     const productInputTypes = [
         { key: "text", label: "متن", icon: <AiOutlineFontColors className="w-4 h-4" /> },
@@ -110,7 +116,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                         {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
                                     </Autocomplete>
 
-                                    <div className="mt-10">
+                                    <div className="mt-10 mb-5">
                                         <Select label="نوع ویژگی" placeholder="انتخاب کنید" labelPlacement="outside" selectedKeys={selectedtTypeAttribute} onSelectionChange={(keys: any) => setSelectedtTypeAttribute(keys)}>
                                             {productInputTypes.map((item) => (
                                                 <SelectItem key={item.key} startContent={item.icon}>
@@ -119,6 +125,14 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                             ))}
                                         </Select>
                                     </div>
+
+                                    <Switch color="secondary" size="sm" checked={isChecked} onChange={e => setIsChecked(e.target.checked)}>
+                                        {
+                                            isChecked 
+                                            ? "این ویژگی یک متغیر است"
+                                            : "این ویژگی متغیر نیست"
+                                        }
+                                    </Switch>
 
                                     <div className="w-full text-end">
                                         <Button size="sm" variant="flat" color="secondary" className="mt-4" isDisabled={isDisabledAcc} onClick={handleAddAttr}>
