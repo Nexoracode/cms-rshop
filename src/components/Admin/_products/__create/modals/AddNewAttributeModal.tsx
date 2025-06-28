@@ -6,6 +6,10 @@ import { useState } from "react";
 import { TbSettings } from "react-icons/tb";
 import AttributeVarient from "../temps/AttributeVarient";
 //
+import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
+import { BsPalette } from "react-icons/bs";
+import { MdDateRange } from "react-icons/md";
+import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 
 type Props = {
@@ -39,13 +43,13 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
     };
 
     const productInputTypes = [
-        { key: "text", label: "متن (text)" },
-        { key: "number", label: "عدد (number)" },
-        { key: "color", label: "رنگ (color)" },
-        { key: "date", label: "تاریخ (date)" },
-        { key: "checkbox", label: "چک‌باکس (checkbox)" },
-        { key: "radio", label: "دکمه انتخابی (radio)" },
-        { key: "file", label: "فایل / تصویر (file)" },
+        { key: "text", label: "متن", icon: <AiOutlineFontColors className="w-4 h-4" /> },
+        { key: "number", label: "عدد", icon: <AiOutlineNumber className="w-4 h-4" /> },
+        { key: "color", label: "رنگ", icon: <BsPalette className="w-4 h-4" /> },
+        { key: "date", label: "تاریخ", icon: <MdDateRange className="w-4 h-4" /> },
+        { key: "checkbox", label: "چک‌باکس", icon: <FiCheckSquare className="w-4 h-4" /> },
+        { key: "radio", label: "دکمه انتخابی", icon: <FiCircle className="w-4 h-4" /> },
+        { key: "file", label: "فایل / تصویر", icon: <FiImage className="w-4 h-4" /> },
     ];
 
 
@@ -94,16 +98,14 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                     </Autocomplete>
 
                                     <div className="mt-4 flex w-full flex-wrap md:flex-nowrap gap-4">
-                                        <Select
-                                            size="md"
-                                            labelPlacement="outside"
-                                            label="نوع ویژگی"
-                                            placeholder="انتخاب نوع ویژگس"
-                                        >
-                                            {productInputTypes.map((form) => (
-                                                <SelectItem key={form.key}>{form.label}</SelectItem>
+                                        <Select label="نوع ویژگی" placeholder="انتخاب کنید" labelPlacement="outside">
+                                            {productInputTypes.map((item) => (
+                                                <SelectItem key={item.key} startContent={item.icon}>
+                                                    {item.label}
+                                                </SelectItem>
                                             ))}
                                         </Select>
+
                                     </div>
 
                                     <div className="w-full text-end">
