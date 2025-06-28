@@ -52,10 +52,15 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                         </ModalHeader>
                         <ModalBody>
                             <AddNewAttribute onNewAttribute={handleAddAttribute} />
-                            <AddNewSubAttribute
-                                attributeList={attributes}
-                                onNewAttribute={() => { }}
-                            />
+                            {
+                                attributes.length
+                                    ?
+                                    <AddNewSubAttribute
+                                        attributeList={attributes}
+                                        onNewAttribute={() => { }}
+                                    />
+                                    : ""
+                            }
                         </ModalBody>
                         <ModalFooter>
                             <Button
