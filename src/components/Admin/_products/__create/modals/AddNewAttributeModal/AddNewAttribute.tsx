@@ -40,8 +40,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
     const [selectedTypeAttr, setSelectedTypeAttr] = useState<string | null>(null);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     //
-    const [typeChoosed, setTypeChoosed] = useState<Attr[]>([])
-    const [attributes, setAttributes] = useState<Attr[]>()
+    const [attributes, setAttributes] = useState<Attr[]>([])
     const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
         status: false,
         isApiCall: false
@@ -82,19 +81,22 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
     }
 
     const handleAddNewAttribute = () => {
-        if (!attributes?.length) return
+        if (attributes && !attributes.length) return
 
         let newAttr = attributes.find(attr => attr.id === selectedAttr)!
 
+        setAttributes(prev => {
+            let past = prev.filter(attr => attr.id !== newAttr.id)
+            return [...past, { ...newAttr, isUsed: true }]
+        })
+
         const data: AttributeData = {
             id: -1,
-            attr: newAttr,
+            attr: { ...newAttr, isUsed: true },
             type: selectedTypeAttr!,
             isVariable: isChecked,
         };
         onNewAttribute(data);
-
-        setTypeChoosed(prev => ([...prev, newAttr]))
 
         setInputValue("");
         setSelectedAttr(null);
@@ -102,6 +104,13 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
         setIsChecked(false);
         setAccordionKeys([]);
     };
+
+    const handleAddAttr = () => {
+        if (attributes?.length) {
+            setAttributes((prev: any) => ([...prev, { id: prev?.length + 1, isUsed: false, label: inputValue }]))
+            setInputValue("")
+        }
+    }
 
     return (
         <Accordion
@@ -131,12 +140,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                     label="نام ویژگی"
                     placeholder="نام جدید را وارد کنید یا جستجو کنید"
                     variant="flat"
-                    selectedKey={selectedAttr}
+                    //electedKey={selectedAttr}
                     onSelectionChange={(key) => setSelectedAttr(+key!)}
                     onInputChange={setInputValue}
                     endContent={
                         !isAddedNewAttribute.status && inputValue.length ?
-                            <Button size="sm" onClick={() => { }} color="secondary" variant="flat">
+                            <Button size="sm" onClick={handleAddAttr} color="secondary" variant="flat">
                                 افزودن
                             </Button>
                             : ""
