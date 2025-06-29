@@ -22,49 +22,46 @@ type AttributeData = {
     isNew: boolean;
 };
 
+type SubAttributeData = {
+    name: string;
+    type: string;
+    isVariable: boolean;
+    isNew: boolean;
+    subs: string[]
+};
+
 type Props = {
-    onNewAttribute: (data: AttributeData) => void;
+    onNewSubAttribute: (data: SubAttributeData) => void;
     attribute: AttributeData;
 };
 
-const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
+const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) => {
+
     const [inputValue, setInputValue] = useState<string>("");
     const [keyAttribute, setKeyAttribute] = useState<string | null>(null);
-    const [accordionKeys, setAccordionKeys] = useState<any>([]); // ← پیش‌فرض بسته
-    const [selectedTypeAttribute, setSelectedTypeAttribute] = useState<string | null>(null);
-
+    const [subAttributesList, setSubAttributesList] = useState<string | null>(null);
     const isDisabledAcc = !keyAttribute && !inputValue;
 
-    const attributes = [
+    const subAttributes = [
         { label: "Cat", key: "cat", description: "The second most popular pet in the world" },
         { label: "Dog", key: "dog", description: "The most popular pet in the world" },
     ];
 
     const handleAddNewAttribute = () => {
-       /*  const data = {
-            name: inputValue || attributes.find((a) => a.key === keyAttribute!)?.label || "",
-            type: selectedTypeAttribute!
-            isNew: !attributes.some((a) => a.key === keyAttribute),
-        };
-
-        onNewAttribute(data) */;
-
+        console.log(inputValue, keyAttribute);
+        setSubAttributesList(prev => {
+            if (prev) {
+                return ([...prev, inputValue])
+            }
+        })
         setInputValue("");
         setKeyAttribute(null);
-        setSelectedTypeAttribute(null);
-        setAccordionKeys([]);
     };
 
 
     return (
         <Accordion
             variant="splitted"
-            selectedKeys={accordionKeys}
-            onSelectionChange={(keys) => {
-                if (keys === "all") return;
-                const keyArray = Array.isArray(keys) ? keys : Array.from(keys as Set<string>);
-                setAccordionKeys(keyArray);
-            }}
         >
             <AccordionItem
                 key="1"
@@ -92,7 +89,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
                         <Autocomplete
                             allowsCustomValue
                             labelPlacement="outside"
-                            defaultItems={attributes}
+                            defaultItems={subAttributes}
                             placeholder="نام جدید را وارد کنید یا جستجو کنید"
                             variant="flat"
                             selectedKey={keyAttribute}

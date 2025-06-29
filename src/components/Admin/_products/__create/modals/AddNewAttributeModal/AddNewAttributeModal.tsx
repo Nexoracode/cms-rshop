@@ -69,8 +69,10 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                                     <AddNewSubAttribute
                                                         key={index}
                                                         attribute={item}
-                                                        onNewAttribute={() => { }}
-                                                    />
+                                                        onNewSubAttribute={() => { }}
+                                                    >
+
+                                                    </AddNewSubAttribute>
                                                 ))
                                             }
                                         </CardBody>
