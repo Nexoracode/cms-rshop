@@ -80,9 +80,9 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                                         })}
                                                         onNewSubAttribute={(newItem) => {
                                                             setAttributes(prev => {
-                                                                let pasts = prev.filter(item => item.id !== newItem.id)
-                                                                return { ...pasts, ...newItem }
-                                                            })
+                                                                const without = prev.filter(attr => attr.id !== newItem.id);
+                                                                return [...without, newItem];
+                                                            });
                                                         }}
                                                     />
                                                 ))

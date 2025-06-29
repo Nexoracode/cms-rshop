@@ -10,7 +10,7 @@ import {
     SelectItem,
     Switch,
 } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Icons
 import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
@@ -37,13 +37,31 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
     const [accordionKeys, setAccordionKeys] = useState<any>([]); // ← پیش‌فرض بسته
     const [selectedTypeAttribute, setSelectedTypeAttribute] = useState<string | null>(null);
     const [isChecked, setIsChecked] = useState<boolean>(false);
+    //
+    const [attributes, setAttributes] = useState([
+        { label: "Cat", key: "cat" },
+        { label: "Dog", key: "dog" },
+    ])
+    const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
+        status: false,
+        isApiCall: false
+    })
 
-    const isDisabledAcc = (!keyAttribute && !inputValue) || !selectedTypeAttribute;
+    const isDisabledAcc = (!keyAttribute && !inputValue) || !selectedTypeAttribute || !isAddedNewAttribute.isApiCall || !isAddedNewAttribute.status;
 
-    const attributes = [
-        { label: "Cat", key: "cat", description: "The second most popular pet in the world" },
-        { label: "Dog", key: "dog", description: "The most popular pet in the world" },
-    ];
+    useEffect(() => {
+        const result = attributes.find(item => item.label === inputValue) === undefined
+        setIsAddedNewAttribute((prev: any) => {
+            if (result) {
+                return { ...prev, status: false, isApiCall: false }
+            }
+            return { ...prev, status: true, isApiCall: true }
+        })
+    }, [inputValue])
+
+    /* const filteredSubAttributes = attributes.filter(
+        (item) => !subAttrs.includes(item.label)
+    ); */
 
     const productInputTypes = [
         { key: "text", label: "متن", icon: <AiOutlineFontColors className="w-4 h-4" /> },
@@ -72,7 +90,6 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
         setIsChecked(false);
         setAccordionKeys([]);
     };
-
 
     return (
         <Accordion
@@ -105,6 +122,13 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                     selectedKey={keyAttribute}
                     onSelectionChange={(key) => setKeyAttribute(key as string)}
                     onInputChange={setInputValue}
+                    endContent={
+                        !isAddedNewAttribute.status && inputValue.length ?
+                            <Button size="sm" onClick={() => { }} color="secondary" variant="flat">
+                                افزودن
+                            </Button>
+                            : ""
+                    }
                 >
                     {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
                 </Autocomplete>
