@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, CardBody, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
@@ -10,10 +10,12 @@ import BoxHeader from "../../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 
 type AttributeData = {
+    id: number;
     name: string;
     type: string;
     isVariable: boolean;
     isNew: boolean;
+    subs?: string[];
 };
 
 type Props = {
@@ -23,9 +25,13 @@ type Props = {
 };
 
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
-    const [attributes, setAttributes] = useState<AttributeData[]>([]);
 
+    const [attributes, setAttributes] = useState<AttributeData[]>([]);
     const isDisabled = true;
+
+    useEffect(() => {
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@", attributes);
+    }, [attributes])
 
     const handleSubmit = () => {
         onSubmit();
@@ -33,7 +39,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
     };
 
     const handleAddAttribute = (data: AttributeData) => {
-        setAttributes((prev) => [...prev, data]);
+        setAttributes((prev) => [...prev, { ...data, id: prev.length + 1 }]);
     };
 
     return (
@@ -69,10 +75,16 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                                                     <AddNewSubAttribute
                                                         key={index}
                                                         attribute={item}
-                                                        onNewSubAttribute={() => { }}
-                                                    >
-
-                                                    </AddNewSubAttribute>
+                                                        onDelete={(id) => setAttributes(prev => {
+                                                            return prev.filter(item => item.id !== id)
+                                                        })}
+                                                        onNewSubAttribute={(newItem) => {
+                                                            setAttributes(prev => {
+                                                                let pasts = prev.filter(item => item.id !== newItem.id)
+                                                                return { ...pasts, newItem }
+                                                            })
+                                                        }}
+                                                    />
                                                 ))
                                             }
                                         </CardBody>

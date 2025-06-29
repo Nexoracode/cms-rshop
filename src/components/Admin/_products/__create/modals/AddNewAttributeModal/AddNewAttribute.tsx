@@ -19,10 +19,12 @@ import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
 
 type AttributeData = {
+    id: number;
     name: string;
     type: string;
     isVariable: boolean;
     isNew: boolean;
+    subs?: string[];
 };
 
 type Props = {
@@ -55,6 +57,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
 
     const handleAddNewAttribute = () => {
         const data: AttributeData = {
+            id: -1,
             name: inputValue || attributes.find((a) => a.key === keyAttribute!)?.label || "",
             type: selectedTypeAttribute!,
             isVariable: isChecked,

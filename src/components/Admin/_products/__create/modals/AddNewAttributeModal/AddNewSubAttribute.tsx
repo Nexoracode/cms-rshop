@@ -16,26 +16,21 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 
 type AttributeData = {
+    id: number;
     name: string;
     type: string;
     isVariable: boolean;
     isNew: boolean;
-};
-
-type SubAttributeData = {
-    name: string;
-    type: string;
-    isVariable: boolean;
-    isNew: boolean;
-    subs: string[];
+    subs?: string[];
 };
 
 type Props = {
-    onNewSubAttribute: (data: SubAttributeData) => void;
+    onNewSubAttribute: (data: AttributeData) => void;
+    onDelete: (id: number) => void
     attribute: AttributeData;
 };
 
-const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) => {
+const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onDelete }) => {
     const [inputValue, setInputValue] = useState<string>("");
     const [subAttrs, setSubAttrs] = useState<string[]>([]);
 
@@ -76,7 +71,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) =
                 title={
                     <div className="flex items-center justify-between w-full">
                         <p className="text-gray-600">{attribute.name}</p>
-                        <RiDeleteBin5Line className="text-xl text-red-500" />
+                        <RiDeleteBin5Line className="text-xl text-red-500" onClick={() => onDelete(attribute.id)}/>
                     </div>
                 }
                 startContent={
