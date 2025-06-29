@@ -18,12 +18,13 @@ import { BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
 
+type Attr = { id: number, label: string, isUsed: boolean }
+
 type AttributeData = {
     id: number;
-    name: string;
+    attr: Attr;
     type: string;
     isVariable: boolean;
-    isNew: boolean;
     subs?: string[];
 };
 
@@ -32,37 +33,19 @@ type Props = {
 };
 
 const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
+
     const [inputValue, setInputValue] = useState<string>("");
-    const [keyAttribute, setKeyAttribute] = useState<string | null>(null);
-    const [accordionKeys, setAccordionKeys] = useState<any>([]); // ← پیش‌فرض بسته
-    const [selectedTypeAttribute, setSelectedTypeAttribute] = useState<string | null>(null);
+    const [accordionKeys, setAccordionKeys] = useState<any>([]);
+    const [selectedAttr, setSelectedAttr] = useState<number | null>(null);
+    const [selectedTypeAttr, setSelectedTypeAttr] = useState<string | null>(null);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     //
-    const [attributes, setAttributes] = useState([
-        { label: "Cat", key: "cat" },
-        { label: "Dog", key: "dog" },
-    ])
+    const [typeChoosed, setTypeChoosed] = useState<Attr[]>([])
+    const [attributes, setAttributes] = useState<Attr[]>()
     const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
         status: false,
         isApiCall: false
     })
-
-    const isDisabledAcc = (!keyAttribute && !inputValue) || !selectedTypeAttribute || !isAddedNewAttribute.isApiCall || !isAddedNewAttribute.status;
-
-    useEffect(() => {
-        const result = attributes.find(item => item.label === inputValue) === undefined
-        setIsAddedNewAttribute((prev: any) => {
-            if (result) {
-                return { ...prev, status: false, isApiCall: false }
-            }
-            return { ...prev, status: true, isApiCall: true }
-        })
-    }, [inputValue])
-
-    /* const filteredSubAttributes = attributes.filter(
-        (item) => !subAttrs.includes(item.label)
-    ); */
-
     const productInputTypes = [
         { key: "text", label: "متن", icon: <AiOutlineFontColors className="w-4 h-4" /> },
         { key: "number", label: "عدد", icon: <AiOutlineNumber className="w-4 h-4" /> },
@@ -73,20 +56,49 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
         { key: "file", label: "فایل / تصویر", icon: <FiImage className="w-4 h-4" /> },
     ];
 
+    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || !isAddedNewAttribute.isApiCall || !isAddedNewAttribute.status;
+
+    useEffect(() => {
+        getAllAttributes()
+    }, [])
+
+    useEffect(() => {
+        if (attributes?.length) {
+            const result = attributes.find(item => item.label === inputValue) === undefined
+            setIsAddedNewAttribute((prev: any) => {
+                if (result) {
+                    return { ...prev, status: false, isApiCall: false }
+                }
+                return { ...prev, status: true, isApiCall: true }
+            })
+        }
+    }, [inputValue])
+
+    const getAllAttributes = async () => {
+        setAttributes([
+            { id: 0, label: "Cat", isUsed: false },
+            { id: 1, label: "Dog", isUsed: false },
+        ])
+    }
+
     const handleAddNewAttribute = () => {
+        if (!attributes?.length) return
+
+        let newAttr = attributes.find(attr => attr.id === selectedAttr)!
+
         const data: AttributeData = {
             id: -1,
-            name: inputValue || attributes.find((a) => a.key === keyAttribute!)?.label || "",
-            type: selectedTypeAttribute!,
+            attr: newAttr,
+            type: selectedTypeAttr!,
             isVariable: isChecked,
-            isNew: !attributes.some((a) => a.key === keyAttribute),
         };
-
         onNewAttribute(data);
 
+        setTypeChoosed(prev => ([...prev, newAttr]))
+
         setInputValue("");
-        setKeyAttribute(null);
-        setSelectedTypeAttribute(null);
+        setSelectedAttr(null);
+        setSelectedTypeAttr(null);
         setIsChecked(false);
         setAccordionKeys([]);
     };
@@ -115,12 +127,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                 <Autocomplete
                     allowsCustomValue
                     labelPlacement="outside"
-                    defaultItems={attributes}
+                    defaultItems={attributes?.length ? attributes.filter(attr => !attr.isUsed) : []}
                     label="نام ویژگی"
                     placeholder="نام جدید را وارد کنید یا جستجو کنید"
                     variant="flat"
-                    selectedKey={keyAttribute}
-                    onSelectionChange={(key) => setKeyAttribute(key as string)}
+                    selectedKey={selectedAttr}
+                    onSelectionChange={(key) => setSelectedAttr(+key!)}
                     onInputChange={setInputValue}
                     endContent={
                         !isAddedNewAttribute.status && inputValue.length ?
@@ -130,7 +142,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                             : ""
                     }
                 >
-                    {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+                    {(item) => <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>}
                 </Autocomplete>
 
                 <div className="mt-10 mb-5">
@@ -138,11 +150,11 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                         label="نوع ویژگی"
                         placeholder="انتخاب کنید"
                         labelPlacement="outside"
-                        selectedKeys={selectedTypeAttribute ? new Set([selectedTypeAttribute]) : new Set()}
+                        selectedKeys={selectedTypeAttr ? new Set([selectedTypeAttr]) : new Set()}
                         onSelectionChange={(keys) => {
                             if (keys === "all") return;
                             const keyArray = Array.from(keys as Set<string>);
-                            setSelectedTypeAttribute(keyArray[0] ?? null);
+                            setSelectedTypeAttr(keyArray[0] ?? null);
                         }}
                     >
                         {productInputTypes.map((item) => (
