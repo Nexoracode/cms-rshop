@@ -8,10 +8,11 @@ import {
     Button,
     Card,
     CardBody,
+    CardHeader,
     Divider
 } from "@heroui/react";
 import { useState } from "react";
-
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 
 type AttributeData = {
@@ -74,18 +75,23 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
                     attribute.isVariable ? <MdOutlineCategory className="text-xl text-gray-500" /> : ""
                 }
             >
-                <Card>
+                <Divider className="mb-4" />
+                <Card className="bg-gray-100 p-2 shadow-none">
+                    <CardHeader className="flex flex-col items-start gap-2">
+                        <p className="text-[16px]">افزودن مقدار ویژگی</p>
+                        <p className="text-gray-500">نام مورد نظر را وارد کرده یا در لیست جستجو کنید.</p>
+                    </CardHeader>
                     <CardBody>
                         <Autocomplete
                             allowsCustomValue
                             labelPlacement="outside"
                             defaultItems={attributes}
-                            label="نام"
                             placeholder="نام جدید را وارد کنید یا جستجو کنید"
                             variant="flat"
                             selectedKey={keyAttribute}
                             onSelectionChange={(key) => setKeyAttribute(key as string)}
                             onInputChange={setInputValue}
+                            color="secondary"
                         >
                             {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -102,18 +108,23 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
                                 + افزودن
                             </Button>
                         </div>
+
+                        <Divider className="mt-6" />
+
+                        <div className="mt-4">
+                            <p className="text-start pb-4">زیر مجموعه ها</p>
+                            <ul className="flex flex-col gap-4">
+                                <li className="flex items-center justify-between">
+                                    <span>■ 1</span>
+                                    <Button size="sm" variant="light" color="danger">
+                                        <RiDeleteBin5Line className="text-xl" />
+                                    </Button>
+                                </li>
+                            </ul>
+                        </div>
+
                     </CardBody>
                 </Card>
-                <Divider className="mt-6" />
-                <div className="mt-4">
-                    <p className="text-start pb-4">زیر مجموعه ها</p>
-                    <ul>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                        <li>4</li>
-                    </ul>
-                </div>
             </AccordionItem>
         </Accordion>
     );
