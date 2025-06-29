@@ -108,8 +108,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
 
     const handleAddAttr = () => {
         if (attributes?.length) {
-            setAttributes((prev: any) => ([...prev, { id: (prev?.length - 1) + 1, isUsed: false, label: inputValue }]))
-            setIsAddedNewAttribute((prev: any) => ({ ...prev, status: true, isApiCall: true }))
+            setAttributes((prev: any) => {
+                setSelectedAttr((prev?.length - 1) + 1)
+                return ([...prev, { id: (prev?.length - 1) + 1, isUsed: false, label: inputValue }])
+            })
+            console.log(selectedAttr);
+            setIsAddedNewAttribute({ status: true, isApiCall: true })
         }
     }
 
@@ -141,7 +145,6 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                     label="نام ویژگی"
                     placeholder="نام جدید را وارد کنید یا جستجو کنید"
                     variant="flat"
-                    //electedKey={selectedAttr}
                     onSelectionChange={(key) => setSelectedAttr(+key!)}
                     onInputChange={setInputValue}
                     endContent={
