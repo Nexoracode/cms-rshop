@@ -39,25 +39,32 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) =
     const [inputValue, setInputValue] = useState<string>("");
     const [subAttrs, setSubAttrs] = useState<string[]>([]);
 
-    const isDisabledAcc = inputValue.trim() === "";
-
-    const subAttributes = [
-        { label: "Cat", key: "cat", description: "The second most popular pet in the world" },
-        { label: "Dog", key: "dog", description: "The most popular pet in the world" },
+    // پایه داده‌های پیشنهادی اولیه
+    const baseSubAttributes = [
+        { label: "Cat", key: "cat" },
+        { label: "Dog", key: "dog" },
     ];
 
-    const handleAddNewAttribute = () => {
-        // اضافه کردن به آرایه‌ی زیرمجموعه‌ها
-        setSubAttrs(prev => [...prev, inputValue]);
+    // فیلتر آیتم‌های پیشنهادی براساس مقادیری که اضافه شده
+    const filteredSubAttributes = baseSubAttributes.filter(
+        (item) => !subAttrs.includes(item.label)
+    );
 
-        // پاک کردن فیلد Autocomplete
+    const isDisabledAcc = inputValue.trim() === "";
+
+    const handleAddNewAttribute = () => {
+        const newValue = inputValue;
+        setSubAttrs((prev) => [...prev, newValue]);
         setInputValue("");
 
-        // اطلاع‌رسانی به Parent
         onNewSubAttribute({
             ...attribute,
-            subs: [...subAttrs, inputValue]
+            subs: [...subAttrs, newValue]
         });
+    };
+
+    const handleRemove = (value: string) => {
+        setSubAttrs((prev) => prev.filter((item) => item !== value));
     };
 
     return (
@@ -72,7 +79,9 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) =
                         <RiDeleteBin5Line className="text-xl text-red-500" />
                     </div>
                 }
-                startContent={attribute.isVariable ? <MdOutlineCategory className="text-xl text-gray-500" /> : null}
+                startContent={
+                    attribute.isVariable ? <MdOutlineCategory className="text-xl text-gray-500" /> : null
+                }
             >
                 <Divider className="mb-4" />
                 <Card className="bg-gray-100 p-2 shadow-none">
@@ -84,7 +93,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) =
                         <Autocomplete
                             allowsCustomValue
                             labelPlacement="outside"
-                            defaultItems={subAttributes}
+                            defaultItems={filteredSubAttributes}
                             placeholder="نام جدید را وارد کنید یا جستجو کنید"
                             variant="flat"
                             inputValue={inputValue}
@@ -106,24 +115,27 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute }) =
                                 + افزودن
                             </Button>
                         </div>
-
-                        <Divider className="mt-6" />
-
-                        <div className="mt-4">
-                            <p className="text-start pb-4">زیر مجموعه‌ها</p>
-                            <ul className="flex flex-col gap-4">
-                                {subAttrs.map((sub, i) => (
-                                    <li key={i} className="flex items-center justify-between">
-                                        <span>■ {sub}</span>
-                                        <Button size="sm" variant="light" color="danger" onClick={() => setSubAttrs(prev => {
-                                            return prev.filter((item, index) => item[index] !== item[i])
-                                        })}>
-                                            <RiDeleteBin5Line className="text-xl" />
-                                        </Button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                        {
+                            subAttrs.length
+                                ?
+                                <>
+                                    <Divider className="mt-6" />
+                                    <div className="mt-4">
+                                        <p className="text-start pb-4">زیر مجموعه‌ها</p>
+                                        <ul className="flex flex-col gap-4">
+                                            {subAttrs.map((sub, i) => (
+                                                <li key={i} className="flex items-center justify-between bg-gray-200 rounded-lg p-2">
+                                                    <span>{sub}</span>
+                                                    <Button size="sm" variant="flat" color="danger" onClick={() => handleRemove(sub)}>
+                                                        <RiDeleteBin5Line className="text-xl" />
+                                                    </Button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </>
+                                : ""
+                        }
                     </CardBody>
                 </Card>
             </AccordionItem>
