@@ -57,26 +57,24 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                             {
                                 attributes.length
                                     ?
-                                    <>
-                                        <Card>
-                                            <BoxHeader
-                                                title="ویژگی های اضافه شده"
-                                                color="bg-green-700/10 text-green-700"
-                                                icon={<MdOutlineCategory className="text-3xl" />}
-                                            />
-                                            <CardBody className="flex flex-col gap-4 bg-green-100/20">
-                                                {
-                                                    attributes.map((item, index) => (
-                                                        <AddNewSubAttribute
-                                                            key={index}
-                                                            attribute={item}
-                                                            onNewAttribute={() => { }}
-                                                        />
-                                                    ))
-                                                }
-                                            </CardBody>
-                                        </Card>
-                                    </>
+                                    <Card className="mx-2">
+                                        <BoxHeader
+                                            title="ویژگی های اضافه شده"
+                                            color="bg-green-700/10 text-green-700"
+                                            icon={<MdOutlineCategory className="text-3xl" />}
+                                        />
+                                        <CardBody className="flex flex-col gap-4 bg-green-100/20">
+                                            {
+                                                attributes.map((item, index) => (
+                                                    <AddNewSubAttribute
+                                                        key={index}
+                                                        attribute={item}
+                                                        onNewAttribute={() => { }}
+                                                    />
+                                                ))
+                                            }
+                                        </CardBody>
+                                    </Card>
                                     : ""
                             }
                         </ModalBody>

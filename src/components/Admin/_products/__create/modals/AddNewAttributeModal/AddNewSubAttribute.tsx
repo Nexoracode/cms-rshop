@@ -70,7 +70,14 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewAttribute, attribute }) => {
                 key="1"
                 className="shadow-md"
                 aria-label="Accordion 1"
-                title={attribute.name}
+                title={
+                    <div className="flex items-center justify-between w-full">
+                        <p className="text-gray-600">{attribute.name}</p>
+                        <div className="border-l-1 pl-3 border-gray-400">
+                            <RiDeleteBin5Line className="text-xl text-red-500" />
+                        </div>
+                    </div>
+                }
                 startContent={
                     attribute.isVariable ? <MdOutlineCategory className="text-xl text-gray-500" /> : ""
                 }
