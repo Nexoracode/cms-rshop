@@ -9,12 +9,13 @@ import AddNewAttribute from "./AddNewAttribute";
 import BoxHeader from "../../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 
+type Attr = { id: number, label: string, isUsed: boolean }
+
 type AttributeData = {
     id: number;
-    name: string;
+    attr: Attr;
     type: string;
     isVariable: boolean;
-    isNew: boolean;
     subs?: string[];
 };
 
