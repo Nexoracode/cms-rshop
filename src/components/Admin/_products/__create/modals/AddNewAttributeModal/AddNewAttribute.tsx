@@ -64,6 +64,8 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
     useEffect(() => {
         if (attributes?.length) {
             const result = attributes.find(item => item.label === inputValue) === undefined
+            console.log("EEEEEEEEEEEEEEEEEEEEE", result, attributes);
+
             setIsAddedNewAttribute((prev: any) => {
                 if (result) {
                     return { ...prev, status: false, isApiCall: false }
@@ -90,13 +92,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
             return [...past, { ...newAttr, isUsed: true }]
         })
 
-        const data: AttributeData = {
+        onNewAttribute({
             id: -1,
             attr: { ...newAttr, isUsed: true },
             type: selectedTypeAttr!,
             isVariable: isChecked,
-        };
-        onNewAttribute(data);
+        });
 
         setInputValue("");
         setSelectedAttr(null);
@@ -107,8 +108,8 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
 
     const handleAddAttr = () => {
         if (attributes?.length) {
-            setAttributes((prev: any) => ([...prev, { id: prev?.length + 1, isUsed: false, label: inputValue }]))
-            setInputValue("")
+            setAttributes((prev: any) => ([...prev, { id: (prev?.length - 1) + 1, isUsed: false, label: inputValue }]))
+            setIsAddedNewAttribute((prev: any) => ({ ...prev, status: true, isApiCall: true }))
         }
     }
 
