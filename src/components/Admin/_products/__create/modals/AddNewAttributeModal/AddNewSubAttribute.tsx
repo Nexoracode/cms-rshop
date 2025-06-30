@@ -35,7 +35,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
   useEffect(() => {
     getAllSubAttributes()
   }, [])
- 
+
   useEffect(() => {
     //split
     if (subAttributes.length) {
@@ -60,8 +60,30 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
   }
 
   const handleAddNewSubAttrInList = () => {
+    const trimmed = inputValue.trim();
+    // Case 1: they’ve typed a brand‑new label that’s not in subAttributes
+    if (trimmed && !subAttributes.some(s => s.label === trimmed)) {
+      // just reuse your existing new‑attr logic
+      handleAddSubAttr();
+      return;
+    }
 
-  }
+    // Case 2: they selected an existing suggestion
+    if (selectedAttr) {
+      // find that object in attributesListSuggestion
+      const found = attributesListSuggestion.find(a => a.id === selectedAttr);
+      if (found) {
+        const newList = [...subAttributes, found];
+        setSubAttributes(newList);
+        onNewSubAttribute({ ...attribute, subs: newList });
+        // reset
+        setInputValue("");
+        setSelectedAttr(null);
+        setActiveBtn("add_new_attribute");
+      }
+    }
+  };
+
 
   const handleAddSubAttr = () => {
     let generateID = crypto.randomUUID()
@@ -105,23 +127,33 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
             <Autocomplete
               allowsCustomValue
               labelPlacement="outside"
-              defaultItems={subAttributes}
+              // فقط مقادیرِ اولیه‌ای که هنوز زیرمجموعه نشده‌اند
+              defaultItems={attributesListSuggestion.filter(a =>
+                !subAttributes.some(s => s.id === a.id)
+              )}
               placeholder="نام جدید را وارد کنید یا جستجو کنید"
               variant="flat"
               inputValue={inputValue}
-              onSelectionChange={(key: any) => setSelectedAttr(key)}
               onInputChange={setInputValue}
+              onSelectionChange={(key: any) => setSelectedAttr(key)}
               color="secondary"
               endContent={
-                activeBtn === "add_new_attribute" && inputValue.length ?
-                  <Button size="sm" onPress={handleAddSubAttr} color="secondary" variant="flat">
+                // وقتی:
+                // 1. کاربر متنی تایپ کرده
+                // 2. آن label هنوز در subAttributes نیست
+                // 3. وضعیت دکمه در حالت "add_new_attribute" است
+                inputValue.trim() &&
+                  !subAttributes.some(s => s.label === inputValue) &&
+                  activeBtn === "add_new_attribute" ? (
+                  <Button size="sm" variant="flat" color="secondary" onPress={handleAddSubAttr}>
                     افزودن
                   </Button>
-                  : ""
+                ) : null
               }
             >
-              {(item) => <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>}
+              {item => <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>}
             </Autocomplete>
+
 
             <div className="w-full text-end">
               <Button size="sm" variant="flat" color="secondary" className="mt-4" onPress={handleAddNewSubAttrInList}>
