@@ -18,10 +18,10 @@ import { BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
 
-type Attr = { id: number, label: string, isUsed: boolean }
+type Attr = { id: string, label: string }
 
 type AttributeData = {
-    id: number;
+    id: string;
     attr: Attr;
     type: string;
     isVariable: boolean;
@@ -30,17 +30,19 @@ type AttributeData = {
 
 type Props = {
     onNewAttribute: (data: AttributeData) => void;
+    selectedAttributes: Attr[]
 };
 
-const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
+const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }) => {
 
     const [inputValue, setInputValue] = useState<string>("");
     const [accordionKeys, setAccordionKeys] = useState<any>([]);
-    const [selectedAttr, setSelectedAttr] = useState<number | null>(null);
+    const [selectedAttr, setSelectedAttr] = useState<string | null>(null);
     const [selectedTypeAttr, setSelectedTypeAttr] = useState<string | null>(null);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     //
     const [attributes, setAttributes] = useState<Attr[]>([])
+    const [unmatchedAttrs, setUnmatchedAttrs] = useState<Attr[]>([])
     const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
         status: false,
         isApiCall: false
@@ -62,14 +64,19 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
     }, [])
 
     useEffect(() => {
+        const selectedIds = selectedAttributes.map(item => item.id);
+
+        const unmatchedAttrs = attributes.filter(attr =>
+            !selectedIds.includes(attr.id)
+        );
+        setUnmatchedAttrs(unmatchedAttrs);
+    }, [selectedAttributes]);
+
+    useEffect(() => {
         if (attributes?.length) {
             const result = attributes.find(item => item.label === inputValue) === undefined
-            console.log("EEEEEEEEEEEEEEEEEEEEE", result, attributes);
-
             setIsAddedNewAttribute((prev: any) => {
-                if (result) {
-                    return { ...prev, status: false, isApiCall: false }
-                }
+                if (result) return { ...prev, status: false, isApiCall: false }
                 return { ...prev, status: true, isApiCall: true }
             })
         }
@@ -77,8 +84,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
 
     const getAllAttributes = async () => {
         setAttributes([
-            { id: 0, label: "Cat", isUsed: false },
-            { id: 1, label: "Dog", isUsed: false },
+            { id: crypto.randomUUID(), label: "Cat", },
+            { id: crypto.randomUUID(), label: "Dog", },
+        ])
+        setUnmatchedAttrs([
+            { id: crypto.randomUUID(), label: "Cat", },
+            { id: crypto.randomUUID(), label: "Dog", },
         ])
     }
 
@@ -89,12 +100,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
 
         setAttributes(prev => {
             let past = prev.filter(attr => attr.id !== newAttr.id)
-            return [...past, { ...newAttr, isUsed: true }]
+            return [...past, newAttr]
         })
 
         onNewAttribute({
-            id: -1,
-            attr: { ...newAttr, isUsed: true },
+            id: crypto.randomUUID(),
+            attr: newAttr,
             type: selectedTypeAttr!,
             isVariable: isChecked,
         });
@@ -108,11 +119,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
 
     const handleAddAttr = () => {
         if (attributes?.length) {
+            let generateID = crypto.randomUUID()
             setAttributes((prev: any) => {
-                setSelectedAttr((prev?.length - 1) + 1)
-                return ([...prev, { id: (prev?.length - 1) + 1, isUsed: false, label: inputValue }])
+                setSelectedAttr(generateID)
+                return ([...prev, { id: generateID, label: inputValue }])
             })
-            console.log(selectedAttr);
+            setSelectedAttr(generateID)
             setIsAddedNewAttribute({ status: true, isApiCall: true })
         }
     }
@@ -141,15 +153,15 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute }) => {
                 <Autocomplete
                     allowsCustomValue
                     labelPlacement="outside"
-                    defaultItems={attributes?.length ? attributes.filter(attr => !attr.isUsed) : []}
+                    defaultItems={unmatchedAttrs}
                     label="نام ویژگی"
                     placeholder="نام جدید را وارد کنید یا جستجو کنید"
                     variant="flat"
-                    onSelectionChange={(key) => setSelectedAttr(+key!)}
+                    onSelectionChange={(key: any) => setSelectedAttr(key)}
                     onInputChange={setInputValue}
                     endContent={
                         !isAddedNewAttribute.status && inputValue.length ?
-                            <Button size="sm" onClick={handleAddAttr} color="secondary" variant="flat">
+                            <Button size="sm" onPress={handleAddAttr} color="secondary" variant="flat">
                                 افزودن
                             </Button>
                             : ""

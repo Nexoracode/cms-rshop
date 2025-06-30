@@ -15,9 +15,11 @@ import { useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 
+type Attr = { id: string, label: string }
+
 type AttributeData = {
-  id: number;
-  attr: { id: number; label: string; isUsed: boolean };
+  id: string;
+  attr: Attr;
   type: string;
   isVariable: boolean;
   subs?: string[];
@@ -25,7 +27,7 @@ type AttributeData = {
 
 type Props = {
   onNewSubAttribute: (data: AttributeData) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
   attribute: AttributeData;
 };
 

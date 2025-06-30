@@ -9,10 +9,10 @@ import AddNewAttribute from "./AddNewAttribute";
 import BoxHeader from "../../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 
-type Attr = { id: number; label: string; isUsed: boolean };
+type Attr = { id: string, label: string }
 
 type AttributeData = {
-  id: number;
+  id: string;
   attr: Attr;
   type: string;
   isVariable: boolean;
@@ -26,30 +26,13 @@ type Props = {
 };
 
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
+
   const [attributes, setAttributes] = useState<AttributeData[]>([]);
   const isDisabled = attributes.length === 0;
-
-  useEffect(() => {
-    console.log("Current attributes:", attributes);
-  }, [attributes]);
 
   const handleSubmit = () => {
     onSubmit();
     onOpenChange();
-  };
-
-  const handleAddAttribute = (data: AttributeData) => {
-    setAttributes((prev) => [...prev, { ...data, id: prev.length + 1 }]);
-  };
-
-  const handleDelete = (id: number) => {
-    setAttributes((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const handleUpdateSubs = (newItem: AttributeData) => {
-    setAttributes((prev) =>
-      prev.map((item) => (item.id === newItem.id ? newItem : item))
-    );
   };
 
   return (
@@ -59,12 +42,18 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
           <>
             <ModalHeader className="w-full px-8 flex items-center justify-between">
               <p className="font-normal text-[16px]">ویژگی‌های محصول</p>
-              <Button variant="flat" className="text-xl" size="sm" onClick={() => {}}>
+              <Button variant="flat" className="text-xl" size="sm" onClick={() => { }}>
                 <TbSettings />
               </Button>
             </ModalHeader>
+
             <ModalBody>
-              <AddNewAttribute onNewAttribute={handleAddAttribute} />
+
+              <AddNewAttribute
+                onNewAttribute={data => setAttributes((prev) => [...prev, data])}
+                selectedAttributes={(attributes.map(item => item.attr)) as Attr[]}
+              />
+
               {attributes.length > 0 && (
                 <Card className="mx-2">
                   <BoxHeader
@@ -73,20 +62,21 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                     icon={<MdOutlineCategory className="text-3xl" />}
                   />
                   <CardBody className="flex flex-col gap-4 bg-green-100/20">
-                    {attributes.map((item) => (
+                    {attributes.map((attr) => (
                       <AddNewSubAttribute
-                        key={item.id}
-                        attribute={item}
-                        onDelete={handleDelete}
-                        onNewSubAttribute={handleUpdateSubs}
+                        key={attr.id}
+                        attribute={attr}
+                        onDelete={id => setAttributes(prev => prev.filter(item => item.id !== id))}
+                        onNewSubAttribute={data => setAttributes((prev) => prev.map((item) => (item.id === data.id ? data : item)))}
                       />
                     ))}
                   </CardBody>
                 </Card>
               )}
             </ModalBody>
+
             <ModalFooter>
-              <Button isDisabled={isDisabled} className="w-full" variant="solid" color="secondary" onClick={handleSubmit}>
+              <Button isDisabled={isDisabled} className="w-full" variant="solid" color="secondary" onPress={handleSubmit}>
                 ثبت تغییرات
               </Button>
             </ModalFooter>
