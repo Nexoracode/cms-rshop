@@ -35,10 +35,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     const [test, setTest] = useState(false)
     const [attributes, setAttributes] = useState<Attribute[]>([])
     const [attributesListSuggestion, setAttributesListSuggestion] = useState<Attribute[]>([]);
-    const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
-        status: false,
-        isApiCall: false
-    })
+    const [activeBtn, setActiveBtn] = useState<"submit" | "add_new_attribute">("submit")
     // static
     const productInputTypes = [
         { key: "text", label: "متن", icon: <AiOutlineFontColors className="w-4 h-4" /> },
@@ -50,7 +47,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
         { key: "file", label: "فایل / تصویر", icon: <FiImage className="w-4 h-4" /> },
     ];
 
-    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || !isAddedNewAttribute.isApiCall || !isAddedNewAttribute.status || test;
+    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || test || activeBtn === "add_new_attribute";
 
     useEffect(() => {
         getAllAttributes()
@@ -63,14 +60,11 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     }, [selectedAttributes]);
 
     useEffect(() => {
-        if (attributes?.length) {
-            const result = attributes.find(item => item.label === inputValue) === undefined
-            setIsAddedNewAttribute((prev: any) => {
-                if (result) return { ...prev, status: false, isApiCall: false }
-                return { ...prev, status: true, isApiCall: true }
-            })
+        //split
+        if (attributes.length) {
+            const result = attributes.find(item => item.label === inputValue)
+            setActiveBtn(result === undefined ? "add_new_attribute" : "submit")
         }
-
         //
         let attrFind = attributes.find(attr => attr.label === inputValue)
         console.log("BBBBBBBB", attrFind);
@@ -121,15 +115,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     };
 
     const handleAddAttr = () => {
-        if (attributes?.length) {
-            let generateID = crypto.randomUUID()
-            setAttributes((prev: any) => {
-                setSelectedAttr(generateID)
-                return ([...prev, { id: generateID, label: inputValue }])
-            })
-            setSelectedAttr(generateID)
-            setIsAddedNewAttribute({ status: true, isApiCall: true })
-        }
+        let generateID = crypto.randomUUID()
+        let newAttr = { id: generateID, label: inputValue }
+        setAttributes((prev: any) => ([...prev, newAttr]))
+        setSelectedAttr(generateID)
+        setActiveBtn("submit")
+        setAttributesListSuggestion(prev => ([...prev, newAttr]))
     }
 
     return (
@@ -163,7 +154,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
                     onSelectionChange={(key: any) => setSelectedAttr(key)}
                     onInputChange={setInputValue}
                     endContent={
-                        !isAddedNewAttribute.status && inputValue.length ?
+                        activeBtn === "add_new_attribute" && inputValue.length ?
                             <Button size="sm" onPress={handleAddAttr} color="secondary" variant="flat">
                                 افزودن
                             </Button>
