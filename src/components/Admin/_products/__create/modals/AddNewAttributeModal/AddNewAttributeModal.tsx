@@ -20,12 +20,6 @@ type Props = {
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
 
   const [attributes, setAttributes] = useState<AttributeData[]>([]);
-  const isDisabled = attributes.length === 0;
-
-  const handleSubmit = () => {
-    onSubmit();
-    onOpenChange();
-  };
 
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
@@ -34,7 +28,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
           <>
             <ModalHeader className="w-full px-8 flex items-center justify-between">
               <p className="font-normal text-[16px]">ویژگی‌های محصول</p>
-              <Button variant="flat" className="text-xl" size="sm" onClick={() => { }}>
+              <Button variant="flat" className="text-xl" size="sm" onPress={() => { }}>
                 <TbSettings />
               </Button>
             </ModalHeader>
@@ -68,7 +62,10 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
             </ModalBody>
 
             <ModalFooter>
-              <Button isDisabled={isDisabled} className="w-full" variant="solid" color="secondary" onPress={handleSubmit}>
+              <Button isDisabled={attributes.length === 0} className="w-full" variant="solid" color="secondary" onPress={() => {
+                onSubmit();
+                onOpenChange();
+              }}>
                 ثبت تغییرات
               </Button>
             </ModalFooter>
