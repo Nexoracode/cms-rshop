@@ -11,11 +11,11 @@ import {
   CardHeader,
   Divider
 } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 //
-import { AttributeData } from "./Types";
+import { Attribute, AttributeData } from "./Types";
 
 type Props = {
   onNewSubAttribute: (data: AttributeData) => void;
@@ -25,28 +25,58 @@ type Props = {
 
 const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onDelete }) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [subAttrs, setSubAttrs] = useState<string[]>(attribute.subs || []);
+  const [selectedAttr, setSelectedAttr] = useState<string | null>(null);
+  //
+  const [subAttributes, setSubAttributes] = useState<Attribute[]>(attribute.subs || []);
+  const [isExistAttrInListSuggestion, setIsExistAttrInListSuggestion] = useState(false)
+  const [attributesListSuggestion, setAttributesListSuggestion] = useState<Attribute[]>([]);
+  const [activeBtn, setActiveBtn] = useState<"submit" | "add_new_attribute">("submit")
 
-  const baseSubAttributes = attribute.subs ? [] : [
-    { label: "Cat", key: "cat" },
-    { label: "Dog", key: "dog" }
-  ];
+  useEffect(() => {
+    getAllSubAttributes()
+  }, [])
+ 
+  useEffect(() => {
+    //split
+    if (subAttributes.length) {
+      const result = subAttributes.find(item => item.label === inputValue)
+      setActiveBtn(result === undefined ? "add_new_attribute" : "submit")
+    }
+    //
+    let attrFind = subAttributes.find(attr => attr.label === inputValue)
+    if (attrFind) {
+      setSelectedAttr(attrFind.id)
+      let isExist = attributesListSuggestion.filter(attr => attr.label === attrFind?.label);
+      setIsExistAttrInListSuggestion(isExist.length ? false : true)
+    } else setIsExistAttrInListSuggestion(false)
+  }, [inputValue])
 
-  const filteredSubAttributes = baseSubAttributes.filter((item) => !subAttrs.includes(item.label));
-  const isDisabledAcc = inputValue.trim() === "";
+  const getAllSubAttributes = async () => {
+    const data = [
+      { id: crypto.randomUUID(), label: "sub - 1", },
+      { id: crypto.randomUUID(), label: "sub - 2", },
+    ]
+    setAttributesListSuggestion(data)
+  }
 
-  const handleAddNewAttribute = () => {
-    const newValue = inputValue;
-    const newList = [...subAttrs, newValue];
-    setSubAttrs(newList);
-    setInputValue("");
+  const handleAddNewSubAttrInList = () => {
+
+  }
+
+  const handleAddSubAttr = () => {
+    let generateID = crypto.randomUUID()
+    let newAttr = { id: generateID, label: inputValue }
+    setSubAttributes((prev: any) => ([...prev, newAttr]))
+    setSelectedAttr(generateID)
+    setActiveBtn("submit")
+    setAttributesListSuggestion(prev => ([...prev, newAttr]))
+  }
+
+  const handleRemove = (id: string) => {
+    const newList = subAttributes.filter((item) => item.id !== id);
+    setSubAttributes(newList);
     onNewSubAttribute({ ...attribute, subs: newList });
-  };
-
-  const handleRemove = (value: string) => {
-    const newList = subAttrs.filter((item) => item !== value);
-    setSubAttrs(newList);
-    onNewSubAttribute({ ...attribute, subs: newList });
+    //setAttributesListSuggestion(subAttributes.filter(attr => !selectedIds.includes(attr.id)));
   };
 
   return (
@@ -75,32 +105,40 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
             <Autocomplete
               allowsCustomValue
               labelPlacement="outside"
-              defaultItems={filteredSubAttributes}
+              defaultItems={subAttributes}
               placeholder="نام جدید را وارد کنید یا جستجو کنید"
               variant="flat"
               inputValue={inputValue}
+              onSelectionChange={(key: any) => setSelectedAttr(key)}
               onInputChange={setInputValue}
               color="secondary"
+              endContent={
+                activeBtn === "add_new_attribute" && inputValue.length ?
+                  <Button size="sm" onPress={handleAddSubAttr} color="secondary" variant="flat">
+                    افزودن
+                  </Button>
+                  : ""
+              }
             >
-              {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+              {(item) => <AutocompleteItem key={item.id}>{item.label}</AutocompleteItem>}
             </Autocomplete>
 
             <div className="w-full text-end">
-              <Button size="sm" variant="flat" color="secondary" className="mt-4" isDisabled={isDisabledAcc} onClick={handleAddNewAttribute}>
+              <Button size="sm" variant="flat" color="secondary" className="mt-4" onPress={handleAddNewSubAttrInList}>
                 + افزودن
               </Button>
             </div>
 
-            {subAttrs.length > 0 && (
+            {subAttributes.length > 0 && (
               <>
                 <Divider className="mt-6" />
                 <div className="mt-4">
                   <p className="text-start pb-4">زیر مجموعه‌ها</p>
                   <ul className="flex flex-col gap-4">
-                    {subAttrs.map((sub, i) => (
+                    {subAttributes.map((sub, i) => (
                       <li key={i} className="flex items-center justify-between bg-gray-200 rounded-lg p-2">
-                        <span>{sub}</span>
-                        <Button size="sm" variant="flat" color="danger" onClick={() => handleRemove(sub)}>
+                        <span>{sub.label}</span>
+                        <Button size="sm" variant="flat" color="danger" onPress={() => handleRemove(sub.id)}>
                           <RiDeleteBin5Line className="text-xl" />
                         </Button>
                       </li>

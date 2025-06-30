@@ -5,5 +5,5 @@ export type AttributeData = {
   attr: Attribute;
   type: string;
   isVariable: boolean;
-  subs?: string[];
+  subs?: Attribute[];
 };
