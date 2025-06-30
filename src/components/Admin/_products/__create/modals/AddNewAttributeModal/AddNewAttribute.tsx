@@ -34,11 +34,12 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     //
     const [test, setTest] = useState(false)
     const [attributes, setAttributes] = useState<Attribute[]>([])
-    const [unmatchedAttrs, setUnmatchedAttrs] = useState<Attribute[]>([])
+    const [attributesListSuggestion, setAttributesListSuggestion] = useState<Attribute[]>([]);
     const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
         status: false,
         isApiCall: false
     })
+    // static
     const productInputTypes = [
         { key: "text", label: "متن", icon: <AiOutlineFontColors className="w-4 h-4" /> },
         { key: "number", label: "عدد", icon: <AiOutlineNumber className="w-4 h-4" /> },
@@ -56,12 +57,9 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     }, [])
 
     useEffect(() => {
+        //filter attributes for suggestions list
         const selectedIds = selectedAttributes.map(item => item.id);
-
-        const unmatchedAttrs = attributes.filter(attr =>
-            !selectedIds.includes(attr.id)
-        );
-        setUnmatchedAttrs(unmatchedAttrs);
+        setAttributesListSuggestion(attributes.filter(attr => !selectedIds.includes(attr.id)));
     }, [selectedAttributes]);
 
     useEffect(() => {
@@ -79,7 +77,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
 
         if (attrFind) {
             setSelectedAttr(attrFind.id)
-            let t = unmatchedAttrs.filter(attr => attr.label === attrFind?.label);
+            let t = attributesListSuggestion.filter(attr => attr.label === attrFind?.label);
             console.log(t);
             setTest(t.length ? false : true)
         } else {
@@ -92,7 +90,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
             { id: crypto.randomUUID(), label: "Cat", },
             { id: crypto.randomUUID(), label: "Dog", },
         ])
-        setUnmatchedAttrs([
+        setAttributesListSuggestion([
             { id: crypto.randomUUID(), label: "Cat", },
             { id: crypto.randomUUID(), label: "Dog", },
         ])
@@ -158,7 +156,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
                 <Autocomplete
                     allowsCustomValue
                     labelPlacement="outside"
-                    defaultItems={unmatchedAttrs}
+                    defaultItems={attributesListSuggestion}
                     label="نام ویژگی"
                     placeholder="نام جدید را وارد کنید یا جستجو کنید"
                     variant="flat"
