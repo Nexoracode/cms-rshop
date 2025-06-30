@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react";
 import {
     Accordion,
     AccordionItem,
@@ -10,27 +11,17 @@ import {
     SelectItem,
     Switch,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
-
 // Icons
 import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
 import { BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
-
-type Attr = { id: string, label: string }
-
-type AttributeData = {
-    id: string;
-    attr: Attr;
-    type: string;
-    isVariable: boolean;
-    subs?: string[];
-};
+//
+import { Attribute, AttributeData } from "./Types";
 
 type Props = {
     onNewAttribute: (data: AttributeData) => void;
-    selectedAttributes: Attr[]
+    selectedAttributes: Attribute[]
 };
 
 const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }) => {
@@ -42,8 +33,8 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     const [isChecked, setIsChecked] = useState<boolean>(false);
     //
     const [test, setTest] = useState(false)
-    const [attributes, setAttributes] = useState<Attr[]>([])
-    const [unmatchedAttrs, setUnmatchedAttrs] = useState<Attr[]>([])
+    const [attributes, setAttributes] = useState<Attribute[]>([])
+    const [unmatchedAttrs, setUnmatchedAttrs] = useState<Attribute[]>([])
     const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
         status: false,
         isApiCall: false

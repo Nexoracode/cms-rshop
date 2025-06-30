@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, CardBody, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
@@ -8,16 +8,8 @@ import AddNewSubAttribute from "./AddNewSubAttribute";
 import AddNewAttribute from "./AddNewAttribute";
 import BoxHeader from "../../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
-
-type Attr = { id: string, label: string }
-
-type AttributeData = {
-  id: string;
-  attr: Attr;
-  type: string;
-  isVariable: boolean;
-  subs?: string[];
-};
+//
+import { Attribute, AttributeData } from "./Types";
 
 type Props = {
   isOpen: boolean;
@@ -51,7 +43,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
 
               <AddNewAttribute
                 onNewAttribute={data => setAttributes((prev) => [...prev, data])}
-                selectedAttributes={(attributes.map(item => item.attr)) as Attr[]}
+                selectedAttributes={(attributes.map(item => item.attr)) as Attribute[]}
               />
 
               {attributes.length > 0 && (
