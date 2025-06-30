@@ -32,7 +32,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     const [selectedTypeAttr, setSelectedTypeAttr] = useState<string | null>(null);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     //
-    const [test, setTest] = useState(false)
+    const [isExistAttrInListSuggestion, setIsExistAttrInListSuggestion] = useState(false)
     const [attributes, setAttributes] = useState<Attribute[]>([])
     const [attributesListSuggestion, setAttributesListSuggestion] = useState<Attribute[]>([]);
     const [activeBtn, setActiveBtn] = useState<"submit" | "add_new_attribute">("submit")
@@ -47,7 +47,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
         { key: "file", label: "فایل / تصویر", icon: <FiImage className="w-4 h-4" /> },
     ];
 
-    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || test || activeBtn === "add_new_attribute";
+    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || isExistAttrInListSuggestion || activeBtn === "add_new_attribute";
 
     useEffect(() => {
         getAllAttributes()
@@ -67,16 +67,11 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
         }
         //
         let attrFind = attributes.find(attr => attr.label === inputValue)
-        console.log("BBBBBBBB", attrFind);
-
         if (attrFind) {
             setSelectedAttr(attrFind.id)
-            let t = attributesListSuggestion.filter(attr => attr.label === attrFind?.label);
-            console.log(t);
-            setTest(t.length ? false : true)
-        } else {
-            setTest(false)
-        }
+            let isExist = attributesListSuggestion.filter(attr => attr.label === attrFind?.label);
+            setIsExistAttrInListSuggestion(isExist.length ? false : true)
+        } else setIsExistAttrInListSuggestion(false)
     }, [inputValue])
 
     const getAllAttributes = async () => {
@@ -190,7 +185,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
                     checked={isChecked}
                     onChange={(e) => setIsChecked(e.target.checked)}
                 >
-                    {isChecked ? "این ویژگی یک متغیر است" : "این ویژگی متغیر نیست"}
+                    {isChecked ? "متغیر" : "ثابت"}
                 </Switch>
 
                 <div className="w-full text-end">
