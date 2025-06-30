@@ -41,6 +41,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
     const [selectedTypeAttr, setSelectedTypeAttr] = useState<string | null>(null);
     const [isChecked, setIsChecked] = useState<boolean>(false);
     //
+    const [test, setTest] = useState(false)
     const [attributes, setAttributes] = useState<Attr[]>([])
     const [unmatchedAttrs, setUnmatchedAttrs] = useState<Attr[]>([])
     const [isAddedNewAttribute, setIsAddedNewAttribute] = useState({
@@ -57,7 +58,7 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
         { key: "file", label: "فایل / تصویر", icon: <FiImage className="w-4 h-4" /> },
     ];
 
-    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || !isAddedNewAttribute.isApiCall || !isAddedNewAttribute.status;
+    const isDisabledAcc = (!selectedAttr && !inputValue) || !selectedTypeAttr || !isAddedNewAttribute.isApiCall || !isAddedNewAttribute.status || test;
 
     useEffect(() => {
         getAllAttributes()
@@ -79,6 +80,19 @@ const AddNewAttribute: React.FC<Props> = ({ onNewAttribute, selectedAttributes }
                 if (result) return { ...prev, status: false, isApiCall: false }
                 return { ...prev, status: true, isApiCall: true }
             })
+        }
+
+        //
+        let attrFind = attributes.find(attr => attr.label === inputValue)
+        console.log("BBBBBBBB", attrFind);
+
+        if (attrFind) {
+            setSelectedAttr(attrFind.id)
+            let t = unmatchedAttrs.filter(attr => attr.label === attrFind?.label);
+            console.log(t);
+            setTest(t.length ? false : true)
+        } else {
+            setTest(false)
         }
     }, [inputValue])
 
