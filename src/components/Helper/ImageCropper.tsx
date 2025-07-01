@@ -1,71 +1,102 @@
 "use client"
 import { useState, useRef } from "react"
 import { Button } from "@heroui/react"
-import { LuImage, LuVideo } from "react-icons/lu"
+import { LuImage, LuVideo, LuPin } from "react-icons/lu"
 
-type Preview = { file: File; url: string; type: "image" | "video" }
+type Preview = { file: File; url: string; type: "image" | "video"; pinned: boolean }
 
 const ImageCropper = () => {
-    const [previews, setPreviews] = useState<Preview[]>([])
-    const inputRef = useRef<HTMLInputElement>(null)
+  const [previews, setPreviews] = useState<Preview[]>([])
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    const handleAdd = (type: "image" | "video") => {
-        if (!inputRef.current) return
-        inputRef.current.accept = type === "image" ? "image/*" : "video/*"
-        inputRef.current.onchange = e => {
-            const file = (e.target as any).files?.[0]
-            if (!file) return
+  const handleAdd = (type: "image" | "video") => {
+    if (!inputRef.current) return
+    inputRef.current.accept =
+      type === "image" ? ".jpg,.jpeg,.png,.webp" : ".mp4"
+    inputRef.current.multiple = type === "image" // فقط عکس‌ها گروهی انتخاب می‌شن
+    inputRef.current.onchange = e => {
+      const files = (e.target as any).files
+      if (!files?.length) return
 
-            const max = type === "image" ? 5.5 * 1024 * 1024 : 50 * 1024 * 1024
-            if (file.size > max) {
-                alert(`حجم فایل ${type === "image" ? "تصویر" : "ویدیو"} بیشتر از حد مجاز است`)
-                return
-            }
+      const max = type === "image" ? 5.5 * 1024 * 1024 : 50 * 1024 * 1024
+      const allowedCount = type === "image" ? 20 : 5
+      const currentCount = previews.filter(p => p.type === type).length
 
-            const allowedCount = type === "image" ? 20 : 5
-            const current = previews.filter(p => p.type === type).length
-            if (current + 1 > allowedCount) {
-                alert(`نمی‌توانید بیشتر از ${allowedCount} ${type === "image" ? "تصویر" : "ویدیو"} آپلود کنید`)
-                return
-            }
-
-            const url = URL.createObjectURL(file)
-            setPreviews(prev => [...prev, { file, url, type }])
+      const toAdd: Preview[] = []
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        if (file.size > max) {
+          alert(`فایل ${file.name} بیشتر از حد مجاز است`)
+          continue
         }
-        inputRef.current.click()
+        if (currentCount + toAdd.length >= allowedCount) {
+          alert(`حد مجاز ${allowedCount} ${type === "image" ? "تصویر" : "ویدیو"} رد شد`)
+          break
+        }
+        const url = URL.createObjectURL(file)
+        toAdd.push({ file, url, type, pinned: false })
+      }
+
+      setPreviews(prev => [...prev, ...toAdd])
     }
+    inputRef.current.click()
+  }
 
-    const remove = (idx: number) => setPreviews(prev => prev.filter((_, i) => i !== idx))
-
-    return (
-        <>
-            <input ref={inputRef} type="file" hidden />
-
-            <div className="mb-4 flex flex-wrap gap-4">
-                {previews.map((p, idx) => (
-                    <div key={idx} className="relative w-32 h-32 border rounded-md overflow-hidden">
-                        {p.type === "image" ? (
-                            <img src={p.url} alt="" className="object-cover w-full h-full" />
-                        ) : (
-                            <video src={p.url} controls className="object-cover w-full h-full" />
-                        )}
-                        <button onClick={() => remove(idx)} className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500">
-                            ×
-                        </button>
-                    </div>
-                ))}
-            </div>
-
-            <div className="w-full flex items-center justify-center gap-8">
-                <Button color="secondary" variant="ghost" className="w-full border border-dashed h-[79px] rounded-md flex-col-reverse" endContent={<LuImage className="text-2xl" />} onClick={() => handleAdd("image")}>
-                    افزودن تصویر
-                </Button>
-                <Button color="secondary" variant="ghost" className="w-full border border-dashed h-[79px] rounded-md flex-col-reverse" endContent={<LuVideo className="text-2xl" />} onClick={() => handleAdd("video")}>
-                    افزودن ویدیو
-                </Button>
-            </div>
-        </>
+  const pin = (idx: number) => {
+    setPreviews(prev =>
+      prev.map((p, i) => ({
+        ...p,
+        pinned: i === idx ? true : false,
+      }))
+      .sort((a, b) => Number(b.pinned) - Number(a.pinned))
     )
+  }
+
+  const remove = (idx: number) => {
+    setPreviews(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  return (
+    <>
+      <input ref={inputRef} type="file" hidden />
+
+      <div className="mb-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+        {previews.map((p, idx) => (
+          <div key={idx}
+               className="relative group w-24 h-24 border rounded-md overflow-hidden shadow hover:shadow-lg transition"
+               onClick={() => p.type === "image" && pin(idx)}>
+            {p.type === "image" ? (
+              <img src={p.url} alt="" className="object-cover w-full h-full" />
+            ) : (
+              <video src={p.url} className="object-cover w-full h-full" muted />
+            )}
+            <button onClick={(e)=>{e.stopPropagation(); remove(idx)}}
+                    className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 opacity-0 group-hover:opacity-100 transition">
+              ×
+            </button>
+            {p.pinned && (
+              <LuPin className="absolute top-1 left-1 text-yellow-400 text-lg" />
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="w-full flex items-center justify-center gap-4">
+        <Button color="secondary" variant="ghost"
+                className="w-1/2 border border-dashed h-[60px] rounded-md flex-col-reverse"
+                endContent={<LuImage className="text-2xl" />}
+                onClick={() => handleAdd("image")}>
+          افزودن تصویر
+        </Button>
+        <Button color="secondary" variant="ghost"
+                className="w-1/2 border border-dashed h-[60px] rounded-md flex-col-reverse"
+                endContent={<LuVideo className="text-2xl" />}
+                onClick={() => handleAdd("video")}>
+          افزودن ویدیو
+        </Button>
+      </div>
+    </>
+  )
 }
 
 export default ImageCropper
