@@ -85,6 +85,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
     let newAttr = { id: generateID, label: inputValue.trim() }
     setSubAttributes((prev: any) => ([...prev, newAttr]))
     setSelectedAttr(generateID)
+    onNewSubAttribute({ ...attribute, subs: [...attribute.subs || [], newAttr] })
     setActiveBtn("submit")
     setInputValue("")
     setSelectedAttr(null)
