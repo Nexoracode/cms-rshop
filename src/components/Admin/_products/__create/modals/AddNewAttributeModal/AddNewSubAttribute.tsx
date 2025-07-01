@@ -39,13 +39,10 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
   }, [])
 
   useEffect(() => {
-    console.log("<<<<<<<<<<<<", attributesListSuggestion);
-  }, [attributesListSuggestion])
-
-  useEffect(() => {
     //split
-    if (subAttributes.length) {
-      const result = subAttributes.find(item => item.label.trim() === inputValue.trim())
+
+    if (attribute.subs?.length) {
+      const result = attribute.subs.find(item => item.label.trim() === inputValue.trim())
       setActiveBtn(result === undefined ? "add_new_attribute" : "submit")
     }
     //
@@ -89,7 +86,8 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
     setSubAttributes((prev: any) => ([...prev, newAttr]))
     setSelectedAttr(generateID)
     setActiveBtn("submit")
-    setAttributesListSuggestion(prev => ([...prev, newAttr]))
+    setInputValue("")
+    setSelectedAttr(null)
   }
 
   const handleRemove = (id: string) => {
