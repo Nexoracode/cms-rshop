@@ -63,19 +63,19 @@ const ImageCropper = () => {
       <div className="mb-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
         {previews.map((p, idx) => (
           <div key={idx}
-               className="relative group w-24 h-24 border rounded-md overflow-hidden shadow hover:shadow-lg transition"
+               className="relative group w-28 h-28 border rounded-xl overflow-hidden shadow hover:shadow-lg transition"
                onClick={() => p.type === "image" && pin(idx)}>
             {p.type === "image" ? (
-              <img src={p.url} alt="" className="object-cover w-full h-full" />
+              <img src={p.url} alt="" className="object-cover w-full h-full cursor-pointer" />
             ) : (
               <video src={p.url} className="object-cover w-full h-full" muted />
             )}
             <button onClick={(e)=>{e.stopPropagation(); remove(idx)}}
-                    className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 opacity-0 group-hover:opacity-100 transition">
+                    className="absolute top-1 right-1 bg-white rounded-full px-1.5 hover:bg-red-200 text-red-500 opacity-0 group-hover:opacity-100 transition">
               ×
             </button>
             {p.pinned && (
-              <LuPin className="absolute top-1 left-1 text-yellow-400 text-lg" />
+              <LuPin className="absolute top-1 left-1 bg-white rounded-full p-1 text-2xl -rotate-45" />
             )}
           </div>
         ))}
@@ -85,13 +85,13 @@ const ImageCropper = () => {
         <Button color="secondary" variant="ghost"
                 className="w-1/2 border border-dashed h-[60px] rounded-md flex-col-reverse"
                 endContent={<LuImage className="text-2xl" />}
-                onClick={() => handleAdd("image")}>
+                onPress={() => handleAdd("image")}>
           افزودن تصویر
         </Button>
         <Button color="secondary" variant="ghost"
                 className="w-1/2 border border-dashed h-[60px] rounded-md flex-col-reverse"
                 endContent={<LuVideo className="text-2xl" />}
-                onClick={() => handleAdd("video")}>
+                onPress={() => handleAdd("video")}>
           افزودن ویدیو
         </Button>
       </div>
