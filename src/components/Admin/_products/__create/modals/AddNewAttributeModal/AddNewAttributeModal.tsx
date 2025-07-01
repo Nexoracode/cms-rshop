@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, CardBody, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
@@ -20,6 +20,11 @@ type Props = {
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
 
   const [attributes, setAttributes] = useState<AttributeData[]>([]);
+
+  useEffect(() => {
+    //console.log("!!!!!!!!!!!!!!!!!!", attributes);
+
+  }, [attributes])
 
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
@@ -53,7 +58,13 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                         key={attr.id}
                         attribute={attr}
                         onDelete={id => setAttributes(prev => prev.filter(item => item.id !== id))}
-                        onNewSubAttribute={data => setAttributes((prev) => prev.map((item) => (item.id === data.id ? data : item)))}
+                        onNewSubAttribute={data => {
+                          setAttributes(prev => {
+                            let filterdeAttr = prev.filter(attr => attr.id !== data.id)
+                            let newDatas = [...filterdeAttr, data]
+                            return newDatas
+                          })
+                        }}
                       />
                     ))}
                   </CardBody>

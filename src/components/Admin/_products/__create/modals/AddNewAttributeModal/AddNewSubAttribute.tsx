@@ -27,23 +27,29 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
   const [inputValue, setInputValue] = useState<string>("");
   const [selectedAttr, setSelectedAttr] = useState<string | null>(null);
   //
-  const [subAttributes, setSubAttributes] = useState<Attribute[]>(attribute.subs || []);
+  const [subAttributes, setSubAttributes] = useState<Attribute[]>([]);
   const [isExistAttrInListSuggestion, setIsExistAttrInListSuggestion] = useState(false)
   const [attributesListSuggestion, setAttributesListSuggestion] = useState<Attribute[]>([]);
   const [activeBtn, setActiveBtn] = useState<"submit" | "add_new_attribute">("submit")
+
+  const isDisabledAcc = (!selectedAttr && !inputValue) || isExistAttrInListSuggestion || activeBtn === "add_new_attribute";
 
   useEffect(() => {
     getAllSubAttributes()
   }, [])
 
   useEffect(() => {
+    console.log("<<<<<<<<<<<<", attributesListSuggestion);
+  }, [attributesListSuggestion])
+
+  useEffect(() => {
     //split
     if (subAttributes.length) {
-      const result = subAttributes.find(item => item.label === inputValue)
+      const result = subAttributes.find(item => item.label.trim() === inputValue.trim())
       setActiveBtn(result === undefined ? "add_new_attribute" : "submit")
     }
     //
-    let attrFind = subAttributes.find(attr => attr.label === inputValue)
+    let attrFind = subAttributes.find(attr => attr.label.trim() === inputValue.trim())
     if (attrFind) {
       setSelectedAttr(attrFind.id)
       let isExist = attributesListSuggestion.filter(attr => attr.label === attrFind?.label);
@@ -56,38 +62,30 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
       { id: crypto.randomUUID(), label: "sub - 1", },
       { id: crypto.randomUUID(), label: "sub - 2", },
     ]
+    onNewSubAttribute({ ...attribute, subs: data })
     setAttributesListSuggestion(data)
   }
 
   const handleAddNewSubAttrInList = () => {
-    const trimmed = inputValue.trim();
-    // Case 1: they’ve typed a brand‑new label that’s not in subAttributes
-    if (trimmed && !subAttributes.some(s => s.label === trimmed)) {
-      // just reuse your existing new‑attr logic
-      handleAddSubAttr();
-      return;
-    }
+    if (!attribute.subs?.length) return
+    let newAttr = attribute.subs.find(attr => attr.id === selectedAttr)!
 
-    // Case 2: they selected an existing suggestion
-    if (selectedAttr) {
-      // find that object in attributesListSuggestion
-      const found = attributesListSuggestion.find(a => a.id === selectedAttr);
-      if (found) {
-        const newList = [...subAttributes, found];
-        setSubAttributes(newList);
-        onNewSubAttribute({ ...attribute, subs: newList });
-        // reset
-        setInputValue("");
-        setSelectedAttr(null);
-        setActiveBtn("add_new_attribute");
-      }
-    }
+    setSubAttributes(prev => {
+      let past = prev.filter(attr => attr.id !== newAttr.id)
+      return [...past, newAttr]
+    })
+
+    setAttributesListSuggestion(prev => prev.filter(attr => attr.id !== newAttr.id))
+
+    // reset
+    setInputValue("");
+    setSelectedAttr(null);
+    setActiveBtn("add_new_attribute");
   };
-
 
   const handleAddSubAttr = () => {
     let generateID = crypto.randomUUID()
-    let newAttr = { id: generateID, label: inputValue }
+    let newAttr = { id: generateID, label: inputValue.trim() }
     setSubAttributes((prev: any) => ([...prev, newAttr]))
     setSelectedAttr(generateID)
     setActiveBtn("submit")
@@ -96,9 +94,9 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
 
   const handleRemove = (id: string) => {
     const newList = subAttributes.filter((item) => item.id !== id);
+    const subAttr = subAttributes.filter((item) => item.id === id);
     setSubAttributes(newList);
-    onNewSubAttribute({ ...attribute, subs: newList });
-    //setAttributesListSuggestion(subAttributes.filter(attr => !selectedIds.includes(attr.id)));
+    setAttributesListSuggestion(prev => [...prev, ...subAttr])
   };
 
   return (
@@ -127,10 +125,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
             <Autocomplete
               allowsCustomValue
               labelPlacement="outside"
-              // فقط مقادیرِ اولیه‌ای که هنوز زیرمجموعه نشده‌اند
-              defaultItems={attributesListSuggestion.filter(a =>
-                !subAttributes.some(s => s.id === a.id)
-              )}
+              defaultItems={attributesListSuggestion}
               placeholder="نام جدید را وارد کنید یا جستجو کنید"
               variant="flat"
               inputValue={inputValue}
@@ -138,10 +133,6 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
               onSelectionChange={(key: any) => setSelectedAttr(key)}
               color="secondary"
               endContent={
-                // وقتی:
-                // 1. کاربر متنی تایپ کرده
-                // 2. آن label هنوز در subAttributes نیست
-                // 3. وضعیت دکمه در حالت "add_new_attribute" است
                 inputValue.trim() &&
                   !subAttributes.some(s => s.label === inputValue) &&
                   activeBtn === "add_new_attribute" ? (
@@ -156,7 +147,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
 
 
             <div className="w-full text-end">
-              <Button size="sm" variant="flat" color="secondary" className="mt-4" onPress={handleAddNewSubAttrInList}>
+              <Button isDisabled={isDisabledAcc} size="sm" variant="flat" color="secondary" className="mt-4" onPress={handleAddNewSubAttrInList}>
                 + افزودن
               </Button>
             </div>
