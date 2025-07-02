@@ -2,7 +2,7 @@
 
 // Other
 import Link from "next/link";
-import { Button, Input, useDisclosure } from "@heroui/react"
+import { Button, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/_products/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
@@ -48,16 +48,24 @@ const Orders = () => {
                     <p>سفارش (1)</p>
                     <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
                         <Link href={'/admin/products/create'}>
-                            ثبت جدید
+                            ثبت سفارش
                         </Link>
                     </Button>
                 </header>
-                <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
+                <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl my-4"></div>
+                <Tabs aria-label="Tabs colors" color={"secondary"} radius="md" className="bg-white rounded-xl tabs-site w-full" variant="bordered">
+                    <Tab key="all" title="همه"></Tab>
+                    <Tab key="rewind" title="بررسی"></Tab>
+                    <Tab key="test" title="پردازش"></Tab>
+                    <Tab key="closed" title="بسته شده"></Tab>
+                    <Tab key="back" title="مرجوعی"></Tab>
+                </Tabs>
                 <section className="w-full mt-5">
                     <Input
                         isClearable
                         size="lg"
-                        variant="flat"
+                        variant="bordered"
+                        className="bg-white rounded-xl"
                         color="secondary"
                         placeholder="جستجو کدسفارش یا نام مشتری یا نام محصول"
                         startContent={

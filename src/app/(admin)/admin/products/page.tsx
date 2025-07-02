@@ -57,7 +57,8 @@ const Products = () => {
                     <Input
                         isClearable
                         size="lg"
-                        variant="flat"
+                        variant="bordered"
+                        className="bg-white rounded-xl"
                         color="secondary"
                         placeholder="جستجو در محصول ها..."
                         startContent={
