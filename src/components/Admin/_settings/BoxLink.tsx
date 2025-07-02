@@ -14,7 +14,7 @@ const BoxLink = ({ title, routeName, icon, iconStyle, parentStyle }: Props) => {
     return (
         <Link
             href={`/admin/${routeName}`}
-            className={`flex flex-col gap-1.5 items-center justify-start text-md px-2 py-3 rounded-xl transition ${parentStyle}`}
+            className={`flex flex-col gap-1.5 items-center justify-start text-md px-2 py-3 w-28 h-24 hover:opacity-70 rounded-xl transition ${parentStyle}`}
         >
             <div className={`rounded-md p-2 ${iconStyle}`}>
                 {icon}

@@ -3,22 +3,23 @@
 import BoxLink from "@/components/Admin/_settings/BoxLink";
 import { Button, Card, CardBody } from "@heroui/react"
 import { FiEdit } from "react-icons/fi";
-import { IoReceiptOutline } from "react-icons/io5";
 //
 import { GrAnnounce } from "react-icons/gr";
-
+import { GoCommentDiscussion } from "react-icons/go";
+import { TbReportAnalytics } from "react-icons/tb";
+import { FiUsers } from "react-icons/fi";
 
 const Settings = () => {
 
     return (
         <div>
-            <Card className="bg-gradient-to-r from-blue-200 via-purple-500 to-yellow-200">
+            <Card className="bg-gradient-to-r from-blue-200 via-purple-500">
                 <CardBody>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 text-start">
                             <img src="/images/logo.png" alt="logo" className="w-28 h-28 object-contain bg-[rgba(255,255,255,.8)] border-4 rounded-full" />
                             <div>
-                                <p className="text-xl text-white">آرشاپ</p>
+                                <p className="text-2xl text-white">آرشاپ</p>
                                 <p className="mt-1 text-[13px]">محصولات فرهنگی و مذهبی</p>
                             </div>
                         </div>
@@ -28,13 +29,34 @@ const Settings = () => {
                     </div>
                 </CardBody>
             </Card>
-            <div className="flex items-center gap-6 mt-6">
+            <div className="flex items-center justify-around mt-6">
+                <BoxLink
+                    title="مشتریان"
+                    icon={<FiUsers className="text-2xl" />}
+                    routeName="store/customers"
+                    parentStyle="text-purple-700 bg-purple-700/5"
+                    iconStyle="bg-purple-700/10"
+                />
+                <BoxLink
+                    title="گزارشات مالی"
+                    icon={<TbReportAnalytics className="text-2xl" />}
+                    routeName="store/settings/finance"
+                    parentStyle="text-green-700 bg-green-700/5"
+                    iconStyle="bg-green-700/10"
+                />
+                <BoxLink
+                    title="دیدگاه ها"
+                    icon={<GoCommentDiscussion className="text-2xl" />}
+                    routeName="store/comments"
+                    parentStyle="text-gray-700 bg-gray-700/5"
+                    iconStyle="bg-gray-700/10"
+                />
                 <BoxLink
                     title="پروموشن ها"
                     icon={<GrAnnounce className="text-2xl" />}
                     routeName="store/promotions"
-                    parentStyle="text-blue-700 bg-blue-700/5"
-                    iconStyle="bg-blue-700/10"
+                    parentStyle="text-orange-700 bg-orange-700/5"
+                    iconStyle="bg-orange-700/10"
                 />
             </div>
         </div>
