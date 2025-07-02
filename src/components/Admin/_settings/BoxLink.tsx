@@ -8,9 +8,10 @@ type Props = {
     icon: React.ReactNode;
     parentStyle?: string,
     iconStyle: string,
+    titleStyle?: string,
 };
 
-const BoxLink = ({ title, routeName, icon, iconStyle, parentStyle }: Props) => {
+const BoxLink = ({ title, routeName, icon, iconStyle, parentStyle, titleStyle }: Props) => {
     return (
         <Link
             href={`/admin/${routeName}`}
@@ -19,7 +20,7 @@ const BoxLink = ({ title, routeName, icon, iconStyle, parentStyle }: Props) => {
             <div className={`rounded-md p-2 ${iconStyle}`}>
                 {icon}
             </div>
-            <span className="px-2">{title}</span>
+            <span className={`px-2 truncate pt-1 ${titleStyle}`}>{title}</span>
         </Link>
     );
 };
