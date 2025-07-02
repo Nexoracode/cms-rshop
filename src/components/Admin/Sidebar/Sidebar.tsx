@@ -41,7 +41,7 @@ export default function Sidebar() {
                 <Item
                     title="تنظیمات"
                     icon={<IoSettingsOutline className="text-2xl" />}
-                    routeName="settings"
+                    routeName="store"
                     parentStyle="text-sky-700 hover:text-sky-700 hover:bg-sky-700/5"
                     iconStyle="bg-sky-700/10"
                     active="bg-sky-700/5"

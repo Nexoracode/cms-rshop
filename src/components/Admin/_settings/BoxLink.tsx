@@ -1,0 +1,27 @@
+"use client"
+
+import Link from "next/link";
+
+type Props = {
+    title: string;
+    routeName: string;
+    icon: React.ReactNode;
+    parentStyle: string,
+    iconStyle: string,
+};
+
+const BoxLink = ({ title, routeName, icon, iconStyle, parentStyle }: Props) => {
+    return (
+        <Link
+            href={`/admin/${routeName}`}
+            className={`flex flex-col gap-1.5 items-center justify-start text-md px-2 py-3 rounded-xl transition ${parentStyle}`}
+        >
+            <div className={`rounded-md p-2 ${iconStyle}`}>
+                {icon}
+            </div>
+            <span className="px-2">{title}</span>
+        </Link>
+    );
+};
+
+export default BoxLink;
