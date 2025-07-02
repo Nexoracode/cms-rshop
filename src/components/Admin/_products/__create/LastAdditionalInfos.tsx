@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react";
+import { Button, Card, CardBody, NumberInput, Select, SelectItem, Switch, Textarea, useDisclosure } from "@heroui/react";
 import AddNewSpecificationModal from "./modals/AddNewSpecificationModal";
 import { TiDeleteOutline } from "react-icons/ti";
 import { TbEdit } from "react-icons/tb";
@@ -54,7 +54,7 @@ const LastAdditionalInfos = () => {
                             onOpen();
                         }}
                     />
-                    
+
                     {properties.length > 0 ?
                         properties.map((prop, index) => (
                             <Card key={index} className="shadow-md border">
@@ -80,6 +80,8 @@ const LastAdditionalInfos = () => {
                         ))
                         : <p className="text-gray-500">با تعریف مشخصات محصول، ویژگی‌های محصول خود را معرفی و به تصمیم گیری سریعتر مشتریان به خرید کمک کنید.</p>
                     }
+
+                    <Textarea placeholder="توضیحات را وارد نمایید" labelPlacement="outside" label="توضیحات"></Textarea>
 
                     <Select
                         dir="rtl"
