@@ -18,7 +18,7 @@ const ProductBox: React.FC<Props> = ({ title, onShowMore, price, varientsCount, 
     return (
         <Card
             isBlurred
-            className="border-none"
+            className="border-none shadow-md"
         >
             <CardBody>
                 <div className="flex gap-4 items-center justify-between h-28">
@@ -33,7 +33,7 @@ const ProductBox: React.FC<Props> = ({ title, onShowMore, price, varientsCount, 
                     </div>
                     <div className="w-full">
                         <div className="flex justify-between items-start">
-                            <p className="text-sm">{title}</p>
+                            <p className="text-[17px]">{title}</p>
                             <Button
                                 isIconOnly
                                 className="-translate-y-2"
@@ -49,8 +49,8 @@ const ProductBox: React.FC<Props> = ({ title, onShowMore, price, varientsCount, 
                         </div>
 
                         <div className="flex w-full items-center justify-between">
-                            <small className="text-gray-500">موجودی تنوع ها {varientsCount} تا</small>
-                            <small>از {price.toLocaleString()} <span className="text-gray-500">تومان</span></small>
+                            <p className="text-gray-500 text-[13px]">موجودی تنوع ها {varientsCount} تا</p>
+                            <p>از {price.toLocaleString()} <span className="text-gray-500">تومان</span></p>
                         </div>
                     </div>
                 </div>

@@ -72,7 +72,7 @@ const Products = () => {
                 <section className="flex flex-col gap-3">
                     <ProductBox
                         title="کفش آسیاتک"
-                        pathImg="/images/logo.png"
+                        pathImg="https://indigo18.com/images/product-06.jpg"
                         price={30000000}
                         varientsCount={400}
                         onMoreDetail={onOpenActions}
