@@ -1,13 +1,21 @@
 "use client"
 
 import BoxLink from "@/components/Admin/_settings/BoxLink";
-import { Button, Card, CardBody } from "@heroui/react"
+import { Button, Card, CardBody, CardHeader } from "@heroui/react"
 import { FiEdit } from "react-icons/fi";
 //
 import { GrAnnounce } from "react-icons/gr";
 import { GoCommentDiscussion } from "react-icons/go";
 import { TbReportAnalytics } from "react-icons/tb";
 import { FiUsers } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
+import { HiOutlineInformationCircle } from "react-icons/hi";
+import { BsShop } from "react-icons/bs";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { HiOutlineAtSymbol } from "react-icons/hi";
+import { HiOutlineDocumentText } from "react-icons/hi2";
+import { RiListSettingsLine } from "react-icons/ri";
+import { LuShoppingBag } from "react-icons/lu";
 
 const Settings = () => {
 
@@ -35,31 +43,133 @@ const Settings = () => {
                         title="مشتریان"
                         icon={<FiUsers className="text-2xl" />}
                         routeName="store/customers"
-                        parentStyle="text-purple-700 bg-purple-700/5"
+                        parentStyle="text-purple-700 bg-purple-700/5 shadow-md"
                         iconStyle="bg-purple-700/10"
                     />
                     <BoxLink
                         title="گزارشات مالی"
                         icon={<TbReportAnalytics className="text-2xl" />}
                         routeName="store/settings/finance"
-                        parentStyle="text-green-700 bg-green-700/5"
+                        parentStyle="text-green-700 bg-green-700/5 shadow-md"
                         iconStyle="bg-green-700/10"
                     />
                     <BoxLink
                         title="دیدگاه ها"
                         icon={<GoCommentDiscussion className="text-2xl" />}
                         routeName="store/comments"
-                        parentStyle="text-gray-700 bg-gray-700/5"
+                        parentStyle="text-gray-700 bg-gray-700/5 shadow-md"
                         iconStyle="bg-gray-700/10"
                     />
                     <BoxLink
                         title="پروموشن ها"
                         icon={<GrAnnounce className="text-2xl" />}
                         routeName="store/promotions"
-                        parentStyle="text-orange-700 bg-orange-700/5"
+                        parentStyle="text-orange-700 bg-orange-700/5 shadow-md"
                         iconStyle="bg-orange-700/10"
                     />
                 </div>
+            </div>
+            <div className="flex items-center justify-between gap-4 mt-8">
+                <Card className="shadow-md">
+                    <CardHeader className="flex items-center justify-between bg-gray-200">
+                        <p className="text-gray-600">تنظیمات فروشگاه</p>
+                        <RiListSettingsLine className="text-2xl text-gray-600" />
+                    </CardHeader>
+                    <CardBody className="grid grid-cols-3">
+                        <BoxLink
+                            title="حساب کاربری"
+                            icon={<FiUser className="text-2xl" />}
+                            routeName="store/customers"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="اطلاعات فروشگاه"
+                            icon={<BsShop className="text-2xl" />}
+                            routeName="store/settings/finance"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="درباره فروشگاه"
+                            icon={<HiOutlineInformationCircle className="text-2xl" />}
+                            routeName="store/comments"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="شبکه های اجتماعی"
+                            icon={<IoShareSocialOutline className="text-2xl" />}
+                            routeName="store/promotions"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="نمادها و مجوزها"
+                            icon={<HiOutlineAtSymbol className="text-2xl" />}
+                            routeName="store/promotions"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="بلاگ ها"
+                            icon={<HiOutlineDocumentText className="text-2xl" />}
+                            routeName="store/promotions"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                    </CardBody>
+                </Card>
+                <Card className="shadow-md">
+                    <CardHeader className="flex items-center justify-between bg-green-200">
+                        <p className="text-gray-600">تنظیمات سفارش گیری</p>
+                        <LuShoppingBag className="text-2xl text-gray-600" />
+                    </CardHeader>
+                    <CardBody className="grid grid-cols-3">
+                        <BoxLink
+                            title="حساب کاربری"
+                            icon={<FiUser className="text-2xl" />}
+                            routeName="store/customers"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="اطلاعات فروشگاه"
+                            icon={<BsShop className="text-2xl" />}
+                            routeName="store/settings/finance"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="درباره فروشگاه"
+                            icon={<HiOutlineInformationCircle className="text-2xl" />}
+                            routeName="store/comments"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="شبکه های اجتماعی"
+                            icon={<IoShareSocialOutline className="text-2xl" />}
+                            routeName="store/promotions"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="نمادها و مجوزها"
+                            icon={<HiOutlineAtSymbol className="text-2xl" />}
+                            routeName="store/promotions"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                        <BoxLink
+                            title="بلاگ ها"
+                            icon={<HiOutlineDocumentText className="text-2xl" />}
+                            routeName="store/promotions"
+                            parentStyle="text-purple-700 w-36"
+                            iconStyle="bg-gray-700/10"
+                        />
+                    </CardBody>
+                </Card>
             </div>
         </div>
     )
