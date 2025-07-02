@@ -2,7 +2,7 @@
 
 // Other
 import Link from "next/link";
-import { Button, useDisclosure } from "@heroui/react"
+import { Button, Input, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/_products/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
@@ -54,15 +54,17 @@ const Products = () => {
                 </header>
                 <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
                 <section className="w-full mt-5">
-                    <div className="relative">
-                        <FiSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-xl text-black/50 dark:text-white/60 pointer-events-none" />
-                        <input
-                            id="search"
-                            type="text"
-                            placeholder="جستجو در محصول ها..."
-                            className={`w-full pr-12 pl-4 py-3 rounded-lg shadow-box placeholder-default-700/50 text-black/70 text-right transition`}
-                        />
-                    </div>
+                    <Input
+                        isClearable
+                        size="lg"
+                        variant="flat"
+                        color="secondary"
+                        placeholder="جستجو در محصول ها..."
+                        startContent={
+                            <FiSearch className="text-xl" />
+                        }
+                    >
+                    </Input>
                 </section>
                 <section className="flex items-center justify-between px-8 my-3">
                     <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
