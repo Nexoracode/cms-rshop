@@ -1,197 +1,206 @@
-"use client"
+"use client";
 
+import React from "react";
 import BoxLink from "@/components/Admin/_settings/BoxLink";
-import { Button, Card, CardBody, CardHeader } from "@heroui/react"
-import { FiEdit } from "react-icons/fi";
-//
+import { Button, Card, CardBody, CardHeader } from "@heroui/react";
+import { FiEdit, FiUsers, FiUser } from "react-icons/fi";
 import { GrAnnounce } from "react-icons/gr";
 import { GoCommentDiscussion } from "react-icons/go";
-import { TbReportAnalytics } from "react-icons/tb";
-import { FiUsers } from "react-icons/fi";
-import { FiUser } from "react-icons/fi";
-import { HiOutlineInformationCircle } from "react-icons/hi";
+import { TbReportAnalytics, TbTruckDelivery } from "react-icons/tb";
 import { BsShop } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { HiOutlineAtSymbol } from "react-icons/hi";
-import { HiOutlineDocumentText } from "react-icons/hi2";
-import { RiListSettingsLine } from "react-icons/ri";
-import { LuShoppingBag } from "react-icons/lu";
+import { HiOutlineInformationCircle, HiOutlineAtSymbol } from "react-icons/hi";
+import { HiOutlineDocumentText, HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
+import { LuShoppingBag, LuPackage } from "react-icons/lu";
 import { PiMoneyWavy } from "react-icons/pi";
-import { TbTruckDelivery } from "react-icons/tb";
-import { LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
-import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
-import { RiTimerLine } from "react-icons/ri";
 
+// لینک‌های بالای بخش تنظیمات اصلی
+const topLinks = [
+  {
+    title: "مشتریان",
+    icon: <FiUsers className="text-2xl" />,
+    route: "/admin/customers",
+    parent: "text-purple-700 bg-purple-700/5 shadow-md",
+    iconBg: "bg-purple-700/10",
+  },
+  {
+    title: "گزارشات مالی",
+    icon: <TbReportAnalytics className="text-2xl" />,
+    route: "/admin/finance-reports",
+    parent: "text-green-700 bg-green-700/5 shadow-md",
+    iconBg: "bg-green-700/10",
+  },
+  {
+    title: "دیدگاه‌ها",
+    icon: <GoCommentDiscussion className="text-2xl" />,
+    route: "/admin/reviews",
+    parent: "text-gray-700 bg-gray-700/5 shadow-md",
+    iconBg: "bg-gray-700/10",
+  },
+  {
+    title: "پروموشن‌ها",
+    icon: <GrAnnounce className="text-2xl" />,
+    route: "/admin/promotions",
+    parent: "text-orange-700 bg-orange-700/5 shadow-md",
+    iconBg: "bg-orange-700/10",
+  },
+];
 
-const Settings = () => {
+// تنظیمات فروشگاه
+const storeSettingsLinks = [
+  {
+    title: "حساب کاربری",
+    icon: <FiUser className="text-2xl" />,
+    route: "/admin/account",
+  },
+  {
+    title: "اطلاعات فروشگاه",
+    icon: <BsShop className="text-2xl" />,
+    route: "/admin/store-info",
+  },
+  {
+    title: "درباره فروشگاه",
+    icon: <HiOutlineInformationCircle className="text-2xl" />,
+    route: "/admin/about",
+  },
+  {
+    title: "شبکه‌های اجتماعی",
+    icon: <IoShareSocialOutline className="text-2xl" />,
+    route: "/admin/social",
+  },
+  {
+    title: "نمادها و مجوزها",
+    icon: <HiOutlineAtSymbol className="text-2xl" />,
+    route: "/admin/licenses",
+  },
+  {
+    title: "بلاگ‌ها",
+    icon: <HiOutlineDocumentText className="text-2xl" />,
+    route: "/admin/blog",
+  },
+];
 
-    return (
-        <div>
-            <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md">
-                <Card className="shadow-md bg-gradient-to-l from-blue-200 via-purple-400">
-                    <CardBody>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-start">
-                                <img src="/images/logo.png" alt="logo" className="w-28 h-28 object-contain bg-[rgba(255,255,255,.8)] border-4 rounded-full" />
-                                <div>
-                                    <p className="text-2xl text-white">آرشاپ</p>
-                                    <p className="mt-1 text-[13px]">محصولات فرهنگی و مذهبی</p>
-                                </div>
-                            </div>
-                            <Button color="secondary" variant="flat" size="sm" className="py-5 rounded-xl">
-                                <FiEdit className="text-lg" /> ویرایش
-                            </Button>
-                        </div>
-                    </CardBody>
-                </Card>
-                <div className="flex items-center justify-around mt-6">
-                    <BoxLink
-                        title="مشتریان"
-                        icon={<FiUsers className="text-2xl" />}
-                        routeName="store/customers"
-                        parentStyle="text-purple-700 bg-purple-700/5 shadow-md"
-                        iconStyle="bg-purple-700/10"
-                    />
-                    <BoxLink
-                        title="گزارشات مالی"
-                        icon={<TbReportAnalytics className="text-2xl" />}
-                        routeName="store/settings/finance"
-                        parentStyle="text-green-700 bg-green-700/5 shadow-md"
-                        iconStyle="bg-green-700/10"
-                    />
-                    <BoxLink
-                        title="دیدگاه ها"
-                        icon={<GoCommentDiscussion className="text-2xl" />}
-                        routeName="store/comments"
-                        parentStyle="text-gray-700 bg-gray-700/5 shadow-md"
-                        iconStyle="bg-gray-700/10"
-                    />
-                    <BoxLink
-                        title="پروموشن ها"
-                        icon={<GrAnnounce className="text-2xl" />}
-                        routeName="store/promotions"
-                        parentStyle="text-orange-700 bg-orange-700/5 shadow-md"
-                        iconStyle="bg-orange-700/10"
-                    />
+// تنظیمات سفارش گیری
+const orderSettingsLinks = [
+  {
+    title: "روش‌های پرداخت",
+    icon: <PiMoneyWavy className="text-2xl" />,
+    route: "/admin/orders/payment-methods",
+  },
+  {
+    title: "روش‌های ارسال",
+    icon: <TbTruckDelivery className="text-2xl" />,
+    route: "/admin/orders/shipping-methods",
+  },
+  {
+    title: "بسته‌بندی",
+    icon: <LuPackage className="text-2xl" />,
+    route: "/admin/orders/packaging",
+  },
+  {
+    title: "تأیید خودکار",
+    icon: <MdOutlineVerifiedUser className="text-2xl" />,
+    route: "/admin/orders/auto-approval",
+  },
+  {
+    title: "پیش‌سفارش",
+    icon: <HiOutlineClipboardDocumentCheck className="text-2xl" />,
+    route: "/admin/orders/pre-orders",
+  },
+  {
+    title: "زمان رزرو",
+    icon: <RiTimerLine className="text-2xl" />,
+    route: "/admin/orders/reservation-times",
+  },
+];
+
+const Settings: React.FC = () => {
+  return (
+    <div>
+      {/* هدر و لینک‌های بالایی */}
+      <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md">
+        <Card className="shadow-md bg-gradient-to-l from-blue-200 via-purple-400">
+          <CardBody>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 text-start">
+                <img
+                  src="/images/logo.png"
+                  alt="logo"
+                  className="w-28 h-28 object-contain bg-[rgba(255,255,255,.8)] border-4 rounded-full"
+                />
+                <div>
+                  <p className="text-2xl text-white">آرشاپ</p>
+                  <p className="mt-1 text-[13px]">محصولات فرهنگی و مذهبی</p>
                 </div>
+              </div>
+              <Button color="secondary" variant="flat" size="sm" className="py-5 rounded-xl">
+                <FiEdit className="text-lg" /> ویرایش
+              </Button>
             </div>
-            <div className="flex items-center justify-between gap-4 mt-8">
-                <Card className="shadow-md">
-                    <CardHeader className="flex items-center justify-between bg-gray-200">
-                        <p className="text-gray-600">تنظیمات فروشگاه</p>
-                        <RiListSettingsLine className="text-2xl text-gray-600" />
-                    </CardHeader>
-                    <CardBody className="grid grid-cols-3 gap-4">
-                        <BoxLink
-                            title="حساب کاربری"
-                            icon={<FiUser className="text-2xl" />}
-                            routeName="store/customers"
-                            parentStyle="text-purple-700"
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="اطلاعات فروشگاه"
-                            icon={<BsShop className="text-2xl" />}
-                            routeName="store/settings/finance"
-                            parentStyle="text-purple-700"
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="درباره فروشگاه"
-                            icon={<HiOutlineInformationCircle className="text-2xl" />}
-                            routeName="store/comments"
-                            parentStyle="text-purple-700"
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="شبکه های اجتماعی"
-                            icon={<IoShareSocialOutline className="text-2xl" />}
-                            routeName="store/promotions"
-                            parentStyle="text-purple-700"
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="نمادها و مجوزها"
-                            icon={<HiOutlineAtSymbol className="text-2xl" />}
-                            routeName="store/promotions"
-                            parentStyle="text-purple-700"
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="بلاگ ها"
-                            icon={<HiOutlineDocumentText className="text-2xl" />}
-                            routeName="store/promotions"
-                            parentStyle="text-purple-700"
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                    </CardBody>
-                </Card>
-                <Card className="shadow-md">
-                    <CardHeader className="flex items-center justify-between bg-blue-200">
-                        <p className="text-blue-600">تنظیمات سفارش گیری</p>
-                        <LuShoppingBag className="text-2xl text-blue-600" />
-                    </CardHeader>
-                    <CardBody className="grid grid-cols-3 gap-4">
-                        <BoxLink
-                            title="روش پرداخت"
-                            icon={<PiMoneyWavy className="text-2xl" />}
-                            routeName="store/customers"
-                            parentStyle="text-blue-700 "
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="روش ارسال"
-                            icon={<TbTruckDelivery className="text-2xl" />}
-                            routeName="store/settings/finance"
-                            parentStyle="text-blue-700 "
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="بسته بندی"
-                            icon={<LuPackage className="text-2xl" />}
-                            routeName="store/comments"
-                            parentStyle="text-blue-700 "
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="تایید خودکار"
-                            icon={<MdOutlineVerifiedUser className="text-2xl" />}
-                            routeName="store/promotions"
-                            parentStyle="text-blue-700 "
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="پیش سفارش"
-                            icon={<HiOutlineClipboardDocumentCheck className="text-2xl" />}
-                            routeName="store/promotions"
-                            parentStyle="text-blue-700 "
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                        <BoxLink
-                            title="زمان رزرو"
-                            icon={<RiTimerLine className="text-2xl" />}
-                            routeName="store/promotions"
-                            parentStyle="text-blue-700 "
-                            iconStyle="bg-gray-700/10"
-                            titleStyle="text-gray-600"
-                        />
-                    </CardBody>
-                </Card>
-            </div>
+          </CardBody>
+        </Card>
+        <div className="flex items-center justify-around mt-6">
+          {topLinks.map(({ title, icon, route, parent, iconBg }) => (
+            <BoxLink
+              key={route}
+              title={title}
+              icon={icon}
+              routeName={route}
+              parentStyle={parent}
+              iconStyle={iconBg}
+            />
+          ))}
         </div>
-    )
-}
+      </div>
 
-export default Settings
+      {/* کارت‌های تنظیمات پایین */}
+      <div className="flex items-start justify-between gap-4 mt-8">
+        {/* تنظیمات فروشگاه */}
+        <Card className="shadow-md w-1/2">
+          <CardHeader className="flex items-center justify-between bg-gray-200">
+            <p className="text-gray-600">تنظیمات فروشگاه</p>
+            <RiListSettingsLine className="text-2xl text-gray-600" />
+          </CardHeader>
+          <CardBody className="grid grid-cols-3 gap-4">
+            {storeSettingsLinks.map(({ title, icon, route }) => (
+              <BoxLink
+                key={route}
+                title={title}
+                icon={icon}
+                routeName={route}
+                parentStyle="text-purple-700"
+                iconStyle="bg-gray-700/10"
+                titleStyle="text-gray-600"
+              />
+            ))}
+          </CardBody>
+        </Card>
+
+        {/* تنظیمات سفارش گیری */}
+        <Card className="shadow-md w-1/2">
+          <CardHeader className="flex items-center justify-between bg-blue-200">
+            <p className="text-blue-600">تنظیمات سفارش گیری</p>
+            <LuShoppingBag className="text-2xl text-blue-600" />
+          </CardHeader>
+          <CardBody className="grid grid-cols-3 gap-4">
+            {orderSettingsLinks.map(({ title, icon, route }) => (
+              <BoxLink
+                key={route}
+                title={title}
+                icon={icon}
+                routeName={route}
+                parentStyle="text-blue-700"
+                iconStyle="bg-gray-700/10"
+                titleStyle="text-gray-600"
+              />
+            ))}
+          </CardBody>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;
