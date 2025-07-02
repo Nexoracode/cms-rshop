@@ -6,9 +6,9 @@ import { Button, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/_products/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
-import FilterModal from "@/components/Admin/_products/modals/FilterModal";
-import SortingModal from "@/components/Admin/_products/modals/SortingModal";
-import MoreFeaturesModal from "@/components/Admin/_products/modals/MoreFeaturesModal";
+import FilterModal from "@/components/Admin/_orders/modals/FilterModal";
+import SortingModal from "@/components/Admin/_orders/modals/SortingModal";
+import MoreFeaturesModal from "@/components/Admin/_orders/modals/MoreFeaturesModal";
 // Icons
 import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";

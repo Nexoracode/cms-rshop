@@ -5,3 +5,9 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 };
 
 export type Stock = "money" | "percent"
+
+export type SelectOption = {
+  key: string | number;
+  title: string;
+  [key: string]: any;
+};

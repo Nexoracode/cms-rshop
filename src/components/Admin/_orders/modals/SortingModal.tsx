@@ -46,18 +46,6 @@ const SortingModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                                 >
                                     کمترین قیمت
                                 </ListboxItem>
-                                <ListboxItem
-                                    key="more-sales"
-                                    startContent={<TbShoppingCartDollar className="text-2xl text-[var(--primary)]" />}
-                                >
-                                    پرفروش ترین
-                                </ListboxItem>
-                                <ListboxItem
-                                    key="more-favorited"
-                                    startContent={<TbShoppingCartHeart className="text-2xl text-[var(--primary)]" />}
-                                >
-                                    محبوب ترین
-                                </ListboxItem>
                             </Listbox>
                         </ModalBody>
                     </>
