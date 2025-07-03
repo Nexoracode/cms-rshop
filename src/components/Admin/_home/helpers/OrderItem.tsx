@@ -5,11 +5,11 @@ import { BiMessageSquareDetail } from "react-icons/bi"
 
 type Props = {
     status: string,
-    productName: string,
+    customerName: string,
     price: number | string,
 }
 
-const OrderDetail: React.FC<Props> = ({price, productName, status}) => {
+const OrderItem: React.FC<Props> = ({price, customerName, status}) => {
 
     return (
         <div className="flex items-center justify-between bg-slate-100 rounded-xl p-2">
@@ -18,7 +18,7 @@ const OrderDetail: React.FC<Props> = ({price, productName, status}) => {
                     <BiMessageSquareDetail className="text-2xl text-gray-600" />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <p>{productName}</p>
+                    <p>{customerName}</p>
                     <p>{price.toLocaleString()} تومان</p>
                 </div>
             </div>
@@ -30,4 +30,4 @@ const OrderDetail: React.FC<Props> = ({price, productName, status}) => {
     )
 }
 
-export default OrderDetail
+export default OrderItem
