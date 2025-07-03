@@ -17,11 +17,18 @@ import { GrLocation } from "react-icons/gr";
 import { LuUserRound } from "react-icons/lu";
 import { TbTruckLoading } from "react-icons/tb";
 import { PiMoneyWavy } from "react-icons/pi";
+import { IoIosArrowForward } from "react-icons/io";
 
 const statusOptions = [
+    { key: "waiting_for_approval", label: "در انتظار تایید" },
+    { key: "waiting_for_payment", label: "در انتظار پرداخت" },
+    { key: "waiting_for_payment_confirmation", label: "در انتظار تایید پرداخت" },
     { key: "preparing", label: "در حال آماده‌سازی" },
-    { key: "shipped", label: "ارسال شده" },
-    { key: "delivered", label: "تحویل داده شد" },
+    { key: "shipping", label: "در حال ارسال" },
+    { key: "delivered", label: "تحویل گرفته" },
+    { key: "not_delivered", label: "تحویل نگرفته" },
+    { key: "expired", label: "منقضی شده" },
+    { key: "rejected", label: "رد شده" },
 ];
 
 const OrderBox = ({
@@ -51,16 +58,21 @@ const OrderBox = ({
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Card isBlurred className="border-none shadow-md">
+        <Card isBlurred className="border-none shadow-md cursor-pointer !transition-all hover:shadow-lg">
             <div className="w-full h-[4px] bg-cyan-200 rounded-t-md" />
             <CardBody className="p-4">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Image
-                            src={image}
-                            alt="cover"
-                            className="w-12 h-12 object-cover rounded-full"
-                        />
+                        <div className="flex items-center gap-1">
+                            <div>
+                                <IoIosArrowForward className="text-xl" />
+                            </div>
+                            <Image
+                                src={image}
+                                alt="cover"
+                                className="w-12 h-12 object-cover rounded-full"
+                            />
+                        </div>
                         <div className="flex flex-col">
                             <span className="text-[13px] font-semibold text-gray-700">{orderId}</span>
                             <span className="text-xs text-gray-500">{date}</span>
