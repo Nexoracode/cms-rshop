@@ -11,7 +11,7 @@ type Props = {
 const ReportBox: React.FC<Props> = ({ count, icon, title }) => {
 
     return (
-        <Card className="shadow-md bg-gray-50 px-2 py-4">
+        <Card className="shadow-md bg-gray-50 p-1">
             <CardHeader className="flex items-center gap-2">
                 {icon}
                 <p className="text-gray-600 text-lg">{title}</p>
