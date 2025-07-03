@@ -3,7 +3,7 @@
 // Other
 import Link from "next/link";
 import { Button, Input, useDisclosure } from "@heroui/react"
-import OptionBox from "@/components/Admin/_products/OptionBox";
+import OptionBox from "@/components/Admin/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
 import FilterModal from "@/components/Admin/_products/modals/FilterModal";

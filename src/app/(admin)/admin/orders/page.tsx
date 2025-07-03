@@ -3,9 +3,8 @@
 // Other
 import Link from "next/link";
 import { Button, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
-import OptionBox from "@/components/Admin/_products/OptionBox";
-import ProductBox from "@/components/Admin/_products/ProductBox";
-import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
+import OptionBox from "@/components/Admin/OptionBox";
+import OrderBox from "@/components/Admin/_orders/OrderBox";
 import FilterModal from "@/components/Admin/_orders/modals/FilterModal";
 import SortingModal from "@/components/Admin/_orders/modals/SortingModal";
 import MoreFeaturesModal from "@/components/Admin/_orders/modals/MoreFeaturesModal";
@@ -16,12 +15,6 @@ import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 
 const Orders = () => {
-
-    const {
-        isOpen: isActionsOpen,
-        onOpen: onOpenActions,
-        onOpenChange: onActionsOpenChange,
-    } = useDisclosure();
 
     const {
         isOpen: isSortOpen,
@@ -80,21 +73,25 @@ const Orders = () => {
                     <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
                 </section>
                 <section className="flex flex-col gap-3">
-                    <ProductBox
-                        title="کفش آسیاتک"
-                        pathImg="https://indigo18.com/images/product-06.jpg"
-                        price={30000000}
-                        varientsCount={400}
-                        onMoreDetail={onOpenActions}
-                        onShowMore={() => { }}
+                    <OrderBox
+                        imageSrc="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
+                        title="ویندوز 10"
+                        statusOptions={[
+                            { key: "preparing", label: "در حال آماده‌سازی" },
+                            { key: "shipped", label: "ارسال شده" },
+                            { key: "delivered", label: "تحویل داده شد" },
+                        ]}
+                        selectedStatus={{ key: "preparing", label: "در حال آماده‌سازی" }}
+                        onStatusChange={(status) => console.log("New status:", status)}
+                        dateTime="12:21 - 1402/04/12"
+                        orderId="DF-696970"
+                        customer="محمدحسین خادم المهدي"
+                        location="اصفهان - اصفهان"
+                        shipping="ارسال امروز"
+                        price="385,000"
                     />
                 </section>
             </div>
-            <ActionsModal
-                isOpen={isActionsOpen}
-                onOpenChange={onActionsOpenChange}
-                productName="کفش آسیاتک"
-            />
             <SortingModal
                 isOpen={isSortOpen}
                 onOpenChange={onSortOpenChange}
