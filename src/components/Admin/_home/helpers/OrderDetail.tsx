@@ -1,5 +1,6 @@
 "use client"
 
+import { Progress } from "@heroui/react"
 import { BiMessageSquareDetail } from "react-icons/bi"
 
 type Props = {
@@ -13,7 +14,7 @@ const OrderDetail: React.FC<Props> = ({price, productName, status}) => {
     return (
         <div className="flex items-center justify-between bg-slate-100 rounded-xl p-2">
             <div className="flex items-center text-start gap-3">
-                <div className="bg-gray-300 p-4 rounded-md">
+                <div className="bg-gray-300 p-4 rounded-xl">
                     <BiMessageSquareDetail className="text-2xl text-gray-600" />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -21,10 +22,9 @@ const OrderDetail: React.FC<Props> = ({price, productName, status}) => {
                     <p>{price.toLocaleString()} تومان</p>
                 </div>
             </div>
-            <div>
-                <p>
-                    {status}
-                </p>
+            <div className="flex flex-col gap-2 items-center max-w-36 w-full">
+                <p>{status}</p>
+                <Progress isStriped aria-label="Loading..." className="w-full" color="secondary" value={60} />
             </div>
         </div>
     )

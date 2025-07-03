@@ -1,7 +1,8 @@
 "use client";
 
 import LatestOrders from "@/components/Admin/_home/LatestOrders";
-import ReportWrapper from "@/components/Admin/_home/ReportWrapper";
+import ProductListMostViewed from "@/components/Admin/_home/ProductListMostViewed";
+import ReportsList from "@/components/Admin/_home/ReportsList";
 import ArShopCard from "@/components/Admin/ArShopCard";
 import { Button } from "@heroui/react";
 import { MdMoreVert } from "react-icons/md";
@@ -14,8 +15,9 @@ const Home = () => {
                     <MdMoreVert className="text-lg" /> بیشتر
                 </Button>
             </ArShopCard>
-            <ReportWrapper />
+            <ReportsList />
             <LatestOrders />
+            <ProductListMostViewed />
         </div>
     );
 };

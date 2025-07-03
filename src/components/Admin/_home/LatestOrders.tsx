@@ -15,7 +15,12 @@ const LatestOrders = () => {
                     color="bg-blue-700/10 text-blue-700"
                     icon={<IoReceiptOutline className="text-3xl" />}
                 />
-                <CardBody>
+                <CardBody className="flex flex-col gap-4">
+                    <OrderDetail
+                        price={385000}
+                        productName="ویندوز 10"
+                        status="درخواست شده"
+                    />
                     <OrderDetail
                         price={385000}
                         productName="ویندوز 10"

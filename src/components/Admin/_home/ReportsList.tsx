@@ -17,7 +17,7 @@ const dateOptions = [
     { key: "lastYear", label: "سال گذشته" },
 ];
 
-const ReportWrapper = () => {
+const ReportsList = () => {
 
     const [selectedDate, setSelectedDate] = useState(dateOptions[1]);
     const [isOpen, setIsOpen] = useState(false);
@@ -80,4 +80,4 @@ const ReportWrapper = () => {
     )
 }
 
-export default ReportWrapper
+export default ReportsList
