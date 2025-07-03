@@ -3,6 +3,7 @@
 import { Card, CardBody } from "@heroui/react"
 import BoxHeader from "../_products/__create/helpers/BoxHeader"
 import { IoReceiptOutline } from "react-icons/io5";
+import OrderDetail from "./helpers/OrderDetail";
 
 const LatestOrders = () => {
 
@@ -15,7 +16,11 @@ const LatestOrders = () => {
                     icon={<IoReceiptOutline className="text-3xl" />}
                 />
                 <CardBody>
-
+                    <OrderDetail
+                        price={385000}
+                        productName="ویندوز 10"
+                        status="درخواست شده"
+                    />
                 </CardBody>
             </Card>
         </div>
