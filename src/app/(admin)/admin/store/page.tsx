@@ -15,7 +15,7 @@ import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
 import { LuShoppingBag, LuPackage } from "react-icons/lu";
 import { PiMoneyWavy } from "react-icons/pi";
 import { MdOutlineVerifiedUser } from "react-icons/md";
-import ArShopCard from "@/components/Admin/ArShopCard";
+import ArShopCard from "@/components/Admin/ArShopCard/ArShopCard";
 
 // لینک‌های بالای بخش تنظیمات اصلی
 const topLinks = [

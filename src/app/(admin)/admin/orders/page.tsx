@@ -13,6 +13,7 @@ import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
+import ShopInfosCard from "@/components/Admin/ArShopCard/ShopInfosCard";
 
 const Orders = () => {
 
@@ -36,8 +37,9 @@ const Orders = () => {
 
     return (
         <>
-            <div>
-                <header className="flex items-center justify-between">
+            <ShopInfosCard />
+            <div className="arshop-card">
+                <header className="flex items-center justify-between mb-6">
                     <p>سفارش (1)</p>
                     <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
                         <Link href={'/admin/products/create'}>
@@ -45,7 +47,6 @@ const Orders = () => {
                         </Link>
                     </Button>
                 </header>
-                <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl my-4"></div>
                 <Tabs aria-label="Tabs colors" color={"secondary"} radius="md" className="bg-white rounded-xl tabs-site w-full" variant="bordered">
                     <Tab key="all" title="همه"></Tab>
                     <Tab key="rewind" title="بررسی"></Tab>

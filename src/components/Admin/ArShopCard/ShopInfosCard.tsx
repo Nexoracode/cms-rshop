@@ -10,7 +10,7 @@ import {
     ListboxItem,
 } from "@heroui/react"
 import { MdMoreVert } from "react-icons/md"
-import ArShopCard from "../ArShopCard"
+import ArShopCard from "../ArShopCard/ArShopCard"
 import { RxLapTimer } from "react-icons/rx"
 import { TbEyeShare } from "react-icons/tb"
 import { BsCopy } from "react-icons/bs"
