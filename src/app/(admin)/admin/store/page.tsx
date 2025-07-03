@@ -53,32 +53,27 @@ const storeSettingsLinks = [
     {
         title: "حساب کاربری",
         icon: <FiUser className="text-2xl" />,
-        route: "/admin/store/settings/user_infos",
+        route: "store/settings/user_infos",
     },
     {
         title: "اطلاعات فروشگاه",
         icon: <BsShop className="text-2xl" />,
-        route: "/admin/store/settings/infos",
+        route: "store/settings/infos",
     },
     {
         title: "درباره فروشگاه",
         icon: <HiOutlineInformationCircle className="text-2xl" />,
-        route: "/admin/store/settings/about-store",
+        route: "store/settings/about-store",
     },
     {
         title: "شبکه‌های اجتماعی",
         icon: <IoShareSocialOutline className="text-2xl" />,
-        route: "/admin/store/settings/social",
-    },
-    {
-        title: "نمادها و مجوزها",
-        icon: <HiOutlineAtSymbol className="text-2xl" />,
-        route: "/admin/store/settings/licenses",
+        route: "store/settings/social",
     },
     {
         title: "بلاگ‌ها",
         icon: <HiOutlineDocumentText className="text-2xl" />,
-        route: "/admin/store/blog",
+        route: "store/blog",
     },
 ];
 
@@ -87,32 +82,32 @@ const orderSettingsLinks = [
     {
         title: "روش‌های پرداخت",
         icon: <PiMoneyWavy className="text-2xl" />,
-        route: "/admin/orders/payment-methods",
+        route: "store/payment",
     },
     {
         title: "روش‌های ارسال",
         icon: <TbTruckDelivery className="text-2xl" />,
-        route: "/admin/orders/shipping-methods",
+        route: "store/shippings",
     },
     {
         title: "بسته‌بندی",
         icon: <LuPackage className="text-2xl" />,
-        route: "/admin/orders/packaging",
+        route: "store/pockets",
     },
     {
         title: "تأیید خودکار",
         icon: <MdOutlineVerifiedUser className="text-2xl" />,
-        route: "/admin/orders/auto-approval",
+        route: "store/auto-approval",
     },
     {
         title: "پیش‌سفارش",
         icon: <HiOutlineClipboardDocumentCheck className="text-2xl" />,
-        route: "/admin/orders/pre-orders",
+        route: "store/pre-order",
     },
     {
         title: "زمان رزرو",
         icon: <RiTimerLine className="text-2xl" />,
-        route: "/admin/orders/reservation-times",
+        route: "store/reservation-times",
     },
 ];
 
