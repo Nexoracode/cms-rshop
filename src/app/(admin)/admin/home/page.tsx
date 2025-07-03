@@ -1,8 +1,8 @@
 "use client"
 
-import { Button, Card, CardBody } from "@heroui/react";
+import { Button, Card, CardBody, CardHeader, Listbox, ListboxItem, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 import { MdMoreVert } from "react-icons/md";
-
+import { MdOutlineFilterList } from "react-icons/md";
 
 const Home = () => {
     return (
@@ -34,6 +34,43 @@ const Home = () => {
                             </Button>
                         </div>
                     </div>
+                </CardBody>
+            </Card>
+            <Card className="mt-6 shadow-md">
+                <CardHeader className="flex items-center justify-between bg-blue-200">
+                    <p className="text-blue-600">گزارش ها</p>
+
+                    <Popover showArrow backdrop={"opaque"} offset={10} placement="bottom">
+                        <PopoverTrigger>
+                            <Button className="capitalize" color="primary" variant="flat" size="sm">
+                                <MdOutlineFilterList className="text-2xl"/>
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[240px]">
+                            {(titleProps) => (
+                                <div className="px-1 py-2 w-full">
+                                    <div className="mt-2 flex flex-col gap-2 w-full">
+                                        <Listbox
+                                            items={[
+                                                { key: "today", label: "امروز" },
+                                                { key: "last7", label: "7 روز گذشته" },
+                                                { key: "last30", label: "30 روز گذشته" },
+                                                { key: "lastYear", label: "سال گذشته" },
+                                            ]}
+                                        >
+                                            {item => (
+                                                <ListboxItem key={item.key}>{item.label}</ListboxItem>
+                                            )}
+                                        </Listbox>
+                                    </div>
+                                </div>
+                            )}
+                        </PopoverContent>
+                    </Popover>
+                </CardHeader>
+                <CardBody>
+
+
                 </CardBody>
             </Card>
         </div>
