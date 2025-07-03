@@ -15,6 +15,7 @@ import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
 import { LuShoppingBag, LuPackage } from "react-icons/lu";
 import { PiMoneyWavy } from "react-icons/pi";
 import { MdOutlineVerifiedUser } from "react-icons/md";
+import ArShopCard from "@/components/Admin/ArShopCard";
 
 // لینک‌های بالای بخش تنظیمات اصلی
 const topLinks = [
@@ -114,28 +115,12 @@ const orderSettingsLinks = [
 const Settings: React.FC = () => {
     return (
         <div>
-            {/* هدر و لینک‌های بالایی */}
             <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md">
-                <Card className="shadow-md bg-gradient-to-r from-white via-purple-400">
-                    <CardBody>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-start">
-                                <img
-                                    src="/images/logo.png"
-                                    alt="logo"
-                                    className="w-28 h-28 object-contain bg-[rgba(255,255,255,.8)] border-4 rounded-full"
-                                />
-                                <div>
-                                    <p className="text-2xl text-white">آرشاپ</p>
-                                    <p className="mt-1 text-[13px]">محصولات فرهنگی و مذهبی</p>
-                                </div>
-                            </div>
-                            <Button color="secondary" variant="flat" size="sm" className="py-5 rounded-xl">
-                                <FiEdit className="text-lg" /> ویرایش
-                            </Button>
-                        </div>
-                    </CardBody>
-                </Card>
+                <ArShopCard>
+                    <Button color="secondary" variant="flat" size="sm" className="py-5 rounded-xl">
+                        <FiEdit className="text-lg" /> ویرایش
+                    </Button>
+                </ArShopCard>
                 <div className="flex items-center justify-around mt-6">
                     {topLinks.map(({ title, icon, route, parent, iconBg }) => (
                         <BoxLink

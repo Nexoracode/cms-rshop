@@ -1,120 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    Listbox,
-    ListboxItem,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@heroui/react";
-import { MdMoreVert, MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { TbWorldSearch } from "react-icons/tb";
-import ReportBox from "@/components/Admin/_home/ReportBox";
-import { FiUsers } from "react-icons/fi";
-import { PiMoneyWavyBold } from "react-icons/pi";
-import { HiOutlineDocumentText } from "react-icons/hi2";
-
-
-const dateOptions = [
-    { key: "today", label: "امروز" },
-    { key: "last7", label: "7 روز گذشته" },
-    { key: "last30", label: "30 روز گذشته" },
-    { key: "lastYear", label: "سال گذشته" },
-];
+import ReportWrapper from "@/components/Admin/_home/ReportWrapper";
+import ArShopCard from "@/components/Admin/ArShopCard";
+import { Button } from "@heroui/react";
+import { MdMoreVert } from "react-icons/md";
 
 const Home = () => {
-    const [selectedDate, setSelectedDate] = useState(dateOptions[1]); // پیش‌فرض: 7 روز گذشته
-    const [isOpen, setIsOpen] = useState(false); // وضعیت باز/بسته بودن Popover
-
     return (
         <div>
-            <Card className="shadow-md bg-gradient-to-r from-white via-purple-400">
-                <CardBody>
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-start">
-                            <img
-                                src="/images/logo.png"
-                                alt="logo"
-                                className="w-28 h-28 object-contain bg-[rgba(255,255,255,.8)] border-4 rounded-full"
-                            />
-                            <div>
-                                <p className="text-2xl text-white">فروشگاه آرشاپ</p>
-                                <p className="mt-1 text-[13px]">محصولات فرهنگی و مذهبی</p>
-                                <div className="mt-2 bg-green-700/60 rounded-xl flex justify-start px-2 w-fit items-center gap-2 text-green-200">
-                                    <span className="relative flex size-3">
-                                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-200 opacity-75"></span>
-                                        <span className="relative inline-flex size-3 rounded-full bg-green-300"></span>
-                                    </span>
-                                    <p className="text-[12px]">سفارش گیری فعال</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <Button color="secondary" variant="flat" size="sm" className="rounded-md">
-                                <MdMoreVert className="text-lg" /> بیشتر
-                            </Button>
-                        </div>
-                    </div>
-                </CardBody>
-            </Card>
-
-            <Card className="mt-6 shadow-md">
-                <CardHeader className="flex items-center justify-between bg-gray-200">
-                    <p className="text-gray-600 text-xl">گزارش ها</p>
-
-                    <Popover
-                        showArrow
-                        backdrop="opaque"
-                        offset={10}
-                        placement="bottom"
-                        isOpen={isOpen}
-                        onOpenChange={(open) => setIsOpen(open)}
-                    >
-                        <PopoverTrigger>
-                            <Button
-                                className="capitalize"
-                                color="primary"
-                                variant="flat"
-                                size="sm"
-                            >
-                                {selectedDate.label} <MdOutlineKeyboardArrowDown className="text-xl" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[240px]">
-                            <div className="px-1 py-2 w-full">
-                                <div className="mt-2 flex flex-col gap-2 w-full">
-                                    <Listbox
-                                        items={dateOptions}
-                                        onAction={(key) => {
-                                            const selected = dateOptions.find((item) => item.key === key);
-                                            if (selected) {
-                                                setSelectedDate(selected);
-                                                setIsOpen(false); // پاپ‌آپ بسته شود
-                                            }
-                                        }}
-                                        selectedKeys={[selectedDate.key]}
-                                    >
-                                        {(item) => (
-                                            <ListboxItem key={item.key}>{item.label}</ListboxItem>
-                                        )}
-                                    </Listbox>
-                                </div>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
-                </CardHeader>
-                <CardBody className="shadow-md grid grid-cols-2 gap-6">
-                    <ReportBox title="بازدید سایت" icon={<TbWorldSearch className="text-2xl text-blue-600" />} count={"3000"}/>
-                    <ReportBox title="فروش کل" icon={<PiMoneyWavyBold className="text-2xl text-blue-600" />} count={"3000"}/>
-                    <ReportBox title="سفارش ها" icon={<HiOutlineDocumentText className="text-2xl text-blue-600" />} count={"3000"}/>
-                    <ReportBox title="مشتری جدید" icon={<FiUsers className="text-2xl text-blue-600" />} count={"3000"}/>
-                </CardBody>
-            </Card>
+            <ArShopCard activeOrderBadge>
+                <Button color="secondary" variant="flat" size="sm" className="rounded-md">
+                    <MdMoreVert className="text-lg" /> بیشتر
+                </Button>
+            </ArShopCard>
+            <ReportWrapper />
         </div>
     );
 };
