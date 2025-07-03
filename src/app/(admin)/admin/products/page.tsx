@@ -14,6 +14,7 @@ import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
+import ShopInfosCard from "@/components/Admin/ArShopCard/ShopInfosCard";
 
 const Products = () => {
 
@@ -43,7 +44,8 @@ const Products = () => {
 
     return (
         <>
-            <div>
+            <ShopInfosCard />
+            <div className="arshop-card">
                 <header className="flex items-center justify-between">
                     <p>محصول (1)</p>
                     <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
@@ -52,7 +54,6 @@ const Products = () => {
                         </Link>
                     </Button>
                 </header>
-                <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
                 <section className="w-full mt-5">
                     <Input
                         isClearable
