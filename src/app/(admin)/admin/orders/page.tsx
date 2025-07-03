@@ -74,21 +74,15 @@ const Orders = () => {
                 </section>
                 <section className="flex flex-col gap-3">
                     <OrderBox
-                        imageSrc="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                        title="ویندوز 10"
-                        statusOptions={[
-                            { key: "preparing", label: "در حال آماده‌سازی" },
-                            { key: "shipped", label: "ارسال شده" },
-                            { key: "delivered", label: "تحویل داده شد" },
-                        ]}
-                        selectedStatus={{ key: "preparing", label: "در حال آماده‌سازی" }}
-                        onStatusChange={(status) => console.log("New status:", status)}
-                        dateTime="12:21 - 1402/04/12"
-                        orderId="DF-696970"
-                        customer="محمدحسین خادم المهدي"
-                        location="اصفهان - اصفهان"
-                        shipping="ارسال امروز"
-                        price="385,000"
+                        image="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
+                        orderId="DF-696620"
+                        date="1404/4/12 - 12:21"
+                        status="preparing"
+                        name="محمدحسین خادم المهدی"
+                        province="خراسان رضوی"
+                        city="مشهد"
+                        delivery="ارسال امروز"
+                        price="۳۸۵,۰۰۰"
                     />
                 </section>
             </div>
