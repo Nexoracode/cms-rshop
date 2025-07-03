@@ -116,7 +116,7 @@ const Settings: React.FC = () => {
         <div>
             {/* هدر و لینک‌های بالایی */}
             <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md">
-                <Card className="shadow-md bg-gradient-to-l from-blue-200 via-purple-400">
+                <Card className="shadow-md bg-gradient-to-r from-white via-purple-400">
                     <CardBody>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3 text-start">
