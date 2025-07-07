@@ -2,32 +2,50 @@
 
 import { Card, CardBody, Checkbox, Input, NumberInput, Select, SelectItem, useDisclosure } from "@heroui/react"
 import { LuTextCursorInput } from "react-icons/lu"
-import { FiSearch } from "react-icons/fi";
-import { TiPlusOutline } from "react-icons/ti";
-import AddNewCategoryModal from "./modals/AddNewCategoryModal";
-import { useEffect, useState } from "react";
-import { Stock } from "@/types";
-import BoxHeader from "./helpers/BoxHeader";
+import { FiSearch } from "react-icons/fi"
+import { TiPlusOutline } from "react-icons/ti"
+import AddNewCategoryModal from "./modals/AddNewCategoryModal"
+import { useEffect, useState } from "react"
+import { Stock } from "@/types"
+import BoxHeader from "./helpers/BoxHeader"
 
-type Props = {
+interface InitInfosProps {
+    onChange: (data: {
+        title: string
+        price: number,
+        stock: number,
+        unlimitedStock: boolean
+        discount: { value: number; type: Stock }
+        specialOffer: boolean
+        category?: string
+    }) => void
 }
 
-const InitInfos: React.FC<Props> = ({ }) => {
-
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [infos, setInfos] = useState({
-        price: ""
+const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    const [formData, setFormData] = useState({
+        title: "",
+        price: 10000,
+        unlimitedStock: false,
+        discountValue: 0,
+        discountType: "percent" as Stock,
+        specialOffer: false,
+        category: "",
+        stock: 5
     })
-    //
-    const [selectStock, setSelectStock] = useState<Stock>("percent")
-    const [isSelected, setIsSelected] = useState(false);
-    //
-    const [discount, setDiscount] = useState({ value: 0, type: "percent" as Stock })
-    const [isPriceExist, setIsPriceExist] = useState(false)
 
+    // ارسال لحظه‌ای به والد
     useEffect(() => {
-        setIsPriceExist(infos.price ? true : false)
-    }, [infos.price])
+        onChange({
+            title: formData.title,
+            price: formData.price,
+            unlimitedStock: formData.unlimitedStock,
+            discount: { value: formData.discountValue, type: formData.discountType },
+            specialOffer: formData.specialOffer,
+            category: formData.category || undefined,
+            stock: formData.stock
+        })
+    }, [formData, onChange])
 
     return (
         <>
@@ -42,14 +60,16 @@ const InitInfos: React.FC<Props> = ({ }) => {
                         isRequired
                         label="نام"
                         labelPlacement="outside"
-                        name="title"
                         placeholder="نام محصول را وارد کنید"
+                        value={formData.title}
+                        onValueChange={title => setFormData(prev => ({ ...prev, title }))}
                     />
+
                     <div className="flex flex-col items-start">
                         <NumberInput
                             label="قیمت"
-                            labelPlacement={"outside"}
-                            placeholder="0.00"
+                            labelPlacement="outside"
+                            placeholder="10,000"
                             min={1}
                             isRequired
                             endContent={
@@ -57,50 +77,55 @@ const InitInfos: React.FC<Props> = ({ }) => {
                                     <span className="text-default-400 text-small">تومان</span>
                                 </div>
                             }
-                            onValueChange={(value: any) => setInfos(prev => ({ ...prev, price: value }))}
+                            value={+formData.price}
+                            onValueChange={price => setFormData(prev => ({ ...prev, price }))}
                         />
-                        {
-                            discount?.value && (discount.type === "percent" && discount.value < 100) || (discount?.type === "money" && discount.value < +infos.price) && infos.price
-                                ?
-                                <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف:
-                                    {
-                                        discount.type === "percent"
-                                            ? ((+infos.price * (1 - (+discount.value / 100)))).toLocaleString()
-                                            : ((+infos.price - discount.value)).toLocaleString()
-                                    }
-                                    تومان
-                                </p>
-                                : ""
-                        }
+                        {formData.price && formData.discountValue !== 0 && (
+                            <p className="text-green-600 text-sm mt-2 mr-3">
+                                قیمت با تخفیف:{' '}
+                                {formData.discountType === "percent"
+                                    ? (+formData.price * (1 - formData.discountValue / 100)).toLocaleString()
+                                    : (+formData.price - formData.discountValue).toLocaleString()}{' '}
+                                تومان
+                            </p>
+                        )}
                     </div>
+
                     <NumberInput
                         label="موجودی"
-                        labelPlacement={"outside"}
+                        labelPlacement="outside"
                         placeholder="1"
                         minValue={1}
                         isRequired
+                        isDisabled={formData.unlimitedStock}
                         endContent={
                             <div className="pointer-events-none flex items-center">
                                 <span className="text-default-400 text-small truncate">عدد موجود</span>
                             </div>
                         }
-                        isDisabled={isSelected}
+                        value={+formData.stock}
+                        onValueChange={stock => setFormData(prev => ({ ...prev, stock }))}
                     />
-                    <Checkbox isSelected={isSelected} onValueChange={setIsSelected}><p className="text-sm">موجودی نامحدود</p></Checkbox>
+                    <Checkbox
+                        isSelected={formData.unlimitedStock}
+                        onValueChange={unlimitedStock => setFormData(prev => ({ ...prev, unlimitedStock }))}
+                    >
+                        <p className="text-sm">موجودی نامحدود</p>
+                    </Checkbox>
+
                     <Select
                         isRequired
                         dir="rtl"
-                        labelPlacement={"outside"}
+                        labelPlacement="outside"
                         label="دسته بندی"
-                        name="category"
                         placeholder="دسته بندی مورد نظر را جستجو یا اضافه کنید"
                         startContent={
-                            <div className="pointer-events-none flex items-center">
-                                <span className="text-default-400 text-small truncate"><FiSearch className="text-lg" /></span>
-                            </div>
+                            <FiSearch className="text-lg pointer-events-none" />
                         }
-                        onSelectionChange={(value: any) => {
-                            value.anchorKey === "$.0" && onOpen()
+                        onSelectionChange={value => {
+                            if (value.anchorKey === "$.0") onOpen()
+                            else setFormData(prev => ({ ...prev, category: value.value }))
+                            console.log(value)
                         }}
                     >
                         <SelectItem>
@@ -109,54 +134,44 @@ const InitInfos: React.FC<Props> = ({ }) => {
                                 <span>افزودن دسته بندی جدید</span>
                             </div>
                         </SelectItem>
-                        <SelectItem>اپل</SelectItem>
-                        <SelectItem>آیفون</SelectItem>
+                        <SelectItem value="apple">اپل</SelectItem>
+                        <SelectItem value="iphone">آیفون</SelectItem>
                     </Select>
-                    <div className="flex flex-col gap-2 text-start">
+
+                    <div className="flex flex-col gap-2">
                         <NumberInput
-                            isDisabled={!isPriceExist}
                             label="تخفیف"
-                            labelPlacement={"outside"}
+                            labelPlacement="outside"
                             placeholder="10"
                             minValue={1}
+                            formatOptions={{ useGrouping: true, locale: 'fa-IR' }}
                             endContent={
-                                <div className="flex items-center">
-                                    <label className="sr-only" htmlFor="stock">
-                                        stock
-                                    </label>
-                                    <select
-                                        aria-label="Select stock"
-                                        className="outline-none border-0 bg-transparent text-default-400 text-small"
-                                        defaultValue="percent"
-                                        id="stock"
-                                        name="stock"
-                                        onChange={(e: any) => setSelectStock(e.target.value)}
-                                    >
-                                        <option aria-label="percent" value="percent">
-                                            درصد
-                                        </option>
-                                        <option aria-label="money" value="money">
-                                            مبلغ ثابت (تومان)
-                                        </option>
-                                    </select>
-                                </div>
+                                <select
+                                    aria-label="Select discount type"
+                                    className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                    value={formData.discountType}
+                                    onChange={e => setFormData(prev => ({ ...prev, discountType: e.target.value as Stock }))}
+                                >
+                                    <option value="percent">درصد</option>
+                                    <option value="money">مبلغ ثابت (تومان)</option>
+                                </select>
                             }
-                            onValueChange={(value: any) => {
-                                console.log(value, selectStock);
-                                setDiscount({ value, type: selectStock })
-                            }}
+                            onValueChange={value => setFormData(prev => ({ ...prev, discountValue: value }))}
+                            isDisabled={!formData.price}
                         />
-                        {
-                            !isPriceExist
-                                ? <p className="text-gray-500 text-[13px]">برای تعریف تخفیف ابتدا قیمت را وارد کنید.</p>
-                                : ""
-                        }
+                        {!formData.price && (
+                            <p className="text-gray-500 text-[13px]">برای تعریف تخفیف ابتدا قیمت را وارد کنید.</p>
+                        )}
                     </div>
-                    <Checkbox>
+
+                    <Checkbox
+                        isSelected={formData.specialOffer}
+                        onValueChange={specialOffer => setFormData(prev => ({ ...prev, specialOffer }))}
+                    >
                         <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
                     </Checkbox>
                 </CardBody>
-            </Card>
+            </Card >
 
             <AddNewCategoryModal
                 isOpen={isOpen}
@@ -167,4 +182,4 @@ const InitInfos: React.FC<Props> = ({ }) => {
     )
 }
 
-export default InitInfos
+export default InitInfos;

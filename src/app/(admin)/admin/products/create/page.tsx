@@ -35,7 +35,7 @@ const CreateNewProduct = () => {
                 <ImagesProducts>
                     <ImageCropper onPreviewsChange={datas => setProductInfos(prev => ({ ...prev, medias: datas }))} />
                 </ImagesProducts>
-                <InitInfos />
+                <InitInfos onChange={(data) => console.log(data)} />
                 <MiddAdditionalInfos />
                 <LastAdditionalInfos />
                 <AttributesProducts />
