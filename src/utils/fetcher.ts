@@ -26,5 +26,5 @@ export const fetcher = async ({ route, method = "GET", body, headers, loadingTex
         return
     }
     toast.success(successText ? successText : data.message)
-    return data.data;
+    return {data: data.data, ok: res.ok};
 };

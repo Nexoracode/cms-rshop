@@ -1,16 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Card, CardBody, InputOtp, Input } from "@heroui/react";
 import BreakpointWatcher from "@/components/Helper/BreakpointWatcher";
 import { fetcher } from "@/utils/fetcher";
+import { useRouter } from "next/navigation";
 
 type Auth = "phone" | "otp";
 
 export default function App() {
-    const [selected, setSelected] = useState<Auth>("phone");
+    
+    const router = useRouter()
     const [isPhone, setIsPhone] = useState(false);
+    const [selected, setSelected] = useState<Auth>("phone");
+    //
     const [phoneValue, setPhoneValue] = useState("");
+    const [code, setCode] = useState("");
+
+    useEffect(() => {
+        if (code.length === 6) {
+            sendOtpCodeApiCall()
+        }
+    }, [code])
 
     const handleTabChange = (key: string) => {
         if (key === "otp" && phoneValue.length < 11) return;
@@ -37,13 +48,16 @@ export default function App() {
         })
     }
 
-    const sendOtpCodeApiCall = async (phone: string) => {
-        await fetcher({
-            route: "/auth/request-otp",
+    const sendOtpCodeApiCall = async () => {
+        const res = await fetcher({
+            route: "/auth/verify-otp",
             method: "POST",
-            body: { identifier: phone },
-            successText: "کد ارسال شده به تلفن همراه خود را وارد نمایید"
+            body: { identifier: phoneValue, code },
+            successText: "به ادمین پنل خوش آمدید"
         })
+        if (res?.ok) {
+            router.push('/admin/home')
+        }
     }
 
     return (
@@ -89,7 +103,7 @@ export default function App() {
                             title="رمز یک‌بار مصرف"
                             className="flex items-center justify-center w-full"
                         >
-                            <InputOtp length={6} size="md" autoFocus />
+                            <InputOtp length={6} size="md" autoFocus value={code} onValueChange={setCode}/>
                         </Tab>
                     </Tabs>
                 </CardBody>
