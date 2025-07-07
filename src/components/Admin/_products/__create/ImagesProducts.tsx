@@ -1,11 +1,15 @@
 "use client"
 
-import ImageCropper from "@/components/Helper/ImageCropper";
 import { Alert, Card, CardBody, CardFooter } from "@heroui/react"
 import { FaRegImages } from "react-icons/fa6";
 import BoxHeader from "./helpers/BoxHeader";
+import React from "react";
 
-const ImagesProducts = () => {
+type Props = {
+    children: React.ReactNode
+}
+
+const ImagesProducts = ({ children }: Props) => {
 
     return (
         <Card className="w-full shadow-md">
@@ -15,7 +19,7 @@ const ImagesProducts = () => {
                 icon={<FaRegImages className="text-3xl" />}
             />
             <CardBody>
-                <ImageCropper />
+                {children}
             </CardBody>
             <CardFooter>
                 <div className="w-full flex items-center">
