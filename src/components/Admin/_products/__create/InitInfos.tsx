@@ -20,6 +20,7 @@ const InitInfos: React.FC<Props> = ({ }) => {
     })
     //
     const [selectStock, setSelectStock] = useState<Stock>("percent")
+    const [isSelected, setIsSelected] = useState(false);
     //
     const [discount, setDiscount] = useState({ value: 0, type: "percent" as Stock })
     const [isPriceExist, setIsPriceExist] = useState(false)
@@ -83,8 +84,9 @@ const InitInfos: React.FC<Props> = ({ }) => {
                                 <span className="text-default-400 text-small truncate">عدد موجود</span>
                             </div>
                         }
+                        isDisabled={isSelected}
                     />
-                    <Checkbox><p className="text-sm">موجودی نامحدود</p></Checkbox>
+                    <Checkbox isSelected={isSelected} onValueChange={setIsSelected}><p className="text-sm">موجودی نامحدود</p></Checkbox>
                     <Select
                         isRequired
                         dir="rtl"
