@@ -1,7 +1,7 @@
 "use client"
 
-import { Button, Modal, ModalContent } from "@heroui/react"
-import { LuImages } from "react-icons/lu"
+import { Button, Modal, ModalContent, Tab, Tabs } from "@heroui/react"
+import { LuImages, LuUpload } from "react-icons/lu"
 import { useState } from "react"
 
 const MediaGallery = () => {
@@ -19,15 +19,37 @@ const MediaGallery = () => {
         <LuImages className="text-lg" /> گالری
       </Button>
 
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={open => setIsOpen(open)}
-        placement="auto"
-      >
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen} placement="auto">
         <ModalContent>
           {onClose => (
-            <div className="p-6 text-center text-gray-500">
-              <p>گالری در حال توسعه است...</p>
+            <div className="flex w-full flex-col p-2">
+              <Tabs aria-label="Media Options" color="primary" variant="bordered">
+                <Tab
+                  key="gallery"
+                  title={
+                    <div className="flex items-center gap-2">
+                      <LuImages />
+                      <span>گالری</span>
+                    </div>
+                  }
+                >
+                  {/* اینجا محتوای گالری قرار بگیره */}
+                  <div className="p-4">محتوای گالری اینجاست.</div>
+                </Tab>
+
+                <Tab
+                  key="upload"
+                  title={
+                    <div className="flex items-center gap-2">
+                      <LuUpload />
+                      <span>آپلود فایل</span>
+                    </div>
+                  }
+                >
+                  {/* اینجا فرم آپلود قرار بگیره */}
+                  <div className="p-4">محتوای آپلود فایل اینجاست.</div>
+                </Tab>
+              </Tabs>
             </div>
           )}
         </ModalContent>
