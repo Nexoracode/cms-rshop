@@ -1,6 +1,8 @@
 "use client"
+
 import "../styles/globals.css";
 import { Providers } from "./providers";
+import { Toaster } from 'react-hot-toast'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body cz-shortcut-listen="false" className="bg-white text-black dark:bg-gray-900 dark:text-white">
+        <Toaster />
         <Providers>
           {children}
         </Providers>

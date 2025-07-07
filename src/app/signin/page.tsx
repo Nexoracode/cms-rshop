@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Card, CardBody, InputOtp, Input } from "@heroui/react";
 import BreakpointWatcher from "@/components/Helper/BreakpointWatcher";
+import { fetcher } from "@/utils/fetcher";
 
 type Auth = "phone" | "otp";
 
@@ -21,8 +22,29 @@ export default function App() {
         val = val.replace(/\D/g, "");
         setPhoneValue(val);
 
-        if (val.length === 11) setSelected("otp");
+        if (val.length === 11) {
+            setSelected("otp")
+            sendPhoneApiCall(val)
+        };
     };
+
+    const sendPhoneApiCall = async (phone: string) => {
+        await fetcher({
+            route: "/auth/request-otp",
+            method: "POST",
+            body: { identifier: phone },
+            successText: "کد ارسال شده به تلفن همراه خود را وارد نمایید"
+        })
+    }
+
+    const sendOtpCodeApiCall = async (phone: string) => {
+        await fetcher({
+            route: "/auth/request-otp",
+            method: "POST",
+            body: { identifier: phone },
+            successText: "کد ارسال شده به تلفن همراه خود را وارد نمایید"
+        })
+    }
 
     return (
         <div className="flex flex-col items-center justify-center h-[calc(100vh-128px)]">
