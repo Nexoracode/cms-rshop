@@ -2,6 +2,8 @@
 
 import { Card, CardBody, NumberInput, Switch } from "@heroui/react"
 import { useState } from "react"
+import BoxHeader from "./helpers/BoxHeader"
+import { FiShoppingBag } from "react-icons/fi"
 
 const MiddAdditionalInfos = () => {
 
@@ -9,6 +11,11 @@ const MiddAdditionalInfos = () => {
 
     return (
         <Card className="w-full shadow-md">
+            <BoxHeader
+                title="اطلاعات تکمیلی محصول"
+                color="bg-green-700/10 text-green-700"
+                icon={<FiShoppingBag className="text-3xl" />}
+            />
             <CardBody dir="rtl" className="flex flex-col gap-6 text-start">
                 <NumberInput
                     hideStepper

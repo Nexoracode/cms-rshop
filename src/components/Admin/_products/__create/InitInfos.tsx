@@ -10,19 +10,22 @@ import { Stock } from "@/types";
 import BoxHeader from "./helpers/BoxHeader";
 
 type Props = {
-    discount?: { value: number, type: Stock },
-    onIsPriceExist: (val: boolean) => void
 }
 
-const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
+const InitInfos: React.FC<Props> = ({ }) => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [infos, setInfos] = useState({
         price: ""
     })
+    //
+    const [selectStock, setSelectStock] = useState<Stock>("percent")
+    //
+    const [discount, setDiscount] = useState({ value: 0, type: "percent" as Stock })
+    const [isPriceExist, setIsPriceExist] = useState(false)
 
     useEffect(() => {
-        onIsPriceExist(infos.price ? true : false)
+        setIsPriceExist(infos.price ? true : false)
     }, [infos.price])
 
     return (
@@ -61,8 +64,8 @@ const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
                                 <p className="text-green-600 text-sm mt-2 mr-3">قیمت با تخفیف:
                                     {
                                         discount.type === "percent"
-                                            ? (+infos.price * (1 - (+discount.value / 100))).toFixed(0)
-                                            : (+infos.price - discount.value).toFixed(0)
+                                            ? ((+infos.price * (1 - (+discount.value / 100)))).toLocaleString()
+                                            : ((+infos.price - discount.value)).toLocaleString()
                                     }
                                     تومان
                                 </p>
@@ -107,13 +110,56 @@ const InitInfos: React.FC<Props> = ({ discount, onIsPriceExist }) => {
                         <SelectItem>اپل</SelectItem>
                         <SelectItem>آیفون</SelectItem>
                     </Select>
+                    <div className="flex flex-col gap-2 text-start">
+                        <NumberInput
+                            isDisabled={!isPriceExist}
+                            label="تخفیف"
+                            labelPlacement={"outside"}
+                            placeholder="10"
+                            minValue={1}
+                            endContent={
+                                <div className="flex items-center">
+                                    <label className="sr-only" htmlFor="stock">
+                                        stock
+                                    </label>
+                                    <select
+                                        aria-label="Select stock"
+                                        className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                        defaultValue="percent"
+                                        id="stock"
+                                        name="stock"
+                                        onChange={(e: any) => setSelectStock(e.target.value)}
+                                    >
+                                        <option aria-label="percent" value="percent">
+                                            درصد
+                                        </option>
+                                        <option aria-label="money" value="money">
+                                            مبلغ ثابت (تومان)
+                                        </option>
+                                    </select>
+                                </div>
+                            }
+                            onValueChange={(value: any) => {
+                                console.log(value, selectStock);
+                                setDiscount({ value, type: selectStock })
+                            }}
+                        />
+                        {
+                            !isPriceExist
+                                ? <p className="text-gray-500 text-[13px]">برای تعریف تخفیف ابتدا قیمت را وارد کنید.</p>
+                                : ""
+                        }
+                    </div>
+                    <Checkbox>
+                        <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
+                    </Checkbox>
                 </CardBody>
             </Card>
 
             <AddNewCategoryModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                onSubmit={() => {}}
+                onSubmit={() => { }}
             />
         </>
     )
