@@ -1,28 +1,46 @@
 "use client"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@heroui/react"
 import { LuImage, LuVideo, LuPin } from "react-icons/lu"
 
-type Preview = { file: File; url: string; type: "image" | "video"; pinned: boolean }
+interface PreviewMeta {
+  file: File
+  pinned: boolean
+}
 
-const ImageCropper = () => {
-  const [previews, setPreviews] = useState<Preview[]>([])
+interface ImageCropperProps {
+  /** Initial previews, if any */
+  initialPreviews?: PreviewMeta[]
+  /** Called whenever the previews array is updated (add/remove/pin) */
+  onPreviewsChange: (previews: PreviewMeta[]) => void
+}
+
+const ImageCropper: React.FC<ImageCropperProps> = ({ initialPreviews = [], onPreviewsChange }) => {
+  const [previews, setPreviews] = useState<PreviewMeta[]>(initialPreviews)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    onPreviewsChange(previews)
+  }, [])
+
+  const updatePreviews = (newList: PreviewMeta[]) => {
+    setPreviews(newList)
+    onPreviewsChange(newList)
+  }
 
   const handleAdd = (type: "image" | "video") => {
     if (!inputRef.current) return
-    inputRef.current.accept =
-      type === "image" ? ".jpg,.jpeg,.png,.webp" : ".mp4"
-    inputRef.current.multiple = type === "image" // فقط عکس‌ها گروهی انتخاب می‌شن
+    inputRef.current.accept = type === "image" ? ".jpg,.jpeg,.png,.webp" : ".mp4"
+    inputRef.current.multiple = type === "image"
     inputRef.current.onchange = e => {
-      const files = (e.target as any).files
+      const files = (e.target as any).files as FileList
       if (!files?.length) return
 
       const max = type === "image" ? 5.5 * 1024 * 1024 : 50 * 1024 * 1024
       const allowedCount = type === "image" ? 20 : 5
-      const currentCount = previews.filter(p => p.type === type).length
+      const currentCount = previews.length
 
-      const toAdd: Preview[] = []
+      const toAdd: PreviewMeta[] = []
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
         if (file.size > max) {
@@ -33,27 +51,25 @@ const ImageCropper = () => {
           alert(`حد مجاز ${allowedCount} ${type === "image" ? "تصویر" : "ویدیو"} رد شد`)
           break
         }
-        const url = URL.createObjectURL(file)
-        toAdd.push({ file, url, type, pinned: false })
+        toAdd.push({ file, pinned: false })
       }
 
-      setPreviews(prev => [...prev, ...toAdd])
+      updatePreviews([...previews, ...toAdd])
+      inputRef.current!.value = ''
     }
     inputRef.current.click()
   }
 
   const pin = (idx: number) => {
-    setPreviews(prev =>
-      prev.map((p, i) => ({
-        ...p,
-        pinned: i === idx ? true : false,
-      }))
+    const newList = previews
+      .map((p, i) => ({ ...p, pinned: i === idx }))
       .sort((a, b) => Number(b.pinned) - Number(a.pinned))
-    )
+    updatePreviews(newList)
   }
 
   const remove = (idx: number) => {
-    setPreviews(prev => prev.filter((_, i) => i !== idx))
+    const newList = previews.filter((_, i) => i !== idx)
+    updatePreviews(newList)
   }
 
   return (
@@ -61,24 +77,29 @@ const ImageCropper = () => {
       <input ref={inputRef} type="file" hidden />
 
       <div className="mb-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-        {previews.map((p, idx) => (
-          <div key={idx}
-               className="relative group w-28 h-28 border rounded-xl overflow-hidden shadow hover:shadow-lg transition"
-               onClick={() => p.type === "image" && pin(idx)}>
-            {p.type === "image" ? (
-              <img src={p.url} alt="" className="object-cover w-full h-full cursor-pointer" />
-            ) : (
-              <video src={p.url} className="object-cover w-full h-full" muted />
-            )}
-            <button onClick={(e)=>{e.stopPropagation(); remove(idx)}}
-                    className="absolute top-1 right-1 bg-white rounded-full px-1.5 hover:bg-red-200 text-red-500 opacity-0 group-hover:opacity-100 transition">
-              ×
-            </button>
-            {p.pinned && (
-              <LuPin className="absolute top-1 left-1 bg-white rounded-full p-1 text-2xl -rotate-45" />
-            )}
-          </div>
-        ))}
+        {previews.map((p, idx) => {
+          const url = URL.createObjectURL(p.file)
+          const type = p.file.type.startsWith("image") ? "image" : "video"
+
+          return (
+            <div key={idx}
+                 className="relative group w-28 h-28 border rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+                 onClick={() => type === "image" && pin(idx)}>
+              {type === "image" ? (
+                <img src={url} alt="" className="object-cover w-full h-full cursor-pointer" />
+              ) : (
+                <video src={url} className="object-cover w-full h-full" muted />
+              )}
+              <button onClick={e => { e.stopPropagation(); remove(idx) }}
+                      className="absolute top-1 right-1 bg-white rounded-full px-1.5 hover:bg-red-200 text-red-500 opacity-0 group-hover:opacity-100 transition">
+                ×
+              </button>
+              {p.pinned && (
+                <LuPin className="absolute top-1 left-1 bg-white rounded-full p-1 text-2xl -rotate-45" />
+              )}
+            </div>
+          )
+        })}
       </div>
 
       <div className="w-full flex items-center justify-center gap-4">
@@ -99,4 +120,4 @@ const ImageCropper = () => {
   )
 }
 
-export default ImageCropper
+export default ImageCropper;

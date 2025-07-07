@@ -15,7 +15,7 @@ import AttributesProducts from "@/components/Admin/_products/__create/Attributes
 import ImageCropper from "@/components/Helper/ImageCropper";
 
 type ProductInfo = {
-    medias: [],
+    medias: any[],
 }
 
 const CreateNewProduct = () => {
@@ -38,7 +38,7 @@ const CreateNewProduct = () => {
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
             <section className="flex flex-col gap-6 py-6">
                 <ImagesProducts>
-                    <ImageCropper />
+                    <ImageCropper onPreviewsChange={datas => setProductInfos(prev => ({...prev, medias: datas}))} />
                 </ImagesProducts>
                 <InitInfos discount={discount} onIsPriceExist={(val) => setIsPriceExist(val)} />
                 <FirstAdditionalInfos isDisabled={!isPriceExist} onDiscount={(value: any, type: Stock) => setDiscount({ value, type })} />
