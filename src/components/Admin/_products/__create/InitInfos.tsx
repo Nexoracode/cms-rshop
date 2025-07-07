@@ -124,8 +124,8 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
                         }
                         onSelectionChange={value => {
                             if (value.anchorKey === "$.0") onOpen()
-                            else setFormData(prev => ({ ...prev, category: value.value }))
-                            console.log(value)
+                            else setFormData(prev => ({ ...prev, category: String(value.anchorKey) }))
+                            console.log(value.anchorKey)
                         }}
                     >
                         <SelectItem>
@@ -134,8 +134,8 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
                                 <span>افزودن دسته بندی جدید</span>
                             </div>
                         </SelectItem>
-                        <SelectItem value="apple">اپل</SelectItem>
-                        <SelectItem value="iphone">آیفون</SelectItem>
+                        <SelectItem key="apple">اپل</SelectItem>
+                        <SelectItem key="iphone">آیفون</SelectItem>
                     </Select>
 
                     <div className="flex flex-col gap-2">
@@ -144,7 +144,6 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
                             labelPlacement="outside"
                             placeholder="10"
                             minValue={1}
-                            formatOptions={{ useGrouping: true, locale: 'fa-IR' }}
                             endContent={
                                 <select
                                     aria-label="Select discount type"
