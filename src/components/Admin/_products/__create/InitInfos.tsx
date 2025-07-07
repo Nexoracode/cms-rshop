@@ -22,7 +22,13 @@ interface InitInfosProps {
 }
 
 const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure()
+    const [categories, setCategories] = useState([
+        { id: "apple", title: "اپل" },
+        { id: "iphone", title: "آیفون" }
+    ])
+    //
     const [formData, setFormData] = useState({
         title: "",
         price: 10000,
@@ -34,7 +40,6 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
         stock: 5
     })
 
-    // ارسال لحظه‌ای به والد
     useEffect(() => {
         onChange({
             title: formData.title,
@@ -45,7 +50,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
             category: formData.category || undefined,
             stock: formData.stock
         })
-    }, [formData, onChange])
+    }, [formData])
 
     return (
         <>
@@ -134,8 +139,11 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
                                 <span>افزودن دسته بندی جدید</span>
                             </div>
                         </SelectItem>
-                        <SelectItem key="apple">اپل</SelectItem>
-                        <SelectItem key="iphone">آیفون</SelectItem>
+                        {
+                            categories.map(cat => (
+                                <SelectItem key={cat.id}>{cat.title}</SelectItem>
+                            ))
+                        }
                     </Select>
 
                     <div className="flex flex-col gap-2">

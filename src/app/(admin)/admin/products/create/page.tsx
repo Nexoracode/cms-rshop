@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link"
 import { Button } from "@heroui/react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
@@ -13,12 +13,19 @@ import AttributesProducts from "@/components/Admin/_products/__create/Attributes
 import ImageCropper from "@/components/Helper/ImageCropper";
 
 type ProductInfo = {
-    medias: any[],
+    medias?: any[],
+    initInfos?: any
 }
 
 const CreateNewProduct = () => {
 
     const [productInfos, setProductInfos] = useState<ProductInfo | null>(null)
+
+    useEffect(() => {
+        if (productInfos) {
+            console.log("FINAL =>", productInfos);
+        }
+    }, [productInfos])
 
     return (
         <div>
@@ -33,9 +40,21 @@ const CreateNewProduct = () => {
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
             <section className="flex flex-col gap-6 py-6">
                 <ImagesProducts>
-                    <ImageCropper onPreviewsChange={datas => setProductInfos(prev => ({ ...prev, medias: datas }))} />
+                    <ImageCropper onPreviewsChange={datas =>
+                        setProductInfos(prev =>
+                            prev
+                                ? { ...prev, medias: datas }
+                                : { medias: datas }
+                        )
+                    } />
                 </ImagesProducts>
-                <InitInfos onChange={(data) => console.log(data)} />
+                <InitInfos onChange={datas =>
+                    setProductInfos(prev =>
+                        prev
+                            ? { ...prev, initInfos: datas }
+                            : { initInfos: datas }
+                    )
+                } />
                 <MiddAdditionalInfos />
                 <LastAdditionalInfos />
                 <AttributesProducts />
