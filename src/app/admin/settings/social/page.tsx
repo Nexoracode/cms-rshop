@@ -2,6 +2,9 @@
 
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, Input } from "@heroui/react"
+import { FaTelegram } from "react-icons/fa";
+import { LuInstagram } from "react-icons/lu";
+import Image from "next/image";
 
 const Social = () => {
     return (
@@ -17,13 +20,18 @@ const Social = () => {
                         فقط نام کاربری یا ID خود را وارد کنید. پیشوند لینک به‌صورت خودکار نمایش داده شده است.
                     </span>
                 </div>
-                    
+
                 <Input
-                    label="اینستاگرام"
+                    label={
+                        <div className="flex items-center gap-2">
+                            <LuInstagram className="text-xl text-pink-500" />
+                            <span>اینستاگرام</span>
+                        </div>
+                    }
                     labelPlacement="outside"
                     placeholder="username"
                     type="text"
-                    style={{direction: "ltr"}}
+                    style={{ direction: "ltr" }}
                     endContent={
                         <div className="pointer-events-none flex items-center pr-4">
                             <span className="text-default-400 text-sm">https://instagram.com</span>
@@ -32,11 +40,16 @@ const Social = () => {
                 />
 
                 <Input
-                    label="تلگرام"
+                    label={
+                        <div className="flex items-center gap-2">
+                            <FaTelegram className="text-xl text-sky-500" />
+                            <span>تلگرام</span>
+                        </div>
+                    }
                     labelPlacement="outside"
                     placeholder="username"
                     type="text"
-                    style={{direction: "ltr"}}
+                    style={{ direction: "ltr" }}
                     endContent={
                         <div className="pointer-events-none flex items-center pr-4">
                             <span className="text-default-400 text-sm">https://t.me</span>
@@ -45,11 +58,16 @@ const Social = () => {
                 />
 
                 <Input
-                    label="ایتا"
+                    label={
+                        <div className="flex items-center gap-2">
+                            <img src="/images/eitaa.png" className="w-5" alt="eitaa" />
+                            <span>ایتا</span>
+                        </div>
+                    }
                     labelPlacement="outside"
                     placeholder="username"
                     type="text"
-                    style={{direction: "ltr"}}
+                    style={{ direction: "ltr" }}
                     endContent={
                         <div className="pointer-events-none flex items-center pr-4">
                             <span className="text-default-400 text-sm">https://eitaa.com</span>
@@ -58,11 +76,16 @@ const Social = () => {
                 />
 
                 <Input
-                    label="روبیکا"
+                    label={
+                        <div className="flex items-center gap-2">
+                            <img src="/images/rubika.png" className="w-5" alt="rubika" />
+                            <span>روبیکا</span>
+                        </div>
+                    }
                     labelPlacement="outside"
                     placeholder="username"
                     type="text"
-                    style={{direction: "ltr"}}
+                    style={{ direction: "ltr" }}
                     endContent={
                         <div className="pointer-events-none flex items-center pr-4">
                             <span className="text-default-400 text-sm">https://rubika.ir</span>
