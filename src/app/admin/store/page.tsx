@@ -54,7 +54,7 @@ const storeSettingsLinks = [
     {
         title: "حساب کاربری",
         icon: <FiUser className="text-2xl" />,
-        route: "settings/user_infos",
+        route: "settings/user-infos",
     },
     {
         title: "اطلاعات فروشگاه",

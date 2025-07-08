@@ -11,6 +11,7 @@ import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAddit
 import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import ImageCropper from "@/components/Helper/ImageCropper";
+import BackToPage from "@/components/Helper/BackToPage";
 
 type ProductInfo = {
     medias?: any[],
@@ -29,14 +30,7 @@ const CreateNewProduct = () => {
 
     return (
         <div>
-            <header className="flex items-center justify-start">
-                <Button variant="flat" type="button">
-                    <Link href={'/admin/products'} className="flex items-center gap-2">
-                        <MdOutlineArrowBackIos className="text-lg rotate-180" />
-                        <span>تعریف محصول</span>
-                    </Link>
-                </Button>
-            </header>
+            <BackToPage title="تعریف محصول" link="/admin/products" />
             <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
             <section className="flex flex-col gap-6 py-6">
                 <ImagesProducts>
