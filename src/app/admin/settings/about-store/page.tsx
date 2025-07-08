@@ -6,10 +6,11 @@ import { BsInfoCircle } from "react-icons/bs";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
 import { TbUserQuestion } from "react-icons/tb";
+import { useRouter } from "next/navigation";
 
 const AboutStore = () => {
-
-    const style = "text-3xl w-12 h-12 rounded-lg p-2"
+    const router = useRouter();
+    const style = "text-3xl w-12 h-12 rounded-lg p-2";
 
     return (
         <div className="flex flex-col gap-4">
@@ -19,37 +20,55 @@ const AboutStore = () => {
                 <Accordion selectionMode="multiple">
                     <AccordionItem
                         key="1"
-                        aria-label="Chung Miller"
-                        startContent={<BsInfoCircle className={`${style} text-yellow-700 bg-yellow-700/10`} />}
-                        subtitle="توضیحات در مورد فروشگاه"
                         title="درباره ما"
-                    />
+                        subtitle="توضیحات در مورد فروشگاه"
+                        startContent={
+                            <BsInfoCircle
+                                className={`${style} text-yellow-700 bg-yellow-700/10`}
+                            />
+                        }
+                        onPress={() => router.push("/admin/settings/about-store/about")}
+                    > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
+
                     <AccordionItem
                         key="2"
-                        aria-label="Janelle Lenard"
-                        startContent={<IoDocumentTextOutline className={`${style} text-blue-700 bg-blue-700/10`} />}
-                        subtitle="توضیحات راهنمای خرید"
                         title="راهنمای خرید"
-                    />
+                        subtitle="توضیحات راهنمای خرید"
+                        startContent={
+                            <IoDocumentTextOutline
+                                className={`${style} text-blue-700 bg-blue-700/10`}
+                            />
+                        }
+                        onPress={() => router.push("/admin/settings/about-store/help")}
+                    > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
+
                     <AccordionItem
                         key="3"
-                        aria-label="Zoey Lang"
-                        startContent={<HiOutlineReceiptRefund className={`${style} text-orange-700 bg-orange-700/10`} />}
-                        subtitle="شرایط بازگشت کالاها (مرجوعی)"
                         title="شرایط بازگشت کالا"
-                    />
+                        subtitle="شرایط بازگشت کالاها (مرجوعی)"
+                        startContent={
+                            <HiOutlineReceiptRefund
+                                className={`${style} text-orange-700 bg-orange-700/10`}
+                            />
+                        }
+                        onPress={() => router.push("/admin/settings/about-store/refund")}
+                    > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
+
                     <AccordionItem
                         key="4"
-                        aria-label="Zoey Lang"
-                        startContent={<TbUserQuestion className={`${style} text-green-700 bg-green-700/10`} />}
+                        title="سوالات متداول"
                         subtitle="سوالات متدوال پیش آمده برای مشتری"
-                        title="سوالات متدوال"
-                    />
+                        startContent={
+                            <TbUserQuestion
+                                className={`${style} text-green-700 bg-green-700/10`}
+                            />
+                        }
+                        onPress={() => router.push("/admin/settings/about-store/faq")}
+                    > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
                 </Accordion>
             </div>
         </div>
     )
-
 }
 
-export default AboutStore
+export default AboutStore;
