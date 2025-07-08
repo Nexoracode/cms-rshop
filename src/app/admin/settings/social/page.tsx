@@ -1,11 +1,81 @@
 "use client"
 
+import BackToPage from "@/components/Helper/BackToPage"
+import { Button, Input } from "@heroui/react"
+
 const Social = () => {
-
     return (
-        <div></div>
-    )
+        <div className="flex flex-col gap-4">
+            <BackToPage title="شبکه‌های اجتماعی" link="/admin/store" />
 
+            <div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
+
+                <div className="text-gray-700 text-sm leading-relaxed">
+                    لینک شبکه‌های اجتماعی
+                    <br />
+                    <span className="text-gray-500">
+                        فقط نام کاربری یا ID خود را وارد کنید. پیشوند لینک به‌صورت خودکار نمایش داده شده است.
+                    </span>
+                </div>
+                    
+                <Input
+                    label="اینستاگرام"
+                    labelPlacement="outside"
+                    placeholder="username"
+                    type="text"
+                    style={{direction: "ltr"}}
+                    endContent={
+                        <div className="pointer-events-none flex items-center pr-4">
+                            <span className="text-default-400 text-sm">https://instagram.com</span>
+                        </div>
+                    }
+                />
+
+                <Input
+                    label="تلگرام"
+                    labelPlacement="outside"
+                    placeholder="username"
+                    type="text"
+                    style={{direction: "ltr"}}
+                    endContent={
+                        <div className="pointer-events-none flex items-center pr-4">
+                            <span className="text-default-400 text-sm">https://t.me</span>
+                        </div>
+                    }
+                />
+
+                <Input
+                    label="ایتا"
+                    labelPlacement="outside"
+                    placeholder="username"
+                    type="text"
+                    style={{direction: "ltr"}}
+                    endContent={
+                        <div className="pointer-events-none flex items-center pr-4">
+                            <span className="text-default-400 text-sm">https://eitaa.com</span>
+                        </div>
+                    }
+                />
+
+                <Input
+                    label="روبیکا"
+                    labelPlacement="outside"
+                    placeholder="username"
+                    type="text"
+                    style={{direction: "ltr"}}
+                    endContent={
+                        <div className="pointer-events-none flex items-center pr-4">
+                            <span className="text-default-400 text-sm">https://rubika.ir</span>
+                        </div>
+                    }
+                />
+
+                <div className="w-full pt-2">
+                    <Button className="w-full" color="secondary" variant="flat">ثبت اطلاعات</Button>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default Social
