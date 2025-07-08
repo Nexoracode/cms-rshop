@@ -44,7 +44,6 @@ const Products = () => {
 
     return (
         <>
-            <ShopInfosCard />
             <div className="arshop-card">
                 <header className="flex items-center justify-between">
                     <p>محصول (1)</p>

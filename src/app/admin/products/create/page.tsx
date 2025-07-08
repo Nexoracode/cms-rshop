@@ -31,7 +31,6 @@ const CreateNewProduct = () => {
     return (
         <div>
             <BackToPage title="تعریف محصول" link="/admin/products" />
-            <div className="w-full h-24 bg-slate-200 animate-pulse rounded-xl mt-4"></div>
             <section className="flex flex-col gap-6 py-6">
                 <ImagesProducts>
                     <ImageCropper onPreviewsChange={datas =>

@@ -37,7 +37,6 @@ const Orders = () => {
 
     return (
         <>
-            <ShopInfosCard />
             <div className="arshop-card">
                 <header className="flex items-center justify-between mb-6">
                     <p>سفارش (1)</p>

@@ -1,4 +1,5 @@
 "use client"
+import ShopInfosCard from "@/components/Admin/ArShopCard/ShopInfosCard"
 import Sidebar from "@/components/Admin/Sidebar/Sidebar"
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
@@ -9,6 +10,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 <Sidebar />
             </div>
             <div className="w-9/12 pr-6 mt-6">
+                <div className="mb-6">
+                    <ShopInfosCard />
+                </div>
                 {children}
             </div>
         </div>

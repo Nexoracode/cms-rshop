@@ -3,10 +3,7 @@
 import React from "react";
 import BoxLink from "@/components/Admin/_settings/BoxLink";
 import { Card, CardBody, CardHeader } from "@heroui/react";
-import { FiUsers, FiUser } from "react-icons/fi";
-import { GrAnnounce } from "react-icons/gr";
-import { GoCommentDiscussion } from "react-icons/go";
-import { TbReportAnalytics, TbTruckDelivery } from "react-icons/tb";
+import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { HiOutlineInformationCircle } from "react-icons/hi";
@@ -15,39 +12,7 @@ import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
 import { LuShoppingBag, LuPackage } from "react-icons/lu";
 import { PiMoneyWavy } from "react-icons/pi";
 import { MdOutlineVerifiedUser } from "react-icons/md";
-import ShopInfosCard from "@/components/Admin/ArShopCard/ShopInfosCard";
-
-// لینک‌های بالای بخش تنظیمات اصلی
-const topLinks = [
-    {
-        title: "مشتریان",
-        icon: <FiUsers className="text-2xl" />,
-        route: "store/customers",
-        parent: "text-purple-700 bg-purple-700/5 shadow-md",
-        iconBg: "bg-purple-700/10",
-    },
-    {
-        title: "گزارشات مالی",
-        icon: <TbReportAnalytics className="text-2xl" />,
-        route: "settings/finance",
-        parent: "text-green-700 bg-green-700/5 shadow-md",
-        iconBg: "bg-green-700/10",
-    },
-    {
-        title: "دیدگاه‌ها",
-        icon: <GoCommentDiscussion className="text-2xl" />,
-        route: "store/comments",
-        parent: "text-gray-700 bg-gray-700/5 shadow-md",
-        iconBg: "bg-gray-700/10",
-    },
-    {
-        title: "پروموشن‌ها",
-        icon: <GrAnnounce className="text-2xl" />,
-        route: "store/promotions",
-        parent: "text-orange-700 bg-orange-700/5 shadow-md",
-        iconBg: "bg-orange-700/10",
-    },
-];
+import { TbTruckDelivery } from "react-icons/tb";
 
 // تنظیمات فروشگاه
 const storeSettingsLinks = [
@@ -114,67 +79,48 @@ const orderSettingsLinks = [
 
 const Settings: React.FC = () => {
     return (
-        <div>
-            <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md">
-                <ShopInfosCard />
-                <div className="flex items-center justify-around mt-6">
-                    {topLinks.map(({ title, icon, route, parent, iconBg }) => (
+        <div className="flex items-start justify-between gap-4 mt-8">
+            {/* تنظیمات فروشگاه */}
+            <Card className="shadow-md w-1/2">
+                <CardHeader className="flex items-center justify-between bg-gray-200">
+                    <p className="text-gray-600">تنظیمات فروشگاه</p>
+                    <RiListSettingsLine className="text-2xl text-gray-600" />
+                </CardHeader>
+                <CardBody className="grid grid-cols-3 gap-4">
+                    {storeSettingsLinks.map(({ title, icon, route }) => (
                         <BoxLink
                             key={route}
                             title={title}
                             icon={icon}
                             routeName={route}
-                            parentStyle={parent}
-                            iconStyle={iconBg}
+                            parentStyle="text-purple-700"
+                            iconStyle="bg-gray-700/10"
+                            titleStyle="text-gray-600"
                         />
                     ))}
-                </div>
-            </div>
+                </CardBody>
+            </Card>
 
-            {/* کارت‌های تنظیمات پایین */}
-            <div className="flex items-start justify-between gap-4 mt-8">
-                {/* تنظیمات فروشگاه */}
-                <Card className="shadow-md w-1/2">
-                    <CardHeader className="flex items-center justify-between bg-gray-200">
-                        <p className="text-gray-600">تنظیمات فروشگاه</p>
-                        <RiListSettingsLine className="text-2xl text-gray-600" />
-                    </CardHeader>
-                    <CardBody className="grid grid-cols-3 gap-4">
-                        {storeSettingsLinks.map(({ title, icon, route }) => (
-                            <BoxLink
-                                key={route}
-                                title={title}
-                                icon={icon}
-                                routeName={route}
-                                parentStyle="text-purple-700"
-                                iconStyle="bg-gray-700/10"
-                                titleStyle="text-gray-600"
-                            />
-                        ))}
-                    </CardBody>
-                </Card>
-
-                {/* تنظیمات سفارش گیری */}
-                <Card className="shadow-md w-1/2">
-                    <CardHeader className="flex items-center justify-between bg-blue-200">
-                        <p className="text-blue-600">تنظیمات سفارش گیری</p>
-                        <LuShoppingBag className="text-2xl text-blue-600" />
-                    </CardHeader>
-                    <CardBody className="grid grid-cols-3 gap-4">
-                        {orderSettingsLinks.map(({ title, icon, route }) => (
-                            <BoxLink
-                                key={route}
-                                title={title}
-                                icon={icon}
-                                routeName={route}
-                                parentStyle="text-blue-700"
-                                iconStyle="bg-gray-700/10"
-                                titleStyle="text-gray-600"
-                            />
-                        ))}
-                    </CardBody>
-                </Card>
-            </div>
+            {/* تنظیمات سفارش گیری */}
+            <Card className="shadow-md w-1/2">
+                <CardHeader className="flex items-center justify-between bg-blue-200">
+                    <p className="text-blue-600">تنظیمات سفارش گیری</p>
+                    <LuShoppingBag className="text-2xl text-blue-600" />
+                </CardHeader>
+                <CardBody className="grid grid-cols-3 gap-4">
+                    {orderSettingsLinks.map(({ title, icon, route }) => (
+                        <BoxLink
+                            key={route}
+                            title={title}
+                            icon={icon}
+                            routeName={route}
+                            parentStyle="text-blue-700"
+                            iconStyle="bg-gray-700/10"
+                            titleStyle="text-gray-600"
+                        />
+                    ))}
+                </CardBody>
+            </Card>
         </div>
     );
 };
