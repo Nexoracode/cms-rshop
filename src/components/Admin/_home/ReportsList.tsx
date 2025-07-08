@@ -26,7 +26,7 @@ const ReportsList = () => {
         <Card className="shadow-md">
             <BoxHeader
                 title="گزارش ها"
-                color="bg-purple-700/10 text-purple-700"
+                color="bg-orange-700/10 text-orange-700"
                 icon={
                     <Popover
                         showArrow
@@ -39,7 +39,7 @@ const ReportsList = () => {
                         <PopoverTrigger>
                             <Button
                                 className="capitalize"
-                                color="secondary"
+                                color="warning"
                                 variant="flat"
                                 size="sm"
                             >

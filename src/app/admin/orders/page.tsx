@@ -37,7 +37,7 @@ const Orders = () => {
 
     return (
         <>
-            <div className="arshop-card">
+            <div className="">
                 <header className="flex items-center justify-between mb-6">
                     <p>سفارش (1)</p>
                     <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">

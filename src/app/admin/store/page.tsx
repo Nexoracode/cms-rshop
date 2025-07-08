@@ -79,7 +79,7 @@ const orderSettingsLinks = [
 
 const Settings: React.FC = () => {
     return (
-        <div className="flex items-start justify-between gap-4 mt-8">
+        <div className="flex items-start justify-between gap-4">
             {/* تنظیمات فروشگاه */}
             <Card className="shadow-md w-1/2">
                 <CardHeader className="flex items-center justify-between bg-gray-200">

@@ -6,7 +6,7 @@ import ReportsList from "@/components/Admin/_home/ReportsList";
 
 const Home = () => {
     return (
-        <div className="flex flex-col gap-6 arshop-card">
+        <div className="flex flex-col gap-6">
             <ReportsList />
             <LatestOrders />
             <ProductListMostViewed />

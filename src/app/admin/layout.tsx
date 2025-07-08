@@ -13,7 +13,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 <div className="mb-6">
                     <ShopInfosCard />
                 </div>
-                {children}
+                <div className="arshop-card">
+                    {children}
+                </div>
             </div>
         </div>
     )
