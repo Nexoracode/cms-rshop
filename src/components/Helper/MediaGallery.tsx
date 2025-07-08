@@ -3,7 +3,6 @@
 import { Button, Modal, ModalContent, Tab, Tabs } from "@heroui/react"
 import { LuImages, LuUpload } from "react-icons/lu"
 import { useState } from "react"
-import ImageCropper from "./ImageCropper"
 
 const MediaGallery = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -20,7 +19,7 @@ const MediaGallery = () => {
                 <LuImages className="text-lg" /> گالری
             </Button>
 
-            <Modal isOpen={isOpen} size="5xl" onOpenChange={setIsOpen} placement="auto">
+            <Modal isOpen={isOpen} onOpenChange={setIsOpen} placement="auto">
                 <ModalContent>
                     {onClose => (
                         <div className="flex w-full flex-col p-2">
@@ -34,7 +33,7 @@ const MediaGallery = () => {
                                         </div>
                                     }
                                 >
-                                    <ImageCropper onPreviewsChange={() => {}}/>
+                                    <div className="p-4">جزو فیچر های آینده</div>
                                 </Tab>
 
                                 <Tab
@@ -46,8 +45,7 @@ const MediaGallery = () => {
                                         </div>
                                     }
                                 >
-                                    {/* اینجا محتوای گالری قرار بگیره */}
-                                    <div className="p-4">محتوای گالری اینجاست.</div>
+                                    <div className="p-4">جزو فیچر های آینده</div>
                                 </Tab>
                             </Tabs>
                         </div>
