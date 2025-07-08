@@ -1,17 +1,27 @@
 "use client"
 
+import ImageBoxUploader from "@/components/Admin/_orders/__create/helpers/ImageBoxUploader"
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, Input, NumberInput } from "@heroui/react"
+import { useState } from "react"
 
 const AboutStore = () => {
+
+    const [imageFile, setImageFile] = useState<File | null>(null);
 
     return (
         <div className="flex flex-col gap-4">
             <BackToPage title="اطلاعات فروشگاه" link="/admin/store" />
 
-            <div className="bg-slate-100 rounded-2xl p-4 flex flex-col items-center gap-4">
+            <div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
+                <ImageBoxUploader
+                    textBtn={imageFile ? "تغییر لوگو" : "+ افزودن لوگو"}
+                    title="تصویر لوگو"
+                    changeStatusFile={imageFile}
+                    onFile={(file) => setImageFile(file)}
+                />
                 <Input labelPlacement="outside" variant="flat" label="نام فارسی فروشگاه" placeholder="نام فارسی فروشگاه را وارد کنید" type="text" />
-                <NumberInput label="تلفن فروشگاه" labelPlacement="outside" placeholder="09" hideStepper style={{ direction: "ltr" }} />
+                <NumberInput maxLength={11} label="تلفن فروشگاه" labelPlacement="outside" placeholder="09" hideStepper style={{ direction: "ltr" }} />
                 <div className="w-full">
                     <Button className="w-full" color="secondary" variant="flat">ویرایش اطلاعات</Button>
                 </div>
