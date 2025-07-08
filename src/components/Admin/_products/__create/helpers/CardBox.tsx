@@ -14,21 +14,24 @@ type Props = {
 
 const CardBox: React.FC<Props> = ({ onDelete, onEdit, imageFile, title, description }) => {
 
+    console.log(imageFile);
+    
+
     return (
         <Card className="shadow-md border">
-            <CardBody className="flex flex-col gap-4 p-2 py-1">
+            <CardBody className="flex flex-col gap-4 p-2">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3 text-start">
                         {imageFile && (
                             <img
-                                src={URL.createObjectURL(imageFile)}
+                                src={!imageFile.includes("http") ? URL.createObjectURL(imageFile) : imageFile}
                                 alt="preview"
-                                className="rounded-lg w-24 h-16 object-cover border"
+                                className="rounded-xl w-24 h-24 object-cover border"
                             />
                         )}
                         <div>
                             <p>{title}</p>
-                            <p className="text-gray-600 mt-2">{description}</p>
+                            <p className="text-gray-600 mt-2 max-w-[450px] truncate">{description}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
