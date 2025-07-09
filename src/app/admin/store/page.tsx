@@ -46,11 +46,6 @@ const storeSettingsLinks = [
 // تنظیمات سفارش گیری
 const orderSettingsLinks = [
     {
-        title: "روش‌های پرداخت",
-        icon: <PiMoneyWavy className="text-2xl" />,
-        route: "store/payment",
-    },
-    {
         title: "روش‌های ارسال",
         icon: <TbTruckDelivery className="text-2xl" />,
         route: "store/shippings",
