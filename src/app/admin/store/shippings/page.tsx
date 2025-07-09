@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import BackToPage from "@/components/Helper/BackToPage"
-import { Button, Input, Switch, Select, SelectItem, CardBody, Card } from "@heroui/react"
+import { Button, Input, Switch, Select, SelectItem, CardBody, Card, NumberInput } from "@heroui/react"
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import { GrMapLocation } from "react-icons/gr";
 import { FaTreeCity } from "react-icons/fa6";
@@ -10,8 +10,8 @@ import { FaTreeCity } from "react-icons/fa6";
 export default function Shippings() {
     // اطلاعات کلی
     const [title, setTitle] = useState("پیک فروشگاه")
-    const [localPaymentType, setLocalPaymentType] = useState("پیش کرایه")
-    const [localTimeValue, setLocalTimeValue] = useState("2")
+    const [localPaymentType, setLocalPaymentType] = useState<any>()
+    const [localTimeValue, setLocalTimeValue] = useState<any>()
     const localTimeUnit = "روز" // ثابت
     const [localCost, setLocalCost] = useState("")
     const [freeLocal, setFreeLocal] = useState(false)
@@ -85,91 +85,142 @@ export default function Shippings() {
                         placeholder="شیوه پرداخت را انتخاب نمایید"
                         labelPlacement="outside"
                         value={localPaymentType}
-                        onValueChange={setLocalPaymentType}
+                        onChange={setLocalPaymentType}
                     >
                         <SelectItem key="before">پیش کرایه</SelectItem>
                         <SelectItem key="after">پس کرایه</SelectItem>
                     </Select>
 
                     <div className="flex flex-col gap-2">
-                        <Input
+                        <NumberInput
                             label="زمان ارسال"
-                            labelPlacement="outside"
-                            type="number"
-                            value={localTimeValue}
-                            onChange={e => setLocalTimeValue(e.target.value)}
+                            placeholder="3"
+                            labelPlacement={"outside"}
+                            minValue={1}
+                            endContent={
+                                <div className="pointer-events-none flex items-center">
+                                    <span className="text-default-400 text-small">روز</span>
+                                </div>
+                            }
+                            onValueChange={setLocalTimeValue}
                         />
-                        <Input
-                            label="واحد"
-                            labelPlacement="outside"
-                            value={localTimeUnit}
-                            disabled
-                        />
+                        <small className="text-gray-600 text-start">مدت زمانی که پس از آماده‌سازی سفارش، تحویل به مسئول ارسال و تحویل به مشتری برای تکمیل سفارش لازم است.</small>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-4">
                         <Input
                             label="هزینه ارسال (تومان)"
                             labelPlacement="outside"
+                            placeholder="60,000"
                             type="number"
                             value={localCost}
                             onChange={e => setLocalCost(e.target.value)}
                             disabled={freeLocal}
                         />
                         <Switch
-                            label="می‌خواهم هزینه ارسال رایگان باشد"
-                            checked={freeLocal}
-                            onCheckedChange={setFreeLocal}
+                            size="sm"
+                            isSelected={freeLocal}
+                            onValueChange={setFreeLocal}
+                        >
+                            میخواهم هزینه ارسال رایگان باشد
+                        </Switch>
+                    </div>
+
+                    <div className="bg-slate-300/10 flex flex-col gap-6 rounded-2xl p-4 py-6">
+                        <div className="flex flex-col gap-4 text-start">
+                            <p className="-mb-2 text-black/80">تعین بازه وزنی (اختیاری)</p>
+                            <div className="w-full flex flex-wrap justify-between md:flex-nowrap mb-6 md:mb-0 gap-4">
+                                <NumberInput
+                                    hideStepper
+                                    label="از"
+                                    placeholder="3"
+                                    minValue={1}
+                                    labelPlacement={"outside-left"}
+                                    endContent={
+                                        <div className="flex items-center">
+                                            <label className="sr-only" htmlFor="currency">
+                                                Currency
+                                            </label>
+                                            <select
+                                                aria-label="Select currency"
+                                                className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                                defaultValue="USD"
+                                                id="currency"
+                                                name="currency"
+                                            >
+                                                <option aria-label="US Dollar" value="USD">
+                                                    کیلوگرم
+                                                </option>
+                                                <option aria-label="Argentine Peso" value="ARS">
+                                                    گرم
+                                                </option>
+                                            </select>
+                                        </div>
+                                    }
+                                    className="w-1/2 justify-center"
+                                />
+                                <NumberInput
+                                    hideStepper
+                                    label="تا"
+                                    placeholder="10"
+                                    minValue={2}
+                                    labelPlacement={"outside-left"}
+                                    endContent={
+                                        <div className="flex items-center">
+                                            <label className="sr-only" htmlFor="currency">
+                                                Currency
+                                            </label>
+                                            <select
+                                                aria-label="Select currency"
+                                                className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                                defaultValue="USD"
+                                                id="currency"
+                                                name="currency"
+                                            >
+                                                <option aria-label="Argentine Peso" value="ARS">
+                                                    گرم
+                                                </option>
+                                                <option aria-label="US Dollar" value="USD">
+                                                    کیلوگرم
+                                                </option>
+                                            </select>
+                                        </div>
+                                    }
+                                    className="w-1/2 justify-center"
+                                />
+                            </div>
+                        </div>
+
+                        <Input
+                            label="هزینه وزنی (تومان)"
+                            labelPlacement="outside"
+                            placeholder="120,000"
+                            type="number"
+                            value={weightCost}
+                            onChange={e => setWeightCost(e.target.value)}
                         />
                     </div>
 
-                    <Switch
-                        label="تعیین بازه وزنی (اختیاری)"
-                        checked={useWeightRange}
-                        onCheckedChange={setUseWeightRange}
-                    />
-                    {useWeightRange && (
-                        <div className="flex flex-col gap-2">
-                            <Input
-                                label="از وزن (کیلوگرم)"
-                                labelPlacement="outside"
-                                type="number"
-                                value={weightFrom}
-                                onChange={e => setWeightFrom(e.target.value)}
-                            />
-                            <Input
-                                label="تا وزن (کیلوگرم)"
-                                labelPlacement="outside"
-                                type="number"
-                                value={weightTo}
-                                onChange={e => setWeightTo(e.target.value)}
-                            />
-                            <Input
-                                label="هزینه وزنی (تومان)"
-                                labelPlacement="outside"
-                                type="number"
-                                value={weightCost}
-                                onChange={e => setWeightCost(e.target.value)}
-                            />
-                        </div>
-                    )}
-
-                    <Switch
-                        label="پرداخت در محل (اختیاری)"
-                        checked={cashOnDelivery}
-                        onCheckedChange={setCashOnDelivery}
-                    />
-
-                    <Button
-                        className="w-full mt-4"
-                        color="secondary"
-                        variant="flat"
-                        onClick={handleSubmit}
-                    >
-                        ثبت اطلاعات
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                        <Switch
+                            size="sm"
+                            isSelected={cashOnDelivery}
+                            onValueChange={setCashOnDelivery}
+                        >
+                            پرداخت در محل (اختیاری)
+                        </Switch>
+                        <small className="text-gray-600 text-right">امکان پرداخت مبلغ سفارش و ارسال، به هنگام دریافت مرسوله توسط مشتری</small>
+                    </div>
                 </CardBody>
             </Card>
+            <Button
+                className="w-full mt-4"
+                color="secondary"
+                variant="flat"
+                onPress={handleSubmit}
+            >
+                ثبت اطلاعات
+            </Button>
         </div>
     )
 }
