@@ -8,10 +8,10 @@ import { useState, useEffect } from "react"
 type Props = {
   cardType: "new" | "update"
   title?: string
-  onSubmit?: () => void
+  onSubmit?: (data?: { title: string; price: number }) => void
   onDelete?: () => void
-  onChange?: (data: { title: string, price: number }) => void
-  defaultValues?: { title: string, price: number }
+  onChange?: (data: { title: string; price: number }) => void
+  defaultValues?: { title: string; price: number }
 }
 
 const Packaging: React.FC<Props> = ({
@@ -25,17 +25,28 @@ const Packaging: React.FC<Props> = ({
   const [title, setTitle] = useState(defaultValues?.title || "")
   const [price, setPrice] = useState<any>(defaultValues?.price)
 
+  // فقط زمانی که نوع new است، به parent اطلاع بده
   useEffect(() => {
-    if (onChange) {
+    if (cardType === "new" && onChange) {
       onChange({ title, price })
     }
   }, [title, price])
+
+  const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit({ title, price })
+    }
+  }
 
   return (
     <Card className={cardType === "new" ? "shadow-md shadow-purple-300" : ""}>
       <BoxHeader
         title={cardType === "new" ? "تعریف بسته بندی جدید" : titleCard}
-        color={cardType === "new" ? "bg-purple-700/10 text-purple-700" : "bg-green-700/10 text-green-700"}
+        color={
+          cardType === "new"
+            ? "bg-purple-700/10 text-purple-700"
+            : "bg-green-700/10 text-green-700"
+        }
         icon={<LuPackageOpen className="text-3xl" />}
       />
       <CardBody className="shadow-md flex flex-col gap-6">
@@ -61,12 +72,18 @@ const Packaging: React.FC<Props> = ({
 
         <div className="flex items-center justify-end gap-2">
           {cardType === "update" && (
-            <Button color="danger" variant="flat" onPress={onDelete}>
-              حذف
-            </Button>
+            <>
+              <Button color="danger" variant="flat" onPress={onDelete}>
+                حذف
+              </Button>
+              <Button color="primary" variant="flat" onPress={handleSubmit}>
+                به‌روزرسانی
+              </Button>
+            </>
           )}
+
           {cardType === "new" && (
-            <Button color="success" variant="flat" onPress={onSubmit}>
+            <Button color="success" variant="flat" onPress={handleSubmit}>
               ثبت
             </Button>
           )}
