@@ -25,17 +25,18 @@ const Packaging: React.FC<Props> = ({
   const [title, setTitle] = useState(defaultValues?.title || "")
   const [price, setPrice] = useState<any>(defaultValues?.price)
 
-  // فقط زمانی که نوع new است، به parent اطلاع بده
+  // فقط برای حالت new
   useEffect(() => {
     if (cardType === "new" && onChange) {
       onChange({ title, price })
     }
   }, [title, price])
 
+  const isDisabled = !title.trim() || price === "" || Number(price) <= 0
+
   const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit({ title, price })
-    }
+    if (isDisabled || !onSubmit) return
+    onSubmit({ title, price: Number(price) })
   }
 
   return (
@@ -76,14 +77,24 @@ const Packaging: React.FC<Props> = ({
               <Button color="danger" variant="flat" onPress={onDelete}>
                 حذف
               </Button>
-              <Button color="primary" variant="flat" onPress={handleSubmit}>
+              <Button
+                color="primary"
+                variant="flat"
+                onPress={handleSubmit}
+                isDisabled={isDisabled}
+              >
                 به‌روزرسانی
               </Button>
             </>
           )}
 
           {cardType === "new" && (
-            <Button color="success" variant="flat" onPress={handleSubmit}>
+            <Button
+              color="success"
+              variant="flat"
+              onPress={handleSubmit}
+              isDisabled={isDisabled}
+            >
               ثبت
             </Button>
           )}
