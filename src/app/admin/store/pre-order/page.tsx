@@ -1,14 +1,15 @@
 "use client"
 
 import BackToPage from "@/components/Helper/BackToPage"
-import { NumberInput, Select, SelectItem, Switch } from "@heroui/react"
-import { useState } from "react"
+import { Button, NumberInput, Select, SelectItem, Switch } from "@heroui/react"
+import { useEffect, useState } from "react"
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 const PreOrder = () => {
 
     const [isActiveCard, setIsActiveCard] = useState(false)
     const [selectItem, setSelectItem] = useState<"limit" | "unlimit">("unlimit")
+    const [selectedCategoryType, setSelectedCategoryType] = useState<any>()
 
     return (
         <div>
@@ -73,16 +74,26 @@ const PreOrder = () => {
                             dir="rtl"
                             labelPlacement={"outside"}
                             placeholder="دسته بندی مورد نظر را جستجو یا اضافه کنید"
-                            onSelectionChange={(value: any) => { }}
+                            selectedKeys={selectedCategoryType}
+                            onSelectionChange={setSelectedCategoryType}
                         >
-                            <SelectItem>همه محصولات</SelectItem>
-                            <SelectItem>محصولات منتخب</SelectItem>
+                            <SelectItem key="all">همه محصولات</SelectItem>
+                            <SelectItem key="selected">محصولات منتخب</SelectItem>
                         </Select>
-                    
-                        <div className="w-full flex items-center justify-center flex-col animate-pulse">
-                            <TfiShoppingCartFull className="text-[70px] text-gray-600 mb-2"/>
-                            <p>محصولاتی که می خواهید قابلیت پیش سفارش داشته باشند انتخاب کنید.</p>
-                        </div>
+
+                        {
+                            selectedCategoryType?.anchorKey === "selected" ?
+                                <div className="w-full">
+                                    <div className="w-full flex items-center justify-center flex-col animate-pulse">
+                                        <TfiShoppingCartFull className="text-[70px] text-gray-600 mb-2" />
+                                        <p>محصولاتی که می‌خواهید قابلیت پیش سفارش داشته باشند انتخاب کنید.</p>
+                                    </div>
+                                    <Button color="secondary" variant="flat" className="mt-4 w-full">
+                                        افزودن محصول
+                                    </Button>
+                                </div>
+                                : ""
+                        }
 
                     </div>
 
