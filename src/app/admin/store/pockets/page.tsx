@@ -1,6 +1,7 @@
 "use client"
 
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
+import Packaging from "@/components/Admin/_store/__pockets/Packaging"
 import BackToPage from "@/components/Helper/BackToPage"
 
 const Pockets = () => {
@@ -14,6 +15,11 @@ const Pockets = () => {
                     textBtn="+ بسته بندی جدید"
                     onPress={() => { }}
                 />
+                <div className="flex flex-col gap-6 mt-6">
+                    <Packaging cardType="new">
+
+                    </Packaging>
+                </div>
             </div>
         </div>
     )
