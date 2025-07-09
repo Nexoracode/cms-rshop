@@ -39,9 +39,14 @@ const Packaging: React.FC<Props> = ({ cardType, title: titleCard = "" }) => {
                     />
                 </div>
                 <div className="flex items-center justify-end gap-2">
-                    <Button color="danger" variant="flat" onPress={() => { }}>
-                        حذف
-                    </Button>
+                    {
+                        cardType !== "new"
+                            ?
+                            <Button color="danger" variant="flat" onPress={() => { }}>
+                                حذف
+                            </Button>
+                            : ""
+                    }
                     <Button color="success" variant="flat" onPress={() => { }}>
                         ثبت
                     </Button>

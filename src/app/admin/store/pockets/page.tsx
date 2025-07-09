@@ -3,8 +3,11 @@
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
 import Packaging from "@/components/Admin/_store/__pockets/Packaging"
 import BackToPage from "@/components/Helper/BackToPage"
+import { useState } from "react"
 
 const Pockets = () => {
+
+    const [isNewPack, setIsNewPack] = useState(false)
 
     return (
         <div className="flex flex-col gap-6">
@@ -12,13 +15,15 @@ const Pockets = () => {
             <div className="bg-white p-4 rounded-2xl">
                 <HeaderAction
                     title="تعریف بسته بندی"
-                    textBtn="+ بسته بندی جدید"
-                    onPress={() => { }}
+                    textBtn={isNewPack ? "x لغو بسته بندی جدید" : "+ بسته بندی جدید"}
+                    onPress={() => setIsNewPack(prev => !prev)}
                 />
                 <div className="flex flex-col gap-6 mt-6">
-                    <Packaging cardType="new">
-
-                    </Packaging>
+                    {
+                        isNewPack ?
+                            <Packaging cardType="new" />
+                            : ""
+                    }
                 </div>
             </div>
         </div>
