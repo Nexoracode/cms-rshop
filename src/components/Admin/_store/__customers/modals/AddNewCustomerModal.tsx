@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, ModalFooter } from "@heroui/react";
+import { Button, DatePicker, Input, ModalFooter, NumberInput } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 
 type Props = {
@@ -38,11 +38,39 @@ const AddNewCustomerModal: React.FC<Props> = ({
                     <>
                         <ModalHeader>
                             <p className="font-normal text-[16px]">
-                                افزودن کاربر
+                                مشتری جدید
                             </p>
                         </ModalHeader>
-                        <ModalBody>
-                          
+                        <ModalBody className="flex flex-col gap-6">
+                            <Input
+                                labelPlacement="outside"
+                                isRequired
+                                label="نام مشتری"
+                                placeholder="نام مشتری را وارد کنید"
+                                value={brandFa}
+                                onChange={(e) => setBrandFa(e.target.value)}
+                                className="mb-2"
+                            />
+                            <Input
+                                dir="ltr"
+                                labelPlacement="outside"
+                                isRequired
+                                label="نام خانوادگی مشتری "
+                                placeholder="نام خوانوادگی مشتری را وارد کنید"
+                                value={brandEn}
+                                onChange={(e) => setBrandEn(e.target.value)}
+                            />
+                            <NumberInput
+                                label="شماره همراه"
+                                labelPlacement="outside"
+                                placeholder="09"
+                                style={{direction: "ltr"}}
+                                min={1}
+                                hideStepper
+                                isRequired
+                                onValueChange={price => { }}
+                            />
+                            <DatePicker label="تاریخ تولد" labelPlacement="outside" />
                         </ModalBody>
                         <ModalFooter>
                             <Button
