@@ -26,8 +26,9 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 {onClose => (
                     <>
                         <ModalHeader><p className="font-normal text-[16px]">فیلتر</p></ModalHeader>
-                        <ModalBody className="overflow-y-auto">
-                            <DateRangePicker label="تاریخ ثبت" labelPlacement="outside" />
+                        <ModalBody className="overflow-y-auto flex flex-col gap-6">
+                            <DateRangePicker label="تاریخ عضویت" labelPlacement="outside" />
+                            <DateRangePicker label="تاریخ آخرین خرید" labelPlacement="outside" />
                         </ModalBody>
                         <ModalFooter>
                             <Button color="danger">حذف فیلتر</Button>
