@@ -1,6 +1,6 @@
 "use client"
 
-const AmazingOffer = () => {
+const Commission = () => {
 
     return(
         <div>
@@ -9,4 +9,4 @@ const AmazingOffer = () => {
     )
 }
 
-export default AmazingOffer
+export default Commission
