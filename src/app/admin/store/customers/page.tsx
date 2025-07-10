@@ -1,12 +1,13 @@
 "use client"
 
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
+import CustomerInfoBox from "@/components/Admin/_store/__customers/helper/CustomerInfoBox";
 import AddNewCustomerModal from "@/components/Admin/_store/__customers/modals/AddNewCustomerModal";
 import FilterModal from "@/components/Admin/_store/__customers/modals/FilterModal";
 import SortingModal from "@/components/Admin/_store/__customers/modals/SortingModal";
 import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage"
-import { Divider, Input, useDisclosure } from "@heroui/react";
+import { Input, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
@@ -75,6 +76,24 @@ const Customers = () => {
                                 </p>
                             </div>
                         )}
+                        <div className="flex flex-col gap-4">
+                            <CustomerInfoBox
+                                firstName="محمد"
+                                lastName="کریمی"
+                                phone="09121234567"
+                                membership="1403/04/18"
+                                lastPurchase="1403/04/18"
+                                onShowDetail={() => { }}
+                            />
+                            <CustomerInfoBox
+                                firstName="محمد"
+                                lastName="کریمی"
+                                phone="09121234567"
+                                membership="1403/04/18"
+                                lastPurchase="1403/04/18"
+                                onShowDetail={() => { }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
