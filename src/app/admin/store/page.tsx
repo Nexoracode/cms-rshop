@@ -10,7 +10,6 @@ import { HiOutlineInformationCircle } from "react-icons/hi";
 import { HiOutlineDocumentText, HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
 import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
 import { LuShoppingBag, LuPackage } from "react-icons/lu";
-import { PiMoneyWavy } from "react-icons/pi";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 
