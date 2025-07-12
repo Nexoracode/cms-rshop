@@ -5,6 +5,7 @@ import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSp
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, Card, CardBody, DateRangePicker, useDisclosure } from "@heroui/react"
 import { useState } from "react";
+import { FiShoppingBag } from "react-icons/fi";
 import { MdWhatshot } from "react-icons/md";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
@@ -33,18 +34,20 @@ const AmazingOffer = () => {
                     <DateRangePicker label="زمان آغاز و پایان تخفیف" labelPlacement="outside" />
 
                     <div className={`flex flex-col bg-slate-50 rounded-2xl p-2 py-4 gap-6`}>
-                        <div className="flex flex-col gap-2">
-                            <p>پیشنهادات ویژه</p>
-                            <p className="text-gray-600">هر نوع محصولی را میتوانید انتخاب کنید.</p>
+                        <div className="flex items-center justify-between">
+                            <div className="flex flex-col gap-2">
+                                <p>پیشنهادات ویژه</p>
+                                <p className="text-gray-600">هر نوع محصولی را میتوانید انتخاب کنید.</p>
+                            </div>
+                            <Button color="secondary" size="sm" variant="flat" onPress={onOpen}>
+                                افزودن محصول
+                            </Button>
                         </div>
                         <div className="w-full">
                             <div className="w-full flex items-center justify-center flex-col animate-pulse">
-                                <TfiShoppingCartFull className="text-[70px] text-gray-600 mb-2" />
-                                <p>محصولاتی که می‌خواهید را انتخاب کنید.</p>
+                                <FiShoppingBag className="text-[70px] animate-blink w-full text-gray-600 mb-2" />
+                                <p>هنوز محصولی را انتخاب نکرده اید</p>
                             </div>
-                            <Button color="secondary" variant="flat" className="mt-4 w-full" onPress={onOpen}>
-                                افزودن محصول
-                            </Button>
                         </div>
                     </div>
 
