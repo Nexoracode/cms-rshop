@@ -58,9 +58,7 @@ const AmazingOffer = () => {
             <AddSpecialProductsModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                onAdd={(newProducts) =>
-                    setSpecialProducts(prev => [...prev, ...newProducts])
-                }
+                onAdd={(newSelection) => setSpecialProducts(newSelection)}
                 initialSelectedProducts={specialProducts}
             />
         </>

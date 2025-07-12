@@ -102,12 +102,8 @@ const AddSpecialProductsModal: React.FC<Props> = ({
   };
 
   const handleAdd = () => {
-    const newSelected = products.filter(
-      (p) =>
-        selectedIds.includes(p.id) &&
-        !initialSelectedProducts.some((ip) => ip.id === p.id)
-    );
-    onAdd(newSelected);
+    const allSelected = products.filter((p) => selectedIds.includes(p.id));
+    onAdd(allSelected); // همه محصولات انتخاب شده رو ارسال کن
     onOpenChange();
     setSelectedIds([]);
   };
@@ -183,9 +179,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                   variant="flat"
                   color="secondary"
                   className="mb-4"
-                  isDisabled={selectedIds.filter(
-                    (id) => !initialSelectedProducts.some((p) => p.id === id)
-                  ).length === 0}
+                  isDisabled={!selectedIds.length}
                   onPress={handleAdd}
                 >
                   اضافه کردن
