@@ -21,7 +21,7 @@ import SortingModal from "../../_products/modals/SortingModal";
 import ProductItem from "../../_home/helpers/ProductItem";
 import BoxHeader from "../../_products/__create/helpers/BoxHeader";
 import { TfiShoppingCartFull } from "react-icons/tfi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Product = {
   id: number;
@@ -35,14 +35,28 @@ type Product = {
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onAdd: (products: Product[]) => void; // تو باید در parent این تابع رو پیاده‌سازی کنی
+  onAdd: (products: Product[]) => void;
+  initialSelectedProducts?: Product[]; // محصولات انتخاب شده از قبل
 };
 
 const AddSpecialProductsModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
   onAdd,
+  initialSelectedProducts = [],
 }) => {
+  const {
+    isOpen: isSortOpen,
+    onOpen: onOpenSort,
+    onOpenChange: onSortOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isFilterOpen,
+    onOpen: onOpenFilter,
+    onOpenChange: onFilterOpenChange,
+  } = useDisclosure();
+
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const products: Product[] = [
@@ -62,32 +76,41 @@ const AddSpecialProductsModal: React.FC<Props> = ({
       isExist: "موجود",
       subProductName: "پرفروش‌ترین",
     },
+    {
+      id: 3,
+      price: 590000,
+      img: "https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg",
+      productName: "ویندوز 11",
+      isExist: "موجود",
+      subProductName: "نسخه جدید",
+    },
   ];
 
+  // مقداردهی اولیه چک‌باکس‌ها بر اساس initialSelectedProducts
+  useEffect(() => {
+    if (isOpen) {
+      const initialIds = initialSelectedProducts.map((p) => p.id);
+      setSelectedIds(initialIds);
+    }
+  }, [isOpen, initialSelectedProducts]);
+
+  // تغییر انتخاب چک‌باکس
   const toggleSelect = (id: number) => {
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
     );
   };
 
   const handleAdd = () => {
-    const selectedProducts = products.filter(p => selectedIds.includes(p.id));
-    onAdd(selectedProducts);
-    onOpenChange(); // بستن مدال
-    setSelectedIds([]); // پاک کردن انتخاب‌ها
+    const newSelected = products.filter(
+      (p) =>
+        selectedIds.includes(p.id) &&
+        !initialSelectedProducts.some((ip) => ip.id === p.id)
+    );
+    onAdd(newSelected);
+    onOpenChange();
+    setSelectedIds([]);
   };
-
-  const {
-    isOpen: isSortOpen,
-    onOpen: onOpenSort,
-    onOpenChange: onSortOpenChange,
-  } = useDisclosure();
-
-  const {
-    isOpen: isFilterOpen,
-    onOpen: onOpenFilter,
-    onOpenChange: onFilterOpenChange,
-  } = useDisclosure();
 
   return (
     <>
@@ -98,8 +121,10 @@ const AddSpecialProductsModal: React.FC<Props> = ({
               <ModalHeader>
                 <p className="font-normal text-[16px]">افزودن محصول</p>
               </ModalHeader>
+
               <ModalBody>
                 <p className="text-gray-600">محصولات مورد نظر را انتخاب کنید.</p>
+
                 <Input
                   isClearable
                   size="lg"
@@ -111,8 +136,16 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                 />
 
                 <section className="flex items-center justify-start">
-                  <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
-                  <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
+                  <OptionBox
+                    title="فیلتر"
+                    icon={<IoFilter className="text-[16px]" />}
+                    onClick={onOpenFilter}
+                  />
+                  <OptionBox
+                    title="مرتب سازی"
+                    icon={<BiSortAlt2 className="text-[16px]" />}
+                    onClick={onOpenSort}
+                  />
                 </section>
 
                 <Card className="shadow-md mb-4">
@@ -121,15 +154,25 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                     color="bg-green-700/10 text-green-700"
                     icon={<TfiShoppingCartFull className="text-3xl" />}
                   />
+
                   <CardBody className="flex flex-col gap-4">
                     {products.map((product) => (
-                      <div key={product.id} className="flex items-center gap-4">
+                      <div
+                        key={product.id}
+                        className="flex items-center gap-4"
+                      >
                         <Checkbox
                           isSelected={selectedIds.includes(product.id)}
                           onValueChange={() => toggleSelect(product.id)}
                         />
                         <div className="w-full">
-                          <ProductItem {...product} />
+                          <ProductItem
+                            price={product.price}
+                            img={product.img}
+                            productName={product.productName}
+                            isExist={product.isExist}
+                            subProductName={product.subProductName}
+                          />
                         </div>
                       </div>
                     ))}
@@ -140,8 +183,10 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                   variant="flat"
                   color="secondary"
                   className="mb-4"
-                  isDisabled={selectedIds.length === 0}
-                  onClick={handleAdd}
+                  isDisabled={selectedIds.filter(
+                    (id) => !initialSelectedProducts.some((p) => p.id === id)
+                  ).length === 0}
+                  onPress={handleAdd}
                 >
                   اضافه کردن
                 </Button>

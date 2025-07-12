@@ -4,11 +4,14 @@ import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, Card, CardBody, DateRangePicker, useDisclosure } from "@heroui/react"
+import { useState } from "react";
 import { MdWhatshot } from "react-icons/md";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 
 const AmazingOffer = () => {
+
+    const [specialProducts, setSpecialProducts] = useState<any[]>([]);
 
     const {
         isOpen,
@@ -53,9 +56,12 @@ const AmazingOffer = () => {
             </Card>
 
             <AddSpecialProductsModal
-                onAdd={data => console.log(data)}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
+                onAdd={(newProducts) =>
+                    setSpecialProducts(prev => [...prev, ...newProducts])
+                }
+                initialSelectedProducts={specialProducts}
             />
         </>
     )
