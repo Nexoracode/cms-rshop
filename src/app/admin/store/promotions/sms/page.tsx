@@ -105,6 +105,15 @@ const Sms = () => {
                                     endContent={<p>تومان</p>}
                                     onValueChange={(value: any) => { }}
                                 />
+                                
+                                <NumberInput
+                                    label="تعیین سقف تخفیف"
+                                    labelPlacement={"outside"}
+                                    placeholder="100,000"
+                                    minValue={1}
+                                    endContent={<p>تومان</p>}
+                                    onValueChange={(value: any) => { }}
+                                />
 
                                 <DatePicker isRequired labelPlacement="outside" label="تعیین تاریخ پایان تخفیف" />
 
