@@ -1,7 +1,6 @@
 "use client";
 
-import { Modal, ModalContent, ModalHeader, ModalBody, Input, useDisclosure, Card, CardBody, Checkbox } from "@heroui/react";
-import { useRouter } from "next/navigation";
+import { Modal, ModalContent, ModalHeader, ModalBody, Input, useDisclosure, Card, CardBody, Checkbox, Button } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
 import OptionBox from "../../OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
@@ -21,9 +20,6 @@ const AddSpecialProductsModal: React.FC<Props> = ({
     isOpen,
     onOpenChange,
 }) => {
-
-    const router = useRouter();
-    const style = "text-3xl w-12 h-12 rounded-lg p-2";
 
     const {
         isOpen: isSortOpen,
@@ -54,7 +50,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                                 </p>
                             </ModalHeader>
                             <ModalBody>
-                                <p className="text-gray-600">محصولات پیش سفارش را انتخاب کنید.</p>
+                                <p className="text-gray-600">محصولات مورد نظر را انتخاب کنید.</p>
                                 <Input
                                     isClearable
                                     size="lg"
@@ -67,7 +63,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                                     }
                                 >
                                 </Input>
-                                <section className="flex items-center justify-start my-3">
+                                <section className="flex items-center justify-start">
                                     <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
                                     <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
                                 </section>
@@ -105,6 +101,9 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                                         </div>
                                     </CardBody>
                                 </Card>
+                                <Button variant="flat" color="secondary" className="mb-4">
+                                    اضافه کردن
+                                </Button>
                             </ModalBody>
                         </>
                     )}
