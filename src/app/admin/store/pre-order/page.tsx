@@ -1,16 +1,18 @@
 "use client"
 
+import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
 import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react"
 import { useState } from "react"
-import { TfiShoppingCartFull } from "react-icons/tfi";
+import { FiShoppingBag } from "react-icons/fi";
 
 const PreOrder = () => {
 
     const [isActiveCard, setIsActiveCard] = useState(false)
     const [selectItem, setSelectItem] = useState<"limit" | "unlimit">("unlimit")
     const [selectedCategoryType, setSelectedCategoryType] = useState<any>()
+    const [specialProducts, setSpecialProducts] = useState<any[]>([]);
     const {
         isOpen,
         onOpen,
@@ -73,9 +75,19 @@ const PreOrder = () => {
                         </div>
 
                         <div className={`flex flex-col bg-slate-50 rounded-2xl p-2 py-4 gap-6`}>
-                            <div className="flex flex-col gap-2">
-                                <p>محصولات پیش سفارش</p>
-                                <p className="text-gray-600">پیش سفارش برای محصولات ناموجود است و برای محصولات دارای موجودی، در صورت ناموجود شدن فعال می شود.</p>
+                            <div className="flex items-center justify-between">
+                                <div className="flex flex-col gap-2">
+                                    <p>محصولات پیش سفارش</p>
+                                    <p className="text-gray-600">پیش سفارش برای محصولات ناموجود است و برای محصولات دارای موجودی، در صورت ناموجود شدن فعال می شود.</p>
+                                </div>
+                                {
+                                    selectedCategoryType?.anchorKey === "selected" ?
+                                        <Button color="secondary" size="sm" variant="flat" onPress={onOpen}>
+                                            {specialProducts.length ? "ویرایش" : "افزودن"}
+                                        </Button>
+                                        :
+                                        ""
+                                }
                             </div>
                             <Select
                                 dir="rtl"
@@ -87,19 +99,35 @@ const PreOrder = () => {
                                 <SelectItem key="all">همه محصولات</SelectItem>
                                 <SelectItem key="selected">محصولات منتخب</SelectItem>
                             </Select>
-
                             {
                                 selectedCategoryType?.anchorKey === "selected" ?
                                     <div className="w-full">
-                                        <div className="w-full flex items-center justify-center flex-col animate-pulse">
-                                            <TfiShoppingCartFull className="text-[70px] text-gray-600 mb-2" />
-                                            <p>محصولاتی که می‌خواهید قابلیت پیش سفارش داشته باشند انتخاب کنید.</p>
-                                        </div>
-                                        <Button color="secondary" variant="flat" className="mt-4 w-full" onPress={onOpen}>
-                                            افزودن محصول
-                                        </Button>
+                                        {
+                                            !specialProducts.length
+                                                ?
+                                                <div className="w-full flex items-center justify-center flex-col animate-pulse">
+                                                    <FiShoppingBag className="text-[70px] animate-blink w-full text-gray-600 mb-2" />
+                                                    <p>هنوز محصولی را انتخاب نکرده اید</p>
+                                                </div>
+                                                :
+                                                <div className="flex flex-col gap-4">
+                                                    {
+                                                        specialProducts.map((pr, index) => (
+                                                            <ProductItem
+                                                                key={index}
+                                                                img={pr.img}
+                                                                price={pr.price}
+                                                                productName={pr.productName}
+                                                                isExist={pr.isExist}
+                                                                subProductName={pr.subProductName}
+                                                            />
+                                                        ))
+                                                    }
+                                                </div>
+                                        }
                                     </div>
-                                    : ""
+                                    :
+                                    ""
                             }
 
                         </div>
@@ -111,6 +139,8 @@ const PreOrder = () => {
             <AddSpecialProductsModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
+                onAdd={(newSelection) => setSpecialProducts(newSelection)}
+                initialSelectedProducts={specialProducts}
             />
         </>
     )
