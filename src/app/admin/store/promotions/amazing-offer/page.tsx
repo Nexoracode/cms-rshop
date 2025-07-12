@@ -53,6 +53,7 @@ const AmazingOffer = () => {
             </Card>
 
             <AddSpecialProductsModal
+                onAdd={data => console.log(data)}
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
             />
