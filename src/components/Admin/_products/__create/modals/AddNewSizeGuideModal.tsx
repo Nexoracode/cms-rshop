@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import ImageBoxUploader from "@/components/Admin/_orders/__create/helpers/ImageBoxUploader"
+import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 
 type Props = {
     isOpen: boolean;

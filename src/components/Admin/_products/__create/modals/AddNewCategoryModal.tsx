@@ -2,7 +2,7 @@
 
 import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import ImageBoxUploader from "@/components/Admin/_orders/__create/helpers/ImageBoxUploader"
+import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { useState } from "react";
 
 type Props = {
