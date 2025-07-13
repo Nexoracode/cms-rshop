@@ -4,92 +4,110 @@ import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAc
 import BlogCard from "@/components/Admin/_store/__blog/BlogCard"
 import BackToPage from "@/components/Helper/BackToPage"
 import { useState } from "react"
-import { TbFolderOpen } from "react-icons/tb";
+import { TbFolderOpen } from "react-icons/tb"
 
 type FaqItem = {
-  id: number
-  title: string
-  description: string
+    id: number
+    title: string
+    description: string
+    imageFile: File | null
 }
 
 const Blog = () => {
-  const [isNewFaq, setIsNewFaq] = useState(false)
-  const [faqList, setFaqList] = useState<FaqItem[]>([])
-  const [tempTitle, setTempTitle] = useState("")
-  const [tempDescription, setTempDescription] = useState("")
+    const [isNewFaq, setIsNewFaq] = useState(false)
+    const [faqList, setFaqList] = useState<FaqItem[]>([])
 
-  const handleAddFaq = () => {
-    if (!tempTitle || !tempDescription) return
+    const [tempTitle, setTempTitle] = useState("")
+    const [tempDescription, setTempDescription] = useState("")
+    const [tempImageFile, setTempImageFile] = useState<File | null>(null)
 
-    setFaqList(prev => [
-      ...prev,
-      { id: Date.now(), title: tempTitle, description: tempDescription }
-    ])
-    setIsNewFaq(false)
-    setTempTitle("")
-    setTempDescription("")
-  }
+    const handleAddFaq = () => {
+        if (!tempTitle || !tempDescription) return
 
-  const handleRemoveFaq = (id: number) => {
-    setFaqList(prev => prev.filter(f => f.id !== id))
-  }
+        setFaqList(prev => [
+            ...prev,
+            {
+                id: Date.now(),
+                title: tempTitle,
+                description: tempDescription,
+                imageFile: tempImageFile
+            }
+        ])
 
-  const handleUpdateFaq = (id: number, data: { title: string; description: string }) => {
-    setFaqList(prev =>
-      prev.map(faq =>
-        faq.id === id ? { ...faq, title: data.title, description: data.description } : faq
-      )
-    )
-  }
+        setIsNewFaq(false)
+        setTempTitle("")
+        setTempDescription("")
+        setTempImageFile(null)
+    }
 
-  return (
-    <div className="flex flex-col gap-6">
-      <BackToPage title="بازگشت" link="/admin/store" />
+    const handleRemoveFaq = (id: number) => {
+        setFaqList(prev => prev.filter(f => f.id !== id))
+    }
 
-      <div className="bg-white p-4 rounded-2xl">
-        <HeaderAction
-          title="بلاگ ها"
-          textBtn={isNewFaq ? "x لغو بلاگ جدید" : "+ بلاگ جدید"}
-          onPress={() => setIsNewFaq(prev => !prev)}
-        />
+    const handleUpdateFaq = (
+        id: number,
+        data: { title: string; description: string; imageFile: File | null }
+    ) => {
+        setFaqList(prev =>
+            prev.map(faq =>
+                faq.id === id ? { ...faq, ...data } : faq
+            )
+        )
+    }
 
-        <div className="flex flex-col gap-6 mt-6">
-          {isNewFaq && (
-            <div className={!faqList.length ? "mb-10" : ""}>
-              <BlogCard
-                cardType="new"
-                onSubmit={handleAddFaq}
-                onChange={(data) => {
-                  setTempTitle(data.title)
-                  setTempDescription(data.description)
-                }}
-              />
+    return (
+        <div className="flex flex-col gap-6">
+            <BackToPage title="بازگشت" link="/admin/store" />
+
+            <div className="bg-white p-4 rounded-2xl">
+                <HeaderAction
+                    title="بلاگ ها"
+                    textBtn={isNewFaq ? "x لغو بلاگ جدید" : "+ بلاگ جدید"}
+                    onPress={() => setIsNewFaq(prev => !prev)}
+                />
+
+                <div className="flex flex-col gap-6 mt-6">
+                    {isNewFaq && (
+                        <div className={!faqList.length ? "mb-10" : ""}>
+                            <BlogCard
+                                cardType="new"
+                                onSubmit={handleAddFaq}
+                                onChange={(data) => {
+                                    setTempTitle(data.title)
+                                    setTempDescription(data.description)
+                                    setTempImageFile(data.imageFile)
+                                }}
+                            />
+                        </div>
+                    )}
+
+                    {faqList.map(faq => (
+                        <BlogCard
+                            key={faq.id}
+                            cardType="update"
+                            title={faq.title}
+                            defaultValues={{
+                                title: faq.title,
+                                description: faq.description,
+                                imageFile: faq.imageFile
+                            }}
+                            onDelete={() => handleRemoveFaq(faq.id)}
+                            onSubmit={(data: any) => handleUpdateFaq(faq.id, data)}
+                        />
+                    ))}
+
+                    {!faqList.length && (
+                        <div className="flex items-center flex-col gap-2">
+                            <TbFolderOpen className="text-[90px] text-gray-600 animate-bounce" />
+                            <p className="text-center animate-pulse pb-4">
+                                هنوز هیچ بلاگی ساخته نشده است
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
-          )}
-
-          {faqList.map(faq => (
-            <BlogCard
-              key={faq.id}
-              cardType="update"
-              title={faq.title}
-              defaultValues={{ title: faq.title, description: faq.description }}
-              onDelete={() => handleRemoveFaq(faq.id)}
-              onSubmit={(data: any) => handleUpdateFaq(faq.id, data)}
-            />
-          ))}
-
-          {!faqList.length && (
-            <div className="flex items-center flex-col gap-2">
-              <TbFolderOpen className="text-[90px] text-gray-600 animate-bounce" />
-              <p className="text-center animate-pulse pb-4">
-                هنوز هیچ بلاگی ساخته نشده است
-              </p>
-            </div>
-          )}
         </div>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default Blog
