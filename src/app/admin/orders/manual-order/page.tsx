@@ -3,9 +3,10 @@
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 import BackToPage from "@/components/Helper/BackToPage"
-import { Button, Card, CardBody, CardFooter, Divider, NumberInput, Select, SelectItem, Switch } from "@heroui/react"
+import { Button, Card, CardBody, CardFooter, Divider, NumberInput, Select, SelectItem, Switch, Textarea } from "@heroui/react"
 import { useState } from "react";
 import { TbShoppingCartPlus } from "react-icons/tb";
+import { LuNotebookPen } from "react-icons/lu";
 
 const pay = [
     { key: "payed", label: "مبلغ سفارش قبلا پرداخت شده" },
@@ -27,7 +28,7 @@ const ManualOrder = () => {
             <BackToPage title="بازگشت" link="/admin/orders" />
             <Card className="shadow-md mt-6">
                 <BoxHeader
-                    title="ثبت جدید"
+                    title="ثبت سفارش"
                     color="text-blue-700 bg-blue-700/10"
                     icon={<TbShoppingCartPlus className="text-3xl" />}
                 />
@@ -101,6 +102,26 @@ const ManualOrder = () => {
                                         ""
                                 }
                             </div>
+                        </CardBody>
+                    </Card>
+                    <Card className="border-5 border-gray-300 border-dashed m-8 mx-12">
+                        <BoxHeader
+                            title="فاکتور"
+                            color="text-green-700 bg-green-700/10"
+                            icon={<LuNotebookPen className="text-3xl" />}
+                        />
+                        <CardBody className="text-right bg-gradient-to-r from-white via-green-100 to-white py-4">
+                            <p>برای مشاهده فاکتور، محصولات مورد نظر و وضعیت پرداخت سفارش را مشخص کنید.</p>
+                            <div className="py-6">
+                                <Divider />
+                            </div>
+                            <Textarea
+                                label="توضیحات مکمل"
+                                labelPlacement="outside"
+                                placeholder="توضیحات خود را وارد کنید"
+                                variant="bordered"
+                                color="primary"
+                            />
                         </CardBody>
                     </Card>
                 </CardBody>
