@@ -4,8 +4,8 @@ import { Button, Card, CardBody, Input, Textarea } from "@heroui/react"
 import BoxHeader from "../../_products/__create/helpers/BoxHeader"
 import { useState, useEffect } from "react"
 import { IoDocumentTextOutline } from "react-icons/io5"
-import GenericMultiSelect from "@/components/Helper/GenericMultiSelect"
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader"
+import GenericTagInput from "@/components/Helper/GenericTagInput"
 
 type Props = {
     cardType: "new" | "update"
@@ -88,17 +88,10 @@ const BlogCard: React.FC<Props> = ({
                         autoFocus
                     />
 
-                    <GenericMultiSelect
-                        label="تگ ها"
-                        items={[
-                            { key: "cat", title: "جدید" },
-                            { key: "dog", title: "قدیمی" },
-                            { key: "elephant", title: "تازه" }
-                        ]}
-                        selectedKeys={tags}
-                        onSelectionChange={(selected: any) => {
-                            setTags(Array.from(selected))
-                        }}
+                    <GenericTagInput
+                        label="تگ‌ها"
+                        defaultTags={tags}
+                        onChange={setTags}
                     />
 
                     <Textarea
