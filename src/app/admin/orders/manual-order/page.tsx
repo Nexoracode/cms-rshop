@@ -3,10 +3,13 @@
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 import BackToPage from "@/components/Helper/BackToPage"
-import { Button, Card, CardBody, CardFooter, Divider, NumberInput, Select, SelectItem, Switch, Textarea } from "@heroui/react"
+import { Button, Card, CardBody, CardFooter, Divider, NumberInput, Select, SelectItem, Switch, Textarea, useDisclosure } from "@heroui/react"
 import { useState } from "react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { LuNotebookPen } from "react-icons/lu";
+import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
+import { FiShoppingBag } from "react-icons/fi";
+import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
 
 const pay = [
     { key: "payed", label: "مبلغ سفارش قبلا پرداخت شده" },
@@ -22,6 +25,12 @@ const status = [
 const ManualOrder = () => {
 
     const [isSelected, setIsSelected] = useState(false);
+    const [specialProducts, setSpecialProducts] = useState<any[]>([]);
+    const {
+        isOpen,
+        onOpen,
+        onOpenChange,
+    } = useDisclosure();
 
     return (
         <>
@@ -48,10 +57,46 @@ const ManualOrder = () => {
                         <HeaderAction
                             title={"محصولات"}
                             textBtn={"+ انتخاب محصولات"}
-                            onPress={() => { }}
+                            onPress={onOpen}
                         />
                         <CardBody>
-                            <p className="text-center text-gray-600 py-6 animate-bounce">محصولات مورد نظر را انتخاب کنید</p>
+                            <div className="w-full">
+                                {
+                                    !specialProducts.length
+                                        ?
+                                        <div className="w-full flex items-center justify-center flex-col animate-pulse">
+                                            <FiShoppingBag className="text-[70px] animate-blink w-full text-gray-600 mb-2" />
+                                            <p>هنوز محصولی را انتخاب نکرده اید</p>
+                                        </div>
+                                        :
+                                        <div className="flex flex-col gap-4">
+                                            {
+                                                specialProducts.map((pr, index) => (
+                                                    <div className="flex flex-col gap-2 rounded-2xl p-2 bg-slate-200">
+                                                        <ProductItem
+                                                            key={index}
+                                                            img={pr.img}
+                                                            price={pr.price}
+                                                            productName={pr.productName}
+                                                            isExist={pr.isExist}
+                                                            subProductName={pr.subProductName}
+                                                        />
+                                                        <div>
+                                                            <NumberInput
+                                                                label="تعداد"
+                                                                size="sm"
+                                                                labelPlacement="inside"
+                                                                placeholder="10"
+                                                                minValue={1}
+                                                                endContent={"عدد"}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                }
+                            </div>
                         </CardBody>
                     </Card>
                     <Card className="shadow-md p-2">
@@ -131,6 +176,13 @@ const ManualOrder = () => {
                     </Button>
                 </CardFooter>
             </Card>
+
+            <AddSpecialProductsModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onAdd={(newSelection) => setSpecialProducts(newSelection)}
+                initialSelectedProducts={specialProducts}
+            />
         </>
     )
 }
