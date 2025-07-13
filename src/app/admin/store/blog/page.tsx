@@ -1,24 +1,102 @@
 "use client"
 
-import CardBox from "@/components/Admin/_products/__create/helpers/CardBox"
+import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
+import BlogCard from "@/components/Admin/_store/__blog/BlogCard"
 import BackToPage from "@/components/Helper/BackToPage"
-import { Button, Input } from "@heroui/react"
 import { useState } from "react"
-import { FiSearch } from "react-icons/fi"
+import { TbFolderOpen } from "react-icons/tb";
+
+type FaqItem = {
+  id: number
+  title: string
+  description: string
+}
 
 const Blog = () => {
+  const [isNewFaq, setIsNewFaq] = useState(false)
+  const [faqList, setFaqList] = useState<FaqItem[]>([])
+  const [tempTitle, setTempTitle] = useState("")
+  const [tempDescription, setTempDescription] = useState("")
 
-    const [articles, setArticles] = useState([])
+  const handleAddFaq = () => {
+    if (!tempTitle || !tempDescription) return
 
-    return (
-        <div className="flex flex-col gap-4">
-            <BackToPage title="لیست مقالات" link="/admin/store">
-                <div className="w-full pt-2">
-                    <Button className="w-full" color="secondary" variant="flat">+ پست جدید</Button>
-                </div>
-            </BackToPage>
+    setFaqList(prev => [
+      ...prev,
+      { id: Date.now(), title: tempTitle, description: tempDescription }
+    ])
+    setIsNewFaq(false)
+    setTempTitle("")
+    setTempDescription("")
+  }
 
-            <div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
+  const handleRemoveFaq = (id: number) => {
+    setFaqList(prev => prev.filter(f => f.id !== id))
+  }
+
+  const handleUpdateFaq = (id: number, data: { title: string; description: string }) => {
+    setFaqList(prev =>
+      prev.map(faq =>
+        faq.id === id ? { ...faq, title: data.title, description: data.description } : faq
+      )
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <BackToPage title="بازگشت" link="/admin/store" />
+
+      <div className="bg-white p-4 rounded-2xl">
+        <HeaderAction
+          title="بلاگ ها"
+          textBtn={isNewFaq ? "x لغو بلاگ جدید" : "+ بلاگ جدید"}
+          onPress={() => setIsNewFaq(prev => !prev)}
+        />
+
+        <div className="flex flex-col gap-6 mt-6">
+          {isNewFaq && (
+            <div className={!faqList.length ? "mb-10" : ""}>
+              <BlogCard
+                cardType="new"
+                onSubmit={handleAddFaq}
+                onChange={(data) => {
+                  setTempTitle(data.title)
+                  setTempDescription(data.description)
+                }}
+              />
+            </div>
+          )}
+
+          {faqList.map(faq => (
+            <BlogCard
+              key={faq.id}
+              cardType="update"
+              title={faq.title}
+              defaultValues={{ title: faq.title, description: faq.description }}
+              onDelete={() => handleRemoveFaq(faq.id)}
+              onSubmit={(data: any) => handleUpdateFaq(faq.id, data)}
+            />
+          ))}
+
+          {!faqList.length && (
+            <div className="flex items-center flex-col gap-2">
+              <TbFolderOpen className="text-[90px] text-gray-600 animate-bounce" />
+              <p className="text-center animate-pulse pb-4">
+                هنوز هیچ بلاگی ساخته نشده است
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Blog
+
+
+/* 
+<div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
 
                 <section className="w-full mt-5">
                     <Input
@@ -57,8 +135,5 @@ const Blog = () => {
                     onEdit={() => { }}
                 />
             </div>
-        </div>
-    )
-}
 
-export default Blog
+*/
