@@ -10,6 +10,8 @@ import { LuNotebookPen } from "react-icons/lu";
 import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
 import { FiShoppingBag } from "react-icons/fi";
 import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
+import SelectCustomer from "@/components/Admin/_store/__customers/modals/SelectCustomer";
+import { TbUserExclamation } from "react-icons/tb";
 
 const pay = [
     { key: "payed", label: "مبلغ سفارش قبلا پرداخت شده" },
@@ -26,10 +28,16 @@ const ManualOrder = () => {
 
     const [isSelected, setIsSelected] = useState(false);
     const [specialProducts, setSpecialProducts] = useState<any[]>([]);
+    const [customer, setCustomer] = useState<Record<string, any>>({});
     const {
-        isOpen,
-        onOpen,
-        onOpenChange,
+        isOpen: isProductOpen,
+        onOpen: onProductOpen,
+        onOpenChange: onOpenProductChange,
+    } = useDisclosure();
+    const {
+        isOpen: isCustomerOpen,
+        onOpen: onCustomerOpen,
+        onOpenChange: onOpenCustomerChange,
     } = useDisclosure();
 
     return (
@@ -47,17 +55,30 @@ const ManualOrder = () => {
                         <HeaderAction
                             title={"مشتری"}
                             textBtn={"+ انتخاب مشتری"}
-                            onPress={() => { }}
+                            onPress={onCustomerOpen}
                         />
                         <CardBody>
-                            <p className="text-center text-gray-600 py-6 animate-bounce">مشتری مورد نظر خود را انتخاب کنید</p>
+                            <div className="w-full">
+                                {
+                                    !customer.length
+                                        ?
+                                        <div className="w-full flex items-center justify-center flex-col animate-pulse">
+                                            <TbUserExclamation className="text-[70px] animate-blink w-full text-gray-600 mb-2" />
+                                            <p>هنوز کاربری را انتخاب نکرده اید</p>
+                                        </div>
+                                        :
+                                        <div>
+                                            اطلاعات مشتری
+                                        </div>
+                                }
+                            </div>
                         </CardBody>
                     </Card>
                     <Card className="shadow-md p-2">
                         <HeaderAction
                             title={"محصولات"}
                             textBtn={"+ انتخاب محصولات"}
-                            onPress={onOpen}
+                            onPress={onProductOpen}
                         />
                         <CardBody>
                             <div className="w-full">
@@ -178,8 +199,15 @@ const ManualOrder = () => {
             </Card>
 
             <AddSpecialProductsModal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                isOpen={isProductOpen}
+                onOpenChange={onOpenProductChange}
+                onAdd={(newSelection) => setSpecialProducts(newSelection)}
+                initialSelectedProducts={specialProducts}
+            />
+
+            <SelectCustomer
+                isOpen={isCustomerOpen}
+                onOpenChange={onOpenCustomerChange}
                 onAdd={(newSelection) => setSpecialProducts(newSelection)}
                 initialSelectedProducts={specialProducts}
             />
