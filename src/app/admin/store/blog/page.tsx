@@ -102,6 +102,7 @@ const Blog = () => {
               }}
               onDelete={() => handleRemoveFaq(faq.id)}
               onSubmit={(data) => handleUpdateFaq(faq.id, data)}
+              closed
             />
           ))}
 
