@@ -3,9 +3,9 @@
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import BackToPage from "@/components/Helper/BackToPage"
 import ImageCropper from "@/components/Helper/ImageCropper"
-import { Alert, Button, Card, CardBody, CardFooter, Divider } from "@heroui/react"
+import { Alert, Button, Card, CardBody, CardFooter, Divider, Textarea } from "@heroui/react"
 import { useState } from "react"
-import { IoImagesOutline } from "react-icons/io5"
+import { BsInfoCircle } from "react-icons/bs"
 
 const About = () => {
 
@@ -13,12 +13,12 @@ const About = () => {
 
     return (
         <>
-            <BackToPage title="درباره فروشگاه" link="/admin/settings/about" />
+            <BackToPage title="بازگشت" link="/admin/settings/about-store" />
             <Card className="shadow-md mt-6">
                 <BoxHeader
-                    title="اطلاعات کلی"
-                    color="bg-blue-700/10 text-blue-700"
-                    icon={<IoImagesOutline className="text-3xl" />}
+                    title="درباره ما"
+                    color="text-yellow-700 bg-yellow-700/10"
+                    icon={<BsInfoCircle className="text-3xl" />}
                 />
                 <CardBody>
                     <div className="flex flex-col gap-3 mb-6">
@@ -30,8 +30,16 @@ const About = () => {
                         </div>
                     </div>
                     <Divider />
-                    <div className="mt-6">
-
+                    <div className="mt-6 text-right">
+                        <p className="text-gray-600 mb-4">میتوانید توضیحات شرایط پرداخت و ارسال سفارشات را در اینجا بنویسید تا برای مشتریانتان نمایش داده شود.</p>
+                        <Textarea
+                            labelPlacement="outside"
+                            isClearable
+                            label="درباره ما"
+                            placeholder="وارد کنید"
+                            variant="flat"
+                            onClear={() => console.log("textarea cleared")}
+                        />
                     </div>
                 </CardBody>
                 <CardFooter className="w-full">
