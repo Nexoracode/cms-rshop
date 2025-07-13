@@ -1,20 +1,20 @@
 "use client"
 
-import { Button, Card, CardBody, Input, NumberInput } from "@heroui/react"
+import { Button, Card, CardBody, Input, Textarea } from "@heroui/react"
 import BoxHeader from "../_products/__create/helpers/BoxHeader"
-import { LuPackageOpen } from "react-icons/lu"
+import { FaQuestion } from "react-icons/fa6"
 import { useState, useEffect } from "react"
 
 type Props = {
   cardType: "new" | "update"
   title?: string
-  onSubmit?: (data?: { title: string; price: number }) => void
+  onSubmit?: (data?: { title: string; description: string }) => void
   onDelete?: () => void
-  onChange?: (data: { title: string; price: number }) => void
-  defaultValues?: { title: string; price: number }
+  onChange?: (data: { title: string; description: string }) => void
+  defaultValues?: { title: string; description: string }
 }
 
-const Packaging: React.FC<Props> = ({
+const Faq: React.FC<Props> = ({
   cardType,
   title: titleCard = "",
   onSubmit,
@@ -23,51 +23,47 @@ const Packaging: React.FC<Props> = ({
   defaultValues
 }) => {
   const [title, setTitle] = useState(defaultValues?.title || "")
-  const [price, setPrice] = useState<any>(defaultValues?.price)
+  const [description, setDescription] = useState(defaultValues?.description || "")
 
   // فقط برای حالت new
   useEffect(() => {
     if (cardType === "new" && onChange) {
-      onChange({ title, price })
+      onChange({ title, description })
     }
-  }, [title, price])
+  }, [title, description])
 
-  const isDisabled = !title.trim() || price === "" || Number(price) <= 0
+  const isDisabled = !title.trim() || !description.trim()
 
   const handleSubmit = () => {
     if (isDisabled || !onSubmit) return
-    onSubmit({ title, price: Number(price) })
+    onSubmit({ title, description })
   }
 
   return (
     <Card className={cardType === "new" ? "shadow-md shadow-purple-300" : ""}>
       <BoxHeader
-        title={cardType === "new" ? "تعریف بسته بندی جدید" : titleCard}
+        title={cardType === "new" ? "تعریف سوال جدید" : titleCard}
         color={
           cardType === "new"
             ? "bg-purple-700/10 text-purple-700"
             : "bg-green-700/10 text-green-700"
         }
-        icon={<LuPackageOpen className="text-3xl" />}
+        icon={<FaQuestion className="text-3xl" />}
       />
       <CardBody className="shadow-md flex flex-col gap-6">
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 text-right">
           <Input
-            label="عنوان بسته بندی"
-            labelPlacement="outside"
-            placeholder="مثلاً بسته بندی شیشه‌ای"
+            label="عنوان سوال"
+            placeholder="مثلاً نحوه ارسال کالا"
             value={title}
             onValueChange={setTitle}
           />
-          <NumberInput
-            label="مبلغ"
-            labelPlacement="outside"
-            placeholder="60,000"
-            type="number"
-            minValue={0}
-            value={price}
-            onValueChange={setPrice}
-            endContent={<div><p>تومان</p></div>}
+          <Textarea
+            label="توضیحات سوال"
+            placeholder="مثلاً کالا از طریق پست پیشتاز ارسال می‌شود..."
+            variant="flat"
+            value={description}
+            onValueChange={setDescription}
           />
         </div>
 
@@ -104,4 +100,4 @@ const Packaging: React.FC<Props> = ({
   )
 }
 
-export default Packaging
+export default Faq
