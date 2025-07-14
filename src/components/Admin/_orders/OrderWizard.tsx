@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Tabs, Tab, Card, CardBody, Button } from "@heroui/react"
+import { StepOne } from "./StepOne"
 
 type StepKey = "1" | "2" | "3" | "4" | "5" | "6"
 
@@ -47,11 +48,8 @@ export default function OrderWizard() {
       </Tabs>
 
       {/* Content */}
-      <Card className="shadow-md">
-        <CardBody className="py-6 text-right">
-          <StepContent step={step} />
-        </CardBody>
-      </Card>
+
+      <StepContent step={step} />
 
       {/* کنترل‌های نمونه */}
       <div className="flex justify-between">
@@ -69,7 +67,39 @@ export default function OrderWizard() {
 function StepContent({ step }: { step: StepKey }) {
   switch (step) {
     case "1":
-      return <p>مرحله ۱: درخواست ثبت شد.</p>
+      return (
+        <StepOne
+          customer={{
+            name: "علی رضایی",
+            phone: "09121234567",
+            address: "تهران، خیابان آزادی",
+            notes: "تحویل بعد از ظهر انجام شود",
+          }}
+          order={{
+            code: "ORD-12345",
+            date: "۱۴۰۳/۰۴/۲۴",
+            instruction: "لطفاً محصول سالم باشد",
+            paymentMethod: "پرداخت در محل",
+            amount: "۲٬۰۰۰٬۰۰۰ تومان",
+            deliveryDate: "۱۴۰۳/۰۴/۳۰",
+            readyIn: "۲ روز",
+            promoCode: "OFF50",
+          }}
+          invoice={[
+            { label: "جمع کل", value: "۱٬۸۰۰٬۰۰۰ تومان" },
+            { label: "تخفیف", value: "۵۰٬۰۰۰ تومان" },
+            { label: "هزینه ارسال", value: "۲۰۰٬۰۰۰ تومان" },
+            { label: "مبلغ قابل پرداخت", value: "۲٬۰۰۰٬۰۰۰ تومان" },
+          ]}
+          shipping={{
+            method: "پست پیشتاز",
+            cost: "۲۰۰٬۰۰۰ تومان",
+            time: "۲ الی ۳ روز کاری",
+            weight: "۱٫۲ کیلوگرم",
+          }}
+          onReview={() => console.log("Review!")}
+        />
+      )
     case "2":
       return <p>مرحله ۲: لطفاً پرداخت را انجام دهید.</p>
     case "3":
