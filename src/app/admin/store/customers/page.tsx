@@ -9,7 +9,6 @@ import SortingModal from "@/components/Admin/_store/__customers/modals/SortingMo
 import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage"
 import { Input, useDisclosure } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
@@ -18,7 +17,6 @@ import { LuUsersRound } from "react-icons/lu";
 
 const Customers = () => {
 
-    const router = useRouter()
     const [customers, setCustomers] = useState<any[]>([])
     const [userId, setUserId] = useState("")
 

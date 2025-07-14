@@ -2,7 +2,7 @@
 
 // Other
 import Link from "next/link";
-import { Button, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
+import { Button, Card, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/OptionBox";
 import OrderBox from "@/components/Admin/_orders/OrderBox";
 import FilterModal from "@/components/Admin/_orders/modals/FilterModal";
@@ -13,8 +13,14 @@ import { FiPlus, FiSearch, } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
+import { useState } from "react";
+import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
+import { TfiShoppingCartFull } from "react-icons/tfi";
+import BackToPage from "@/components/Helper/BackToPage";
 
 const Orders = () => {
+
+    const [orderId, setOrderId] = useState("")
 
     const {
         isOpen: isSortOpen,
@@ -36,55 +42,76 @@ const Orders = () => {
 
     return (
         <>
-            <div className="">
-                <header className="flex items-center justify-between mb-6">
-                    <p>سفارش (1)</p>
-                    <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
-                        <Link href={'/admin/orders/manual-order'}>
-                            ثبت سفارش
-                        </Link>
-                    </Button>
-                </header>
-                <Tabs aria-label="Tabs colors" color={"secondary"} radius="md" className="bg-white rounded-xl tabs-site w-full" variant="bordered">
-                    <Tab key="all" title="همه"></Tab>
-                    <Tab key="rewind" title="بررسی"></Tab>
-                    <Tab key="test" title="پردازش"></Tab>
-                    <Tab key="closed" title="بسته شده"></Tab>
-                    <Tab key="back" title="مرجوعی"></Tab>
-                </Tabs>
-                <section className="w-full mt-5">
-                    <Input
-                        isClearable
-                        size="lg"
-                        variant="bordered"
-                        className="bg-white rounded-xl"
-                        color="secondary"
-                        placeholder="جستجو کدسفارش یا نام مشتری یا نام محصول"
-                        startContent={
-                            <FiSearch className="text-xl" />
-                        }
-                    >
-                    </Input>
-                </section>
-                <section className="flex items-center justify-between px-8 my-3">
-                    <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
-                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
-                    <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
-                </section>
-                <section className="flex flex-col gap-3">
-                    <OrderBox
-                        image="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                        orderId="DF-696620"
-                        date="1404/4/12 - 12:21"
-                        status="preparing"
-                        name="محمدحسین خادم المهدی"
-                        province="خراسان رضوی"
-                        city="مشهد"
-                        delivery="ارسال امروز"
-                        price="۳۸۵,۰۰۰"
-                    />
-                </section>
-            </div>
+            {
+                !orderId.length
+                    ?
+                    <div>
+                        <header className="flex items-center justify-between mb-6">
+                            <p>سفارش (1)</p>
+                            <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
+                                <Link href={'/admin/orders/manual-order'}>
+                                    ثبت سفارش
+                                </Link>
+                            </Button>
+                        </header>
+                        <Tabs aria-label="Tabs colors" color={"secondary"} radius="md" className="bg-white rounded-xl tabs-site w-full" variant="bordered">
+                            <Tab key="all" title="همه"></Tab>
+                            <Tab key="rewind" title="بررسی"></Tab>
+                            <Tab key="test" title="پردازش"></Tab>
+                            <Tab key="closed" title="بسته شده"></Tab>
+                            <Tab key="back" title="مرجوعی"></Tab>
+                        </Tabs>
+                        <section className="w-full mt-5">
+                            <Input
+                                isClearable
+                                size="lg"
+                                variant="bordered"
+                                className="bg-white rounded-xl"
+                                color="secondary"
+                                placeholder="جستجو کدسفارش یا نام مشتری یا نام محصول"
+                                startContent={
+                                    <FiSearch className="text-xl" />
+                                }
+                            >
+                            </Input>
+                        </section>
+                        <section className="flex items-center justify-between px-8 my-3">
+                            <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
+                            <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
+                            <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
+                        </section>
+                        <section className="flex flex-col gap-3">
+                            <OrderBox
+                                image="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
+                                orderId="DF-696620"
+                                date="1404/4/12 - 12:21"
+                                status="preparing"
+                                name="محمدحسین خادم المهدی"
+                                province="خراسان رضوی"
+                                city="مشهد"
+                                delivery="ارسال امروز"
+                                price="۳۸۵,۰۰۰"
+                                onClicked={() => {
+                                    console.log("asdasdadasdas");
+                                    
+                                    setOrderId("DF-696620")
+                                }}
+                            />
+                        </section>
+                    </div>
+                    :
+                    <div>
+                        <BackToPage title="بازگشت" link="/admin/orders/manual-order" onClick={() => setOrderId("")} />
+                        <Card className="shadow-md mt-6">
+                            <BoxHeader
+                                title={`سفارش ${orderId}`}
+                                color="text-blue-700 bg-blue-700/10"
+                                icon={<TfiShoppingCartFull className="text-3xl" />}
+                            />
+                        </Card>
+                    </div>
+            }
+
             <SortingModal
                 isOpen={isSortOpen}
                 onOpenChange={onSortOpenChange}

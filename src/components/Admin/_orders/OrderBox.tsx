@@ -41,6 +41,7 @@ const OrderBox = ({
     province,
     delivery,
     price,
+    onClicked
 }: {
     image: string,
     orderId: string,
@@ -51,6 +52,7 @@ const OrderBox = ({
     province: string,
     delivery: string,
     price: string,
+    onClicked: () => void
 }) => {
     const [selectedStatus, setSelectedStatus] = useState(
         statusOptions.find((s) => s.key === status) || statusOptions[0]
@@ -60,7 +62,7 @@ const OrderBox = ({
     return (
         <Card isBlurred className="border-none shadow-md cursor-pointer !transition-all hover:shadow-lg">
             <div className="w-full h-[4px] bg-cyan-200 rounded-t-md" />
-            <CardBody className="p-4">
+            <CardBody className="p-4" onClick={onClicked}>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">
