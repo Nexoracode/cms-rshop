@@ -4,7 +4,7 @@ import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, Card, CardBody, CardFooter, Divider, NumberInput, Select, SelectItem, Switch, Textarea, useDisclosure } from "@heroui/react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import { LuNotebookPen } from "react-icons/lu";
 import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
@@ -29,6 +29,9 @@ const ManualOrder = () => {
     const [isSelected, setIsSelected] = useState(false);
     const [specialProducts, setSpecialProducts] = useState<any[]>([]);
     const [customer, setCustomer] = useState<any>();
+    //Discount
+    const [discount, setDiscount] = useState<any>();
+    const [discountType, setDiscountType] = useState<"money" | "percent">("percent")
 
     const {
         isOpen: isProductOpen,
@@ -155,10 +158,13 @@ const ManualOrder = () => {
                                                 labelPlacement="outside"
                                                 placeholder="10"
                                                 minValue={1}
+                                                value={discount}
+                                                onValueChange={setDiscount}
                                                 endContent={
                                                     <select
                                                         aria-label="Select discount type"
                                                         className="outline-none border-0 bg-transparent text-default-400 text-small"
+                                                        onChange={(e) => setDiscountType(e.target.value as any)}
                                                     >
                                                         <option value="percent">درصد</option>
                                                         <option value="money">مبلغ ثابت (تومان)</option>
@@ -185,10 +191,24 @@ const ManualOrder = () => {
                                     <p>مبلغ کل محصولات</p>
                                     <p className="text-gray-600">30000</p>
                                 </div>
-                                <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
-                                    <p>مجموع تخفیف</p>
-                                    <p className="text-gray-600">400</p>
-                                </div>
+                                {
+                                    isSelected && discount
+                                        ?
+                                        <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
+                                            <p>مجموع تخفیف</p>
+                                            <p className="text-gray-600">
+                                                {
+                                                    discountType === "money"
+                                                        ?
+                                                        ""
+                                                        :
+                                                        ""
+                                                }
+                                            </p>
+                                        </div>
+                                        :
+                                        ""
+                                }
                                 <div className="mt-4">
                                     <Divider />
                                 </div>
