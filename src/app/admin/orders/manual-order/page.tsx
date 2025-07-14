@@ -180,6 +180,23 @@ const ManualOrder = () => {
                         />
                         <CardBody className="text-right bg-gradient-to-r from-white via-green-100 to-white py-4">
                             <p>برای مشاهده فاکتور، محصولات مورد نظر و وضعیت پرداخت سفارش را مشخص کنید.</p>
+                            <div className="flex flex-col gap-2 mt-4 bg-gradient-to-r from-white via-blue-950 to-white py-4 rounded-2xl p-4">
+                                <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
+                                    <p>مبلغ کل محصولات</p>
+                                    <p className="text-gray-600">30000</p>
+                                </div>
+                                <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
+                                    <p>مجموع تخفیف</p>
+                                    <p className="text-gray-600">400</p>
+                                </div>
+                                <div className="mt-4">
+                                    <Divider />
+                                </div>
+                                <div className="!w-full text-lg text-black py-3 px-8 flex items-center justify-between">
+                                    <p>مبلغ قابل پرداخت</p>
+                                    <p>400</p>
+                                </div>
+                            </div>
                             <div className="py-6">
                                 <Divider />
                             </div>
