@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin="anonymous"
         />
       </head>
-      <body cz-shortcut-listen="false" className="bg-white text-black dark:bg-gray-900 dark:text-white">
+      <body cz-shortcut-listen="false">
         <Toaster />
         <Providers>
           {children}
