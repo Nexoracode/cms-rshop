@@ -6,83 +6,54 @@ import {
   ModalHeader,
   ModalBody,
   Input,
-  useDisclosure,
   Card,
   CardBody,
-  Checkbox,
   Button,
+  RadioGroup,
+  Radio,
 } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
-import OptionBox from "@/components/Admin/OptionBox";
-import { BiSortAlt2 } from "react-icons/bi";
-import { IoFilter } from "react-icons/io5";
-import FilterModal from "./FilterModal";
-import SortingModal from "./SortingModal";
-import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
-import { TfiShoppingCartFull } from "react-icons/tfi";
 import { useEffect, useState } from "react";
+import { TbUser } from "react-icons/tb";
 
-type Product = {
-  id: number;
-  price: number;
-  img: string;
-  productName: string;
-  isExist: string;
-  subProductName: string;
-};
+type Customer = {
+  id: number,
+  name: string,
+  phone: string
+}
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onAdd: (products: Product[]) => void;
-  initialSelectedProducts?: Product[]; // محصولات انتخاب شده از قبل
+  onAdd: (customer: Customer) => void;
+  initialSelectedProducts?: Customer;
 };
 
-const SelectCustomer: React.FC<Props> = ({
+const AddSpecialProductsModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
   onAdd,
   initialSelectedProducts = [],
 }) => {
-  const {
-    isOpen: isSortOpen,
-    onOpen: onOpenSort,
-    onOpenChange: onSortOpenChange,
-  } = useDisclosure();
-
-  const {
-    isOpen: isFilterOpen,
-    onOpen: onOpenFilter,
-    onOpenChange: onFilterOpenChange,
-  } = useDisclosure();
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  const products: Product[] = [
+  const customer: Customer[] = [
     {
       id: 1,
-      price: 385000,
-      img: "https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg",
-      productName: "ویندوز 10",
-      isExist: "موجود",
-      subProductName: "کمترین قیمت",
+      name: "علی اصغر",
+      phone: "09031335939"
     },
     {
       id: 2,
-      price: 385000,
-      img: "https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg",
-      productName: "ویندوز 10 نسخه دوم",
-      isExist: "موجود",
-      subProductName: "پرفروش‌ترین",
+      name: "احمد صهبایی",
+      phone: "09031335939"
     },
     {
       id: 3,
-      price: 590000,
-      img: "https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg",
-      productName: "ویندوز 11",
-      isExist: "موجود",
-      subProductName: "نسخه جدید",
+      name: "علی کورمی",
+      phone: "09031335939"
     },
   ];
 
@@ -102,8 +73,8 @@ const SelectCustomer: React.FC<Props> = ({
   };
 
   const handleAdd = () => {
-    const allSelected = products.filter((p) => selectedIds.includes(p.id));
-    onAdd(allSelected); // همه محصولات انتخاب شده رو ارسال کن
+    const allSelected = customer.filter((p) => selectedIds.includes(p.id));
+    onAdd(allSelected);
     onOpenChange();
     setSelectedIds([]);
   };
@@ -115,63 +86,45 @@ const SelectCustomer: React.FC<Props> = ({
           {(onClose) => (
             <>
               <ModalHeader>
-                <p className="font-normal text-[16px]">افزودن محصول</p>
+                <p className="font-normal text-[16px]">افزودن مشتری</p>
               </ModalHeader>
 
               <ModalBody>
-                <p className="text-gray-600">محصولات مورد نظر را انتخاب کنید.</p>
-
                 <Input
                   isClearable
                   size="lg"
                   variant="bordered"
                   className="bg-white rounded-xl"
                   color="secondary"
-                  placeholder="جستجو در محصول ها..."
+                  placeholder="جستجو نام یا شماره موبایل مشتری"
                   startContent={<FiSearch className="text-xl" />}
                 />
 
-                <section className="flex items-center justify-start">
-                  <OptionBox
-                    title="فیلتر"
-                    icon={<IoFilter className="text-[16px]" />}
-                    onClick={onOpenFilter}
-                  />
-                  <OptionBox
-                    title="مرتب سازی"
-                    icon={<BiSortAlt2 className="text-[16px]" />}
-                    onClick={onOpenSort}
-                  />
-                </section>
-
                 <Card className="shadow-md mb-4">
                   <BoxHeader
-                    title="محصولات"
-                    color="bg-green-700/10 text-green-700"
-                    icon={<TfiShoppingCartFull className="text-3xl" />}
+                    title="کاربران"
+                    color="bg-purple-700/10 text-purple-700"
+                    icon={<TbUser className="text-3xl" />}
                   />
 
                   <CardBody className="flex flex-col gap-4">
-                    {products.map((product) => (
-                      <div
-                        key={product.id}
-                        className="flex items-center gap-4"
-                      >
-                        <Checkbox
-                          isSelected={selectedIds.includes(product.id)}
-                          onValueChange={() => toggleSelect(product.id)}
-                        />
-                        <div className="w-full">
-                          <ProductItem
-                            price={product.price}
-                            img={product.img}
-                            productName={product.productName}
-                            isExist={product.isExist}
-                            subProductName={product.subProductName}
-                          />
+                    <RadioGroup
+                      value={selectedIds.includes(product.id)}
+                      onValueChange={() => toggleSelect(customer.id)}
+                    >
+                      {customer.map((customer, index) => (
+                        <div
+                          key={customer.id}
+                          className="flex items-center gap-4"
+                        >
+                          <Radio value={`$-${index}`}></Radio>
+                          <div className="w-full bg-slate-100 rounded-xl py-3 px-4 flex items-center justify-between">
+                            <p>{customer.name}</p>
+                            <p>{customer.phone}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </RadioGroup>
                   </CardBody>
                 </Card>
 
@@ -189,11 +142,8 @@ const SelectCustomer: React.FC<Props> = ({
           )}
         </ModalContent>
       </Modal>
-
-      <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
-      <FilterModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
     </>
   );
 };
 
-export default SelectCustomer;
+export default AddSpecialProductsModal;
