@@ -8,6 +8,12 @@ import {
     Divider,
 } from "@heroui/react";
 import { FiShoppingCart } from "react-icons/fi";
+import InfoRow from "./helper/InfoRow";
+import BoxHeader from "../_products/__create/helpers/BoxHeader";
+import { LuUserRound } from "react-icons/lu";
+import { TiInfoLargeOutline } from "react-icons/ti";
+import { IoMdPaper } from "react-icons/io";
+import { TbTruckLoading } from "react-icons/tb";
 
 type CustomerInfo = {
     name: string;
@@ -60,12 +66,14 @@ export function StepOne({
             <div className="space-y-6">
                 {/* باکس کد سفارش */}
                 <Card className="shadow-md border border-gray-100">
-                    <CardHeader className="flex sm:justify-between bg-blue-100 sm:items-center gap-2">
-                        <p className="font-bold text-blue-500">{order.code}</p>
-                        <p className="">{order.date}</p>
-                    </CardHeader>
+                    <BoxHeader
+                        title={order.code}
+                        color="text-blue-700 bg-blue-700/10"
+                        textSize="text-[16px]"
+                        icon={order.date}
+                    />
                     {order.instruction && (
-                        <CardBody className="text-right mt-3">
+                        <CardBody className="text-right">
                             <p className="text-default-600">
                                 پس از تایید درخواست سفارش ، مشتری میتواند مبلغ سفارش را به صورت کارت به کارت پرداخت کند.
                             </p>
@@ -95,22 +103,27 @@ export function StepOne({
 
                 {/* باکس فاکتور */}
                 <Card className="shadow-md border border-gray-100">
-                    <CardHeader className="flex bg-blue-100 flex-col gap-2 justify-start items-start">
-                        <p className="font-bold text-blue-500">محصولات و فاکتور</p>
-                        <div className="bg-white shadow p-2 rounded-xl w-full flex gap-2">
-                            <img src="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg" alt="product" className="rounded-xl w-16" />
-                            <div className="w-full flex flex-col justify-between py-1">
-                                <div className="w-full flex items-center justify-between">
-                                    <p>ویندوز 10</p>
-                                    <p>تعداد : 10</p>
-                                </div>
-                                <div className="w-full flex items-center justify-between">
-                                    <p>50000 تومان</p>
+                    <BoxHeader
+                        title="محصولات و فاکتور"
+                        color="text-gray-100 bg-black"
+                        textSize="text-[16px]"
+                        icon={<IoMdPaper className="text-2xl" />}
+                    />
+                    <CardBody>
+                        <div className="mb-4">
+                            <div className="bg-white shadow p-2 rounded-xl w-full flex gap-2">
+                                <img src="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg" alt="product" className="rounded-xl w-16" />
+                                <div className="w-full flex flex-col justify-between py-1">
+                                    <div className="w-full flex items-center justify-between">
+                                        <p>ویندوز 10</p>
+                                        <p>تعداد : 10</p>
+                                    </div>
+                                    <div className="w-full flex items-center justify-between">
+                                        <p>50000 تومان</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </CardHeader>
-                    <CardBody>
                         <div className="space-y-1">
                             {invoice.map((item, idx) => (
                                 <div key={idx} className={`flex justify-between rounded-md p-2 ${idx % 2 !== 0 ? "bg-slate-100" : ""}`}>
@@ -127,32 +140,52 @@ export function StepOne({
             <div className="space-y-6">
                 {/* اطلاعات مشتری */}
                 <Card className="shadow-md border border-gray-100">
-                    <CardHeader>
-                        <p className="font-bold">اطلاعات مشتری</p>
-                    </CardHeader>
+                    <BoxHeader
+                        title="اطلاعات مشتری"
+                        color="text-orange-700 bg-orange-700/10"
+                        textSize="text-[16px]"
+                        icon={<LuUserRound className="text-2xl" />}
+                    />
                     <CardBody>
-                        <div className="space-y-2">
-                            <InfoRow label="نام" value={customer.name} />
-                            <InfoRow label="شماره موبایل" value={customer.phone} />
-                            <InfoRow label="آدرس" value={customer.address} />
-                            <InfoRow label="توضیحات مشتری" value={customer.notes} />
+                        <div className="space-y-1 -mt-1">
+                            <InfoRow
+                                label="نام و نام خوانوادگی"
+                                value={customer.name}
+                            />
+                            <InfoRow
+                                label="شماره موبایل"
+                                value={customer.phone}
+                                isActiveBg
+                            />
+                            <InfoRow
+                                label="آدرس"
+                                value={customer.address}
+                            />
+                            <InfoRow
+                                label="توضیحات مشتری"
+                                value={customer.notes}
+                                isActiveBg
+                            />
                         </div>
                     </CardBody>
                 </Card>
 
                 {/* اطلاعات سفارش */}
                 <Card className="shadow-md border border-gray-100">
-                    <CardHeader>
-                        <p className="font-bold">اطلاعات سفارش</p>
-                    </CardHeader>
+                    <BoxHeader
+                        title="اطلاعات سفارش"
+                        color="text-orange-700 bg-orange-700/10"
+                        textSize="text-[16px]"
+                        icon={<TiInfoLargeOutline className="text-2xl" />}
+                    />
                     <CardBody>
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <InfoRow label="کد سفارش" value={order.code} />
-                            <InfoRow label="تاریخ ثبت" value={order.date} />
+                            <InfoRow label="تاریخ ثبت" value={order.date} isActiveBg />
                             <InfoRow label="روش پرداخت" value={order.paymentMethod} />
-                            <InfoRow label="مبلغ" value={order.amount} />
+                            <InfoRow label="مبلغ" value={order.amount} isActiveBg />
                             <InfoRow label="تاریخ تحویل" value={order.deliveryDate} />
-                            <InfoRow label="آماده‌سازی" value={order.readyIn} />
+                            <InfoRow label="آماده‌سازی" value={order.readyIn} isActiveBg />
                             <InfoRow label="کد تخفیف" value={order.promoCode} />
                         </div>
                     </CardBody>
@@ -160,15 +193,18 @@ export function StepOne({
 
                 {/* اطلاعات ارسال */}
                 <Card className="shadow-md border border-gray-100">
-                    <CardHeader>
-                        <p className="font-bold">اطلاعات ارسال</p>
-                    </CardHeader>
+                    <BoxHeader
+                        title="اطلاعات ارسال"
+                        color="text-orange-700 bg-orange-700/10"
+                        textSize="text-[16px]"
+                        icon={<TbTruckLoading className="text-2xl" />}
+                    />
                     <CardBody>
                         <div className="space-y-2">
                             <InfoRow label="روش ارسال" value={shipping.method} />
-                            <InfoRow label="هزینه ارسال" value={shipping.cost} />
+                            <InfoRow label="هزینه ارسال" value={shipping.cost} isActiveBg/>
                             <InfoRow label="زمان ارسال" value={shipping.time} />
-                            <InfoRow label="وزن مرسوله" value={shipping.weight} />
+                            <InfoRow label="وزن مرسوله" value={shipping.weight} isActiveBg/>
                         </div>
                     </CardBody>
                 </Card>
@@ -177,11 +213,3 @@ export function StepOne({
     );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
-    return (
-        <div className="flex justify-between text-sm border-b border-default-100 pb-1">
-            <span className="text-default-400">{label}</span>
-            <span className="font-medium text-right">{value}</span>
-        </div>
-    );
-}
