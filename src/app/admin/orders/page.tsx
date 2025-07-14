@@ -91,17 +91,13 @@ const Orders = () => {
                                 city="مشهد"
                                 delivery="ارسال امروز"
                                 price="۳۸۵,۰۰۰"
-                                onClicked={() => {
-                                    console.log("asdasdadasdas");
-                                    
-                                    setOrderId("DF-696620")
-                                }}
+                                onClicked={() => setOrderId("DF-696620")}
                             />
                         </section>
                     </div>
                     :
                     <div>
-                        <BackToPage title="بازگشت" link="/admin/orders/manual-order" onClick={() => setOrderId("")} />
+                        <BackToPage title="بازگشت" link="/admin/orders" onClick={() => setOrderId("")} />
                         <Card className="shadow-md mt-6">
                             <BoxHeader
                                 title={`سفارش ${orderId}`}
