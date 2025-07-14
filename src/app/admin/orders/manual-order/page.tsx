@@ -214,18 +214,17 @@ const ManualOrder = () => {
                                     <div className="flex flex-col gap-2 mt-4 bg-gradient-to-r from-white via-blue-950 to-white py-4 rounded-2xl p-4">
                                         <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
                                             <p>مبلغ کل محصولات</p>
-                                            <p className="text-gray-600">{totalPrice} تومان</p>
+                                            <p className="text-gray-600">{totalPrice.toLocaleString()} تومان</p>
                                         </div>
                                         {
-                                            isSelected && discount && discount <= 100
-                                                ?
+                                            isSelected && discount && (discountType === "percent" && discount <= 100) || (discountType === "money" && discount <= totalPrice) ?
                                                 <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
                                                     <p>مجموع تخفیف</p>
                                                     <p>
                                                         {
                                                             discountType === "money"
-                                                                ? `${totalPrice - discount} تومان`
-                                                                : totalPrice - (totalPrice * discount / 100)
+                                                                ? totalPrice - discount ? `${(totalPrice - discount).toLocaleString()} تومان` : `${totalPrice.toLocaleString()} تومان`
+                                                                : totalPrice - (totalPrice * discount / 100) ? `${(totalPrice - (totalPrice * discount / 100)).toLocaleString()} تومان` : `${totalPrice.toLocaleString()} تومان`
                                                         }
                                                     </p>
                                                 </div>
@@ -235,16 +234,16 @@ const ManualOrder = () => {
                                         <div className="mt-4">
                                             <Divider />
                                         </div>
-                                        <div className="!w-full text-lg text-black py-3 px-8 flex items-center justify-between">
+                                        <div className="!w-full text-lg bg-green-50 mt-4 rounded-xl text-black py-3 px-8 flex items-center justify-between">
                                             <p>مبلغ قابل پرداخت</p>
                                             <p className="text-gray-600">
                                                 {
-                                                    isSelected && discount && discount <= 100 ?
+                                                    isSelected && discount && (discountType === "percent" && discount <= 100) || (discountType === "money" && discount <= totalPrice) ?
                                                         discountType === "money"
-                                                            ? totalPrice - discount
-                                                            : totalPrice - (totalPrice * discount / 100)
+                                                            ? `${(totalPrice - discount).toLocaleString()} تومان`
+                                                            : `${(totalPrice - (totalPrice * discount / 100)).toLocaleString()} تومان`
                                                         :
-                                                        totalPrice
+                                                        `${totalPrice.toLocaleString()} تومان`
                                                 }
                                             </p>
                                         </div>
