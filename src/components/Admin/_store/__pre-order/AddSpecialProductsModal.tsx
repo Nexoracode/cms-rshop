@@ -152,9 +152,9 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                   />
 
                   <CardBody className="flex flex-col gap-4">
-                    {products.map((product) => (
+                    {products.map((product, index) => (
                       <div
-                        key={product.id}
+                        key={index}
                         className="flex items-center gap-4"
                       >
                         <Checkbox

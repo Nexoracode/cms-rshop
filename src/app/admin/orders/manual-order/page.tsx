@@ -28,7 +28,8 @@ const ManualOrder = () => {
 
     const [isSelected, setIsSelected] = useState(false);
     const [specialProducts, setSpecialProducts] = useState<any[]>([]);
-    const [customer, setCustomer] = useState<Record<string, any>>({});
+    const [customer, setCustomer] = useState<any>();
+
     const {
         isOpen: isProductOpen,
         onOpen: onProductOpen,
@@ -54,21 +55,22 @@ const ManualOrder = () => {
                     <Card className="shadow-md p-2">
                         <HeaderAction
                             title={"مشتری"}
-                            textBtn={"+ انتخاب مشتری"}
+                            textBtn={customer ? "ویرایش مشتری" : "+ انتخاب مشتری"}
                             onPress={onCustomerOpen}
                         />
                         <CardBody>
                             <div className="w-full">
                                 {
-                                    !customer.length
+                                    !customer
                                         ?
                                         <div className="w-full flex items-center justify-center flex-col animate-pulse">
                                             <TbUserExclamation className="text-[70px] animate-blink w-full text-gray-600 mb-2" />
                                             <p>هنوز کاربری را انتخاب نکرده اید</p>
                                         </div>
                                         :
-                                        <div>
-                                            اطلاعات مشتری
+                                        <div className="!w-full bg-slate-100 rounded-xl py-3 px-4 flex items-center justify-between">
+                                            <p>{customer.name}</p>
+                                            <p className="text-gray-600">{customer.phone}</p>
                                         </div>
                                 }
                             </div>
@@ -208,9 +210,10 @@ const ManualOrder = () => {
             <SelectCustomer
                 isOpen={isCustomerOpen}
                 onOpenChange={onOpenCustomerChange}
-                onAdd={(newSelection) => setSpecialProducts(newSelection)}
-                initialSelectedProducts={specialProducts}
+                onAdd={(newSelection) => setCustomer(newSelection)}
+                initialSelectedProducts={customer}
             />
+
         </>
     )
 }

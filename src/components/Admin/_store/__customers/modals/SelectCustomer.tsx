@@ -18,10 +18,10 @@ import { useEffect, useState } from "react";
 import { TbUser } from "react-icons/tb";
 
 type Customer = {
-  id: number,
-  name: string,
-  phone: string
-}
+  id: number;
+  name: string;
+  phone: string;
+};
 
 type Props = {
   isOpen: boolean;
@@ -34,115 +34,93 @@ const AddSpecialProductsModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
   onAdd,
-  initialSelectedProducts = [],
+  initialSelectedProducts,
 }) => {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-  const customer: Customer[] = [
-    {
-      id: 1,
-      name: "علی اصغر",
-      phone: "09031335939"
-    },
-    {
-      id: 2,
-      name: "احمد صهبایی",
-      phone: "09031335939"
-    },
-    {
-      id: 3,
-      name: "علی کورمی",
-      phone: "09031335939"
-    },
+  const customers: Customer[] = [
+    { id: 1, name: "علی اصغر", phone: "09031335939" },
+    { id: 2, name: "احمد صهبایی", phone: "09031335939" },
+    { id: 3, name: "علی کورمی", phone: "09031335939" },
   ];
 
-  // مقداردهی اولیه چک‌باکس‌ها بر اساس initialSelectedProducts
+  // مقداردهی اولیه انتخاب‌شده
   useEffect(() => {
-    if (isOpen) {
-      const initialIds = initialSelectedProducts.map((p) => p.id);
-      setSelectedIds(initialIds);
+    if (isOpen && initialSelectedProducts) {
+      setSelectedId(initialSelectedProducts.id);
+    } else if (isOpen) {
+      setSelectedId(null);
     }
   }, [isOpen, initialSelectedProducts]);
 
-  // تغییر انتخاب چک‌باکس
-  const toggleSelect = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
-    );
-  };
-
   const handleAdd = () => {
-    const allSelected = customer.filter((p) => selectedIds.includes(p.id));
-    onAdd(allSelected);
-    onOpenChange();
-    setSelectedIds([]);
+    const selected = customers.find((c) => c.id === selectedId);
+    if (selected) {
+      onAdd(selected);
+      onOpenChange();
+      setSelectedId(null);
+    }
   };
 
   return (
-    <>
-      <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
-        <ModalContent className="max-w-[700px] w-full">
-          {(onClose) => (
-            <>
-              <ModalHeader>
-                <p className="font-normal text-[16px]">افزودن مشتری</p>
-              </ModalHeader>
+    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
+      <ModalContent className="max-w-[700px] w-full">
+        <ModalHeader>
+          <p className="font-normal text-[16px]">افزودن مشتری</p>
+        </ModalHeader>
 
-              <ModalBody>
-                <Input
-                  isClearable
-                  size="lg"
-                  variant="bordered"
-                  className="bg-white rounded-xl"
-                  color="secondary"
-                  placeholder="جستجو نام یا شماره موبایل مشتری"
-                  startContent={<FiSearch className="text-xl" />}
-                />
+        <ModalBody>
+          <Input
+            isClearable
+            size="lg"
+            variant="bordered"
+            className="bg-white rounded-xl"
+            color="secondary"
+            placeholder="جستجو نام یا شماره موبایل مشتری"
+            startContent={<FiSearch className="text-xl" />}
+          />
 
-                <Card className="shadow-md mb-4">
-                  <BoxHeader
-                    title="کاربران"
-                    color="bg-purple-700/10 text-purple-700"
-                    icon={<TbUser className="text-3xl" />}
-                  />
+          <Card className="shadow-md mb-4 max-h-[300px] overflow-y-auto">
+            <BoxHeader
+              title="کاربران"
+              color="bg-purple-700/10 text-purple-700"
+              icon={<TbUser className="text-3xl" />}
+            />
 
-                  <CardBody className="flex flex-col gap-4">
-                    <RadioGroup
-                      value={selectedIds.includes(product.id)}
-                      onValueChange={() => toggleSelect(customer.id)}
-                    >
-                      {customer.map((customer, index) => (
-                        <div
-                          key={customer.id}
-                          className="flex items-center gap-4"
-                        >
-                          <Radio value={`$-${index}`}></Radio>
-                          <div className="w-full bg-slate-100 rounded-xl py-3 px-4 flex items-center justify-between">
-                            <p>{customer.name}</p>
-                            <p>{customer.phone}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </CardBody>
-                </Card>
+            <CardBody className="flex flex-col gap-4">
+              <RadioGroup
+                value={String(selectedId ?? "")}
+                onValueChange={(val) => setSelectedId(Number(val))}
+                className="w-full"
+              >
+                {customers.map((customer) => (
+                  <Radio
+                    key={customer.id}
+                    value={String(customer.id)}
+                    className=""
+                  >
+                    <div className="!w-[320px] bg-slate-100 rounded-xl py-3 px-4 flex items-center justify-between">
+                      <p>{customer.name}</p>
+                      <p className="text-gray-600">{customer.phone}</p>
+                    </div>
+                  </Radio>
+                ))}
+              </RadioGroup>
+            </CardBody>
+          </Card>
 
-                <Button
-                  variant="flat"
-                  color="secondary"
-                  className="mb-4"
-                  isDisabled={!selectedIds.length}
-                  onPress={handleAdd}
-                >
-                  اضافه کردن
-                </Button>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
+          <Button
+            variant="flat"
+            color="secondary"
+            className="mb-4"
+            isDisabled={selectedId === null}
+            onPress={handleAdd}
+          >
+            اضافه کردن
+          </Button>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 
