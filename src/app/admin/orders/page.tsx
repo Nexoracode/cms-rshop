@@ -2,7 +2,7 @@
 
 // Other
 import Link from "next/link";
-import { Button, Card, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
+import { Button, Card, CardBody, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
 import OptionBox from "@/components/Admin/OptionBox";
 import OrderBox from "@/components/Admin/_orders/OrderBox";
 import FilterModal from "@/components/Admin/_orders/modals/FilterModal";
@@ -17,6 +17,7 @@ import { useState } from "react";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import BackToPage from "@/components/Helper/BackToPage";
+import OrderWizard from "@/components/Admin/_orders/OrderWizard";
 
 const Orders = () => {
 
@@ -104,6 +105,9 @@ const Orders = () => {
                                 color="text-blue-700 bg-blue-700/10"
                                 icon={<TfiShoppingCartFull className="text-3xl" />}
                             />
+                            <CardBody>
+                                <OrderWizard />
+                            </CardBody>
                         </Card>
                     </div>
             }
