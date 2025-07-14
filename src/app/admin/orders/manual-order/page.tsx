@@ -24,14 +24,35 @@ const status = [
     { key: "geted", label: "تحویل گرفته" },
 ];
 
+type Product = {
+    id: number;
+    price: number;
+    img: string;
+    productName: string;
+    isExist: string;
+    subProductName: string;
+};
+
+
 const ManualOrder = () => {
 
     const [isSelected, setIsSelected] = useState(false);
-    const [specialProducts, setSpecialProducts] = useState<any[]>([]);
+    const [specialProducts, setSpecialProducts] = useState<Product[]>([]);
     const [customer, setCustomer] = useState<any>();
     //Discount
+    const [totalPrice, setTotalPrice] = useState(0);
     const [discount, setDiscount] = useState<any>();
     const [discountType, setDiscountType] = useState<"money" | "percent">("percent")
+
+    useEffect(() => {
+        if (specialProducts.length) {
+            specialProducts.map(product => {
+                if (product.isExist) {
+                    setTotalPrice(prev => prev += +product.price)
+                }
+            })
+        }
+    }, [specialProducts])
 
     const {
         isOpen: isProductOpen,
@@ -98,7 +119,7 @@ const ManualOrder = () => {
                                         <div className="flex flex-col gap-4">
                                             {
                                                 specialProducts.map((pr, index) => (
-                                                    <div className="flex flex-col gap-2 rounded-2xl p-2 bg-slate-200">
+                                                    <div className={`flex flex-col gap-2 rounded-2xl p-2 bg-slate-200 ${!pr.isExist ? "pointer-events-none select-none opacity-60" : ""}`}>
                                                         <ProductItem
                                                             key={index}
                                                             img={pr.img}
@@ -114,6 +135,7 @@ const ManualOrder = () => {
                                                                 labelPlacement="inside"
                                                                 placeholder="10"
                                                                 minValue={1}
+                                                                maxValue={99}
                                                                 endContent={"عدد"}
                                                             />
                                                         </div>
@@ -186,37 +208,49 @@ const ManualOrder = () => {
                         />
                         <CardBody className="text-right bg-gradient-to-r from-white via-green-100 to-white py-4">
                             <p>برای مشاهده فاکتور، محصولات مورد نظر و وضعیت پرداخت سفارش را مشخص کنید.</p>
-                            <div className="flex flex-col gap-2 mt-4 bg-gradient-to-r from-white via-blue-950 to-white py-4 rounded-2xl p-4">
-                                <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
-                                    <p>مبلغ کل محصولات</p>
-                                    <p className="text-gray-600">30000</p>
-                                </div>
-                                {
-                                    isSelected && discount
-                                        ?
+                            {
+                                specialProducts.length
+                                    ?
+                                    <div className="flex flex-col gap-2 mt-4 bg-gradient-to-r from-white via-blue-950 to-white py-4 rounded-2xl p-4">
                                         <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
-                                            <p>مجموع تخفیف</p>
+                                            <p>مبلغ کل محصولات</p>
+                                            <p className="text-gray-600">{totalPrice} تومان</p>
+                                        </div>
+                                        {
+                                            isSelected && discount && discount <= 100
+                                                ?
+                                                <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
+                                                    <p>مجموع تخفیف</p>
+                                                    <p>
+                                                        {
+                                                            discountType === "money"
+                                                                ? `${totalPrice - discount} تومان`
+                                                                : totalPrice - (totalPrice * discount / 100)
+                                                        }
+                                                    </p>
+                                                </div>
+                                                :
+                                                ""
+                                        }
+                                        <div className="mt-4">
+                                            <Divider />
+                                        </div>
+                                        <div className="!w-full text-lg text-black py-3 px-8 flex items-center justify-between">
+                                            <p>مبلغ قابل پرداخت</p>
                                             <p className="text-gray-600">
                                                 {
-                                                    discountType === "money"
-                                                        ?
-                                                        ""
+                                                    isSelected && discount && discount <= 100 ?
+                                                        discountType === "money"
+                                                            ? totalPrice - discount
+                                                            : totalPrice - (totalPrice * discount / 100)
                                                         :
-                                                        ""
+                                                        totalPrice
                                                 }
                                             </p>
                                         </div>
-                                        :
-                                        ""
-                                }
-                                <div className="mt-4">
-                                    <Divider />
-                                </div>
-                                <div className="!w-full text-lg text-black py-3 px-8 flex items-center justify-between">
-                                    <p>مبلغ قابل پرداخت</p>
-                                    <p>400</p>
-                                </div>
-                            </div>
+                                    </div>
+                                    : ""
+                            }
                             <div className="py-6">
                                 <Divider />
                             </div>
@@ -240,7 +274,10 @@ const ManualOrder = () => {
             <AddSpecialProductsModal
                 isOpen={isProductOpen}
                 onOpenChange={onOpenProductChange}
-                onAdd={(newSelection) => setSpecialProducts(newSelection)}
+                onAdd={(newSelection) => {
+                    setTotalPrice(0)
+                    setSpecialProducts(newSelection)
+                }}
                 initialSelectedProducts={specialProducts}
             />
 
