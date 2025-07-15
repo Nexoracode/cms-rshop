@@ -18,15 +18,14 @@ const STEP_TITLES: Record<StepKey, string> = {
 const OrderWizard = () => {
   const [step, setStep] = useState<StepKey>("1")
 
-  // فانکشن نمونه برای جابجایی بین مراحل
-  const next = () => {
+/*   const next = () => {
     const nextNum = Math.min(Number(step) + 1, 6)
     setStep(String(nextNum) as StepKey)
   }
   const prev = () => {
     const prevNum = Math.max(Number(step) - 1, 1)
     setStep(String(prevNum) as StepKey)
-  }
+  } */
 
   return (
     <div className="space-y-4">
@@ -82,15 +81,14 @@ const OrderWizard = () => {
         actionBox={<StepContent step={step} />}
       />
 
-      {/* کنترل‌های نمونه */}
-      <div className="flex justify-between">
+{/*       <div className="flex justify-between">
         <Button variant="flat" onPress={prev} isDisabled={step === "1"}>
           قبلی
         </Button>
         <Button variant="flat" onPress={next} isDisabled={step === "6"}>
           بعدی
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 }

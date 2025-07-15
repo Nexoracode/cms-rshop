@@ -4,6 +4,7 @@ import { Button, Input, Select, SelectItem, Switch } from "@heroui/react";
 import { useState } from "react";
 import { TbTruckLoading } from "react-icons/tb";
 import { StepKey } from "./type";
+import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
 const StepContent = ({ step }: { step: StepKey }) => {
     const [isSelected, setIsSelected] = useState(true);
@@ -25,15 +26,15 @@ const StepContent = ({ step }: { step: StepKey }) => {
                         >
                             عدم تایید
                         </Button>
-                        <Button
-                            color="primary"
+                        <DoubleClickBtn
+                            onPress={() => console.log("Test")}
+                            textBtn="تایید درخواست"
                             startContent={<TbTruckLoading className="text-lg" />}
-                            onPress={() => { }}
+                            color="success"
                             size="sm"
                             className="mt-4 w-full"
-                        >
-                            تایید درخواست
-                        </Button>
+                            isActiveDoubleClick
+                        />
                     </div>
                 </>
             )
