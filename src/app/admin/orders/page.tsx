@@ -17,7 +17,7 @@ import { useState } from "react";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import BackToPage from "@/components/Helper/BackToPage";
-import OrderWizard from "@/components/Admin/_orders/OrderWizard";
+import OrderWizard from "@/components/Admin/_orders/OrderProccess/OrderWizard";
 
 const Orders = () => {
 

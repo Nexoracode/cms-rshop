@@ -5,8 +5,8 @@ import {
     CardBody,
     Divider,
 } from "@heroui/react";
-import InfoRow from "./helper/InfoRow";
-import BoxHeader from "../_products/__create/helpers/BoxHeader";
+import InfoRow from "../helper/InfoRow";
+import BoxHeader from "../../_products/__create/helpers/BoxHeader";
 import { LuUserRound } from "react-icons/lu";
 import { TiInfoLargeOutline } from "react-icons/ti";
 import { IoMdPaper } from "react-icons/io";
