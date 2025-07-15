@@ -53,7 +53,7 @@ const ManualOrder = () => {
                 price += item.price * item.count
             })
             console.log("FFFFFFFFFFFFF", price);
-            
+
             setTotalPrice(price)
         }
     }, [specialProducts])
@@ -142,16 +142,15 @@ const ManualOrder = () => {
                                                                 defaultValue={1}
                                                                 endContent={"عدد"}
                                                                 onValueChange={(val) => {
+                                                                    if (specialProducts === undefined) return;
+
                                                                     setSpecialProducts(prev => {
-                                                                        const unchangeProducts = prev.filter(product => product.id !== pr.id)
-                                                                        const updateProduct = prev.find(product => product.id === pr.id)
-                                                                        updateProduct && (updateProduct.count = val)
-                                                                        console.log(unchangeProducts, updateProduct);
-                                                                        if (updateProduct) {
-                                                                            return [...unchangeProducts, updateProduct]
-                                                                        }
-                                                                    })
-                                                                    setTotalPrice(0)
+                                                                        return prev.map(product =>
+                                                                            product.id === pr.id ? { ...product, count: val } : product
+                                                                        );
+                                                                    });
+
+                                                                    setTotalPrice(0);
                                                                 }}
                                                             />
                                                         </div>
@@ -291,7 +290,7 @@ const ManualOrder = () => {
                 onOpenChange={onOpenProductChange}
                 onAdd={(newSelection) => {
                     setTotalPrice(0)
-                    console.log("################",newSelection);
+                    console.log("################", newSelection);
                     setSpecialProducts(newSelection)
                 }}
                 initialSelectedProducts={specialProducts}
