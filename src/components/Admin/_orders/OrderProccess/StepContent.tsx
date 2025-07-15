@@ -6,8 +6,13 @@ import { TbTruckLoading } from "react-icons/tb";
 import { StepKey } from "./type";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
-const StepContent = ({ step }: { step: StepKey }) => {
-    const [isSelected, setIsSelected] = useState(true);
+type Props = {
+    step: StepKey,
+    onNextStep: () => void
+}
+
+const StepContent = ({ step, onNextStep }: Props) => {
+    const [isSelected, setIsSelected] = useState(false);
 
     switch (step) {
         case "1":
@@ -26,7 +31,7 @@ const StepContent = ({ step }: { step: StepKey }) => {
                             isActiveDoubleClick
                         />
                         <DoubleClickBtn
-                            onPress={() => console.log("Test")}
+                            onPress={onNextStep}
                             textBtn="تایید درخواست"
                             startContent={<TbTruckLoading className="text-lg" />}
                             color="success"
@@ -50,23 +55,22 @@ const StepContent = ({ step }: { step: StepKey }) => {
                         سفارش کارت به کارت توسط مشتری پرداخت شده و تصویر رسید ارسال شده است.
                     </p>
                     <div className="w-full flex items-center gap-2">
-                        <Button
+                        <DoubleClickBtn
+                            onPress={() => console.log("Test")}
+                            textBtn="عدم تایید"
                             color="danger"
-                            variant="flat"
-                            onPress={() => { }}
                             size="sm"
                             className="mt-4 w-full"
-                        >
-                            عدم تایید
-                        </Button>
-                        <Button
-                            color="primary"
-                            onPress={() => { }}
+                            isActiveDoubleClick
+                        />
+                        <DoubleClickBtn
+                            onPress={onNextStep}
+                            textBtn="تایید"
+                            color="success"
                             size="sm"
                             className="mt-4 w-full"
-                        >
-                            تایید
-                        </Button>
+                            isActiveDoubleClick
+                        />
                     </div>
                 </>
             )
@@ -108,14 +112,14 @@ const StepContent = ({ step }: { step: StepKey }) => {
                     </div>
 
                     <div className="w-full flex items-center gap-2">
-                        <Button
-                            color="primary"
-                            onPress={() => { }}
+                        <DoubleClickBtn
+                            onPress={onNextStep}
+                            textBtn="تایید"
+                            color="success"
                             size="sm"
                             className="mt-4 w-full"
-                        >
-                            تایید
-                        </Button>
+                            isActiveDoubleClick
+                        />
                     </div>
                 </>
             )
@@ -126,14 +130,15 @@ const StepContent = ({ step }: { step: StepKey }) => {
                         لطفا در صورت اطمینان از تحویل مرسوله به مشتری، وضعیت سفارش را "تحویل شده" تعیین کنید.
                     </p>
                     <div className="w-full flex items-center gap-2">
-                        <Button
+                        <DoubleClickBtn
+                            onPress={onNextStep}
+                            textBtn="تحویل شده"
                             color="secondary"
-                            onPress={() => { }}
                             size="sm"
+                            variant="solid"
                             className="mt-4 w-full"
-                        >
-                            تحویل شده
-                        </Button>
+                            isActiveDoubleClick
+                        />
                     </div>
                 </>
             )
