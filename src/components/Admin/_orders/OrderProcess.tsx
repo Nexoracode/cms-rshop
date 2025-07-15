@@ -2,12 +2,9 @@
 
 import {
     Card,
-    CardHeader,
     CardBody,
-    Button,
     Divider,
 } from "@heroui/react";
-import { FiShoppingCart } from "react-icons/fi";
 import InfoRow from "./helper/InfoRow";
 import BoxHeader from "../_products/__create/helpers/BoxHeader";
 import { LuUserRound } from "react-icons/lu";
@@ -34,8 +31,13 @@ type OrderInfo = {
 };
 
 type InvoiceItem = {
-    label: string;
-    value: string;
+    total: string,
+    discount: string,
+    code: string,
+    tax: string,
+    shippingCost: string,
+    packagingCost: string,
+    totalDue: string,
 };
 
 type ShippingInfo = {
@@ -47,19 +49,14 @@ type ShippingInfo = {
 
 type StepOneProps = {
     customer: CustomerInfo;
+    actionBox: React.ReactNode,
     order: OrderInfo;
-    invoice: InvoiceItem[];
+    invoice: InvoiceItem;
     shipping: ShippingInfo;
-    onReview: () => void;
 };
 
-export function StepOne({
-    customer,
-    order,
-    invoice,
-    shipping,
-    onReview,
-}: StepOneProps) {
+const OrderProcess = ({ customer, order, invoice, shipping, actionBox }: StepOneProps) => {
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             {/* ستون اول */}
@@ -74,29 +71,7 @@ export function StepOne({
                     />
                     {order.instruction && (
                         <CardBody className="text-right">
-                            <p className="text-default-600">
-                                پس از تایید درخواست سفارش ، مشتری میتواند مبلغ سفارش را به صورت کارت به کارت پرداخت کند.
-                            </p>
-                            <div className="w-full flex items-center gap-2">
-                                <Button
-                                    color="danger"
-                                    variant="flat"
-                                    onPress={onReview}
-                                    size="sm"
-                                    className="mt-4 w-full"
-                                >
-                                    عدم تایید
-                                </Button>
-                                <Button
-                                    color="primary"
-                                    startContent={<FiShoppingCart />}
-                                    onPress={onReview}
-                                    size="sm"
-                                    className="mt-4 w-full"
-                                >
-                                    تایید درخواست
-                                </Button>
-                            </div>
+                            {actionBox}
                         </CardBody>
                     )}
                 </Card>
@@ -125,12 +100,14 @@ export function StepOne({
                             </div>
                         </div>
                         <div className="space-y-1">
-                            {invoice.map((item, idx) => (
-                                <div key={idx} className={`flex justify-between rounded-md p-2 ${idx % 2 !== 0 ? "bg-slate-100" : ""}`}>
-                                    <span className="text-default-600">{item.label}</span>
-                                    <span className="font-medium">{item.value}</span>
-                                </div>
-                            ))}
+                            <InfoRow label="جمع کل" value={invoice.total} isActiveBg />
+                            <InfoRow label="تخفیف محصولات" value={invoice.discount} />
+                            <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg />
+                            <InfoRow label="مالیات" value={invoice.tax} />
+                            <InfoRow label="هزینه ارسال" value={invoice.shippingCost} isActiveBg />
+                            <InfoRow label="هزینه بسته بندی" value={invoice.packagingCost} />
+                            <Divider />
+                            <InfoRow label="مبلغ قابل پرداخت" value={invoice.totalDue} />
                         </div>
                     </CardBody>
                 </Card>
@@ -202,9 +179,9 @@ export function StepOne({
                     <CardBody>
                         <div className="space-y-2">
                             <InfoRow label="روش ارسال" value={shipping.method} />
-                            <InfoRow label="هزینه ارسال" value={shipping.cost} isActiveBg/>
+                            <InfoRow label="هزینه ارسال" value={shipping.cost} isActiveBg />
                             <InfoRow label="زمان ارسال" value={shipping.time} />
-                            <InfoRow label="وزن مرسوله" value={shipping.weight} isActiveBg/>
+                            <InfoRow label="وزن مرسوله" value={shipping.weight} isActiveBg />
                         </div>
                     </CardBody>
                 </Card>
@@ -213,3 +190,4 @@ export function StepOne({
     );
 }
 
+export default OrderProcess
