@@ -33,6 +33,7 @@ type Product = {
     subProductName: string;
 };
 
+type Count = { _id: string, count: number }
 
 const ManualOrder = () => {
 
@@ -40,19 +41,10 @@ const ManualOrder = () => {
     const [specialProducts, setSpecialProducts] = useState<Product[]>([]);
     const [customer, setCustomer] = useState<any>();
     //Discount
+    const [productCount, setProductCount] = useState<Count[]>([])
     const [totalPrice, setTotalPrice] = useState(0);
     const [discount, setDiscount] = useState<any>();
     const [discountType, setDiscountType] = useState<"money" | "percent">("percent")
-
-    useEffect(() => {
-        if (specialProducts.length) {
-            specialProducts.map(product => {
-                if (product.isExist) {
-                    setTotalPrice(prev => prev += +product.price)
-                }
-            })
-        }
-    }, [specialProducts])
 
     const {
         isOpen: isProductOpen,
@@ -135,8 +127,27 @@ const ManualOrder = () => {
                                                                 labelPlacement="inside"
                                                                 placeholder="10"
                                                                 minValue={1}
-                                                                maxValue={99}
+                                                                defaultValue={1}
                                                                 endContent={"عدد"}
+                                                                onValueChange={(val) => {
+                                                                    if (!specialProducts.length) return;
+
+                                                                    specialProducts.map(product => {
+                                                                        if (product.isExist && product.id === pr.id) {
+                                                                            setProductCount((prev: Count[]) => {
+
+                                                                                const isExistProduct = prev.find(item => +item._id === pr.id);
+                                                                                const products = prev.filter(item => +item._id !== pr.id);
+
+                                                                                if (!isExistProduct) {
+                                                                                    return [...prev, { _id: String(pr.id), count: val }];
+                                                                                } else {
+                                                                                    return [...products, { _id: String(pr.id), count: val }];
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
@@ -275,6 +286,20 @@ const ManualOrder = () => {
                 onOpenChange={onOpenProductChange}
                 onAdd={(newSelection) => {
                     setTotalPrice(0)
+                    if (!specialProducts.length) {
+                        
+                        newSelection.map(product => {
+                            if (product.isExist) {
+                                setTotalPrice(prev => prev += +product.price)
+                            }
+                        })
+                        
+                        const products = newSelection.map(item => {
+                            return { id: String(item.id), count: 1 }
+                        })
+                        console.log(products);
+                        setProductCount(products as any)
+                    }
                     setSpecialProducts(newSelection)
                 }}
                 initialSelectedProducts={specialProducts}
