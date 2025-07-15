@@ -17,15 +17,14 @@ const StepContent = ({ step }: { step: StepKey }) => {
                         پس از تایید درخواست سفارش ، مشتری میتواند مبلغ سفارش را به صورت کارت به کارت پرداخت کند.
                     </p>
                     <div className="w-full flex items-center gap-2">
-                        <Button
+                        <DoubleClickBtn
+                            onPress={() => console.log("Test")}
+                            textBtn="عدم تایید"
                             color="danger"
-                            variant="flat"
-                            onPress={() => { }}
                             size="sm"
                             className="mt-4 w-full"
-                        >
-                            عدم تایید
-                        </Button>
+                            isActiveDoubleClick
+                        />
                         <DoubleClickBtn
                             onPress={() => console.log("Test")}
                             textBtn="تایید درخواست"

@@ -53,7 +53,7 @@ const DoubleClickBtn: React.FC<Props> = ({ className = "", color = "default", si
             size={size}
             className={`${className} ${textButton === "دوباره کلیک کنید" ? "animate-bounce" : ""}`}
             startContent={startContent}
-            isDisabled={!isDisabledBtn ? isDisabled : isDisabledBtn}
+            isDisabled={isDisabled}
         >
             {textButton}
         </Button>
