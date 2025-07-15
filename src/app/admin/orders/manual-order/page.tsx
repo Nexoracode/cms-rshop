@@ -31,9 +31,10 @@ type Product = {
     productName: string;
     isExist: string;
     subProductName: string;
+    count: number
 };
 
-type Count = { _id: string, count: number }
+type Count = { _id: string, count: number, price: number }
 
 const ManualOrder = () => {
 
@@ -41,10 +42,21 @@ const ManualOrder = () => {
     const [specialProducts, setSpecialProducts] = useState<Product[]>([]);
     const [customer, setCustomer] = useState<any>();
     //Discount
-    const [productCount, setProductCount] = useState<Count[]>([])
     const [totalPrice, setTotalPrice] = useState(0);
     const [discount, setDiscount] = useState<any>();
     const [discountType, setDiscountType] = useState<"money" | "percent">("percent")
+
+    useEffect(() => {
+        if (specialProducts.length) {
+            let price = 0
+            specialProducts.map(item => {
+                price += item.price * item.count
+            })
+            console.log("FFFFFFFFFFFFF", price);
+            
+            setTotalPrice(price)
+        }
+    }, [specialProducts])
 
     const {
         isOpen: isProductOpen,
@@ -130,23 +142,16 @@ const ManualOrder = () => {
                                                                 defaultValue={1}
                                                                 endContent={"عدد"}
                                                                 onValueChange={(val) => {
-                                                                    if (!specialProducts.length) return;
-
-                                                                    specialProducts.map(product => {
-                                                                        if (product.isExist && product.id === pr.id) {
-                                                                            setProductCount((prev: Count[]) => {
-
-                                                                                const isExistProduct = prev.find(item => +item._id === pr.id);
-                                                                                const products = prev.filter(item => +item._id !== pr.id);
-
-                                                                                if (!isExistProduct) {
-                                                                                    return [...prev, { _id: String(pr.id), count: val }];
-                                                                                } else {
-                                                                                    return [...products, { _id: String(pr.id), count: val }];
-                                                                                }
-                                                                            });
+                                                                    setSpecialProducts(prev => {
+                                                                        const unchangeProducts = prev.filter(product => product.id !== pr.id)
+                                                                        const updateProduct = prev.find(product => product.id === pr.id)
+                                                                        updateProduct && (updateProduct.count = val)
+                                                                        console.log(unchangeProducts, updateProduct);
+                                                                        if (updateProduct) {
+                                                                            return [...unchangeProducts, updateProduct]
                                                                         }
-                                                                    });
+                                                                    })
+                                                                    setTotalPrice(0)
                                                                 }}
                                                             />
                                                         </div>
@@ -286,20 +291,7 @@ const ManualOrder = () => {
                 onOpenChange={onOpenProductChange}
                 onAdd={(newSelection) => {
                     setTotalPrice(0)
-                    if (!specialProducts.length) {
-                        
-                        newSelection.map(product => {
-                            if (product.isExist) {
-                                setTotalPrice(prev => prev += +product.price)
-                            }
-                        })
-                        
-                        const products = newSelection.map(item => {
-                            return { id: String(item.id), count: 1 }
-                        })
-                        console.log(products);
-                        setProductCount(products as any)
-                    }
+                    console.log("################",newSelection);
                     setSpecialProducts(newSelection)
                 }}
                 initialSelectedProducts={specialProducts}

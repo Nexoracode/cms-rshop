@@ -30,6 +30,7 @@ type Product = {
   productName: string;
   isExist: string;
   subProductName: string;
+  count: number,
 };
 
 type Props = {
@@ -58,8 +59,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
   } = useDisclosure();
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-  const products: Product[] = [
+  const [products, setProducts] = useState<Product[]>([
     {
       id: 1,
       price: 385000,
@@ -67,6 +67,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
       productName: "ویندوز 10",
       isExist: "موجود",
       subProductName: "کمترین قیمت",
+      count: 1
     },
     {
       id: 2,
@@ -75,6 +76,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
       productName: "ویندوز 10 نسخه دوم",
       isExist: "موجود",
       subProductName: "پرفروش‌ترین",
+      count: 1
     },
     {
       id: 3,
@@ -83,8 +85,9 @@ const AddSpecialProductsModal: React.FC<Props> = ({
       productName: "ویندوز 11",
       isExist: "موجود",
       subProductName: "نسخه جدید",
+      count: 1
     },
-  ];
+  ])
 
   // مقداردهی اولیه چک‌باکس‌ها بر اساس initialSelectedProducts
   useEffect(() => {
@@ -93,6 +96,28 @@ const AddSpecialProductsModal: React.FC<Props> = ({
       setSelectedIds(initialIds);
     }
   }, [isOpen, initialSelectedProducts]);
+
+  useEffect(() => {
+    if (initialSelectedProducts.length) {
+      setProducts(prev => {
+        
+        let pr: any = []
+
+        prev.map(product => {
+          
+          let filteredPr = initialSelectedProducts.filter(pr => pr.id === product.id)
+  
+          if (filteredPr.length) {
+            pr.push(...filteredPr)
+          } else {
+            pr.push(product)
+          }
+        })
+
+        return pr
+      })
+    }
+  }, [initialSelectedProducts])
 
   // تغییر انتخاب چک‌باکس
   const toggleSelect = (id: number) => {
