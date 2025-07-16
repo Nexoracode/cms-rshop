@@ -63,8 +63,8 @@ const OrderBox = ({
         <Card isBlurred className="border-none shadow-md cursor-pointer !transition-all hover:shadow-lg">
             <div className="w-full h-[4px] bg-cyan-200 rounded-t-md" />
             <CardBody className="p-4" onClick={onClicked}>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                <div className="flex flex-col xs:flex-row gap-3 items-center justify-between">
+                    <div className="flex w-full justify-between xs:justify-center items-center gap-3">
                         <div className="flex items-center gap-1">
                             <div>
                                 <IoIosArrowForward className="text-xl" />
@@ -80,61 +80,63 @@ const OrderBox = ({
                             <span className="text-xs text-gray-500">{date}</span>
                         </div>
                     </div>
-                    <Popover
-                        showArrow
-                        backdrop="opaque"
-                        offset={10}
-                        placement="bottom"
-                        isOpen={isOpen}
-                        onOpenChange={(open) => setIsOpen(open)}
-                    >
-                        <PopoverTrigger>
-                            <Button
-                                className="capitalize text-sm"
-                                color="secondary"
-                                variant="flat"
-                                size="sm"
-                            >
-                                {selectedStatus.label} <MdOutlineKeyboardArrowDown className="text-lg" />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[240px]">
-                            <div className="px-1 py-2 w-full">
-                                <div className="mt-2 flex flex-col gap-2 w-full">
-                                    <Listbox
-                                        items={statusOptions}
-                                        onAction={(key) => {
-                                            const selected = statusOptions.find((item) => item.key === key);
-                                            if (selected) {
-                                                setSelectedStatus(selected);
-                                                setIsOpen(false);
-                                            }
-                                        }}
-                                        selectedKeys={[selectedStatus.key]}
-                                    >
-                                        {(item) => (
-                                            <ListboxItem key={item.key}>{item.label}</ListboxItem>
-                                        )}
-                                    </Listbox>
+                    <div className="w-full">
+                        <Popover
+                            showArrow
+                            backdrop="opaque"
+                            offset={10}
+                            placement="bottom"
+                            isOpen={isOpen}
+                            onOpenChange={(open) => setIsOpen(open)}
+                        >
+                            <PopoverTrigger>
+                                <Button
+                                    className="capitalize w-full xs:w-fit text-sm"
+                                    color="secondary"
+                                    variant="flat"
+                                    size="sm"
+                                >
+                                    {selectedStatus.label} <MdOutlineKeyboardArrowDown className="text-lg" />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[240px]">
+                                <div className="px-1 py-2 w-full">
+                                    <div className="mt-2 flex flex-col gap-2 w-full">
+                                        <Listbox
+                                            items={statusOptions}
+                                            onAction={(key) => {
+                                                const selected = statusOptions.find((item) => item.key === key);
+                                                if (selected) {
+                                                    setSelectedStatus(selected);
+                                                    setIsOpen(false);
+                                                }
+                                            }}
+                                            selectedKeys={[selectedStatus.key]}
+                                        >
+                                            {(item) => (
+                                                <ListboxItem key={item.key}>{item.label}</ListboxItem>
+                                            )}
+                                        </Listbox>
+                                    </div>
                                 </div>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
+                            </PopoverContent>
+                        </Popover>
+                    </div>
                 </div>
 
                 <hr className="my-3 border-gray-200" />
 
-                <div className="flex justify-between items-center text-sm text-gray-700">
-                    <span className="flex items-center gap-1">
+                <div className="flex flex-wrap gap-4 justify-between items-center text-sm text-gray-700">
+                    <span className="bg-slate-100 rounded-xl p-2 px-4 flex-grow flex items-center gap-1">
                         <PiMoneyWavy className="text-xl" /> {price} تومان
                     </span>
-                    <span className="flex items-center gap-1">
+                    <span className="bg-slate-100 rounded-xl p-2 px-4 flex-grow flex items-center gap-1">
                         <TbTruckLoading className="text-xl" /> {delivery}
                     </span>
-                    <span className="flex items-center gap-1">
+                    <span className="bg-slate-100 rounded-xl p-2 px-4 flex-grow flex items-center gap-1">
                         <GrLocation className="text-xl" /> {province} - {city}
                     </span>
-                    <span className="text-[13p] flex items-center gap-1 text-gray-600">
+                    <span className="bg-slate-100 rounded-xl p-2 px-4 flex-grow flex items-center gap-1">
                         <LuUserRound className="text-xl" />
                         {name}
                     </span>
