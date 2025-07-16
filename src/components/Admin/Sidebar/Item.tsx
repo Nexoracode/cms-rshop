@@ -16,7 +16,7 @@ const Item = ({ title, routeName, icon, iconStyle, parentStyle, active }: Props)
     return (
         <Link
             href={`/admin/${routeName}`}
-            className={`flex flex-col sm:flex-row items-center justify-start text-md px-2 py-2 rounded-md transition ${parentStyle} ${pathname.includes(routeName) ? active : ""}`}
+            className={`flex flex-col sm:flex-row items-center justify-center lg:justify-start text-md px-2 py-2 rounded-2xl lg:rounded-md transition ${parentStyle} ${pathname.includes(routeName) ? active : ""}`}
         >
             <div className={`rounded-md p-1 ${iconStyle}`}>
                 {icon}
