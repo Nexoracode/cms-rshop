@@ -15,7 +15,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                 </div>
                 <div className="relative pt-12 mb-3">
                     <div className="arshop-card animate-pulse min-h-[70vh] absolute inset-0"></div>
-                    {children}
+                    <div className="max-w-[794px] mx-auto mb-28">
+                        {children}
+                    </div>
                 </div>
             </div>
         </div>
