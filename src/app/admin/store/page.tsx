@@ -73,14 +73,14 @@ const orderSettingsLinks = [
 
 const Settings: React.FC = () => {
     return (
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex justify-center flex-col sm:flex-row lg:items-start lg:justify-between gap-4">
             {/* تنظیمات فروشگاه */}
-            <Card className="shadow-md w-1/2">
+            <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] lg:w-1/2">
                 <CardHeader className="flex items-center justify-between bg-gray-200">
                     <p className="text-gray-600">تنظیمات فروشگاه</p>
                     <RiListSettingsLine className="text-2xl text-gray-600" />
                 </CardHeader>
-                <CardBody className="grid grid-cols-3 gap-4">
+                <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
                     {storeSettingsLinks.map(({ title, icon, route }) => (
                         <BoxLink
                             key={route}
@@ -96,12 +96,12 @@ const Settings: React.FC = () => {
             </Card>
 
             {/* تنظیمات سفارش گیری */}
-            <Card className="shadow-md w-1/2">
+            <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] lg:w-1/2">
                 <CardHeader className="flex items-center justify-between bg-blue-200">
                     <p className="text-blue-600">تنظیمات سفارش گیری</p>
                     <LuShoppingBag className="text-2xl text-blue-600" />
                 </CardHeader>
-                <CardBody className="grid grid-cols-3 gap-4">
+                <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
                     {orderSettingsLinks.map(({ title, icon, route }) => (
                         <BoxLink
                             key={route}
