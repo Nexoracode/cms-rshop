@@ -8,15 +8,15 @@ const MediaGallery = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <div>
+        <div className="w-full xs:w-fit">
             <Button
                 color="secondary"
                 variant="flat"
                 size="sm"
-                className="rounded-md"
+                className="rounded-md w-full xs:w-fit"
                 onPress={() => setIsOpen(true)}
             >
-                <LuImages className="text-lg" /> گالری
+                <LuImages className="text-lg" /> <span className="hidden sm:flex">گالری</span>
             </Button>
 
             <Modal isOpen={isOpen} onOpenChange={setIsOpen} placement="auto">

@@ -1,4 +1,4 @@
-import {heroui} from "@heroui/theme"
+import { heroui } from "@heroui/theme"
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -10,6 +10,14 @@ const config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: '420px',
+        sm: '576px',
+        md: '768px',
+        lg: '992px',
+        xl: '1200px',
+        '2xl': '1400px',
+      },
     },
   },
   darkMode: "class",

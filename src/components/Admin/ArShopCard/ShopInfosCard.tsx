@@ -57,7 +57,7 @@ const ShopInfosCard = () => {
     return (
         <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md -mb-5">
             <ArShopCard activeOrderBadge>
-                <div className="flex flex-col gap-2 bg-gray-50 p-4 rounded-xl items-center">
+                <div className="flex xs:flex-col mt-3 xs:mt-0 gap-2 sm:bg-gray-50 sm:p-4 rounded-xl items-center">
                     <MediaGallery />
                     <Popover
                         showArrow
@@ -72,9 +72,9 @@ const ShopInfosCard = () => {
                                 color="secondary"
                                 variant="flat"
                                 size="sm"
-                                className="rounded-md"
+                                className="rounded-md w-full xs:w-fit"
                             >
-                                <MdMoreVert className="text-lg" /> بیشتر
+                                <MdMoreVert className="text-lg" /> <span className="hidden sm:flex">بیشتر</span>
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-[240px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
@@ -102,7 +102,7 @@ const ShopInfosCard = () => {
                     </Popover>
                 </div>
             </ArShopCard>
-            <div className="flex items-center justify-around mt-6">
+            <div className="flex flex-wrap gap-6 items-center justify-around mt-6">
                 {topLinks.map(({ title, icon, route, parent, iconBg }) => (
                     <BoxLink
                         key={route}

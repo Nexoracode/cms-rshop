@@ -8,7 +8,7 @@ import Item from "./Item";
 
 export default function Sidebar() {
     return (
-        <aside className="h-fit lg:h-[calc(100vh-24px)] sticky top-3 p-2 bg-white shadow-lg mt-6 rounded-3xl bg-gradient-to-r from-white via-slate-200">
+        <aside className="h-fit lg:h-[calc(100vh-24px)] sticky top-3 p-2 bg-white shadow-lg mt-6 rounded-3xl bg-gradient-to-r from-white via-slate-100">
             <div className="hidden lg:flex pt-6 pb-4 border-b items-center justify-center">
                 <img src="/images/logo.png" alt="logo" className="w-28" />
             </div>

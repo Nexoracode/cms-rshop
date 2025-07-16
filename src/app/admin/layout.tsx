@@ -9,7 +9,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             <div className="fixed bottom-0 left-0 right-0 lg:relative w-3/12 z-50">
                 <Sidebar />
             </div>
-            <div className="w-9/12 pr-6 mt-6">
+            <div className="w-full lg:w-9/12 lg:pr-6 mt-6">
                 <div className="mb-6">
                     <ShopInfosCard />
                 </div>
