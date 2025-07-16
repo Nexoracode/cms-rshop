@@ -11,6 +11,7 @@ const config = {
   theme: {
     extend: {
       screens: {
+        phone: '360px',
         xs: '420px',
         sm: '576px',
         md: '768px',

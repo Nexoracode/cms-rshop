@@ -11,7 +11,7 @@ const ArShopCard: React.FC<Props> = ({ activeOrderBadge= false, children }) => {
 
     return (
         <Card className="shadow-md bg-gradient-to-r from-white via-purple-400">
-            <CardBody>
+            <CardBody className="p-2 sm:p-3">
                 <div className="flex flex-col xs:flex-row xs:items-center justify-between">
                     <div className="flex items-center gap-3 text-start">
                         <img

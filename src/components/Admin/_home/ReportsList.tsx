@@ -70,7 +70,7 @@ const ReportsList = () => {
                     </Popover>
                 }
             />
-            <CardBody className="shadow-md grid grid-cols-2 gap-6">
+            <CardBody className="shadow-md grid xs:grid-cols-2 gap-2 xs:gap-6">
                 <ReportBox title="بازدید سایت" icon={<TbWorldSearch className="text-2xl text-purple-600" />} count={"3000"} />
                 <ReportBox title="فروش کل" icon={<PiMoneyWavyBold className="text-2xl text-purple-600" />} count={"3000"} />
                 <ReportBox title="سفارش ها" icon={<HiOutlineDocumentText className="text-2xl text-purple-600" />} count={"3000"} />
