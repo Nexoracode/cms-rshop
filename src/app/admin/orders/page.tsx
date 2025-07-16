@@ -47,9 +47,9 @@ const Orders = () => {
             {
                 !orderId.length
                     ?
-                    <div>
-                        <header className="flex items-center justify-between mb-6">
-                            <p>سفارش (1)</p>
+                    <section className="flex flex-col gap-6">
+                        <header className="flex items-center justify-between">
+                            <p>لیست سفارشات</p>
                             <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
                                 <Link href={'/admin/orders/manual-order'}>
                                     ثبت سفارش
@@ -57,7 +57,7 @@ const Orders = () => {
                             </Button>
                         </header>
 
-                        <Card className="shadow-none my-6">
+                        <Card className="shadow-none">
                             <BoxHeader
                                 title="باکس فیلر"
                                 color="text-white bg-gray-800"
@@ -95,7 +95,7 @@ const Orders = () => {
 
                         <Card className="shadow-md">
                             <BoxHeader
-                                title="محصولات"
+                                title="سفارشات"
                                 color="text-blue-700 bg-blue-700/10"
                                 icon={<IoReceiptOutline className="text-3xl" />}
                             />
@@ -114,7 +114,7 @@ const Orders = () => {
                                 />
                             </CardBody>
                         </Card>
-                    </div>
+                    </section>
                     :
                     <div>
                         <BackToPage title="بازگشت" link="/admin/orders" onClick={() => setOrderId("")} />

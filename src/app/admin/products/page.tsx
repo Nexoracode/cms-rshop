@@ -47,9 +47,9 @@ const Products = () => {
 
     return (
         <>
-            <div>
+            <section className="flex flex-col gap-6">
                 <header className="flex items-center justify-between">
-                    <p>محصول (1)</p>
+                    <p>لیست محصولات</p>
                     <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
                         <Link href={'/admin/products/create'}>
                             محصول جدید
@@ -57,7 +57,7 @@ const Products = () => {
                     </Button>
                 </header>
 
-                <Card className="shadow-none my-6">
+                <Card className="shadow-none">
                     <BoxHeader
                         title="باکس فیلر"
                         color="text-white bg-gray-800"
@@ -103,7 +103,7 @@ const Products = () => {
                         />
                     </CardBody>
                 </Card>
-            </div>
+            </section>
             <ActionsModal
                 isOpen={isActionsOpen}
                 onOpenChange={onActionsOpenChange}
