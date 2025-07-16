@@ -55,7 +55,7 @@ const ShopInfosCard = () => {
     ];
 
     return (
-        <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md">
+        <div className="bg-gradient-to-l from-blue-100 via-purple-100 rounded-xl p-4 shadow-md -mb-5">
             <ArShopCard activeOrderBadge>
                 <div className="flex flex-col gap-2 bg-gray-50 p-4 rounded-xl items-center">
                     <MediaGallery />
