@@ -64,7 +64,7 @@ const OrderBox = ({
             <div className="w-full h-[4px] bg-cyan-200 rounded-t-md" />
             <CardBody className="p-4" onClick={onClicked}>
                 <div className="flex flex-col xs:flex-row gap-3 items-center justify-between">
-                    <div className="flex w-full justify-between xs:justify-center items-center gap-3">
+                    <div className="flex w-full justify-between xs:justify-start items-center gap-3">
                         <div className="flex items-center gap-1">
                             <div>
                                 <IoIosArrowForward className="text-xl" />

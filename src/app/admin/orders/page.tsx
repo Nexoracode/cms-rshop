@@ -76,10 +76,10 @@ const Orders = () => {
                             >
                             </Input>
                         </section>
-                        <section className="flex items-center justify-between px-8 my-3">
-                            <OptionBox title="فیلتر" icon={<IoFilter className="text-[16px]" />} onClick={onOpenFilter} />
-                            <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="text-[16px]" />} onClick={onOpenSort} />
-                            <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="text-[16px]" />} onClick={onOpenFeature} />
+                        <section className="flex flex-wrap items-center gap-2 justify-between my-3">
+                            <OptionBox title="فیلتر" icon={<IoFilter className="!text-[16px]" />} onClick={onOpenFilter} />
+                            <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="!text-[16px]" />} onClick={onOpenSort} />
+                            <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="!text-[16px]" />} onClick={onOpenFeature} />
                         </section>
                         <section className="flex flex-col gap-3">
                             <OrderBox

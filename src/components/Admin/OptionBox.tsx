@@ -11,7 +11,7 @@ type Props = {
 const OptionBox: React.FC<Props> = ({ icon, onClick, title }) => {
 
     return (
-        <Button color="secondary" variant="light" startContent={icon} onPress={onClick}>
+        <Button color="success" className="flex-grow" variant="flat" startContent={icon} onPress={onClick}>
             {title}
         </Button>
     )
