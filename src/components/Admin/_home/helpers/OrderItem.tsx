@@ -19,11 +19,11 @@ const OrderItem: React.FC<Props> = ({price, customerName, status}) => {
                 </div>
                 <div className="flex flex-col gap-2">
                     <p>{customerName}</p>
-                    <p>{price.toLocaleString()} تومان</p>
+                    <p className="text-gray-600">{price.toLocaleString()} تومان</p>
                 </div>
             </div>
             <div className="w-full flex-col phone:flex-row sm:flex-col bg-white p-2 rounded-xl sm:max-w-36 flex gap-2 items-center">
-                <p className="w-1/2 sm:w-auto text-start w-full">{status}</p>
+                <p className="sm:w-auto text-start w-full">{status}</p>
                 <Progress isStriped aria-label="Loading..." className="w-full animate-pulse" color="secondary" value={60} />
             </div>
         </div>

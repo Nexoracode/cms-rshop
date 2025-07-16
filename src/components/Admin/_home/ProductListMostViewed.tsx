@@ -29,6 +29,20 @@ const ProductListMostViewed = () => {
                     isExist="موجود"
                     subProductName="کمترین قیمت"
                 />
+                <ProductItem
+                    img="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
+                    price={385000}
+                    productName="ویندوز 10"
+                    isExist="موجود"
+                    subProductName="کمترین قیمت"
+                />
+                <ProductItem
+                    img="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
+                    price={385000}
+                    productName="ویندوز 10"
+                    isExist="موجود"
+                    subProductName="کمترین قیمت"
+                />
             </CardBody>
         </Card>
     )
