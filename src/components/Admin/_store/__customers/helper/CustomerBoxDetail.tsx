@@ -15,6 +15,7 @@ type Props = {
     membership: string;
     lastPurchase: string;
     onShowDetail: () => void;
+    cardHeader?: React.ReactNode
 };
 
 const CustomerBoxDetail: React.FC<Props> = ({
@@ -24,21 +25,28 @@ const CustomerBoxDetail: React.FC<Props> = ({
     membership,
     lastPurchase,
     onShowDetail,
+    cardHeader
 }) => {
     return (
         <Card className="w-full border shadow-md">
+            {cardHeader}
             <CardBody>
-                <div className="w-full flex flex-col xs:flex-row items-center justify-between mb-4">
-                    <p className="hidden xs:flex">اطلاعات کلی کاربر</p>
-                    <Button
-                        onPress={onShowDetail}
-                        className="text-sm w-full xs:w-fit"
-                        variant="flat"
-                        color="primary"
-                    >
-                        مشاهده جزئیات
-                    </Button>
-                </div>
+                {
+                    !cardHeader
+                        ?
+                        <div className="w-full flex flex-col xs:flex-row items-center justify-between mb-4">
+                            <p className="hidden xs:flex">اطلاعات کلی کاربر</p>
+                            <Button
+                                onPress={onShowDetail}
+                                className="text-sm w-full xs:w-fit"
+                                variant="flat"
+                                color="primary"
+                            >
+                                مشاهده جزئیات
+                            </Button>
+                        </div>
+                        : ""
+                }
                 <div className="flex flex-wrap gap-4 justify-between items-center text-sm text-gray-700">
                     <CustomerBoxInfo
                         title={`${firstName} ${lastName}`}

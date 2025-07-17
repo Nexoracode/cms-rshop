@@ -121,7 +121,7 @@ const Customers = () => {
                     :
                     <div className="flex flex-col gap-6">
 
-                        <BackToPage title="لیست مشتریان" link="customers" onClick={() => setUserId("")} />
+                        <BackToPage title="برگشت" link="customers" onClick={() => setUserId("")} />
 
                         <div className="bg-white p-4 rounded-2xl">
                             <CustomerInfo
