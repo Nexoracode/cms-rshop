@@ -4,15 +4,20 @@ import { Card, CardBody, useDisclosure } from "@heroui/react";
 import { TbBookmarks } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewAttributeModal from "./modals/AddNewAttributeModal/AddNewAttributeModal";
+import { AttributeData } from "./modals/AddNewAttributeModal/Types";
 
 const AttributesProducts = () => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [infos, setInfos] = useState({
-        price: ""
-    })
+    const [attributes, setAttributes] = useState<AttributeData[]>([]);
+
+    useEffect(() => {
+        if (attributes.length) {
+            console.log(attributes);
+        }
+    }, [attributes])
 
     return (
         <>
@@ -35,7 +40,7 @@ const AttributesProducts = () => {
             <AddNewAttributeModal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                onSubmit={() => {}}
+                onSubmit={setAttributes}
             />
         </>
     );

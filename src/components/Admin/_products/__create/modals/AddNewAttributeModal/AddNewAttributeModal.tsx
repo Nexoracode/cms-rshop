@@ -14,17 +14,12 @@ import { Attribute, AttributeData } from "./Types";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onSubmit: () => void;
+  onSubmit: (attribute: AttributeData[]) => void;
 };
 
 const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit }) => {
 
   const [attributes, setAttributes] = useState<AttributeData[]>([]);
-
-  useEffect(() => {
-    //console.log("!!!!!!!!!!!!!!!!!!", attributes);
-
-  }, [attributes])
 
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement="auto">
@@ -74,7 +69,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
 
             <ModalFooter>
               <Button isDisabled={attributes.length === 0} className="w-full" variant="solid" color="secondary" onPress={() => {
-                onSubmit();
+                onSubmit(attributes);
                 onOpenChange();
               }}>
                 ثبت تغییرات
