@@ -39,6 +39,7 @@ const AttributesProducts = () => {
                             ?
                             <SubAttributeBox
                                 titleCard={attributes[0].attr.label}
+                                isVariable={attributes[0].isVariable}
                                 onHandleSubmit={() => { }}
                             />
                             : <p className="text-gray-500 pr-2">■ این محصول تنوع رنگ‌بندی و سایزبندی و ... دارد؟ از این بخش می‌تونید آنها را اضافه کنید.</p>

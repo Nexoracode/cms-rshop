@@ -5,13 +5,15 @@ import { Accordion, AccordionItem, Button, Card, CardBody, Checkbox, NumberInput
 import { useState } from "react"
 import BoxHeader from "./BoxHeader"
 import { MdOutlineCategory } from "react-icons/md"
+import { TbCategory } from "react-icons/tb"
 
 type Props = {
     titleCard: string,
-    onHandleSubmit: () => void
+    onHandleSubmit: () => void,
+    isVariable: boolean
 }
 
-const SubAttributeBox: React.FC<Props> = ({titleCard, onHandleSubmit}) => {
+const SubAttributeBox: React.FC<Props> = ({ titleCard, onHandleSubmit, isVariable }) => {
 
     const [selectItem, setSelectItem] = useState<"today" | "time-ready">("time-ready")
     const [formData, setFormData] = useState({
@@ -24,11 +26,15 @@ const SubAttributeBox: React.FC<Props> = ({titleCard, onHandleSubmit}) => {
 
     return (
         <>
-            <Card className="shadow-md shadow-purple-300">
+            <Card className={`shadow-md ${isVariable ? "shadow-purple-300" : "" }`}>
                 <BoxHeader
                     title={titleCard}
-                    color="bg-purple-700/10 text-purple-700"
-                    icon={<MdOutlineCategory className="text-3xl" />}
+                    color={`${isVariable ? "bg-purple-700/10 text-purple-700" : "bg-gray-700/10 text-gray-700" }`}
+                    icon={
+                        !isVariable
+                            ? <TbCategory className="text-3xl" />
+                            : <MdOutlineCategory className="text-3xl" />
+                    }
                 />
                 <CardBody className="shadow-md flex flex-col gap-6">
                     <Accordion>
