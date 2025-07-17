@@ -143,7 +143,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                 <p className="font-normal text-[16px]">افزودن محصول</p>
               </ModalHeader>
 
-              <ModalBody>
+              <ModalBody className="p-2 xs:p4">
                 <p className="text-gray-600">محصولات مورد نظر را انتخاب کنید.</p>
 
                 <Input
@@ -156,7 +156,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                   startContent={<FiSearch className="text-xl" />}
                 />
 
-                <section className="flex items-center justify-start">
+                <section className="flex gap-3 items-center justify-start">
                   <OptionBox
                     title="فیلتر"
                     icon={<IoFilter className="text-[16px]" />}
@@ -180,7 +180,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                     {products.map((product, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-4"
+                        className="flex flex-col sm:flex-row sm:items-center bg-stone-50 sm:bg-transparent rounded-2xl p-2 sm:p-0 gap-4"
                       >
                         <Checkbox
                           isSelected={selectedIds.includes(product.id)}

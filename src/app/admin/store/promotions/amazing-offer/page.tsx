@@ -36,7 +36,7 @@ const AmazingOffer = () => {
                         <div className="flex items-center justify-between">
                             <div className="flex flex-col gap-2">
                                 <p>پیشنهادات ویژه</p>
-                                <p className="text-gray-600">هر نوع محصولی را میتوانید انتخاب کنید.</p>
+                                <p className="text-gray-600 hidden xs:flex">هر نوع محصولی را میتوانید انتخاب کنید.</p>
                             </div>
                             <Button color="secondary" size="sm" variant="flat" onPress={onOpen}>
                                 {specialProducts.length ? "ویرایش محصول" : "افزودن محصول"}
