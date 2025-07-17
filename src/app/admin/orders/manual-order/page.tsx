@@ -215,7 +215,7 @@ const ManualOrder = () => {
                             </div>
                         </CardBody>
                     </Card>
-                    <Card className="border-5 border-gray-300 border-dashed m-8 mx-12">
+                    <Card className="border-5 border-gray-300 border-dashed m-8 mx-0 sm:mx-12">
                         <BoxHeader
                             title="فاکتور"
                             color="text-green-700 bg-green-700/10"
@@ -227,13 +227,13 @@ const ManualOrder = () => {
                                 specialProducts.length
                                     ?
                                     <div className="flex flex-col gap-2 mt-4 bg-gradient-to-r from-white via-blue-950 to-white py-4 rounded-2xl p-4">
-                                        <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
+                                        <div className="!w-full flex-col xs:flex-row gap-2 xs:gap-0 xs:text-md sm:text-lg bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
                                             <p>مبلغ کل محصولات</p>
                                             <p className="text-gray-600">{totalPrice.toLocaleString()} تومان</p>
                                         </div>
                                         {
                                             isSelected && discount && (discountType === "percent" && discount <= 100) || (discountType === "money" && discount <= totalPrice) ?
-                                                <div className="!w-full bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
+                                                <div className="!w-full flex-col xs:flex-row gap-2 xs:gap-0 xs:text-md sm:text-lg bg-white rounded-xl py-3 px-4 flex items-center justify-between shadow">
                                                     <p>مجموع تخفیف</p>
                                                     <p>
                                                         {
@@ -249,7 +249,7 @@ const ManualOrder = () => {
                                         <div className="mt-4">
                                             <Divider />
                                         </div>
-                                        <div className="!w-full text-lg bg-green-50 mt-4 rounded-xl text-black py-3 px-8 flex items-center justify-between">
+                                        <div className="!w-full flex-col xs:flex-row gap-2 xs:gap-0 xs:text-md sm:text-lg bg-green-50 mt-4 rounded-xl text-black py-3 px-8 flex items-center justify-between">
                                             <p>مبلغ قابل پرداخت</p>
                                             <p className="text-gray-600">
                                                 {

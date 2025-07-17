@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const AboutStore = () => {
     const router = useRouter();
-    const style = "text-3xl w-12 h-12 rounded-lg p-2";
+    const style = "text-3xl hidden phone:flex w-12 h-12 rounded-lg p-2";
 
     return (
         <div className="flex flex-col gap-4">

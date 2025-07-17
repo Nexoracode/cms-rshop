@@ -78,7 +78,7 @@ const PreOrder = () => {
                             <div className="flex items-center justify-between">
                                 <div className="flex flex-col gap-2">
                                     <p>محصولات پیش سفارش</p>
-                                    <p className="text-gray-600">پیش سفارش برای محصولات ناموجود است و برای محصولات دارای موجودی، در صورت ناموجود شدن فعال می شود.</p>
+                                    <p className="text-gray-600 hidden sm:flex">پیش سفارش برای محصولات ناموجود است و برای محصولات دارای موجودی، در صورت ناموجود شدن فعال می شود.</p>
                                 </div>
                                 {
                                     selectedCategoryType?.anchorKey === "selected" ?

@@ -51,7 +51,7 @@ const Packaging: React.FC<Props> = ({
         icon={<LuPackageOpen className="text-3xl" />}
       />
       <CardBody className="shadow-md flex flex-col gap-6">
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Input
             label="عنوان بسته بندی"
             labelPlacement="outside"

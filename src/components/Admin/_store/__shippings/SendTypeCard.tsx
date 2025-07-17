@@ -79,7 +79,7 @@ const SendTypeCard: React.FC<Props> = ({ children, childrenBody, isActiveCard = 
                                     label="از"
                                     placeholder="3"
                                     minValue={1}
-                                    labelPlacement={"outside-left"}
+                                    labelPlacement={"outside"}
                                     endContent={
                                         <div className="flex items-center">
                                             <label className="sr-only" htmlFor="currency">
@@ -101,14 +101,14 @@ const SendTypeCard: React.FC<Props> = ({ children, childrenBody, isActiveCard = 
                                             </select>
                                         </div>
                                     }
-                                    className="w-1/2 justify-center"
+                                    className="w-full md:w-1/2 justify-center"
                                 />
                                 <NumberInput
                                     hideStepper
                                     label="تا"
                                     placeholder="10"
                                     minValue={2}
-                                    labelPlacement={"outside-left"}
+                                    labelPlacement={"outside"}
                                     endContent={
                                         <div className="flex items-center">
                                             <label className="sr-only" htmlFor="currency">
@@ -130,7 +130,7 @@ const SendTypeCard: React.FC<Props> = ({ children, childrenBody, isActiveCard = 
                                             </select>
                                         </div>
                                     }
-                                    className="w-1/2 justify-center"
+                                    className="w-full md:w-1/2 justify-center"
                                 />
                             </div>
                         </div>
