@@ -102,7 +102,7 @@ const AddNewSubAttribute: React.FC<Props> = ({ onNewSubAttribute, attribute, onD
     <Accordion variant="splitted">
       <AccordionItem
         key={attribute.id}
-        className="shadow-md"
+        className="shadow-md p-2 sm:p-4"
         aria-label="Accordion 1"
         title={
           <div className="flex items-center justify-between w-full">

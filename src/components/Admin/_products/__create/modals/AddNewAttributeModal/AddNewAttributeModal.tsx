@@ -38,7 +38,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
               </Button>
             </ModalHeader>
 
-            <ModalBody>
+            <ModalBody className="p-0 sm:p-4">
 
               <AddNewAttribute
                 onNewAttribute={data => setAttributes((prev) => [...prev, data])}
@@ -52,7 +52,7 @@ const AddNewAttributeModal: React.FC<Props> = ({ isOpen, onOpenChange, onSubmit 
                     color="bg-green-700/10 text-green-700"
                     icon={<MdOutlineCategory className="text-3xl" />}
                   />
-                  <CardBody className="flex flex-col gap-4 bg-green-100/20">
+                  <CardBody className="flex flex-col gap-4 bg-green-100/20 p-0 sm:p-4">
                     {attributes.map((attr) => (
                       <AddNewSubAttribute
                         key={attr.id}

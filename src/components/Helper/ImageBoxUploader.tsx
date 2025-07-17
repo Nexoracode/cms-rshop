@@ -46,7 +46,7 @@ const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatu
                 </label>
             </div>
 
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col xs:flex-row items-start gap-3">
                 <div className="w-[80px] h-[80px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                     <div className={`${!imageFile ? "p-3 bg-gray-100 rounded-lg" : ""}`}>
                         {

@@ -76,7 +76,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ initialPreviews = [], onPre
     <>
       <input ref={inputRef} type="file" hidden />
 
-      <div className="w-full mb-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+      <div className="w-full mb-4 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
         {previews.length ?
           previews.map((p, idx) => {
             const url = URL.createObjectURL(p.file)
@@ -84,7 +84,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ initialPreviews = [], onPre
 
             return (
               <div key={idx}
-                className="relative group w-28 h-28 border rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+                className="relative mx-auto group w-28 h-28 border rounded-xl overflow-hidden shadow hover:shadow-lg transition"
                 onClick={() => type === "image" && pin(idx)}>
                 {type === "image" ? (
                   <img src={url} alt="" className="object-cover w-full h-full cursor-pointer" />
@@ -105,15 +105,15 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ initialPreviews = [], onPre
         }
       </div>
 
-      <div className="w-full flex items-center justify-center gap-4">
+      <div className="w-full flex flex-col xs:flex-row flex-wrap xs:flex-nowrap items-center justify-center gap-4">
         <Button color="secondary" variant="ghost"
-          className="w-1/2 border border-dashed h-[60px] rounded-md flex-col-reverse"
+          className="w-full xs:w-1/2 border border-dashed h-[60px] rounded-md"
           endContent={<LuImage className="text-2xl" />}
           onPress={() => handleAdd("image")}>
           افزودن تصویر
         </Button>
         <Button color="secondary" variant="ghost"
-          className="w-1/2 border border-dashed h-[60px] rounded-md flex-col-reverse"
+          className="w-full xs:w-1/2 border border-dashed h-[60px] rounded-md"
           endContent={<LuVideo className="text-2xl" />}
           onPress={() => handleAdd("video")}>
           افزودن ویدیو
