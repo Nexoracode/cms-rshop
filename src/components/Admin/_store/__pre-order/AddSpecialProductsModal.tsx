@@ -143,7 +143,7 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                 <p className="font-normal text-[16px]">افزودن محصول</p>
               </ModalHeader>
 
-              <ModalBody className="p-2 xs:p4">
+              <ModalBody className="p-2 xs:p-4">
                 <p className="text-gray-600">محصولات مورد نظر را انتخاب کنید.</p>
 
                 <Input
@@ -203,7 +203,6 @@ const AddSpecialProductsModal: React.FC<Props> = ({
                 <Button
                   variant="flat"
                   color="secondary"
-                  className="mb-4"
                   isDisabled={!selectedIds.length}
                   onPress={handleAdd}
                 >

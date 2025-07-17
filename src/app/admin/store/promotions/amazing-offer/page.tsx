@@ -63,7 +63,7 @@ const AmazingOffer = () => {
                                                         isExist={pr.isExist}
                                                         subProductName={pr.subProductName}
                                                     />
-                                                    <div className="flex items-center gap-2">
+                                                    <div className="flex flex-col xs:flex-row items-center gap-2">
                                                         <NumberInput
                                                             color="default"
                                                             placeholder="تعداد را وارد کنید"
