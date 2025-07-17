@@ -38,7 +38,7 @@ const SubAttributeBox: React.FC<Props> = ({ titleCard, onHandleSubmit, isVariabl
                 />
                 <CardBody className="shadow-md flex flex-col gap-6">
                     <Accordion>
-                        <AccordionItem key="1" aria-label="Accordion 1" title={`ویرایش تنوع محصول (${titleCard})`}>
+                        <AccordionItem key={crypto.randomUUID()} aria-label="Accordion 1" title={`ویرایش تنوع محصول (${titleCard})`}>
 
                             <div className="flex flex-col gap-6 text-right">
                                 <div className="flex flex-col items-start">
