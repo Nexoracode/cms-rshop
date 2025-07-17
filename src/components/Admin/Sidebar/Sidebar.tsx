@@ -13,7 +13,7 @@ export default function Sidebar() {
                 <img src="/images/logo.png" alt="logo" className="w-28" />
             </div>
 
-            <nav className="bg-white p-3 lg:p-0 rounded-t-3xl fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row lg:flex-col gap-4 text-end mt-4">
+            <nav className="bg-white p-0 xs:p-3 lg:p-0 rounded-t-2xl xs:rounded-t-3xl fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row lg:flex-col xs:gap-4 text-end mt-4">
                 <Item
                     title="خانه"
                     icon={<HiOutlineHome className="text-2xl animate-pulse" />}
