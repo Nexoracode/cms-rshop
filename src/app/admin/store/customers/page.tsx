@@ -138,7 +138,6 @@ const Customers = () => {
             <AddNewCustomerModal
                 isOpen={isAddOpen}
                 onOpenChange={onAddOpenChange}
-                onSubmit={() => { }}
             />
 
             <SortingModal

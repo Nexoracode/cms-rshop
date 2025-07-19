@@ -1,93 +1,126 @@
 "use client";
 
 import { useState } from "react";
-import { Button, DatePicker, Input, ModalFooter, NumberInput } from "@heroui/react";
+import {
+  Button,
+  DatePicker,
+  Input,
+  ModalFooter,
+  NumberInput,
+} from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
+import { fetcher } from "@/utils/fetcher";
 
 type Props = {
-    isOpen: boolean;
-    onOpenChange: () => void;
-    onSubmit: (brandNameFa: string, brandNameEn: string, image: File | null) => void;
+  isOpen: boolean;
+  onOpenChange: () => void;
 };
 
-const AddNewCustomerModal: React.FC<Props> = ({
-    isOpen,
-    onOpenChange,
-    onSubmit,
-}) => {
-    const [brandFa, setBrandFa] = useState("");
-    const [brandEn, setBrandEn] = useState("");
-    const [imageFile, setImageFile] = useState<File | null>(null);
+const AddNewCustomerModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const isDisabled = !brandFa.trim() || !brandEn.trim() || !imageFile;
+  const isDisabled = !firstName.trim() || !lastName.trim() || !phone || loading;
 
-    const handleSubmit = () => {
-        if (!isDisabled) {
-            onSubmit(brandFa.trim(), brandEn.trim(), imageFile);
-            setBrandFa("");
-            setBrandEn("");
-            setImageFile(null);
-            onOpenChange();
-        }
+  const handleSubmit = async () => {
+    if (isDisabled) return;
+    setLoading(true);
+
+    const newUser = {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      phone: phone.trim(),
+      isPhoneVerified: false,
+      email: "",
+      password: "123456",
+      role: "user",
+      isActive: true,
+      avatarUrl: "",
+      addresses: [],
     };
 
-    return (
-        <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent className="max-w-[700px] w-full">
-                {(onClose) => (
-                    <>
-                        <ModalHeader>
-                            <p className="font-normal text-[16px]">
-                                مشتری جدید
-                            </p>
-                        </ModalHeader>
-                        <ModalBody className="flex flex-col gap-6">
-                            <Input
-                                labelPlacement="outside"
-                                isRequired
-                                label="نام مشتری"
-                                placeholder="نام مشتری را وارد کنید"
-                                value={brandFa}
-                                onChange={(e) => setBrandFa(e.target.value)}
-                                className="mb-2"
-                            />
-                            <Input
-                                dir="ltr"
-                                labelPlacement="outside"
-                                isRequired
-                                label="نام خانوادگی مشتری "
-                                placeholder="نام خوانوادگی مشتری را وارد کنید"
-                                value={brandEn}
-                                onChange={(e) => setBrandEn(e.target.value)}
-                            />
-                            <NumberInput
-                                label="شماره همراه"
-                                labelPlacement="outside"
-                                placeholder="09"
-                                style={{direction: "ltr"}}
-                                min={1}
-                                hideStepper
-                                isRequired
-                                onValueChange={price => { }}
-                            />
-                            <DatePicker label="تاریخ تولد" labelPlacement="outside" />
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button
-                                className="w-full"
-                                variant="solid"
-                                color="secondary"
-                                isDisabled={isDisabled}
-                                onPress={handleSubmit}
-                            >
-                                تایید و ثبت
-                            </Button>
-                        </ModalFooter>
-                    </>
-                )}
-            </ModalContent>
-        </Modal>
-    );
+    await fetcher({
+      route: "/users",
+      method: "POST",
+      body: newUser,
+      successText: "کاربر با موفقیت اضافه شد",
+    });
+
+    setFirstName("");
+    setLastName("");
+    setPhone("");
+    setLoading(false);
+    onOpenChange();
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value;
+    val = val.replace(/\D/g, "");
+    setPhone(val);
+  };
+
+  return (
+    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent className="max-w-[700px] w-full">
+        {(onClose) => (
+          <>
+            <ModalHeader>
+              <p className="font-normal text-[16px]">مشتری جدید</p>
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-6">
+              <Input
+                autoFocus
+                labelPlacement="outside"
+                isRequired
+                label="نام مشتری"
+                placeholder="نام مشتری را وارد کنید"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="mb-2"
+              />
+              <Input
+                dir="ltr"
+                labelPlacement="outside"
+                isRequired
+                label="نام خانوادگی مشتری "
+                placeholder="نام خوانوادگی مشتری را وارد کنید"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <Input
+                style={{ direction: "ltr" }}
+                placeholder="09XXXXXXXXXX"
+                labelPlacement="outside"
+                isRequired
+                label="شماره تماس"
+                type="tel"
+                inputMode="tel"
+                variant="flat"
+                maxLength={11}
+                value={phone}
+                onChange={handlePhoneChange}
+              />
+              <DatePicker label="تاریخ تولد" labelPlacement="outside" />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                className="w-full"
+                variant="solid"
+                color="secondary"
+                isDisabled={isDisabled}
+                isLoading={loading}
+                onPress={handleSubmit}
+              >
+                تایید و ثبت
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
 };
 
 export default AddNewCustomerModal;

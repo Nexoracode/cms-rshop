@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex items-center justify-center w-full bg-gradient-to-br from-blue-100 via-white to-purple-100 px-4">
-      <div className="bg-white shadow-xl rounded-2xl pt-5 sm:p-10 text-center space-y-6">
+      <div className="bg-white shadow-xl rounded-2xl pt-6 sm:p-10 text-center space-y-6">
         <div className="flex flex-col items-center justify-center mb-6">
           <img src="/images/logo.png" alt="logo" className="w-32 mb-3" />
           <p>
