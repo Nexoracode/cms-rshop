@@ -1,10 +1,19 @@
-"use client"
+"use client";
 
 import "../styles/globals.css";
-import { Providers } from "./providers";
-import { Toaster } from 'react-hot-toast'
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HeroUIProvider } from "@heroui/system";
+import { Toaster } from "react-hot-toast";
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [queryClient] = React.useState(() => new QueryClient());
+  const router = useRouter();
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa">
       <head>
@@ -18,9 +27,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body cz-shortcut-listen="false">
         <Toaster />
-        <Providers>
-          {children}
-        </Providers>
+        <QueryClientProvider client={queryClient}>
+          <HeroUIProvider navigate={router.push} locale="fa-IR">
+            {children}
+          </HeroUIProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
