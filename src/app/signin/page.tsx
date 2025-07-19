@@ -5,6 +5,10 @@ import { Tabs, Tab, Card, CardBody, InputOtp, Input } from "@heroui/react";
 import BreakpointWatcher from "@/components/Helper/BreakpointWatcher";
 import { fetcher } from "@/utils/fetcher";
 import { useRouter } from "next/navigation";
+import {
+  useRequestOtpMutation,
+  useVerifyOtpMutation,
+} from "@/hooks/signin/useSignin";
 
 type Auth = "phone" | "otp";
 
@@ -15,6 +19,10 @@ export default function App() {
   //
   const [phoneValue, setPhoneValue] = useState("");
   const [code, setCode] = useState("");
+
+  //?Hooks
+  const requestOtpMutation = useRequestOtpMutation();
+  const verifyOtpMutation = useVerifyOtpMutation();
 
   useEffect(() => {
     if (code.length === 6) {
@@ -38,25 +46,21 @@ export default function App() {
     }
   };
 
-  const sendPhoneApiCall = async (phone: string) => {
-    await fetcher({
-      route: "/auth/request-otp",
-      method: "POST",
-      body: { identifier: phone },
-      successText: "کد ارسال شده به تلفن همراه خود را وارد نمایید",
-    });
+  const sendPhoneApiCall = (phone: string) => {
+    requestOtpMutation.mutate(phone);
   };
 
-  const sendOtpCodeApiCall = async () => {
-    const res = await fetcher({
-      route: "/auth/verify-otp",
-      method: "POST",
-      body: { identifier: phoneValue, code },
-      successText: "به ادمین پنل خوش آمدید",
-    });
-    if (res?.ok) {
-      router.push("/admin/home");
-    }
+  const sendOtpCodeApiCall = () => {
+    verifyOtpMutation.mutate(
+      { phone: phoneValue, code },
+      {
+        onSuccess: (res) => {
+          if (res?.ok) {
+            router.push("/admin/home");
+          }
+        },
+      }
+    );
   };
 
   return (
