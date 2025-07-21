@@ -139,11 +139,11 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
                                 <span>افزودن دسته بندی جدید</span>
                             </div>
                         </SelectItem>
-                        {
+                        {/* {
                             categories.map(cat => (
                                 <SelectItem key={cat.id}>{cat.title}</SelectItem>
                             ))
-                        }
+                        } */}
                     </Select>
 
                     <div className="flex flex-col gap-2">
