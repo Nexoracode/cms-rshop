@@ -19,7 +19,7 @@ export const fetcher = async ({
   headers,
   loadingText = "در حال ارسال...",
   successText,
-  credentials = "same-origin"
+  credentials = "include"
 }: FetcherProps): Promise<{ data: any; ok: boolean } | undefined> => {
   const toastId = toast.loading(loadingText);
 
@@ -39,7 +39,7 @@ export const fetcher = async ({
 
     if (!res.ok) {
       toast.error(data.message || "خطا در عملیات");
-      return;
+      return { data: null, ok: false };
     }
 
     toast.success(successText || data.message || "عملیات موفق");

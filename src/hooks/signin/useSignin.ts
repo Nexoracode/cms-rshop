@@ -20,7 +20,6 @@ export const useVerifyOtpMutation = () => {
         route: "/auth/verify-otp",
         method: "POST",
         body: { identifier: phone, code },
-        credentials: "include",
         successText: "به ادمین پنل خوش آمدید",
       }),
   });

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Card, CardBody, InputOtp, Input } from "@heroui/react";
 import BreakpointWatcher from "@/components/Helper/BreakpointWatcher";
-import { fetcher } from "@/utils/fetcher";
 import { useRouter } from "next/navigation";
 import {
   useRequestOtpMutation,
