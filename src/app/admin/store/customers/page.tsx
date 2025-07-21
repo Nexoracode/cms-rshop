@@ -106,9 +106,9 @@ const Customers = () => {
                       firstName={user.first_name || "نام"}
                       lastName={user.last_name || " | نام خوانوادگی"}
                       onShowDetail={() => setUserId(user.id)}
-                      phone={user?.phone || "09xxxxxxxxx"}
-                      membership={user?.createdAt || "1300/01/01"}
-                      lastPurchase={user?.lastPurchase || "1300/01/01"}
+                      phone={user.phone || "09xxxxxxxxx"}
+                      membership={user?.created_at.slice(0, 10) || "1300/01/01"}
+                      email={user?.email || "example@gmail.com"}
                     />
                   ))}
                 </div>
