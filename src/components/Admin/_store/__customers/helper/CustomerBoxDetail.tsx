@@ -79,7 +79,7 @@ const CustomerBoxDetail: React.FC<Props> = ({
             />
           </div>
         ) : (
-          <div className="flex flex-wrap gap-4 justify-between items-center text-sm text-gray-700">
+          <div className="w-1/2 border rounded-lg p-2 flex flex-col gap-2">
             <InfoRow label="شناسه کاربر" value={String(id)} isActiveBg />
             <InfoRow
               label="نام و نام خانوادگی"
@@ -87,9 +87,13 @@ const CustomerBoxDetail: React.FC<Props> = ({
             />
             <InfoRow label="شماره همراه" value={phone} isActiveBg />
             <InfoRow label="ایمیل" value={email} />
-            <InfoRow label="تاریخ عضویت" value={email} isActiveBg />
+            <InfoRow label="تاریخ عضویت" value={membership} isActiveBg />
             <InfoRow label="وضعیت حساب" value={isActive ? "بله" : "خیر"} />
-            <InfoRow label="وریفای" value={isPhoneVerified ? "بله" : "خیر"} isActiveBg />
+            <InfoRow
+              label="وریفای"
+              value={isPhoneVerified ? "بله" : "خیر"}
+              isActiveBg
+            />
           </div>
         )}
       </CardBody>
