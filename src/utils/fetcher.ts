@@ -24,7 +24,7 @@ export const fetcher = async ({
   const toastId = toast.loading(loadingText);
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${route}`, {
+    const res = await fetch(`/api${route}`, {
       method,
       headers: {
         "Content-Type": "application/json",
