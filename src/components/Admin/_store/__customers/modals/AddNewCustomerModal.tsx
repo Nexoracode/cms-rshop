@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button, DatePicker, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { fetcher } from "@/utils/fetcher";
+import { useAddNewUser } from "@/hooks/users/useUsers";
 
 type Props = {
   isOpen: boolean;
@@ -15,8 +15,9 @@ const AddNewCustomerModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-
   const isDisabled = !firstName.trim() || !lastName.trim() || !phone || loading;
+  //?Hooks
+  const addNewUser = useAddNewUser();
 
   const handleSubmit = async () => {
     if (isDisabled) return;
@@ -27,7 +28,7 @@ const AddNewCustomerModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
       lastName: lastName.trim(),
       phone: phone.trim(),
       isPhoneVerified: false,
-      email: "",
+      email: "example@gmail.com",
       password: "123456",
       role: "user",
       isActive: true,
@@ -35,18 +36,15 @@ const AddNewCustomerModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
       addresses: [],
     };
 
-    await fetcher({
-      route: "/users",
-      method: "POST",
-      body: newUser,
-      successText: "کاربر با موفقیت اضافه شد",
+    addNewUser.mutate(newUser, {
+      onSuccess: () => {
+        setFirstName("");
+        setLastName("");
+        setPhone("");
+        setLoading(false);
+        onOpenChange();
+      },
     });
-
-    setFirstName("");
-    setLastName("");
-    setPhone("");
-    setLoading(false);
-    onOpenChange();
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
