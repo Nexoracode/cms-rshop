@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Switch } from "@heroui/react";
-
+/* 
 export const MoonIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" {...props}>
     <path
@@ -19,7 +19,7 @@ export const SunIcon = (props: React.SVGProps<SVGSVGElement>) => (
       <path d="M12 22.96a.969.969 0 01-1-.96v-.08a1 1 0 012 0 1.038 1.038 0 01-1 1.04zm7.14-2.82a1.024 1.024 0 01-.71-.29l-.13-.13a1 1 0 011.41-1.41l.13.13a1 1 0 010 1.41.984.984 0 01-.7.29zM4.86 20.14a1.024 1.024 0 01-.71-.29 1 1 0 010-1.41l.13-.13a1 1 0 011.41 1.41l-.13.13a1 1 0 01-.7.29zM22 13h-.08a1 1 0 010-2 1.038 1.038 0 011.04 1 .969.969 0 01-.96 1zM2.08 13H2a1 1 0 010-2 1.038 1.038 0 011.04 1 .969.969 0 01-.96 1zm16.93-7.01a1.024 1.024 0 01-.71-.29 1 1 0 010-1.41l.13-.13a1 1 0 011.41 1.41l-.13.13a.984.984 0 01-.7.29zM4.99 5.99a1.024 1.024 0 01-.71-.29l-.13-.14a1 1 0 011.41-1.41l.13.13a1 1 0 010 1.41.97.97 0 01-.7.3zM12 3.04a.969.969 0 01-1-.96V2a1 1 0 012 0 1.038 1.038 0 01-1 1.04z" />
     </g>
   </svg>
-);
+); */
 
 export function DarkMode() {
   const [isDark, setIsDark] = useState(false);
@@ -47,13 +47,13 @@ export function DarkMode() {
       onChange={handleChange}
       size="lg"
       color="success"
-      thumbIcon={({ isSelected, className }) =>
+     /*  thumbIcon={({ isSelected, className }) =>
         isSelected ? (
           <SunIcon className={className} />
         ) : (
           <MoonIcon className={className} />
         )
-      }
+      } */
     />
   );
 }
