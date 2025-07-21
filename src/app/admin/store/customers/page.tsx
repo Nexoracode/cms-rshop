@@ -144,6 +144,13 @@ const Customers = () => {
                   isPhoneVerified={oneUser.data.is_phone_verified}
                   isShowDetail
                 />
+                <img
+                  src={
+                    oneUser.data.avatar_url ||
+                    "https://images.unsplash.com/photo-1544502062-f82887f03d1c?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb"
+                  }
+                  alt="profile"
+                />
               </CustomerInfo>
             ) : (
               <LoadingApiCall />
