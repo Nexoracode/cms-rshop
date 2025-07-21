@@ -9,8 +9,9 @@ import FilterModal from "@/components/Admin/_store/__customers/modals/FilterModa
 import SortingModal from "@/components/Admin/_store/__customers/modals/SortingModal";
 import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage";
+import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { useGetAllUsers } from "@/hooks/users/useUsers";
-import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
+import { Card, CardBody, Input, Spinner, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
@@ -23,8 +24,8 @@ const Customers = () => {
   //? Hooks
   const { data: users } = useGetAllUsers();
 
-  console.log(users);
-  
+  console.log(users?.data);
+
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
@@ -95,23 +96,21 @@ const Customers = () => {
               icon={<LuUsersRound className="text-3xl" />}
             />
             <CardBody className="p-4 flex flex-col gap-6">
-              {!users ? (
-                <div className="flex items-center flex-col gap-2">
-                  <LuUsersRound className="text-[90px] text-gray-600 animate-bounce" />
-                  <p className="text-center animate-pulse pb-4">
-                    هنوز هیچ کاربری در وبسایت ثبت نام نکرده است
-                  </p>
-                </div>
+              {!users?.data ? (
+                <LoadingApiCall loadingText="هنوز هیچ کاربری در وبسایت ثبت نام نکرده است یا" />
               ) : (
                 <div className="flex flex-col gap-4">
-                  <CustomerBoxDetail
-                    firstName="محمد"
-                    lastName="کریمی"
-                    phone="09121234567"
-                    membership="1403/04/18"
-                    lastPurchase="1403/04/18"
-                    onShowDetail={() => setUserId("safsdgsdf2354f23")}
-                  />
+                  {users.data.map((user: any) => (
+                    <CustomerBoxDetail
+                      key={user.id}
+                      firstName={user.first_name || "نام"}
+                      lastName={user.last_name || " | نام خوانوادگی"}
+                      onShowDetail={() => setUserId(user.id)}
+                      phone={user?.phone || "09xxxxxxxxx"}
+                      membership={user?.createdAt || "1300/01/01"}
+                      lastPurchase={user?.lastPurchase || "1300/01/01"}
+                    />
+                  ))}
                 </div>
               )}
             </CardBody>
