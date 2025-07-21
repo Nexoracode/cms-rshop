@@ -139,6 +139,10 @@ const Customers = () => {
                       icon={<LuUserSearch className="text-3xl" />}
                     />
                   }
+                  id={oneUser.data.id}
+                  isActive={oneUser.data.is_active}
+                  isPhoneVerified={oneUser.data.is_phone_verified}
+                  isShowDetail
                 />
               </CustomerInfo>
             ) : (
