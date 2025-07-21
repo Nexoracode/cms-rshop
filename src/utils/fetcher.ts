@@ -10,6 +10,7 @@ type FetcherProps = {
   loadingText?: string;
   successText?: string;
   credentials?: "same-origin" | "omit" | "include";
+  isActiveToast?: boolean
 };
 
 export const fetcher = async ({
@@ -19,9 +20,11 @@ export const fetcher = async ({
   headers,
   loadingText = "در حال ارسال...",
   successText,
-  credentials = "include"
+  credentials = "include",
+  isActiveToast = false
 }: FetcherProps): Promise<{ data: any; ok: boolean } | undefined> => {
-  const toastId = toast.loading(loadingText);
+
+  const toastId = isActiveToast && toast.loading(loadingText);
 
   try {
     const res = await fetch(`/api${route}`, {
@@ -35,17 +38,17 @@ export const fetcher = async ({
     });
 
     const data = await res.json();
-    toast.dismiss(toastId);
+    toastId && toast.dismiss(toastId);
 
     if (!res.ok) {
       toast.error(data.message || "خطا در عملیات");
       return { data: null, ok: false };
     }
 
-    toast.success(successText || data.message || "عملیات موفق");
+    isActiveToast && toast.success(successText || data.message || "عملیات موفق");
     return { data: data.data, ok: true };
   } catch (err: any) {
-    toast.dismiss(toastId);
+    toastId && toast.dismiss(toastId);
     toast.error(err.message || "خطای اتصال به سرور");
   }
 };

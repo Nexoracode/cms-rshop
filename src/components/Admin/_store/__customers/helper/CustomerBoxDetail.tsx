@@ -14,7 +14,7 @@ type Props = {
   phone: string;
   membership: string;
   email: string;
-  onShowDetail: () => void;
+  onShowDetail?: () => void;
   cardHeader?: React.ReactNode;
 };
 

@@ -13,6 +13,19 @@ export const useGetAllUsers = () => {
   });
 };
 
+export const useGetOneUser = (id: string) => {
+  return useQuery({
+    queryKey: ["one-user", id],
+    queryFn: () =>
+      fetcher({
+        route: `/users/cms/${id}`,
+        successText: "کاربر با موفقیت دریافت شد",
+        loadingText: "در حال دریافت اطلاعات کاربر",
+      }),
+      enabled: !!id, // Only run the query if id is provided
+  });
+};
+
 export const useAddNewUser = () => {
   const queryClient = useQueryClient();
 

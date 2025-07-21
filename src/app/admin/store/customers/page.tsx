@@ -10,21 +10,20 @@ import SortingModal from "@/components/Admin/_store/__customers/modals/SortingMo
 import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import { useGetAllUsers } from "@/hooks/users/useUsers";
+import { useGetAllUsers, useGetOneUser } from "@/hooks/users/useUsers";
 import { Card, CardBody, Input, Spinner, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { IoFilter } from "react-icons/io5";
-import { LuBox, LuUsersRound } from "react-icons/lu";
+import { LuBox, LuUserSearch, LuUsersRound } from "react-icons/lu";
 
 const Customers = () => {
   const [customers, setCustomers] = useState<any[]>([]);
   const [userId, setUserId] = useState("");
   //? Hooks
   const { data: users } = useGetAllUsers();
-
-  console.log(users?.data);
+  const { data: oneUser } = useGetOneUser(userId);
 
   const {
     isOpen: isAddOpen,
@@ -46,7 +45,7 @@ const Customers = () => {
 
   return (
     <>
-      {!userId.length ? (
+      {!userId ? (
         <div className="flex flex-col gap-6">
           <BackToPage title="برگشت" link="/admin/store" />
 
@@ -107,7 +106,7 @@ const Customers = () => {
                       lastName={user.last_name || " | نام خوانوادگی"}
                       onShowDetail={() => setUserId(user.id)}
                       phone={user.phone || "09xxxxxxxxx"}
-                      membership={user?.created_at.slice(0, 10) || "1300/01/01"}
+                      membership={user?.created_at.slice(0, 10)}
                       email={user?.email || "example@gmail.com"}
                     />
                   ))}
@@ -125,13 +124,26 @@ const Customers = () => {
           />
 
           <div className="bg-white p-4 rounded-2xl">
-            <CustomerInfo
-              firstName="محمد"
-              lastName="کریمی"
-              phone="09121234567"
-              membership="1403/04/18"
-              lastPurchase="1403/04/18"
-            />
+            {oneUser?.data ? (
+              <CustomerInfo>
+                <CustomerBoxDetail
+                  firstName={oneUser.data.first_name || "نام"}
+                  lastName={oneUser.data.last_name || " | نام خوانوادگی"}
+                  phone={oneUser.data.phone}
+                  membership={oneUser.data.created_at.slice(0, 10)}
+                  email={oneUser.data.email || "example@gmail.com"}
+                  cardHeader={
+                    <BoxHeader
+                      title="اطلاعات کاربر"
+                      color="bg-purple-700/10 text-purple-700"
+                      icon={<LuUserSearch className="text-3xl" />}
+                    />
+                  }
+                />
+              </CustomerInfo>
+            ) : (
+              <LoadingApiCall />
+            )}
           </div>
         </div>
       )}
