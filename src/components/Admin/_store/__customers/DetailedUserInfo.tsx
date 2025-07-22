@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox, Input, Textarea } from "@heroui/react";
+import { Button, Checkbox, Divider, Input, Textarea } from "@heroui/react";
 import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
 import { useState } from "react";
@@ -148,25 +148,42 @@ const DetailedUserInfo = ({
               isActiveBg
             />
             <InfoRow label="شماره همراه" value={phone} />
-            <InfoRow label="ایمیل" value={email || "example@gmail.com"} isActiveBg/>
+            <InfoRow
+              label="ایمیل"
+              value={email || "example@gmail.com"}
+              isActiveBg
+            />
             <InfoRow label="تاریخ عضویت" value={membership} />
-            <InfoRow label="وضعیت حساب" value={isActive ? "بله" : "خیر"} isActiveBg/>
+            <InfoRow
+              label="وضعیت حساب"
+              value={isActive ? "بله" : "خیر"}
+              isActiveBg
+            />
             <InfoRow
               label="تایید شماره همراه"
               value={isPhoneVerified ? "بله" : "خیر"}
-              
             />
-            <div className="flex flex-col gap-2 text-right bg-slate-50 p-3 rounded-lg">
+            <div className="flex flex-col gap-2 text-right bg-slate-100 p-3 rounded-lg">
               <p className="text-sm text-gray-700">آدرس ها:</p>
-              <div className="text-sm text-gray-500 bg-slate-100 p-2 rounded-lg">
+              <div className="text-sm text-gray-500 bg-slate-50 p-2 rounded-lg">
                 {address.map((addr, index) => (
                   <div key={index} className="flex flex-col gap-2">
                     <span className="text-gray-700">آدرس {index + 1}</span>
+                    <Divider />
                     <InfoRow label="استان" value={addr.province || "نامشخص"} />
                     <InfoRow label="شهر" value={addr.city || "نامشخص"} />
-                    <InfoRow label="آدرس" value={addr.address_line || "نامشخص"} />
-                    <InfoRow label="آدرس پستی" value={addr.postal_code || "نامشخص"} />
-                    <InfoRow label="آدرس اصلی" value={addr.is_primary ? "بله" : "خیر"} />
+                    <InfoRow
+                      label="آدرس"
+                      value={addr.address_line || "نامشخص"}
+                    />
+                    <InfoRow
+                      label="آدرس پستی"
+                      value={addr.postal_code || "نامشخص"}
+                    />
+                    <InfoRow
+                      label="آدرس اصلی"
+                      value={addr.is_primary ? "بله" : "خیر"}
+                    />
                   </div>
                 )) || "ندارد"}
               </div>
