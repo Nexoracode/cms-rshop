@@ -13,7 +13,7 @@ export const useGetAllUsers = () => {
   });
 };
 
-export const useGetOneUser = (id: string) => {
+export const useGetOneUser = (id: number) => {
   return useQuery({
     queryKey: ["one-user", id],
     queryFn: () =>
@@ -23,6 +23,24 @@ export const useGetOneUser = (id: string) => {
         loadingText: "در حال دریافت اطلاعات کاربر",
       }),
       enabled: !!id, // Only run the query if id is provided
+  });
+};
+
+export const useDeleteUser = (id: number) => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: () =>
+      fetcher({
+        route: `/users/${id}`,
+        method: "DELETE",
+        successText: "کاربر با موفقیت حذف شد",
+        loadingText: "در حال حذف کاربر",
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-user", id] });
+      queryClient.invalidateQueries({ queryKey: ["all-users"] });
+    },
   });
 };
 

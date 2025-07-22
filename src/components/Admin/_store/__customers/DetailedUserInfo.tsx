@@ -3,8 +3,9 @@
 import { Button } from "@heroui/react";
 import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import { useDeleteUser } from "@/hooks/users/useUsers";
 
 type Props = {
   firstName: string;
@@ -12,10 +13,10 @@ type Props = {
   phone: string;
   membership: string;
   email: string;
-  id?: number;
-  isActive?: boolean;
-  isPhoneVerified?: boolean;
-  avatar_url?: string;
+  id: number;
+  isActive: boolean;
+  isPhoneVerified: boolean;
+  avatar_url: string;
 };
 
 const DetailedUserInfo = ({
@@ -30,6 +31,21 @@ const DetailedUserInfo = ({
   avatar_url,
 }: Props) => {
   const [actionType, setActionType] = useState<ActionType>("view");
+  const deleteUser = useDeleteUser(id);
+
+  useEffect(() => {
+    if (actionType !== "view") {
+      handleAction();
+    }
+  }, [actionType]);
+
+  const handleAction = () => {
+    if (actionType === "edit") {
+      // Handle edit logic here
+    } else if (actionType === "delete") {
+      deleteUser.mutate();
+    }
+  };
 
   return (
     <div className="flex justify-center">

@@ -23,7 +23,7 @@ import { LuBox, LuUsersRound } from "react-icons/lu";
 
 const Customers = () => {
   // State
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(0);
   //? Hooks
   const { data: users } = useGetAllUsers();
   const { data: oneUser } = useGetOneUser(userId);
@@ -124,7 +124,7 @@ const Customers = () => {
           <BackToPage
             title="برگشت"
             link="customers"
-            onClick={() => setUserId("")}
+            onClick={() => setUserId(0)}
           />
           {(() => {
             if (!oneUser?.data) return <LoadingApiCall />;
@@ -140,7 +140,7 @@ const Customers = () => {
               is_phone_verified,
               avatar_url,
             } = oneUser.data;
-            
+
             return (
               <div className="flex flex-col gap-4">
                 <DetailedUserInfo
