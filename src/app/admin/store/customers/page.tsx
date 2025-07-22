@@ -27,17 +27,6 @@ const Customers = () => {
   //? Hooks
   const { data: users } = useGetAllUsers();
   const { data: oneUser } = useGetOneUser(userId);
-  const {
-    first_name,
-    last_name,
-    phone,
-    email,
-    created_at,
-    id,
-    is_active,
-    is_phone_verified,
-    avatar_url,
-  } = oneUser?.data;
 
   //? Disclosures
   const {
@@ -137,25 +126,38 @@ const Customers = () => {
             link="customers"
             onClick={() => setUserId("")}
           />
+          {(() => {
+            if (!oneUser?.data) return <LoadingApiCall />;
 
-          {oneUser?.data ? (
-            <div className="flex flex-col gap-4">
-              <DetailedUserInfo
-                firstName={first_name}
-                lastName={last_name}
-                phone={phone}
-                membership={created_at.slice(0, 10)}
-                email={email}
-                id={id}
-                isActive={is_active}
-                isPhoneVerified={is_phone_verified}
-                avatar_url={avatar_url}
-              />
-              <UserOrders />
-            </div>
-          ) : (
-            <LoadingApiCall />
-          )}
+            const {
+              first_name,
+              last_name,
+              phone,
+              email,
+              created_at,
+              id,
+              is_active,
+              is_phone_verified,
+              avatar_url,
+            } = oneUser.data;
+            
+            return (
+              <div className="flex flex-col gap-4">
+                <DetailedUserInfo
+                  firstName={first_name}
+                  lastName={last_name}
+                  phone={phone}
+                  membership={created_at.slice(0, 10)}
+                  email={email}
+                  id={id}
+                  isActive={is_active}
+                  isPhoneVerified={is_phone_verified}
+                  avatar_url={avatar_url}
+                />
+                <UserOrders />
+              </div>
+            );
+          })()}
         </section>
       )}
 
