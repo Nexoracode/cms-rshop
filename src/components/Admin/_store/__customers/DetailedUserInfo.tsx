@@ -5,7 +5,7 @@ import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
 import { use, useEffect, useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
-import { useDeleteUser } from "@/hooks/users/useUsers";
+import { useDeleteUser, useUpdateUser } from "@/hooks/users/useUsers";
 
 type Props = {
   firstName: string;
@@ -45,19 +45,36 @@ const DetailedUserInfo = ({
   });
   //? Hooks
   const deleteUser = useDeleteUser(id);
+  const updateUser = useUpdateUser(id);
 
-  useEffect(() => {
-    if (actionType !== "view") {
-      handleAction();
-    }
-  }, [actionType]);
+  const handleUpdate = () => {
+    const {
+      address,
+      avatarUrl,
+      email,
+      firstName,
+      isActive,
+      isPhoneVerified,
+      lastName,
+      phone,
+    } = data;
 
-  const handleAction = () => {
-    if (actionType === "edit") {
-      // Handle edit logic here
-    } else if (actionType === "delete") {
-      deleteUser.mutate();
-    }
+    const dataToSend = {
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone,
+      email: email,
+      is_active: isActive,
+      is_phone_verified: isPhoneVerified,
+      avatar_url: avatarUrl,
+      address: address,
+    };
+
+    updateUser.mutate(dataToSend, {
+      onSuccess: () => {
+        setActionType("view");
+      },
+    });
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +105,9 @@ const DetailedUserInfo = ({
               <DoubleClickBtn
                 color="danger"
                 size="sm"
-                onPress={() => setActionType("delete")}
+                onPress={() => {
+                  deleteUser.mutate();
+                }}
                 textBtn="حذف"
                 isActiveDoubleClick
               />
@@ -152,7 +171,7 @@ const DetailedUserInfo = ({
             <Input
               labelPlacement="outside"
               label="شماره تماس"
-              style={{direction: "ltr"}}
+              style={{ direction: "ltr" }}
               type="tel"
               inputMode="tel"
               variant="flat"
@@ -203,14 +222,11 @@ const DetailedUserInfo = ({
                 label={`آدرس ${index + 1}`}
                 placeholder="آدرس را وارد کنید"
                 value={data.address[index]}
-                onValueChange={(value) =>
-                  setData((prev) => ({
-                    ...prev,
-                    address: prev.address.map((item, i) =>
-                      i === index ? value : item
-                    ),
-                  }))
-                }
+                onValueChange={(value) => {
+                  const newAddresses = [...data.address];
+                  newAddresses[index] = value;
+                  setData((prev) => ({ ...prev, address: newAddresses }));
+                }}
               />
             ))}
             <Button
@@ -218,13 +234,13 @@ const DetailedUserInfo = ({
               variant="flat"
               color={"success"}
               size="sm"
-              onPress={() => {}}
+              onPress={handleUpdate}
               isDisabled={
                 !data.firstName.length ||
                 !data.lastName.length ||
                 !data.email ||
                 data.phone.length < 11 ||
-                !data.address.length
+                data.address.some((addr) => addr.trim().length === 0)
               }
             >
               ویرایش

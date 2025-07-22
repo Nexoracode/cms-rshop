@@ -44,6 +44,25 @@ export const useDeleteUser = (id: number) => {
   });
 };
 
+export const useUpdateUser = (id: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: Record<string, any>) =>
+      fetcher({
+        route: `/users/${id}`,
+        method: "PATCH",
+        successText: "کاربر با موفقیت ویرایش شد",
+        loadingText: "در حال ویرایش کاربر",
+        body: data,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-user", id] });
+      queryClient.invalidateQueries({ queryKey: ["all-users"] });
+    },
+  });
+};
+
 export const useAddNewUser = () => {
   const queryClient = useQueryClient();
 

@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 type FetcherProps = {
   route: string;
-  method?: "GET" | "POST" | "PUT" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: any;
   headers?: HeadersInit;
   loadingText?: string;
