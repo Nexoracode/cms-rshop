@@ -36,6 +36,7 @@ export const useDeleteUser = (id: number) => {
         method: "DELETE",
         successText: "کاربر با موفقیت حذف شد",
         loadingText: "در حال حذف کاربر",
+        isActiveToast: true,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["one-user", id] });
@@ -54,6 +55,7 @@ export const useUpdateUser = (id: number) => {
         method: "PATCH",
         successText: "کاربر با موفقیت ویرایش شد",
         loadingText: "در حال ویرایش کاربر",
+        isActiveToast: true,
         body: data,
       }),
     onSuccess: () => {
@@ -72,6 +74,7 @@ export const useAddNewUser = () => {
         route: "/users",
         method: "POST",
         body: data,
+        isActiveToast: true,
         successText: "کاربر با موفقیت اضافه شد",
         loadingText: "درحال افزودن کاربر...",
       }),
