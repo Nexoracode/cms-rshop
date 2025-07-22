@@ -152,7 +152,7 @@ const Customers = () => {
                   id={id}
                   isActive={is_active}
                   isPhoneVerified={is_phone_verified}
-                  avatar_url={avatar_url}
+                  avatarUrl={avatar_url}
                 />
                 <UserOrders />
               </div>
