@@ -101,9 +101,9 @@ const DetailedUserInfo = ({
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col items-center gap-4 shadow-[0_0_20px_lightgray] bg-white w-full xs:w-fit p-2 xs:p-4 rounded-2xl">
-        <div className="flex items-center bg-slate-100 rounded-xl py-4 justify-around w-full">
+    <div className="flex justify-center flex-row">
+      <div className="flex flex-col items-center gap-4 shadow-[0_0_20px_lightgray] bg-white w-full p-2 xs:p-4 rounded-2xl">
+        <div className="flex items-center bg-gradient-to-t from-white via-purple-300 to-white rounded-xl py-4 justify-around w-full">
           <div className="flex flex-col items-center gap-4 text-gray-700">
             <p className="text-lg hidden sm:flex">
               کاربر {firstName} {lastName}
@@ -140,41 +140,20 @@ const DetailedUserInfo = ({
           />
         </div>
         {actionType !== "edit" ? (
-          <div className="w-full xs:w-[350px] sm:w-[400px] border rounded-xl p-2 flex flex-col gap-2 text-left">
-            <InfoRow label="شناسه کاربر" value={String(id)} />
-            <InfoRow
-              label="نام و نام خانوادگی"
-              value={`${firstName || "نام"} ${lastName || " | نام خوانوادگی"}`}
-              isActiveBg
-            />
-            <InfoRow label="شماره همراه" value={phone} />
-            <InfoRow
-              label="ایمیل"
-              value={email || "example@gmail.com"}
-              isActiveBg
-            />
-            <InfoRow label="تاریخ عضویت" value={membership} />
-            <InfoRow
-              label="وضعیت حساب"
-              value={isActive ? "بله" : "خیر"}
-              isActiveBg
-            />
-            <InfoRow
-              label="تایید شماره همراه"
-              value={isPhoneVerified ? "بله" : "خیر"}
-            />
-            <div className="flex flex-col gap-2 text-right bg-slate-100 p-3 rounded-lg">
+          <div className="w-full flex flex-col md:flex-row">
+            <div className="w-full flex flex-col gap-2 text-right p-3">
               <p className="text-sm text-gray-700">آدرس ها:</p>
               <div className="text-sm text-gray-500 bg-slate-50 p-2 rounded-lg">
                 {address.map((addr, index) => (
                   <div key={index} className="flex flex-col gap-2">
                     <span className="text-gray-700">آدرس {index + 1}</span>
                     <Divider />
-                    <InfoRow label="استان" value={addr.province || "نامشخص"} />
+                    <InfoRow label="استان" value={addr.province || "نامشخص"} isActiveBg/>
                     <InfoRow label="شهر" value={addr.city || "نامشخص"} />
                     <InfoRow
                       label="آدرس"
                       value={addr.address_line || "نامشخص"}
+                      isActiveBg
                     />
                     <InfoRow
                       label="آدرس پستی"
@@ -183,10 +162,35 @@ const DetailedUserInfo = ({
                     <InfoRow
                       label="آدرس اصلی"
                       value={addr.is_primary ? "بله" : "خیر"}
+                      isActiveBg
                     />
                   </div>
                 )) || "ندارد"}
               </div>
+            </div>
+            <div className="w-full p-2 flex flex-col gap-2 text-left">
+              <InfoRow label="شناسه کاربر" value={String(id)} isActiveBg/>
+              <InfoRow
+                label="نام و نام خانوادگی"
+                value={`${firstName || "نام"} ${
+                  lastName || " | نام خوانوادگی"
+                }`}
+              />
+              <InfoRow label="شماره همراه" value={phone} isActiveBg/>
+              <InfoRow
+                label="ایمیل"
+                value={email || "example@gmail.com"}
+              />
+              <InfoRow label="تاریخ عضویت" value={membership} isActiveBg/>
+              <InfoRow
+                label="وضعیت حساب"
+                value={isActive ? "بله" : "خیر"}
+              />
+              <InfoRow
+                label="تایید شماره همراه"
+                value={isPhoneVerified ? "بله" : "خیر"}
+                isActiveBg
+              />
             </div>
           </div>
         ) : (
