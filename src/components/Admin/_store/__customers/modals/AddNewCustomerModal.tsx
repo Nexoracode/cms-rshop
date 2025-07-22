@@ -24,15 +24,15 @@ const AddNewCustomerModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     setLoading(true);
 
     const newUser = {
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
       phone: phone.trim(),
-      isPhoneVerified: false,
+      is_phone_verified: false,
       email: "example@gmail.com",
       password: "123456",
       role: "user",
-      isActive: true,
-      avatarUrl: "",
+      is_active: true,
+      avatar_url: "",
       addresses: [],
     };
 

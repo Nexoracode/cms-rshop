@@ -1,30 +1,45 @@
 "use client";
 
+import { useState } from "react";
+import { useGetAllUsers, useGetOneUser } from "@/hooks/users/useUsers";
+import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
+//? Components | Templates
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
-import CustomerInfo from "@/components/Admin/_store/__customers/CustomerInfo";
-import CustomerBoxDetail from "@/components/Admin/_store/__customers/helper/CustomerBoxDetail";
+import DetailedUserInfo from "@/components/Admin/_store/__customers/DetailedUserInfo";
+import UserOrders from "@/components/Admin/_store/__customers/UserOrders";
+import GeneralUserInformation from "@/components/Admin/_store/__customers/GeneralUserInfo";
 import AddNewCustomerModal from "@/components/Admin/_store/__customers/modals/AddNewCustomerModal";
 import FilterModal from "@/components/Admin/_store/__customers/modals/FilterModal";
 import SortingModal from "@/components/Admin/_store/__customers/modals/SortingModal";
 import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import { useGetAllUsers, useGetOneUser } from "@/hooks/users/useUsers";
-import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
-import { useState } from "react";
+//? Icons
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { IoFilter } from "react-icons/io5";
-import { LuBox, LuUserSearch, LuUsersRound } from "react-icons/lu";
+import { LuBox, LuUsersRound } from "react-icons/lu";
 
 const Customers = () => {
-  const [customers, setCustomers] = useState<any[]>([]);
+  // State
   const [userId, setUserId] = useState("");
   //? Hooks
   const { data: users } = useGetAllUsers();
   const { data: oneUser } = useGetOneUser(userId);
+  const {
+    first_name,
+    last_name,
+    phone,
+    email,
+    created_at,
+    id,
+    is_active,
+    is_phone_verified,
+    avatar_url,
+  } = oneUser?.data;
 
+  //? Disclosures
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
@@ -46,7 +61,7 @@ const Customers = () => {
   return (
     <>
       {!userId ? (
-        <div className="flex flex-col gap-6">
+        <section className="flex flex-col gap-6">
           <BackToPage title="برگشت" link="/admin/store" />
 
           <HeaderAction
@@ -95,12 +110,10 @@ const Customers = () => {
               icon={<LuUsersRound className="text-3xl" />}
             />
             <CardBody className="p-4 flex flex-col gap-6">
-              {!users?.data ? (
-                <LoadingApiCall />
-              ) : (
+              {users?.data ? (
                 <div className="flex flex-col gap-4">
                   {users.data.map((user: any) => (
-                    <CustomerBoxDetail
+                    <GeneralUserInformation
                       key={user.id}
                       firstName={user.first_name || "نام"}
                       lastName={user.last_name || " | نام خوانوادگی"}
@@ -111,12 +124,14 @@ const Customers = () => {
                     />
                   ))}
                 </div>
+              ) : (
+                <LoadingApiCall />
               )}
             </CardBody>
           </Card>
-        </div>
+        </section>
       ) : (
-        <div className="flex flex-col gap-6">
+        <section className="flex flex-col gap-6">
           <BackToPage
             title="برگشت"
             link="customers"
@@ -124,30 +139,28 @@ const Customers = () => {
           />
 
           {oneUser?.data ? (
-            <CustomerInfo>
-              <CustomerBoxDetail
-                firstName={oneUser.data.first_name || "نام"}
-                lastName={oneUser.data.last_name || " | نام خوانوادگی"}
-                phone={oneUser.data.phone}
-                membership={oneUser.data.created_at.slice(0, 10)}
-                email={oneUser.data.email || "example@gmail.com"}
-                id={oneUser.data.id}
-                isActive={oneUser.data.is_active}
-                isPhoneVerified={oneUser.data.is_phone_verified}
-                isShowDetail
-                avatar_url={oneUser.data.avatar_url}
+            <div className="flex flex-col gap-4">
+              <DetailedUserInfo
+                firstName={first_name}
+                lastName={last_name}
+                phone={phone}
+                membership={created_at.slice(0, 10)}
+                email={email}
+                id={id}
+                isActive={is_active}
+                isPhoneVerified={is_phone_verified}
+                avatar_url={avatar_url}
               />
-            </CustomerInfo>
+              <UserOrders />
+            </div>
           ) : (
             <LoadingApiCall />
           )}
-        </div>
+        </section>
       )}
 
       <AddNewCustomerModal isOpen={isAddOpen} onOpenChange={onAddOpenChange} />
-
       <SortingModal isOpen={isSortingOpen} onOpenChange={onSortingOpenChange} />
-
       <FilterModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
     </>
   );
