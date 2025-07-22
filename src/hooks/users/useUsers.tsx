@@ -6,7 +6,7 @@ export const useGetAllUsers = () => {
     queryKey: ["all-users"],
     queryFn: () =>
       fetcher({
-        route: "/users/cms",
+        route: "/users",
         successText: "لیست کاربران با موفقیت دریافت شد",
         loadingText: "در حال دریافت لیست کاربران",
       }),
@@ -18,7 +18,7 @@ export const useGetOneUser = (id: string) => {
     queryKey: ["one-user", id],
     queryFn: () =>
       fetcher({
-        route: `/users/cms/${id}`,
+        route: `/users/${id}`,
         successText: "کاربر با موفقیت دریافت شد",
         loadingText: "در حال دریافت اطلاعات کاربر",
       }),

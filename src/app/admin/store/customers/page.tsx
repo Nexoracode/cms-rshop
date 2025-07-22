@@ -11,7 +11,7 @@ import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { useGetAllUsers, useGetOneUser } from "@/hooks/users/useUsers";
-import { Card, CardBody, Input, Spinner, useDisclosure } from "@heroui/react";
+import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
@@ -96,7 +96,7 @@ const Customers = () => {
             />
             <CardBody className="p-4 flex flex-col gap-6">
               {!users?.data ? (
-                <LoadingApiCall loadingText="هنوز هیچ کاربری در وبسایت ثبت نام نکرده است یا" />
+                <LoadingApiCall />
               ) : (
                 <div className="flex flex-col gap-4">
                   {users.data.map((user: any) => (
@@ -123,39 +123,24 @@ const Customers = () => {
             onClick={() => setUserId("")}
           />
 
-          <div className="bg-white p-4 rounded-2xl">
-            {oneUser?.data ? (
-              <CustomerInfo>
-                <CustomerBoxDetail
-                  firstName={oneUser.data.first_name || "نام"}
-                  lastName={oneUser.data.last_name || " | نام خوانوادگی"}
-                  phone={oneUser.data.phone}
-                  membership={oneUser.data.created_at.slice(0, 10)}
-                  email={oneUser.data.email || "example@gmail.com"}
-                  cardHeader={
-                    <BoxHeader
-                      title="اطلاعات کاربر"
-                      color="bg-purple-700/10 text-purple-700"
-                      icon={<LuUserSearch className="text-3xl" />}
-                    />
-                  }
-                  id={oneUser.data.id}
-                  isActive={oneUser.data.is_active}
-                  isPhoneVerified={oneUser.data.is_phone_verified}
-                  isShowDetail
-                />
-                <img
-                  src={
-                    oneUser.data.avatar_url ||
-                    "https://images.unsplash.com/photo-1544502062-f82887f03d1c?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb"
-                  }
-                  alt="profile"
-                />
-              </CustomerInfo>
-            ) : (
-              <LoadingApiCall />
-            )}
-          </div>
+          {oneUser?.data ? (
+            <CustomerInfo>
+              <CustomerBoxDetail
+                firstName={oneUser.data.first_name || "نام"}
+                lastName={oneUser.data.last_name || " | نام خوانوادگی"}
+                phone={oneUser.data.phone}
+                membership={oneUser.data.created_at.slice(0, 10)}
+                email={oneUser.data.email || "example@gmail.com"}
+                id={oneUser.data.id}
+                isActive={oneUser.data.is_active}
+                isPhoneVerified={oneUser.data.is_phone_verified}
+                isShowDetail
+                avatar_url={oneUser.data.avatar_url}
+              />
+            </CustomerInfo>
+          ) : (
+            <LoadingApiCall />
+          )}
         </div>
       )}
 
