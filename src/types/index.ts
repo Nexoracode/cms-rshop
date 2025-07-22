@@ -1,10 +1,6 @@
-import { SVGProps } from "react";
-
-export type IconSvgProps = SVGProps<SVGSVGElement> & {
-  size?: number;
-};
-
 export type Stock = "money" | "percent"
+
+export type ActionType = "add" | "edit" | "delete" | "view";
 
 export type SelectOption = {
   key: string | number;

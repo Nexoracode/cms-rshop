@@ -2,6 +2,9 @@
 
 import { Button } from "@heroui/react";
 import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
+import { ActionType } from "@/types";
+import { useState } from "react";
+import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
 type Props = {
   firstName: string;
@@ -26,15 +29,31 @@ const DetailedUserInfo = ({
   isPhoneVerified,
   avatar_url,
 }: Props) => {
+  const [actionType, setActionType] = useState<ActionType>("view");
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center gap-4 shadow-[0_0_20px_lightgray] bg-white w-full xs:w-fit p-2 xs:p-4 rounded-2xl">
         <div className="flex items-center bg-slate-100 rounded-xl py-4 justify-around w-full">
-          <div className="flex flex-col items-center gap-2 text-gray-700">
-            <p className="text-xl hidden sm:flex">عکس پروفایل</p>
-            <Button variant="flat" color="success" size="sm">
-              بروز رسانی کاربر
-            </Button>
+          <div className="flex flex-col items-center gap-4 text-gray-700">
+            <p className="text-lg hidden sm:flex">کاربر {firstName} {lastName}</p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="flat"
+                color="success"
+                size="sm"
+                onPress={() => setActionType("edit")}
+              >
+                ویرایش
+              </Button>
+              <DoubleClickBtn
+                color="danger"
+                size="sm"
+                onPress={() => setActionType("delete")}
+                textBtn="حذف"
+                isActiveDoubleClick
+              />
+            </div>
           </div>
           <img
             src={
