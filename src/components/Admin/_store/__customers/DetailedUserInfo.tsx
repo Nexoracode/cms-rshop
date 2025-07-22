@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox, Input, NumberInput } from "@heroui/react";
+import { Button, Checkbox, Input, Textarea } from "@heroui/react";
 import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
 import { use, useEffect, useState } from "react";
@@ -17,6 +17,7 @@ type Props = {
   isActive: boolean;
   isPhoneVerified: boolean;
   avatarUrl: string;
+  address: string[];
 };
 
 const DetailedUserInfo = ({
@@ -29,6 +30,7 @@ const DetailedUserInfo = ({
   isActive,
   isPhoneVerified,
   avatarUrl,
+  address,
 }: Props) => {
   const [actionType, setActionType] = useState<ActionType>("view");
   const [data, setData] = useState({
@@ -39,6 +41,7 @@ const DetailedUserInfo = ({
     isActive: isActive,
     isPhoneVerified: isPhoneVerified,
     avatarUrl: avatarUrl,
+    address: address || [""],
   });
   //? Hooks
   const deleteUser = useDeleteUser(id);
@@ -116,10 +119,18 @@ const DetailedUserInfo = ({
               value={isPhoneVerified ? "بله" : "خیر"}
               isActiveBg
             />
+            <div className="flex flex-col gap-2 text-right bg-slate-50 p-3 rounded-lg">
+              <p className="text-sm text-gray-700">آدرس ها:</p>
+              <p className="text-sm text-gray-500 bg-slate-100 p-2 rounded-lg">
+                {address.join(", ") || "ندارد"}
+              </p>
+            </div>
           </div>
         ) : (
-          <div className="w-full xs:w-[350px] sm:w-[400px] border rounded-xl p-2 flex flex-col gap-3 text-left">
+          <div className="w-full xs:w-[350px] sm:w-[400px] border rounded-xl p-2 flex flex-col gap-6 text-left">
             <Input
+              labelPlacement="outside"
+              label="نام"
               autoFocus
               variant="flat"
               placeholder="نام را وارد کنید"
@@ -129,7 +140,9 @@ const DetailedUserInfo = ({
               }
             />
             <Input
+              labelPlacement="outside"
               variant="flat"
+              label="نام خوانوادگی"
               placeholder="نام خانوادگی را وارد کنید"
               value={data.lastName}
               onValueChange={(value) =>
@@ -137,18 +150,21 @@ const DetailedUserInfo = ({
               }
             />
             <Input
+              labelPlacement="outside"
               label="شماره تماس"
+              style={{direction: "ltr"}}
               type="tel"
               inputMode="tel"
               variant="flat"
-              size="sm"
               maxLength={11}
               value={data.phone}
               onChange={handlePhoneChange}
             />
             <Input
+              labelPlacement="outside"
               variant="flat"
               placeholder="ایمیل را وارد کنید"
+              label="ایمیل"
               type="email"
               value={data.email}
               onValueChange={(value) =>
@@ -179,6 +195,24 @@ const DetailedUserInfo = ({
                 </span>
               </Checkbox>
             </div>
+            {address.map((item, index) => (
+              <Textarea
+                labelPlacement="outside"
+                className="text-right"
+                key={index}
+                label={`آدرس ${index + 1}`}
+                placeholder="آدرس را وارد کنید"
+                value={data.address[index]}
+                onValueChange={(value) =>
+                  setData((prev) => ({
+                    ...prev,
+                    address: prev.address.map((item, i) =>
+                      i === index ? value : item
+                    ),
+                  }))
+                }
+              />
+            ))}
             <Button
               className="w-full"
               variant="flat"
@@ -188,8 +222,9 @@ const DetailedUserInfo = ({
               isDisabled={
                 !data.firstName.length ||
                 !data.lastName.length ||
-                !data.email.length ||
-                data.phone.length < 11
+                !data.email ||
+                data.phone.length < 11 ||
+                !data.address.length
               }
             >
               ویرایش

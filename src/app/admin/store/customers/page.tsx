@@ -153,6 +153,7 @@ const Customers = () => {
                   isActive={is_active}
                   isPhoneVerified={is_phone_verified}
                   avatarUrl={avatar_url}
+                  address={[""]}
                 />
                 <UserOrders />
               </div>
