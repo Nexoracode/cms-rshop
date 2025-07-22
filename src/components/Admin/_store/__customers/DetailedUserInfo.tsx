@@ -3,9 +3,17 @@
 import { Button, Checkbox, Input, Textarea } from "@heroui/react";
 import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteUser, useUpdateUser } from "@/hooks/users/useUsers";
+
+type Address = {
+  city: string;
+  province: string;
+  address_line: string;
+  postal_code: string;
+  is_primary: boolean;
+};
 
 type Props = {
   firstName: string;
@@ -17,7 +25,7 @@ type Props = {
   isActive: boolean;
   isPhoneVerified: boolean;
   avatarUrl: string;
-  address: string[];
+  address: Address[];
 };
 
 const DetailedUserInfo = ({
@@ -41,8 +49,17 @@ const DetailedUserInfo = ({
     isActive: isActive,
     isPhoneVerified: isPhoneVerified,
     avatarUrl: avatarUrl,
-    address: address || [""],
+    address: address || [
+      {
+        city: "",
+        province: "",
+        address_line: "",
+        postal_code: "",
+        is_primary: false,
+      },
+    ],
   });
+
   //? Hooks
   const deleteUser = useDeleteUser(id);
   const updateUser = useUpdateUser(id);
@@ -124,25 +141,35 @@ const DetailedUserInfo = ({
         </div>
         {actionType !== "edit" ? (
           <div className="w-full xs:w-[350px] sm:w-[400px] border rounded-xl p-2 flex flex-col gap-2 text-left">
-            <InfoRow label="شناسه کاربر" value={String(id)} isActiveBg />
+            <InfoRow label="شناسه کاربر" value={String(id)} />
             <InfoRow
               label="نام و نام خانوادگی"
               value={`${firstName || "نام"} ${lastName || " | نام خوانوادگی"}`}
-            />
-            <InfoRow label="شماره همراه" value={phone} isActiveBg />
-            <InfoRow label="ایمیل" value={email || "example@gmail.com"} />
-            <InfoRow label="تاریخ عضویت" value={membership} isActiveBg />
-            <InfoRow label="وضعیت حساب" value={isActive ? "بله" : "خیر"} />
-            <InfoRow
-              label="وریفای"
-              value={isPhoneVerified ? "بله" : "خیر"}
               isActiveBg
+            />
+            <InfoRow label="شماره همراه" value={phone} />
+            <InfoRow label="ایمیل" value={email || "example@gmail.com"} isActiveBg/>
+            <InfoRow label="تاریخ عضویت" value={membership} />
+            <InfoRow label="وضعیت حساب" value={isActive ? "بله" : "خیر"} isActiveBg/>
+            <InfoRow
+              label="تایید شماره همراه"
+              value={isPhoneVerified ? "بله" : "خیر"}
+              
             />
             <div className="flex flex-col gap-2 text-right bg-slate-50 p-3 rounded-lg">
               <p className="text-sm text-gray-700">آدرس ها:</p>
-              <p className="text-sm text-gray-500 bg-slate-100 p-2 rounded-lg">
-                {address.join(", ") || "ندارد"}
-              </p>
+              <div className="text-sm text-gray-500 bg-slate-100 p-2 rounded-lg">
+                {address.map((addr, index) => (
+                  <div key={index} className="flex flex-col gap-2">
+                    <span className="text-gray-700">آدرس {index + 1}</span>
+                    <InfoRow label="استان" value={addr.province || "نامشخص"} />
+                    <InfoRow label="شهر" value={addr.city || "نامشخص"} />
+                    <InfoRow label="آدرس" value={addr.address_line || "نامشخص"} />
+                    <InfoRow label="آدرس پستی" value={addr.postal_code || "نامشخص"} />
+                    <InfoRow label="آدرس اصلی" value={addr.is_primary ? "بله" : "خیر"} />
+                  </div>
+                )) || "ندارد"}
+              </div>
             </div>
           </div>
         ) : (
@@ -214,20 +241,58 @@ const DetailedUserInfo = ({
                 </span>
               </Checkbox>
             </div>
-            {address.map((item, index) => (
-              <Textarea
-                labelPlacement="outside"
-                className="text-right"
+            {data.address.map((addr: Address, index: number) => (
+              <div
                 key={index}
-                label={`آدرس ${index + 1}`}
-                placeholder="آدرس را وارد کنید"
-                value={data.address[index]}
-                onValueChange={(value) => {
-                  const newAddresses = [...data.address];
-                  newAddresses[index] = value;
-                  setData((prev) => ({ ...prev, address: newAddresses }));
-                }}
-              />
+                className="bg-gray-50 border p-3 rounded-lg flex flex-col gap-3"
+              >
+                <Input
+                  label="استان"
+                  value={addr.province}
+                  onValueChange={(value) => {
+                    const updated = [...data.address];
+                    updated[index].province = value;
+                    setData((prev) => ({ ...prev, address: updated }));
+                  }}
+                />
+                <Input
+                  label="شهر"
+                  value={addr.city}
+                  onValueChange={(value) => {
+                    const updated = [...data.address];
+                    updated[index].city = value;
+                    setData((prev) => ({ ...prev, address: updated }));
+                  }}
+                />
+                <Input
+                  label="کد پستی"
+                  value={addr.postal_code}
+                  onValueChange={(value) => {
+                    const updated = [...data.address];
+                    updated[index].postal_code = value;
+                    setData((prev) => ({ ...prev, address: updated }));
+                  }}
+                />
+                <Textarea
+                  label="آدرس کامل"
+                  value={addr.address_line}
+                  onValueChange={(value) => {
+                    const updated = [...data.address];
+                    updated[index].address_line = value;
+                    setData((prev) => ({ ...prev, address: updated }));
+                  }}
+                />
+                <Checkbox
+                  isSelected={addr.is_primary}
+                  onValueChange={(value) => {
+                    const updated = [...data.address];
+                    updated[index].is_primary = value;
+                    setData((prev) => ({ ...prev, address: updated }));
+                  }}
+                >
+                  آدرس اصلی
+                </Checkbox>
+              </div>
             ))}
             <Button
               className="w-full"
@@ -240,7 +305,13 @@ const DetailedUserInfo = ({
                 !data.lastName.length ||
                 !data.email ||
                 data.phone.length < 11 ||
-                data.address.some((addr) => addr.trim().length === 0)
+                data.address.some(
+                  (addr) =>
+                    !addr.city.trim() ||
+                    !addr.province.trim() ||
+                    !addr.address_line.trim() ||
+                    !addr.postal_code.trim()
+                )
               }
             >
               ویرایش
