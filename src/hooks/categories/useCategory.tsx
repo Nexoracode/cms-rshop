@@ -24,7 +24,7 @@ export const useCreateCategory = () => {
         route: "/category",
         method: "POST",
         body: data,
-        isActiveToast: true,
+        isActiveToast: false,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-categories"] });

@@ -64,8 +64,16 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
 
     if (res.ok) {
       const mediaId = res.data[0].id;
+      const { discount, parentId, slug, title } = data;
+
       createCategory(
-        { ...data, mediaId },
+        {
+          mediaId,
+          discount,
+          parentId,
+          slug,
+          title
+        },
         {
           onSuccess: () => {
             setData({
@@ -152,8 +160,8 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 placeholder="مقدار تخفیف را وارد کنید"
                 minValue={0}
                 endContent={<p>%</p>}
-                onValueChange={(value: any) =>
-                  setData({ ...data, discount: value || "0" })
+                onValueChange={value =>
+                  setData({ ...data, discount: String(value) || "0" })
                 }
               />
               {/*  */}
@@ -173,16 +181,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 isLoading={isPending}
                 onPress={handleCreateNewCategory}
               >
-                {
-                  isPending
-                  ?
-                  <Spinner
-                    color="default"
-                    labelColor="foreground"
-                  />
-                  :
-                  <span>ثبت تغیرات</span>
-                }
+                {isPending ? "" : <span>ثبت تغیرات</span>}
               </Button>
             </ModalFooter>
           </>
