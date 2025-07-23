@@ -15,7 +15,7 @@ const ImagesProducts = ({ children }: Props) => {
         <Card className="w-full shadow-md">
             <BoxHeader
                 title="تصویر و ویدیو محصول"
-                color="bg-blue-700/10 text-blue-700"
+                color="bg-green-700/10 text-green-700"
                 icon={<FaRegImages className="text-3xl" />}
             />
             <CardBody>

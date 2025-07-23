@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link"
+import Link from "next/link";
 import { Button } from "@heroui/react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 //
@@ -14,47 +14,51 @@ import ImageCropper from "@/components/Helper/ImageCropper";
 import BackToPage from "@/components/Helper/BackToPage";
 
 type ProductInfo = {
-    medias?: any[],
-    initInfos?: any
-}
+  medias?: any[];
+  initInfos?: any;
+};
 
 const CreateNewProduct = () => {
+  const [productInfos, setProductInfos] = useState<ProductInfo | null>(null);
 
-    const [productInfos, setProductInfos] = useState<ProductInfo | null>(null)
+  useEffect(() => {
+    if (productInfos) {
+      console.log("FINAL =>", productInfos);
+    }
+  }, [productInfos]);
 
-    useEffect(() => {
-        if (productInfos) {
-            console.log("FINAL =>", productInfos);
-        }
-    }, [productInfos])
+  return (
+    <div>
+      <BackToPage title="تعریف محصول" link="/admin/products" />
+      <section className="flex flex-col gap-6 py-6">
+        <InitInfos
+          onChange={(datas) =>
+            setProductInfos((prev) =>
+              prev ? { ...prev, initInfos: datas } : { initInfos: datas }
+            )
+          }
+        />
+        <MiddAdditionalInfos />
+        <LastAdditionalInfos />
+        <ImagesProducts>
+          <ImageCropper
+            onPreviewsChange={(datas) =>
+              setProductInfos((prev) =>
+                prev ? { ...prev, medias: datas } : { medias: datas }
+              )
+            }
+          />
+        </ImagesProducts>
+        <AttributesProducts />
+        <Button
+          color="secondary"
+          isDisabled={productInfos === null ? true : false}
+        >
+          ثبت محصول
+        </Button>
+      </section>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            <BackToPage title="تعریف محصول" link="/admin/products" />
-            <section className="flex flex-col gap-6 py-6">
-                <ImagesProducts>
-                    <ImageCropper onPreviewsChange={datas =>
-                        setProductInfos(prev =>
-                            prev
-                                ? { ...prev, medias: datas }
-                                : { medias: datas }
-                        )
-                    } />
-                </ImagesProducts>
-                <InitInfos onChange={datas =>
-                    setProductInfos(prev =>
-                        prev
-                            ? { ...prev, initInfos: datas }
-                            : { initInfos: datas }
-                    )
-                } />
-                <MiddAdditionalInfos />
-                <LastAdditionalInfos />
-                <AttributesProducts />
-                <Button color="secondary" isDisabled={productInfos === null ? true : false}>ثبت محصول</Button>
-            </section>
-        </div>
-    )
-}
-
-export default CreateNewProduct
+export default CreateNewProduct;

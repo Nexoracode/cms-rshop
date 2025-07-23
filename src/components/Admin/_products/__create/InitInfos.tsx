@@ -57,7 +57,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
             <Card className="w-full shadow-md">
                 <BoxHeader
                     title="اطلاعات اولیه محصول"
-                    color="bg-orange-700/10 text-orange-700"
+                    color="bg-black text-white"
                     icon={<LuTextCursorInput className="text-3xl" />}
                 />
                 <CardBody dir="rtl" className="flex flex-col gap-6">

@@ -12,8 +12,8 @@ const MiddAdditionalInfos = () => {
     return (
         <Card className="w-full shadow-md">
             <BoxHeader
-                title="اطلاعات تکمیلی محصول"
-                color="bg-green-700/10 text-green-700"
+                title="اطلاعات میانی محصول"
+                color="bg-black text-white"
                 icon={<FiShoppingBag className="text-3xl" />}
             />
             <CardBody dir="rtl" className="flex flex-col gap-6 text-start">
