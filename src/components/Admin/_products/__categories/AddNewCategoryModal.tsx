@@ -13,6 +13,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
+  Spinner,
 } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import {
@@ -20,15 +21,7 @@ import {
   useCreateCategory,
 } from "@/hooks/categories/useCategory";
 import { fetcher } from "@/utils/fetcher";
-
-export type CategoryData = {
-  _id?: string;
-  title: string;
-  slug: string;
-  discount: string;
-  parentId: number;
-  mediaId: string;
-};
+import { CategoryData } from "./category-types";
 
 type Props = {
   isOpen: boolean;
@@ -69,23 +62,25 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
 
     console.log(res?.data);
 
-    const mediaId = res?.data?.[0]?._id || "";
-    /*  createCategory(
-      { ...data, mediaId },
-      {
-        onSuccess: () => {
-          setData({
-            title: "",
-            slug: "",
-            discount: "0",
-            parentId: 0,
-            mediaId: "",
-          });
-          setImageFile(null);
-          onOpenChange();
-        },
-      }
-    ); */
+    if (res.ok) {
+      const mediaId = res.data[0].id;
+      createCategory(
+        { ...data, mediaId },
+        {
+          onSuccess: () => {
+            setData({
+              title: "",
+              slug: "",
+              discount: "0",
+              parentId: 0,
+              mediaId: "",
+            });
+            setImageFile(null);
+            onOpenChange();
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -178,7 +173,16 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 isLoading={isPending}
                 onPress={handleCreateNewCategory}
               >
-                افزودن دسته بندی
+                {
+                  isPending
+                  ?
+                  <Spinner
+                    color="default"
+                    labelColor="foreground"
+                  />
+                  :
+                  <span>ثبت تغیرات</span>
+                }
               </Button>
             </ModalFooter>
           </>

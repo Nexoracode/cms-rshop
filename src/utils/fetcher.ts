@@ -22,18 +22,19 @@ export const fetcher = async ({
   successText,
   credentials = "include",
   isActiveToast = false
-}: FetcherProps): Promise<{ data: any; ok: boolean } | undefined> => {
+}: FetcherProps): Promise<{ data: any; ok: boolean }> => {
 
   const toastId = isActiveToast && toast.loading(loadingText);
+  const isFormData = body instanceof FormData;
 
   try {
     const res = await fetch(`/api${route}`, {
       method,
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...headers,
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: isFormData ? body : body ? JSON.stringify(body) : undefined,
       credentials
     });
 
@@ -50,5 +51,6 @@ export const fetcher = async ({
   } catch (err: any) {
     toastId && toast.dismiss(toastId);
     toast.error(err.message || "خطای اتصال به سرور");
+    return { data: null, ok: false };
   }
 };
