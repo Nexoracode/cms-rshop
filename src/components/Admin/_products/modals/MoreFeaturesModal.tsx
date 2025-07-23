@@ -6,6 +6,7 @@ import { BiCategory } from "react-icons/bi";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { TbBrandCupra, TbEdit } from "react-icons/tb";
 import { GrWorkshop } from "react-icons/gr";
+import { useRouter } from "next/navigation";
 
 type Props = {
     isOpen: boolean,
@@ -13,6 +14,9 @@ type Props = {
 }
 
 const MoreFeaturesModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+    
+    const router = useRouter()
+
     return (
         <Modal
             dir="rtl"
@@ -35,6 +39,7 @@ const MoreFeaturesModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                                 <ListboxItem
                                     key="category"
                                     startContent={<BiCategory className="text-2xl text-[var(--primary)]" />}
+                                    onPress={() => router.push('/admin/products/categories')}
                                 >
                                     دسته بندی
                                 </ListboxItem>

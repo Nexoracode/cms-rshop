@@ -4,7 +4,7 @@ import { Card, CardBody, Checkbox, Input, NumberInput, Select, SelectItem, useDi
 import { LuTextCursorInput } from "react-icons/lu"
 import { FiSearch } from "react-icons/fi"
 import { TiPlusOutline } from "react-icons/ti"
-import AddNewCategoryModal from "./modals/AddNewCategoryModal"
+import AddNewCategoryModal from "../__categories/AddNewCategoryModal"
 import { useEffect, useState } from "react"
 import { Stock } from "@/types"
 import BoxHeader from "./helpers/BoxHeader"

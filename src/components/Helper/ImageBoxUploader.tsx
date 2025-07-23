@@ -30,8 +30,8 @@ const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatu
 
     return (
         <section>
-            <div className="w-full px-2 flex items-center justify-between my-3">
-                <span>{title}</span>
+            <div className="w-full px-2 flex items-center justify-between mb-3">
+                <span>{title} (ضروری)</span>
                 <input
                     type="file"
                     accept="image/*"
@@ -54,7 +54,7 @@ const ImageBoxUploader: React.FC<Props> = ({ textBtn, title, onFile, changeStatu
                                 <img
                                     src={URL.createObjectURL(imageFile)}
                                     alt="preview"
-                                    className="rounded-2xl w-[80px] h-[80px] p-2 object-cover"
+                                    className="rounded-2xl w-[8p5x] h-[80px] p-2 object-cover"
                                 />
                                 :
                                 <TbCategoryPlus className="text-4xl text-gray-500" />

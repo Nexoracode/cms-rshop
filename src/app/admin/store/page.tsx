@@ -12,6 +12,7 @@ import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
 import { LuShoppingBag, LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
+import { BiCategoryAlt } from "react-icons/bi";
 
 // تنظیمات فروشگاه
 const storeSettingsLinks = [
@@ -39,7 +40,7 @@ const storeSettingsLinks = [
         title: "بلاگ‌ها",
         icon: <HiOutlineDocumentText className="text-2xl" />,
         route: "store/blog",
-    },
+    }
 ];
 
 // تنظیمات سفارش گیری
