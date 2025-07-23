@@ -1,5 +1,5 @@
 export type CategoryData = {
-  _id?: string;
+  id?: string;
   title: string;
   slug: string;
   discount: string;

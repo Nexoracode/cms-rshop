@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -43,7 +43,11 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
   const { mutate: createCategory, isPending } = useCreateCategory();
 
   const isDisabled =
-    !data.title.trim() || !data.slug.trim() || !imageFile || isPending;
+    !data.title.trim() ||
+    (!isSelected && !data.parentId) ||
+    !data.slug.trim() ||
+    !imageFile ||
+    isPending;
 
   const handleCreateNewCategory = async () => {
     if (isDisabled) return;
@@ -72,7 +76,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
           discount,
           parentId,
           slug,
-          title
+          title,
         },
         {
           onSuccess: () => {
@@ -112,11 +116,13 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                   labelPlacement="outside"
                   label="دسته بندی"
                   placeholder="دسته بندی را انتخاب کنید"
-                  onChange={(value) => setData({ ...data, parentId: +value })}
+                  onChange={(e) =>
+                    setData({ ...data, parentId: +e.target.value })
+                  }
                 >
                   {categoriesData?.data?.length ? (
                     categoriesData.data.map((cat: CategoryData) => (
-                      <SelectItem key={cat._id}>{cat.title}</SelectItem>
+                      <SelectItem key={`${cat.id}`}>{cat.title}</SelectItem>
                     ))
                   ) : (
                     <SelectItem isDisabled>دسته بندی موجود نیست</SelectItem>
@@ -160,7 +166,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 placeholder="مقدار تخفیف را وارد کنید"
                 minValue={0}
                 endContent={<p>%</p>}
-                onValueChange={value =>
+                onValueChange={(value) =>
                   setData({ ...data, discount: String(value) || "0" })
                 }
               />

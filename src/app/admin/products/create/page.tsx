@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Button } from "@heroui/react";
-import { MdOutlineArrowBackIos } from "react-icons/md";
 //
 import ImagesProducts from "@/components/Admin/_products/__create/ImagesProducts";
 import InitInfos from "@/components/Admin/_products/__create/InitInfos";
@@ -29,7 +27,7 @@ const CreateNewProduct = () => {
 
   return (
     <div>
-      <BackToPage title="تعریف محصول" link="/admin/products" />
+      <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
         <InitInfos
           onChange={(datas) =>
