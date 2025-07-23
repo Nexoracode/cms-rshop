@@ -70,7 +70,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
     console.log(res?.data);
 
     const mediaId = res?.data?.[0]?._id || "";
-   /*  createCategory(
+    /*  createCategory(
       { ...data, mediaId },
       {
         onSuccess: () => {
@@ -102,23 +102,6 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
               <p className="font-normal text-[16px]">افزودن دسته بندی جدید</p>
             </ModalHeader>
             <ModalBody className="flex flex-col gap-6">
-              <Input
-                isRequired
-                label="عنوان دسته بندی"
-                labelPlacement="outside"
-                value={data.title}
-                placeholder="نام دسته بندی را وارد کنید"
-                onChange={(e) => setData({ ...data, title: e.target.value })}
-              />
-              <Input
-                isRequired
-                label="عنوان انگلیسی دسته بندی"
-                labelPlacement="outside"
-                value={data.slug}
-                placeholder="slug"
-                style={{ direction: "ltr" }}
-                onChange={(e) => setData({ ...data, slug: e.target.value })}
-              />
               <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-2xl">
                 <Select
                   isRequired
@@ -130,9 +113,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 >
                   {categoriesData?.data?.length ? (
                     categoriesData.data.map((cat: CategoryData) => (
-                      <SelectItem key={cat._id}>
-                        {cat.title}
-                      </SelectItem>
+                      <SelectItem key={cat._id}>{cat.title}</SelectItem>
                     ))
                   ) : (
                     <SelectItem isDisabled>دسته بندی موجود نیست</SelectItem>
@@ -148,6 +129,28 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                   <span className="text-sm">دسته بندی مادر</span>
                 </Checkbox>
               </div>
+              {/*  */}
+              <div className="flex flex-col gap-6 sm:flex-row items-center sm:gap-4">
+                <Input
+                  isRequired
+                  label="عنوان دسته بندی"
+                  labelPlacement="outside"
+                  value={data.title}
+                  placeholder="نام دسته بندی را وارد کنید"
+                  onChange={(e) => setData({ ...data, title: e.target.value })}
+                />
+
+                <Input
+                  isRequired
+                  label="عنوان انگلیسی دسته بندی"
+                  labelPlacement="outside"
+                  value={data.slug}
+                  placeholder="slug"
+                  style={{ direction: "ltr" }}
+                  onChange={(e) => setData({ ...data, slug: e.target.value })}
+                />
+              </div>
+              {/*  */}
               <NumberInput
                 labelPlacement="outside"
                 label="تخفیف"
@@ -158,6 +161,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                   setData({ ...data, discount: value || "0" })
                 }
               />
+              {/*  */}
               <ImageBoxUploader
                 textBtn="+ افزودن تصویر"
                 title="تصویر دسته بندی"
