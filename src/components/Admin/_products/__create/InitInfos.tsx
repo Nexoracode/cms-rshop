@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { Stock } from "@/types";
 import BoxHeader from "./helpers/BoxHeader";
 import { useGetAllCategories } from "@/hooks/categories/useCategory";
-import { CategoryData } from "../__categories/category-types";
+import { CategoryPayload } from "../__categories/category-types";
 
 interface InitInfosProps {
   onChange: (data: {
@@ -155,7 +155,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
               }}
             >
               {categoriesData?.data?.length ? (
-                categoriesData.data.map((cat: CategoryData) => (
+                categoriesData.data.map((cat: CategoryPayload) => (
                   <SelectItem key={cat._id}>{cat.title}</SelectItem>
                 ))
               ) : (

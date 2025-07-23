@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryData } from "@/components/Admin/_products/__categories/category-types";
+import { CategoryPayload } from "@/components/Admin/_products/__categories/category-types";
 import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -19,7 +19,7 @@ export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CategoryData) =>
+    mutationFn: (data: CategoryPayload) =>
       fetcher({
         route: "/category",
         method: "POST",

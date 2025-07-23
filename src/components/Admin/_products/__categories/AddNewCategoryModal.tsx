@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -13,7 +13,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  Spinner,
 } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import {
@@ -21,7 +20,7 @@ import {
   useCreateCategory,
 } from "@/hooks/categories/useCategory";
 import { fetcher } from "@/utils/fetcher";
-import { CategoryData } from "./category-types";
+import { CategoryPayload } from "./category-types";
 
 type Props = {
   isOpen: boolean;
@@ -29,7 +28,7 @@ type Props = {
 };
 
 const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
-  const [data, setData] = useState<CategoryData>({
+  const [data, setData] = useState<CategoryPayload>({
     title: "",
     slug: "",
     discount: "0",
@@ -121,7 +120,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                   }
                 >
                   {categoriesData?.data?.length ? (
-                    categoriesData.data.map((cat: CategoryData) => (
+                    categoriesData.data.map((cat: CategoryPayload) => (
                       <SelectItem key={`${cat.id}`}>{cat.title}</SelectItem>
                     ))
                   ) : (
