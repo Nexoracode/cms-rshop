@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -40,6 +40,24 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
 
   const { data: categoriesData } = useGetAllCategories();
   const { mutate: createCategory, isPending } = useCreateCategory();
+
+  // flatten hierarchical categories for Select, with indentation
+  const flatOptions = useMemo(() => {
+    const result: { id: number; title: string }[] = [];
+    function traverse(list: Category[], depth = 0) {
+      list.forEach((cat) => {
+        result.push({
+          id: cat.id,
+          title: `${"  ".repeat(depth)}${cat.title}`,
+        });
+        if (cat.children && cat.children.length) {
+          traverse(cat.children, depth + 1);
+        }
+      });
+    }
+    if (categoriesData?.data) traverse(categoriesData.data);
+    return result;
+  }, [categoriesData]);
 
   const isDisabled =
     !data.title.trim() ||
@@ -119,12 +137,14 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                     setData({ ...data, parentId: +e.target.value })
                   }
                 >
-                  {categoriesData?.data?.length ? (
-                    categoriesData.data.map((cat: Category) => (
-                      <SelectItem key={`${cat.id}`}>{cat.title}</SelectItem>
+                  {categoriesData?.data && categoriesData.data.length ? (
+                    flatOptions.map((opt) => (
+                      <SelectItem key={opt.id}>{opt.title}</SelectItem>
                     ))
                   ) : (
-                    <SelectItem isDisabled>دسته بندی موجود نیست</SelectItem>
+                    <SelectItem key="-1" isDisabled>
+                      دسته‌بندی وجود ندارد
+                    </SelectItem>
                   )}
                 </Select>
                 <Checkbox
