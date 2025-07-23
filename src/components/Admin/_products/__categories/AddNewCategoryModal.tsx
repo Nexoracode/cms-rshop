@@ -20,7 +20,7 @@ import {
   useCreateCategory,
 } from "@/hooks/categories/useCategory";
 import { fetcher } from "@/utils/fetcher";
-import { CategoryPayload } from "./category-types";
+import { Category, CategoryPayload } from "./category-types";
 
 type Props = {
   isOpen: boolean;
@@ -120,7 +120,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                   }
                 >
                   {categoriesData?.data?.length ? (
-                    categoriesData.data.map((cat: CategoryPayload) => (
+                    categoriesData.data.map((cat: Category) => (
                       <SelectItem key={`${cat.id}`}>{cat.title}</SelectItem>
                     ))
                   ) : (
