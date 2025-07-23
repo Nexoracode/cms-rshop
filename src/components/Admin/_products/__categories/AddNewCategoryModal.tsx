@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
-import { useGetAllCategories } from "@/hooks/categories/useCategory";
 import {
   Button,
   Checkbox,
@@ -16,7 +14,21 @@ import {
   ModalHeader,
   ModalBody,
 } from "@heroui/react";
-import { CategoryData } from "./category-types";
+import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
+import {
+  useGetAllCategories,
+  useCreateCategory,
+} from "@/hooks/categories/useCategory";
+import { fetcher } from "@/utils/fetcher";
+
+export type CategoryData = {
+  _id?: string;
+  title: string;
+  slug: string;
+  discount: string;
+  parentId: number;
+  mediaId: string;
+};
 
 type Props = {
   isOpen: boolean;
@@ -33,23 +45,47 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
   });
   const [isSelected, setIsSelected] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  //? Hooks
-  const { data: categoriesData } = useGetAllCategories();
-  const isDisabled = !imageFile;
 
-  const handleCreateNewCategory = () => {
-    if (!isDisabled) {
-      setData({
-        _id: undefined,
-        title: "",
-        slug: "",
-        discount: "0",
-        parentId: 0,
-        mediaId: "",
-      });
-      setImageFile(null);
-      onOpenChange();
-    }
+  const { data: categoriesData } = useGetAllCategories();
+  const { mutate: createCategory, isPending } = useCreateCategory();
+
+  const isDisabled =
+    !data.title.trim() || !data.slug.trim() || !imageFile || isPending;
+
+  const handleCreateNewCategory = async () => {
+    if (isDisabled) return;
+
+    const formData = new FormData();
+    formData.append("files", imageFile);
+
+    const res = await fetcher({
+      route: "/category/upload",
+      body: formData,
+      isActiveToast: true,
+      method: "POST",
+      loadingText: "در حال آپلود تصویر...",
+      successText: "تصویر با موفقیت آپلود شد",
+    });
+
+    console.log(res?.data);
+
+    const mediaId = res?.data?.[0]?._id || "";
+   /*  createCategory(
+      { ...data, mediaId },
+      {
+        onSuccess: () => {
+          setData({
+            title: "",
+            slug: "",
+            discount: "0",
+            parentId: 0,
+            mediaId: "",
+          });
+          setImageFile(null);
+          onOpenChange();
+        },
+      }
+    ); */
   };
 
   return (
@@ -94,23 +130,33 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 >
                   {categoriesData?.data?.length ? (
                     categoriesData.data.map((cat: CategoryData) => (
-                      <SelectItem key={cat._id}>{cat.title}</SelectItem>
+                      <SelectItem key={cat._id}>
+                        {cat.title}
+                      </SelectItem>
                     ))
                   ) : (
                     <SelectItem isDisabled>دسته بندی موجود نیست</SelectItem>
                   )}
                 </Select>
-                <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
+                <Checkbox
+                  isSelected={isSelected}
+                  onValueChange={(val) => {
+                    setIsSelected(val);
+                    if (val) setData((prev) => ({ ...prev, parentId: 0 }));
+                  }}
+                >
                   <span className="text-sm">دسته بندی مادر</span>
                 </Checkbox>
               </div>
               <NumberInput
                 labelPlacement="outside"
-                label={"تخفیف"}
+                label="تخفیف"
                 placeholder="مقدار تخفیف را وارد کنید"
-                minValue={1}
+                minValue={0}
                 endContent={<p>%</p>}
-                onValueChange={(value: any) => {}}
+                onValueChange={(value: any) =>
+                  setData({ ...data, discount: value || "0" })
+                }
               />
               <ImageBoxUploader
                 textBtn="+ افزودن تصویر"
@@ -125,6 +171,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
                 className="w-full"
                 variant="solid"
                 color="secondary"
+                isLoading={isPending}
                 onPress={handleCreateNewCategory}
               >
                 افزودن دسته بندی
@@ -136,4 +183,5 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
     </Modal>
   );
 };
+
 export default AddNewCategoryModal;
