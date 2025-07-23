@@ -1,7 +1,8 @@
 "use client";
 
+import { CategoryData } from "@/components/Admin/_products/__categories/category-types";
 import { fetcher } from "@/utils/fetcher";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetAllCategories = () => {
   return useQuery({
@@ -9,7 +10,24 @@ export const useGetAllCategories = () => {
     queryFn: () =>
       fetcher({
         route: "/category",
-        isActiveToast: false
+        isActiveToast: false,
       }),
+  });
+};
+
+export const useCreateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CategoryData) =>
+      fetcher({
+        route: "/category",
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-categories"] });
+    },
   });
 };

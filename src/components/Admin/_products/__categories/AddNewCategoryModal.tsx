@@ -16,19 +16,11 @@ import {
   ModalHeader,
   ModalBody,
 } from "@heroui/react";
+import { CategoryData } from "./category-types";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-};
-
-type CategoryData = {
-  _id?: string;
-  title: string;
-  slug: string;
-  discount: string;
-  parentId: number;
-  mediaId: string;
 };
 
 const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
