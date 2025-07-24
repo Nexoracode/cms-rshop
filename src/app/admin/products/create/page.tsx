@@ -14,15 +14,15 @@ import { Product } from "@/components/Admin/_products/__create/product-type";
 
 type ProductInfo = {
   medias?: any[];
-  initInfos: Pick<Product, "category_id" | "name" | "price" | "stock" | "is_limited_stock" | "is_featured" | "discount_amount" | "discount_percent">;
-  middInfos: Pick<Product, "weight" | "weight_unit" | "is_same_day_shipping" | "requires_preparation" | "preparation_days">
+  initInfos?: Pick<Product, "category_id" | "name" | "price" | "stock" | "is_limited_stock" | "is_featured" | "discount_amount" | "discount_percent">;
+  middInfos?: Pick<Product, "weight" | "weight_unit" | "is_same_day_shipping" | "requires_preparation" | "preparation_days">
 };
 
 const CreateNewProduct = () => {
   const [productInfos, setProductInfos] = useState<ProductInfo | null>(null);
 
   useEffect(() => {
-    if (productInfos) {
+    if (productInfos?.initInfos && productInfos?.middInfos) {
       const { name, price, stock, is_limited_stock, discount_amount, discount_percent, is_featured, category_id } = productInfos.initInfos;
       
       const productInitInfos = {

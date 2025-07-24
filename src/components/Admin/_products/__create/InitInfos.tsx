@@ -17,7 +17,6 @@ import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import { useEffect, useState } from "react";
 import { Stock } from "@/types";
 import BoxHeader from "./helpers/BoxHeader";
-import { CategoryPayload } from "../__categories/category-types";
 
 interface InitInfosProps {
   onChange: (data: {
@@ -28,7 +27,7 @@ interface InitInfosProps {
     discount_percent?: number;
     discount_amount?: number;
     is_featured: boolean;
-    category_id?: number;
+    category_id: number;
   }) => void;
 }
 
@@ -45,7 +44,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
     discountValue: 0,
     discountType: "percent" as Stock,
     is_featured: false,
-    category_id: "",
+    category_id: 0,
     stock: 5,
   });
 
@@ -68,7 +67,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
         ? { discount_percent: discountValue }
         : { discount_amount: discountValue }),
       is_featured,
-      category_id: +category_id || 0,
+      category_id: category_id ? category_id : 0,
       stock,
     });
   }, [formData]);
@@ -166,7 +165,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
               onChange={(e) => {
                 setFormData((prev) => ({
                   ...prev,
-                  category_id: e.target.value,
+                  category_id: +e.target.value,
                 }));
               }}
             >

@@ -10,7 +10,7 @@ export type ProductMedia = {
 export interface Product {
   id: number;
   name: string;
-  price: string;
+  price: number;
   stock: number;
   is_same_day_shipping: boolean;
   requires_preparation: boolean;
