@@ -8,12 +8,11 @@ import InitInfos from "@/components/Admin/_products/__create/InitInfos";
 import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAdditionalInfos";
 import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
-import ImageCropper from "@/components/Helper/ImageCropper";
 import BackToPage from "@/components/Helper/BackToPage";
 import { Product } from "@/components/Admin/_products/__create/product-type";
 
 type ProductInfo = {
-  medias?: any[];
+  medias?: { file: File; pinned: boolean }[];
   initInfos?: Pick<
     Product,
     | "category_id"
@@ -40,11 +39,10 @@ const CreateNewProduct = () => {
   const [productInfos, setProductInfos] = useState<ProductInfo | null>(null);
 
   useEffect(() => {
-    if (
-      productInfos?.initInfos &&
-      productInfos?.middInfos &&
-      productInfos?.lastInfos
-    ) {
+    if (!productInfos) return;
+    const { initInfos, lastInfos, medias, middInfos } = productInfos;
+
+    if (initInfos && middInfos && lastInfos) {
       const {
         name,
         price,
@@ -54,7 +52,7 @@ const CreateNewProduct = () => {
         discount_percent,
         is_featured,
         category_id,
-      } = productInfos.initInfos;
+      } = initInfos;
 
       const productInitInfos = {
         name,
@@ -74,7 +72,7 @@ const CreateNewProduct = () => {
         requires_preparation,
         weight,
         weight_unit,
-      } = productInfos.middInfos;
+      } = middInfos;
 
       const productMiddInfos = {
         is_same_day_shipping,
@@ -85,7 +83,7 @@ const CreateNewProduct = () => {
       };
       /* last */
 
-      const { description, is_visible } = productInfos.lastInfos;
+      const { description, is_visible } = lastInfos;
 
       const productLastInfos = {
         description,
@@ -101,10 +99,17 @@ const CreateNewProduct = () => {
     }
   }, [productInfos]);
 
+  useEffect(() => {
+    if (!productInfos?.medias?.length) return;
+
+    console.log(productInfos.medias);
+  }, [productInfos?.medias]);
+
   return (
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
+        <ImagesProducts />
         <InitInfos
           onChange={(datas) =>
             setProductInfos((prev) =>
@@ -126,16 +131,7 @@ const CreateNewProduct = () => {
             )
           }
         />
-        <ImagesProducts>
-          <ImageCropper
-            onPreviewsChange={(datas) =>
-              setProductInfos((prev) =>
-                prev ? { ...prev, medias: datas } : { medias: datas }
-              )
-            }
-          />
-        </ImagesProducts>
-        <AttributesProducts />
+        {/* <AttributesProducts /> */}
         <Button
           color="secondary"
           isDisabled={

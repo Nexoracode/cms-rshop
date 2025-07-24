@@ -2,7 +2,7 @@
 
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import BackToPage from "@/components/Helper/BackToPage"
-import ImageCropper from "@/components/Helper/ImageCropper"
+import MediasUploader from "@/components/Helper/MediasUploader"
 import { Alert, Button, Card, CardBody, CardFooter, Divider, Textarea } from "@heroui/react"
 import { useState } from "react"
 import { BsInfoCircle } from "react-icons/bs"
@@ -22,7 +22,7 @@ const About = () => {
                 />
                 <CardBody>
                     <div className="flex flex-col gap-3 mb-6">
-                        <ImageCropper onPreviewsChange={datas =>
+                        <MediasUploader onPreviewsChange={datas =>
                             setGallery(datas)
                         } />
                         <div className="w-full flex items-center text-right">

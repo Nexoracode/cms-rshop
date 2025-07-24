@@ -2,20 +2,16 @@
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@heroui/react"
 import { LuImage, LuVideo, LuPin } from "react-icons/lu"
+import { PreviewMeta } from "@/types"
 
-interface PreviewMeta {
-  file: File
-  pinned: boolean
-}
-
-interface ImageCropperProps {
+interface MediasUploaderProps {
   /** Initial previews, if any */
   initialPreviews?: PreviewMeta[]
   /** Called whenever the previews array is updated (add/remove/pin) */
   onPreviewsChange: (previews: PreviewMeta[]) => void
 }
 
-const ImageCropper: React.FC<ImageCropperProps> = ({ initialPreviews = [], onPreviewsChange }) => {
+const MediasUploader: React.FC<MediasUploaderProps> = ({ initialPreviews = [], onPreviewsChange }) => {
   const [previews, setPreviews] = useState<PreviewMeta[]>(initialPreviews)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -123,4 +119,4 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ initialPreviews = [], onPre
   )
 }
 
-export default ImageCropper;
+export default MediasUploader;
