@@ -10,10 +10,12 @@ import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAddit
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import ImageCropper from "@/components/Helper/ImageCropper";
 import BackToPage from "@/components/Helper/BackToPage";
+import { Product } from "@/components/Admin/_products/__create/product-type";
 
 type ProductInfo = {
   medias?: any[];
-  initInfos?: any;
+  initInfos: Pick<Product, "category_id" | "name" | "price" | "stock" | "is_limited_stock" | "is_featured" | "discount_amount" | "discount_percent">;
+  middInfos: Pick<Product, "weight" | "weight_unit" | "is_same_day_shipping" | "requires_preparation" | "preparation_days">
 };
 
 const CreateNewProduct = () => {
@@ -21,7 +23,24 @@ const CreateNewProduct = () => {
 
   useEffect(() => {
     if (productInfos) {
-      console.log("FINAL =>", productInfos);
+      const { name, price, stock, is_limited_stock, discount_amount, discount_percent, is_featured, category_id } = productInfos.initInfos;
+      
+      const productInitInfos = {
+        name,
+        price,
+        stock,
+        is_limited_stock,
+        is_featured,
+        category_id,
+        ...(discount_percent ? { discount_percent } : { discount_amount }),
+      };
+      console.log("Product Init Infos:", productInitInfos);
+      
+      /*  */
+      const productMiddInfos = {
+       
+      };
+      
     }
   }, [productInfos]);
 

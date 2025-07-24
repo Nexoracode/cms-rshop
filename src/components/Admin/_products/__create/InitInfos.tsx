@@ -13,7 +13,6 @@ import {
 } from "@heroui/react";
 import { LuTextCursorInput } from "react-icons/lu";
 import { FiSearch } from "react-icons/fi";
-import { TiPlusOutline } from "react-icons/ti";
 import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import { useEffect, useState } from "react";
 import { Stock } from "@/types";
@@ -23,13 +22,14 @@ import { CategoryPayload } from "../__categories/category-types";
 
 interface InitInfosProps {
   onChange: (data: {
-    title: string;
+    name: string;
     price: number;
     stock: number;
-    unlimitedStock: boolean;
-    discount: { value: number; type: Stock };
-    specialOffer: boolean;
-    category?: string;
+    is_limited_stock: boolean;
+    discount_percent?: number;
+    discount_amount?: number;
+    is_featured: boolean;
+    category_id?: number;
   }) => void;
 }
 
@@ -38,25 +38,26 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
   const { data: categoriesData } = useGetAllCategories();
   //
   const [formData, setFormData] = useState({
-    title: "",
+    name: "",
     price: 10000,
-    unlimitedStock: false,
+    is_limited_stock: false,
     discountValue: 0,
     discountType: "percent" as Stock,
-    specialOffer: false,
-    category: "",
+    is_featured: false,
+    category_id: "",
     stock: 5,
   });
 
   useEffect(() => {
+    const {category_id, discountType, discountValue, is_featured, is_limited_stock, name, price, stock} = formData
     onChange({
-      title: formData.title,
-      price: formData.price,
-      unlimitedStock: formData.unlimitedStock,
-      discount: { value: formData.discountValue, type: formData.discountType },
-      specialOffer: formData.specialOffer,
-      category: formData.category || undefined,
-      stock: formData.stock,
+      name,
+      price,
+      is_limited_stock,
+      ...(discountType === "percent" ? { discount_percent: discountValue} : { discount_amount: discountValue }),
+      is_featured,
+      category_id: +category_id || 0,
+      stock,
     });
   }, [formData]);
 
@@ -74,9 +75,9 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
             label="نام"
             labelPlacement="outside"
             placeholder="نام محصول را وارد کنید"
-            value={formData.title}
+            value={formData.name}
             onValueChange={(title) =>
-              setFormData((prev) => ({ ...prev, title }))
+              setFormData((prev) => ({ ...prev, name: title }))
             }
           />
 
@@ -119,7 +120,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
             placeholder="1"
             minValue={1}
             isRequired
-            isDisabled={formData.unlimitedStock}
+            isDisabled={formData.is_limited_stock}
             endContent={
               <div className="pointer-events-none flex items-center">
                 <span className="text-default-400 text-small truncate">
@@ -133,9 +134,9 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
             }
           />
           <Checkbox
-            isSelected={formData.unlimitedStock}
-            onValueChange={(unlimitedStock) =>
-              setFormData((prev) => ({ ...prev, unlimitedStock }))
+            isSelected={formData.is_limited_stock}
+            onValueChange={(is_limited_stock) =>
+              setFormData((prev) => ({ ...prev, is_limited_stock }))
             }
           >
             <p className="text-sm">موجودی نامحدود</p>
@@ -150,13 +151,13 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
               }
               label="دسته بندی"
               placeholder="دسته بندی مورد نظر را جستجو یا اضافه کنید"
-              onChange={(value) => {
-                console.log(value);
+              onChange={(e) => {
+                setFormData((prev) => ({ ...prev, category_id: e.target.value }));
               }}
             >
               {categoriesData?.data?.length ? (
                 categoriesData.data.map((cat: CategoryPayload) => (
-                  <SelectItem key={cat._id}>{cat.title}</SelectItem>
+                  <SelectItem key={cat.id}>{cat.title}</SelectItem>
                 ))
               ) : (
                 <SelectItem isDisabled>دسته بندی موجود نیست</SelectItem>
@@ -205,9 +206,9 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
           </div>
 
           <Checkbox
-            isSelected={formData.specialOffer}
-            onValueChange={(specialOffer) =>
-              setFormData((prev) => ({ ...prev, specialOffer }))
+            isSelected={formData.is_featured}
+            onValueChange={(is_featured) =>
+              setFormData((prev) => ({ ...prev, is_featured }))
             }
           >
             <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
@@ -218,7 +219,6 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
       <AddNewCategoryModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={() => {}}
       />
     </>
   );

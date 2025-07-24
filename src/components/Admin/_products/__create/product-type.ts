@@ -16,8 +16,8 @@ export interface Product {
   requires_preparation: boolean;
   preparation_days: number | null;
   is_limited_stock: boolean;
-  discount_amount: number | null;
-  discount_percent: number | null;
+  discount_amount?: number | null;
+  discount_percent?: number | null;
   is_featured: boolean;
   weight: string;
   weight_unit: string;
