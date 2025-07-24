@@ -63,7 +63,23 @@ const CreateNewProduct = () => {
       console.log("Product Init Infos:", productInitInfos);
 
       /*  */
-      const productMiddInfos = {};
+
+      const {
+        is_same_day_shipping,
+        preparation_days,
+        requires_preparation,
+        weight,
+        weight_unit,
+      } = productInfos.middInfos;
+
+      const productMiddInfos = {
+        is_same_day_shipping,
+        preparation_days,
+        requires_preparation,
+        weight,
+        weight_unit,
+      };
+      console.log(productMiddInfos);
     }
   }, [productInfos]);
 

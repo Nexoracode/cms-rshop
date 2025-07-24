@@ -31,7 +31,7 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
       weight_unit: weightUnit,
       is_same_day_shipping: isSameDayShipping,
       requires_preparation: isPreparation,
-      preparation_days: isPreparation ? preparationDays : null,
+      preparation_days: isPreparation ? preparationDays : 0,
     })
   }, [weight, weightUnit, isSameDayShipping, isPreparation, preparationDays])
 
@@ -61,7 +61,6 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
               >
                 <option value="گرم">گرم</option>
                 <option value="کیلوگرم">کیلوگرم</option>
-                <option value="عدد">عدد</option>
               </select>
             </div>
           }
