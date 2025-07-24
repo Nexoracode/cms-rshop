@@ -17,7 +17,6 @@ import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import { useEffect, useState } from "react";
 import { Stock } from "@/types";
 import BoxHeader from "./helpers/BoxHeader";
-import { useGetAllCategories } from "@/hooks/categories/useCategory";
 import { CategoryPayload } from "../__categories/category-types";
 
 interface InitInfosProps {
@@ -35,7 +34,9 @@ interface InitInfosProps {
 
 const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { data: categoriesData } = useGetAllCategories();
+  const [categoriesData, setCategoriesData] = useState<
+    { id: number; title: string }[]
+  >([]);
   //
   const [formData, setFormData] = useState({
     name: "",
@@ -49,12 +50,23 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
   });
 
   useEffect(() => {
-    const {category_id, discountType, discountValue, is_featured, is_limited_stock, name, price, stock} = formData
+    const {
+      category_id,
+      discountType,
+      discountValue,
+      is_featured,
+      is_limited_stock,
+      name,
+      price,
+      stock,
+    } = formData;
     onChange({
       name,
       price,
       is_limited_stock,
-      ...(discountType === "percent" ? { discount_percent: discountValue} : { discount_amount: discountValue }),
+      ...(discountType === "percent"
+        ? { discount_percent: discountValue }
+        : { discount_amount: discountValue }),
       is_featured,
       category_id: +category_id || 0,
       stock,
@@ -152,11 +164,14 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
               label="دسته بندی"
               placeholder="دسته بندی مورد نظر را جستجو یا اضافه کنید"
               onChange={(e) => {
-                setFormData((prev) => ({ ...prev, category_id: e.target.value }));
+                setFormData((prev) => ({
+                  ...prev,
+                  category_id: e.target.value,
+                }));
               }}
             >
-              {categoriesData?.data?.length ? (
-                categoriesData.data.map((cat: CategoryPayload) => (
+              {categoriesData.length ? (
+                categoriesData.map((cat) => (
                   <SelectItem key={cat.id}>{cat.title}</SelectItem>
                 ))
               ) : (
@@ -164,7 +179,9 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
               )}
             </Select>
             <div className="w-full flex items-center justify-between">
-                <p className="text-[13px] text-gray-600">درصورت نیاز میتوانید دسته بندی جدیدی را از این جا اضافه کنید</p>
+              <p className="text-[13px] text-gray-600">
+                درصورت نیاز میتوانید دسته بندی جدیدی را از این جا اضافه کنید
+              </p>
               <Button variant="flat" color="primary" size="sm" onPress={onOpen}>
                 +  افزودن دسته بندی چدید
               </Button>
@@ -219,6 +236,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
       <AddNewCategoryModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        onCategoryPayload={(cats) => setCategoriesData(cats)}
       />
     </>
   );

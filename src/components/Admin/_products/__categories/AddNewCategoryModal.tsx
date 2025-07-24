@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -25,9 +25,14 @@ import { Category, CategoryPayload } from "./category-types";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
+  onCategoryPayload?: (payload: { id: number; title: string }[]) => void;
 };
 
-const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
+const AddNewCategoryModal = ({
+  isOpen,
+  onOpenChange,
+  onCategoryPayload,
+}: Props) => {
   const [data, setData] = useState<CategoryPayload>({
     title: "",
     slug: "",
@@ -56,6 +61,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
       });
     }
     if (categoriesData?.data) traverse(categoriesData.data);
+    onCategoryPayload?.(result);
     return result;
   }, [categoriesData]);
 
