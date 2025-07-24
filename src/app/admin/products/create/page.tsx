@@ -33,13 +33,18 @@ type ProductInfo = {
     | "requires_preparation"
     | "preparation_days"
   >;
+  lastInfos?: Pick<Product, "description" | "is_visible">;
 };
 
 const CreateNewProduct = () => {
   const [productInfos, setProductInfos] = useState<ProductInfo | null>(null);
 
   useEffect(() => {
-    if (productInfos?.initInfos && productInfos?.middInfos) {
+    if (
+      productInfos?.initInfos &&
+      productInfos?.middInfos &&
+      productInfos?.lastInfos
+    ) {
       const {
         name,
         price,
@@ -60,9 +65,8 @@ const CreateNewProduct = () => {
         category_id,
         ...(discount_percent ? { discount_percent } : { discount_amount }),
       };
-      console.log("Product Init Infos:", productInitInfos);
 
-      /*  */
+      /* midd */
 
       const {
         is_same_day_shipping,
@@ -79,7 +83,21 @@ const CreateNewProduct = () => {
         weight,
         weight_unit,
       };
-      console.log(productMiddInfos);
+      /* last */
+
+      const { description, is_visible } = productInfos.lastInfos;
+
+      const productLastInfos = {
+        description,
+        is_visible,
+      };
+      /* Result */
+      const result = {
+        ...productInitInfos,
+        ...productMiddInfos,
+        ...productLastInfos,
+      };
+      console.log("Product Result:", result);
     }
   }, [productInfos]);
 
@@ -101,7 +119,13 @@ const CreateNewProduct = () => {
             )
           }
         />
-        <LastAdditionalInfos />
+        <LastAdditionalInfos
+          onChange={(datas) =>
+            setProductInfos((prev) =>
+              prev ? { ...prev, lastInfos: datas } : { lastInfos: datas }
+            )
+          }
+        />
         <ImagesProducts>
           <ImageCropper
             onPreviewsChange={(datas) =>
