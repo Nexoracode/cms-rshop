@@ -6,6 +6,7 @@ export type PreviewMeta = {
   file: File;
   pinned: boolean;
   id?: number;
+  uploaded?: boolean;
 };
 
 export type SelectOption = {
