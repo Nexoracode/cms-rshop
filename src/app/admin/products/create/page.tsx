@@ -14,8 +14,25 @@ import { Product } from "@/components/Admin/_products/__create/product-type";
 
 type ProductInfo = {
   medias?: any[];
-  initInfos?: Pick<Product, "category_id" | "name" | "price" | "stock" | "is_limited_stock" | "is_featured" | "discount_amount" | "discount_percent">;
-  middInfos?: Pick<Product, "weight" | "weight_unit" | "is_same_day_shipping" | "requires_preparation" | "preparation_days">
+  initInfos?: Pick<
+    Product,
+    | "category_id"
+    | "name"
+    | "price"
+    | "stock"
+    | "is_limited_stock"
+    | "is_featured"
+    | "discount_amount"
+    | "discount_percent"
+  >;
+  middInfos?: Pick<
+    Product,
+    | "weight"
+    | "weight_unit"
+    | "is_same_day_shipping"
+    | "requires_preparation"
+    | "preparation_days"
+  >;
 };
 
 const CreateNewProduct = () => {
@@ -23,8 +40,17 @@ const CreateNewProduct = () => {
 
   useEffect(() => {
     if (productInfos?.initInfos && productInfos?.middInfos) {
-      const { name, price, stock, is_limited_stock, discount_amount, discount_percent, is_featured, category_id } = productInfos.initInfos;
-      
+      const {
+        name,
+        price,
+        stock,
+        is_limited_stock,
+        discount_amount,
+        discount_percent,
+        is_featured,
+        category_id,
+      } = productInfos.initInfos;
+
       const productInitInfos = {
         name,
         price,
@@ -35,12 +61,9 @@ const CreateNewProduct = () => {
         ...(discount_percent ? { discount_percent } : { discount_amount }),
       };
       console.log("Product Init Infos:", productInitInfos);
-      
+
       /*  */
-      const productMiddInfos = {
-       
-      };
-      
+      const productMiddInfos = {};
     }
   }, [productInfos]);
 
@@ -55,7 +78,13 @@ const CreateNewProduct = () => {
             )
           }
         />
-        <MiddAdditionalInfos />
+        <MiddAdditionalInfos
+          onChange={(datas) =>
+            setProductInfos((prev) =>
+              prev ? { ...prev, middInfos: datas } : { middInfos: datas }
+            )
+          }
+        />
         <LastAdditionalInfos />
         <ImagesProducts>
           <ImageCropper
@@ -69,7 +98,9 @@ const CreateNewProduct = () => {
         <AttributesProducts />
         <Button
           color="secondary"
-          isDisabled={productInfos === null ? true : false}
+          isDisabled={
+            !productInfos || !productInfos.initInfos || !productInfos.middInfos
+          }
         >
           ثبت محصول
         </Button>

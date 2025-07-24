@@ -49,7 +49,9 @@ const AddNewCategoryModal = ({
   // flatten hierarchical categories for Select, with indentation
   const flatOptions = useMemo(() => {
     const result: { id: number; title: string }[] = [];
-    function traverse(list: Category[], depth = 0) {
+
+    // تبدیل تابع به متغیر
+    const traverse = (list: Category[], depth = 0) => {
       list.forEach((cat) => {
         result.push({
           id: cat.id,
@@ -59,11 +61,20 @@ const AddNewCategoryModal = ({
           traverse(cat.children, depth + 1);
         }
       });
+    };
+
+    if (categoriesData?.data) {
+      traverse(categoriesData.data);
     }
-    if (categoriesData?.data) traverse(categoriesData.data);
-    onCategoryPayload?.(result);
+
     return result;
   }, [categoriesData]);
+
+  useEffect(() => {
+    if (flatOptions.length > 0) {
+      onCategoryPayload?.(flatOptions);
+    }
+  }, [flatOptions]);
 
   const isDisabled =
     !data.title.trim() ||
