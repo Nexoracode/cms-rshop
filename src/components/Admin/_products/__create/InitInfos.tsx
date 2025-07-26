@@ -68,7 +68,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
         : { discount_amount: discountValue }),
       is_featured,
       category_id: category_id ? category_id : 0,
-      stock,
+      stock: is_limited_stock ? 0 : stock,
     });
   }, [formData]);
 

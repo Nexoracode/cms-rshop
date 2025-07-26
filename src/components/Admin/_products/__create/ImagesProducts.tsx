@@ -53,7 +53,7 @@ const ImagesProducts = ({}: Props) => {
         icon={<FaRegImages className="text-3xl" />}
       />
       <CardBody>
-        <MediasUploader onPreviewsChange={(datas) => setMedias(datas)} />
+        <MediasUploader onChange={(datas) => setMedias(datas)} value={medias}/>
         <div className="w-full flex items-center animate-pulse text-right mt-3">
           <Alert
             className="h-[40px] flex items-center p-0 bg-transparent"

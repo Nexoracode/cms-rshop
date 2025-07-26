@@ -5,25 +5,29 @@ import { LuImage, LuVideo, LuPin } from "react-icons/lu";
 import { PreviewMeta } from "@/types";
 
 interface MediasUploaderProps {
-  /** Initial previews, if any */
   initialPreviews?: PreviewMeta[];
-  /** Called whenever the previews array is updated (add/remove/pin) */
-  onPreviewsChange: (previews: PreviewMeta[]) => void;
+  onChange: (previews: PreviewMeta[]) => void;
+  value: PreviewMeta[];
 }
 
 const MediasUploader: React.FC<MediasUploaderProps> = ({
   initialPreviews = [],
-  onPreviewsChange,
+  onChange,
+  value,
 }) => {
-  const [previews, setPreviews] = useState<PreviewMeta[]>(initialPreviews);
+  const [previews, setPreviews] = useState<PreviewMeta[]>(value);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setPreviews(value);
+  }, [value]);
 
   const updatePreviews = (newList: PreviewMeta[]) => {
     setPreviews(newList);
 
     const newItems = newList.filter((p) => !p.id); // فقط فایل‌هایی که هنوز آپلود نشدن
     if (newItems.length > 0 || newList.length !== previews.length) {
-      onPreviewsChange(newList);
+      onChange(newList);
     }
   };
 
