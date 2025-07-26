@@ -9,6 +9,7 @@ import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAddit
 import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
 import BackToPage from "@/components/Helper/BackToPage";
 import { Product } from "@/components/Admin/_products/__create/product-type";
+import { useProductCreate } from "@/hooks/products/useProduct";
 
 type InitInfosType = Pick<
   Product,
@@ -39,8 +40,11 @@ const CreateNewProduct = () => {
   const [lastInfos, setLastInfos] = useState<LastInfosType | null>(null);
   const [media_ids, setMedia_ids] = useState<number[]>([]);
   const [media_pinned_id, setMedia_pinned_id] = useState<number | null>(null);
+  const [activeForm, setActiveForm] = useState<"infos" | "attributes">("infos");
+  //? Hooks
+  const { mutate: createProduct } = useProductCreate();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const result = getFinalProductObject();
     if (!result) return;
 
@@ -48,7 +52,7 @@ const CreateNewProduct = () => {
     if (Object.keys(result).length > 0) {
       console.log("✅ Final Product Object:", result);
     }
-  }, [initInfos, middInfos, lastInfos, media_ids, media_pinned_id]);
+  }, [initInfos, middInfos, lastInfos, media_ids, media_pinned_id]); */
 
   const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
     if (!obj) return false;
@@ -111,13 +115,16 @@ const CreateNewProduct = () => {
   };
 
   const handleNewProduct = () => {
-    const result = getFinalProductObject();
+    const result = getFinalProductObject() as Product;
     if (!result) return;
 
     if (Object.keys(result).length > 0) {
       console.log("⬆️ Sending to API...", result);
-      // call your mutation here
-      // mutate(result)
+      createProduct(result, {
+        onSuccess: () => {
+          setActiveForm("attributes");
+        },
+      });
     }
   };
 
@@ -125,28 +132,36 @@ const CreateNewProduct = () => {
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
-        <ImagesProducts
-          onMedia_ids={(datas) => setMedia_ids(datas)}
-          onMedia_pinned_id={(id) => setMedia_pinned_id(id)}
-        />
+        {activeForm === "infos" ? (
+          <>
+            <ImagesProducts
+              onMedia_ids={(datas) => setMedia_ids(datas)}
+              onMedia_pinned_id={(id) => setMedia_pinned_id(id)}
+            />
 
-        <InitInfos onChange={setInitInfos} />
+            <InitInfos onChange={setInitInfos} />
 
-        <MiddAdditionalInfos onChange={setMiddInfos} />
+            <MiddAdditionalInfos onChange={setMiddInfos} />
 
-        <LastAdditionalInfos onChange={setLastInfos} />
+            <LastAdditionalInfos onChange={setLastInfos} />
 
-        <Button
-          color="secondary"
-          isDisabled={
-            !isAllFieldsFilled(initInfos) ||
-            !isAllFieldsFilled(middInfos) ||
-            !isAllFieldsFilled(lastInfos)
-          }
-          onPress={handleNewProduct}
-        >
-          ثبت محصول
-        </Button>
+            <Button
+              color="secondary"
+              isDisabled={
+                !isAllFieldsFilled(initInfos) ||
+                !isAllFieldsFilled(middInfos) ||
+                !isAllFieldsFilled(lastInfos)
+              }
+              onPress={handleNewProduct}
+            >
+              ثبت محصول
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button color="success">ثبت نهایی محصول</Button>
+          </>
+        )}
       </section>
     </div>
   );

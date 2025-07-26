@@ -8,7 +8,7 @@ export type ProductMedia = {
 }
 
 export interface Product {
-  id: number;
+  id?: number;
   name: string;
   price: number;
   stock: number;
@@ -24,8 +24,7 @@ export interface Product {
   description: string | null;
   is_visible: boolean;
   category_id: number;
+  created_at?: string;
+  media_ids: number[];
   media_pinned_id: number;
-  created_at: string;
-  media: ProductMedia[];
-  media_pinned: ProductMedia;
 }
