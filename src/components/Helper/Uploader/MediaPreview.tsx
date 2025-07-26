@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LuPin } from "react-icons/lu";
 import { Media } from "@/types";
 
@@ -12,6 +12,10 @@ const MediaPreview: React.FC<Props> = ({ items, onChange, onItemPinned }) => {
 
   const [imgs, setImgs] = useState<Media[]>(items);
   const [itemPinned, setItemPinned] = React.useState<number | null>(null);
+
+  useEffect(() => {
+    setImgs(items);
+  }, [items]);
 
   const handlePin = (idx: number) => {
     setItemPinned(idx);
@@ -28,13 +32,13 @@ const MediaPreview: React.FC<Props> = ({ items, onChange, onItemPinned }) => {
     <div className="w-full mb-4 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
       {imgs.map((item, idx) => {
         const type = item.url?.match(/\.(mp4)$/i) ? "video" : "image";
-        const url = URL.createObjectURL(item.url);
+        const url = item.url
 
         return (
           <div
             key={idx}
             className="relative mx-auto group w-28 h-28 border rounded-xl overflow-hidden shadow hover:shadow-lg transition"
-            onClick={() => type === "image" && handlePin(idx)}
+            onClick={() => type === "image" && handlePin(item.id)}
           >
             {type === "image" ? (
               <img
@@ -59,7 +63,7 @@ const MediaPreview: React.FC<Props> = ({ items, onChange, onItemPinned }) => {
             >
               ×
             </button>
-            {itemPinned === idx ? (
+            {itemPinned === item.id ? (
               <LuPin className="absolute top-1 left-1 bg-white rounded-full p-1 text-2xl -rotate-45" />
             ) : (
               ""

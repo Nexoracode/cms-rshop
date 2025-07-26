@@ -25,6 +25,10 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
     }
   }, [medias]);
 
+  useEffect(() => {
+    onMedia_ids(mediasUrl);
+  }, [mediasUrl]);
+
   const handleUpload = () => {
     const formData = new FormData();
     medias.forEach((media) => {
@@ -46,8 +50,6 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
         icon={<FaRegImages className="text-3xl" />}
       />
       <CardBody>
-        <MediaPicker onSelect={(files) => setMedias(files)} />
-
         <MediaPreview
           onItemPinned={(id) => onMedia_pinned_id(id)}
           items={mediasUrl}
@@ -55,6 +57,8 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
             setMediasUrl((prev) => prev.filter((media) => media.id !== id))
           }
         />
+
+        <MediaPicker onSelect={(files) => setMedias(files)} />
 
         <div className="w-full flex items-center animate-pulse text-right mt-3">
           <Alert
@@ -78,8 +82,7 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
             isLoading={isPending}
             variant="flat"
             color="secondary"
-            className="w-full"
-            onPress={handleUpload}
+            className={`w-full ${!isPending ? "hidden" : ""}`}
           >
             بارگذاری (پس از اتمام تغییرات)
           </Button>

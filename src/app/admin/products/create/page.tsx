@@ -109,7 +109,10 @@ const CreateNewProduct = () => {
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
-        <ImagesProducts />
+        <ImagesProducts
+          onMedia_ids={(medias) => console.log("!!!!!!!!!!!!!!!!!!!!", medias)}
+          onMedia_pinned_id={(id) => console.log("%%%%%%%%%%%%%%%%%%", id)}
+        />
         <InitInfos
           onChange={(datas) =>
             setProductInfos((prev) =>
