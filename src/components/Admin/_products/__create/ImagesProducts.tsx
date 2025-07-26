@@ -4,43 +4,36 @@ import { Alert, Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { FaRegImages } from "react-icons/fa6";
 import BoxHeader from "./helpers/BoxHeader";
 import React, { useEffect, useState } from "react";
-import MediasUploader from "@/components/Helper/MediasUploader";
-import { PreviewMeta } from "@/types";
+import { Media } from "@/types";
 import { useProductUpload } from "@/hooks/products/useProduct";
+import MediaPicker from "@/components/Helper/Uploader/MediaPicker";
+import MediaPreview from "@/components/Helper/Uploader/MediaPreview";
 
-type Props = {};
+type Props = {
+  onMedia_ids: (medias: Media[]) => void;
+  onMedia_pinned_id: (id: number) => void;
+};
 
-const ImagesProducts = ({}: Props) => {
-  const [medias, setMedias] = useState<PreviewMeta[]>([]);
-  const [mediasUrl, setMediasUrl] = useState<string[]>([]);
+const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
+  const [medias, setMedias] = useState<File[]>([]);
+  const [mediasUrl, setMediasUrl] = useState<Media[]>([]);
   const { mutate: uploadMedias, isPending } = useProductUpload();
 
   useEffect(() => {
     if (medias.length) {
-      console.log(medias);
+      handleUpload();
     }
   }, [medias]);
 
   const handleUpload = () => {
-    const newFiles = medias.filter((media) => !media.uploaded);
-
-    if (!newFiles.length) return;
-
     const formData = new FormData();
-    newFiles.forEach((media) => {
-      formData.append("files", media.file);
+    medias.forEach((media) => {
+      formData.append("files", media);
     });
 
     uploadMedias(formData, {
       onSuccess: (response) => {
         setMediasUrl((prev) => [...prev, ...response.data]);
-
-        // ✅ علامت‌گذاری فایل‌ها به عنوان "آپلود شده"
-        setMedias((prev) =>
-          prev.map((media) =>
-            newFiles.includes(media) ? { ...media, uploaded: true } : media
-          )
-        );
       },
     });
   };
@@ -53,7 +46,16 @@ const ImagesProducts = ({}: Props) => {
         icon={<FaRegImages className="text-3xl" />}
       />
       <CardBody>
-        <MediasUploader onChange={(datas) => setMedias(datas)} value={medias}/>
+        <MediaPicker onSelect={(files) => setMedias(files)} />
+
+        <MediaPreview
+          onItemPinned={(id) => onMedia_pinned_id(id)}
+          items={mediasUrl}
+          onChange={(id) =>
+            setMediasUrl((prev) => prev.filter((media) => media.id !== id))
+          }
+        />
+
         <div className="w-full flex items-center animate-pulse text-right mt-3">
           <Alert
             className="h-[40px] flex items-center p-0 bg-transparent"
