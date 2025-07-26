@@ -41,7 +41,28 @@ const CreateNewProduct = () => {
   const [media_pinned_id, setMedia_pinned_id] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!initInfos || !middInfos || !lastInfos) return;
+    const result = getFinalProductObject();
+    if (!result) return;
+
+    // فقط اگر حداقل یک مقدار توش بود لاگ بگیر
+    if (Object.keys(result).length > 0) {
+      console.log("✅ Final Product Object:", result);
+    }
+  }, [initInfos, middInfos, lastInfos, media_ids, media_pinned_id]);
+
+  const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
+    if (!obj) return false;
+
+    return Object.values(obj).every(
+      (val) =>
+        val !== null &&
+        val !== undefined &&
+        !(typeof val === "string" && val.trim() === "")
+    );
+  };
+
+  const getFinalProductObject = () => {
+    if (!initInfos || !middInfos || !lastInfos) return null;
 
     const {
       name,
@@ -80,18 +101,25 @@ const CreateNewProduct = () => {
       weight_unit,
     };
 
-    const productLastInfos = lastInfos;
-
-    const result = {
+    return {
       ...productInitInfos,
       ...productMiddInfos,
-      ...productLastInfos,
+      ...lastInfos,
       media_ids,
       media_pinned_id,
     };
+  };
 
-    console.log("✅ Final Product Object:", result);
-  }, [initInfos, middInfos, lastInfos, media_ids, media_pinned_id]);
+  const handleNewProduct = () => {
+    const result = getFinalProductObject();
+    if (!result) return;
+
+    if (Object.keys(result).length > 0) {
+      console.log("⬆️ Sending to API...", result);
+      // call your mutation here
+      // mutate(result)
+    }
+  };
 
   return (
     <div>
@@ -110,7 +138,12 @@ const CreateNewProduct = () => {
 
         <Button
           color="secondary"
-          isDisabled={!initInfos || !middInfos || !lastInfos}
+          isDisabled={
+            !isAllFieldsFilled(initInfos) ||
+            !isAllFieldsFilled(middInfos) ||
+            !isAllFieldsFilled(lastInfos)
+          }
+          onPress={handleNewProduct}
         >
           ثبت محصول
         </Button>
