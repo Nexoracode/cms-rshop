@@ -18,10 +18,12 @@ import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import { AiOutlineShop } from "react-icons/ai";
 import { LuBox } from "react-icons/lu";
+import { useGetProducts } from "@/hooks/products/useProduct";
+import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 
 const Products = () => {
   const router = useRouter();
-
+  const { data: products, isPending } = useGetProducts();
   const {
     isOpen: isActionsOpen,
     onOpen: onOpenActions,
@@ -100,14 +102,22 @@ const Products = () => {
             icon={<AiOutlineShop className="text-3xl" />}
           />
           <CardBody>
-            <ProductBox
-              title="کفش آسیاتک"
-              pathImg="https://indigo18.com/images/product-06.jpg"
-              price={30000000}
-              varientsCount={400}
-              onMoreDetail={onOpenActions}
-              onShowMore={() => {}}
-            />
+            {products?.data ? (
+              <div className="flex flex-col gap-4">
+                {products.data.map((product: any) => (
+                  <ProductBox
+                    title="کفش آسیاتک"
+                    pathImg="https://indigo18.com/images/product-06.jpg"
+                    price={30000000}
+                    varientsCount={400}
+                    onMoreDetail={onOpenActions}
+                    onShowMore={() => {}}
+                  />
+                ))}
+              </div>
+            ) : (
+              <LoadingApiCall />
+            )}
           </CardBody>
         </Card>
       </section>

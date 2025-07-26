@@ -1,6 +1,17 @@
 import { Product } from "@/components/Admin/_products/__create/product-type";
 import { fetcher } from "@/utils/fetcher";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+export const useGetProducts = (page: number = 1) => {
+  return useQuery({
+    queryKey: ["all-products", page],
+    queryFn: () =>
+      fetcher({
+        route: `/products?page=${page}`,
+        isActiveToast: false,
+      }),
+  });
+};
 
 export const useProductUpload = () => {
   return useMutation({
