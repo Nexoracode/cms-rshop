@@ -21,7 +21,7 @@ const ProductBox: React.FC<Props> = ({ title, onShowMore, price, varientsCount, 
             className="border-none shadow-md"
         >
             <CardBody>
-                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between sm:h-28">
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between sm:h-32">
                     <div className="w-fit">
                         <Image
                             alt="productr cover"
@@ -51,7 +51,7 @@ const ProductBox: React.FC<Props> = ({ title, onShowMore, price, varientsCount, 
 
                             <div className="flex flex-col bg-gray-100 sm:bg-transparent sm:p-o rounded-xl p-3 gap-3 phone:gap-0 items-start phone:flex-row w-full phone:items-center justify-between">
                                 <p className="text-gray-500 text-[13px]">موجودی تنوع ها {varientsCount} تا</p>
-                                <p className="text-end w-full phone:w-fit">از {price.toLocaleString()} <span className="text-gray-500">تومان</span></p>
+                                <p className="text-end w-full phone:w-fit">از {price.toLocaleString("fa-IR")} <span className="text-gray-500">تومان</span></p>
                             </div>
                         </div>
                     </div>

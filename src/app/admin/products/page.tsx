@@ -20,6 +20,7 @@ import { AiOutlineShop } from "react-icons/ai";
 import { LuBox } from "react-icons/lu";
 import { useGetProducts } from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
+import { Product } from "@/components/Admin/_products/__create/product-type";
 
 const Products = () => {
   const router = useRouter();
@@ -104,12 +105,13 @@ const Products = () => {
           <CardBody>
             {products?.data ? (
               <div className="flex flex-col gap-4">
-                {products.data.map((product: any) => (
+                {products.data.items.map((product: Product) => (
                   <ProductBox
-                    title="کفش آسیاتک"
-                    pathImg="https://indigo18.com/images/product-06.jpg"
-                    price={30000000}
-                    varientsCount={400}
+                    key={product.id}
+                    title={product.name}
+                    pathImg={product.media_pinned?.url}
+                    price={product.price}
+                    varientsCount={product.stock}
                     onMoreDetail={onOpenActions}
                     onShowMore={() => {}}
                   />

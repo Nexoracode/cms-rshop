@@ -7,7 +7,7 @@ export const useGetProducts = (page: number = 1) => {
     queryKey: ["all-products", page],
     queryFn: () =>
       fetcher({
-        route: `/products?page=${page}`,
+        route: `/product?page=${page}`,
         isActiveToast: false,
       }),
   });
