@@ -45,16 +45,6 @@ const CreateNewProduct = () => {
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
 
-  /*   useEffect(() => {
-    const result = getFinalProductObject();
-    if (!result) return;
-
-    // فقط اگر حداقل یک مقدار توش بود لاگ بگیر
-    if (Object.keys(result).length > 0) {
-      console.log("✅ Final Product Object:", result);
-    }
-  }, [initInfos, middInfos, lastInfos, media_ids, media_pinned_id]); */
-
   const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
     if (!obj) return false;
 
@@ -135,7 +125,7 @@ const CreateNewProduct = () => {
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
-        {activeForm !== "infos" ? (
+        {activeForm === "infos" ? (
           <>
             <ImagesProducts
               onMedia_ids={(datas) => setMedia_ids(datas)}
