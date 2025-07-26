@@ -7,7 +7,7 @@ import { FiShoppingBag } from "react-icons/fi"
 
 interface MiddAdditionalInfosProps {
   onChange: (data: {
-    weight: string;
+    weight: number;
     weight_unit: string;
     is_same_day_shipping: boolean;
     requires_preparation: boolean;
@@ -18,7 +18,7 @@ interface MiddAdditionalInfosProps {
 const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
   const [selectItem, setSelectItem] = useState<"today" | "time-ready">("time-ready")
 
-  const [weight, setWeight] = useState("1")
+  const [weight, setWeight] = useState(1)
   const [weightUnit, setWeightUnit] = useState("کیلوگرم")
   const [preparationDays, setPreparationDays] = useState(1)
 
@@ -48,8 +48,8 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
           label="وزن"
           placeholder="1"
           minValue={1}
-          value={+weight}
-          onValueChange={(val) => setWeight(val.toString())}
+          value={weight}
+          onValueChange={(val) => setWeight(val)}
           labelPlacement={"outside"}
           endContent={
             <div className="flex items-center">

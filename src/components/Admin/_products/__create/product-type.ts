@@ -19,7 +19,7 @@ export interface Product {
   discount_amount?: number | null;
   discount_percent?: number | null;
   is_featured: boolean;
-  weight: string;
+  weight: number;
   weight_unit: string;
   description: string | null;
   is_visible: boolean;
