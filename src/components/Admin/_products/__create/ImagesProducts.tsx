@@ -10,7 +10,7 @@ import MediaPicker from "@/components/Helper/Uploader/MediaPicker";
 import MediaPreview from "@/components/Helper/Uploader/MediaPreview";
 
 type Props = {
-  onMedia_ids: (medias: Media[]) => void;
+  onMedia_ids: (medias: number[]) => void;
   onMedia_pinned_id: (id: number) => void;
 };
 
@@ -26,7 +26,7 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
   }, [medias]);
 
   useEffect(() => {
-    onMedia_ids(mediasUrl);
+    onMedia_ids(mediasUrl.map((media) => media.id));
   }, [mediasUrl]);
 
   const handleUpload = () => {

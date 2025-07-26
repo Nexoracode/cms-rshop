@@ -7,139 +7,110 @@ import ImagesProducts from "@/components/Admin/_products/__create/ImagesProducts
 import InitInfos from "@/components/Admin/_products/__create/InitInfos";
 import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAdditionalInfos";
 import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
-import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import BackToPage from "@/components/Helper/BackToPage";
 import { Product } from "@/components/Admin/_products/__create/product-type";
 
-type ProductInfo = {
-  medias?: { file: File; pinned: boolean }[];
-  initInfos?: Pick<
-    Product,
-    | "category_id"
-    | "name"
-    | "price"
-    | "stock"
-    | "is_limited_stock"
-    | "is_featured"
-    | "discount_amount"
-    | "discount_percent"
-  >;
-  middInfos?: Pick<
-    Product,
-    | "weight"
-    | "weight_unit"
-    | "is_same_day_shipping"
-    | "requires_preparation"
-    | "preparation_days"
-  >;
-  lastInfos?: Pick<Product, "description" | "is_visible">;
-};
+type InitInfosType = Pick<
+  Product,
+  | "category_id"
+  | "name"
+  | "price"
+  | "stock"
+  | "is_limited_stock"
+  | "is_featured"
+  | "discount_amount"
+  | "discount_percent"
+>;
+
+type MiddInfosType = Pick<
+  Product,
+  | "weight"
+  | "weight_unit"
+  | "is_same_day_shipping"
+  | "requires_preparation"
+  | "preparation_days"
+>;
+
+type LastInfosType = Pick<Product, "description" | "is_visible">;
 
 const CreateNewProduct = () => {
-  const [productInfos, setProductInfos] = useState<ProductInfo | null>(null);
+  const [initInfos, setInitInfos] = useState<InitInfosType | null>(null);
+  const [middInfos, setMiddInfos] = useState<MiddInfosType | null>(null);
+  const [lastInfos, setLastInfos] = useState<LastInfosType | null>(null);
+  const [media_ids, setMedia_ids] = useState<number[]>([]);
+  const [media_pinned_id, setMedia_pinned_id] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!productInfos) return;
-    const { initInfos, lastInfos, medias, middInfos } = productInfos;
+    if (!initInfos || !middInfos || !lastInfos) return;
 
-    if (initInfos && middInfos && lastInfos) {
-      const {
-        name,
-        price,
-        stock,
-        is_limited_stock,
-        discount_amount,
-        discount_percent,
-        is_featured,
-        category_id,
-      } = initInfos;
+    const {
+      name,
+      price,
+      stock,
+      is_limited_stock,
+      discount_amount,
+      discount_percent,
+      is_featured,
+      category_id,
+    } = initInfos;
 
-      const productInitInfos = {
-        name,
-        price,
-        stock,
-        is_limited_stock,
-        is_featured,
-        category_id,
-        ...(discount_percent ? { discount_percent } : { discount_amount }),
-      };
+    const productInitInfos = {
+      name,
+      price,
+      stock,
+      is_limited_stock,
+      is_featured,
+      category_id,
+      ...(discount_percent ? { discount_percent } : { discount_amount }),
+    };
 
-      /* midd */
+    const {
+      is_same_day_shipping,
+      preparation_days,
+      requires_preparation,
+      weight,
+      weight_unit,
+    } = middInfos;
 
-      const {
-        is_same_day_shipping,
-        preparation_days,
-        requires_preparation,
-        weight,
-        weight_unit,
-      } = middInfos;
+    const productMiddInfos = {
+      is_same_day_shipping,
+      preparation_days,
+      requires_preparation,
+      weight,
+      weight_unit,
+    };
 
-      const productMiddInfos = {
-        is_same_day_shipping,
-        preparation_days,
-        requires_preparation,
-        weight,
-        weight_unit,
-      };
-      /* last */
+    const productLastInfos = lastInfos;
 
-      const { description, is_visible } = lastInfos;
+    const result = {
+      ...productInitInfos,
+      ...productMiddInfos,
+      ...productLastInfos,
+      media_ids,
+      media_pinned_id,
+    };
 
-      const productLastInfos = {
-        description,
-        is_visible,
-      };
-      /* Result */
-      const result = {
-        ...productInitInfos,
-        ...productMiddInfos,
-        ...productLastInfos,
-      };
-      console.log("Product Result:", result);
-    }
-  }, [productInfos]);
-
-  useEffect(() => {
-    if (!productInfos?.medias?.length) return;
-
-    console.log(productInfos.medias);
-  }, [productInfos?.medias]);
+    console.log("✅ Final Product Object:", result);
+  }, [initInfos, middInfos, lastInfos, media_ids, media_pinned_id]);
 
   return (
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
         <ImagesProducts
-          onMedia_ids={(medias) => console.log("!!!!!!!!!!!!!!!!!!!!", medias)}
-          onMedia_pinned_id={(id) => console.log("%%%%%%%%%%%%%%%%%%", id)}
+          onMedia_ids={(datas) => setMedia_ids(datas)}
+          onMedia_pinned_id={(id) => setMedia_pinned_id(id)}
         />
-        <InitInfos
-          onChange={(datas) =>
-            setProductInfos((prev) =>
-              prev ? { ...prev, initInfos: datas } : { initInfos: datas }
-            )
-          }
-        />
-        <MiddAdditionalInfos
-          onChange={(datas) =>
-            setProductInfos((prev) =>
-              prev ? { ...prev, middInfos: datas } : { middInfos: datas }
-            )
-          }
-        />
-        <LastAdditionalInfos
-          onChange={(datas) =>
-            setProductInfos((prev) =>
-              prev ? { ...prev, lastInfos: datas } : { lastInfos: datas }
-            )
-          }
-        />
-        {/* <AttributesProducts /> */}
+
+        <InitInfos onChange={setInitInfos} />
+
+        <MiddAdditionalInfos onChange={setMiddInfos} />
+
+        <LastAdditionalInfos onChange={setLastInfos} />
+
         <Button
           color="secondary"
-          isDisabled={
-            !productInfos || !productInfos.initInfos || !productInfos.middInfos
-          }
+          isDisabled={!initInfos || !middInfos || !lastInfos}
         >
           ثبت محصول
         </Button>
