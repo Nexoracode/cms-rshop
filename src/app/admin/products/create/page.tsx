@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@heroui/react";
 //
 import ImagesProducts from "@/components/Admin/_products/__create/ImagesProducts";
@@ -10,6 +10,7 @@ import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAddit
 import BackToPage from "@/components/Helper/BackToPage";
 import { Product } from "@/components/Admin/_products/__create/product-type";
 import { useProductCreate } from "@/hooks/products/useProduct";
+import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 
 type InitInfosType = Pick<
   Product,
@@ -121,8 +122,10 @@ const CreateNewProduct = () => {
     if (Object.keys(result).length > 0) {
       console.log("⬆️ Sending to API...", result);
       createProduct(result, {
-        onSuccess: () => {
-          setActiveForm("attributes");
+        onSuccess: (res) => {
+          if (res.ok) {
+            setActiveForm("attributes");
+          }
         },
       });
     }
@@ -132,7 +135,7 @@ const CreateNewProduct = () => {
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
-        {activeForm === "infos" ? (
+        {activeForm !== "infos" ? (
           <>
             <ImagesProducts
               onMedia_ids={(datas) => setMedia_ids(datas)}
@@ -159,7 +162,8 @@ const CreateNewProduct = () => {
           </>
         ) : (
           <>
-            <Button color="success">ثبت نهایی محصول</Button>
+            <AttributesProducts />
+            <Button color="success" className="text-white">ثبت نهایی محصول</Button>
           </>
         )}
       </section>
