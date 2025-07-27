@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@heroui/react";
 //
 import ImagesProducts from "@/components/Admin/_products/__create/ImagesProducts";
@@ -8,8 +8,8 @@ import InitInfos from "@/components/Admin/_products/__create/InitInfos";
 import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAdditionalInfos";
 import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
 import BackToPage from "@/components/Helper/BackToPage";
-import { Product } from "@/components/Admin/_products/__create/product-type";
-import { useProductCreate } from "@/hooks/products/useProduct";
+import { Product } from "@/components/Admin/_products/types/create-product";
+import { useGetOneProduct, useProductCreate } from "@/hooks/products/useProduct";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 
 type InitInfosType = Pick<
@@ -36,6 +36,7 @@ type MiddInfosType = Pick<
 type LastInfosType = Pick<Product, "description" | "is_visible">;
 
 const CreateNewProduct = () => {
+  
   const [initInfos, setInitInfos] = useState<InitInfosType | null>(null);
   const [middInfos, setMiddInfos] = useState<MiddInfosType | null>(null);
   const [lastInfos, setLastInfos] = useState<LastInfosType | null>(null);
@@ -44,6 +45,18 @@ const CreateNewProduct = () => {
   const [activeForm, setActiveForm] = useState<"infos" | "attributes">("infos");
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
+  
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const editId = urlParams.get("edit_id");
+      if (editId) {
+        console.log(editId);
+        useGetOneProduct(+editId);
+      } 
+    }
+  }, [])
 
   const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
     if (!obj) return false;
