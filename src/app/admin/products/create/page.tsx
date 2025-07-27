@@ -134,7 +134,14 @@ const CreateNewProduct = () => {
     preparation_days: data?.data?.preparation_days ?? 1,
   };
 
+  const lastInfosDefaultValues = {
+    description: data?.data?.description ?? "",
+    is_visible: data?.data?.is_visible ?? true,
+    order_limit: data?.data?.order_limit ?? undefined,
+  };
+
   console.log(data);
+  
 
   return (
     <div>
@@ -164,7 +171,10 @@ const CreateNewProduct = () => {
                 defaultValues={midsInfosDefaultValues}
               />
 
-              <LastAdditionalInfos onChange={setLastInfos} />
+              <LastAdditionalInfos
+                onChange={setLastInfos}
+                defaultValues={lastInfosDefaultValues}
+              />
 
               <Button
                 color="secondary"

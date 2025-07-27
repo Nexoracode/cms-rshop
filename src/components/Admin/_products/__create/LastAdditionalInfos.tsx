@@ -15,28 +15,39 @@ import { LuScrollText } from "react-icons/lu";
 import BrandItem from "./temps/BrandItem";
 import SizeGuide from "./temps/SizeGuide";
 
+type LastInfos = {
+  description: string;
+  is_visible: boolean;
+  order_limit?: number;
+};
+
 interface LastAdditionalInfosProps {
-  onChange: (data: {
-    description: string;
-    is_visible: boolean;
-    order_limit?: number;
-  }) => void;
+  onChange: (data: LastInfos) => void;
+  defaultValues?: LastInfos;
 }
 
-const LastAdditionalInfos = ({ onChange }: LastAdditionalInfosProps) => {
-  const [description, setDescription] = useState("");
-  const [isVisible, setIsVisible] = useState(true);
-  const [selectItem, setSelectItem] = useState<"limit" | "unlimit">("unlimit");
-  const [limitCount, setLimitCount] = useState(1);
+const LastAdditionalInfos = ({
+  onChange,
+  defaultValues,
+}: LastAdditionalInfosProps) => {
+  const [formData, setFormData] = useState<LastInfos>({
+    description: "",
+    is_visible: true,
+    ...(defaultValues ?? {}),
+  });
+
+  const [selectItem, setSelectItem] = useState<"limit" | "unlimit">(
+    defaultValues?.order_limit ? "limit" : "unlimit"
+  );
 
   useEffect(() => {
-    const data = {
-      description,
-      is_visible: isVisible,
-      ...(selectItem === "limit" ? { order_limit: limitCount } : {}),
-    };
-    onChange(data);
-  }, [description, isVisible, selectItem, limitCount]);
+    onChange({
+      ...formData,
+      ...(selectItem === "limit"
+        ? { order_limit: formData.order_limit || 1 }
+        : {}),
+    });
+  }, [formData, selectItem]);
 
   return (
     <Card className="w-full shadow-md">
@@ -50,8 +61,10 @@ const LastAdditionalInfos = ({ onChange }: LastAdditionalInfosProps) => {
           placeholder="توضیحات را وارد نمایید"
           labelPlacement="outside"
           label="توضیحات"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={formData.description}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, description: e.target.value }))
+          }
         />
 
         <Select
@@ -59,9 +72,14 @@ const LastAdditionalInfos = ({ onChange }: LastAdditionalInfosProps) => {
           labelPlacement="outside"
           label="وضعیت نمایش در وبسایت"
           placeholder="انتخاب وضعیت محصول"
-          value={isVisible ? "visible" : "hidden"}
-          onChange={(e) => setIsVisible(e.target.value === "visible")}
           className="!mt-8"
+          onChange={(e) => {
+            setFormData((prev) => ({
+              ...prev,
+              is_visible: e.target.value ? true : false,
+            }));
+          }}
+          selectedKeys={[formData.is_visible ? "visible" : "hidden"]}
         >
           <SelectItem key="visible">
             نمایش - در فروشگاه نمایش داده میشود
@@ -95,8 +113,13 @@ const LastAdditionalInfos = ({ onChange }: LastAdditionalInfosProps) => {
               label="حداکثر تعداد قابل سفارش"
               placeholder="3"
               minValue={1}
-              value={limitCount}
-              onValueChange={(val) => setLimitCount(val)}
+              value={formData.order_limit ?? 1}
+              onValueChange={(val) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  order_limit: val,
+                }))
+              }
               endContent={
                 <div className="pointer-events-none flex items-center">
                   <span className="text-default-400 text-small">عدد</span>
