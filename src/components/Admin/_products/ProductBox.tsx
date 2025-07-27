@@ -9,8 +9,10 @@ import MiniBoxInfo from "@/components/Helper/MiniBoxInfo";
 import { PiMoneyWavy } from "react-icons/pi";
 import { LuBox } from "react-icons/lu";
 import { CgCalendarDates } from "react-icons/cg";
+import { useDeleteProduct } from "@/hooks/products/useProduct";
 
 type Props = {
+  id: number;
   title: string;
   pathImg: string;
   onShowMore: () => void;
@@ -20,6 +22,7 @@ type Props = {
 };
 
 const ProductBox: React.FC<Props> = ({
+  id,
   created_at,
   title,
   onShowMore,
@@ -27,6 +30,12 @@ const ProductBox: React.FC<Props> = ({
   varientsCount,
   pathImg,
 }) => {
+  const { mutate: deleteProduct } = useDeleteProduct(id);
+
+  const handleDelete = () => {
+    deleteProduct();
+  };
+
   return (
     <Card isBlurred className="border-none shadow-md">
       <CardBody>
@@ -58,6 +67,14 @@ const ProductBox: React.FC<Props> = ({
               </div>
             </div>
             <div className="flex flex-row sm:flex-col items-center justify-end gap-2">
+              <DoubleClickBtn
+                onPress={() => handleDelete()}
+                textBtn={<RiDeleteBinLine className="text-lg" />}
+                color="danger"
+                size="sm"
+                className="w-full sm:w-fit"
+                isActiveDoubleClick
+              />
               <Button
                 variant="flat"
                 size="sm"
@@ -67,14 +84,6 @@ const ProductBox: React.FC<Props> = ({
               >
                 <FiEdit className="text-lg" />
               </Button>
-              <DoubleClickBtn
-                onPress={() => console.log("Delete product")}
-                textBtn={<RiDeleteBinLine className="text-lg" />}
-                color="danger"
-                size="sm"
-                className="w-full sm:w-fit"
-                isActiveDoubleClick
-              />
             </div>
           </div>
         </div>

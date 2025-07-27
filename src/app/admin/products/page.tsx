@@ -104,6 +104,7 @@ const Products = () => {
                 {(products.data as GETProduct).items.map((product) => (
                   <ProductBox
                     key={product.id}
+                    id={product.id}
                     created_at={product.created_at.slice(0, 10)}
                     title={product.name}
                     pathImg={product.media_pinned.url}

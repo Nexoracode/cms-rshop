@@ -1,6 +1,6 @@
-import { Product } from "@/components/Admin/_products/__create/product-type";
+import { Product } from "@/components/Admin/_products/types/create-product";
 import { fetcher } from "@/utils/fetcher";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetProducts = (page: number = 1) => {
   return useQuery({
@@ -38,6 +38,28 @@ export const useProductCreate = () => {
         successText:
           "محصول با موفقیت ایجاد شد. لطفا ادامه پروسه رو دنبال کنید تا محصول نهایی شود",
         loadingText: "در حال ایجاد محصول",
+      });
+    },
+  });
+};
+
+export const useDeleteProduct = (id: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () =>
+      fetcher({
+        route: `/product/${id}`,
+        method: "DELETE",
+        successText: "محصول با موفقیت حذف شد",
+        loadingText: "در حال حذف محصول",
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-product", id] });
+
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-products",
       });
     },
   });

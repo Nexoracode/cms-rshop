@@ -22,13 +22,13 @@ export const useGetOneUser = (id: number) => {
         successText: "کاربر با موفقیت دریافت شد",
         loadingText: "در حال دریافت اطلاعات کاربر",
       }),
-      enabled: !!id, // Only run the query if id is provided
+    enabled: !!id, // Only run the query if id is provided
   });
 };
 
 export const useDeleteUser = (id: number) => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: () =>
       fetcher({
@@ -40,7 +40,10 @@ export const useDeleteUser = (id: number) => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["one-user", id] });
-      queryClient.invalidateQueries({ queryKey: ["all-users"] });
+
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-users",
+      });
     },
   });
 };
