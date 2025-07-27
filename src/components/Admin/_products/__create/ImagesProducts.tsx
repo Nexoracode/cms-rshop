@@ -12,11 +12,19 @@ import MediaPreview from "@/components/Helper/Uploader/MediaPreview";
 type Props = {
   onMedia_ids: (medias: number[]) => void;
   onMedia_pinned_id: (id: number) => void;
+  initialMedias?: Media[];
+  initialPinnedId?: number | null;
 };
 
-const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
+const ImagesProducts = ({
+  onMedia_ids,
+  onMedia_pinned_id,
+  initialMedias = [],
+  initialPinnedId = null,
+}: Props) => {
   const [medias, setMedias] = useState<File[]>([]);
-  const [mediasUrl, setMediasUrl] = useState<Media[]>([]);
+  const [mediasUrl, setMediasUrl] = useState<Media[]>(initialMedias);
+  const [pinnedId, setPinnedId] = useState<number | null>(initialPinnedId);
   const { mutate: uploadMedias, isPending } = useProductUpload();
 
   useEffect(() => {
@@ -24,6 +32,13 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
       handleUpload();
     }
   }, [medias]);
+
+/*   useEffect(() => {
+    if (initialMedias) {
+      console.log(initialMedias);
+      setMediasUrl(initialMedias);
+    }
+  }, [initialMedias]); */
 
   useEffect(() => {
     onMedia_ids(mediasUrl.map((media) => media.id));
@@ -51,11 +66,15 @@ const ImagesProducts = ({ onMedia_ids, onMedia_pinned_id }: Props) => {
       />
       <CardBody>
         <MediaPreview
-          onItemPinned={(id) => onMedia_pinned_id(id)}
-          items={mediasUrl}
+          onItemPinned={(id) => {
+            setPinnedId(id);
+            onMedia_pinned_id(id);
+          }}
           onChange={(id) =>
             setMediasUrl((prev) => prev.filter((media) => media.id !== id))
           }
+          items={mediasUrl}
+          pinnedId={pinnedId}
         />
 
         <MediaPicker onSelect={(files) => setMedias(files)} />

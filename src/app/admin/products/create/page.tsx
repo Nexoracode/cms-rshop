@@ -52,6 +52,8 @@ const CreateNewProduct = () => {
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
   const { data, isLoading } = useGetOneProduct(editId ? +editId : undefined);
+  const initialMediasFromApi = data?.data?.medias ?? [];
+  const initialPinnedIdFromApi = data?.data?.media_pinned?.id ?? null;
 
   const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
     if (!obj) return false;
@@ -129,6 +131,8 @@ const CreateNewProduct = () => {
     }
   };
 
+  console.log(data);
+
   return (
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
@@ -143,6 +147,8 @@ const CreateNewProduct = () => {
               <ImagesProducts
                 onMedia_ids={(datas) => setMedia_ids(datas)}
                 onMedia_pinned_id={(id) => setMedia_pinned_id(id)}
+                initialMedias={initialMediasFromApi}
+                initialPinnedId={initialPinnedIdFromApi}
               />
 
               <InitInfos onChange={setInitInfos} />

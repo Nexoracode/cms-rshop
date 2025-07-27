@@ -6,20 +6,23 @@ interface Props {
   items: Media[];
   onItemPinned: (id: number) => void;
   onChange: (id: number) => void;
+  pinnedId?: number | null;
 }
 
-const MediaPreview: React.FC<Props> = ({ items, onChange, onItemPinned }) => {
-
+const MediaPreview: React.FC<Props> = ({
+  items,
+  pinnedId,
+  onChange,
+  onItemPinned,
+}) => {
   const [imgs, setImgs] = useState<Media[]>(items);
-  const [itemPinned, setItemPinned] = React.useState<number | null>(null);
 
   useEffect(() => {
     setImgs(items);
   }, [items]);
 
-  const handlePin = (idx: number) => {
-    setItemPinned(idx);
-    onItemPinned(idx);
+  const handlePin = (id: number) => {
+    onItemPinned(id);
   };
 
   const handleRemove = (idx: number) => {
@@ -32,7 +35,7 @@ const MediaPreview: React.FC<Props> = ({ items, onChange, onItemPinned }) => {
     <div className="w-full mb-4 grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
       {imgs.map((item, idx) => {
         const type = item.url?.match(/\.(mp4)$/i) ? "video" : "image";
-        const url = item.url
+        const url = item.url;
 
         return (
           <div
@@ -63,8 +66,8 @@ const MediaPreview: React.FC<Props> = ({ items, onChange, onItemPinned }) => {
             >
               ×
             </button>
-            {itemPinned === item.id ? (
-              <LuPin className="absolute top-1 left-1 bg-white rounded-full p-1 text-2xl -rotate-45" />
+            {pinnedId === item.id ? (
+              <LuPin className="absolute top-1 left-1 ..." />
             ) : (
               ""
             )}
