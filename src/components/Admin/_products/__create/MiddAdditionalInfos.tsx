@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
-import { Card, CardBody, NumberInput, Switch } from "@heroui/react"
-import { useEffect, useState } from "react"
-import BoxHeader from "./helpers/BoxHeader"
-import { FiShoppingBag } from "react-icons/fi"
+import { Card, CardBody, NumberInput, Switch } from "@heroui/react";
+import { useEffect, useState } from "react";
+import BoxHeader from "./helpers/BoxHeader";
+import { FiShoppingBag } from "react-icons/fi";
+import { MiddInfosType } from "../types/products";
 
 interface MiddAdditionalInfosProps {
   onChange: (data: {
@@ -13,27 +14,36 @@ interface MiddAdditionalInfosProps {
     requires_preparation: boolean;
     preparation_days: number | null;
   }) => void;
+  defaultValues?: MiddInfosType;
 }
 
-const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
-  const [selectItem, setSelectItem] = useState<"today" | "time-ready">("time-ready")
-
-  const [weight, setWeight] = useState(1)
-  const [weightUnit, setWeightUnit] = useState("کیلوگرم")
-  const [preparationDays, setPreparationDays] = useState(1)
-
-  const isPreparation = selectItem === "time-ready"
-  const isSameDayShipping = selectItem === "today"
+const MiddAdditionalInfos = ({
+  onChange,
+  defaultValues,
+}: MiddAdditionalInfosProps) => {
+  const [formData, setFormData] = useState<MiddInfosType>({
+    weight: 1,
+    weight_unit: "کیلوگرم",
+    is_same_day_shipping: false,
+    requires_preparation: true,
+    preparation_days: 1,
+    ...(defaultValues ?? {}),
+  });
+  const [selectItem, setSelectItem] = useState<"today" | "time-ready">(
+    defaultValues?.is_same_day_shipping ? "today" : "time-ready"
+  );
 
   useEffect(() => {
-    onChange({
-      weight,
-      weight_unit: weightUnit,
-      is_same_day_shipping: isSameDayShipping,
-      requires_preparation: isPreparation,
-      preparation_days: isPreparation ? preparationDays : 0,
-    })
-  }, [weight, weightUnit, isSameDayShipping, isPreparation, preparationDays])
+    setFormData((prev) => ({
+      ...prev,
+      is_same_day_shipping: selectItem === "today",
+      requires_preparation: selectItem === "time-ready",
+    }));
+  }, [selectItem]);
+
+  useEffect(() => {
+    onChange(formData);
+  }, [formData]);
 
   return (
     <Card className="w-full shadow-md">
@@ -48,16 +58,23 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
           label="وزن"
           placeholder="1"
           minValue={1}
-          value={weight}
-          onValueChange={(val) => setWeight(val)}
+          value={formData.weight}
+          onValueChange={(val) =>
+            setFormData((prev) => ({ ...prev, weight: val }))
+          }
           labelPlacement={"outside"}
           endContent={
             <div className="flex items-center">
               <select
                 aria-label="Select unit"
                 className="outline-none border-0 bg-transparent text-default-400 text-small"
-                value={weightUnit}
-                onChange={(e) => setWeightUnit(e.target.value)}
+                value={formData.weight_unit}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    weight_unit: e.target.value,
+                  }))
+                }
               >
                 <option value="گرم">گرم</option>
                 <option value="کیلوگرم">کیلوگرم</option>
@@ -70,25 +87,36 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
         <div>
           <p>شرایط ارسال</p>
           <div className="flex flex-col gap-6 mt-3">
-            <div className={`flex flex-col justify-between ${isPreparation ? "bg-stone-50 rounded-xl p-2" : ""}`}>
+            <div
+              className={`flex flex-col justify-between ${
+                selectItem === "time-ready" ? "bg-stone-50 rounded-xl p-2" : ""
+              }`}
+            >
               <div className="flex items-center justify-between mb-4 text-gray-700">
                 <p>محصول نیاز به زمان آماده‌ سازی دارد</p>
                 <Switch
-                  isSelected={isPreparation}
+                  isSelected={selectItem === "time-ready"}
                   onValueChange={() =>
-                    setSelectItem((prev) => (prev === "time-ready" ? "today" : "time-ready"))
+                    setSelectItem((prev) =>
+                      prev === "time-ready" ? "today" : "time-ready"
+                    )
                   }
                   size="sm"
                 />
               </div>
 
-              {isPreparation && (
+              {selectItem === "time-ready" && (
                 <NumberInput
                   label="زمان آماده‌سازی"
                   placeholder="3"
                   minValue={1}
-                  value={preparationDays}
-                  onValueChange={(val) => setPreparationDays(val)}
+                  value={formData.preparation_days || 1}
+                  onValueChange={(val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      preparation_days: val,
+                    }))
+                  }
                   endContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">روز</span>
@@ -103,13 +131,16 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
               <div className="flex flex-col text-gray-700">
                 <p>می‌خواهم محصول “ارسال امروز” داشته باشد.</p>
                 <small className="text-gray-500 mt-1">
-                  برچسب “ارسال امروز” روی کارت این محصول در فروشگاه نمایش داده خواهد شد.
+                  برچسب “ارسال امروز” روی کارت این محصول در فروشگاه نمایش داده
+                  خواهد شد.
                 </small>
               </div>
               <Switch
-                isSelected={isSameDayShipping}
+                isSelected={selectItem === "today"}
                 onValueChange={() =>
-                  setSelectItem((prev) => (prev === "time-ready" ? "today" : "time-ready"))
+                  setSelectItem((prev) =>
+                    prev === "time-ready" ? "today" : "time-ready"
+                  )
                 }
                 size="sm"
               />
@@ -118,7 +149,7 @@ const MiddAdditionalInfos = ({ onChange }: MiddAdditionalInfosProps) => {
         </div>
       </CardBody>
     </Card>
-  )
-}
+  );
+};
 
-export default MiddAdditionalInfos
+export default MiddAdditionalInfos;

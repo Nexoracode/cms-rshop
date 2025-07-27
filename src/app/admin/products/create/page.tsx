@@ -16,16 +16,10 @@ import {
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import { useSearchParams } from "next/navigation";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import { InitInfosType } from "@/components/Admin/_products/types/products";
-
-type MiddInfosType = Pick<
-  Product,
-  | "weight"
-  | "weight_unit"
-  | "is_same_day_shipping"
-  | "requires_preparation"
-  | "preparation_days"
->;
+import {
+  InitInfosType,
+  MiddInfosType,
+} from "@/components/Admin/_products/types/products";
 
 type LastInfosType = Pick<Product, "description" | "is_visible">;
 
@@ -132,6 +126,14 @@ const CreateNewProduct = () => {
     category_id: data?.data?.category_id ?? 0,
   };
 
+  const midsInfosDefaultValues = {
+    weight: data?.data?.weight ?? 1,
+    weight_unit: data?.data?.weight_unit ?? "کیلوگرم",
+    is_same_day_shipping: data?.data?.is_same_day_shipping ?? false,
+    requires_preparation: data?.data?.requires_preparation ?? false,
+    preparation_days: data?.data?.preparation_days ?? 1,
+  };
+
   console.log(data);
 
   return (
@@ -157,7 +159,10 @@ const CreateNewProduct = () => {
                 defaultValues={initInfosDefaultValues}
               />
 
-              <MiddAdditionalInfos onChange={setMiddInfos} />
+              <MiddAdditionalInfos
+                onChange={setMiddInfos}
+                defaultValues={midsInfosDefaultValues}
+              />
 
               <LastAdditionalInfos onChange={setLastInfos} />
 

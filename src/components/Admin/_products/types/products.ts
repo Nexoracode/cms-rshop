@@ -11,3 +11,12 @@ export type InitInfosType = Pick<
   | "discount_amount"
   | "discount_percent"
 >;
+
+export type MiddInfosType = Pick<
+  Product,
+  | "weight"
+  | "weight_unit"
+  | "is_same_day_shipping"
+  | "requires_preparation"
+  | "preparation_days"
+>;
