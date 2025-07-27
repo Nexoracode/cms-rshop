@@ -120,6 +120,18 @@ const CreateNewProduct = () => {
     }
   };
 
+  // Default Values
+  const initInfosDefaultValues = {
+    name: data?.data?.name ?? "",
+    price: data?.data?.price ?? 0,
+    stock: data?.data?.stock ?? 0,
+    is_limited_stock: data?.data?.is_limited_stock ?? false,
+    is_featured: data?.data?.is_featured ?? false,
+    discount_amount: data?.data?.discount_amount ?? null,
+    discount_percent: data?.data?.discount_percent ?? null,
+    category_id: data?.data?.category_id ?? 0,
+  };
+
   console.log(data);
 
   return (
@@ -142,16 +154,7 @@ const CreateNewProduct = () => {
 
               <InitInfos
                 onChange={setInitInfos}
-                defaultValues={{
-                  name: data?.data?.name ?? "",
-                  price: data?.data?.price ?? 0,
-                  stock: data?.data?.stock ?? 0,
-                  is_limited_stock: data?.data?.is_limited_stock ?? false,
-                  is_featured: data?.data?.is_featured ?? false,
-                  discount_amount: data?.data?.discount_amount ?? null,
-                  discount_percent: data?.data?.discount_percent ?? null,
-                  category_id: data?.data?.category_id ?? 0,
-                }}
+                defaultValues={initInfosDefaultValues}
               />
 
               <MiddAdditionalInfos onChange={setMiddInfos} />
