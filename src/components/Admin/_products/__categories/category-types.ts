@@ -1,4 +1,4 @@
-import { Product } from "../__create/product-type";
+import { Product } from "../types/create-product";
 
 export type CategoryPayload = {
   id?: string;

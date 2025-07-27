@@ -2,7 +2,7 @@
 
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader"
 import BackToPage from "@/components/Helper/BackToPage"
-import MediasUploader from "@/components/Helper/MediasUploader"
+//import MediasUploader from "@/components/Helper/MediasUploader"
 import { Alert, Button, Card, CardBody, CardFooter, Divider, Textarea } from "@heroui/react"
 import { useState } from "react"
 import { BsInfoCircle } from "react-icons/bs"
@@ -22,9 +22,9 @@ const About = () => {
                 />
                 <CardBody>
                     <div className="flex flex-col gap-3 mb-6">
-                        <MediasUploader onPreviewsChange={datas =>
+                       {/*  <MediasUploader onPreviewsChange={datas =>
                             setGallery(datas)
-                        } />
+                        } /> */}
                         <div className="w-full flex items-center text-right">
                             <Alert className="h-[40px] flex items-center p-0 bg-transparent" variant="flat" radius="full" color="secondary" dir="rtl" title={<p className="text-[12px]" dir="rtl">حداکثر حجم فایل تصویر 5.5 و ویدئو 50MB است. 10 تصویر و 2 ویدئو میتوانید بارگذاری کنید.</p>} />
                         </div>
