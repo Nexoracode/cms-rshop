@@ -16,18 +16,7 @@ import {
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import { useSearchParams } from "next/navigation";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-
-type InitInfosType = Pick<
-  Product,
-  | "category_id"
-  | "name"
-  | "price"
-  | "stock"
-  | "is_limited_stock"
-  | "is_featured"
-  | "discount_amount"
-  | "discount_percent"
->;
+import { InitInfosType } from "@/components/Admin/_products/types/products";
 
 type MiddInfosType = Pick<
   Product,
@@ -151,7 +140,19 @@ const CreateNewProduct = () => {
                 initialPinnedId={initialPinnedIdFromApi}
               />
 
-              <InitInfos onChange={setInitInfos} />
+              <InitInfos
+                onChange={setInitInfos}
+                defaultValues={{
+                  name: data?.data?.name ?? "",
+                  price: data?.data?.price ?? 0,
+                  stock: data?.data?.stock ?? 0,
+                  is_limited_stock: data?.data?.is_limited_stock ?? false,
+                  is_featured: data?.data?.is_featured ?? false,
+                  discount_amount: data?.data?.discount_amount ?? null,
+                  discount_percent: data?.data?.discount_percent ?? null,
+                  category_id: data?.data?.category_id ?? 0,
+                }}
+              />
 
               <MiddAdditionalInfos onChange={setMiddInfos} />
 

@@ -17,6 +17,7 @@ import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import { useEffect, useState } from "react";
 import { Stock } from "@/types";
 import BoxHeader from "./helpers/BoxHeader";
+import { InitInfosType } from "../types/products";
 
 interface InitInfosProps {
   onChange: (data: {
@@ -29,9 +30,10 @@ interface InitInfosProps {
     is_featured: boolean;
     category_id: number;
   }) => void;
+  defaultValues?: InitInfosType;
 }
 
-const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
+const InitInfos: React.FC<InitInfosProps> = ({ onChange, defaultValues }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [categoriesData, setCategoriesData] = useState<
     { id: number; title: string }[]
@@ -46,6 +48,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange }) => {
     is_featured: false,
     category_id: 0,
     stock: 5,
+    ...(defaultValues ?? {})
   });
 
   useEffect(() => {
