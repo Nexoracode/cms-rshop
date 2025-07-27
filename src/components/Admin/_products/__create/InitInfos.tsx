@@ -48,7 +48,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange, defaultValues }) => {
     is_featured: false,
     category_id: 0,
     stock: 5,
-    ...(defaultValues ?? {})
+    ...(defaultValues ?? {}),
   });
 
   useEffect(() => {
@@ -171,6 +171,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange, defaultValues }) => {
                   category_id: +e.target.value,
                 }));
               }}
+              selectedKeys={[formData.category_id.toString()]}
             >
               {categoriesData.length ? (
                 categoriesData.map((cat) => (
