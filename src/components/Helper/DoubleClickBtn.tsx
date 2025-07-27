@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@heroui/react"
-import { useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 
 type Props = {
     color?: "danger" | "default" | "primary" | "secondary" | "success" | "warning",
@@ -11,7 +11,7 @@ type Props = {
     startContent?: React.ReactNode,
     isActiveDoubleClick?: boolean,
     onPress: () => void,
-    textBtn: string,
+    textBtn: string | React.ReactNode,
     isDisabled?: boolean
 }
 

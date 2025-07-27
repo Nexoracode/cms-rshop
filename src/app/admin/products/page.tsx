@@ -4,7 +4,6 @@
 import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
 import OptionBox from "@/components/Admin/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
-import ActionsModal from "@/components/Admin/_products/modals/ActionsModal";
 import FilterModal from "@/components/Admin/_products/modals/FilterModal";
 import SortingModal from "@/components/Admin/_products/modals/SortingModal";
 import MoreFeaturesModal from "@/components/Admin/_products/modals/MoreFeaturesModal";
@@ -20,17 +19,14 @@ import { AiOutlineShop } from "react-icons/ai";
 import { LuBox } from "react-icons/lu";
 import { useGetProducts } from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import { Product } from "@/components/Admin/_products/__create/product-type";
+import { GETProduct } from "@/components/Admin/_products/types/edit-product";
+import { useState } from "react";
 
 const Products = () => {
   const router = useRouter();
+  const [productId, setProductId] = useState(0);
   const { data: products, isPending } = useGetProducts();
-  const {
-    isOpen: isActionsOpen,
-    onOpen: onOpenActions,
-    onOpenChange: onActionsOpenChange,
-  } = useDisclosure();
-
+  
   const {
     isOpen: isSortOpen,
     onOpen: onOpenSort,
@@ -105,15 +101,19 @@ const Products = () => {
           <CardBody>
             {products?.data ? (
               <div className="flex flex-col gap-4">
-                {products.data.items.map((product: Product) => (
+                {(products.data as GETProduct).items.map((product) => (
                   <ProductBox
                     key={product.id}
+                    created_at={product.created_at.slice(0, 10)}
                     title={product.name}
-                    pathImg={product.media_pinned?.url}
+                    pathImg={product.media_pinned.url}
                     price={product.price}
                     varientsCount={product.stock}
-                    onMoreDetail={onOpenActions}
-                    onShowMore={() => {}}
+                    onShowMore={() =>
+                      router.push(
+                        `/admin/products/create?edit_id=${product.id}`
+                      )
+                    }
                   />
                 ))}
               </div>
@@ -126,11 +126,6 @@ const Products = () => {
       {/* Modals */}
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
       <FilterModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
-      <ActionsModal
-        isOpen={isActionsOpen}
-        onOpenChange={onActionsOpenChange}
-        productName="کفش آسیاتک"
-      />
       <MoreFeaturesModal
         isOpen={isFeatureOpen}
         onOpenChange={onFeatureOpenChange}
