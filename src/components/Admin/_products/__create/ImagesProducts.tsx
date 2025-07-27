@@ -33,13 +33,6 @@ const ImagesProducts = ({
     }
   }, [medias]);
 
-/*   useEffect(() => {
-    if (initialMedias) {
-      console.log(initialMedias);
-      setMediasUrl(initialMedias);
-    }
-  }, [initialMedias]); */
-
   useEffect(() => {
     onMedia_ids(mediasUrl.map((media) => media.id));
   }, [mediasUrl]);
