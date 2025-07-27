@@ -38,15 +38,21 @@ const CreateNewProduct = () => {
   const initialMediasFromApi = data?.data?.medias ?? [];
   const initialPinnedIdFromApi = data?.data?.media_pinned?.id ?? null;
 
-  const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
+  const isAllFieldsFilled = <T extends object>(
+    obj: T | null,
+    ignoreKeys: (keyof T)[] = []
+  ): boolean => {
     if (!obj) return false;
 
-    return Object.values(obj).every(
-      (val) =>
+    return Object.entries(obj).every(([key, val]) => {
+      if (ignoreKeys.includes(key as keyof T)) return true;
+
+      return (
         val !== null &&
         val !== undefined &&
         !(typeof val === "string" && val.trim() === "")
-    );
+      );
+    });
   };
 
   const getFinalProductObject = () => {
@@ -141,7 +147,6 @@ const CreateNewProduct = () => {
   };
 
   console.log(data);
-  
 
   return (
     <div>
@@ -185,7 +190,7 @@ const CreateNewProduct = () => {
                 }
                 onPress={handleNewProduct}
               >
-                ثبت محصول
+                ثبت تغیرات
               </Button>
             </>
           )
