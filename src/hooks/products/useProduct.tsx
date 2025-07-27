@@ -1,6 +1,11 @@
 import { Product } from "@/components/Admin/_products/types/create-product";
 import { fetcher } from "@/utils/fetcher";
-import { useMutation, useQuery, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 
 export const useGetProducts = (page: number = 1) => {
   return useQuery({
@@ -13,14 +18,15 @@ export const useGetProducts = (page: number = 1) => {
   });
 };
 
-export const useGetOneProduct = (id: number, options?: UseQueryOptions<Product>) => {
+export const useGetOneProduct = (id?: number) => {
   return useQuery({
-  queryKey: ["one-products", id],
+    queryKey: ["one-product", id],
     queryFn: () =>
       fetcher({
         route: `/product/${id}`,
         isActiveToast: false,
       }),
+    enabled: !!id,
   });
 };
 

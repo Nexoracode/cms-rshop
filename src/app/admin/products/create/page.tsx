@@ -9,8 +9,13 @@ import MiddAdditionalInfos from "@/components/Admin/_products/__create/MiddAddit
 import LastAdditionalInfos from "@/components/Admin/_products/__create/LastAdditionalInfos";
 import BackToPage from "@/components/Helper/BackToPage";
 import { Product } from "@/components/Admin/_products/types/create-product";
-import { useGetOneProduct, useProductCreate } from "@/hooks/products/useProduct";
+import {
+  useGetOneProduct,
+  useProductCreate,
+} from "@/hooks/products/useProduct";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
+import { useSearchParams } from "next/navigation";
+import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 
 type InitInfosType = Pick<
   Product,
@@ -36,7 +41,8 @@ type MiddInfosType = Pick<
 type LastInfosType = Pick<Product, "description" | "is_visible">;
 
 const CreateNewProduct = () => {
-  
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("edit_id");
   const [initInfos, setInitInfos] = useState<InitInfosType | null>(null);
   const [middInfos, setMiddInfos] = useState<MiddInfosType | null>(null);
   const [lastInfos, setLastInfos] = useState<LastInfosType | null>(null);
@@ -45,18 +51,7 @@ const CreateNewProduct = () => {
   const [activeForm, setActiveForm] = useState<"infos" | "attributes">("infos");
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
-  
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const editId = urlParams.get("edit_id");
-      if (editId) {
-        console.log(editId);
-        useGetOneProduct(+editId);
-      } 
-    }
-  }, [])
+  const { data, isLoading } = useGetOneProduct(editId ? +editId : undefined);
 
   const isAllFieldsFilled = <T extends object>(obj: T | null): boolean => {
     if (!obj) return false;
@@ -139,34 +134,42 @@ const CreateNewProduct = () => {
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
         {activeForm === "infos" ? (
-          <>
-            <ImagesProducts
-              onMedia_ids={(datas) => setMedia_ids(datas)}
-              onMedia_pinned_id={(id) => setMedia_pinned_id(id)}
-            />
+          editId && isLoading ? (
+            <div className="bg-white rounded-2xl shadow-md py-16">
+              <LoadingApiCall />
+            </div>
+          ) : (
+            <>
+              <ImagesProducts
+                onMedia_ids={(datas) => setMedia_ids(datas)}
+                onMedia_pinned_id={(id) => setMedia_pinned_id(id)}
+              />
 
-            <InitInfos onChange={setInitInfos} />
+              <InitInfos onChange={setInitInfos} />
 
-            <MiddAdditionalInfos onChange={setMiddInfos} />
+              <MiddAdditionalInfos onChange={setMiddInfos} />
 
-            <LastAdditionalInfos onChange={setLastInfos} />
+              <LastAdditionalInfos onChange={setLastInfos} />
 
-            <Button
-              color="secondary"
-              isDisabled={
-                !isAllFieldsFilled(initInfos) ||
-                !isAllFieldsFilled(middInfos) ||
-                !isAllFieldsFilled(lastInfos)
-              }
-              onPress={handleNewProduct}
-            >
-              ثبت محصول
-            </Button>
-          </>
+              <Button
+                color="secondary"
+                isDisabled={
+                  !isAllFieldsFilled(initInfos) ||
+                  !isAllFieldsFilled(middInfos) ||
+                  !isAllFieldsFilled(lastInfos)
+                }
+                onPress={handleNewProduct}
+              >
+                ثبت محصول
+              </Button>
+            </>
+          )
         ) : (
           <>
             <AttributesProducts />
-            <Button color="success" className="text-white">ثبت نهایی محصول</Button>
+            <Button color="success" className="text-white">
+              ثبت نهایی محصول
+            </Button>
           </>
         )}
       </section>
