@@ -1,11 +1,6 @@
 import { Product } from "@/components/Admin/_products/types/create-product";
 import { fetcher } from "@/utils/fetcher";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetProducts = (page: number = 1) => {
   return useQuery({
@@ -77,6 +72,21 @@ export const useDeleteProduct = (id: number) => {
 
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === "all-products",
+      });
+    },
+  });
+};
+
+export const useCreateSizeGuid = () => {
+  return useMutation({
+    mutationFn: (data: any) => {
+      return fetcher({
+        route: "/helpers",
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+        successText:"راهنمای سایز با موفقیت ایجاد شد",
+        loadingText: "در حال ایجاد راهنمای سایز",
       });
     },
   });

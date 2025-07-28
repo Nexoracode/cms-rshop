@@ -5,7 +5,7 @@ export type ProductMedia = {
   alt_text: string | null;
   product_id: number | null;
   created_at: string;
-}
+};
 
 export interface Product {
   id?: number;
@@ -26,6 +26,12 @@ export interface Product {
   category_id: number;
   created_at?: string;
   media_ids: number[];
-  order_limit: number,
+  order_limit: number;
   media_pinned_id: number;
+  helper?: {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+  };
 }

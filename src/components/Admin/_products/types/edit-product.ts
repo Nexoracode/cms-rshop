@@ -13,6 +13,12 @@ type ProductItem = {
   name: string;
   price: string;
   stock: number;
+  helper: {
+    id: number,
+    title: string,
+    description: string,
+    image: string
+  }
   created_at: string;
 };
 

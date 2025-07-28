@@ -13,7 +13,7 @@ import {
 import BoxHeader from "./helpers/BoxHeader";
 import { LuScrollText } from "react-icons/lu";
 import BrandItem from "./temps/BrandItem";
-import SizeGuide from "./temps/SizeGuide";
+import SizeGuide from "./SizeGuide/SizeGuide";
 
 type LastInfos = {
   description: string;

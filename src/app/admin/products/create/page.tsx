@@ -21,7 +21,7 @@ import {
   MiddInfosType,
 } from "@/components/Admin/_products/types/products";
 
-type LastInfosType = Pick<Product, "description" | "is_visible">;
+type LastInfosType = Pick<Product, "description" | "is_visible" | "helper">;
 
 const CreateNewProduct = () => {
   const searchParams = useSearchParams();
@@ -144,6 +144,7 @@ const CreateNewProduct = () => {
     description: data?.data?.description ?? "",
     is_visible: data?.data?.is_visible ?? true,
     order_limit: data?.data?.order_limit ?? 0,
+    helper: data?.data?.helper
   };
 
   console.log(data);
