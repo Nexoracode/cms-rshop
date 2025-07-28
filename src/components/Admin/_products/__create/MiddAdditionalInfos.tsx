@@ -42,7 +42,14 @@ const MiddAdditionalInfos = ({
   }, [selectItem]);
 
   useEffect(() => {
-    onChange(formData);
+    const { preparation_days, requires_preparation } = formData;
+
+    const newUpdate: MiddInfosType = {
+      ...formData,
+      preparation_days: requires_preparation ? preparation_days : 0,
+    };
+
+    onChange(newUpdate);
   }, [formData]);
 
   return (
@@ -60,7 +67,7 @@ const MiddAdditionalInfos = ({
           minValue={1}
           value={formData.weight}
           onValueChange={(val) =>
-            setFormData((prev) => ({ ...prev, weight: val }))
+            setFormData((prev) => ({ ...prev, weight: +val }))
           }
           labelPlacement={"outside"}
           endContent={

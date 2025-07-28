@@ -18,7 +18,7 @@ import SizeGuide from "./temps/SizeGuide";
 type LastInfos = {
   description: string;
   is_visible: boolean;
-  order_limit?: number;
+  order_limit: number;
 };
 
 interface LastAdditionalInfosProps {
@@ -33,6 +33,7 @@ const LastAdditionalInfos = ({
   const [formData, setFormData] = useState<LastInfos>({
     description: "",
     is_visible: true,
+    order_limit: 0,
     ...(defaultValues ?? {}),
   });
 

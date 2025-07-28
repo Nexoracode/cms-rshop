@@ -26,5 +26,6 @@ export interface Product {
   category_id: number;
   created_at?: string;
   media_ids: number[];
+  order_limit: number,
   media_pinned_id: number;
 }

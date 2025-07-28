@@ -107,8 +107,8 @@ const CreateNewProduct = () => {
   const handleNewProduct = () => {
     const result = getFinalProductObject() as Product;
     if (!result) return;
-
-    if (Object.keys(result).length > 0) {
+    console.log(result);
+    /*  if (Object.keys(result).length > 0) {
       console.log("⬆️ Sending to API...", result);
       createProduct(result, {
         onSuccess: (res) => {
@@ -117,7 +117,7 @@ const CreateNewProduct = () => {
           }
         },
       });
-    }
+    } */
   };
 
   // Default Values
@@ -143,7 +143,7 @@ const CreateNewProduct = () => {
   const lastInfosDefaultValues = {
     description: data?.data?.description ?? "",
     is_visible: data?.data?.is_visible ?? true,
-    order_limit: data?.data?.order_limit ?? undefined,
+    order_limit: data?.data?.order_limit ?? 0,
   };
 
   console.log(data);

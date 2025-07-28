@@ -67,8 +67,8 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange, defaultValues }) => {
       price,
       is_limited_stock,
       ...(discountType === "percent"
-        ? { discount_percent: discountValue }
-        : { discount_amount: discountValue }),
+        ? { discount_percent: +discountValue }
+        : { discount_amount: +discountValue }),
       is_featured,
       category_id: category_id ? category_id : 0,
       stock: is_limited_stock ? 0 : stock,
@@ -109,7 +109,7 @@ const InitInfos: React.FC<InitInfosProps> = ({ onChange, defaultValues }) => {
               }
               value={+formData.price}
               onValueChange={(price) =>
-                setFormData((prev) => ({ ...prev, price }))
+                setFormData((prev) => ({ ...prev, price: +price }))
               }
             />
             {formData.price && formData.discountValue !== 0 && (

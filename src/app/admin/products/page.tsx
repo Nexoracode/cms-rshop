@@ -21,6 +21,7 @@ import { useGetProducts } from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { GETProduct } from "@/components/Admin/_products/types/edit-product";
 import { useState } from "react";
+import { log } from "node:console";
 
 const Products = () => {
   const router = useRouter();
@@ -44,6 +45,9 @@ const Products = () => {
     onOpen: onOpenFeature,
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
+
+  console.log("BBBB", products);
+  
 
   return (
     <>
