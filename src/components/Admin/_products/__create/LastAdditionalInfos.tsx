@@ -159,10 +159,12 @@ const LastAdditionalInfos = ({
               onChange={(e) => {
                 setFormData((prev) => ({
                   ...prev,
-                  brand: +e.target.value,
+                  brand_id: +e.target.value,
                 }));
               }}
-              selectedKeys={[formData.brand_id?.toString() || -1]}
+              selectedKeys={
+                formData.brand_id !== null ? [formData.brand_id.toString()] : []
+              }
             >
               {allBrands?.data.length ? (
                 allBrands.data.map((brand: BrandItemProp) => (
