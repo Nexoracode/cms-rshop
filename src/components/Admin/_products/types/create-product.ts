@@ -34,4 +34,10 @@ export interface Product {
     description: string;
     image: string;
   };
+  brand?: {
+    id: number;
+    name: string;
+    slug: string;
+    logo: string;
+  };
 }

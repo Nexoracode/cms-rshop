@@ -20,8 +20,16 @@ import {
   InitInfosType,
   MiddInfosType,
 } from "@/components/Admin/_products/types/products";
+import { SizeGuideProp } from "@/components/Admin/_products/__create/SizeGuide/type";
+import { BrandItemProp } from "@/components/Admin/_products/__create/BrandItem/type";
 
-type LastInfosType = Pick<Product, "description" | "is_visible" | "helper">;
+type LastInfosType = {
+  description: string;
+  is_visible: boolean;
+  order_limit: number;
+  helper: SizeGuideProp | null;
+  brand: BrandItemProp | null;
+};
 
 const CreateNewProduct = () => {
   const searchParams = useSearchParams();
@@ -144,7 +152,8 @@ const CreateNewProduct = () => {
     description: data?.data?.description ?? "",
     is_visible: data?.data?.is_visible ?? true,
     order_limit: data?.data?.order_limit ?? 0,
-    helper: data?.data?.helper
+    helper: data?.data?.helper,
+    brand: data?.data?.brand,
   };
 
   console.log(data);
