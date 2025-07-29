@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { BrandItemProp } from "./type";
+import { useProductUpload } from "@/hooks/products/useProduct";
+import { useCreateBrandItem, useUpdateBrand } from "@/hooks/useBrandItem";
 
 type Props = {
   isOpen: boolean;
@@ -21,16 +23,49 @@ const AddNewBrandModal: React.FC<Props> = ({
   defaultValues,
   brandId,
 }) => {
-
   const [datas, setDatas] = useState<BrandItemProp>({
     name: "",
     slug: "",
     logo: null,
     ...(defaultValues ? defaultValues : {}),
   });
+  const { mutate: uploadMedias } = useProductUpload();
+  const { mutate: createBrand } = useCreateBrandItem();
+  const { mutate: updateBrand } = useUpdateBrand(brandId || 0);
 
   const handleUpload = () => {
-   
+    if (!datas.logo) return;
+    const formData = new FormData();
+    formData.append("files", datas.logo);
+
+    uploadMedias(formData, {
+      onSuccess: (response) => {
+        const img = response.data[0];
+        if (img) {
+          if (brandId) {
+            updateBrand(
+              { ...datas, logo: img.url },
+              {
+                onSuccess: (response) => {
+                  onSubmit(response.data);
+                  onOpenChange();
+                },
+              }
+            );
+          } else {
+            createBrand(
+              { ...datas, logo: img.url },
+              {
+                onSuccess: (response) => {
+                  onSubmit(response.data);
+                  onOpenChange();
+                },
+              }
+            );
+          }
+        }
+      },
+    });
   };
 
   return (
@@ -50,7 +85,9 @@ const AddNewBrandModal: React.FC<Props> = ({
                 label="عنوان برند (فارسی)"
                 placeholder="عنوان را وارد کنید"
                 value={datas.name}
-                onChange={(e) =>setDatas((prev) => ({ ...prev, name: e.target.value }))}
+                onChange={(e) =>
+                  setDatas((prev) => ({ ...prev, name: e.target.value }))
+                }
                 className="mb-2"
               />
               <Input
@@ -60,7 +97,9 @@ const AddNewBrandModal: React.FC<Props> = ({
                 label="عنوان برند (انگلیسی)"
                 placeholder="title"
                 value={datas.slug}
-                onChange={(e) => setDatas((prev) => ({ ...prev, slug: e.target.value }))}
+                onChange={(e) =>
+                  setDatas((prev) => ({ ...prev, slug: e.target.value }))
+                }
               />
               <ImageBoxUploader
                 textBtn={datas.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
@@ -75,9 +114,7 @@ const AddNewBrandModal: React.FC<Props> = ({
                 variant="solid"
                 color="secondary"
                 isDisabled={
-                  !datas.name.trim() ||
-                  !datas.slug.trim() ||
-                  !datas.logo
+                  !datas.name.trim() || !datas.slug.trim() || !datas.logo
                 }
                 onPress={handleUpload}
               >

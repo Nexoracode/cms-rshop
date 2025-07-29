@@ -5,11 +5,8 @@ import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { SizeGuideProp } from "./type";
-import {
-  useCreateSizeGuid,
-  useProductUpload,
-  useUpdateSizeGuid,
-} from "@/hooks/products/useProduct";
+import { useProductUpload } from "@/hooks/products/useProduct";
+import { useCreateSizeGuid, useUpdateSizeGuid } from "@/hooks/useSizeGuide";
 
 type Props = {
   isOpen: boolean;
