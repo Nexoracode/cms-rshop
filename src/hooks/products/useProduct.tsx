@@ -1,3 +1,4 @@
+import { SizeGuideProp } from "@/components/Admin/_products/__create/SizeGuide/type";
 import { Product } from "@/components/Admin/_products/types/create-product";
 import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -79,7 +80,7 @@ export const useDeleteProduct = (id: number) => {
 
 export const useCreateSizeGuid = () => {
   return useMutation({
-    mutationFn: (data: any) => {
+    mutationFn: (data: {title: string, description: string, image: string}) => {
       return fetcher({
         route: "/helpers",
         method: "POST",
@@ -88,6 +89,6 @@ export const useCreateSizeGuid = () => {
         successText:"راهنمای سایز با موفقیت ایجاد شد",
         loadingText: "در حال ایجاد راهنمای سایز",
       });
-    },
+    }
   });
 };

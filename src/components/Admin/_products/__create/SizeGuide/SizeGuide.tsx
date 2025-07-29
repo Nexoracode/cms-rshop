@@ -1,28 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import { useDisclosure } from "@heroui/react";
 import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
 import CardBox from "../helpers/CardBox";
 import HeaderAction from "../helpers/HeaderAction";
-import { useCreateSizeGuid } from "@/hooks/products/useProduct";
 import { SizeGuideProp } from "./type";
+import { useState } from "react";
 
 type Props = {
-  sizeGuide?: SizeGuideProp;
+  sizeGuide?: SizeGuideProp | null;
+  onSizeGuide: (datas: SizeGuideProp) => void
 };
 
-const SizeGuide = ({ sizeGuide }: Props) => {
-  const [datas, setDatas] = useState<SizeGuideProp>();
-  //
+const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { mutate: createSizeGuid } = useCreateSizeGuid();
-
-  const createNewSizeGuid = () => {
-    createSizeGuid(datas, {
-      onSuccess: () => {},
-    });
-  };
+  const [guide, setGuide] = useState<SizeGuideProp | null>(sizeGuide || null)
 
   return (
     <>
@@ -30,16 +22,16 @@ const SizeGuide = ({ sizeGuide }: Props) => {
         <HeaderAction
           title="راهنمای سایز"
           textBtn="+ افزودن راهنما"
-          //isDisabled={!!sizeGuide}
+          isDisabled={!!guide}
           onPress={onOpen}
         />
-        {sizeGuide ? (
+        {guide ? (
           <CardBox
-            title={sizeGuide.title}
-            description={sizeGuide.description}
-            imageFile={sizeGuide.image}
+            title={guide.title}
+            description={guide.description}
+            imageFile={guide.image}
             onDelete={() => {}}
-            onEdit={() => {}}
+            onEdit={onOpen}
           />
         ) : (
           ""
@@ -50,9 +42,10 @@ const SizeGuide = ({ sizeGuide }: Props) => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onSubmit={(datas) => {
-          console.log(datas);
-          setDatas(datas)
+          onSizeGuide(datas)
+          setGuide(datas)
         }}
+        defaultValues={guide}
       />
     </>
   );

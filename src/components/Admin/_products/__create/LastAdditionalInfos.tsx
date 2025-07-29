@@ -14,11 +14,13 @@ import BoxHeader from "./helpers/BoxHeader";
 import { LuScrollText } from "react-icons/lu";
 import BrandItem from "./temps/BrandItem";
 import SizeGuide from "./SizeGuide/SizeGuide";
+import { SizeGuideProp } from "./SizeGuide/type";
 
 type LastInfos = {
   description: string;
   is_visible: boolean;
   order_limit: number;
+  helper: null | SizeGuideProp;
 };
 
 interface LastAdditionalInfosProps {
@@ -34,6 +36,7 @@ const LastAdditionalInfos = ({
     description: "",
     is_visible: true,
     order_limit: 0,
+    helper: null,
     ...(defaultValues ?? {}),
   });
 
@@ -132,7 +135,12 @@ const LastAdditionalInfos = ({
         </div>
 
         <BrandItem />
-        <SizeGuide />
+        <SizeGuide
+          onSizeGuide={(datas) =>
+            setFormData((prev) => ({ ...prev, helper: datas }))
+          }
+          sizeGuide={formData.helper}
+        />
       </CardBody>
     </Card>
   );

@@ -5,12 +5,16 @@ import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { SizeGuideProp } from "./type";
+import {
+  useCreateSizeGuid,
+  useProductUpload,
+} from "@/hooks/products/useProduct";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
   onSubmit: (datas: SizeGuideProp, id?: number) => void;
-  defaultValues?: SizeGuideProp;
+  defaultValues?: SizeGuideProp | null;
 };
 
 const AddNewSizeGuideModal: React.FC<Props> = ({
@@ -23,7 +27,33 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     title: "",
     description: "",
     image: null,
+    ...(defaultValues ? defaultValues : {})
   });
+  const { mutate: uploadMedias } = useProductUpload();
+  const { mutate: createSizeGuid } = useCreateSizeGuid();
+
+  const handleUpload = () => {
+    if (!datas.image) return;
+    const formData = new FormData();
+    formData.append("files", datas.image);
+
+    uploadMedias(formData, {
+      onSuccess: (response) => {
+        const img = response.data[0];
+        if (img) {
+          createSizeGuid(
+            { ...datas, image: img.url },
+            {
+              onSuccess: (response) => {
+                onSubmit(response.data);
+                onOpenChange()
+              },
+            }
+          );
+        }
+      },
+    });
+  };
 
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -77,7 +107,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                   !datas.description.trim() ||
                   !datas.image
                 }
-                onPress={() => onSubmit(datas)}
+                onPress={handleUpload}
               >
                 تایید و ثبت
               </Button>
