@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@heroui/react";
 //
 import ImagesProducts from "@/components/Admin/_products/__create/ImagesProducts";
@@ -20,15 +20,13 @@ import {
   InitInfosType,
   MiddInfosType,
 } from "@/components/Admin/_products/types/products";
-import { SizeGuideProp } from "@/components/Admin/_products/__create/SizeGuide/type";
-import { BrandItemProp } from "@/components/Admin/_products/__create/BrandItem/type";
 
 type LastInfosType = {
   description: string;
   is_visible: boolean;
   order_limit: number;
-  helper: SizeGuideProp | null;
-  brand: BrandItemProp | null;
+  helper_id: number | null;
+  brand_id: number | null;
 };
 
 const CreateNewProduct = () => {

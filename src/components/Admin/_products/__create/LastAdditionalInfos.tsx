@@ -26,7 +26,7 @@ type LastInfos = {
 };
 
 interface LastAdditionalInfosProps {
-  onChange: (data: LastInfos) => void;
+  onChange: (data: any) => void;
   defaultValues?: LastInfos;
 }
 
@@ -49,7 +49,10 @@ const LastAdditionalInfos = ({
 
   useEffect(() => {
     onChange({
-      ...formData,
+      helper_id: formData?.helper?.id,
+      brand_id: formData?.brand?.id,
+      description: formData.description,
+      is_visible: formData.is_visible,
       ...(selectItem === "limit"
         ? { order_limit: formData.order_limit || 1 }
         : {}),
