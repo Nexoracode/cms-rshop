@@ -45,7 +45,6 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
       onSuccess: (response) => {
         const img = response.data[0];
         if (img) {
-          console.log("SSSSSS", helperId);
           if (helperId) {
             updateSizeGuid(
               { ...datas, image: img.url },

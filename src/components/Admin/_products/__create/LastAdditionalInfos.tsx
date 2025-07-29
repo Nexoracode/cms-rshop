@@ -12,15 +12,17 @@ import {
 } from "@heroui/react";
 import BoxHeader from "./helpers/BoxHeader";
 import { LuScrollText } from "react-icons/lu";
-import BrandItem from "./temps/BrandItem";
+import BrandItem from "./BrandItem/BrandItem";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import { SizeGuideProp } from "./SizeGuide/type";
+import { BrandItemProp } from "./BrandItem/type";
 
 type LastInfos = {
   description: string;
   is_visible: boolean;
   order_limit: number;
   helper: null | SizeGuideProp;
+  brand: null | BrandItemProp;
 };
 
 interface LastAdditionalInfosProps {
@@ -37,6 +39,7 @@ const LastAdditionalInfos = ({
     is_visible: true,
     order_limit: 0,
     helper: null,
+    brand: null,
     ...(defaultValues ?? {}),
   });
 
@@ -134,7 +137,12 @@ const LastAdditionalInfos = ({
           )}
         </div>
 
-        <BrandItem />
+        <BrandItem
+          onBrand={(datas) =>
+            setFormData((prev) => ({ ...prev, brand: datas }))
+          }
+          defaultBrand={formData.brand}
+        />
         <SizeGuide
           onSizeGuide={(datas) =>
             setFormData((prev) => ({ ...prev, helper: datas }))
