@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
-import { useCreateSizeGuid } from "@/hooks/products/useProduct";
 import { SizeGuideProp } from "./type";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onSubmit: (datas: SizeGuideProp, id: number) => void;
-  defaultValues: SizeGuideProp;
+  onSubmit: (datas: SizeGuideProp, id?: number) => void;
+  defaultValues?: SizeGuideProp;
 };
 
 const AddNewSizeGuideModal: React.FC<Props> = ({
@@ -78,7 +77,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                   !datas.description.trim() ||
                   !datas.image
                 }
-                onPress={createNewSizeGuid}
+                onPress={() => onSubmit(datas)}
               >
                 تایید و ثبت
               </Button>

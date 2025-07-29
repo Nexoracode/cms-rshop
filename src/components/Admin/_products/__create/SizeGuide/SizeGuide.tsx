@@ -31,9 +31,7 @@ const SizeGuide = ({ sizeGuide }: Props) => {
           title="راهنمای سایز"
           textBtn="+ افزودن راهنما"
           //isDisabled={!!sizeGuide}
-          onPress={() => {
-            onOpen();
-          }}
+          onPress={onOpen}
         />
         {sizeGuide ? (
           <CardBox
@@ -51,8 +49,10 @@ const SizeGuide = ({ sizeGuide }: Props) => {
       <AddNewSizeGuideModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={setDatas}
-        defaultValues={(datas) => {}}
+        onSubmit={(datas) => {
+          console.log(datas);
+          setDatas(datas)
+        }}
       />
     </>
   );
