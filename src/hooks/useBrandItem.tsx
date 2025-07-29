@@ -1,7 +1,20 @@
 import { fetcher } from "@/utils/fetcher";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+export const useGetBrands = () => {
+  return useQuery({
+    queryKey: ["all-brands"],
+    queryFn: () =>
+      fetcher({
+        route: `/brand/all`,
+        isActiveToast: false,
+      }),
+  });
+};
 
 export const useCreateBrandItem = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: { name: string; slug: string; logo: string }) => {
       return fetcher({
@@ -13,10 +26,15 @@ export const useCreateBrandItem = () => {
         loadingText: "در حال ایجاد برند جدید",
       });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-brands"] });
+    },
   });
 };
 
 export const useUpdateBrand = (id: number) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: { name: string; slug: string; logo: string }) => {
       return fetcher({
@@ -27,6 +45,9 @@ export const useUpdateBrand = (id: number) => {
         successText: "برند با موفقیت آپدیت شد",
         loadingText: "در حال آپدیت برند",
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-brands"] });
     },
   });
 };

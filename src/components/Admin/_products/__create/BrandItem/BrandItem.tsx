@@ -43,10 +43,6 @@ const BrandItem = ({ onBrand, defaultBrand }: Props) => {
       <AddNewBrandModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={(datas) => {
-          onBrand(datas);
-          setBrand(datas);
-        }}
         defaultValues={brand}
         brandId={brand?.id}
       />

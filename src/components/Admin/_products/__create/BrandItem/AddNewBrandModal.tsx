@@ -11,7 +11,6 @@ import { useCreateBrandItem, useUpdateBrand } from "@/hooks/useBrandItem";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onSubmit: (datas: BrandItemProp, id?: number) => void;
   defaultValues?: BrandItemProp | null;
   brandId?: number | null;
 };
@@ -19,7 +18,6 @@ type Props = {
 const AddNewBrandModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
-  onSubmit,
   defaultValues,
   brandId,
 }) => {
@@ -47,7 +45,6 @@ const AddNewBrandModal: React.FC<Props> = ({
               { ...datas, logo: img.url },
               {
                 onSuccess: (response) => {
-                  onSubmit(response.data);
                   onOpenChange();
                 },
               }
@@ -57,7 +54,6 @@ const AddNewBrandModal: React.FC<Props> = ({
               { ...datas, logo: img.url },
               {
                 onSuccess: (response) => {
-                  onSubmit(response.data);
                   onOpenChange();
                 },
               }

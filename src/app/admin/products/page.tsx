@@ -113,7 +113,7 @@ const Products = () => {
                     title={product.name}
                     pathImg={product.media_pinned.url}
                     price={product.price}
-                    varientsCount={product.stock}
+                    varientsCount={product.stock === 0 ? "نامحدود" : product.stock}
                     onShowMore={() =>
                       router.push(
                         `/admin/products/create?edit_id=${product.id}`

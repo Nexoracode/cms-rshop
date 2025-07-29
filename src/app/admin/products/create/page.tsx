@@ -162,7 +162,7 @@ const CreateNewProduct = () => {
     is_visible: data?.data?.is_visible ?? true,
     order_limit: data?.data?.order_limit ?? 0,
     helper: data?.data?.helper,
-    brand: data?.data?.brand,
+    brand_id: data?.data?.brand_id,
   };
 
   console.log(data);
