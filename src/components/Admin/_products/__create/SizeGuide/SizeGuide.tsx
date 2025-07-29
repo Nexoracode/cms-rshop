@@ -30,7 +30,7 @@ const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
             title={guide.title}
             description={guide.description}
             imageFile={guide.image}
-            onDelete={() => {}}
+            disableDelete
             onEdit={onOpen}
           />
         ) : (

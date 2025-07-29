@@ -12,6 +12,7 @@ import { Product } from "@/components/Admin/_products/types/create-product";
 import {
   useGetOneProduct,
   useProductCreate,
+  useProductUpdate,
 } from "@/hooks/products/useProduct";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import { useSearchParams } from "next/navigation";
@@ -40,6 +41,7 @@ const CreateNewProduct = () => {
   const [activeForm, setActiveForm] = useState<"infos" | "attributes">("infos");
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
+  const { mutate: updateProduct } = useProductUpdate(editId ? +editId : undefined);
   const { data, isLoading } = useGetOneProduct(editId ? +editId : undefined);
   const initialMediasFromApi = data?.data?.medias ?? [];
   const initialPinnedIdFromApi = data?.data?.media_pinned?.id ?? null;
@@ -110,12 +112,13 @@ const CreateNewProduct = () => {
     };
   };
 
-  const handleNewProduct = () => {
+  const handleChangeProduct = () => {
     const result = getFinalProductObject() as Product;
     if (!result) return;
-    console.log(result);
-    /*  if (Object.keys(result).length > 0) {
-      console.log("⬆️ Sending to API...", result);
+
+    console.log("⬆️ Sending to API...", result);
+
+    if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
@@ -123,7 +126,15 @@ const CreateNewProduct = () => {
           }
         },
       });
-    } */
+    } else {
+       updateProduct(result, {
+        onSuccess: (res) => {
+          if (res.ok) {
+            setActiveForm("attributes");
+          }
+        },
+      });
+    }
   };
 
   // Default Values
@@ -196,7 +207,7 @@ const CreateNewProduct = () => {
                   !isAllFieldsFilled(middInfos) ||
                   !isAllFieldsFilled(lastInfos)
                 }
-                onPress={handleNewProduct}
+                onPress={handleChangeProduct}
               >
                 ثبت تغیرات
               </Button>

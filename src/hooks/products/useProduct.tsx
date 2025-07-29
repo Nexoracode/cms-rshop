@@ -56,6 +56,22 @@ export const useProductCreate = () => {
   });
 };
 
+export const useProductUpdate = (id: number | undefined) => {
+  return useMutation({
+    mutationFn: (data: Product) => {
+      return fetcher({
+        route: `/product/${id}`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText:
+          "محصول با موفقیت آپدیت شد. لطفا در صورت نیاز ادامه پروسه رو دنبال کنید تا ویژگی های محصول را هم ویرایش کنید",
+        loadingText: "در حال آپدیت محصول",
+      });
+    },
+  });
+};
+
 export const useDeleteProduct = (id: number) => {
   const queryClient = useQueryClient();
 
