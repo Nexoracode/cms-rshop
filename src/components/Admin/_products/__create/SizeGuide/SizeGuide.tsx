@@ -5,7 +5,7 @@ import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
 import CardBox from "../helpers/CardBox";
 import HeaderAction from "../helpers/HeaderAction";
 import { SizeGuideProp } from "./type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   sizeGuide?: SizeGuideProp | null;
@@ -15,6 +15,10 @@ type Props = {
 const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [guide, setGuide] = useState<SizeGuideProp | null>(sizeGuide || null)
+
+  useEffect(() => {
+    console.log(guide);
+  }, [guide])
 
   return (
     <>
