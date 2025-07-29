@@ -19,7 +19,6 @@ const ImageBoxUploader: React.FC<Props> = ({
   onFile,
   changeStatusFile,
   sizeText,
-  defaultImg,
 }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
 

@@ -38,21 +38,21 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     const formData = new FormData();
     formData.append("files", datas.image);
 
-    uploadMedias(formData, {
-      onSuccess: (response) => {
-        const img = response.data[0];
-        if (img) {
-          if (helperId) {
-            updateSizeGuid(
-              { ...datas, image: img.url },
-              {
-                onSuccess: (response) => {
-                  onSubmit(response.data);
-                  onOpenChange();
-                },
-              }
-            );
-          } else {
+    if (datas.image && typeof datas.image !== "object") {
+      updateSizeGuid(
+        { ...datas, image: datas.image },
+        {
+          onSuccess: (response) => {
+            onSubmit(response.data);
+            onOpenChange();
+          },
+        }
+      );
+    } else {
+      uploadMedias(formData, {
+        onSuccess: (response) => {
+          const img = response.data[0];
+          if (img) {
             createSizeGuid(
               { ...datas, image: img.url },
               {
@@ -63,9 +63,9 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
               }
             );
           }
-        }
-      },
-    });
+        },
+      });
+    }
   };
 
   return (

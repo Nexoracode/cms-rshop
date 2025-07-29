@@ -32,7 +32,7 @@ const BrandItem = ({ onBrand, defaultBrand }: Props) => {
             title={brand.name}
             description={brand.slug}
             imageFile={brand.logo}
-            onDelete={() => {}}
+            onDelete={() => setBrand(null)}
             onEdit={onOpen}
           />
         ) : (
