@@ -46,6 +46,7 @@ const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
           setGuide(datas)
         }}
         defaultValues={guide}
+        helperId={guide?.id}
       />
     </>
   );

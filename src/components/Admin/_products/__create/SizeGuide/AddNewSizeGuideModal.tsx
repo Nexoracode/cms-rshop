@@ -8,6 +8,7 @@ import { SizeGuideProp } from "./type";
 import {
   useCreateSizeGuid,
   useProductUpload,
+  useUpdateSizeGuid,
 } from "@/hooks/products/useProduct";
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
   onOpenChange: () => void;
   onSubmit: (datas: SizeGuideProp, id?: number) => void;
   defaultValues?: SizeGuideProp | null;
+  helperId?: number | null;
 };
 
 const AddNewSizeGuideModal: React.FC<Props> = ({
@@ -22,15 +24,17 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
   onOpenChange,
   onSubmit,
   defaultValues,
+  helperId,
 }) => {
   const [datas, setDatas] = useState<SizeGuideProp>({
     title: "",
     description: "",
     image: null,
-    ...(defaultValues ? defaultValues : {})
+    ...(defaultValues ? defaultValues : {}),
   });
   const { mutate: uploadMedias } = useProductUpload();
   const { mutate: createSizeGuid } = useCreateSizeGuid();
+  const { mutate: updateSizeGuid } = useUpdateSizeGuid(helperId || 0);
 
   const handleUpload = () => {
     if (!datas.image) return;
@@ -41,15 +45,28 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
       onSuccess: (response) => {
         const img = response.data[0];
         if (img) {
-          createSizeGuid(
-            { ...datas, image: img.url },
-            {
-              onSuccess: (response) => {
-                onSubmit(response.data);
-                onOpenChange()
-              },
-            }
-          );
+          console.log("SSSSSS", helperId);
+          if (helperId) {
+            updateSizeGuid(
+              { ...datas, image: img.url },
+              {
+                onSuccess: (response) => {
+                  onSubmit(response.data);
+                  onOpenChange();
+                },
+              }
+            );
+          } else {
+            createSizeGuid(
+              { ...datas, image: img.url },
+              {
+                onSuccess: (response) => {
+                  onSubmit(response.data);
+                  onOpenChange();
+                },
+              }
+            );
+          }
         }
       },
     });
