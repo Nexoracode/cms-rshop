@@ -12,6 +12,8 @@ export interface Product {
   name: string;
   price: number;
   stock: number;
+  helper_id?: number,
+  brand_id?: number
   is_same_day_shipping: boolean;
   requires_preparation: boolean;
   preparation_days: number | null;
