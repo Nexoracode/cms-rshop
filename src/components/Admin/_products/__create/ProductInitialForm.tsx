@@ -55,19 +55,20 @@ const ProductInitialForm = () => {
     onOpenChange: onOpenChangeCategory,
   } = useDisclosure();
 
-  const cardStyle = "flex flex-col gap-6";
+  const cardStyle = "w-full shadow-md";
+  const cardBodyStyle = "flex flex-col gap-6";
   const headerStyle = "bg-black text-white";
 
   return (
     <>
       <section>
-        <Card className="w-full shadow-md">
+        <Card className={cardStyle}>
           <BoxHeader
             title="اطلاعات اولیه محصول"
             color={headerStyle}
             icon={<LuTextCursorInput className="text-3xl" />}
           />
-          <CardBody className={cardStyle}>
+          <CardBody className={cardBodyStyle}>
             <Input
               isRequired
               label="نام"
@@ -119,13 +120,13 @@ const ProductInitialForm = () => {
             </Checkbox>
           </CardBody>
         </Card>
-        <Card className="w-full shadow-md">
+        <Card className={cardStyle}>
           <BoxHeader
             title="اطلاعات میانی محصول"
             color={headerStyle}
             icon={<FiShoppingBag className="text-3xl" />}
           />
-          <CardBody className={cardStyle}>
+          <CardBody className={cardBodyStyle}>
             <LabeledNumberWithUnitInput
               label="وزن"
               value={product.weight}
@@ -177,13 +178,13 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        <Card className="w-full shadow-md">
+        <Card className={cardStyle}>
           <BoxHeader
             title="اطلاعات تکمیلی محصول"
             color={headerStyle}
             icon={<LuScrollText className="text-3xl" />}
           />
-          <CardBody className={cardStyle}></CardBody>
+          <CardBody className={cardBodyStyle}></CardBody>
         </Card>
       </section>
       <AddNewCategoryModal
