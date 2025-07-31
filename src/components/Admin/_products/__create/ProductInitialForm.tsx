@@ -33,6 +33,7 @@ import {
   useProductCreate,
   useProductUpdate,
 } from "@/hooks/products/useProduct";
+import ToggleableSection from "./helpers/ToggleableSection";
 
 const initProduct: Product = {
   name: "",
@@ -177,6 +178,26 @@ const ProductInitialForm = () => {
                 }))
               }
             />
+
+            <ToggleableSection
+              label="موجودی نامحدود"
+              onOptionalToggle={(checked) =>
+                setProduct((prev) => ({ ...prev, is_limited_stock: checked }))
+              }
+              isChecked={!product.is_limited_stock}
+            >
+              <NumberInput
+                label="موجودی"
+                placeholder="1"
+                minValue={0}
+                isRequired
+                value={product.stock}
+                onValueChange={(val) =>
+                  setProduct((prev) => ({ ...prev, stock: +val }))
+                }
+                labelPlacement="outside"
+              />
+            </ToggleableSection>
 
             <SelectWithAddButton
               label="دسته بندی"
