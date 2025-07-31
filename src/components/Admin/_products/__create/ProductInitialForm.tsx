@@ -24,6 +24,7 @@ import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
 import { useGetBrands } from "@/hooks/useBrandItem";
+import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 
 const initProduct: Product = {
   name: "",
@@ -233,6 +234,32 @@ const ProductInitialForm = () => {
               </SelectItem>
             </Select>
 
+            <OrderLimitSwitcher
+              title="محدودیت تعداد برای هر سفارش"
+              initialMode={product.order_limit ? "enabled" : "disabled"}
+              onChange={(val) =>
+                val === 0 &&
+                setProduct((prev) => ({
+                  ...prev,
+                  order_limit: 0,
+                }))
+              }
+            >
+              <NumberInput
+                label="حداکثر تعداد قابل سفارش"
+                placeholder="3"
+                minValue={1}
+                value={product.order_limit ?? 0}
+                labelPlacement="outside"
+                onValueChange={(val) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    order_limit: +val,
+                  }))
+                }
+              />
+            </OrderLimitSwitcher>
+
             <SelectWithAddButton
               label="برند"
               placeholder="برند مورد نظر را انتخاب کنید"
@@ -266,7 +293,7 @@ const ProductInitialForm = () => {
         onOpenChange={onOpenCategory}
         onCategoryPayload={(cats) => setCategories(cats)}
       />
-      <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenBrand} />
+      <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>
   );
 };
