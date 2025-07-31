@@ -34,7 +34,7 @@ const ShippingModeSwitcher: FC<Props> = ({
 
   return (
     <div>
-      <p className="font-semibold">{title}</p>
+      <p>{title}</p>
 
       <div className="flex flex-col gap-6 mt-3">
         <div

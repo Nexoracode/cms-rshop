@@ -1,3 +1,5 @@
+import { Media } from "@/types";
+
 export type ProductMedia = {
   id: number;
   url: string;
@@ -30,6 +32,7 @@ export interface Product {
   media_ids: number[];
   order_limit: number;
   media_pinned_id: number;
+  media?: Media[]
   helper?: {
     id: number;
     title: string;

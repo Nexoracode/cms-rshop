@@ -25,6 +25,7 @@ import SizeGuide from "./SizeGuide/SizeGuide";
 import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
 import { useGetBrands } from "@/hooks/useBrandItem";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
+import ImagesProducts from "./ImagesProducts";
 
 const initProduct: Product = {
   name: "",
@@ -47,6 +48,7 @@ const initProduct: Product = {
   media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
+  media: []
 };
 
 const ProductInitialForm = () => {
@@ -70,12 +72,22 @@ const ProductInitialForm = () => {
   const { data: allBrands } = useGetBrands();
   //
   const cardStyle = "w-full shadow-md";
-  const cardBodyStyle = "flex flex-col gap-6";
+  const cardBodyStyle = "flex flex-col gap-6 text-right";
   const headerStyle = "bg-black text-white";
 
   return (
     <>
-      <section>
+      <section className="flex flex-col gap-6">
+        <ImagesProducts
+          onMedia_ids={(datas) =>
+            setProduct((prev) => ({ ...prev, media_ids: datas }))
+          }
+          onMedia_pinned_id={(id) =>
+            setProduct((prev) => ({ ...prev, media_pinned_id: id }))
+          }
+          initialMedias={product.media}
+          initialPinnedId={product.media_pinned_id}
+        />
         <Card className={cardStyle}>
           <BoxHeader
             title="اطلاعات اولیه محصول"
