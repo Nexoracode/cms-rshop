@@ -23,9 +23,21 @@ const ImagesProducts = ({
   initialPinnedId = null,
 }: Props) => {
   const [medias, setMedias] = useState<File[]>([]);
-  const [mediasUrl, setMediasUrl] = useState<Media[]>(initialMedias);
-  const [pinnedId, setPinnedId] = useState<number | null>(initialPinnedId);
+  const [mediasUrl, setMediasUrl] = useState<Media[]>([]);
+  const [pinnedId, setPinnedId] = useState<number | null>(null);
   const { mutate: uploadMedias, isPending } = useProductUpload();
+
+  useEffect(() => {
+    if (initialMedias) {
+      setMediasUrl(initialMedias);
+    }
+  }, [initialMedias]);
+
+  useEffect(() => {
+    if (initialPinnedId) {
+      setPinnedId(initialPinnedId);
+    }
+  }, [initialPinnedId]);
 
   useEffect(() => {
     if (medias.length) {

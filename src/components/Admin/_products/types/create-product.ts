@@ -32,7 +32,7 @@ export interface Product {
   media_ids: number[];
   order_limit: number;
   media_pinned_id: number;
-  media?: Media[]
+  medias?: Media[]
   helper?: {
     id: number;
     title: string;

@@ -55,7 +55,7 @@ const initProduct: Product = {
   media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
-  media: [],
+  medias: [],
 };
 
 const ProductInitialForm = () => {
@@ -91,58 +91,14 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct) {
-      const {
-        name,
-        price,
-        stock,
-        is_limited_stock,
-        is_featured,
-        discount_amount,
-        discount_percent,
-        category_id,
-        weight,
-        weight_unit,
-        is_same_day_shipping,
-        requires_preparation,
-        preparation_days,
-        description,
-        is_visible,
-        order_limit,
-        helper_id,
-        brand_id,
-        media_pinned_id,
-        medias,
-      } = oneProduct.data;
-
-      setProduct({
-        name,
-        price: +price,
-        stock,
-        is_limited_stock,
-        is_featured,
-        discount_amount: discount_amount ?? 0,
-        discount_percent: discount_percent ?? 0,
-        category_id,
-        weight: +weight,
-        weight_unit,
-        is_same_day_shipping,
-        requires_preparation,
-        preparation_days,
-        description,
-        is_visible,
-        order_limit,
-        helper_id,
-        brand_id,
-        media_pinned_id,
-        media: medias || [],
-        media_ids: medias?.map((m: any) => m.id) || [], // 🔥
-      });
+      console.log(oneProduct.data);
+      setProduct(oneProduct.data);
     }
   }, [oneProduct]);
 
   const handleChangeProduct = () => {
     const {
-      media, // حذف میشه
+      medias, // حذف میشه
       helper, // حذف میشه
       ...sendableData
     } = product;
@@ -182,7 +138,7 @@ const ProductInitialForm = () => {
           onMedia_pinned_id={(id) =>
             setProduct((prev) => ({ ...prev, media_pinned_id: id }))
           }
-          initialMedias={product.media}
+          initialMedias={product.medias}
           initialPinnedId={product.media_pinned_id}
         />
         <Card className={cardStyle}>
