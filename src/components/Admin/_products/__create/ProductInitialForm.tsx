@@ -17,7 +17,7 @@ import { LuScrollText, LuTextCursorInput } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import PriceWithDiscountInput from "./helpers/PriceWithDiscountInput";
 import SelectWithAddButton from "./helpers/SelectWithAddButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "../types/create-product";
 import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
@@ -88,6 +88,57 @@ const ProductInitialForm = () => {
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
   const headerStyle = "bg-black text-white";
+
+  useEffect(() => {
+    if (oneProduct) {
+      const {
+        name,
+        price,
+        stock,
+        is_limited_stock,
+        is_featured,
+        discount_amount,
+        discount_percent,
+        category_id,
+        weight,
+        weight_unit,
+        is_same_day_shipping,
+        requires_preparation,
+        preparation_days,
+        description,
+        is_visible,
+        order_limit,
+        helper_id,
+        brand_id,
+        media_pinned_id,
+        medias,
+      } = oneProduct.data;
+
+      setProduct({
+        name,
+        price: +price,
+        stock,
+        is_limited_stock,
+        is_featured,
+        discount_amount: discount_amount ?? 0,
+        discount_percent: discount_percent ?? 0,
+        category_id,
+        weight: +weight,
+        weight_unit,
+        is_same_day_shipping,
+        requires_preparation,
+        preparation_days,
+        description,
+        is_visible,
+        order_limit,
+        helper_id,
+        brand_id,
+        media_pinned_id,
+        media: medias || [],
+        media_ids: medias?.map((m: any) => m.id) || [], // 🔥
+      });
+    }
+  }, [oneProduct]);
 
   const handleChangeProduct = () => {
     const {
@@ -345,7 +396,11 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        <Button color="success" className="text-white" onPress={handleChangeProduct}>
+        <Button
+          color="success"
+          className="text-white"
+          onPress={handleChangeProduct}
+        >
           ثبت تغیرات
         </Button>
       </section>

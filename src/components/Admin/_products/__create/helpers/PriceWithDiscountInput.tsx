@@ -46,11 +46,11 @@ const PriceWithDiscountInput: FC<Props> = ({
           onValueChange={(val) => onPriceChange(+val)}
         />
 
-        {price && discountValue !== 0 && (
+        {price && discountValue !== 0 ? (
           <p className="text-green-600 text-sm mt-2 mr-3">
             قیمت با تخفیف: {finalPrice.toLocaleString()} تومان
           </p>
-        )}
+        ) : ""}
       </div>
 
       <div className="flex flex-col gap-2">
