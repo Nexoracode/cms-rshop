@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Button,
   Card,
   CardBody,
   Checkbox,
@@ -89,13 +90,22 @@ const ProductInitialForm = () => {
   const headerStyle = "bg-black text-white";
 
   const handleChangeProduct = () => {
-    /*   console.log("⬆️ Sending to API...", result);
+    const {
+      media, // حذف میشه
+      helper, // حذف میشه
+      ...sendableData
+    } = product;
+
+    const result = {
+      ...sendableData,
+    };
 
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
-            setActiveForm("attributes");
+            console.log("✅ محصول ایجاد شد", res.data);
+            // ادامه روند مثل سوییچ به فرم بعدی...
           }
         },
       });
@@ -103,11 +113,12 @@ const ProductInitialForm = () => {
       updateProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
-            setActiveForm("attributes");
+            console.log("✅ محصول آپدیت شد", res.data);
+            // ادامه روند مثل سوییچ به فرم بعدی...
           }
         },
       });
-    } */
+    }
   };
 
   return (
@@ -168,7 +179,7 @@ const ProductInitialForm = () => {
               onChange={(id) =>
                 setProduct((prev) => ({ ...prev, category_id: +id }))
               }
-              onAddNewClick={onOpenChangeCategory}
+              onAddNewClick={onOpenCategory}
             />
 
             <Checkbox
@@ -334,6 +345,9 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
+        <Button color="success" className="text-white" onPress={handleChangeProduct}>
+          ثبت تغیرات
+        </Button>
       </section>
       <AddNewCategoryModal
         isOpen={isOpenCategory}
