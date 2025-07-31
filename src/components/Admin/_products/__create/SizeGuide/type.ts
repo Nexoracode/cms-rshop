@@ -1,5 +1,5 @@
 export type SizeGuideProp = {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   image: File | null | string;

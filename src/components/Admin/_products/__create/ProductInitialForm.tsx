@@ -6,6 +6,9 @@ import {
   Checkbox,
   Input,
   NumberInput,
+  Select,
+  SelectItem,
+  Textarea,
   useDisclosure,
 } from "@heroui/react";
 import BoxHeader from "./helpers/BoxHeader";
@@ -18,6 +21,9 @@ import { Product } from "../types/create-product";
 import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
+import SizeGuide from "./SizeGuide/SizeGuide";
+import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
+import { useGetBrands } from "@/hooks/useBrandItem";
 
 const initProduct: Product = {
   name: "",
@@ -54,7 +60,14 @@ const ProductInitialForm = () => {
     onOpen: onOpenCategory,
     onOpenChange: onOpenChangeCategory,
   } = useDisclosure();
-
+  const {
+    isOpen: isOpenBrand,
+    onOpen: onOpenBrand,
+    onOpenChange: onOpenChangeBrand,
+  } = useDisclosure();
+  //? Hooks
+  const { data: allBrands } = useGetBrands();
+  //
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6";
   const headerStyle = "bg-black text-white";
@@ -184,7 +197,68 @@ const ProductInitialForm = () => {
             color={headerStyle}
             icon={<LuScrollText className="text-3xl" />}
           />
-          <CardBody className={cardBodyStyle}></CardBody>
+          <CardBody className={cardBodyStyle}>
+            <Textarea
+              placeholder="توضیحات را وارد نمایید"
+              labelPlacement="outside"
+              label="توضیحات"
+              value={product.description ?? ""}
+              onChange={(e) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+            />
+
+            <Select
+              dir="rtl"
+              labelPlacement="outside"
+              label="وضعیت نمایش در وبسایت"
+              placeholder="انتخاب وضعیت محصول"
+              className="!mt-8"
+              onChange={(e) => {
+                setProduct((prev) => ({
+                  ...prev,
+                  is_visible: e.target.value ? true : false,
+                }));
+              }}
+              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
+            >
+              <SelectItem key="visible">
+                نمایش - در فروشگاه نمایش داده میشود
+              </SelectItem>
+              <SelectItem key="hidden">
+                عدم نمایش - در فروشگاه نمایش داده نمی شود
+              </SelectItem>
+            </Select>
+
+            <SelectWithAddButton
+              label="برند"
+              placeholder="برند مورد نظر را انتخاب کنید"
+              options={
+                allBrands?.data?.map((brand: any) => ({
+                  id: brand.id,
+                  title: brand.name,
+                })) ?? []
+              }
+              selectedId={product.brand_id ?? 0}
+              onChange={(id) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  brand_id: +id,
+                }))
+              }
+              onAddNewClick={onOpenBrand}
+            />
+
+            <SizeGuide
+              onHelperId={(id) => {
+                setProduct((prev) => ({ ...prev, helper_id: id }));
+              }}
+              sizeGuide={product.helper}
+            />
+          </CardBody>
         </Card>
       </section>
       <AddNewCategoryModal
@@ -192,6 +266,7 @@ const ProductInitialForm = () => {
         onOpenChange={onOpenCategory}
         onCategoryPayload={(cats) => setCategories(cats)}
       />
+      <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenBrand} />
     </>
   );
 };

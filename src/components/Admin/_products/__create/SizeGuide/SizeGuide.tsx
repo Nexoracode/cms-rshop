@@ -5,20 +5,16 @@ import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
 import CardBox from "../helpers/CardBox";
 import HeaderAction from "../helpers/HeaderAction";
 import { SizeGuideProp } from "./type";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Props = {
   sizeGuide?: SizeGuideProp | null;
-  onSizeGuide: (datas: SizeGuideProp) => void
+  onHelperId: (id: number) => void
 };
 
-const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
+const SizeGuide = ({ sizeGuide, onHelperId }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [guide, setGuide] = useState<SizeGuideProp | null>(sizeGuide || null)
-
-  useEffect(() => {
-    console.log(guide);
-  }, [guide])
+  const [helper, setHelper] = useState<SizeGuideProp | null>(sizeGuide || null)
 
   return (
     <>
@@ -26,14 +22,14 @@ const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
         <HeaderAction
           title="راهنمای سایز"
           textBtn="+ افزودن راهنما"
-          isDisabled={!!guide}
+          isDisabled={!!helper}
           onPress={onOpen}
         />
-        {guide ? (
+        {helper ? (
           <CardBox
-            title={guide.title}
-            description={guide.description}
-            imageFile={guide.image}
+            title={helper.title}
+            description={helper.description}
+            imageFile={helper.image}
             disableDelete
             onEdit={onOpen}
           />
@@ -46,11 +42,11 @@ const SizeGuide = ({ sizeGuide, onSizeGuide }: Props) => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onSubmit={(datas) => {
-          onSizeGuide(datas)
-          setGuide(datas)
+          onHelperId(datas.id)
+          setHelper(datas)
         }}
-        defaultValues={guide}
-        helperId={guide?.id}
+        isNew={!helper}
+        defaultValues={helper}
       />
     </>
   );

@@ -11,9 +11,9 @@ import { useCreateSizeGuid, useUpdateSizeGuid } from "@/hooks/useSizeGuide";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onSubmit: (datas: SizeGuideProp, id?: number) => void;
+  onSubmit: (datas: SizeGuideProp) => void;
   defaultValues?: SizeGuideProp | null;
-  helperId?: number | null;
+  isNew: boolean;
 };
 
 const AddNewSizeGuideModal: React.FC<Props> = ({
@@ -21,9 +21,10 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
   onOpenChange,
   onSubmit,
   defaultValues,
-  helperId,
+  isNew,
 }) => {
   const [datas, setDatas] = useState<SizeGuideProp>({
+    id: 0,
     title: "",
     description: "",
     image: null,
@@ -31,30 +32,52 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
   });
   const { mutate: uploadMedias } = useProductUpload();
   const { mutate: createSizeGuid } = useCreateSizeGuid();
-  const { mutate: updateSizeGuid } = useUpdateSizeGuid(helperId || 0);
+  const { mutate: updateSizeGuid } = useUpdateSizeGuid(defaultValues?.id || 0);
 
   const handleUpload = () => {
     if (!datas.image) return;
     const formData = new FormData();
     formData.append("files", datas.image);
 
-    if (datas.image && typeof datas.image !== "object") {
-      updateSizeGuid(
-        { ...datas, image: datas.image },
-        {
+    if (!isNew) {
+      if (typeof datas.image !== "object") {
+        const { id, ...rest } = datas;
+        updateSizeGuid(
+          { ...rest, image: datas.image },
+          {
+            onSuccess: (response) => {
+              onSubmit(response.data);
+              onOpenChange();
+            },
+          }
+        );
+      } else {
+        uploadMedias(formData, {
           onSuccess: (response) => {
-            onSubmit(response.data);
-            onOpenChange();
+            const img = response.data[0];
+            if (img) {
+              const { id, ...rest } = datas;
+              updateSizeGuid(
+                { ...rest, image: img.url },
+                {
+                  onSuccess: (response) => {
+                    onSubmit(response.data);
+                    onOpenChange();
+                  },
+                }
+              );
+            }
           },
-        }
-      );
+        });
+      }
     } else {
       uploadMedias(formData, {
         onSuccess: (response) => {
           const img = response.data[0];
           if (img) {
+            const { id, ...rest } = datas;
             createSizeGuid(
-              { ...datas, image: img.url },
+              { ...rest, image: img.url },
               {
                 onSuccess: (response) => {
                   onSubmit(response.data);

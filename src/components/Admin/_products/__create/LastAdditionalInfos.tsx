@@ -163,7 +163,7 @@ const LastAdditionalInfos = ({
                 }));
               }}
               selectedKeys={
-                formData.brand_id !== null ? [formData.brand_id.toString()] : []
+                formData.brand_id !== null ? [formData.brand_id?.toString()] : []
               }
             >
               {allBrands?.data.length ? (
@@ -185,9 +185,9 @@ const LastAdditionalInfos = ({
           </div>
 
           <SizeGuide
-            onSizeGuide={(datas) =>
-              setFormData((prev) => ({ ...prev, helper: datas }))
-            }
+            onHelperId={id =>{         
+              setFormData((prev) => ({ ...prev, helper_id: id }))
+            }}
             sizeGuide={formData.helper}
           />
         </CardBody>
