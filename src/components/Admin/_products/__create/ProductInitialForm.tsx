@@ -26,6 +26,12 @@ import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
 import { useGetBrands } from "@/hooks/useBrandItem";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
+import { useSearchParams } from "next/navigation";
+import {
+  useGetOneProduct,
+  useProductCreate,
+  useProductUpdate,
+} from "@/hooks/products/useProduct";
 
 const initProduct: Product = {
   name: "",
@@ -48,12 +54,14 @@ const initProduct: Product = {
   media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
-  media: []
+  media: [],
 };
 
 const ProductInitialForm = () => {
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("edit_id");
+  //
   const [product, setProduct] = useState<Product>(initProduct);
-  // Helper States
   const [categories, setCategories] = useState<{ id: number; title: string }[]>(
     []
   );
@@ -70,10 +78,37 @@ const ProductInitialForm = () => {
   } = useDisclosure();
   //? Hooks
   const { data: allBrands } = useGetBrands();
+  const { mutate: createProduct } = useProductCreate();
+  const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
+  const { mutate: updateProduct } = useProductUpdate(
+    editId ? +editId : undefined
+  );
   //
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
   const headerStyle = "bg-black text-white";
+
+  const handleChangeProduct = () => {
+    /*   console.log("⬆️ Sending to API...", result);
+
+    if (!editId) {
+      createProduct(result, {
+        onSuccess: (res) => {
+          if (res.ok) {
+            setActiveForm("attributes");
+          }
+        },
+      });
+    } else {
+      updateProduct(result, {
+        onSuccess: (res) => {
+          if (res.ok) {
+            setActiveForm("attributes");
+          }
+        },
+      });
+    } */
+  };
 
   return (
     <>
@@ -302,7 +337,7 @@ const ProductInitialForm = () => {
       </section>
       <AddNewCategoryModal
         isOpen={isOpenCategory}
-        onOpenChange={onOpenCategory}
+        onOpenChange={onOpenChangeCategory}
         onCategoryPayload={(cats) => setCategories(cats)}
       />
       <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
