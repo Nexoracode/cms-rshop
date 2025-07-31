@@ -12,6 +12,7 @@ type Props = {
   childrenMood1: React.ReactNode;
   childrenMood2: React.ReactNode;
   onChangeType: (type: ShippingMode) => void;
+  defaultMood?: "mood1" | "mood2";
 };
 
 const ShippingModeSwitcher: FC<Props> = ({
@@ -21,8 +22,9 @@ const ShippingModeSwitcher: FC<Props> = ({
   childrenMood1,
   childrenMood2,
   onChangeType,
+  defaultMood
 }) => {
-  const [selectedMode, setSelectedMode] = useState<ShippingMode>("mood2");
+  const [selectedMode, setSelectedMode] = useState<ShippingMode>(defaultMood || "mood2");
 
   useEffect(() => {
     onChangeType(selectedMode);

@@ -243,6 +243,7 @@ const ProductInitialForm = () => {
               ]}
             />
             <ShippingModeSwitcher
+              defaultMood={product.requires_preparation ? "mood2" : "mood1"}
               onChangeType={(type) =>
                 setProduct((prev) => ({
                   ...prev,
