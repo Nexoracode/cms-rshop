@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { NumberInput } from "@heroui/react";
+import LabeledNumberWithUnitInput from "./LabeledNumberWithUnitInput";
 
 type DiscountType = "percent" | "amount";
 
@@ -71,41 +72,30 @@ const PriceWithDiscountInput: FC<Props> = ({
         )}
       </div>
 
-      <div className="flex flex-col gap-2">
-        <NumberInput
-          hideStepper
-          label="تخفیف"
-          labelPlacement="outside"
-          placeholder="10"
-          minValue={1}
-          isDisabled={!price}
-          value={+discountValue}
-          onValueChange={(val) => {
-            setDiscountValue(+val);
-            onDiscountChange(discountType, +val);
-          }}
-          endContent={
-            <select
-              aria-label="نوع تخفیف"
-              className="outline-none border-0 bg-transparent text-default-400 text-small"
-              value={discountType}
-              onChange={(e) => {
-                const type = e.target.value as DiscountType;
-                setDiscountType(type);
-                onDiscountChange(type, discountValue);
-              }}
-            >
-              <option value="percent">درصد</option>
-              <option value="amount">مبلغ ثابت (تومان)</option>
-            </select>
-          }
-        />
-        {!price && (
-          <p className="text-gray-500 text-[13px]">
-            برای تعریف تخفیف ابتدا قیمت را وارد کنید.
-          </p>
-        )}
-      </div>
+      <LabeledNumberWithUnitInput
+        label="تخفیف"
+        placeholder="10"
+        value={discountValue}
+        onValueChange={(val) => {
+          setDiscountValue(val);
+          onDiscountChange(discountType, val);
+        }}
+        selectedKey={discountType}
+        onSelectChange={(val) => {
+          setDiscountType(val as DiscountType);
+          onDiscountChange(val as DiscountType, discountValue);
+        }}
+        options={[
+          { key: "percent", title: "درصد" },
+          { key: "amount", title: "مبلغ ثابت" },
+        ]}
+      />
+
+      {!price && (
+        <p className="text-gray-500 text-[13px]">
+          برای تعریف تخفیف ابتدا قیمت را وارد کنید.
+        </p>
+      )}
     </div>
   );
 };
