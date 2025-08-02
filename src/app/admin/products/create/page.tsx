@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@heroui/react";
 import BackToPage from "@/components/Helper/BackToPage";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import ProductInitialForm from "@/components/Admin/_products/__create/ProductInitialForm";
@@ -14,14 +13,9 @@ const CreateNewProduct = () => {
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
         {activeForm === "infos" ? (
-          <ProductInitialForm />
+          <ProductInitialForm onApiCalled={() => setActiveForm("attributes")} />
         ) : (
-          <>
-            <AttributesProducts />
-            <Button color="success" className="text-white">
-              ثبت نهایی محصول
-            </Button>
-          </>
+          <AttributesProducts />
         )}
       </section>
     </div>

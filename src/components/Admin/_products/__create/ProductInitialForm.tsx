@@ -59,7 +59,11 @@ const initProduct: Product = {
   medias: [],
 };
 
-const ProductInitialForm = () => {
+type Props = {
+  onApiCalled: () => void;
+};
+
+const ProductInitialForm = ({ onApiCalled }: Props) => {
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
   //
@@ -125,8 +129,8 @@ const ProductInitialForm = () => {
     } = sendableData;
 
     const result: Product = {
-      discount_percent: discount_percent && +discount_percent || 0,
-      discount_amount: discount_amount && +discount_amount || 0,
+      discount_percent: (discount_percent && +discount_percent) || 0,
+      discount_amount: (discount_amount && +discount_amount) || 0,
       ...(helper_id ? { helper_id: +helper_id } : {}),
       ...(brand_id ? { brand_id: +brand_id } : {}),
       media_pinned_id: +media_pinned_id,
@@ -138,14 +142,12 @@ const ProductInitialForm = () => {
       ...other,
     };
 
-    console.log("#################", result);
-
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
             console.log("✅ محصول ایجاد شد", res.data);
-            // ادامه روند مثل سوییچ به فرم بعدی...
+            onApiCalled();
           }
         },
       });
@@ -154,7 +156,7 @@ const ProductInitialForm = () => {
         onSuccess: (res) => {
           if (res.ok) {
             console.log("✅ محصول آپدیت شد", res.data);
-            // ادامه روند مثل سوییچ به فرم بعدی...
+            onApiCalled();
           }
         },
       });
