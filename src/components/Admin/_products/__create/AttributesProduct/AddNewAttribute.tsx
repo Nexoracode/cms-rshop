@@ -18,6 +18,7 @@ import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
 import { BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
+import { useGetAllAttributeGroup } from "@/hooks/useAttribute";
 
 type Props = {
   isOpen: boolean;
@@ -34,6 +35,8 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
     display_order: null,
     is_variant: false,
   });
+  //? Hooks
+  const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
 
   // static
   const productInputTypes = [
@@ -65,6 +68,10 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
       icon: <FiImage className="w-4 h-4" />,
     },
   ];
+
+  const handleNewAttribute = () => {
+    console.log(datas);
+  };
 
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -100,8 +107,27 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                 />
 
                 <Select
-                  label="نوع ویژگی"
-                  placeholder="نوع ویژگی را انتخاب کنید"
+                  label="نوع گروه ویژگی"
+                  placeholder="گروه ویژگی را انتخاب کنید"
+                  labelPlacement="outside"
+                  onChange={(e) =>
+                    setDatas((prev) => ({ ...prev, group_id: +e.target.value }))
+                  }
+                >
+                  {getAllAttributeGroup?.data ? (
+                    getAllAttributeGroup.data.map((item: any) => (
+                      <SelectItem key={item.id}>
+                        {item.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
+                  )}
+                </Select>
+
+                <Select
+                  label="تایپ ویژگی"
+                  placeholder="تایپ ویژگی را انتخاب کنید"
                   labelPlacement="outside"
                   selectedKeys={[]}
                   onChange={(e) =>
@@ -144,7 +170,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
               <Button
                 color="secondary"
                 className="w-full mt-4"
-                onPress={() => {}}
+                onPress={handleNewAttribute}
               >
                 افزودن ویژگی
               </Button>
