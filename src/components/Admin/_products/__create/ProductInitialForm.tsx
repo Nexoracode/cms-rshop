@@ -98,13 +98,44 @@ const ProductInitialForm = () => {
 
   const handleChangeProduct = () => {
     const {
-      medias, // حذف میشه
-      helper, // حذف میشه
+      medias,
+      helper,
+      media_pinned,
+      brand,
+      category,
+      updated_at,
+      created_at,
+      variants,
+      id,
       ...sendableData
     } = product;
 
-    const result = {
-      ...sendableData,
+    const {
+      brand_id,
+      category_id,
+      discount_amount,
+      discount_percent,
+      helper_id,
+      media_pinned_id,
+      order_limit,
+      price,
+      weight,
+      stock,
+      ...other
+    } = sendableData;
+
+    const result: Product = {
+      ...(discount_percent ? { discount_percent: +discount_percent } : {}),
+      ...(discount_amount ? { discount_amount: +discount_amount } : {}),
+      ...(helper_id ? { helper_id: +helper_id } : {}),
+      ...(brand_id ? { brand_id: +brand_id } : {}),
+      media_pinned_id: +media_pinned_id,
+      category_id: +category_id,
+      order_limit: +order_limit,
+      weight: +weight,
+      price: +price,
+      stock: +stock,
+      ...other,
     };
 
     console.log("#################", result);
@@ -169,13 +200,13 @@ const ProductInitialForm = () => {
               discount_amount={product.discount_amount ?? 0}
               discount_percent={product.discount_percent ?? 0}
               onPriceChange={(price) =>
-                setProduct((prev) => ({ ...prev, price }))
+                setProduct((prev) => ({ ...prev, price: +price }))
               }
               onDiscountChange={(type, value) =>
                 setProduct((prev) => ({
                   ...prev,
-                  discount_amount: type === "amount" ? value : 0,
-                  discount_percent: type === "percent" ? value : 0,
+                  discount_amount: type === "amount" ? +value : 0,
+                  discount_percent: type === "percent" ? +value : 0,
                 }))
               }
             />
@@ -186,7 +217,7 @@ const ProductInitialForm = () => {
                 setProduct((prev) => ({
                   ...prev,
                   is_limited_stock: checked,
-                  stock: checked ? 0 : product.stock,
+                  stock: checked ? 0 : +product.stock,
                 }))
               }
               isChecked={!product.is_limited_stock}
@@ -335,7 +366,8 @@ const ProductInitialForm = () => {
               onChange={(val) =>
                 setProduct((prev) => ({
                   ...prev,
-                  order_limit: val === "enabled" ? product.order_limit || 1 : 0,
+                  order_limit:
+                    val === "enabled" ? +product.order_limit || 1 : 0,
                 }))
               }
             >

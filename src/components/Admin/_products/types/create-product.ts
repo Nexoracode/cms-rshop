@@ -14,8 +14,8 @@ export interface Product {
   name: string;
   price: number;
   stock: number;
-  helper_id?: number,
-  brand_id?: number
+  helper_id?: number;
+  brand_id?: number;
   is_same_day_shipping: boolean;
   requires_preparation: boolean;
   preparation_days: number | null;
@@ -32,7 +32,11 @@ export interface Product {
   media_ids: number[];
   order_limit: number;
   media_pinned_id: number;
-  medias?: Media[]
+  medias?: Media[];
+  media_pinned?: Record<string, any>;
+  category?: Record<string, any>;
+  updated_at?: string;
+  variants?: any[];
   helper?: {
     id: number;
     title: string;
