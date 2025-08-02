@@ -1,0 +1,159 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Select,
+  SelectItem,
+  Switch,
+} from "@heroui/react";
+// Icons
+import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
+import { BsPalette } from "react-icons/bs";
+import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
+import { MdDateRange } from "react-icons/md";
+
+type Props = {
+  isOpen: boolean;
+  onOpenChange: () => void;
+};
+
+const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
+  const [datas, setDatas] = useState({
+    name: "",
+    group_id: 0,
+    is_public: true,
+    slug: "",
+    type: "text",
+    display_order: null,
+    is_variant: false,
+  });
+
+  // static
+  const productInputTypes = [
+    {
+      key: "text",
+      label: "متن",
+      icon: <AiOutlineFontColors className="w-4 h-4" />,
+    },
+    {
+      key: "number",
+      label: "عدد",
+      icon: <AiOutlineNumber className="w-4 h-4" />,
+    },
+    { key: "color", label: "رنگ", icon: <BsPalette className="w-4 h-4" /> },
+    { key: "date", label: "تاریخ", icon: <MdDateRange className="w-4 h-4" /> },
+    {
+      key: "checkbox",
+      label: "چک‌باکس",
+      icon: <FiCheckSquare className="w-4 h-4" />,
+    },
+    {
+      key: "radio",
+      label: "دکمه انتخابی",
+      icon: <FiCircle className="w-4 h-4" />,
+    },
+    {
+      key: "file",
+      label: "فایل / تصویر",
+      icon: <FiImage className="w-4 h-4" />,
+    },
+  ];
+
+  return (
+    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent className="max-w-[700px] w-full">
+        {(onClose) => (
+          <>
+            <ModalHeader className="w-full px-8 flex items-center justify-between">
+              <p className="font-normal text-[16px]">افزودن ویژگی جدید</p>
+            </ModalHeader>
+            <ModalBody>
+              <div className="flex flex-col gap-5">
+                <Input
+                  labelPlacement="outside"
+                  isRequired
+                  label="عنوان ویژگی"
+                  placeholder="عنوان ویژگی را وارد کنید"
+                  value={datas.name}
+                  onChange={(e) =>
+                    setDatas((prev) => ({ ...prev, name: e.target.value }))
+                  }
+                />
+
+                <Input
+                  labelPlacement="outside"
+                  isRequired
+                  style={{ direction: "ltr" }}
+                  label="عنوان ویژگی (انگلیسی)"
+                  placeholder="slug"
+                  value={datas.slug}
+                  onChange={(e) =>
+                    setDatas((prev) => ({ ...prev, slug: e.target.value }))
+                  }
+                />
+
+                <Select
+                  label="نوع ویژگی"
+                  placeholder="نوع ویژگی را انتخاب کنید"
+                  labelPlacement="outside"
+                  selectedKeys={[]}
+                  onChange={(e) =>
+                    setDatas((prev) => ({ ...prev, type: e.target.value }))
+                  }
+                >
+                  {productInputTypes.map((item) => (
+                    <SelectItem key={item.key} startContent={item.icon}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+
+                <div className="flex items-center gap-8">
+                  <Switch
+                    color="secondary"
+                    size="sm"
+                    isSelected={datas.is_variant}
+                    onValueChange={(status) =>
+                      setDatas((prev) => ({ ...prev, is_variant: status }))
+                    }
+                  >
+                    {datas.is_variant ? "متغیر" : "ثابت"}
+                  </Switch>
+
+                  <Switch
+                    color="secondary"
+                    size="sm"
+                    isSelected={datas.is_public}
+                    onValueChange={(status) =>
+                      setDatas((prev) => ({ ...prev, is_public: status }))
+                    }
+                  >
+                    {datas.is_public ? "عمومی" : "خصوصی"}
+                  </Switch>
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="secondary"
+                className="w-full mt-4"
+                onPress={() => {}}
+              >
+                افزودن ویژگی
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+};
+
+export default AddNewAttribute;

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import AddNewAttributeModal from "./modals/AddNewAttributeModal/AddNewAttributeModal";
 import { AttributeData } from "./modals/AddNewAttributeModal/Types";
 import SubAttributeBox from "./helpers/SubAttributeBox";
+import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -53,11 +54,13 @@ const AttributesProducts = () => {
         </CardBody>
       </Card>
 
-      <AddNewAttributeModal
+      {/*  <AddNewAttributeModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onSubmit={setAttributes}
-      />
+      /> */}
+
+      <AddNewAttributesModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
