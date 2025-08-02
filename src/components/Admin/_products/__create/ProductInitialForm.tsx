@@ -125,8 +125,8 @@ const ProductInitialForm = () => {
     } = sendableData;
 
     const result: Product = {
-      ...(discount_percent ? { discount_percent: +discount_percent } : {}),
-      ...(discount_amount ? { discount_amount: +discount_amount } : {}),
+      discount_percent: discount_percent && +discount_percent || 0,
+      discount_amount: discount_amount && +discount_amount || 0,
       ...(helper_id ? { helper_id: +helper_id } : {}),
       ...(brand_id ? { brand_id: +brand_id } : {}),
       media_pinned_id: +media_pinned_id,
@@ -220,7 +220,7 @@ const ProductInitialForm = () => {
                   stock: checked ? 0 : +product.stock,
                 }))
               }
-              isChecked={!product.is_limited_stock}
+              isChecked={product.is_limited_stock}
             >
               <NumberInput
                 label="موجودی"

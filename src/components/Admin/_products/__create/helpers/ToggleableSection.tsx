@@ -1,22 +1,26 @@
 "use client";
 
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { Checkbox } from "@heroui/react";
 
 type Props = {
   children: ReactNode;
   onOptionalToggle: (checked: boolean) => void;
   label: string;
-  isChecked?: boolean
+  isChecked: boolean;
 };
 
 const ToggleableSection: FC<Props> = ({
   onOptionalToggle,
   label,
   children,
-  isChecked
+  isChecked,
 }) => {
   const [isSelected, setIsSelected] = useState(isChecked || false);
+
+  useEffect(() => {
+    setIsSelected(isChecked);
+  }, [isChecked]);
 
   const handleToggle = (checked: boolean) => {
     setIsSelected(checked);
@@ -25,7 +29,11 @@ const ToggleableSection: FC<Props> = ({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className={isSelected ? "pointer-events-none opacity-60 select-none" : ""}>
+      <div
+        className={
+          isSelected ? "pointer-events-none opacity-60 select-none" : ""
+        }
+      >
         {children}
       </div>
 
