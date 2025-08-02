@@ -6,20 +6,26 @@ import { Switch } from "@heroui/react";
 type Props = {
   title: string;
   children: React.ReactNode;
-  onChange: (val: number | null) => void;
+  onChange: (val: "enabled" | "disabled") => void;
   initialMode?: "enabled" | "disabled";
 };
 
 const OrderLimitSwitcher: FC<Props> = ({ onChange, initialMode, children, title }) => {
-  const [mode, setMode] = useState<"enabled" | "disabled">(initialMode ?? "disabled");
+  const [mode, setMode] = useState<"enabled" | "disabled">("disabled");
+
+  useEffect(() => {
+    if (initialMode) {
+      setMode(initialMode)
+    }
+  }, [initialMode])
 
   const handleSwitch = () => {
     setMode((prev) => (prev === "enabled" ? "disabled" : "enabled"));
   };
 
   useEffect(() => {
-    if (mode === "enabled") onChange(1);
-    if (mode === "disabled") onChange(0);
+    if (mode === "enabled") onChange("enabled");
+    if (mode === "disabled") onChange("disabled");
   }, [mode]);
 
   return (

@@ -92,7 +92,6 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct) {
-      console.log(oneProduct.data);
       setProduct(oneProduct.data);
     }
   }, [oneProduct]);
@@ -107,6 +106,8 @@ const ProductInitialForm = () => {
     const result = {
       ...sendableData,
     };
+
+    console.log("#################", result);
 
     if (!editId) {
       createProduct(result, {
@@ -182,7 +183,11 @@ const ProductInitialForm = () => {
             <ToggleableSection
               label="موجودی نامحدود"
               onOptionalToggle={(checked) =>
-                setProduct((prev) => ({ ...prev, is_limited_stock: checked }))
+                setProduct((prev) => ({
+                  ...prev,
+                  is_limited_stock: checked,
+                  stock: checked ? 0 : product.stock,
+                }))
               }
               isChecked={!product.is_limited_stock}
             >
@@ -248,6 +253,9 @@ const ProductInitialForm = () => {
                 setProduct((prev) => ({
                   ...prev,
                   requires_preparation: type === "mood2" ? true : false,
+                  preparation_days:
+                    type === "mood2" ? product.preparation_days || 1 : 0,
+                  is_same_day_shipping: type === "mood2" ? false : true,
                 }))
               }
               title="شرایط ارسال"
@@ -323,12 +331,11 @@ const ProductInitialForm = () => {
 
             <OrderLimitSwitcher
               title="محدودیت تعداد برای هر سفارش"
-              initialMode={product.order_limit ? "enabled" : "disabled"}
+              initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
               onChange={(val) =>
-                val === 0 &&
                 setProduct((prev) => ({
                   ...prev,
-                  order_limit: 0,
+                  order_limit: val === "enabled" ? product.order_limit || 1 : 0,
                 }))
               }
             >
@@ -341,7 +348,7 @@ const ProductInitialForm = () => {
                 onValueChange={(val) =>
                   setProduct((prev) => ({
                     ...prev,
-                    order_limit: +val,
+                    order_limit: +val || 1,
                   }))
                 }
               />

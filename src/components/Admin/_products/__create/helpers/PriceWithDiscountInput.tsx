@@ -52,7 +52,7 @@ const PriceWithDiscountInput: FC<Props> = ({
           label="قیمت"
           labelPlacement="outside"
           placeholder="10,000"
-          min={1}
+          min={0}
           isRequired
           endContent={
             <div className="pointer-events-none flex items-center">

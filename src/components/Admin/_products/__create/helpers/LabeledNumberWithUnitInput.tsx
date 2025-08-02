@@ -33,7 +33,7 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
         hideStepper
         label={label}
         placeholder={placeholder}
-        minValue={1}
+        minValue={0}
         value={value}
         onValueChange={(val) => onValueChange(+val)}
         labelPlacement="outside"
