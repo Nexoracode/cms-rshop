@@ -31,7 +31,7 @@ type Props = {
 const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
   const [datas, setDatas] = useState({
     name: "",
-    group_id: 0,
+    group_id: -1,
     is_public: true,
     slug: "",
     type: "text",
@@ -40,7 +40,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
   });
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
-  const { mutate: createAttribute } = useAddNewAttribute();
+  const { mutate: createAttribute } = useAddNewAttribute(datas.group_id === -1 ? undefined : datas.group_id);
   //
   const {
     isOpen: isOpenTypeAttr,

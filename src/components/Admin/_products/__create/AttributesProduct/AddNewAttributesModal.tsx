@@ -49,7 +49,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const { mutate: createAttributeValue } = useAddNewAttributeValue();
 
   const addNewAttributeValue = () => {};
-
+  
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent className="max-w-[700px] w-full">
@@ -92,6 +92,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                     attribute_id: +e.target.value,
                   }))
                 }
+                className="!mt-8"
               >
                 {attributes?.data ? (
                   attributes.data.map((item: any) => (
@@ -103,8 +104,8 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
               </Select>
 
               <HeaderAction
-                title={"ویژگی"}
-                textBtn={"افزودن ویژگی جدید"}
+                title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
+                textBtn={"+ افزودن"}
                 onPress={onOpenAttr}
               />
 

@@ -49,7 +49,7 @@ export const useGetAllAttribute = (groupedId: number | undefined) => {
   });
 };
 
-export const useAddNewAttribute = (groupedId: number) => {
+export const useAddNewAttribute = (groupedId: number | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({
