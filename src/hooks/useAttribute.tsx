@@ -38,18 +38,18 @@ export const useAddNewAttributeGroup = () => {
 
 /* 🧬 Attributes Start */
 
-export const useGetAllAttribute = (groupedId: number) => {
+export const useGetAllAttribute = (groupedId: number | undefined) => {
   return useQuery({
-    queryKey: ["all-attribute"],
+    queryKey: [`all-attribute-${groupedId}`],
     queryFn: () =>
       fetcher({
         route: `/attribute?grouped=${groupedId}`,
-        isActiveToast: false,
+        isActiveToast: true,
       }),
   });
 };
 
-export const useAddNewAttribute = () => {
+export const useAddNewAttribute = (groupedId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -64,9 +64,27 @@ export const useAddNewAttribute = () => {
       }),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
+      queryClient.invalidateQueries({ queryKey: [`all-attribute-${groupedId}`] });
     },
   });
 };
 
 /* 🧬 Attributes End */
+
+/* 🔠 Attribute Values Start */
+
+export const useAddNewAttributeValue = () => {
+  return useMutation({
+    mutationFn: (data: any) =>
+      fetcher({
+        route: "/attribute-value",
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+        successText: "مقدار ویژگی با موفقیت اضافه شد",
+        loadingText: "درحال افزودن مقدار ویژگی...",
+      }),
+  });
+};
+
+/* 🔠 Attribute Values End */
