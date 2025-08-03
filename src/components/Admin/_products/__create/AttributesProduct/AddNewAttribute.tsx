@@ -19,7 +19,7 @@ import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
 import { BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
-import { useGetAllAttributeGroup } from "@/hooks/useAttribute";
+import { useAddNewAttribute, useGetAllAttributeGroup } from "@/hooks/useAttribute";
 import HeaderAction from "../helpers/HeaderAction";
 import AddNewAttributeType from "./AddNewAttributeType";
 
@@ -40,6 +40,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
   });
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
+  const { mutate: createAttribute } = useAddNewAttribute();
   //
   const {
     isOpen: isOpenTypeAttr,
@@ -79,7 +80,20 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
   ];
 
   const handleNewAttribute = () => {
-    console.log(datas);
+    createAttribute(datas, {
+      onSuccess: () => {
+        onOpenChange();
+        setDatas({
+          name: "",
+          slug: "",
+          group_id: 0,
+          is_public: true,
+          is_variant: false,
+          type: "",
+          display_order: null
+        });
+      },
+    });
   };
 
   return (
@@ -116,37 +130,40 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                     }
                   />
 
-                  <Select
-                    label="نوع گروه ویژگی"
-                    placeholder="گروه ویژگی را انتخاب کنید"
-                    labelPlacement="outside"
-                    onChange={(e) =>
-                      setDatas((prev) => ({
-                        ...prev,
-                        group_id: +e.target.value,
-                      }))
-                    }
-                  >
-                    {getAllAttributeGroup?.data ? (
-                      getAllAttributeGroup.data.map((item: any) => (
-                        <SelectItem key={item.id}>{item.name}</SelectItem>
-                      ))
-                    ) : (
-                      <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
-                    )}
-                  </Select>
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      label="نوع گروه ویژگی"
+                      placeholder="گروه ویژگی را انتخاب کنید"
+                      labelPlacement="outside"
+                      onChange={(e) =>
+                        setDatas((prev) => ({
+                          ...prev,
+                          group_id: +e.target.value,
+                        }))
+                      }
+                    >
+                      {getAllAttributeGroup?.data ? (
+                        getAllAttributeGroup.data.map((item: any) => (
+                          <SelectItem key={item.id}>{item.name}</SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem isDisabled>
+                          فعلا آیتمی وجود ندارد
+                        </SelectItem>
+                      )}
+                    </Select>
 
-                  <HeaderAction
-                    title={"در صورت نیاز میتوانید نوع ویژگی اضافه کنید"}
-                    textBtn={"+ جدید"}
-                    onPress={onOpenTypeAttr}
-                  />
+                    <HeaderAction
+                      title={"در صورت نیاز میتوانید نوع ویژگی اضافه کنید"}
+                      textBtn={"+ جدید"}
+                      onPress={onOpenTypeAttr}
+                    />
+                  </div>
 
                   <Select
                     label="تایپ ویژگی"
                     placeholder="تایپ ویژگی را انتخاب کنید"
                     labelPlacement="outside"
-                    selectedKeys={[]}
                     onChange={(e) =>
                       setDatas((prev) => ({ ...prev, type: e.target.value }))
                     }
@@ -187,6 +204,12 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                 <Button
                   color="secondary"
                   className="w-full mt-4"
+                  isDisabled={
+                    !datas.group_id ||
+                    !datas.name.length ||
+                    !datas.slug.length ||
+                    !datas.type
+                  }
                   onPress={handleNewAttribute}
                 >
                   افزودن ویژگی
@@ -197,7 +220,10 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
         </ModalContent>
       </Modal>
 
-      <AddNewAttributeType isOpen={isOpenTypeAttr} onOpenChange={onOpenChangeTypeAttr} />
+      <AddNewAttributeType
+        isOpen={isOpenTypeAttr}
+        onOpenChange={onOpenChangeTypeAttr}
+      />
     </>
   );
 };
