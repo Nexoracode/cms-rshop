@@ -87,4 +87,15 @@ export const useAddNewAttributeValue = () => {
   });
 };
 
+export const useGetAttributeValues = (id: number | undefined) => {
+  return useQuery({
+    queryKey: ["attribute-value", id],
+    queryFn: () =>
+      fetcher({
+        route: `/attribute-value/attribute/${id}`,
+        isActiveToast: false,
+      }),
+  });
+};
+
 /* 🔠 Attribute Values End */

@@ -19,9 +19,12 @@ import {
   useAddNewAttributeValue,
   useGetAllAttribute,
   useGetAllAttributeGroup,
+  useGetAttributeValues,
 } from "@/hooks/useAttribute";
 import { useEffect, useState } from "react";
-import AddNewAttributeType from "./AddNewAttributeType";
+import AddNewAttributeGroup from "./AddNewAttributeGroup";
+import GenericMultiSelect from "@/components/Helper/GenericMultiSelect";
+import AddNewAttributeValue from "./AddNewAttributeValue";
 
 type Props = {
   isOpen: boolean;
@@ -30,6 +33,7 @@ type Props = {
 
 const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState(-1);
+  const [selectedAttr, setSelectedAttr] = useState(-1);
   const [datas, setDatas] = useState({
     value: "",
     attribute_id: 1,
@@ -48,14 +52,29 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
     onOpen: onOpenTypeAttr,
     onOpenChange: onOpenChangeTypeAttr,
   } = useDisclosure();
+  const {
+    isOpen: isOpenTypeAttrValue,
+    onOpen: onOpenTypeAttrValue,
+    onOpenChange: onOpenChangeTypeAttrValue,
+  } = useDisclosure();
+
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(
     selectedAttrGroup !== -1 ? selectedAttrGroup : undefined
   );
+  const { data: attributeValues } = useGetAttributeValues(
+    selectedAttr !== -1 ? selectedAttr : undefined
+  );
   const { mutate: createAttributeValue } = useAddNewAttributeValue();
 
   const addNewAttributeValue = () => {};
+
+  const animals = [
+    { key: "cat", title: "جدید" },
+    { key: "dog", title: "قدیمی" },
+    { key: "elephant", title: "تازه" },
+  ];
 
   return (
     <>
@@ -75,17 +94,6 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                 </Button>
               </ModalHeader>
               <ModalBody className="flex flex-col gap-4">
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  label="عنوان"
-                  placeholder="عنوان را وارد کنید"
-                  value={datas.value}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, value: e.target.value }))
-                  }
-                />
-
                 <div className="mt-2">
                   <Select
                     isRequired
@@ -113,15 +121,10 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                 <div>
                   <Select
                     isRequired
-                    label="نوع ویژگی"
+                    label="ویژگی"
                     placeholder="ویژگی را انتخاب کنید"
                     labelPlacement="outside"
-                    onChange={(e) =>
-                      setDatas((prev) => ({
-                        ...prev,
-                        attribute_id: +e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setSelectedAttr(+e.target.value)}
                   >
                     {attributes && attributes?.data ? (
                       attributes.data.map((item: any) => (
@@ -139,6 +142,19 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                   />
                 </div>
 
+                {selectedAttr !== -1 ? (
+                  <div>
+                    <GenericMultiSelect label="مقادیر ویژگی" items={animals} />
+                    <HeaderAction
+                      title={"در صورت نیاز میتوانید مقدار جدیدی اضافه کنید"}
+                      textBtn={"+ افزودن"}
+                      onPress={onOpenTypeAttrValue}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <AddNewAttribute
                   isOpen={isOpenAttr}
                   onOpenChange={onOpenChangeAttr}
@@ -154,9 +170,13 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
         </ModalContent>
       </Modal>
 
-      <AddNewAttributeType
+      <AddNewAttributeGroup
         isOpen={isOpenTypeAttr}
         onOpenChange={onOpenChangeTypeAttr}
+      />
+      <AddNewAttributeValue
+        isOpen={isOpenTypeAttrValue}
+        onOpenChange={onOpenChangeTypeAttrValue}
       />
     </>
   );

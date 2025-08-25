@@ -10,33 +10,40 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
+  attributeId: number;
   isOpen: boolean;
   onOpenChange: () => void;
 };
 
-const AddNewAttributeType = ({ isOpen, onOpenChange }: Props) => {
-  const [datas, setDatas] = useState({
-    name: "",
-    slug: "",
-    display_order: null,
-  });
+const initialDatas = {
+  value: "",
+  attribute_id: -1,
+  display_color: "",
+  display_order: null,
+  is_active: true,
+};
+
+const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
+  const [datas, setDatas] = useState(initialDatas);
   //? Hooks
   const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
   //
 
+  useEffect(() => {
+    if (attributeId) {
+      setDatas((prev) => ({ ...prev, attribute_id: attributeId }));
+    }
+  }, [attributeId]);
+
   const handleCreateNewAttributeGroup = () => {
     createAttributeGroup(datas, {
       onSuccess: () => {
-        onOpenChange()
-        setDatas({
-          name: "",
-          slug: "",
-          display_order: null
-        })
-      }
+        onOpenChange();
+        setDatas(initialDatas);
+      },
     });
   };
 
@@ -53,23 +60,11 @@ const AddNewAttributeType = ({ isOpen, onOpenChange }: Props) => {
                 <Input
                   labelPlacement="outside"
                   isRequired
-                  label="عنوان دسته بندی ویژگی"
-                  placeholder="عنوان  دسته بندی را وارد کنید"
-                  value={datas.name}
+                  label="عنوان مقدار"
+                  placeholder="عنوان مقدار را وارد کنید"
+                  value={datas.value}
                   onChange={(e) =>
                     setDatas((prev) => ({ ...prev, name: e.target.value }))
-                  }
-                />
-
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  style={{ direction: "ltr" }}
-                  label="Slug دسته بندی ویژگی"
-                  placeholder="slug"
-                  value={datas.slug}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, slug: e.target.value }))
                   }
                 />
               </div>
@@ -78,10 +73,10 @@ const AddNewAttributeType = ({ isOpen, onOpenChange }: Props) => {
               <Button
                 color="secondary"
                 className="w-full mt-4"
-                isDisabled={!datas.name.length || !datas.slug.length}
+                isDisabled={!datas.value.length || !datas.display_color.length}
                 onPress={handleCreateNewAttributeGroup}
               >
-                افزودن گروه ویژگی
+                افزودن مقدار ویژگی
               </Button>
             </ModalFooter>
           </>
@@ -91,4 +86,4 @@ const AddNewAttributeType = ({ isOpen, onOpenChange }: Props) => {
   );
 };
 
-export default AddNewAttributeType;
+export default AddNewAttributeValue;

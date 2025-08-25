@@ -24,7 +24,7 @@ import {
   useGetAllAttributeGroup,
 } from "@/hooks/useAttribute";
 import HeaderAction from "../helpers/HeaderAction";
-import AddNewAttributeType from "./AddNewAttributeType";
+import AddNewAttributeGroup from "./AddNewAttributeGroup";
 
 type Props = {
   isOpen: boolean;
@@ -230,7 +230,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
         </ModalContent>
       </Modal>
 
-      <AddNewAttributeType
+      <AddNewAttributeGroup
         isOpen={isOpenTypeAttr}
         onOpenChange={onOpenChangeTypeAttr}
       />
