@@ -40,7 +40,7 @@ export const useAddNewAttributeGroup = () => {
 
 export const useGetAllAttribute = (groupedId: number | undefined) => {
   return useQuery({
-    queryKey: [`all-attribute-${groupedId}`],
+    queryKey: ["all-attribute", groupedId],
     queryFn: () =>
       fetcher({
         route: `/attribute?grouped=${groupedId}`,

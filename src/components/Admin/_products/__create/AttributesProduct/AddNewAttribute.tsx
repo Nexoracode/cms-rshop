@@ -135,6 +135,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                       label="نوع گروه ویژگی"
                       placeholder="گروه ویژگی را انتخاب کنید"
                       labelPlacement="outside"
+                      className="-mb-2"
                       onChange={(e) =>
                         setDatas((prev) => ({
                           ...prev,
