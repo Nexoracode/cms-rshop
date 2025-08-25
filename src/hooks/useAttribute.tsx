@@ -43,7 +43,7 @@ export const useGetAllAttribute = (groupedId: number | undefined) => {
     queryKey: ["all-attribute", groupedId],
     queryFn: () =>
       fetcher({
-        route: `/attribute?grouped=${groupedId}`,
+        route: `/attribute/group/${groupedId}`,
         isActiveToast: true,
       }),
   });
@@ -64,7 +64,7 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
       }),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`all-attribute-${groupedId}`] });
+      queryClient.invalidateQueries({ queryKey: ["all-attribute", groupedId] });
     },
   });
 };

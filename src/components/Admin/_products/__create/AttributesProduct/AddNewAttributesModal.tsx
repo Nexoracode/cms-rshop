@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -63,9 +64,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
           {(onClose) => (
             <>
               <ModalHeader className="w-full px-8 flex items-center justify-between">
-                <p className="font-normal text-[16px]">
-                  افزودن ویژگی های محصول
-                </p>
+                <p className="font-normal text-[16px]">افزودن ویژگی محصول</p>
                 <Button
                   variant="flat"
                   className="text-xl"
@@ -75,55 +74,70 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                   <TbSettings />
                 </Button>
               </ModalHeader>
-              <ModalBody>
-                <Select
-                  label="نوع گروه ویژگی"
-                  placeholder="گروه ویژگی را انتخاب کنید"
+              <ModalBody className="flex flex-col gap-4">
+                <Input
                   labelPlacement="outside"
-                  className="-mb-2"
-                  onChange={(e) => setSelectedAttrGroup(+e.target.value)}
-                >
-                  {getAllAttributeGroup?.data ? (
-                    getAllAttributeGroup.data.map((item: any) => (
-                      <SelectItem key={item.id}>{item.name}</SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
-                  )}
-                </Select>
-
-                <HeaderAction
-                  title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
-                  textBtn={"+ افزودن"}
-                  onPress={onOpenTypeAttr}
-                />
-
-                <Select
-                  label="نوع ویژگی"
-                  placeholder="ویژگی را انتخاب کنید"
-                  labelPlacement="outside"
+                  isRequired
+                  label="عنوان"
+                  placeholder="عنوان را وارد کنید"
+                  value={datas.value}
                   onChange={(e) =>
-                    setDatas((prev) => ({
-                      ...prev,
-                      attribute_id: +e.target.value,
-                    }))
+                    setDatas((prev) => ({ ...prev, value: e.target.value }))
                   }
-                  className="!mt-8 -mb-2"
-                >
-                  {attributes && attributes?.data ? (
-                    attributes.data.map((item: any) => (
-                      <SelectItem key={item.id}>{item.name}</SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
-                  )}
-                </Select>
-
-                <HeaderAction
-                  title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
-                  textBtn={"+ افزودن"}
-                  onPress={onOpenAttr}
                 />
+
+                <div className="mt-2">
+                  <Select
+                    isRequired
+                    label="نوع گروه ویژگی"
+                    placeholder="گروه ویژگی را انتخاب کنید"
+                    labelPlacement="outside"
+                    onChange={(e) => setSelectedAttrGroup(+e.target.value)}
+                  >
+                    {getAllAttributeGroup?.data ? (
+                      getAllAttributeGroup.data.map((item: any) => (
+                        <SelectItem key={item.id}>{item.name}</SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
+                    )}
+                  </Select>
+
+                  <HeaderAction
+                    title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
+                    textBtn={"+ افزودن"}
+                    onPress={onOpenTypeAttr}
+                  />
+                </div>
+
+                <div>
+                  <Select
+                    isRequired
+                    label="نوع ویژگی"
+                    placeholder="ویژگی را انتخاب کنید"
+                    labelPlacement="outside"
+                    onChange={(e) =>
+                      setDatas((prev) => ({
+                        ...prev,
+                        attribute_id: +e.target.value,
+                      }))
+                    }
+                  >
+                    {attributes && attributes?.data ? (
+                      attributes.data.map((item: any) => (
+                        <SelectItem key={item.id}>{item.name}</SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
+                    )}
+                  </Select>
+
+                  <HeaderAction
+                    title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
+                    textBtn={"+ افزودن"}
+                    onPress={onOpenAttr}
+                  />
+                </div>
 
                 <AddNewAttribute
                   isOpen={isOpenAttr}
@@ -139,7 +153,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
           )}
         </ModalContent>
       </Modal>
-      
+
       <AddNewAttributeType
         isOpen={isOpenTypeAttr}
         onOpenChange={onOpenChangeTypeAttr}

@@ -19,7 +19,10 @@ import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
 import { BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
 import { MdDateRange } from "react-icons/md";
-import { useAddNewAttribute, useGetAllAttributeGroup } from "@/hooks/useAttribute";
+import {
+  useAddNewAttribute,
+  useGetAllAttributeGroup,
+} from "@/hooks/useAttribute";
 import HeaderAction from "../helpers/HeaderAction";
 import AddNewAttributeType from "./AddNewAttributeType";
 
@@ -31,8 +34,8 @@ type Props = {
 const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
   const [datas, setDatas] = useState({
     name: "",
-    group_id: -1,
-    is_public: true,
+    group_id: null,
+    is_public: false,
     slug: "",
     type: "text",
     display_order: null,
@@ -40,7 +43,9 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
   });
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
-  const { mutate: createAttribute } = useAddNewAttribute(datas.group_id === -1 ? undefined : datas.group_id);
+  const { mutate: createAttribute } = useAddNewAttribute(
+    datas.group_id === null ? undefined : datas.group_id
+  );
   //
   const {
     isOpen: isOpenTypeAttr,
@@ -86,11 +91,11 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
         setDatas({
           name: "",
           slug: "",
-          group_id: 0,
+          group_id: null,
           is_public: true,
           is_variant: false,
           type: "",
-          display_order: null
+          display_order: null,
         });
       },
     });
@@ -130,36 +135,40 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                     }
                   />
 
-                  <div className="flex flex-col gap-2">
-                    <Select
-                      label="نوع گروه ویژگی"
-                      placeholder="گروه ویژگی را انتخاب کنید"
-                      labelPlacement="outside"
-                      className="-mb-2"
-                      onChange={(e) =>
-                        setDatas((prev) => ({
-                          ...prev,
-                          group_id: +e.target.value,
-                        }))
-                      }
-                    >
-                      {getAllAttributeGroup?.data ? (
-                        getAllAttributeGroup.data.map((item: any) => (
-                          <SelectItem key={item.id}>{item.name}</SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem isDisabled>
-                          فعلا آیتمی وجود ندارد
-                        </SelectItem>
-                      )}
-                    </Select>
+                  {datas.is_public ? (
+                    ""
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <Select
+                        label="نوع گروه ویژگی"
+                        placeholder="گروه ویژگی را انتخاب کنید"
+                        labelPlacement="outside"
+                        className="-mb-2"
+                        onChange={(e) =>
+                          setDatas((prev: any) => ({
+                            ...prev,
+                            group_id: +e.target.value,
+                          }))
+                        }
+                      >
+                        {getAllAttributeGroup?.data ? (
+                          getAllAttributeGroup.data.map((item: any) => (
+                            <SelectItem key={item.id}>{item.name}</SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem isDisabled>
+                            فعلا آیتمی وجود ندارد
+                          </SelectItem>
+                        )}
+                      </Select>
 
-                    <HeaderAction
-                      title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
-                      textBtn={"+ جدید"}
-                      onPress={onOpenTypeAttr}
-                    />
-                  </div>
+                      <HeaderAction
+                        title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
+                        textBtn={"+ جدید"}
+                        onPress={onOpenTypeAttr}
+                      />
+                    </div>
+                  )}
 
                   <Select
                     label="تایپ ویژگی"
@@ -185,7 +194,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                         setDatas((prev) => ({ ...prev, is_variant: status }))
                       }
                     >
-                      {datas.is_variant ? "متغیر" : "ثابت"}
+                      متغیر
                     </Switch>
 
                     <Switch
@@ -196,7 +205,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                         setDatas((prev) => ({ ...prev, is_public: status }))
                       }
                     >
-                      {datas.is_public ? "عمومی" : "خصوصی"}
+                      سراسری
                     </Switch>
                   </div>
                 </div>
@@ -206,7 +215,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                   color="secondary"
                   className="w-full mt-4"
                   isDisabled={
-                    !datas.group_id ||
+                    (!datas.group_id && !datas.is_public) ||
                     !datas.name.length ||
                     !datas.slug.length ||
                     !datas.type
