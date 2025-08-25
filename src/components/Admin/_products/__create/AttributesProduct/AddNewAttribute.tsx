@@ -154,7 +154,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                     </Select>
 
                     <HeaderAction
-                      title={"در صورت نیاز میتوانید نوع ویژگی اضافه کنید"}
+                      title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
                       textBtn={"+ جدید"}
                       onPress={onOpenTypeAttr}
                     />
