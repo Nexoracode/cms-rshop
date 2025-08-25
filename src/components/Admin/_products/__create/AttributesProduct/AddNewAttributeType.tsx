@@ -46,15 +46,15 @@ const AddNewAttributeType = ({ isOpen, onOpenChange }: Props) => {
         {(onClose) => (
           <>
             <ModalHeader className="w-full px-8 flex items-center justify-between">
-              <p className="font-normal text-[16px]">افزودن گروه ویژگی</p>
+              <p className="font-normal text-[16px]">افزودن دسته بندی ویژگی</p>
             </ModalHeader>
             <ModalBody>
               <div className="flex flex-col gap-5">
                 <Input
                   labelPlacement="outside"
                   isRequired
-                  label="عنوان"
-                  placeholder="عنوان را وارد کنید"
+                  label="عنوان دسته بندی ویژگی"
+                  placeholder="عنوان  دسته بندی را وارد کنید"
                   value={datas.name}
                   onChange={(e) =>
                     setDatas((prev) => ({ ...prev, name: e.target.value }))
@@ -65,7 +65,7 @@ const AddNewAttributeType = ({ isOpen, onOpenChange }: Props) => {
                   labelPlacement="outside"
                   isRequired
                   style={{ direction: "ltr" }}
-                  label="عنوان (انگلیسی)"
+                  label="Slug دسته بندی ویژگی"
                   placeholder="slug"
                   value={datas.slug}
                   onChange={(e) =>

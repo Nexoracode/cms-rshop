@@ -89,8 +89,8 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                 <div className="mt-2">
                   <Select
                     isRequired
-                    label="نوع گروه ویژگی"
-                    placeholder="گروه ویژگی را انتخاب کنید"
+                    label="دسته بندی ویژگی"
+                    placeholder="دسته بندی ویژگی را انتخاب کنید"
                     labelPlacement="outside"
                     onChange={(e) => setSelectedAttrGroup(+e.target.value)}
                   >
@@ -104,7 +104,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                   </Select>
 
                   <HeaderAction
-                    title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
+                    title={"در صورت نیاز میتوانید دسته بندی جدیدی اضافه کنید"}
                     textBtn={"+ افزودن"}
                     onPress={onOpenTypeAttr}
                   />

@@ -140,8 +140,8 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                   ) : (
                     <div className="flex flex-col gap-2">
                       <Select
-                        label="نوع گروه ویژگی"
-                        placeholder="گروه ویژگی را انتخاب کنید"
+                        label="دسته بندی ویژگی"
+                        placeholder="دسته بندی ویژگی را انتخاب کنید"
                         labelPlacement="outside"
                         className="-mb-2"
                         onChange={(e) =>
