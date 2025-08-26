@@ -1,6 +1,9 @@
 "use client";
 
-import { useAddNewAttributeGroup } from "@/hooks/useAttribute";
+import {
+  useAddNewAttributeGroup,
+  useAddNewAttributeValue,
+} from "@/hooks/useAttribute";
 import {
   Button,
   Input,
@@ -9,6 +12,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Switch,
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 
@@ -28,10 +32,10 @@ const initialDatas = {
 
 const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
   const [datas, setDatas] = useState(initialDatas);
+  const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   //? Hooks
-  const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
+  const { mutate: createAttributeValue } = useAddNewAttributeValue();
   //
-
   useEffect(() => {
     if (attributeId) {
       setDatas((prev) => ({ ...prev, attribute_id: attributeId }));
@@ -39,7 +43,7 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
   }, [attributeId]);
 
   const handleCreateNewAttributeGroup = () => {
-    createAttributeGroup(datas, {
+    createAttributeValue(datas, {
       onSuccess: () => {
         onOpenChange();
         setDatas(initialDatas);
@@ -67,6 +71,32 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
                     setDatas((prev) => ({ ...prev, name: e.target.value }))
                   }
                 />
+                {isActiveColorPicker ? (
+                  <input type="color" className="w-full h-12 bg-transparent rounded-[20px]" onChange={(e) => setDatas(prev => ({...prev, display_color: e.target.value})) }/>
+                ) : (
+                  ""
+                )}
+                <div className="flex items-center gap-6">
+                  <Switch
+                    color="secondary"
+                    size="sm"
+                    isSelected={isActiveColorPicker}
+                    onValueChange={setIsActiveColorPicker}
+                  >
+                    انتخاب رنگ
+                  </Switch>
+
+                  <Switch
+                    color="secondary"
+                    size="sm"
+                    isSelected={datas.is_active}
+                    onValueChange={(status) =>
+                      setDatas((prev) => ({ ...prev, is_active: status }))
+                    }
+                  >
+                    فعال
+                  </Switch>
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
