@@ -38,8 +38,12 @@ const initialData = {
 };
 
 const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
-  const [selectedAttrGroup, setSelectedAttrGroup] = useState<number | undefined>(undefined);
-  const [selectedAttr, setSelectedAttr] = useState<number | undefined>(undefined);
+  const [selectedAttrGroup, setSelectedAttrGroup] = useState<
+    number | undefined
+  >(undefined);
+  const [selectedAttr, setSelectedAttr] = useState<number | undefined>(
+    undefined
+  );
   const [datas, setDatas] = useState(initialData);
   const [attrValues, setAttrValues] = useState<any>([]);
   //? Hooks
@@ -65,7 +69,18 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
 
   return (
     <>
-      <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        dir="rtl"
+        isOpen={isOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedAttrGroup(undefined);
+            setSelectedAttr(undefined);
+            setAttrValues([]);
+          }
+          onOpenChange();
+        }}
+      >
         <ModalContent className="max-w-[700px] w-full">
           {(onClose) => (
             <>
@@ -117,7 +132,6 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                     onChange={(e) => {
                       setSelectedAttr(+e.target.value);
                       setAttrValues([]);
-                      setAttrValues([]);
                     }}
                   >
                     {attributes && attributes?.data ? (
@@ -136,7 +150,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                   />
                 </div>
 
-                {selectedAttr !== -1 ? (
+                {selectedAttr ? (
                   <div>
                     <div className="flex w-full flex-col gap-2">
                       <Select
