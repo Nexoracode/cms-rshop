@@ -38,18 +38,14 @@ const initialData = {
 };
 
 const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
-  const [selectedAttrGroup, setSelectedAttrGroup] = useState(-1);
-  const [selectedAttr, setSelectedAttr] = useState(-1);
+  const [selectedAttrGroup, setSelectedAttrGroup] = useState<number | undefined>(undefined);
+  const [selectedAttr, setSelectedAttr] = useState<number | undefined>(undefined);
   const [datas, setDatas] = useState(initialData);
   const [attrValues, setAttrValues] = useState<any>([]);
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
-  const { data: attributes } = useGetAllAttribute(
-    selectedAttrGroup !== -1 ? selectedAttrGroup : undefined
-  );
-  const { data: attributeValues } = useGetAttributeValues(
-    selectedAttr !== -1 ? selectedAttr : undefined
-  );
+  const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
+  const { data: attributeValues } = useGetAttributeValues(selectedAttr);
   //
   const {
     isOpen: isOpenAttr,
@@ -91,7 +87,10 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                     label="دسته بندی ویژگی"
                     placeholder="دسته بندی ویژگی را انتخاب کنید"
                     labelPlacement="outside"
-                    onChange={(e) => setSelectedAttrGroup(+e.target.value)}
+                    onChange={(e) => {
+                      setSelectedAttrGroup(+e.target.value);
+                      setAttrValues([]);
+                    }}
                   >
                     {getAllAttributeGroup?.data ? (
                       getAllAttributeGroup.data.map((item: any) => (
@@ -116,8 +115,9 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                     placeholder="ویژگی را انتخاب کنید"
                     labelPlacement="outside"
                     onChange={(e) => {
-                      setSelectedAttr(+e.target.value)
-                      setAttrValues([])
+                      setSelectedAttr(+e.target.value);
+                      setAttrValues([]);
+                      setAttrValues([]);
                     }}
                   >
                     {attributes && attributes?.data ? (
@@ -189,7 +189,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
       <AddNewAttributeValue
         isOpen={isOpenTypeAttrValue}
         onOpenChange={onOpenChangeTypeAttrValue}
-        attributeId={selectedAttr}
+        attributeId={selectedAttr || -1}
       />
     </>
   );

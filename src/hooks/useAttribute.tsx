@@ -46,6 +46,7 @@ export const useGetAllAttribute = (groupedId: number | undefined) => {
         route: `/attribute/group/${groupedId}`,
         isActiveToast: true,
       }),
+    enabled: !!groupedId,
   });
 };
 
@@ -81,6 +82,7 @@ export const useGetAttributeValues = (attributeId: number | undefined) => {
         route: `/attribute-value/attribute/${attributeId}`,
         isActiveToast: false,
       }),
+    enabled: !!attributeId,
   });
 };
 
@@ -97,7 +99,9 @@ export const useAddNewAttributeValue = (attributeId: number | undefined) => {
         loadingText: "درحال افزودن مقدار ویژگی...",
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["attribute-values", attributeId] });
+      queryClient.invalidateQueries({
+        queryKey: ["attribute-values", attributeId],
+      });
     },
   });
 };
