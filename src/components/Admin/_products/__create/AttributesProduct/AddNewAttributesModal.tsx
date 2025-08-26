@@ -31,16 +31,27 @@ type Props = {
   onOpenChange: () => void;
 };
 
+const initialData = {
+  value: "",
+  attribute_id: 1,
+  display_color: "",
+  display_order: null,
+  is_active: true,
+};
+
 const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState(-1);
   const [selectedAttr, setSelectedAttr] = useState(-1);
-  const [datas, setDatas] = useState({
-    value: "",
-    attribute_id: 1,
-    display_color: "",
-    display_order: null,
-    is_active: true,
-  });
+  const [datas, setDatas] = useState(initialData);
+  //? Hooks
+  const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
+  const { data: attributes } = useGetAllAttribute(
+    selectedAttrGroup !== -1 ? selectedAttrGroup : undefined
+  );
+  const { data: attributeValues } = useGetAttributeValues(
+    selectedAttr !== -1 ? selectedAttr : undefined
+  );
+  const { mutate: createAttributeValue } = useAddNewAttributeValue();
   //
   const {
     isOpen: isOpenAttr,
@@ -58,23 +69,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
     onOpenChange: onOpenChangeTypeAttrValue,
   } = useDisclosure();
 
-  //? Hooks
-  const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
-  const { data: attributes } = useGetAllAttribute(
-    selectedAttrGroup !== -1 ? selectedAttrGroup : undefined
-  );
-  const { data: attributeValues } = useGetAttributeValues(
-    selectedAttr !== -1 ? selectedAttr : undefined
-  );
-  const { mutate: createAttributeValue } = useAddNewAttributeValue();
-
-  const addNewAttributeValue = () => {};
-
-  const animals = [
-    { key: "cat", title: "جدید" },
-    { key: "dog", title: "قدیمی" },
-    { key: "elephant", title: "تازه" },
-  ];
+  console.log(attributeValues);
 
   return (
     <>
@@ -144,7 +139,30 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
 
                 {selectedAttr !== -1 ? (
                   <div>
-                    <GenericMultiSelect label="مقادیر ویژگی" items={animals} />
+                    <div className="flex w-full flex-col gap-2">
+                      <Select
+                        label="مقادیر مورد نظر را انتخاب کنید"
+                        labelPlacement="outside"
+                        placeholder="مقادیر ویژگی"
+                        //selectedKeys={values}
+                        selectionMode="multiple"
+                        onSelectionChange={() => {}}
+                      >
+                        {attributeValues?.data &&
+                        attributeValues.data.length ? (
+                          attributeValues.data.map((data: any) => (
+                            <SelectItem key={data.id}>{data.value}</SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem key={-1}>
+                            فعلا آیتمی وجود ندارد
+                          </SelectItem>
+                        )}
+                      </Select>
+                      {/* <p className="text-small text-default-500">
+                        انتخاب شده: {Array.from(values).join(", ")}
+                      </p> */}
+                    </div>
                     <HeaderAction
                       title={"در صورت نیاز میتوانید مقدار جدیدی اضافه کنید"}
                       textBtn={"+ افزودن"}
@@ -154,11 +172,6 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                 ) : (
                   ""
                 )}
-
-                <AddNewAttribute
-                  isOpen={isOpenAttr}
-                  onOpenChange={onOpenChangeAttr}
-                />
               </ModalBody>
               <ModalFooter>
                 <Button className="w-full" variant="solid" color="secondary">
@@ -174,6 +187,8 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
         isOpen={isOpenTypeAttr}
         onOpenChange={onOpenChangeTypeAttr}
       />
+
+      <AddNewAttribute isOpen={isOpenAttr} onOpenChange={onOpenChangeAttr} />
 
       <AddNewAttributeValue
         isOpen={isOpenTypeAttrValue}

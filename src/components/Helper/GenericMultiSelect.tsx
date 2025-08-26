@@ -6,7 +6,7 @@ import { SelectOption } from "@/types";
 
 type GenericMultiSelectProps = {
   label?: string;
-  items: SelectOption[];
+  items: SelectOption[] | undefined;
   renderItem?: (item: SelectOption) => ReactNode;
   renderValue?: (items: SelectOption[]) => ReactNode;
 };
@@ -19,7 +19,7 @@ export default function GenericMultiSelect({
 }: GenericMultiSelectProps) {
   return (
     <Select
-      items={items}
+      items={items || []}
       isMultiline
       label={label}
       labelPlacement="outside"
