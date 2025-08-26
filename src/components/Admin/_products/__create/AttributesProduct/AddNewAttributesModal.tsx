@@ -50,7 +50,6 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const { data: attributeValues } = useGetAttributeValues(
     selectedAttr !== -1 ? selectedAttr : undefined
   );
-  const { mutate: createAttributeValue } = useAddNewAttributeValue();
   //
   const {
     isOpen: isOpenAttr,

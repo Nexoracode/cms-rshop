@@ -73,7 +73,19 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
 
 /* 🔠 Attribute Values Start */
 
-export const useAddNewAttributeValue = () => {
+export const useGetAttributeValues = (attributeId: number | undefined) => {
+  return useQuery({
+    queryKey: ["attribute-values", attributeId],
+    queryFn: () =>
+      fetcher({
+        route: `/attribute-value/attribute/${attributeId}`,
+        isActiveToast: false,
+      }),
+  });
+};
+
+export const useAddNewAttributeValue = (attributeId: number | undefined) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>
       fetcher({
@@ -84,18 +96,9 @@ export const useAddNewAttributeValue = () => {
         successText: "مقدار ویژگی با موفقیت اضافه شد",
         loadingText: "درحال افزودن مقدار ویژگی...",
       }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["attribute-values", attributeId] });
+    },
   });
 };
-
-export const useGetAttributeValues = (id: number | undefined) => {
-  return useQuery({
-    queryKey: ["attribute-value", id],
-    queryFn: () =>
-      fetcher({
-        route: `/attribute-value/attribute/${id}`,
-        isActiveToast: false,
-      }),
-  });
-};
-
 /* 🔠 Attribute Values End */

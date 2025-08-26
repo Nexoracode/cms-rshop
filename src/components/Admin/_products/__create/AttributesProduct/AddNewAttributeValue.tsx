@@ -34,7 +34,7 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
   const [datas, setDatas] = useState(initialDatas);
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   //? Hooks
-  const { mutate: createAttributeValue } = useAddNewAttributeValue();
+  const { mutate: createAttributeValue } = useAddNewAttributeValue(attributeId);
   //
   useEffect(() => {
     if (attributeId) {
@@ -42,11 +42,11 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
     }
   }, [attributeId]);
 
-  const handleCreateNewAttributeGroup = () => {
+  const handleCreateNewAttributeValue = () => {
     createAttributeValue(datas, {
       onSuccess: () => {
         onOpenChange();
-        setDatas(initialDatas);
+        setDatas(prev => ({...prev, display_color: "", is_active: true, value: ""}));
       },
     });
   };
@@ -57,7 +57,7 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
         {(onClose) => (
           <>
             <ModalHeader className="w-full px-8 flex items-center justify-between">
-              <p className="font-normal text-[16px]">افزودن دسته بندی ویژگی</p>
+              <p className="font-normal text-[16px]">افزودن مقدار ویژگی</p>
             </ModalHeader>
             <ModalBody>
               <div className="flex flex-col gap-5">
@@ -68,7 +68,7 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
                   placeholder="عنوان مقدار را وارد کنید"
                   value={datas.value}
                   onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, name: e.target.value }))
+                    setDatas((prev) => ({ ...prev, value: e.target.value }))
                   }
                 />
                 {isActiveColorPicker ? (
@@ -103,8 +103,8 @@ const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
               <Button
                 color="secondary"
                 className="w-full mt-4"
-                isDisabled={!datas.value.length || !datas.display_color.length}
-                onPress={handleCreateNewAttributeGroup}
+                isDisabled={!datas.value.length || (isActiveColorPicker && !datas.display_color.length)}
+                onPress={handleCreateNewAttributeValue}
               >
                 افزودن مقدار ویژگی
               </Button>
