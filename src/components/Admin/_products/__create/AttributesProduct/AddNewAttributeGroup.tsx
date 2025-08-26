@@ -53,7 +53,7 @@ const AddNewAttributeGroup = ({ isOpen, onOpenChange }: Props) => {
                 <Input
                   labelPlacement="outside"
                   isRequired
-                  label="عنوان دسته بندی ویژگی"
+                  label="عنوان"
                   placeholder="عنوان  دسته بندی را وارد کنید"
                   value={datas.name}
                   onChange={(e) =>
@@ -65,7 +65,7 @@ const AddNewAttributeGroup = ({ isOpen, onOpenChange }: Props) => {
                   labelPlacement="outside"
                   isRequired
                   style={{ direction: "ltr" }}
-                  label="Slug دسته بندی ویژگی"
+                  label="نامک"
                   placeholder="slug"
                   value={datas.slug}
                   onChange={(e) =>

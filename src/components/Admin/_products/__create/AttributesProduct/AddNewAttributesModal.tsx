@@ -174,9 +174,11 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
         isOpen={isOpenTypeAttr}
         onOpenChange={onOpenChangeTypeAttr}
       />
+
       <AddNewAttributeValue
         isOpen={isOpenTypeAttrValue}
         onOpenChange={onOpenChangeTypeAttrValue}
+        attributeId={selectedAttr}
       />
     </>
   );

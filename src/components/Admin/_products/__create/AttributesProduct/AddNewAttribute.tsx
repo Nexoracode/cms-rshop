@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Input,
@@ -14,89 +14,91 @@ import {
   Switch,
   useDisclosure,
 } from "@heroui/react";
-// Icons
-import { AiOutlineFontColors, AiOutlineNumber } from "react-icons/ai";
-import { BsPalette } from "react-icons/bs";
-import { FiCheckSquare, FiCircle, FiImage } from "react-icons/fi";
-import { MdDateRange } from "react-icons/md";
 import {
   useAddNewAttribute,
   useGetAllAttributeGroup,
 } from "@/hooks/useAttribute";
-import HeaderAction from "../helpers/HeaderAction";
 import AddNewAttributeGroup from "./AddNewAttributeGroup";
+import HeaderAction from "../helpers/HeaderAction";
+//? Icons
+import { AiOutlineFontColors } from "react-icons/ai";
+import { BsMenuDown, BsPalette } from "react-icons/bs";
+import { FiCheckSquare, FiCircle } from "react-icons/fi";
+import { MdNumbers } from "react-icons/md";
+import { ImCheckmark2 } from "react-icons/im";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
 };
 
+const initialData = {
+  name: "",
+  group_id: null,
+  is_public: false,
+  slug: "",
+  type: "text",
+  display_order: null,
+  is_variant: false,
+};
+
 const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
-  const [datas, setDatas] = useState({
-    name: "",
-    group_id: null,
-    is_public: false,
-    slug: "",
-    type: "text",
-    display_order: null,
-    is_variant: false,
-  });
+  const [datas, setDatas] = useState(initialData);
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
   const { mutate: createAttribute } = useAddNewAttribute(
     datas.group_id === null ? undefined : datas.group_id
   );
-  //
   const {
     isOpen: isOpenTypeAttr,
     onOpen: onOpenTypeAttr,
     onOpenChange: onOpenChangeTypeAttr,
   } = useDisclosure();
 
-  // static
+  // attribute types
   const productInputTypes = [
     {
       key: "text",
-      label: "متن",
+      label: "متنی",
       icon: <AiOutlineFontColors className="w-4 h-4" />,
     },
     {
       key: "number",
-      label: "عدد",
-      icon: <AiOutlineNumber className="w-4 h-4" />,
+      label: "عددی",
+      icon: <MdNumbers className="w-4 h-4" />,
     },
-    { key: "color", label: "رنگ", icon: <BsPalette className="w-4 h-4" /> },
-    { key: "date", label: "تاریخ", icon: <MdDateRange className="w-4 h-4" /> },
+    {
+      key: "color",
+      label: "انتخاب رنگ",
+      icon: <BsPalette className="w-4 h-4" />,
+    },
     {
       key: "checkbox",
-      label: "چک‌باکس",
+      label: "چک‌باکس (چند انتخابی)",
       icon: <FiCheckSquare className="w-4 h-4" />,
     },
     {
       key: "radio",
-      label: "دکمه انتخابی",
+      label: "گزینه‌ای (یک انتخابی)",
       icon: <FiCircle className="w-4 h-4" />,
     },
     {
-      key: "file",
-      label: "فایل / تصویر",
-      icon: <FiImage className="w-4 h-4" />,
+      key: "select",
+      label: "منوی کشویی",
+      icon: <BsMenuDown className="w-4 h-4" />,
+    },
+    {
+      key: "boolean",
+      label: "بله / خیر",
+      icon: <ImCheckmark2 className="w-4 h-4" />,
     },
   ];
-
+  //! actions
   const handleNewAttribute = () => {
     createAttribute(datas, {
       onSuccess: () => {
         onOpenChange();
-        setDatas({
-          name: "",
-          slug: "",
-          group_id: null,
-          is_public: true,
-          is_variant: false,
-          type: "",
-          display_order: null,
-        });
+        setDatas(initialData);
       },
     });
   };
@@ -115,7 +117,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                   <Input
                     labelPlacement="outside"
                     isRequired
-                    label="عنوان ویژگی"
+                    label="عنوان"
                     placeholder="عنوان ویژگی را وارد کنید"
                     value={datas.name}
                     onChange={(e) =>
@@ -127,7 +129,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                     labelPlacement="outside"
                     isRequired
                     style={{ direction: "ltr" }}
-                    label="عنوان ویژگی (انگلیسی)"
+                    label="نامک"
                     placeholder="slug"
                     value={datas.slug}
                     onChange={(e) =>
@@ -135,9 +137,23 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                     }
                   />
 
-                  {datas.is_public ? (
-                    ""
-                  ) : (
+                  <Select
+                    isRequired
+                    label="تایپ ویژگی"
+                    placeholder="تایپ ویژگی را انتخاب کنید"
+                    labelPlacement="outside"
+                    onChange={(e) =>
+                      setDatas((prev) => ({ ...prev, type: e.target.value }))
+                    }
+                  >
+                    {productInputTypes.map((item) => (
+                      <SelectItem key={item.key} startContent={item.icon}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </Select>
+
+                  {!datas.is_public ? (
                     <div className="flex flex-col gap-2">
                       <Select
                         label="دسته بندی ویژگی"
@@ -168,22 +184,9 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                         onPress={onOpenTypeAttr}
                       />
                     </div>
+                  ) : (
+                    ""
                   )}
-
-                  <Select
-                    label="تایپ ویژگی"
-                    placeholder="تایپ ویژگی را انتخاب کنید"
-                    labelPlacement="outside"
-                    onChange={(e) =>
-                      setDatas((prev) => ({ ...prev, type: e.target.value }))
-                    }
-                  >
-                    {productInputTypes.map((item) => (
-                      <SelectItem key={item.key} startContent={item.icon}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
 
                   <div className="flex items-center gap-8">
                     <Switch
