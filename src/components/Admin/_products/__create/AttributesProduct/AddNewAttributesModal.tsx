@@ -2,7 +2,6 @@
 
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -23,7 +22,6 @@ import {
 } from "@/hooks/useAttribute";
 import { useEffect, useState } from "react";
 import AddNewAttributeGroup from "./AddNewAttributeGroup";
-import GenericMultiSelect from "@/components/Helper/GenericMultiSelect";
 import AddNewAttributeValue from "./AddNewAttributeValue";
 
 type Props = {
@@ -43,6 +41,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState(-1);
   const [selectedAttr, setSelectedAttr] = useState(-1);
   const [datas, setDatas] = useState(initialData);
+  const [attrValues, setAttrValues] = useState<any>([]);
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(
@@ -68,8 +67,6 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
     onOpen: onOpenTypeAttrValue,
     onOpenChange: onOpenChangeTypeAttrValue,
   } = useDisclosure();
-
-  console.log(attributeValues);
 
   return (
     <>
@@ -119,7 +116,10 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                     label="ویژگی"
                     placeholder="ویژگی را انتخاب کنید"
                     labelPlacement="outside"
-                    onChange={(e) => setSelectedAttr(+e.target.value)}
+                    onChange={(e) => {
+                      setSelectedAttr(+e.target.value)
+                      setAttrValues([])
+                    }}
                   >
                     {attributes && attributes?.data ? (
                       attributes.data.map((item: any) => (
@@ -144,9 +144,9 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                         label="مقادیر مورد نظر را انتخاب کنید"
                         labelPlacement="outside"
                         placeholder="مقادیر ویژگی"
-                        //selectedKeys={values}
+                        selectedKeys={attrValues}
                         selectionMode="multiple"
-                        onSelectionChange={() => {}}
+                        onSelectionChange={setAttrValues}
                       >
                         {attributeValues?.data &&
                         attributeValues.data.length ? (
@@ -159,9 +159,6 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                           </SelectItem>
                         )}
                       </Select>
-                      {/* <p className="text-small text-default-500">
-                        انتخاب شده: {Array.from(values).join(", ")}
-                      </p> */}
                     </div>
                     <HeaderAction
                       title={"در صورت نیاز میتوانید مقدار جدیدی اضافه کنید"}
