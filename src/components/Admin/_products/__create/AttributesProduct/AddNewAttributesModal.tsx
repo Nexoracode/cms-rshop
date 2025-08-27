@@ -16,6 +16,7 @@ import AddNewAttribute from "./AddNewAttribute";
 import HeaderAction from "../helpers/HeaderAction";
 import {
   useAddNewAttributeValue,
+  useAddNewCategoryAttribute,
   useGetAllAttribute,
   useGetAllAttributeGroup,
   useGetAttributeValues,
@@ -29,13 +30,6 @@ type Props = {
   onOpenChange: () => void;
 };
 
-const initialData = {
-  value: "",
-  attribute_id: 1,
-  display_color: "",
-  display_order: null,
-  is_active: true,
-};
 
 const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState<
@@ -44,12 +38,12 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const [selectedAttr, setSelectedAttr] = useState<number | undefined>(
     undefined
   );
-  const [datas, setDatas] = useState(initialData);
   const [attrValues, setAttrValues] = useState<any>([]);
   //? Hooks
-  const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
+  const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
   const { data: attributeValues } = useGetAttributeValues(selectedAttr);
+  const addNewCategoryAttribute = useAddNewCategoryAttribute()
   //
   const {
     isOpen: isOpenAttr,
@@ -66,6 +60,13 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
     onOpen: onOpenTypeAttrValue,
     onOpenChange: onOpenChangeTypeAttrValue,
   } = useDisclosure();
+
+  const handleChangesCategoryAttributes = () => {
+
+  }
+
+  console.log(attributeGroup);
+  
 
   return (
     <>
@@ -107,8 +108,8 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                       setAttrValues([]);
                     }}
                   >
-                    {getAllAttributeGroup?.data ? (
-                      getAllAttributeGroup.data.map((item: any) => (
+                    {attributeGroup && attributeGroup?.data.length ? (
+                      attributeGroup.data.map((item: any) => (
                         <SelectItem key={item.id}>{item.name}</SelectItem>
                       ))
                     ) : (
@@ -134,7 +135,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                       setAttrValues([]);
                     }}
                   >
-                    {attributes && attributes?.data ? (
+                    {attributes && attributes?.data.length ? (
                       attributes.data.map((item: any) => (
                         <SelectItem key={item.id}>{item.name}</SelectItem>
                       ))
@@ -184,7 +185,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button className="w-full" variant="solid" color="secondary">
+                <Button className="w-full" variant="solid" color="secondary" onPress={handleChangesCategoryAttributes}>
                   ثبت تغیرات
                 </Button>
               </ModalFooter>

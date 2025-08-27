@@ -35,7 +35,7 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          <AttributeBoxes />
+          {/* <AttributeBoxes /> */}
 
           {attributes.length ? (
             attributes.map((attr) => (
