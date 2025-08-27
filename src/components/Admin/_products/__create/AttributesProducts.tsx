@@ -11,7 +11,7 @@ import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [attributes, setAttributes] = useState<Record<string, any>[]>([]);
+  const [attributes, setAttributes] = useState<any[]>([]);
 
   useEffect(() => {
     if (attributes.length) {
@@ -34,7 +34,7 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          {/* <AttributeBoxes /> */}
+          <AttributeBoxes attributes={attributes} onDeleteAttribute={() => {}} onDeleteAttributeValue={() => {}} onMoveAttributeToTop={() => {}} onMoveValueToTop={() => {}}/>
 
           {attributes.length ? (
             attributes.map((attr, index) => (
