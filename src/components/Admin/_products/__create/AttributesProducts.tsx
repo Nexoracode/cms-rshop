@@ -30,17 +30,18 @@ const AttributesProducts = () => {
         <CardBody dir="rtl" className="flex flex-col gap-4 text-start">
           <HeaderAction
             title="ویژگی ها"
-            textBtn={attributes.length ? "ویرایش ویژگی ها" : "+ افزودن ویژگی"}
+            textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
 
           {/* <AttributeBoxes /> */}
 
           {attributes.length ? (
-            attributes.map((attr) => (
+            attributes.map((attr, index) => (
               <SubAttributeBox
-                titleCard={attr.attr.label}
-                isVariable={attr.isVariable}
+                key={index}
+                titleCard={attr.attr.name}
+                isVariable={attr.attr.is_variant}
                 onHandleSubmit={() => {}}
               />
             ))

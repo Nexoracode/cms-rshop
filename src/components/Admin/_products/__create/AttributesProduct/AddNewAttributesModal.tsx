@@ -65,6 +65,13 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
     onOpenChange: onOpenChangeTypeAttrValue,
   } = useDisclosure();
 
+  const resetModalInfos = () => {
+      onOpenChange();
+      setSelectedAttrGroup(undefined);
+      setSelectedAttr(undefined);
+      setAttrValues([]);
+  }
+
   const handleChangesCategoryAttributes = () => {
     // پیدا کردن آبجکت attribute group
     const group = attributeGroup?.data.find(
@@ -79,6 +86,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
 
     if (group && attr && values?.length) {
       onSubmit({ attrGroup: group, attr: attr, values: values });
+      resetModalInfos()
     }
   };
 
@@ -87,14 +95,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
       <Modal
         dir="rtl"
         isOpen={isOpen}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelectedAttrGroup(undefined);
-            setSelectedAttr(undefined);
-            setAttrValues([]);
-          }
-          onOpenChange();
-        }}
+        onOpenChange={resetModalInfos}
       >
         <ModalContent className="max-w-[700px] w-full">
           {(onClose) => (
