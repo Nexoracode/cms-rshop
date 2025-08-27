@@ -30,7 +30,6 @@ type Props = {
   onOpenChange: () => void;
 };
 
-
 const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState<
     number | undefined
@@ -43,7 +42,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
   const { data: attributeValues } = useGetAttributeValues(selectedAttr);
-  const addNewCategoryAttribute = useAddNewCategoryAttribute()
+  //const addNewCategoryAttribute = useAddNewCategoryAttribute();
   //
   const {
     isOpen: isOpenAttr,
@@ -62,11 +61,10 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   } = useDisclosure();
 
   const handleChangesCategoryAttributes = () => {
-
-  }
-
-  console.log(attributeGroup);
-  
+    console.log("Attribute Group => ", selectedAttrGroup);
+    console.log("Attribute => ", selectedAttr);
+    console.log("Attr Values => ", attrValues);
+  };
 
   return (
     <>
@@ -160,7 +158,9 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                         placeholder="مقادیر ویژگی"
                         selectedKeys={attrValues}
                         selectionMode="multiple"
-                        onSelectionChange={setAttrValues}
+                        onChange={(e) =>
+                          setAttrValues(e.target.value.split(","))
+                        }
                       >
                         {attributeValues?.data &&
                         attributeValues.data?.length ? (
@@ -185,7 +185,12 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button className="w-full" variant="solid" color="secondary" onPress={handleChangesCategoryAttributes}>
+                <Button
+                  className="w-full"
+                  variant="solid"
+                  color="secondary"
+                  onPress={handleChangesCategoryAttributes}
+                >
                   ثبت تغیرات
                 </Button>
               </ModalFooter>
