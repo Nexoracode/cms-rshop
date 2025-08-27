@@ -5,14 +5,13 @@ import { TbCategory2 } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
-import { AttributeData } from "./modals/AddNewAttributeModal/Types";
 import SubAttributeBox from "./helpers/SubAttributeBox";
 import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [attributes, setAttributes] = useState<AttributeData[]>([]);
+  const [attributes, setAttributes] = useState<Record<string, any>[]>([]);
 
   useEffect(() => {
     if (attributes.length) {
@@ -63,7 +62,11 @@ const AttributesProducts = () => {
         onSubmit={setAttributes}
       /> */}
 
-      <AddNewAttributesModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AddNewAttributesModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onSubmit={(data) => setAttributes((prev) => [...prev, data])}
+      />
     </>
   );
 };

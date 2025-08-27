@@ -15,22 +15,27 @@ import { TbSettings } from "react-icons/tb";
 import AddNewAttribute from "./AddNewAttribute";
 import HeaderAction from "../helpers/HeaderAction";
 import {
-  useAddNewAttributeValue,
-  useAddNewCategoryAttribute,
   useGetAllAttribute,
   useGetAllAttributeGroup,
   useGetAttributeValues,
 } from "@/hooks/useAttribute";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddNewAttributeGroup from "./AddNewAttributeGroup";
 import AddNewAttributeValue from "./AddNewAttributeValue";
+
+type AttributeData = {
+  attrGroup: Record<string, any>;
+  attr: Record<string, any>;
+  values: Record<string, any>[];
+};
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
+  onSubmit: (data: AttributeData) => void;
 };
 
-const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
+const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState<
     number | undefined
   >(undefined);
@@ -61,9 +66,20 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
   } = useDisclosure();
 
   const handleChangesCategoryAttributes = () => {
-    console.log("Attribute Group => ", selectedAttrGroup);
-    console.log("Attribute => ", selectedAttr);
-    console.log("Attr Values => ", attrValues);
+    // پیدا کردن آبجکت attribute group
+    const group = attributeGroup?.data.find(
+      (g: any) => g.id === selectedAttrGroup
+    );
+    // پیدا کردن آبجکت attribute
+    const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
+    // پیدا کردن آبجکت‌های values
+    const values = attributeValues?.data.filter((v: any) =>
+      attrValues.includes(v.id.toString())
+    );
+
+    if (group && attr && values?.length) {
+      onSubmit({ attrGroup: group, attr: attr, values: values });
+    }
   };
 
   return (
@@ -190,6 +206,11 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                   variant="solid"
                   color="secondary"
                   onPress={handleChangesCategoryAttributes}
+                  isDisabled={
+                    !selectedAttr || !selectedAttrGroup || !attrValues.length
+                      ? true
+                      : false
+                  }
                 >
                   ثبت تغیرات
                 </Button>
