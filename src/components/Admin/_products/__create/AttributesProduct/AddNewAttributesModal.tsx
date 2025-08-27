@@ -135,7 +135,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                       setAttrValues([]);
                     }}
                   >
-                    {attributes && attributes?.data.length ? (
+                    {attributes && attributes?.data?.length ? (
                       attributes.data.map((item: any) => (
                         <SelectItem key={item.id}>{item.name}</SelectItem>
                       ))
@@ -163,7 +163,7 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange }: Props) => {
                         onSelectionChange={setAttrValues}
                       >
                         {attributeValues?.data &&
-                        attributeValues.data.length ? (
+                        attributeValues.data?.length ? (
                           attributeValues.data.map((data: any) => (
                             <SelectItem key={data.id}>{data.value}</SelectItem>
                           ))

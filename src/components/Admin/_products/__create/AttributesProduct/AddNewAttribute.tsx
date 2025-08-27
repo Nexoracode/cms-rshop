@@ -73,12 +73,12 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
       icon: <BsPalette className="w-4 h-4" />,
     },
     {
-      key: "checkbox",
+      key: "checkBox",
       label: "چک‌باکس (چند انتخابی)",
       icon: <FiCheckSquare className="w-4 h-4" />,
     },
     {
-      key: "radio",
+      key: "radioButton",
       label: "گزینه‌ای (یک انتخابی)",
       icon: <FiCircle className="w-4 h-4" />,
     },
@@ -153,40 +153,36 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                     ))}
                   </Select>
 
-                  {!datas.is_public ? (
-                    <div className="flex flex-col gap-2">
-                      <Select
-                        label="دسته بندی ویژگی"
-                        placeholder="دسته بندی ویژگی را انتخاب کنید"
-                        labelPlacement="outside"
-                        className="-mb-2"
-                        onChange={(e) =>
-                          setDatas((prev: any) => ({
-                            ...prev,
-                            group_id: +e.target.value,
-                          }))
-                        }
-                      >
-                        {getAllAttributeGroup?.data ? (
-                          getAllAttributeGroup.data.map((item: any) => (
-                            <SelectItem key={item.id}>{item.name}</SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem isDisabled>
-                            فعلا آیتمی وجود ندارد
-                          </SelectItem>
-                        )}
-                      </Select>
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      label="دسته بندی ویژگی"
+                      placeholder="دسته بندی ویژگی را انتخاب کنید"
+                      labelPlacement="outside"
+                      className="-mb-2"
+                      onChange={(e) =>
+                        setDatas((prev: any) => ({
+                          ...prev,
+                          group_id: +e.target.value,
+                        }))
+                      }
+                    >
+                      {getAllAttributeGroup?.data ? (
+                        getAllAttributeGroup.data.map((item: any) => (
+                          <SelectItem key={item.id}>{item.name}</SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem isDisabled>
+                          فعلا آیتمی وجود ندارد
+                        </SelectItem>
+                      )}
+                    </Select>
 
-                      <HeaderAction
-                        title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
-                        textBtn={"+ جدید"}
-                        onPress={onOpenTypeAttr}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                    <HeaderAction
+                      title={"در صورت نیاز میتوانید گروه ویژگی اضافه کنید"}
+                      textBtn={"+ جدید"}
+                      onPress={onOpenTypeAttr}
+                    />
+                  </div>
 
                   <div className="flex items-center gap-8">
                     <Switch
@@ -218,7 +214,7 @@ const AddNewAttribute = ({ isOpen, onOpenChange }: Props) => {
                   color="secondary"
                   className="w-full mt-4"
                   isDisabled={
-                    (!datas.group_id && !datas.is_public) ||
+                    !datas.group_id ||
                     !datas.name.length ||
                     !datas.slug.length ||
                     !datas.type

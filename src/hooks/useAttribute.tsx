@@ -44,7 +44,7 @@ export const useGetAllAttribute = (groupedId: number | undefined) => {
     queryFn: () =>
       fetcher({
         route: `/attribute/group/${groupedId}`,
-        isActiveToast: true,
+        isActiveToast: false,
       }),
     enabled: !!groupedId,
   });
