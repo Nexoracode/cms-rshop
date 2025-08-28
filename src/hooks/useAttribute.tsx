@@ -1,5 +1,10 @@
 import { fetcher } from "@/utils/fetcher";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 /* 📁 Attribute Groups Start */
 

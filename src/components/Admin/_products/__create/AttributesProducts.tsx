@@ -5,23 +5,57 @@ import { TbCategory2 } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
-import SubAttributeBox from "./helpers/SubAttributeBox";
 import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
-import { useGetOneAttribute } from "@/hooks/useAttribute";
+import {
+  useUpdateAttribute,
+  useUpdateAttributeValue,
+} from "@/hooks/useAttribute";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
-  const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
-  const { data: oneAttribute } = useGetOneAttribute(selectedId);
+
+  const updateAttributeMutation = useUpdateAttribute(0, undefined);
+  const updateAttributeValueMutation = useUpdateAttributeValue(0, undefined);
 
   useEffect(() => {
-    if (oneAttribute) {
-      setAttributes((prev) => [...prev, oneAttribute]);
-      setSelectedId(undefined);
-    }
-  }, [oneAttribute]);
+    console.log(attributes);
+  }, [attributes]);
+
+  const handleDeleteAttribute = (attrId: number) => {
+    setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
+  };
+
+  const handleDeleteAttributeValue = (valId: number) => {
+    setAttributes((prev) =>
+      prev.map((a) => ({
+        ...a,
+        values: a.values.filter((v: any) => v.id !== valId),
+      }))
+    );
+  };
+
+  const handleOrderAttribute = (updatedAttr: any) => {
+    updateAttributeMutation.mutate(updatedAttr, {
+      onSuccess: (res: any) =>
+        setAttributes((prev) =>
+          prev.map((a) => (a.attr.id === res.id ? res : a))
+        ),
+    });
+  };
+
+  const handleOrderAttributeValue = (updatedValue: any) => {
+    updateAttributeValueMutation.mutate(updatedValue, {
+      onSuccess: (res) =>
+        setAttributes((prev) =>
+          prev.map((a) => ({
+            ...a,
+            values: a.values.map((v: any) => (v.id === res.id ? res : v)),
+          }))
+        ),
+    });
+  };
 
   return (
     <>
@@ -40,27 +74,12 @@ const AttributesProducts = () => {
 
           <AttributeBoxes
             attributes={attributes}
-            onDeleteAttribute={() => {}}
-            onDeleteAttributeValue={() => {}}
-            onOrderAttribute={() => {}}
-            onOrderAttributeValue={() => {}}
+            onDeleteAttribute={handleDeleteAttribute}
+            onDeleteAttributeValue={handleDeleteAttributeValue}
+            onOrderAttribute={handleOrderAttribute}
+            onOrderAttributeValue={handleOrderAttributeValue}
           />
 
-          {/*  {attributes.length ? (
-            attributes.map((attr, index) => (
-              <SubAttributeBox
-                key={index}
-                titleCard={attr.attr.name}
-                isVariable={attr.attr.is_variant}
-                onHandleSubmit={() => {}}
-              />
-            ))
-          ) : (
-            <p className="text-gray-500 pr-2">
-              ■ این محصول تنوع رنگ‌بندی و سایزبندی و ... دارد؟ از این بخش
-              می‌تونید آنها را اضافه کنید.
-            </p>
-          )} */}
           <Button color="success" className="text-white">
             ثبت ویژگی های محصولات
           </Button>
@@ -70,7 +89,7 @@ const AttributesProducts = () => {
       <AddNewAttributesModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={(data) => setSelectedId(data.attr.id)}
+        onSubmit={(data) => setAttributes((prev) => [...prev, data])}
       />
     </>
   );

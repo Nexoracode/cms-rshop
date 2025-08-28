@@ -3,6 +3,7 @@
 import React from "react";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { AiOutlineClose } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 type AttributeValue = {
   id: number;
@@ -93,6 +94,10 @@ export default function AttributeBoxes({
                   className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-red-500 hover:bg-red-100 rounded-full cursor-pointer z-10"
                   onClick={(e) => {
                     e.stopPropagation();
+                    if (item.values.length === 1) {
+                      toast.error("حداقل باید یک مقدار داشته باشد")
+                      return
+                    }
                     onDeleteAttributeValue(val.id);
                   }}
                   title="حذف مقدار"
