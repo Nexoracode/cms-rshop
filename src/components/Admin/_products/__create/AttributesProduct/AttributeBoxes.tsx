@@ -5,35 +5,8 @@ import { Card, CardBody, Chip } from "@heroui/react";
 import { AiOutlineClose } from "react-icons/ai";
 import toast from "react-hot-toast";
 
-type AttributeValue = {
-  id: number;
-  value: string;
-  attribute_id: number;
-  display_color?: string;
-  display_order?: number | null;
-  is_active?: boolean;
-};
-
-type Attribute = {
-  attr: {
-    id: number;
-    name: string;
-    slug: string;
-    type?: string;
-    is_variant?: boolean;
-    is_public?: boolean;
-    group: {
-      id: number;
-      name: string;
-      slug: string;
-      display_order?: number | null;
-    };
-  };
-  values: AttributeValue[];
-};
-
 type Props = {
-  attributes: Attribute[];
+  attributes: Record<string, any>[];
   onDeleteAttribute: (attributeId: number) => void;
   onDeleteAttributeValue: (valueId: number) => void;
   onOrderAttribute: (payload: Record<string, any>) => void;
@@ -80,7 +53,7 @@ export default function AttributeBoxes({
 
           {/* مقادیر AttributeValues */}
           <CardBody className="flex flex-row gap-2 flex-wrap">
-            {item.values.map((val, valIndex) => (
+            {item.values.map((val: Record<string, any>, valIndex: number) => (
               <div key={val.id} className="relative">
                 <Chip
                   color="secondary"
