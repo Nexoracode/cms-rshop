@@ -4,7 +4,7 @@ import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import { TbCategory2 } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 import {
@@ -16,14 +16,19 @@ const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
 
-  // هوک‌های mutate
   const updateAttributeMutation = useUpdateAttribute(0, undefined);
   const updateAttributeValueMutation = useUpdateAttributeValue(0, undefined);
 
+  useEffect(() => {
+    console.log(attributes);
+  }, [attributes]);
+
+  // --- حذف Attribute ---
   const handleDeleteAttribute = (attrId: number) => {
     setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
   };
 
+  // --- حذف AttributeValue ---
   const handleDeleteAttributeValue = (valId: number) => {
     setAttributes((prev) =>
       prev.map((a) => ({
@@ -33,48 +38,40 @@ const AttributesProducts = () => {
     );
   };
 
+  // --- مرتب سازی Attribute ---
   const handleOrderAttribute = (data: Record<string, any>) => {
-    
-    console.log(data);
-    
+    const { id, display_order } = data;
 
-    /* updateAttributeMutation.mutate(
-      { id, ...updatedAttr },
-      {
-        onSuccess: (res: any) => {
-          setAttributes((prev) =>
-            prev.map((a) => (a.attr.id === res.attr.id ? res : a))
-          );
-        },
-      }
-    ); */
+    setAttributes((prev) => {
+      const attrIndex = prev.findIndex((a) => a.attr.id === id);
+      if (attrIndex === -1) return prev;
+
+      const moved = prev[attrIndex];
+      const newArr = [...prev];
+      newArr.splice(attrIndex, 1); // حذف
+      newArr.splice(display_order, 0, moved); // اضافه کردن در ایندکس جدید
+
+      // ارسال به parent (API)
+      updateAttributeMutation.mutate(
+        { id, ...moved.attr },
+        {
+          onSuccess: (res: any) => {
+            setAttributes((cur) =>
+              cur.map((a) => (a.attr.id === res.attr.id ? res : a))
+            );
+          },
+        }
+      );
+
+      return newArr;
+    });
   };
 
+  // --- مرتب سازی AttributeValue ---
   const handleOrderAttributeValue = (data: Record<string, any>) => {
-
-    console.log(data);
-
-    /*     updateAttributeValueMutation.mutate(
-      { id, ...updatedValue },
-      {
-        onSuccess: (res: any) => {
-          console.log(res);
-          
-          setAttributes((prev) =>
-            prev.map((a, idx) =>
-              idx === attributeIndex
-                ? {
-                    ...a,
-                    values: a.values.map((v: any) =>
-                      v.id === res.id ? res : v
-                    ),
-                  }
-                : a
-            )
-          );
-        },
-      }
-    ); */
+    const { id, display_order, attr_id } = data;
+    /* console.log(data);
+    console.log(attributes); */
   };
 
   return (

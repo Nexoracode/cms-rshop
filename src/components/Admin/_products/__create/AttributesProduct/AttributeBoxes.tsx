@@ -1,90 +1,121 @@
 "use client";
 
-import React from "react";
 import { Card, CardBody, Chip } from "@heroui/react";
-import { AiOutlineClose } from "react-icons/ai";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import { TbTrash } from "react-icons/tb";
 
-type Props = {
-  attributes: Record<string, any>[];
-  onDeleteAttribute: (attributeId: number) => void;
-  onDeleteAttributeValue: (valueId: number) => void;
-  onOrderAttribute: (payload: Record<string, any>) => void;
-  onOrderAttributeValue: (payload: Record<string, any>) => void;
+type Attribute = {
+  attr: {
+    id: number;
+    name: string;
+    group?: string;
+  };
+  values: { id: number; value: string }[];
 };
 
-export default function AttributeBoxes({
+type Props = {
+  attributes: Attribute[];
+  onDeleteAttribute: (attributeId: number) => void;
+  onDeleteAttributeValue: (valueId: number) => void;
+  onOrderAttribute: (attribute: Record<string, any>) => void;
+  onOrderAttributeValue: (value: Record<string, any>) => void;
+};
+
+const AttributeBoxes = ({
   attributes,
   onDeleteAttribute,
   onDeleteAttributeValue,
   onOrderAttribute,
   onOrderAttributeValue,
-}: Props) {
+}: Props) => {
+  // --- state های مربوط به attribute ---
+  const [dragAttrIndex, setDragAttrIndex] = useState<number | null>(null);
+  const [hoverAttrIndex, setHoverAttrIndex] = useState<number | null>(null);
+
+  // --- state های مربوط به attribute value ---
+  const [dragVal, setDragVal] = useState<{ attrId: number; valIndex: number } | null>(null);
+  const [hoverValIndex, setHoverValIndex] = useState<number | null>(null);
+
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="flex flex-col gap-4">
       {attributes.map((item, attrIndex) => (
         <Card
           key={item.attr.id}
-          className="p-4 rounded-xl shadow-[0_0_5px_lightgray] transition-shadow duration-300 relative"
+          draggable
+          onDragStart={() => setDragAttrIndex(attrIndex)}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setHoverAttrIndex(attrIndex);
+          }}
+          onDrop={() => {
+            if (dragAttrIndex === null) return;
+            if (hoverAttrIndex === null) return;
+            if (dragAttrIndex === hoverAttrIndex) return;
+
+            const { attr } = attributes[dragAttrIndex];
+            const { group, ...payload } = attr;
+            onOrderAttribute({ ...payload, display_order: hoverAttrIndex });
+
+            setDragAttrIndex(null);
+            setHoverAttrIndex(null);
+          }}
+          className={`p-3 transition-all ${
+            hoverAttrIndex === attrIndex ? "ring-2 ring-purple-500" : ""
+          }`}
         >
-          {/* حذف Attribute */}
-          <div
-            className="absolute top-2 right-2 flex items-center justify-center w-4 h-4 text-red-500 hover:bg-red-100 rounded-full cursor-pointer z-10"
-            onClick={() => onDeleteAttribute(item.attr.id)}
-            title="حذف ویژگی"
-          >
-            <AiOutlineClose className="w-3 h-3 text-center" />
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-medium">{item.attr.name}</span>
+            <button
+              onClick={() => onDeleteAttribute(item.attr.id)}
+              className="text-red-500 hover:text-red-700"
+            >
+              <TbTrash />
+            </button>
           </div>
 
-          {/* نام Attribute */}
-          <h3
-            className="text-lg mb-3 text-gray-800 pr-4 cursor-pointer"
-            onClick={() => {
-              const { attr, values } = item;
-              const { group, ...payload } = attr;
-              onOrderAttribute({ ...payload, display_order: attrIndex });
+          <CardBody
+            className="flex flex-row gap-2 flex-wrap"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => {
+              if (!dragVal) return;
+              if (dragVal.attrId !== item.attr.id) return;
+              if (hoverValIndex === null) return;
+              if (dragVal.valIndex === hoverValIndex) return;
+
+              const val = item.values[dragVal.valIndex];
+              //
+              const noChangesItem = item.values.filter(attrVal => attrVal.id !== val.id)
+              const changeItem = { ...val, display_order: hoverValIndex }
+              const arr = [...noChangesItem, changeItem]
+              
+              onOrderAttributeValue({ ...val, display_order: hoverValIndex });
+
+              setDragVal(null);
+              setHoverValIndex(null);
             }}
           >
-            {item.attr.name}{" "}
-            <span className="text-sm text-gray-500">
-              ({item.attr.group.name})
-            </span>
-          </h3>
-
-          {/* مقادیر AttributeValues */}
-          <CardBody className="flex flex-row gap-2 flex-wrap">
-            {item.values.map((val: Record<string, any>, valIndex: number) => (
-              <div key={val.id} className="relative">
-                <Chip
-                  color="secondary"
-                  variant="flat"
-                  className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-colors duration-200"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOrderAttributeValue({
-                      ...val,
-                      display_order: valIndex,
-                    });
-                  }}
+            {item.values.map((val, valIndex) => (
+              <div
+                key={val.id}
+                draggable
+                onDragStart={() =>
+                  setDragVal({ attrId: item.attr.id, valIndex })
+                }
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setHoverValIndex(valIndex);
+                }}
+                className={`flex items-center gap-1 px-2 py-1 rounded-md border cursor-move transition-all ${
+                  hoverValIndex === valIndex ? "bg-purple-100" : "bg-gray-50"
+                }`}
+              >
+                <Chip>{val.value}</Chip>
+                <button
+                  onClick={() => onDeleteAttributeValue(val.id)}
+                  className="text-red-500 hover:text-red-700"
                 >
-                  {val.value}
-                </Chip>
-
-                {/* حذف Value */}
-                <div
-                  className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-red-500 hover:bg-red-100 rounded-full cursor-pointer z-10"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (item.values.length === 1) {
-                      toast.error("حداقل باید یک مقدار داشته باشد");
-                      return;
-                    }
-                    onDeleteAttributeValue(val.id);
-                  }}
-                  title="حذف مقدار"
-                >
-                  <AiOutlineClose className="w-3 h-3 text-center" />
-                </div>
+                  <TbTrash />
+                </button>
               </div>
             ))}
           </CardBody>
@@ -92,4 +123,6 @@ export default function AttributeBoxes({
       ))}
     </div>
   );
-}
+};
+
+export default AttributeBoxes;
