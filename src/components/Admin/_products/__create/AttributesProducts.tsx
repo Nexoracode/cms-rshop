@@ -4,7 +4,7 @@ import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import { TbCategory2 } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 import {
@@ -16,12 +16,9 @@ const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
 
+  // هوک‌های mutate
   const updateAttributeMutation = useUpdateAttribute(0, undefined);
   const updateAttributeValueMutation = useUpdateAttributeValue(0, undefined);
-
-  useEffect(() => {
-    console.log(attributes);
-  }, [attributes]);
 
   const handleDeleteAttribute = (attrId: number) => {
     setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
@@ -36,25 +33,48 @@ const AttributesProducts = () => {
     );
   };
 
-  const handleOrderAttribute = (updatedAttr: any) => {
-    updateAttributeMutation.mutate(updatedAttr, {
-      onSuccess: (res: any) =>
-        setAttributes((prev) =>
-          prev.map((a) => (a.attr.id === res.id ? res : a))
-        ),
-    });
+  const handleOrderAttribute = (data: Record<string, any>) => {
+    
+    console.log(data);
+    
+
+    /* updateAttributeMutation.mutate(
+      { id, ...updatedAttr },
+      {
+        onSuccess: (res: any) => {
+          setAttributes((prev) =>
+            prev.map((a) => (a.attr.id === res.attr.id ? res : a))
+          );
+        },
+      }
+    ); */
   };
 
-  const handleOrderAttributeValue = (updatedValue: any) => {
-    updateAttributeValueMutation.mutate(updatedValue, {
-      onSuccess: (res) =>
-        setAttributes((prev) =>
-          prev.map((a) => ({
-            ...a,
-            values: a.values.map((v: any) => (v.id === res.id ? res : v)),
-          }))
-        ),
-    });
+  const handleOrderAttributeValue = (data: Record<string, any>) => {
+
+    console.log(data);
+
+    /*     updateAttributeValueMutation.mutate(
+      { id, ...updatedValue },
+      {
+        onSuccess: (res: any) => {
+          console.log(res);
+          
+          setAttributes((prev) =>
+            prev.map((a, idx) =>
+              idx === attributeIndex
+                ? {
+                    ...a,
+                    values: a.values.map((v: any) =>
+                      v.id === res.id ? res : v
+                    ),
+                  }
+                : a
+            )
+          );
+        },
+      }
+    ); */
   };
 
   return (

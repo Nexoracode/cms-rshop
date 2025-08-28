@@ -184,8 +184,8 @@ export const useUpdateAttributeValue = (
         method: "PATCH",
         body: data,
         isActiveToast: true,
-        successText: "ویژگی با موفقیت بروزرسانی شد",
-        loadingText: "درحال بروزرسانی ویژگی...",
+        successText: "مقدار ویژگی با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی مقدار ویژگی...",
       });
     },
     onSuccess: () => {
