@@ -36,6 +36,8 @@ export const useAddNewAttributeGroup = () => {
 
 /* 📁 Attribute Groups End */
 
+//? ///////////////////////////////////////////////////////////////////////////
+
 /* 🧬 Attributes Start */
 
 export const useGetAllAttribute = (groupedId: number | undefined) => {
@@ -47,6 +49,18 @@ export const useGetAllAttribute = (groupedId: number | undefined) => {
         isActiveToast: false,
       }),
     enabled: !!groupedId,
+  });
+};
+
+export const useGetOneAttribute = (id: number | undefined) => {
+  return useQuery({
+    queryKey: ["attribute", id],
+    queryFn: () =>
+      fetcher({
+        route: `/attribute/${id}`,
+        isActiveToast: false,
+      }),
+    enabled: !!id,
   });
 };
 
@@ -70,25 +84,53 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
   });
 };
 
-export const useUpdateAttribute = (id: number) => {
+export const useUpdateAttribute = (
+  id: number,
+  groupedId: number | undefined
+) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (data: any) => {
-       fetcher({
+      fetcher({
         route: `/attribute/${id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
-        successText: "جایگاه ویژگی با موفقیت بروز شد",
-        loadingText: "درحال تغیر جایگاه ویژگی...",
-      })
+        successText: "ویژگی با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی ویژگی...",
+      });
     },
     onSuccess: () => {
-      
-    }
-  })
-}
+      queryClient.invalidateQueries({ queryKey: ["all-attribute", groupedId] });
+      queryClient.invalidateQueries({ queryKey: ["attribute", id] });
+    },
+  });
+};
+
+export const useDeleteAttribute = (groupedId: number | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      fetcher({
+        route: `/attribute/${id}`,
+        method: "DELETE",
+        isActiveToast: true,
+        successText: "ویژگی با موفقیت حذف شد",
+        loadingText: "درحال حذف ویژگی...",
+      });
+    },
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ["all-attribute", groupedId] });
+      queryClient.removeQueries({ queryKey: ["attribute", id] });
+    },
+  });
+};
 
 /* 🧬 Attributes End */
+
+//? ///////////////////////////////////////////////////////////////////////////
 
 /* 🔠 Attribute Values Start */
 
@@ -123,7 +165,58 @@ export const useAddNewAttributeValue = (attributeId: number | undefined) => {
     },
   });
 };
+
+export const useUpdateAttributeValue = (
+  id: number,
+  attributeId: number | undefined
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      fetcher({
+        route: `/attribute-value/${id}/order`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText: "ویژگی با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی ویژگی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["attribute-values", attributeId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["attribute-value", id] });
+    },
+  });
+};
+
+export const useDeleteAttributeValue = (attributeId: number | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      fetcher({
+        route: `/attribute-value/${id}`,
+        method: "DELETE",
+        isActiveToast: true,
+        successText: "ویژگی با موفقیت حذف شد",
+        loadingText: "درحال حذف ویژگی...",
+      });
+    },
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({
+        queryKey: ["attribute-values", attributeId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["attribute-value", id] });
+    },
+  });
+};
+
 /* 🔠 Attribute Values End */
+
+//? ///////////////////////////////////////////////////////////////////////////
 
 /* 🧩 Category Attributes Start */
 
@@ -159,6 +252,5 @@ export const useAddNewCategoryAttribute = (
     },
   });
 };
-
 
 /* 🧩 Category Attributes End */

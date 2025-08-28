@@ -8,16 +8,20 @@ import { useEffect, useState } from "react";
 import SubAttributeBox from "./helpers/SubAttributeBox";
 import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
+import { useGetOneAttribute } from "@/hooks/useAttribute";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
+  const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
+  const { data: oneAttribute } = useGetOneAttribute(selectedId);
 
   useEffect(() => {
-    if (attributes.length) {
-      console.log(attributes);
+    if (oneAttribute) {
+      setAttributes((prev) => [...prev, oneAttribute]);
+      setSelectedId(undefined);
     }
-  }, [attributes]);
+  }, [oneAttribute]);
 
   return (
     <>
@@ -42,7 +46,7 @@ const AttributesProducts = () => {
             onOrderAttributeValue={() => {}}
           />
 
-          {attributes.length ? (
+          {/*  {attributes.length ? (
             attributes.map((attr, index) => (
               <SubAttributeBox
                 key={index}
@@ -56,7 +60,7 @@ const AttributesProducts = () => {
               ■ این محصول تنوع رنگ‌بندی و سایزبندی و ... دارد؟ از این بخش
               می‌تونید آنها را اضافه کنید.
             </p>
-          )}
+          )} */}
           <Button color="success" className="text-white">
             ثبت ویژگی های محصولات
           </Button>
@@ -66,7 +70,7 @@ const AttributesProducts = () => {
       <AddNewAttributesModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={(data) => setAttributes((prev) => [...prev, data])}
+        onSubmit={(data) => setSelectedId(data.attr.id)}
       />
     </>
   );
