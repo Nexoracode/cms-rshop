@@ -70,6 +70,24 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
   });
 };
 
+export const useUpdateAttribute = (id: number) => {
+  return useMutation({
+    mutationFn: async (data: any) => {
+       fetcher({
+        route: `/attribute/${id}`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText: "جایگاه ویژگی با موفقیت بروز شد",
+        loadingText: "درحال تغیر جایگاه ویژگی...",
+      })
+    },
+    onSuccess: () => {
+      
+    }
+  })
+}
+
 /* 🧬 Attributes End */
 
 /* 🔠 Attribute Values Start */

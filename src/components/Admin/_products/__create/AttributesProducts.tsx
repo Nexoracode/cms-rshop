@@ -34,7 +34,13 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          <AttributeBoxes attributes={attributes} onDeleteAttribute={() => {}} onDeleteAttributeValue={() => {}} onMoveAttributeToTop={() => {}} onMoveValueToTop={() => {}}/>
+          <AttributeBoxes
+            attributes={attributes}
+            onDeleteAttribute={() => {}}
+            onDeleteAttributeValue={() => {}}
+            onOrderAttribute={() => {}}
+            onOrderAttributeValue={() => {}}
+          />
 
           {attributes.length ? (
             attributes.map((attr, index) => (
@@ -56,12 +62,6 @@ const AttributesProducts = () => {
           </Button>
         </CardBody>
       </Card>
-
-      {/*  <AddNewAttributeModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onSubmit={setAttributes}
-      /> */}
 
       <AddNewAttributesModal
         isOpen={isOpen}

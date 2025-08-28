@@ -24,7 +24,6 @@ import AddNewAttributeGroup from "./AddNewAttributeGroup";
 import AddNewAttributeValue from "./AddNewAttributeValue";
 
 type AttributeData = {
-  attrGroup: Record<string, any>;
   attr: Record<string, any>;
   values: Record<string, any>[];
 };
@@ -73,19 +72,15 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   }
 
   const handleChangesCategoryAttributes = () => {
-    // پیدا کردن آبجکت attribute group
-    const group = attributeGroup?.data.find(
-      (g: any) => g.id === selectedAttrGroup
-    );
-    // پیدا کردن آبجکت attribute
+
     const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
-    // پیدا کردن آبجکت‌های values
+
     const values = attributeValues?.data.filter((v: any) =>
       attrValues.includes(v.id.toString())
     );
 
-    if (group && attr && values?.length) {
-      onSubmit({ attrGroup: group, attr: attr, values: values });
+    if (attr && values?.length) {
+      onSubmit({ attr: attr, values: values });
       resetModalInfos()
     }
   };
