@@ -52,7 +52,8 @@ const AddNewAttribute: React.FC<Props> = ({
           labelPlacement="outside"
           onChange={(e) => {
             onChange(+e.target.value);
-            setSelectedAttr;
+            const selected = attr.find((a: any) => a.id === +e.target.value);
+            setSelectedAttr(selected);
           }}
         >
           {attr && attr?.length ? (
