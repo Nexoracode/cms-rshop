@@ -2,10 +2,45 @@
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
-import AttributesModal from "./AttributesModal";
+import AddNewAttributeModal from "./AddNewAttributeModal";
+import { useEffect, useState } from "react";
+import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
+import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
-const AddNewAttribute = () => {
+type Props = {
+  onChange: (value: number | undefined) => void;
+  attr: Record<string, any>[];
+  groupedId: number | undefined;
+};
+
+const AddNewAttribute: React.FC<Props> = ({
+  onChange,
+  attr: attributes,
+  groupedId,
+}) => {
+  const [attr, setAttr] = useState<Record<string, any>>([]);
+  const [selectedAttr, setSelectedAttr] = useState<
+    Record<string, any> | undefined
+  >(undefined);
+  const [type, setType] = useState<"edit" | "add">("add");
+  //? Hooks
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const deleteAttribute = useDeleteAttribute(groupedId);
+
+  useEffect(() => {
+    setAttr(attributes);
+  }, [attributes]);
+
+  const handleDeleteAttr = () => {
+    if (!selectedAttr) return;
+    deleteAttribute.mutate(selectedAttr.id, {
+      onSuccess: () => {
+        setSelectedAttr(undefined);
+        setAttr((prev) => prev.filter((g: any) => g.id !== selectedAttr.id));
+        onChange(undefined);
+      },
+    });
+  };
 
   return (
     <>
@@ -16,12 +51,12 @@ const AddNewAttribute = () => {
           placeholder="ویژگی را انتخاب کنید"
           labelPlacement="outside"
           onChange={(e) => {
-            setSelectedAttr(+e.target.value);
-            setAttrValues([]);
+            onChange(+e.target.value);
+            setSelectedAttr;
           }}
         >
-          {attributes && attributes?.data?.length ? (
-            attributes.data.map((item: any) => (
+          {attr && attr?.length ? (
+            attr.map((item: any) => (
               <SelectItem key={item.id}>{item.name}</SelectItem>
             ))
           ) : (
@@ -32,17 +67,35 @@ const AddNewAttribute = () => {
         <HeaderAction
           title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
           textBtn={"+ افزودن"}
-          onPress={on}
+          onPress={onOpen}
         />
+
         {selectedAttr ? (
-          <Button size="sm" className="w-full">
-            ویرایش ویژگی انتخاب شده
-          </Button>
+          <div className="flex items-center gap-4 mt-2">
+            <DoubleClickBtn
+              onPress={handleDeleteAttr}
+              textBtn="حذف ویژگی فعلی"
+              color="danger"
+              size="sm"
+              isActiveDoubleClick
+              className="w-full"
+            />
+            <Button
+              size="sm"
+              className="w-full"
+              onPress={() => {
+                onOpen();
+                setType("edit");
+              }}
+            >
+              ویرایش ویژگی فعلی
+            </Button>
+          </div>
         ) : (
           ""
         )}
       </div>
-      <AttributesModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AddNewAttributeModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };

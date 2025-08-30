@@ -9,13 +9,12 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
-import {
-  useGetAllAttribute
-} from "@/hooks/attributes/useAttribute";
+import { useGetAllAttribute } from "@/hooks/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
+import AddNewAttribute from "./Attribute/AddNewAttribute";
 
 type AttributeData = {
   attr: Record<string, any>;
@@ -87,6 +86,14 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                   setAttrValues([]);
                 }}
                 attrGroup={attributeGroup?.data}
+              />
+              <AddNewAttribute
+                onChange={(value) => {
+                  setSelectedAttr(value)
+                  setAttrValues([]);
+                }}
+                attr={attributes?.data}
+                groupedId={selectedAttrGroup}
               />
             </ModalBody>
             <ModalFooter>
