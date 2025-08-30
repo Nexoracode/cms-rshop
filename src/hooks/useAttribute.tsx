@@ -39,6 +39,26 @@ export const useAddNewAttributeGroup = () => {
   });
 };
 
+export const useUpdateAttributeGroup = (id: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      return fetcher({
+        route: `/attribute-group/${id}`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText: "دسته بندی با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی دسته بندی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
+    },
+  });
+};
+
 export const useDeleteAttributeGroup = () => {
   const queryClient = useQueryClient();
 

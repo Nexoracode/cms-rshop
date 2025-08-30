@@ -2,7 +2,7 @@
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
-import AddNewAttributeGroup from "../AddNewAttributeGroup";
+import AddNewAttributeGroupModal from "../AddNewAttributeGroupModal";
 import React, { useEffect, useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeGroup } from "@/hooks/useAttribute";
@@ -88,7 +88,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
           ""
         )}
       </div>
-      <AddNewAttributeGroup
+      <AddNewAttributeGroupModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         defaultDatas={selectedAttrGroup}

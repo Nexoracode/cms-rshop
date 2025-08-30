@@ -1,6 +1,9 @@
 "use client";
 
-import { useAddNewAttributeGroup } from "@/hooks/useAttribute";
+import {
+  useAddNewAttributeGroup,
+  useUpdateAttributeGroup,
+} from "@/hooks/useAttribute";
 import {
   Button,
   Input,
@@ -18,22 +21,34 @@ type Props = {
   defaultDatas: any;
 };
 
-const initialState = { name: "", slug: "", display_order: null };
+const initialState = { name: "", slug: "", display_order: null, id: 0 };
 
-const AddNewAttributeGroup = ({
+const AddNewAttributeGroupModal = ({
   isOpen,
   onOpenChange,
   defaultDatas = initialState,
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
   const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
+  const { mutate: updateAttributeGroup } = useUpdateAttributeGroup(datas.id);
 
   useEffect(() => {
-    setDatas(defaultDatas)
-  }, [defaultDatas])
+    setDatas(defaultDatas);
+  }, [defaultDatas]);
+
+  const handleUpdateAttributeGroup = () => {
+    const { id, ...rest } = datas;
+    updateAttributeGroup(rest, {
+      onSuccess: () => {
+        onOpenChange();
+        setDatas(initialState);
+      },
+    });
+  };
 
   const handleCreateNewAttributeGroup = () => {
-    createAttributeGroup(datas, {
+    const { id, ...rest } = datas;
+    createAttributeGroup(rest, {
       onSuccess: () => {
         onOpenChange();
         setDatas(initialState);
@@ -80,7 +95,11 @@ const AddNewAttributeGroup = ({
                 color="secondary"
                 className="w-full mt-4"
                 isDisabled={!datas.name.length || !datas.slug.length}
-                onPress={handleCreateNewAttributeGroup}
+                onPress={() =>
+                  datas.id
+                    ? handleUpdateAttributeGroup()
+                    : handleCreateNewAttributeGroup()
+                }
               >
                 ثبت تغیرات
               </Button>
@@ -92,4 +111,4 @@ const AddNewAttributeGroup = ({
   );
 };
 
-export default AddNewAttributeGroup;
+export default AddNewAttributeGroupModal;
