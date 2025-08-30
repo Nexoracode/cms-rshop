@@ -11,9 +11,9 @@ import {
 import { TbSettings } from "react-icons/tb";
 import {
   useGetAllAttribute,
-  useGetAllAttributeGroup,
   useGetAttributeValues,
 } from "@/hooks/useAttribute";
+import { useGetAllAttributeGroup } from "@/hooks/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AddNewAttrGroup";
 

@@ -3,7 +3,7 @@
 import {
   useAddNewAttributeGroup,
   useUpdateAttributeGroup,
-} from "@/hooks/useAttribute";
+} from "@/hooks/useAttributeGroup";
 import {
   Button,
   Input,

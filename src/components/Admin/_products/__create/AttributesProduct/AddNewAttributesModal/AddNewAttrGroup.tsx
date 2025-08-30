@@ -5,7 +5,7 @@ import HeaderAction from "../../helpers/HeaderAction";
 import AddNewAttributeGroupModal from "../AddNewAttributeGroupModal";
 import React, { useEffect, useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
-import { useDeleteAttributeGroup } from "@/hooks/useAttribute";
+import { useDeleteAttributeGroup } from "@/hooks/useAttributeGroup";
 
 type Props = {
   onChange: (value: number | undefined) => void;
