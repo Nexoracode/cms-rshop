@@ -5,7 +5,7 @@ import { TbCategory2 } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
-import AddNewAttributesModal from "./AttributesProduct/AddNewAttributesModal/AddNewAttributesModal";
+import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 import {
   useUpdateAttribute,

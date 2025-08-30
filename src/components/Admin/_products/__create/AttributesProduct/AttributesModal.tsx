@@ -15,7 +15,7 @@ import {
 } from "@/hooks/useAttribute";
 import { useGetAllAttributeGroup } from "@/hooks/useAttributeGroup";
 import { useState } from "react";
-import AddNewAttrGroup from "../AttributeGroup/AddNewAttrGroup";
+import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 
 type AttributeData = {
   attr: Record<string, any>;

@@ -2,14 +2,10 @@
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
-import AddNewAttribute from "../AddNewAttribute";
+import AddNewAttributeModal from "./AddNewAttributeModal";
 
-const AddNewAttr = () => {
-  const {
-    isOpen: isOpenTypeAttr,
-    onOpen: onOpenTypeAttr,
-    onOpenChange: onOpenChangeTypeAttr,
-  } = useDisclosure();
+const AddNewAttribute = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
@@ -36,7 +32,7 @@ const AddNewAttr = () => {
         <HeaderAction
           title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
           textBtn={"+ افزودن"}
-          onPress={onOpenAttr}
+          onPress={on}
         />
         {selectedAttr ? (
           <Button size="sm" className="w-full">
@@ -46,9 +42,9 @@ const AddNewAttr = () => {
           ""
         )}
       </div>
-      <AddNewAttribute isOpen={isOpenAttr} onOpenChange={onOpenChangeAttr} />
+      <AddNewAttributeModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
 
-export default AddNewAttr;
+export default AddNewAttribute;
