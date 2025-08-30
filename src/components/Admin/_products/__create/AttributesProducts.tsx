@@ -10,7 +10,7 @@ import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 import {
   useUpdateAttribute,
   useUpdateAttributeValue,
-} from "@/hooks/useAttribute";
+} from "@/hooks/attributes/useAttribute";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

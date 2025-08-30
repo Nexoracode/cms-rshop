@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
-import AddNewAttributeValue from "../AddNewAttributeValue";
+import AddNewAttributeValue from "./AddNewAttributeValue";
 import HeaderAction from "../../helpers/HeaderAction";
 import { useState } from "react";
 
