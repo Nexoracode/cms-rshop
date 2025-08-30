@@ -13,7 +13,10 @@ import {
   SelectItem,
   Switch,
 } from "@heroui/react";
-import { useAddNewAttribute } from "@/hooks/attributes/useAttribute";
+import {
+  useAddNewAttribute,
+  useUpdateAttribute,
+} from "@/hooks/attributes/useAttribute";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 //? Icons
 import { AiOutlineFontColors } from "react-icons/ai";
@@ -25,9 +28,22 @@ import { ImCheckmark2 } from "react-icons/im";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
+  defaultDatas: any;
+  type: "edit" | "add";
 };
 
-const initialData = {
+type Attr = {
+  name: string;
+  group_id: number | null;
+  is_public: boolean;
+  slug: string;
+  type: string;
+  display_order: null;
+  is_variant: boolean;
+  id?: number;
+};
+
+const initialState: Attr = {
   name: "",
   group_id: null,
   is_public: false,
@@ -37,11 +53,20 @@ const initialData = {
   is_variant: false,
 };
 
-const AddNewAttributeModal = ({ isOpen, onOpenChange }: Props) => {
-  const [datas, setDatas] = useState(initialData);
+const AddNewAttributeModal = ({
+  isOpen,
+  onOpenChange,
+  defaultDatas,
+  type,
+}: Props) => {
+  const [datas, setDatas] = useState(initialState);
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
   const { mutate: createAttribute } = useAddNewAttribute(
+    datas.group_id === null ? undefined : datas.group_id
+  );
+  const { mutate: updateAttribute } = useUpdateAttribute(
+    datas?.id ? datas.id : -1,
     datas.group_id === null ? undefined : datas.group_id
   );
 
@@ -83,12 +108,23 @@ const AddNewAttributeModal = ({ isOpen, onOpenChange }: Props) => {
       icon: <ImCheckmark2 className="w-4 h-4" />,
     },
   ];
-  //! actions
-  const handleNewAttribute = () => {
-    createAttribute(datas, {
+
+  const handleUpdateAttribute = () => {
+    const { id, ...rest } = datas;
+    updateAttribute(rest, {
       onSuccess: () => {
         onOpenChange();
-        setDatas(initialData);
+        setDatas(initialState);
+      },
+    });
+  };
+
+  const handleNewAttribute = () => {
+    const { id, ...rest } = datas;
+    createAttribute(rest, {
+      onSuccess: () => {
+        onOpenChange();
+        setDatas(initialState);
       },
     });
   };
@@ -200,9 +236,13 @@ const AddNewAttributeModal = ({ isOpen, onOpenChange }: Props) => {
                   !datas.slug.length ||
                   !datas.type
                 }
-                onPress={handleNewAttribute}
+                onPress={() => {
+                  type === "edit"
+                    ? handleUpdateAttribute()
+                    : handleNewAttribute();
+                }}
               >
-                افزودن ویژگی
+                ثبت تغیرات
               </Button>
             </ModalFooter>
           </>

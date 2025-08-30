@@ -96,7 +96,12 @@ const AddNewAttribute: React.FC<Props> = ({
           ""
         )}
       </div>
-      <AddNewAttributeModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AddNewAttributeModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        defaultDatas={selectedAttr}
+        type={type}
+      />
     </>
   );
 };

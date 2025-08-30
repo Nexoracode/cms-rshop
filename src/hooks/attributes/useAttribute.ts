@@ -67,6 +67,7 @@ export const useUpdateAttribute = (
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute", groupedId] });
       queryClient.invalidateQueries({ queryKey: ["attribute", id] });
+      queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
     },
   });
 };
