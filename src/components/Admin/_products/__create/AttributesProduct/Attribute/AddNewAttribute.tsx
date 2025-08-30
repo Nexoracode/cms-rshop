@@ -11,12 +11,14 @@ type Props = {
   onChange: (value: number | undefined) => void;
   attr: Record<string, any>[];
   groupedId: number | undefined;
+  selectedAttr: Record<string, any> | undefined;
 };
 
 const AddNewAttribute: React.FC<Props> = ({
   onChange,
   attr: attributes,
   groupedId,
+  selectedAttr: selectedAttributes,
 }) => {
   const [attr, setAttr] = useState<Record<string, any>>([]);
   const [selectedAttr, setSelectedAttr] = useState<
@@ -28,8 +30,13 @@ const AddNewAttribute: React.FC<Props> = ({
   const deleteAttribute = useDeleteAttribute(groupedId);
 
   useEffect(() => {
+    console.log(attributes);
     setAttr(attributes);
   }, [attributes]);
+
+  useEffect(() => {
+    setSelectedAttr(selectedAttributes);
+  }, [selectedAttributes]);
 
   const handleDeleteAttr = () => {
     if (!selectedAttr) return;
@@ -68,7 +75,10 @@ const AddNewAttribute: React.FC<Props> = ({
         <HeaderAction
           title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
           textBtn={"+ افزودن"}
-          onPress={onOpen}
+          onPress={() => {
+            onOpen();
+            setType("add");
+          }}
         />
 
         {selectedAttr ? (

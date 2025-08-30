@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Input,
@@ -63,12 +63,16 @@ const AddNewAttributeModal = ({
   //? Hooks
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
   const { mutate: createAttribute } = useAddNewAttribute(
-    datas.group_id === null ? undefined : datas.group_id
+    datas?.group_id || undefined
   );
   const { mutate: updateAttribute } = useUpdateAttribute(
     datas?.id ? datas.id : -1,
-    datas.group_id === null ? undefined : datas.group_id
+    datas?.group_id || undefined
   );
+
+  useEffect(() => {
+    type === "add" ? setDatas(initialState) : setDatas(defaultDatas);
+  }, [defaultDatas, type]);
 
   // attribute types
   const productInputTypes = [
