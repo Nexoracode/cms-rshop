@@ -20,6 +20,8 @@ const AddNewAttrGroup: React.FC<Props> = ({
   const [selectedAttrGroup, setSelectedAttrGroup] = useState<
     Record<string, any> | undefined
   >(undefined);
+  const [type, setType] = useState<"edit" | "add">("add");
+  //? Hooks
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const deleteAttributeGroup = useDeleteAttributeGroup();
 
@@ -32,8 +34,8 @@ const AddNewAttrGroup: React.FC<Props> = ({
     deleteAttributeGroup.mutate(selectedAttrGroup.id, {
       onSuccess: () => {
         setSelectedAttrGroup(undefined);
-        setAttrGrop(
-          (prev) => prev.filter((g: any) => g.id !== selectedAttrGroup.id)
+        setAttrGrop((prev) =>
+          prev.filter((g: any) => g.id !== selectedAttrGroup.id)
         );
         onChange(undefined);
       },
@@ -68,7 +70,10 @@ const AddNewAttrGroup: React.FC<Props> = ({
         <HeaderAction
           title={"در صورت نیاز میتوانید دسته بندی جدیدی اضافه کنید"}
           textBtn={"+ افزودن"}
-          onPress={onOpen}
+          onPress={() => {
+            onOpen();
+            setType("add");
+          }}
         />
         {selectedAttrGroup ? (
           <div className="flex items-center gap-4 mt-2">
@@ -80,7 +85,14 @@ const AddNewAttrGroup: React.FC<Props> = ({
               isActiveDoubleClick
               className="w-full"
             />
-            <Button size="sm" onPress={onOpen} className="w-full">
+            <Button
+              size="sm"
+              className="w-full"
+              onPress={() => {
+                onOpen();
+                setType("edit");
+              }}
+            >
               ویرایش دسته بندی فعلی
             </Button>
           </div>
@@ -92,6 +104,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         defaultDatas={selectedAttrGroup}
+        type={type}
       />
     </>
   );

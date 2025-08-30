@@ -19,22 +19,33 @@ type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
   defaultDatas: any;
+  type: "edit" | "add";
 };
 
-const initialState = { name: "", slug: "", display_order: null, id: 0 };
+type AttrGroup = {
+  name: string;
+  slug: string;
+  display_order: null;
+  id?: number;
+};
+
+const initialState: AttrGroup = { name: "", slug: "", display_order: null };
 
 const AddNewAttributeGroupModal = ({
   isOpen,
   onOpenChange,
   defaultDatas = initialState,
+  type,
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
   const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
-  const { mutate: updateAttributeGroup } = useUpdateAttributeGroup(datas.id);
+  const { mutate: updateAttributeGroup } = useUpdateAttributeGroup(
+    datas?.id ? datas.id : -1
+  );
 
   useEffect(() => {
-    setDatas(defaultDatas);
-  }, [defaultDatas]);
+    type === "add" ? setDatas(initialState) : setDatas(defaultDatas);
+  }, [defaultDatas, type]);
 
   const handleUpdateAttributeGroup = () => {
     const { id, ...rest } = datas;
@@ -96,7 +107,7 @@ const AddNewAttributeGroupModal = ({
                 className="w-full mt-4"
                 isDisabled={!datas.name.length || !datas.slug.length}
                 onPress={() =>
-                  datas.id
+                  type === "edit"
                     ? handleUpdateAttributeGroup()
                     : handleCreateNewAttributeGroup()
                 }
