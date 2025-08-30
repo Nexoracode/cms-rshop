@@ -2,7 +2,7 @@
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
-import AddNewAttributeModal from "./AddNewAttributeModal";
+import AttributesModal from "./AttributesModal";
 
 const AddNewAttribute = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -42,7 +42,7 @@ const AddNewAttribute = () => {
           ""
         )}
       </div>
-      <AddNewAttributeModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AttributesModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };

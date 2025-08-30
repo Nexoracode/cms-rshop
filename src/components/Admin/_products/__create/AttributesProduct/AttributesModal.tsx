@@ -10,9 +10,9 @@ import {
 } from "@heroui/react";
 import { TbSettings } from "react-icons/tb";
 import {
-  useGetAllAttribute,
-  useGetAttributeValues,
+  useGetAllAttribute
 } from "@/hooks/attributes/useAttribute";
+import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
@@ -28,7 +28,7 @@ type Props = {
   onSubmit: (data: AttributeData) => void;
 };
 
-const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
+const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState<
     number | undefined
   >(undefined);
@@ -111,4 +111,4 @@ const AddNewAttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   );
 };
 
-export default AddNewAttributesModal;
+export default AttributesModal;

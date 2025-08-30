@@ -9,9 +9,8 @@ import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
 import {
   useUpdateAttribute,
-  useUpdateAttributeValue,
 } from "@/hooks/attributes/useAttribute";
-
+import { useUpdateAttributeValue } from "@/hooks/attributes/useAttributeValue";
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
