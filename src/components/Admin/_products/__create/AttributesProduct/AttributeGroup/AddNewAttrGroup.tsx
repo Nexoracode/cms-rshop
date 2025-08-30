@@ -2,7 +2,7 @@
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
-import AddNewAttributeGroupModal from "../AddNewAttributeGroupModal";
+import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useEffect, useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeGroup } from "@/hooks/useAttributeGroup";

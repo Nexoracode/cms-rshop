@@ -18,7 +18,7 @@ import {
   useAddNewAttribute,
   useGetAllAttributeGroup,
 } from "@/hooks/useAttribute";
-import AddNewAttributeGroup from "./AddNewAttributeGroupModal";
+import AddNewAttributeGroup from "./AttributeGroup/AddNewAttributeGroupModal";
 import HeaderAction from "../helpers/HeaderAction";
 //? Icons
 import { AiOutlineFontColors } from "react-icons/ai";
