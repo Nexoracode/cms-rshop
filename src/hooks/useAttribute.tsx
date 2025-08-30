@@ -39,6 +39,25 @@ export const useAddNewAttributeGroup = () => {
   });
 };
 
+export const useDeleteAttributeGroup = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return fetcher({
+        route: `/attribute-group/${id}`,
+        method: "DELETE",
+        isActiveToast: true,
+        successText: "دسته بندی با موفقیت حذف شد",
+        loadingText: "درحال حذف دسته بندی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
+    },
+  });
+};
+
 /* 📁 Attribute Groups End */
 
 //? ///////////////////////////////////////////////////////////////////////////

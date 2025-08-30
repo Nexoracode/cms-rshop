@@ -10,33 +10,34 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
+  defaultDatas: any;
 };
 
-const AddNewAttributeGroup = ({ isOpen, onOpenChange }: Props) => {
-  const [datas, setDatas] = useState({
-    name: "",
-    slug: "",
-    display_order: null,
-  });
-  //? Hooks
+const initialState = { name: "", slug: "", display_order: null };
+
+const AddNewAttributeGroup = ({
+  isOpen,
+  onOpenChange,
+  defaultDatas = initialState,
+}: Props) => {
+  const [datas, setDatas] = useState(initialState);
   const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
-  //
+
+  useEffect(() => {
+    setDatas(defaultDatas)
+  }, [defaultDatas])
 
   const handleCreateNewAttributeGroup = () => {
     createAttributeGroup(datas, {
       onSuccess: () => {
-        onOpenChange()
-        setDatas({
-          name: "",
-          slug: "",
-          display_order: null
-        })
-      }
+        onOpenChange();
+        setDatas(initialState);
+      },
     });
   };
 
@@ -81,7 +82,7 @@ const AddNewAttributeGroup = ({ isOpen, onOpenChange }: Props) => {
                 isDisabled={!datas.name.length || !datas.slug.length}
                 onPress={handleCreateNewAttributeGroup}
               >
-                افزودن 
+                ثبت تغیرات
               </Button>
             </ModalFooter>
           </>

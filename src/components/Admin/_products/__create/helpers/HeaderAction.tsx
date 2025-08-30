@@ -12,7 +12,7 @@ type Props = {
 const HeaderAction: React.FC<Props> = ({ title, onPress, isDisabled = false, textBtn }) => {
 
     return (
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between mt-2">
             <span className="text-gray-600 text-[13px]">{title}</span>
             <Button
                 color="secondary"
