@@ -30,6 +30,7 @@ type Props = {
   onOpenChange: () => void;
   defaultDatas: any;
   type: "edit" | "add";
+  onSuccess: (updated: any) => void;
 };
 
 type Attr = {
@@ -58,6 +59,7 @@ const AddNewAttributeModal = ({
   onOpenChange,
   defaultDatas,
   type,
+  onSuccess,
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
   //? Hooks
@@ -115,10 +117,12 @@ const AddNewAttributeModal = ({
 
   const handleUpdateAttribute = () => {
     const { id, ...rest } = datas;
+
     updateAttribute(rest, {
       onSuccess: () => {
         onOpenChange();
         setDatas(initialState);
+        onSuccess({ ...datas, ...rest });
       },
     });
   };
@@ -171,6 +175,7 @@ const AddNewAttributeModal = ({
                   label="تایپ ویژگی"
                   placeholder="تایپ ویژگی را انتخاب کنید"
                   labelPlacement="outside"
+                  selectedKeys={[datas.type]}
                   onChange={(e) =>
                     setDatas((prev) => ({ ...prev, type: e.target.value }))
                   }
@@ -188,12 +193,15 @@ const AddNewAttributeModal = ({
                     placeholder="دسته بندی ویژگی را انتخاب کنید"
                     labelPlacement="outside"
                     className="-mb-2"
-                    onChange={(e) =>
+                    selectedKeys={
+                      datas.group_id ? [datas.group_id.toString()] : []
+                    }
+                    onChange={(e) => {
                       setDatas((prev: any) => ({
                         ...prev,
                         group_id: +e.target.value,
-                      }))
-                    }
+                      }));
+                    }}
                   >
                     {getAllAttributeGroup?.data ? (
                       getAllAttributeGroup.data.map((item: any) => (

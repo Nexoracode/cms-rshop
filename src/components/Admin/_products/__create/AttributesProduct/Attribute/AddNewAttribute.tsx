@@ -57,6 +57,7 @@ const AddNewAttribute: React.FC<Props> = ({
           label="ویژگی"
           placeholder="ویژگی را انتخاب کنید"
           labelPlacement="outside"
+          selectedKeys={selectedAttr ? [selectedAttr.id.toString()] : []}
           onChange={(e) => {
             onChange(+e.target.value);
             const selected = attr.find((a: any) => a.id === +e.target.value);
@@ -108,9 +109,18 @@ const AddNewAttribute: React.FC<Props> = ({
       </div>
       <AddNewAttributeModal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={() => {
+          onOpenChange();
+        }}
         defaultDatas={selectedAttr}
         type={type}
+        onSuccess={(updated) => {
+          if (updated && updated.group_id !== groupedId) {
+            setSelectedAttr(undefined);
+            setAttr((prev) => prev.filter((g: any) => g.id !== updated.id));
+            onChange(undefined);
+          }
+        }}
       />
     </>
   );
