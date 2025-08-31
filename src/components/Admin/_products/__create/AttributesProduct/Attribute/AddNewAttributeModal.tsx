@@ -73,7 +73,7 @@ const AddNewAttributeModal = ({
   );
 
   useEffect(() => {
-    type === "add" ? setDatas(initialState) : setDatas(defaultDatas);
+    type === "add" ? setDatas(initialState) : setDatas(defaultDatas || initialState);
   }, [defaultDatas, type]);
 
   // attribute types

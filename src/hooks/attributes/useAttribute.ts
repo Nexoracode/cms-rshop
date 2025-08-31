@@ -55,7 +55,7 @@ export const useUpdateAttribute = (
 
   return useMutation({
     mutationFn: async (data: any) => {
-      fetcher({
+      return fetcher({
         route: `/attribute/${id}`,
         method: "PATCH",
         body: data,
