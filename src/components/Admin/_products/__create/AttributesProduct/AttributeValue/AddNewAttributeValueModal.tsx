@@ -49,7 +49,9 @@ const AddNewAttributeValueModal = ({
   type,
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
-  const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
+  const [isActiveColorPicker, setIsActiveColorPicker] = useState(
+    datas?.display_color?.length ? true : false
+  );
   //? Hooks
   const { mutate: createAttributeValue } = useAddNewAttributeValue(attributeId);
   const { mutate: updateAttributeValue } = useUpdateAttributeValue(
@@ -64,14 +66,16 @@ const AddNewAttributeValueModal = ({
   }, [defaultDatas, type]);
 
   const handleUpdateAttributeValue = () => {
-    const { id, ...rest } = datas;
-    console.log(rest);
-    updateAttributeValue(rest, {
-      onSuccess: () => {
-        onOpenChange();
-        setDatas(initialState);
-      },
-    });
+    const { id, attribute_id, ...rest } = datas;
+    updateAttributeValue(
+      { ...rest, attributeId: attributeId },
+      {
+        onSuccess: () => {
+          onOpenChange();
+          setDatas(initialState);
+        },
+      }
+    );
   };
 
   const handleCreateNewAttributeValue = () => {

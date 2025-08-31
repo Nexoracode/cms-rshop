@@ -35,7 +35,9 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   const [selectedAttr, setSelectedAttr] = useState<number | undefined>(
     undefined
   );
-  const [selectedAttrValueIds, setSelectedAttrValueIds] = useState<number[]>([]);
+  const [selectedAttrValueIds, setSelectedAttrValueIds] = useState<number[]>(
+    []
+  );
   //? Hooks
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
@@ -49,7 +51,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   };
 
   const handleChangesCategoryAttributes = () => {
-  /*   const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
+    /*   const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
 
     const values = attributeValues?.data.filter((v: any) =>
       attrValues.includes(v.id.toString())
@@ -100,9 +102,10 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                 selectedAttrIds={selectedAttr}
                 attrValues={attributeValues?.data}
                 onChange={(ids) => {
-                    setSelectedAttrValueIds(ids);
+                  setSelectedAttrValueIds(ids);
                 }}
                 selectedValues={selectedAttrValueIds}
+                selectedAttrId={selectedAttr}
               />
             </ModalBody>
             <ModalFooter>

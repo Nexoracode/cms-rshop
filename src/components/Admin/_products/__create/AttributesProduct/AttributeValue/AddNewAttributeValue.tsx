@@ -6,12 +6,14 @@ import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import HeaderAction from "../../helpers/HeaderAction";
 import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
 
 type Props = {
   selectedAttrIds: number | undefined; // id of attribute
   attrValues: Record<string, any>[]; // list of possible values from server
   selectedValues: number[]; // selected value ids (from parent state)
   onChange: (values: number[]) => void; // notify parent with array of selected ids
+  selectedAttrId: number | undefined
 };
 
 const AddNewAttributeValue: React.FC<Props> = ({
@@ -19,6 +21,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
   attrValues,
   selectedValues,
   onChange,
+  selectedAttrId
 }) => {
   const [editAttrValue, setEditAttrValue] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -26,8 +29,16 @@ const AddNewAttributeValue: React.FC<Props> = ({
   const [selectedAttrValueId, setSelectedAttrValueId] = useState<
     number | undefined
   >(undefined);
+    const deleteAttributeValue = useDeleteAttributeValue(selectedAttrId);
 
-  const handleDeleteAttrValue = () => {};
+  const handleDeleteAttrValue = () => {
+    if (!selectedAttrValueId) return;
+    deleteAttributeValue.mutate(selectedAttrValueId, {
+      onSuccess: () => {
+        
+      },
+    });
+  };
 
   const handleChange = (e: any) => {
     const raw = e.target.value || "";
@@ -99,8 +110,8 @@ const AddNewAttributeValue: React.FC<Props> = ({
               size="sm"
               className="w-full bg-gray-100"
               onPress={() => {
-                setEditAttrValue((prev) => !prev)
-                setSelectedAttrValueId(undefined)   
+                setEditAttrValue((prev) => !prev);
+                setSelectedAttrValueId(undefined);
               }}
             >
               {!editAttrValue
@@ -140,8 +151,8 @@ const AddNewAttributeValue: React.FC<Props> = ({
       <AddNewAttributeValueModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        attributeId={selectedAttrIds}
-        defaultDatas={attrValues?.find(val => val.id === selectedAttrValueId)}
+        attributeId={selectedAttrId}
+        defaultDatas={attrValues?.find((val) => val.id === selectedAttrValueId)}
         type={type}
       />
     </>
