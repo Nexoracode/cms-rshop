@@ -29,7 +29,7 @@ export const useAddNewAttributeValue = (attributeId: number | undefined) => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["attribute-values", attributeId],
+        queryKey: ["attribute-values"],
       });
     },
   });

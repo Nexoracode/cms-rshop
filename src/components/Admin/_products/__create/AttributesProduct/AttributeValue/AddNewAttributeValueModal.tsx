@@ -79,7 +79,14 @@ const AddNewAttributeValueModal = ({
   };
 
   const handleCreateNewAttributeValue = () => {
-    createAttributeValue(datas, {
+    const { attribute_id, ...rest } = datas;
+
+    const newAttrVal = {
+      attribute_id: attributeId,
+      ...rest,
+    };
+
+    createAttributeValue(newAttrVal, {
       onSuccess: () => {
         onOpenChange();
         setDatas(initialState);
