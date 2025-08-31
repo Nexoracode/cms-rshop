@@ -57,7 +57,7 @@ const AddNewAttributeModal = ({
   isOpen,
   onOpenChange,
   defaultDatas,
-  type
+  type,
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
   //? Hooks
@@ -116,7 +116,7 @@ const AddNewAttributeModal = ({
 
   const handleUpdateAttribute = () => {
     const { id, ...rest } = datas;
-
+    console.log(rest);
     updateAttribute(rest, {
       onSuccess: () => {
         onOpenChange();
