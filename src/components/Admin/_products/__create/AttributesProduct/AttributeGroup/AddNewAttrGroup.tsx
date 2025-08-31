@@ -3,7 +3,7 @@
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 
@@ -12,31 +12,20 @@ type Props = {
   attrGroup: Record<string, any>[];
 };
 
-const AddNewAttrGroup: React.FC<Props> = ({
-  onChange,
-  attrGroup: attributeGroup,
-}) => {
-  const [attrGroup, setAttrGrop] = useState<Record<string, any>>([]);
-  const [selectedAttrGroup, setSelectedAttrGroup] = useState<
-    Record<string, any> | undefined
+const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup }) => {
+  const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
+    number | undefined
   >(undefined);
   const [type, setType] = useState<"edit" | "add">("add");
   //? Hooks
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const deleteAttributeGroup = useDeleteAttributeGroup();
 
-  useEffect(() => {
-    setAttrGrop(attributeGroup);
-  }, [attributeGroup]);
-
   const handleDeleteAttrGroup = () => {
-    if (!selectedAttrGroup) return;
-    deleteAttributeGroup.mutate(selectedAttrGroup.id, {
+    if (!selectedAttrGroupId) return;
+    deleteAttributeGroup.mutate(selectedAttrGroupId, {
       onSuccess: () => {
-        setSelectedAttrGroup(undefined);
-        setAttrGrop((prev) =>
-          prev.filter((g: any) => g.id !== selectedAttrGroup.id)
-        );
+        setSelectedAttrGroupId(undefined);
         onChange(undefined);
       },
     });
@@ -52,10 +41,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
           labelPlacement="outside"
           onChange={(e) => {
             onChange(+e.target.value);
-            const selected = attrGroup.find(
-              (a: any) => a.id === +e.target.value
-            );
-            setSelectedAttrGroup(selected);
+            setSelectedAttrGroupId(+e.target.value);
           }}
         >
           {attrGroup && attrGroup.length ? (
@@ -75,7 +61,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
             setType("add");
           }}
         />
-        {selectedAttrGroup ? (
+        {selectedAttrGroupId ? (
           <div className="flex items-center gap-4 mt-2">
             <DoubleClickBtn
               onPress={handleDeleteAttrGroup}
@@ -103,7 +89,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
       <AddNewAttributeGroupModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        defaultDatas={selectedAttrGroup}
+        defaultDatas={attrGroup?.find((g: any) => g.id === selectedAttrGroupId)}
         type={type}
       />
     </>
