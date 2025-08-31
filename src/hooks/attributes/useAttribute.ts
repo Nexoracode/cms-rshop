@@ -47,10 +47,7 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
   });
 };
 
-export const useUpdateAttribute = (
-  id: number,
-  groupedId: number | undefined
-) => {
+export const useUpdateAttribute = (id: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -65,14 +62,14 @@ export const useUpdateAttribute = (
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-attribute", groupedId] });
+      queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
       queryClient.invalidateQueries({ queryKey: ["attribute", id] });
       queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
     },
   });
 };
 
-export const useDeleteAttribute = (groupedId: number | undefined) => {
+export const useDeleteAttribute = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -86,7 +83,7 @@ export const useDeleteAttribute = (groupedId: number | undefined) => {
       });
     },
     onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: ["all-attribute", groupedId] });
+      queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
       queryClient.removeQueries({ queryKey: ["attribute", id] });
     },
   });

@@ -27,7 +27,7 @@ const AddNewAttribute: React.FC<Props> = ({
   const [type, setType] = useState<"edit" | "add">("add");
   //? Hooks
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const deleteAttribute = useDeleteAttribute(groupedId);
+  const deleteAttribute = useDeleteAttribute();
 
   useEffect(() => {
     console.log(attributes);
@@ -115,10 +115,19 @@ const AddNewAttribute: React.FC<Props> = ({
         defaultDatas={selectedAttr}
         type={type}
         onSuccess={(updated) => {
-          if (updated && updated.group_id !== groupedId) {
+          if (!updated || !updated.id) return;
+
+          // اگر منتقل شد به گروه دیگه → انتخاب رو پاک کن
+          if (updated.group_id !== groupedId) {
             setSelectedAttr(undefined);
-            setAttr((prev) => prev.filter((g: any) => g.id !== updated.id));
             onChange(undefined);
+            return;
+          }
+
+          // اگر همون آیتم انتخاب شده بود → بلافاصله اسم جدید رو نشون بده
+          if (selectedAttr?.id === updated.id) {
+            setSelectedAttr(updated);
+            onChange(updated.id);
           }
         }}
       />

@@ -68,12 +68,13 @@ const AddNewAttributeModal = ({
     datas?.group_id || undefined
   );
   const { mutate: updateAttribute } = useUpdateAttribute(
-    datas?.id ? datas.id : -1,
-    datas?.group_id || undefined
+    datas?.id ? datas.id : -1
   );
 
   useEffect(() => {
-    type === "add" ? setDatas(initialState) : setDatas(defaultDatas || initialState);
+    type === "add"
+      ? setDatas(initialState)
+      : setDatas(defaultDatas || initialState);
   }, [defaultDatas, type]);
 
   // attribute types
