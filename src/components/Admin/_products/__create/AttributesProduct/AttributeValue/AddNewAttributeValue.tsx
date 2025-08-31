@@ -27,13 +27,9 @@ const AddNewAttributeValue: React.FC<Props> = ({
     number | undefined
   >(undefined);
 
-  // اگر هیچ attribute انتخاب نشده، چیزی نمایش نده
-  if (!selectedAttrIds) return null;
-
   const handleDeleteAttrValue = () => {};
 
   const handleChange = (e: any) => {
-    // heroui Select در mode multiple مقدار رو به شکل "1,2,3" برمی‌گردونه
     const raw = e.target.value || "";
     const arr = raw
       .toString()
@@ -42,7 +38,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
       .filter(Boolean)
       .map((s: any) => +s);
 
-    onChange(arr); // ارسال به parent
+    onChange(arr);
   };
 
   return (
@@ -53,13 +49,12 @@ const AddNewAttributeValue: React.FC<Props> = ({
             label="مقادیر مورد نظر را انتخاب کنید"
             labelPlacement="outside"
             placeholder="مقادیر ویژگی"
-            selectedKeys={selectedValues?.map(String) ?? []} // از parent بگیر
+            selectedKeys={selectedValues?.map(String) ?? []}
             selectionMode="multiple"
             onChange={handleChange}
           >
             {attrValues && attrValues.length ? (
               attrValues.map((data: any) => (
-                // مهم: value اضافه شده تا Select براحتی مقدار را بخواند
                 <SelectItem key={data.id}>{data.value}</SelectItem>
               ))
             ) : (
@@ -84,7 +79,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
             onChange={(e) => {
               setSelectedAttrValueId(+e.target.value);
             }}
-            className="mb-2"
+            className="mb-4"
           >
             {attrValues ? (
               attrValues.map((data: any) => (
@@ -103,7 +98,10 @@ const AddNewAttributeValue: React.FC<Props> = ({
             <Button
               size="sm"
               className="w-full bg-gray-100"
-              onPress={() => setEditAttrValue((prev) => !prev)}
+              onPress={() => {
+                setEditAttrValue((prev) => !prev)
+                setSelectedAttrValueId(undefined)   
+              }}
             >
               {!editAttrValue
                 ? "ویرایش مقادیر ویژگی"
