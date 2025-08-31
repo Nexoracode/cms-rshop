@@ -36,7 +36,7 @@ export const useAddNewAttributeValue = (attributeId: number | undefined) => {
 };
 
 export const useUpdateAttributeValue = (
-  id: number,
+  id: number | undefined,
   attributeId: number | undefined
 ) => {
   const queryClient = useQueryClient();

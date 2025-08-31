@@ -141,6 +141,8 @@ const AddNewAttributeValue: React.FC<Props> = ({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         attributeId={selectedAttrIds}
+        defaultDatas={attrValues?.find(val => val.id === selectedAttrValueId)}
+        type={type}
       />
     </>
   );

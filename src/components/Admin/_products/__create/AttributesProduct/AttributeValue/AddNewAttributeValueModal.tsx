@@ -11,15 +11,29 @@ import {
   ModalHeader,
   Switch,
 } from "@heroui/react";
-import { useAddNewAttributeValue } from "@/hooks/attributes/useAttributeValue";
+import {
+  useAddNewAttributeValue,
+  useUpdateAttributeValue,
+} from "@/hooks/attributes/useAttributeValue";
 
 type Props = {
   attributeId: number | undefined;
   isOpen: boolean;
   onOpenChange: () => void;
+  defaultDatas: any;
+  type: "edit" | "add";
 };
 
-const initialDatas = {
+type AttrValue = {
+  id?: number;
+  value: string;
+  attribute_id: number;
+  display_color: string;
+  display_order: null;
+  is_active: boolean;
+};
+
+const initialState: AttrValue = {
   value: "",
   attribute_id: -1,
   display_color: "",
@@ -27,17 +41,44 @@ const initialDatas = {
   is_active: true,
 };
 
-const AddNewAttributeValueModal = ({ isOpen, onOpenChange, attributeId }: Props) => {
-  const [datas, setDatas] = useState(initialDatas);
+const AddNewAttributeValueModal = ({
+  isOpen,
+  onOpenChange,
+  attributeId,
+  defaultDatas,
+  type,
+}: Props) => {
+  const [datas, setDatas] = useState(initialState);
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   //? Hooks
   const { mutate: createAttributeValue } = useAddNewAttributeValue(attributeId);
+  const { mutate: updateAttributeValue } = useUpdateAttributeValue(
+    datas?.id ? datas.id : -1,
+    attributeId
+  );
+
+  useEffect(() => {
+    type === "add"
+      ? setDatas(initialState)
+      : setDatas(defaultDatas || initialState);
+  }, [defaultDatas, type]);
+
+  const handleUpdateAttributeValue = () => {
+    const { id, ...rest } = datas;
+    console.log(rest);
+    updateAttributeValue(rest, {
+      onSuccess: () => {
+        onOpenChange();
+        setDatas(initialState);
+      },
+    });
+  };
 
   const handleCreateNewAttributeValue = () => {
     createAttributeValue(datas, {
       onSuccess: () => {
         onOpenChange();
-        setDatas(initialDatas);
+        setDatas(initialState);
       },
     });
   };
@@ -63,7 +104,16 @@ const AddNewAttributeValueModal = ({ isOpen, onOpenChange, attributeId }: Props)
                   }
                 />
                 {isActiveColorPicker ? (
-                  <input type="color" className="w-full h-12 bg-transparent rounded-[20px]" onChange={(e) => setDatas(prev => ({...prev, display_color: e.target.value})) }/>
+                  <input
+                    type="color"
+                    className="w-full h-12 bg-transparent rounded-[20px]"
+                    onChange={(e) =>
+                      setDatas((prev) => ({
+                        ...prev,
+                        display_color: e.target.value,
+                      }))
+                    }
+                  />
                 ) : (
                   ""
                 )}
@@ -94,8 +144,15 @@ const AddNewAttributeValueModal = ({ isOpen, onOpenChange, attributeId }: Props)
               <Button
                 color="secondary"
                 className="w-full mt-4"
-                isDisabled={!datas.value.length || (isActiveColorPicker && !datas.display_color.length)}
-                onPress={handleCreateNewAttributeValue}
+                isDisabled={
+                  !datas.value.length ||
+                  (isActiveColorPicker && !datas.display_color.length)
+                }
+                onPress={() => {
+                  type === "edit"
+                    ? handleUpdateAttributeValue()
+                    : handleCreateNewAttributeValue();
+                }}
               >
                 افزودن مقدار ویژگی
               </Button>
