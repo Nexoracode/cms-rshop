@@ -96,7 +96,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                   setAttrValues([]);
                 }}
                 attr={attributes?.data}
-                selectedAttr={attributes?.data.find(
+                selectedAttr={attributes?.data?.find(
                   (a: any) => a.id === selectedAttr
                 )}
                 groupedId={selectedAttrGroup}
