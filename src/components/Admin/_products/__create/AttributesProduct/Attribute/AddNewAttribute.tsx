@@ -3,7 +3,7 @@
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import HeaderAction from "../../helpers/HeaderAction";
 import AddNewAttributeModal from "./AddNewAttributeModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
@@ -11,39 +11,24 @@ type Props = {
   onChange: (value: number | undefined) => void;
   attr: Record<string, any>[];
   groupedId: number | undefined;
-  selectedAttr: Record<string, any> | undefined;
+  selectedAttrId: number | undefined;
 };
 
 const AddNewAttribute: React.FC<Props> = ({
   onChange,
-  attr: attributes,
+  attr,
   groupedId,
-  selectedAttr: selectedAttributes,
+  selectedAttrId,
 }) => {
-  const [attr, setAttr] = useState<Record<string, any>>([]);
-  const [selectedAttr, setSelectedAttr] = useState<
-    Record<string, any> | undefined
-  >(undefined);
   const [type, setType] = useState<"edit" | "add">("add");
   //? Hooks
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const deleteAttribute = useDeleteAttribute();
 
-  useEffect(() => {
-    console.log(attributes);
-    setAttr(attributes);
-  }, [attributes]);
-
-  useEffect(() => {
-    setSelectedAttr(selectedAttributes);
-  }, [selectedAttributes]);
-
   const handleDeleteAttr = () => {
-    if (!selectedAttr) return;
-    deleteAttribute.mutate(selectedAttr.id, {
+    if (!selectedAttrId) return;
+    deleteAttribute.mutate(selectedAttrId, {
       onSuccess: () => {
-        setSelectedAttr(undefined);
-        setAttr((prev) => prev.filter((g: any) => g.id !== selectedAttr.id));
         onChange(undefined);
       },
     });
@@ -57,11 +42,9 @@ const AddNewAttribute: React.FC<Props> = ({
           label="ویژگی"
           placeholder="ویژگی را انتخاب کنید"
           labelPlacement="outside"
-          selectedKeys={selectedAttr ? [selectedAttr.id.toString()] : []}
+          selectedKeys={selectedAttrId ? [selectedAttrId.toString()] : []}
           onChange={(e) => {
             onChange(+e.target.value);
-            const selected = attr.find((a: any) => a.id === +e.target.value);
-            setSelectedAttr(selected);
           }}
         >
           {attr && attr?.length ? (
@@ -82,7 +65,7 @@ const AddNewAttribute: React.FC<Props> = ({
           }}
         />
 
-        {selectedAttr ? (
+        {selectedAttrId ? (
           <div className="flex items-center gap-4 mt-2">
             <DoubleClickBtn
               onPress={handleDeleteAttr}
@@ -112,24 +95,8 @@ const AddNewAttribute: React.FC<Props> = ({
         onOpenChange={() => {
           onOpenChange();
         }}
-        defaultDatas={selectedAttr}
+        defaultDatas={attr?.find(attr => attr.id === selectedAttrId)}
         type={type}
-        onSuccess={(updated) => {
-          if (!updated || !updated.id) return;
-
-          // اگر منتقل شد به گروه دیگه → انتخاب رو پاک کن
-          if (updated.group_id !== groupedId) {
-            setSelectedAttr(undefined);
-            onChange(undefined);
-            return;
-          }
-
-          // اگر همون آیتم انتخاب شده بود → بلافاصله اسم جدید رو نشون بده
-          if (selectedAttr?.id === updated.id) {
-            setSelectedAttr(updated);
-            onChange(updated.id);
-          }
-        }}
       />
     </>
   );

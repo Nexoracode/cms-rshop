@@ -30,7 +30,6 @@ type Props = {
   onOpenChange: () => void;
   defaultDatas: any;
   type: "edit" | "add";
-  onSuccess: (updated: any) => void;
 };
 
 type Attr = {
@@ -58,8 +57,7 @@ const AddNewAttributeModal = ({
   isOpen,
   onOpenChange,
   defaultDatas,
-  type,
-  onSuccess,
+  type
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
   //? Hooks
@@ -123,7 +121,6 @@ const AddNewAttributeModal = ({
       onSuccess: () => {
         onOpenChange();
         setDatas(initialState);
-        onSuccess({ ...datas, ...rest });
       },
     });
   };

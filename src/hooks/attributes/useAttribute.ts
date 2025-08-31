@@ -64,7 +64,6 @@ export const useUpdateAttribute = (id: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
       queryClient.invalidateQueries({ queryKey: ["attribute", id] });
-      queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
     },
   });
 };
@@ -74,7 +73,7 @@ export const useDeleteAttribute = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      fetcher({
+      return fetcher({
         route: `/attribute/${id}`,
         method: "DELETE",
         isActiveToast: true,
@@ -84,6 +83,7 @@ export const useDeleteAttribute = () => {
     },
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
+      queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
       queryClient.removeQueries({ queryKey: ["attribute", id] });
     },
   });

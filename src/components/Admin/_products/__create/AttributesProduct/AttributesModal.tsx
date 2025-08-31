@@ -82,7 +82,6 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
             <ModalBody className="flex flex-col gap-4">
               <AddNewAttrGroup
                 onChange={(value) => {
-                  console.log("Selected Attr Group => ", value);
                   setSelectedAttrGroup(value);
                   setSelectedAttr(undefined);
                   setSelectedAttrValue(undefined);
@@ -96,9 +95,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                   setAttrValues([]);
                 }}
                 attr={attributes?.data}
-                selectedAttr={attributes?.data?.find(
-                  (a: any) => a.id === selectedAttr
-                )}
+                selectedAttrId={selectedAttr}
                 groupedId={selectedAttrGroup}
               />
             </ModalBody>
