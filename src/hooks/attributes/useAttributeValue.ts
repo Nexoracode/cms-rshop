@@ -70,15 +70,14 @@ export const useDeleteAttributeValue = (attributeId: number | undefined) => {
         route: `/attribute-value/${id}`,
         method: "DELETE",
         isActiveToast: true,
-        successText: "ویژگی با موفقیت حذف شد",
-        loadingText: "درحال حذف ویژگی...",
+        successText: "مقدار ویژگی با موفقیت حذف شد",
+        loadingText: "درحال حذف مقدار ویژگی...",
       });
     },
-    onSuccess: (_, id) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["attribute-values", attributeId],
       });
-      queryClient.invalidateQueries({ queryKey: ["attribute-value", id] });
     },
   });
 };

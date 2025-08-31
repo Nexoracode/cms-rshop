@@ -15,6 +15,7 @@ import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
+import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 
 type AttributeData = {
   attr: Record<string, any>;
@@ -34,10 +35,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   const [selectedAttr, setSelectedAttr] = useState<number | undefined>(
     undefined
   );
-  const [selectedAttrValue, setSelectedAttrValue] = useState<
-    number | undefined
-  >(undefined);
-  const [attrValues, setAttrValues] = useState<any>([]);
+  const [selectedAttrValueIds, setSelectedAttrValueIds] = useState<number[]>([]);
   //? Hooks
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
@@ -47,11 +45,11 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
     onOpenChange();
     setSelectedAttrGroup(undefined);
     setSelectedAttr(undefined);
-    setAttrValues([]);
+    //setAttrValues([]);
   };
 
   const handleChangesCategoryAttributes = () => {
-    const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
+  /*   const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
 
     const values = attributeValues?.data.filter((v: any) =>
       attrValues.includes(v.id.toString())
@@ -60,7 +58,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
     if (attr && values?.length) {
       onSubmit({ attr: attr, values: values });
       resetModalInfos();
-    }
+    } */
   };
 
   return (
@@ -84,19 +82,27 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                 onChange={(value) => {
                   setSelectedAttrGroup(value);
                   setSelectedAttr(undefined);
-                  setSelectedAttrValue(undefined);
-                  setAttrValues([]);
+                  //setSelectedAttrValue(undefined);
+                  //setAttrValues([]);
                 }}
                 attrGroup={attributeGroup?.data}
               />
               <AddNewAttribute
                 onChange={(value) => {
                   setSelectedAttr(value);
-                  setAttrValues([]);
+                  //setAttrValues([]);
                 }}
                 attr={attributes?.data}
                 selectedAttrId={selectedAttr}
                 groupedId={selectedAttrGroup}
+              />
+              <AddNewAttributeValue
+                selectedAttrIds={selectedAttr}
+                attrValues={attributeValues?.data}
+                onChange={(ids) => {
+                    setSelectedAttrValueIds(ids);
+                }}
+                selectedValues={selectedAttrValueIds}
               />
             </ModalBody>
             <ModalFooter>
@@ -106,7 +112,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                 color="secondary"
                 onPress={handleChangesCategoryAttributes}
                 isDisabled={
-                  !selectedAttr || !selectedAttrGroup || !attrValues.length
+                  !selectedAttr || !selectedAttrGroup //|| !attrValues.length
                     ? true
                     : false
                 }

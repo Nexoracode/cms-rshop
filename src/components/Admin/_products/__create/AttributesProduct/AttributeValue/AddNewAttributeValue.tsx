@@ -1,118 +1,150 @@
+// AddNewAttributeValue.tsx
 "use client";
 
-import {
-  useAddNewAttributeGroup,
-  useAddNewAttributeValue,
-} from "@/hooks/attributes/useAttribute";
-import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Switch,
-} from "@heroui/react";
-import { useEffect, useState } from "react";
+import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
+import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
+import HeaderAction from "../../helpers/HeaderAction";
+import React, { useState } from "react";
+import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
 type Props = {
-  attributeId: number;
-  isOpen: boolean;
-  onOpenChange: () => void;
+  selectedAttrIds: number | undefined; // id of attribute
+  attrValues: Record<string, any>[]; // list of possible values from server
+  selectedValues: number[]; // selected value ids (from parent state)
+  onChange: (values: number[]) => void; // notify parent with array of selected ids
 };
 
-const initialDatas = {
-  value: "",
-  attribute_id: -1,
-  display_color: "",
-  display_order: null,
-  is_active: true,
-};
+const AddNewAttributeValue: React.FC<Props> = ({
+  selectedAttrIds,
+  attrValues,
+  selectedValues,
+  onChange,
+}) => {
+  const [editAttrValue, setEditAttrValue] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [type, setType] = useState<"edit" | "add">("add");
+  const [selectedAttrValueId, setSelectedAttrValueId] = useState<
+    number | undefined
+  >(undefined);
 
-const AddNewAttributeValue = ({ isOpen, onOpenChange, attributeId }: Props) => {
-  const [datas, setDatas] = useState(initialDatas);
-  const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
-  //? Hooks
-  const { mutate: createAttributeValue } = useAddNewAttributeValue(attributeId);
-  //
-  useEffect(() => {
-    if (attributeId) {
-      setDatas((prev) => ({ ...prev, attribute_id: attributeId }));
-    }
-  }, [attributeId]);
+  // اگر هیچ attribute انتخاب نشده، چیزی نمایش نده
+  if (!selectedAttrIds) return null;
 
-  const handleCreateNewAttributeValue = () => {
-    createAttributeValue(datas, {
-      onSuccess: () => {
-        onOpenChange();
-        setDatas(prev => ({...prev, display_color: "", is_active: true, value: ""}));
-      },
-    });
+  const handleDeleteAttrValue = () => {};
+
+  const handleChange = (e: any) => {
+    // heroui Select در mode multiple مقدار رو به شکل "1,2,3" برمی‌گردونه
+    const raw = e.target.value || "";
+    const arr = raw
+      .toString()
+      .split(",")
+      .map((s: any) => s.trim())
+      .filter(Boolean)
+      .map((s: any) => +s);
+
+    onChange(arr); // ارسال به parent
   };
 
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[700px] w-full">
-        {(onClose) => (
-          <>
-            <ModalHeader className="w-full px-8 flex items-center justify-between">
-              <p className="font-normal text-[16px]">افزودن مقدار ویژگی</p>
-            </ModalHeader>
-            <ModalBody>
-              <div className="flex flex-col gap-5">
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  label="عنوان مقدار"
-                  placeholder="عنوان مقدار را وارد کنید"
-                  value={datas.value}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, value: e.target.value }))
-                  }
-                />
-                {isActiveColorPicker ? (
-                  <input type="color" className="w-full h-12 bg-transparent rounded-[20px]" onChange={(e) => setDatas(prev => ({...prev, display_color: e.target.value})) }/>
-                ) : (
-                  ""
-                )}
-                <div className="flex items-center gap-6">
-                  <Switch
-                    color="secondary"
-                    size="sm"
-                    isSelected={isActiveColorPicker}
-                    onValueChange={setIsActiveColorPicker}
-                  >
-                    انتخاب رنگ
-                  </Switch>
+    <>
+      <div className="mt-2 bg-gray-50 rounded-xl p-4">
+        <div className="flex w-full flex-col gap-2">
+          <Select
+            label="مقادیر مورد نظر را انتخاب کنید"
+            labelPlacement="outside"
+            placeholder="مقادیر ویژگی"
+            selectedKeys={selectedValues?.map(String) ?? []} // از parent بگیر
+            selectionMode="multiple"
+            onChange={handleChange}
+          >
+            {attrValues && attrValues.length ? (
+              attrValues.map((data: any) => (
+                // مهم: value اضافه شده تا Select براحتی مقدار را بخواند
+                <SelectItem key={data.id}>{data.value}</SelectItem>
+              ))
+            ) : (
+              <SelectItem key={-1} isDisabled>
+                فعلا آیتمی وجود ندارد
+              </SelectItem>
+            )}
+          </Select>
+        </div>
 
-                  <Switch
-                    color="secondary"
-                    size="sm"
-                    isSelected={datas.is_active}
-                    onValueChange={(status) =>
-                      setDatas((prev) => ({ ...prev, is_active: status }))
-                    }
-                  >
-                    فعال
-                  </Switch>
-                </div>
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                color="secondary"
-                className="w-full mt-4"
-                isDisabled={!datas.value.length || (isActiveColorPicker && !datas.display_color.length)}
-                onPress={handleCreateNewAttributeValue}
-              >
-                افزودن مقدار ویژگی
-              </Button>
-            </ModalFooter>
-          </>
+        <HeaderAction
+          title={"در صورت نیاز میتوانید مقدار جدیدی اضافه کنید"}
+          textBtn={"+ افزودن"}
+          onPress={onOpen}
+        />
+
+        {editAttrValue ? (
+          <Select
+            isRequired
+            placeholder="مقدار ویژگی را انتخاب کنید"
+            labelPlacement="outside"
+            onChange={(e) => {
+              setSelectedAttrValueId(+e.target.value);
+            }}
+            className="mb-2"
+          >
+            {attrValues ? (
+              attrValues.map((data: any) => (
+                <SelectItem key={data.id}>{data.value}</SelectItem>
+              ))
+            ) : (
+              <SelectItem key={-1}>فعلا آیتمی وجود ندارد</SelectItem>
+            )}
+          </Select>
+        ) : (
+          ""
         )}
-      </ModalContent>
-    </Modal>
+
+        {selectedValues && selectedValues.length ? (
+          <div className="flex items-center gap-4 mt-2">
+            <Button
+              size="sm"
+              className="w-full bg-gray-100"
+              onPress={() => setEditAttrValue((prev) => !prev)}
+            >
+              {!editAttrValue
+                ? "ویرایش مقادیر ویژگی"
+                : "لغو ویرایش مقادیر ویژگی"}
+            </Button>
+            {selectedAttrValueId ? (
+              <>
+                <DoubleClickBtn
+                  onPress={handleDeleteAttrValue}
+                  textBtn="حذف مقدار ویژگی فعلی"
+                  color="danger"
+                  size="sm"
+                  isActiveDoubleClick
+                  className="w-full"
+                />
+                <Button
+                  size="sm"
+                  className="w-full"
+                  onPress={() => {
+                    onOpen();
+                    setType("edit");
+                  }}
+                >
+                  ویرایش مقدار ویژگی فعلی
+                </Button>
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+
+      <AddNewAttributeValueModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        attributeId={selectedAttrIds}
+      />
+    </>
   );
 };
 
