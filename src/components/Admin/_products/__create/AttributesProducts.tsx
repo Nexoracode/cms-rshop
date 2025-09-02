@@ -7,70 +7,26 @@ import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
-import {
-  useUpdateAttribute,
-} from "@/hooks/attributes/useAttribute";
-import { useUpdateAttributeValue } from "@/hooks/attributes/useAttributeValue";
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
-
-  const updateAttributeMutation = useUpdateAttribute(0);
-  const updateAttributeValueMutation = useUpdateAttributeValue(0);
 
   useEffect(() => {
     console.log(attributes);
   }, [attributes]);
 
-  const handleDeleteAttribute = (attrId: number) => {
-    setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
-  };
+  // Handle Logic Delete Attribute or AttributeValue
 
-  // --- حذف AttributeValue ---
-  const handleDeleteAttributeValue = (valId: number) => {
+  const handleDeleteAttribute = (attrId: number) =>
+    setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
+
+  const handleDeleteAttributeValue = (valId: number) =>
     setAttributes((prev) =>
       prev.map((a) => ({
         ...a,
         values: a.values.filter((v: any) => v.id !== valId),
       }))
     );
-  };
-
-  // --- مرتب سازی Attribute ---
-  const handleOrderAttribute = (data: Record<string, any>) => {
-    const { id, display_order } = data;
-
-    setAttributes((prev) => {
-      const attrIndex = prev.findIndex((a) => a.attr.id === id);
-      if (attrIndex === -1) return prev;
-
-      const moved = prev[attrIndex];
-      const newArr = [...prev];
-      newArr.splice(attrIndex, 1); // حذف
-      newArr.splice(display_order, 0, moved); // اضافه کردن در ایندکس جدید
-
-      // ارسال به parent (API)
-      updateAttributeMutation.mutate(
-        { id, ...moved.attr },
-        {
-          onSuccess: (res: any) => {
-            setAttributes((cur) =>
-              cur.map((a) => (a.attr.id === res.attr.id ? res : a))
-            );
-          },
-        }
-      );
-
-      return newArr;
-    });
-  };
-
-  // --- مرتب سازی AttributeValue ---
-  const handleOrderAttributeValue = (data: Record<string, any>) => {
-    const { id, display_order, attr_id } = data;
-    /* console.log(data);
-    console.log(attributes); */
-  };
 
   return (
     <>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useUpdateAttribute } from "@/hooks/attributes/useAttribute";
+import { useUpdateAttributeValue } from "@/hooks/attributes/useAttributeValue";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { useState } from "react";
 import { TbTrash } from "react-icons/tb";
@@ -30,6 +32,18 @@ const AttributeBoxes = ({
     currentPositionVal: 0,
     newPositionVal: 1,
   });
+  //? Hooks
+    const updateAttributeMutation = useUpdateAttribute(0);
+    const updateAttributeValueMutation = useUpdateAttributeValue(0);
+
+
+  // Helper function
+  function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
+    const result = [...list];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  }
 
   return (
     <div className="flex flex-col gap-4">
