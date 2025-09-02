@@ -27,7 +27,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
   const [selectedAttrValueId, setSelectedAttrValueId] = useState<
     number | undefined
   >(undefined);
-    const deleteAttributeValue = useDeleteAttributeValue(selectedAttrId);
+    const deleteAttributeValue = useDeleteAttributeValue();
 
   const handleDeleteAttrValue = () => {
     if (!selectedAttrValueId) return;

@@ -15,7 +15,7 @@ export const useGetAttributeValues = (attributeId: number | undefined) => {
   });
 };
 
-export const useAddNewAttributeValue = (attributeId: number | undefined) => {
+export const useAddNewAttributeValue = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>
@@ -61,7 +61,7 @@ export const useUpdateAttributeValue = (
   });
 };
 
-export const useDeleteAttributeValue = (attributeId: number | undefined) => {
+export const useDeleteAttributeValue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -76,7 +76,7 @@ export const useDeleteAttributeValue = (attributeId: number | undefined) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["attribute-values", attributeId],
+        queryKey: ["attribute-values"],
       });
     },
   });

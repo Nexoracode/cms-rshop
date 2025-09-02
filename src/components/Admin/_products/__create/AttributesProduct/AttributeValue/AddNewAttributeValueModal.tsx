@@ -51,7 +51,7 @@ const AddNewAttributeValueModal = ({
   const [datas, setDatas] = useState(initialState);
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   //? Hooks
-  const { mutate: createAttributeValue } = useAddNewAttributeValue(attributeId);
+  const { mutate: createAttributeValue } = useAddNewAttributeValue();
   const { mutate: updateAttributeValue } = useUpdateAttributeValue(
     datas?.id ? datas.id : -1,
     attributeId
