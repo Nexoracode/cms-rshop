@@ -43,24 +43,25 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
   const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
   const { data: attributeValues } = useGetAttributeValues(selectedAttr);
 
+  const handleSubmit = () => {
+    const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
+    const attrValues = attributeValues?.data.filter((val: any) => {
+      const vals = selectedAttrValueIds.find((id) => val.id === id && val);
+      return vals;
+    });
+
+    if (attr) {
+      onSubmit({ attr: attr, values: attrValues });
+      resetModalInfos();
+      onOpenChange()
+    }
+  };
+
   const resetModalInfos = () => {
     onOpenChange();
     setSelectedAttrGroup(undefined);
     setSelectedAttr(undefined);
-    //setAttrValues([]);
-  };
-
-  const handleChangesCategoryAttributes = () => {
-    /*   const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
-
-    const values = attributeValues?.data.filter((v: any) =>
-      attrValues.includes(v.id.toString())
-    );
-
-    if (attr && values?.length) {
-      onSubmit({ attr: attr, values: values });
-      resetModalInfos();
-    } */
+    setSelectedAttrValueIds([]);
   };
 
   return (
@@ -116,12 +117,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                 className="w-full"
                 variant="solid"
                 color="secondary"
-                onPress={handleChangesCategoryAttributes}
-                isDisabled={
-                  !selectedAttr || !selectedAttrGroup //|| !attrValues.length
-                    ? true
-                    : false
-                }
+                onPress={handleSubmit}
               >
                 ثبت تغیرات
               </Button>
