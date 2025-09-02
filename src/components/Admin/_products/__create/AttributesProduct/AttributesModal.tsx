@@ -98,15 +98,18 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                 selectedAttrId={selectedAttr}
                 groupedId={selectedAttrGroup}
               />
-              <AddNewAttributeValue
-                selectedAttrIds={selectedAttr}
-                attrValues={attributeValues?.data}
-                onChange={(ids) => {
-                  setSelectedAttrValueIds(ids);
-                }}
-                selectedValues={selectedAttrValueIds}
-                selectedAttrId={selectedAttr}
-              />
+              {selectedAttr ? (
+                <AddNewAttributeValue
+                  attrValues={attributeValues?.data}
+                  onChange={(ids) => {
+                    setSelectedAttrValueIds(ids);
+                  }}
+                  selectedValues={selectedAttrValueIds}
+                  selectedAttrId={selectedAttr}
+                />
+              ) : (
+                ""
+              )}
             </ModalBody>
             <ModalFooter>
               <Button

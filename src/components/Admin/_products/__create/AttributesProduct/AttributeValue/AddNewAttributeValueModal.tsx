@@ -49,9 +49,7 @@ const AddNewAttributeValueModal = ({
   type,
 }: Props) => {
   const [datas, setDatas] = useState(initialState);
-  const [isActiveColorPicker, setIsActiveColorPicker] = useState(
-    datas?.display_color?.length ? true : false
-  );
+  const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   //? Hooks
   const { mutate: createAttributeValue } = useAddNewAttributeValue(attributeId);
   const { mutate: updateAttributeValue } = useUpdateAttributeValue(
@@ -63,12 +61,15 @@ const AddNewAttributeValueModal = ({
     type === "add"
       ? setDatas(initialState)
       : setDatas(defaultDatas || initialState);
+    
+    setIsActiveColorPicker(defaultDatas?.display_color?.length);
   }, [defaultDatas, type]);
 
   const handleUpdateAttributeValue = () => {
     const { id, attribute_id, ...rest } = datas;
+    console.log("$$$$$$$$$", { ...rest, attribute_id: attributeId });
     updateAttributeValue(
-      { ...rest, attributeId: attributeId },
+      { ...rest, attribute_id: attributeId },
       {
         onSuccess: () => {
           onOpenChange();
@@ -114,10 +115,11 @@ const AddNewAttributeValueModal = ({
                     setDatas((prev) => ({ ...prev, value: e.target.value }))
                   }
                 />
-                {isActiveColorPicker ? (
+                {isActiveColorPicker || datas?.display_color?.length ? (
                   <input
                     type="color"
                     className="w-full h-12 bg-transparent rounded-[20px]"
+                    value={datas.display_color}
                     onChange={(e) =>
                       setDatas((prev) => ({
                         ...prev,
@@ -165,7 +167,7 @@ const AddNewAttributeValueModal = ({
                     : handleCreateNewAttributeValue();
                 }}
               >
-                افزودن مقدار ویژگی
+                ثبت تغیرات
               </Button>
             </ModalFooter>
           </>

@@ -9,7 +9,6 @@ import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
 
 type Props = {
-  selectedAttrIds: number | undefined; // id of attribute
   attrValues: Record<string, any>[]; // list of possible values from server
   selectedValues: number[]; // selected value ids (from parent state)
   onChange: (values: number[]) => void; // notify parent with array of selected ids
@@ -17,7 +16,6 @@ type Props = {
 };
 
 const AddNewAttributeValue: React.FC<Props> = ({
-  selectedAttrIds,
   attrValues,
   selectedValues,
   onChange,
