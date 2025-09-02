@@ -15,14 +15,13 @@ const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
 
-  const updateAttributeMutation = useUpdateAttribute(0, undefined);
-  const updateAttributeValueMutation = useUpdateAttributeValue(0, undefined);
+  const updateAttributeMutation = useUpdateAttribute(0);
+  const updateAttributeValueMutation = useUpdateAttributeValue(0);
 
   useEffect(() => {
     console.log(attributes);
   }, [attributes]);
 
-  // --- حذف Attribute ---
   const handleDeleteAttribute = (attrId: number) => {
     setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
   };
@@ -92,8 +91,6 @@ const AttributesProducts = () => {
             attributes={attributes}
             onDeleteAttribute={handleDeleteAttribute}
             onDeleteAttributeValue={handleDeleteAttributeValue}
-            onOrderAttribute={handleOrderAttribute}
-            onOrderAttributeValue={handleOrderAttributeValue}
           />
 
           <Button color="success" className="text-white">

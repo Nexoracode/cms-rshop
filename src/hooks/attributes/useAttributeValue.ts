@@ -55,6 +55,26 @@ export const useUpdateAttributeValue = (id: number | undefined) => {
   });
 };
 
+export const useReorderAttributeValue = (id: number | undefined) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      fetcher({
+        route: `/attribute-value/${id}/order`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText: "جایگاه مقدار ویژگی با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی جایگاه مقدار ویژگی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["attribute-values"] });
+    },
+  });
+};
+
 export const useDeleteAttributeValue = () => {
   const queryClient = useQueryClient();
 
