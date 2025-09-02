@@ -35,10 +35,7 @@ export const useAddNewAttributeValue = () => {
   });
 };
 
-export const useUpdateAttributeValue = (
-  id: number | undefined,
-  attributeId: number | undefined
-) => {
+export const useUpdateAttributeValue = (id: number | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -53,10 +50,7 @@ export const useUpdateAttributeValue = (
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["attribute-values", attributeId],
-      });
-      queryClient.invalidateQueries({ queryKey: ["attribute-value", id] });
+      queryClient.invalidateQueries({ queryKey: ["attribute-values"] });
     },
   });
 };

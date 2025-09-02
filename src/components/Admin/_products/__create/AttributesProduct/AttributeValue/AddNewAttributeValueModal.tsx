@@ -53,21 +53,19 @@ const AddNewAttributeValueModal = ({
   //? Hooks
   const { mutate: createAttributeValue } = useAddNewAttributeValue();
   const { mutate: updateAttributeValue } = useUpdateAttributeValue(
-    datas?.id ? datas.id : -1,
-    attributeId
+    datas?.id ? datas.id : -1
   );
 
   useEffect(() => {
     type === "add"
       ? setDatas(initialState)
       : setDatas(defaultDatas || initialState);
-    
+
     setIsActiveColorPicker(defaultDatas?.display_color?.length);
   }, [defaultDatas, type]);
 
   const handleUpdateAttributeValue = () => {
     const { id, attribute_id, ...rest } = datas;
-    console.log("$$$$$$$$$", { ...rest, attribute_id: attributeId });
     updateAttributeValue(
       { ...rest, attribute_id: attributeId },
       {
