@@ -47,6 +47,27 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
   });
 };
 
+export const useReorderAttribute = (id: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      return fetcher({
+        route: `/api/attribute/${id}/order`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText: "جایگاه ویژگی با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی جایگاه ویژگی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
+      queryClient.invalidateQueries({ queryKey: ["attribute", id] });
+    },
+  });
+};
+
 export const useUpdateAttribute = (id: number) => {
   const queryClient = useQueryClient();
 

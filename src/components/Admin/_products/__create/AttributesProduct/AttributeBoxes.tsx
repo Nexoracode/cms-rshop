@@ -1,7 +1,7 @@
 "use client";
 
-import { useUpdateAttribute } from "@/hooks/attributes/useAttribute";
-import { useUpdateAttributeValue } from "@/hooks/attributes/useAttributeValue";
+import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
+import { useReorderAttributeValue, useUpdateAttributeValue } from "@/hooks/attributes/useAttributeValue";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { useState } from "react";
 import { TbTrash } from "react-icons/tb";
@@ -33,9 +33,8 @@ const AttributeBoxes = ({
     newPositionVal: 1,
   });
   //? Hooks
-    const updateAttributeMutation = useUpdateAttribute(0);
-    const updateAttributeValueMutation = useUpdateAttributeValue(0);
-
+  const ReorderAttributeMutation = useReorderAttribute(attrPosition.attrId);
+  const ReorderAttributeValueMutation = useReorderAttributeValue(attrPosition.valueId);
 
   // Helper function
   function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
@@ -44,6 +43,30 @@ const AttributeBoxes = ({
     result.splice(endIndex, 0, removed);
     return result;
   }
+
+  // Reorder and ApiCall
+
+  const ReorderAttribute = (newPosition: number) => {
+    const orderedAttr = {
+      display_order: newPosition,
+    };
+    ReorderAttributeMutation.mutate(orderedAttr, {
+      onSuccess: () => {
+        
+      }
+    });
+  };
+  
+  const ReorderAttributeValue = (newPosition: number) => {
+    const orderedAttr = {
+      display_order: newPosition,
+    };
+    ReorderAttributeValueMutation.mutate(orderedAttr, {
+      onSuccess: () => {
+
+      }
+    });
+  };
 
   return (
     <div className="flex flex-col gap-4">
