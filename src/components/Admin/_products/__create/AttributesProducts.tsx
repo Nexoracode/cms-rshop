@@ -7,13 +7,10 @@ import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
+
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
-
-  useEffect(() => {
-    console.log(attributes);
-  }, [attributes]);
 
   // Handle Logic Delete Attribute or AttributeValue
 

@@ -1,12 +1,9 @@
 "use client";
 
 import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
-import {
-  useReorderAttributeValue,
-  useUpdateAttributeValue,
-} from "@/hooks/attributes/useAttributeValue";
+import { useReorderAttributeValue } from "@/hooks/attributes/useAttributeValue";
 import { Card, CardBody, Chip } from "@heroui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbTrash } from "react-icons/tb";
 
 type Attribute = {
@@ -25,23 +22,26 @@ const AttributeBoxes = ({
   onDeleteAttribute,
   onDeleteAttributeValue,
 }: Props) => {
+  const [localAttributes, setLocalAttributes] = useState<Attribute[]>([]);
   const [attrPosition, setAttrPosition] = useState({
     attrId: 0,
     valueId: 0,
-    // Attribute
     currentPositionAttr: 0,
-    newPositionAttr: 1,
-    // Attribute Value
     currentPositionVal: 0,
-    newPositionVal: 1,
   });
-  //? Hooks
-  const ReorderAttributeMutation = useReorderAttribute(attrPosition.attrId);
-  const ReorderAttributeValueMutation = useReorderAttributeValue(
-    attrPosition.valueId
-  );
 
-  // Helper function
+  // sync props -> local state
+  useEffect(() => {
+    console.log(attributes);
+    
+    setLocalAttributes(attributes);
+  }, [attributes]);
+
+  // hooks
+  const ReorderAttributeMutation = useReorderAttribute(attrPosition.attrId);
+  const ReorderAttributeValueMutation = useReorderAttributeValue(attrPosition.valueId);
+
+  // helper reorder function
   function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
     const result = [...list];
     const [removed] = result.splice(startIndex, 1);
@@ -49,36 +49,43 @@ const AttributeBoxes = ({
     return result;
   }
 
-  // Reorder and ApiCall
-
+  // reorder attribute after API success
   const reorderAttribute = (newIndex: number) => {
-    const orderedAttr = {
-      display_order: newIndex,
-    };
-    ReorderAttributeMutation.mutate(orderedAttr, {
-      onSuccess: () => {
-        setAttrPosition((prev) => ({ ...prev, newPositionAttr: newIndex }));
-      },
-    });
+    ReorderAttributeMutation.mutate(
+      { display_order: newIndex },
+      {
+        onSuccess: () => {
+          const updated = reorder(localAttributes, attrPosition.currentPositionAttr, newIndex);
+          setLocalAttributes(updated);
+        },
+      }
+    );
   };
 
-  const reorderAttributeValue = (newIndex: number) => {
-    const orderedAttr = {
-      display_order: newIndex,
-    };
-    ReorderAttributeValueMutation.mutate(orderedAttr, {
-      onSuccess: () => {
-        setAttrPosition((prev) => ({
-          ...prev,
-          newPositionVal: newIndex,
-        }));
-      },
-    });
+  // reorder attribute value after API success
+  const reorderAttributeValue = (attrIndex: number, newIndex: number) => {
+    ReorderAttributeValueMutation.mutate(
+      { display_order: newIndex },
+      {
+        onSuccess: () => {
+          const targetAttr = localAttributes[attrIndex];
+          const updatedValues = reorder(
+            targetAttr.values,
+            attrPosition.currentPositionVal,
+            newIndex
+          );
+
+          const updatedAttrs = [...localAttributes];
+          updatedAttrs[attrIndex] = { ...targetAttr, values: updatedValues };
+          setLocalAttributes(updatedAttrs);
+        },
+      }
+    );
   };
 
   return (
     <div className="flex flex-col gap-4">
-      {attributes.map((item, index) => (
+      {localAttributes.map((item, index) => (
         <Card
           key={item.attr.id}
           draggable
@@ -104,7 +111,7 @@ const AttributeBoxes = ({
           </div>
 
           <CardBody className="flex flex-row gap-2 flex-wrap">
-            {item.values.map((val, index) => (
+            {item.values.map((val, vIndex) => (
               <div
                 key={val.id}
                 draggable
@@ -112,11 +119,14 @@ const AttributeBoxes = ({
                   setAttrPosition((prev) => ({
                     ...prev,
                     valueId: val.id,
-                    currentPositionVal: index,
+                    currentPositionVal: vIndex,
                   }))
                 }
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={() => reorderAttributeValue(index)}
+                onDrop={(e) => {
+                  e.stopPropagation();
+                  reorderAttributeValue(index, vIndex)
+                }}
                 className="flex items-center gap-1 px-2 py-1 rounded-md border bg-gray-50"
               >
                 <Chip>{val.value}</Chip>
