@@ -127,9 +127,9 @@ const AttributeBoxes = ({
                   e.stopPropagation();
                   reorderAttributeValue(index, vIndex)
                 }}
-                className="flex items-center gap-1 px-2 py-1 rounded-md border bg-gray-50"
+                className="flex items-center gap-1 px-2 py-1 rounded-full cursor-grab border bg-gray-50"
               >
-                <Chip>{val.value}</Chip>
+                <Chip color="secondary" variant="flat">{val.value}</Chip>
                 <button
                   onClick={() => onDeleteAttributeValue(val.id)}
                   className="text-red-500 hover:text-red-700"
