@@ -32,8 +32,6 @@ const AttributeBoxes = ({
 
   // sync props -> local state
   useEffect(() => {
-    console.log(attributes);
-    
     setLocalAttributes(attributes);
   }, [attributes]);
 
@@ -51,6 +49,9 @@ const AttributeBoxes = ({
 
   // reorder attribute after API success
   const reorderAttribute = (newIndex: number) => {
+    // if a value is currently being dragged, don't treat drop on card as attribute reorder
+    if (attrPosition.valueId) return;
+
     ReorderAttributeMutation.mutate(
       { display_order: newIndex },
       {
@@ -94,6 +95,7 @@ const AttributeBoxes = ({
               ...prev,
               attrId: item.attr.id,
               currentPositionAttr: index,
+              // keep valueId as-is (only set when dragging a value)
             }))
           }
           onDragOver={(e) => e.preventDefault()}
@@ -118,15 +120,31 @@ const AttributeBoxes = ({
                 onDragStart={() =>
                   setAttrPosition((prev) => ({
                     ...prev,
+                    // set value drag info AND parent attrId so we know origin
                     valueId: val.id,
+                    attrId: item.attr.id,           // <-- important: remember parent
                     currentPositionVal: vIndex,
                   }))
                 }
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => {
                   e.stopPropagation();
-                  reorderAttributeValue(index, vIndex)
+                  // Prevent moving value to a different parent:
+                  // only accept drop if the target parent (item.attr.id) is same as origin attrId
+                  if (attrPosition.attrId !== item.attr.id) {
+                    // drop target is different parent -> ignore
+                    return;
+                  }
+                  reorderAttributeValue(index, vIndex);
                 }}
+                // when drag ends reset valueId (so Card won't treat this as attr-drag)
+                onDragEnd={() =>
+                  setAttrPosition((prev) => ({
+                    ...prev,
+                    valueId: 0,
+                    // keep attrId (not critical), currentPositionVal: 0
+                  }))
+                }
                 className="flex items-center gap-1 px-2 py-1 rounded-full cursor-grab border bg-gray-50"
               >
                 <Chip color="secondary" variant="flat">{val.value}</Chip>
