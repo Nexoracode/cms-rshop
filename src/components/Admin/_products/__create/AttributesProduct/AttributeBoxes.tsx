@@ -1,7 +1,10 @@
 "use client";
 
 import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
-import { useReorderAttributeValue, useUpdateAttributeValue } from "@/hooks/attributes/useAttributeValue";
+import {
+  useReorderAttributeValue,
+  useUpdateAttributeValue,
+} from "@/hooks/attributes/useAttributeValue";
 import { Card, CardBody, Chip } from "@heroui/react";
 import { useState } from "react";
 import { TbTrash } from "react-icons/tb";
@@ -34,7 +37,9 @@ const AttributeBoxes = ({
   });
   //? Hooks
   const ReorderAttributeMutation = useReorderAttribute(attrPosition.attrId);
-  const ReorderAttributeValueMutation = useReorderAttributeValue(attrPosition.valueId);
+  const ReorderAttributeValueMutation = useReorderAttributeValue(
+    attrPosition.valueId
+  );
 
   // Helper function
   function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
@@ -46,25 +51,28 @@ const AttributeBoxes = ({
 
   // Reorder and ApiCall
 
-  const ReorderAttribute = (newPosition: number) => {
+  const reorderAttribute = (newIndex: number) => {
     const orderedAttr = {
-      display_order: newPosition,
+      display_order: newIndex,
     };
     ReorderAttributeMutation.mutate(orderedAttr, {
       onSuccess: () => {
-        
-      }
+        setAttrPosition((prev) => ({ ...prev, newPositionAttr: newIndex }));
+      },
     });
   };
-  
-  const ReorderAttributeValue = (newPosition: number) => {
+
+  const reorderAttributeValue = (newIndex: number) => {
     const orderedAttr = {
-      display_order: newPosition,
+      display_order: newIndex,
     };
     ReorderAttributeValueMutation.mutate(orderedAttr, {
       onSuccess: () => {
-
-      }
+        setAttrPosition((prev) => ({
+          ...prev,
+          newPositionVal: newIndex,
+        }));
+      },
     });
   };
 
@@ -82,9 +90,7 @@ const AttributeBoxes = ({
             }))
           }
           onDragOver={(e) => e.preventDefault()}
-          onDrop={() =>
-            setAttrPosition((prev) => ({ ...prev, newPositionAttr: index }))
-          }
+          onDrop={() => reorderAttribute(index)}
           className="p-3"
         >
           <div className="flex justify-between items-center mb-2">
@@ -110,12 +116,7 @@ const AttributeBoxes = ({
                   }))
                 }
                 onDragOver={(e) => e.preventDefault()}
-                onDrop={() =>
-                  setAttrPosition((prev) => ({
-                    ...prev,
-                    newPositionVal: index,
-                  }))
-                }
+                onDrop={() => reorderAttributeValue(index)}
                 className="flex items-center gap-1 px-2 py-1 rounded-md border bg-gray-50"
               >
                 <Chip>{val.value}</Chip>

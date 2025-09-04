@@ -41,7 +41,7 @@ export const useUpdateAttributeValue = (id: number | undefined) => {
   return useMutation({
     mutationFn: async (data: any) => {
       fetcher({
-        route: `/attribute-value/${id}/order`,
+        route: `/attribute-value/${id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,

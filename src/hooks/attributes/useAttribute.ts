@@ -53,7 +53,7 @@ export const useReorderAttribute = (id: number) => {
   return useMutation({
     mutationFn: async (data: any) => {
       return fetcher({
-        route: `/api/attribute/${id}/order`,
+        route: `/attribute/${id}/order`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
