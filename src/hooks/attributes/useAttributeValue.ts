@@ -55,21 +55,21 @@ export const useUpdateAttributeValue = (id: number | undefined) => {
   });
 };
 
-export const useReorderAttributeValue = (id: number | undefined) => {
+export const useReorderAttributeValue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
-      fetcher({
+    mutationFn: async ({ id, display_order }: { id: number; display_order: number }) => {
+      return fetcher({
         route: `/attribute-value/${id}/order`,
         method: "PATCH",
-        body: data,
+        body: { display_order },
         isActiveToast: true,
         successText: "جایگاه مقدار ویژگی با موفقیت بروزرسانی شد",
         loadingText: "درحال بروزرسانی جایگاه مقدار ویژگی...",
       });
     },
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["attribute-values"] });
     },
   });

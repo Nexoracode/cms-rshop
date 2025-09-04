@@ -23,142 +23,113 @@ const AttributeBoxes = ({
   onDeleteAttributeValue,
 }: Props) => {
   const [localAttributes, setLocalAttributes] = useState<Attribute[]>([]);
-  const [attrPosition, setAttrPosition] = useState({
+  const [dragInfo, setDragInfo] = useState({
     attrId: 0,
     valueId: 0,
-    currentPositionAttr: 0,
-    currentPositionVal: 0,
+    startAttrIndex: 0,
+    startValueIndex: 0,
   });
 
-  // sync props -> local state
   useEffect(() => {
     setLocalAttributes(attributes);
   }, [attributes]);
 
-  // hooks
-  const ReorderAttributeMutation = useReorderAttribute(attrPosition.attrId);
-  const ReorderAttributeValueMutation = useReorderAttributeValue(attrPosition.valueId);
+  useEffect(() => {
+    console.log(localAttributes);
+  }, [localAttributes]);
 
-  // helper reorder function
-  function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
-    const result = [...list];
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  }
+  const ReorderAttributeMutation = useReorderAttribute();
+  const ReorderAttributeValueMutation = useReorderAttributeValue();
 
-  // reorder attribute after API success
-  const reorderAttribute = (newIndex: number) => {
-    // if a value is currently being dragged, don't treat drop on card as attribute reorder
-    if (attrPosition.valueId) return;
+  // swap Attributes UI + API
+  const swapAttributes = (targetIndex: number) => {
+    const startIndex = dragInfo.startAttrIndex;
+    if (startIndex === targetIndex) return;
 
-    ReorderAttributeMutation.mutate(
-      { display_order: newIndex },
-      {
-        onSuccess: () => {
-          const updated = reorder(localAttributes, attrPosition.currentPositionAttr, newIndex);
-          setLocalAttributes(updated);
-        },
-      }
-    );
+    const newAttrs = [...localAttributes];
   };
 
-  // reorder attribute value after API success
-  const reorderAttributeValue = (attrIndex: number, newIndex: number) => {
-    ReorderAttributeValueMutation.mutate(
-      { display_order: newIndex },
-      {
-        onSuccess: () => {
-          const targetAttr = localAttributes[attrIndex];
-          const updatedValues = reorder(
-            targetAttr.values,
-            attrPosition.currentPositionVal,
-            newIndex
-          );
+  // swap Attribute Values UI + API
+  const swapAttributeValues = (parentIndex: number, targetIndex: number) => {
+    const startIndex = dragInfo.startValueIndex;
+    if (startIndex === targetIndex) return;
 
-          const updatedAttrs = [...localAttributes];
-          updatedAttrs[attrIndex] = { ...targetAttr, values: updatedValues };
-          setLocalAttributes(updatedAttrs);
-        },
-      }
-    );
+    const newAttrs = [...localAttributes];
+    const values = [...newAttrs[parentIndex].values];
   };
 
   return (
     <div className="flex flex-col gap-4">
-      {localAttributes.map((item, index) => (
-        <Card
-          key={item.attr.id}
-          draggable
-          onDragStart={() =>
-            setAttrPosition((prev) => ({
-              ...prev,
-              attrId: item.attr.id,
-              currentPositionAttr: index,
-              // keep valueId as-is (only set when dragging a value)
-            }))
-          }
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={() => reorderAttribute(index)}
-          className="p-3"
-        >
-          <div className="flex justify-between items-center mb-2">
-            <span className="font-medium">{item.attr.name}</span>
-            <button
-              onClick={() => onDeleteAttribute(item.attr.id)}
-              className="text-red-500 hover:text-red-700"
-            >
-              <TbTrash />
-            </button>
-          </div>
-
-          <CardBody className="flex flex-row gap-2 flex-wrap">
-            {item.values.map((val, vIndex) => (
-              <div
-                key={val.id}
-                draggable
-                onDragStart={() =>
-                  setAttrPosition((prev) => ({
-                    ...prev,
-                    // set value drag info AND parent attrId so we know origin
-                    valueId: val.id,
-                    attrId: item.attr.id,           // <-- important: remember parent
-                    currentPositionVal: vIndex,
-                  }))
-                }
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.stopPropagation();
-                  // Prevent moving value to a different parent:
-                  // only accept drop if the target parent (item.attr.id) is same as origin attrId
-                  if (attrPosition.attrId !== item.attr.id) {
-                    // drop target is different parent -> ignore
-                    return;
-                  }
-                  reorderAttributeValue(index, vIndex);
-                }}
-                // when drag ends reset valueId (so Card won't treat this as attr-drag)
-                onDragEnd={() =>
-                  setAttrPosition((prev) => ({
-                    ...prev,
-                    valueId: 0,
-                    // keep attrId (not critical), currentPositionVal: 0
-                  }))
-                }
-                className="flex items-center gap-1 px-2 py-1 rounded-full cursor-grab border bg-gray-50"
+      {localAttributes
+        .sort((a, b) => a.attr.display_order - b.attr.display_order)
+        .map((attr, attrIndex) => (
+          <Card
+            key={attr.attr.id}
+            draggable
+            onDragStart={() =>
+              setDragInfo({
+                attrId: attr.attr.id,
+                valueId: 0,
+                startAttrIndex: attrIndex,
+                startValueIndex: 0,
+              })
+            }
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => swapAttributes(attrIndex)}
+            className="p-3"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-medium">{attr.attr.name}</span>
+              <button
+                onClick={() => onDeleteAttribute(attr.attr.id)}
+                className="text-red-500 hover:text-red-700"
               >
-                <Chip color="secondary" variant="flat">{val.value}</Chip>
-                <button
-                  onClick={() => onDeleteAttributeValue(val.id)}
-                  className="text-red-500 hover:text-red-700"
+                <TbTrash />
+              </button>
+            </div>
+
+            <CardBody className="flex flex-row gap-2 flex-wrap">
+              {attr.values.map((val, valIndex) => (
+                <div
+                  key={val.id}
+                  draggable
+                  onDragStart={() =>
+                    setDragInfo({
+                      attrId: attr.attr.id,
+                      valueId: val.id,
+                      startAttrIndex: attrIndex,
+                      startValueIndex: valIndex,
+                    })
+                  }
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.stopPropagation();
+                    if (dragInfo.attrId !== attr.attr.id) return;
+                    swapAttributeValues(attrIndex, valIndex);
+                  }}
+                  onDragEnd={() =>
+                    setDragInfo((prev) => ({
+                      ...prev,
+                      valueId: 0,
+                      startValueIndex: 0,
+                    }))
+                  }
+                  className="flex items-center gap-1 px-2 py-1 rounded-full cursor-grab border bg-gray-50"
                 >
-                  <TbTrash />
-                </button>
-              </div>
-            ))}
-          </CardBody>
-        </Card>
-      ))}
+                  <Chip color="secondary" variant="flat">
+                    {val.value}
+                  </Chip>
+                  <button
+                    onClick={() => onDeleteAttributeValue(val.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <TbTrash />
+                  </button>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+        ))}
     </div>
   );
 };
