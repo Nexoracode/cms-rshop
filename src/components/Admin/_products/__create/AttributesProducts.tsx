@@ -7,6 +7,7 @@ import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import AttributeBoxes from "./AttributesProduct/AttributeBoxes";
+import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -49,6 +50,10 @@ const AttributesProducts = () => {
             onDeleteAttribute={handleDeleteAttribute}
             onDeleteAttributeValue={handleDeleteAttributeValue}
           /> */}
+
+          <VariantRowEditor
+            variantName="تست"
+          />
 
           <Button color="success" className="text-white">
             ثبت ویژگی های محصولات
