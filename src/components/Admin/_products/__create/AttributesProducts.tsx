@@ -14,7 +14,7 @@ const AttributesProducts = () => {
 
   // Handle Logic Delete Attribute or AttributeValue
 
-  const handleDeleteAttribute = (attrId: number) =>
+  /* const handleDeleteAttribute = (attrId: number) =>
     setAttributes((prev) => prev.filter((a) => a.attr.id !== attrId));
 
   const handleDeleteAttributeValue = (valId: number) =>
@@ -23,7 +23,7 @@ const AttributesProducts = () => {
         ...a,
         values: a.values.filter((v: any) => v.id !== valId),
       }))
-    );
+    ); */
 
   return (
     <>
@@ -40,11 +40,11 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          <AttributeBoxes
+          {/* <AttributeBoxes
             attributes={attributes}
             onDeleteAttribute={handleDeleteAttribute}
             onDeleteAttributeValue={handleDeleteAttributeValue}
-          />
+          /> */}
 
           <Button color="success" className="text-white">
             ثبت ویژگی های محصولات
