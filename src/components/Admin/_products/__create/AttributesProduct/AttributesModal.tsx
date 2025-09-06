@@ -51,7 +51,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
     });
 
     if (attr) {
-      onSubmit({ attr: attr, values: attrValues });
+      onSubmit({...attr, values: attrValues});
       resetModalInfos();
       onOpenChange()
     }

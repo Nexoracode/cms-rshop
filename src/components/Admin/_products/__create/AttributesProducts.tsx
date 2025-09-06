@@ -12,6 +12,10 @@ const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
 
+  useEffect(() => {
+    console.log(attributes);
+  }, [attributes]);
+
   // Handle Logic Delete Attribute or AttributeValue
 
   /* const handleDeleteAttribute = (attrId: number) =>
@@ -55,7 +59,19 @@ const AttributesProducts = () => {
       <AddNewAttributesModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={(data) => setAttributes((prev) => [...prev, data])}
+        onSubmit={(data: Record<string, any>) =>
+          setAttributes((prev) => {
+            const index = prev.findIndex((a) => a.id === data.id);
+
+            if (index !== -1) {
+              const updated = [...prev];
+              updated[index] = data;
+              return updated;
+            }
+
+            return [...prev, data];
+          })
+        }
       />
     </>
   );
