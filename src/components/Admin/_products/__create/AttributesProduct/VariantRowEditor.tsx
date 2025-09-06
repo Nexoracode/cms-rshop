@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardBody, Checkbox, Input, NumberInput } from "@heroui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Checkbox,
+  Input,
+  NumberInput,
+} from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
@@ -10,9 +17,10 @@ import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 type Props = {
   variantName: string;
   onHandleSubmit?: (data: Record<string, any>) => void;
+  onRemove:(id: string) => void
 };
 
-const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
+const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemove }) => {
   const [formData, setFormData] = useState({
     price: 10000,
     discountValue: 0,
@@ -20,12 +28,13 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
     stock: 5,
     sku: "",
   });
-  const [status, setStatus] = useState(false)
+  const [status, setStatus] = useState(false);
 
   const submitChange = () => {
     const { discountType, discountValue, price, stock, sku } = formData;
 
     const obj = {
+      id: variantName,
       price,
       sku,
       stock: +stock,
@@ -33,7 +42,7 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
         ? { discount_percent: discountValue }
         : { discount_amount: discountValue }),
     };
-    setStatus(true)
+    setStatus(true);
     onHandleSubmit?.(obj);
   };
 
@@ -80,7 +89,7 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
                 )}
               </div>
 
-             {/*  <NumberInput
+              {/*  <NumberInput
                 label="موجودی"
                 labelPlacement="outside"
                 placeholder="1"
@@ -160,7 +169,7 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
             <div className="flex items-center justify-end gap-2">
               <DoubleClickBtn
                 size="sm"
-                onPress={() => {}}
+                onPress={() => onRemove(variantName)}
                 textBtn="حذف"
                 color="danger"
                 isActiveDoubleClick
@@ -171,9 +180,7 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
                 variant={status ? "bordered" : "flat"}
                 onPress={submitChange}
               >
-                {
-                    status ? "تغیرات ثبت شده!!" : "ثبت تغیرات"
-                }                
+                {status ? "تغیرات ثبت شده!!" : "ثبت تغیرات"}
               </Button>
             </div>
           </div>

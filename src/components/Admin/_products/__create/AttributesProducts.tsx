@@ -27,6 +27,7 @@ function cartesianObject(arrays: any[][]): any[][] {
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
+  const [variantsData, setVariantsData] = useState<Record<string, any>[]>([]);
 
   useEffect(() => {
     console.log(attributes);
@@ -40,6 +41,20 @@ const AttributesProducts = () => {
 
   // تمام ترکیب‌ها
   const allCombinations = cartesianObject(variantValues);
+
+  const findItemForReplaceInArray = (
+    datas: any[],
+    obj: Record<string, any>
+  ) => {
+    const index = datas.findIndex((a) => a.id === obj.id);
+    if (index !== -1) {
+      const updated = [...datas];
+      updated[index] = obj;
+      return updated;
+    }
+
+    return [...datas, obj];
+  };
 
   return (
     <>
@@ -65,9 +80,14 @@ const AttributesProducts = () => {
                 key={idx}
                 variantName={variantName}
                 onHandleSubmit={(data) => {
-                  // اینجا می‌تونی api call بزنی
-                  console.log("submit variant", combo);
-                  console.log("change", data);
+                  setVariantsData((prev) =>
+                    findItemForReplaceInArray(prev, data)
+                  );
+                }}
+                onRemove={(id) => {
+                  setVariantsData(prev => {
+                    return prev.filter(a => a.id !== id)
+                  })
                 }}
               />
             );
@@ -94,15 +114,7 @@ const AttributesProducts = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onSubmit={(data: Record<string, any>) =>
-          setAttributes((prev) => {
-            const index = prev.findIndex((a) => a.id === data.id);
-            if (index !== -1) {
-              const updated = [...prev];
-              updated[index] = data;
-              return updated;
-            }
-            return [...prev, data];
-          })
+          setAttributes((prev) => findItemForReplaceInArray(prev, data))
         }
       />
     </>
