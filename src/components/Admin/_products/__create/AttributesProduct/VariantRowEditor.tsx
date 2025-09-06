@@ -1,16 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Button,
-  Card,
-  CardBody,
-  Checkbox,
-  NumberInput
-} from "@heroui/react";
+import { Button, Card, CardBody, Input, NumberInput } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
+import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
 type Props = {
   variantName: string;
@@ -26,7 +21,23 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
     discountValue: 0,
     discountType: "percent" as Stock,
     stock: 5,
+    sku: "",
   });
+
+  const submitChange = () => {
+    const { discountType, discountValue, price, stock, sku } = formData;
+
+    const obj = {
+      price,
+      sku,
+      stock: +stock,
+      ...(discountType === "percent"
+        ? { discount_percent: discountValue }
+        : { discount_amount: discountValue }),
+    };
+
+    onHandleSubmit?.();
+  };
 
   return (
     <>
@@ -42,7 +53,6 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
               <div className="w-full flex flex-col items-start">
                 <NumberInput
                   label="قیمت"
-                  labelPlacement="outside"
                   placeholder="10,000"
                   min={1}
                   isRequired
@@ -104,7 +114,6 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
                 <NumberInput
                   className="w-full"
                   label="تخفیف"
-                  labelPlacement="outside"
                   placeholder="10"
                   minValue={1}
                   endContent={
@@ -139,14 +148,35 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
               </div>
             </div>
           </div>
-          {/* <Button
+          <div className="flex gap-4">
+            <Input
+              isClearable
+              className="bg-white rounded-xl"
+              label="کد انبار"
+              placeholder="کد را وارد نمایید"
+              value={formData.sku}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, sku: e.target.value }))
+              }
+            />
+            <div className="flex items-center justify-end gap-2">
+              <DoubleClickBtn
+                size="sm"
+                onPress={() => {}}
+                textBtn="حذف"
+                color="danger"
+                isActiveDoubleClick
+              />
+              <Button
+                size="sm"
                 color="success"
                 variant="flat"
-                className="w-full mt-4"
-                onPress={onHandleSubmit}
+                onPress={submitChange}
               >
                 ثبت تغیرات
-              </Button> */}
+              </Button>
+            </div>
+          </div>
         </CardBody>
       </Card>
     </>
