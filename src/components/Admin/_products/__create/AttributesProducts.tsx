@@ -56,6 +56,48 @@ const AttributesProducts = () => {
     return [...datas, obj];
   };
 
+  const handleChangesAttributes = () => {
+    // اطلاعات variant بدون id
+    const variantsInfo = variantsData.map(({ id, ...rest }) => rest);
+
+    // فقط attributeهایی که is_variant هستند
+    const variantAttributes = attributes.filter((attr) => attr.is_variant);
+
+    // آماده‌سازی valueها
+    const variantValues = variantAttributes.map((attr) =>
+      attr.values.map((v: any) => ({
+        attribute_id: v.attribute_id,
+        value_id: v.id,
+        label: v.value,
+      }))
+    );
+
+    // تابع کراس‌پروداکت
+    const cartesian = (arrays: any[][]) =>
+      arrays.reduce(
+        (acc, curr) => acc.flatMap((a) => curr.map((c) => [...a, c])),
+        [[]]
+      );
+
+    const allCombinations = cartesian(variantValues);
+
+    const product_id = 53;
+
+    // ساخت variantهای نهایی
+    const variants = allCombinations.map((combo, index) => ({
+      product_id,
+      ...variantsInfo[index], // اینجا هر ترکیب داده خودش رو میگیره
+      attributes: combo.map((c: any) => ({
+        attribute_id: c.attribute_id,
+        value_id: c.value_id,
+        label: c.label,
+      })),
+    }));
+
+    console.log("allCombinations:", allCombinations);
+    console.log("variants (برای ارسال به API):", variants);
+  };
+
   return (
     <>
       <Card className="w-full shadow-md">
@@ -85,9 +127,9 @@ const AttributesProducts = () => {
                   );
                 }}
                 onRemove={(id) => {
-                  setVariantsData(prev => {
-                    return prev.filter(a => a.id !== id)
-                  })
+                  setVariantsData((prev) => {
+                    return prev.filter((a) => a.id !== id);
+                  });
                 }}
               />
             );
@@ -104,9 +146,17 @@ const AttributesProducts = () => {
               </Card>
             ))}
 
-          <Button color="success" className="text-white">
-            ثبت ویژگی های محصولات
-          </Button>
+          {attributes.length ? (
+            <Button
+              color="success"
+              className="text-white"
+              onPress={handleChangesAttributes}
+            >
+              ثبت ویژگی های محصولات
+            </Button>
+          ) : (
+            ""
+          )}
         </CardBody>
       </Card>
 
