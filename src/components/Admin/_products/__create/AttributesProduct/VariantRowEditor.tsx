@@ -9,7 +9,7 @@ import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 
 type Props = {
   variantName: string;
-  onHandleSubmit?: () => void;
+  onHandleSubmit?: (data: Record<string, any>) => void;
 };
 
 const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
@@ -20,6 +20,7 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
     stock: 5,
     sku: "",
   });
+  const [status, setStatus] = useState(false)
 
   const submitChange = () => {
     const { discountType, discountValue, price, stock, sku } = formData;
@@ -32,8 +33,8 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
         ? { discount_percent: discountValue }
         : { discount_amount: discountValue }),
     };
-
-    onHandleSubmit?.();
+    setStatus(true)
+    onHandleSubmit?.(obj);
   };
 
   return (
@@ -166,11 +167,13 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
               />
               <Button
                 size="sm"
-                color="success"
-                variant="flat"
+                color={!status ? "secondary" : "success"}
+                variant={status ? "bordered" : "flat"}
                 onPress={submitChange}
               >
-                ثبت تغیرات
+                {
+                    status ? "تغیرات ثبت شده!!" : "ثبت تغیرات"
+                }                
               </Button>
             </div>
           </div>

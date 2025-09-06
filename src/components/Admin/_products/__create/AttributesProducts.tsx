@@ -64,9 +64,10 @@ const AttributesProducts = () => {
               <VariantRowEditor
                 key={idx}
                 variantName={variantName}
-                onHandleSubmit={() => {
+                onHandleSubmit={(data) => {
                   // اینجا می‌تونی api call بزنی
                   console.log("submit variant", combo);
+                  console.log("change", data);
                 }}
               />
             );
