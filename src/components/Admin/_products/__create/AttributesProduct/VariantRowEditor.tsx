@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardBody, Input, NumberInput } from "@heroui/react";
+import { Button, Card, CardBody, Checkbox, Input, NumberInput } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
@@ -13,9 +13,6 @@ type Props = {
 };
 
 const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
-  const [selectItem, setSelectItem] = useState<"today" | "time-ready">(
-    "time-ready"
-  );
   const [formData, setFormData] = useState({
     price: 10000,
     discountValue: 0,
@@ -82,33 +79,33 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit }) => {
                 )}
               </div>
 
-              {/* <NumberInput
-                      label="موجودی"
-                      labelPlacement="outside"
-                      placeholder="1"
-                      minValue={1}
-                      isRequired
-                      isDisabled={formData.unlimitedStock}
-                      endContent={
-                        <div className="pointer-events-none flex items-center">
-                          <span className="text-default-400 text-small truncate">
-                            عدد موجود
-                          </span>
-                        </div>
-                      }
-                      value={+formData.stock}
-                      onValueChange={(stock) =>
-                        setFormData((prev) => ({ ...prev, stock }))
-                      }
-                    />
-                    <Checkbox
-                      isSelected={formData.unlimitedStock}
-                      onValueChange={(unlimitedStock) =>
-                        setFormData((prev) => ({ ...prev, unlimitedStock }))
-                      }
-                    >
-                      <p className="text-sm">موجودی نامحدود</p>
-                    </Checkbox> */}
+             {/*  <NumberInput
+                label="موجودی"
+                labelPlacement="outside"
+                placeholder="1"
+                minValue={1}
+                isRequired
+                //isDisabled={formData.unlimitedStock}
+                endContent={
+                  <div className="pointer-events-none flex items-center">
+                    <span className="text-default-400 text-small truncate">
+                      عدد موجود
+                    </span>
+                  </div>
+                }
+                value={+formData.stock}
+                onValueChange={(stock) =>
+                  setFormData((prev) => ({ ...prev, stock }))
+                }
+              />
+              <Checkbox
+                //isSelected={formData.unlimitedStock}
+                onValueChange={(unlimitedStock) =>
+                  setFormData((prev) => ({ ...prev, unlimitedStock }))
+                }
+              >
+                <p className="text-sm">موجودی نامحدود</p>
+              </Checkbox> */}
 
               <div className="w-full flex flex-col gap-2">
                 <NumberInput
