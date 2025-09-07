@@ -9,6 +9,8 @@ import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
+import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
+import { useRouter } from "next/navigation";
 
 type Variant = {
   id: number | string;
@@ -19,6 +21,8 @@ const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
+  const addNewVariantProductMutation = useAddNewVariantProduct();
+  const router = useRouter()
 
   useEffect(() => {
     console.log(attributes);
@@ -28,10 +32,10 @@ const AttributesProducts = () => {
   const variantValues = variantAttributes.map((attr) => attr.values);
   const allCombinations = variantValues.length ? cartesian(variantValues) : [];
 
-  const handleChangesAttributes = () => {
+
+  const handleChangesAttributes = async () => {
     const variantsInfo = variantsData.map(({ id, ...rest }) => rest);
 
-    // آماده‌سازی valueها
     const variantValues = variantAttributes.map((attr) =>
       attr.values.map((v: any) => ({
         attribute_id: v.attribute_id,
@@ -41,13 +45,11 @@ const AttributesProducts = () => {
     );
 
     const allCombinations = cartesian(variantValues);
-
     const product_id = 53;
 
-    // ساخت variantهای نهایی
     const variants = allCombinations.map((combo, index) => ({
       product_id,
-      ...variantsInfo[index], // اینجا هر ترکیب داده خودش رو میگیره
+      ...variantsInfo[index],
       attributes: combo.map((c: any) => ({
         attribute_id: c.attribute_id,
         value_id: c.value_id,
@@ -55,8 +57,17 @@ const AttributesProducts = () => {
       })),
     }));
 
-    console.log("allCombinations:", allCombinations);
-    console.log("variants (برای ارسال به API):", variants);
+    try {
+      // همه variantها رو همزمان ارسال کن
+      await Promise.all(
+        variants.map((variant) =>
+          addNewVariantProductMutation.mutateAsync(variant)
+        )
+      );
+      router.push('/admin/products')
+    } catch (error) {
+      console.error("خطا در افزودن variants:", error);
+    }
   };
 
   return (

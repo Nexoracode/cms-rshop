@@ -46,9 +46,6 @@ const Products = () => {
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
 
-  console.log(products);
-  
-
   return (
     <>
       <section className="flex flex-col gap-6">
@@ -115,7 +112,9 @@ const Products = () => {
                     title={product.name}
                     pathImg={product.media_pinned.url}
                     price={product.price}
-                    varientsCount={product.stock === 0 ? "نامحدود یا هیچ" : product.stock}
+                    varientsCount={
+                      product.stock === 0 ? "نامحدود یا هیچ" : product.stock
+                    }
                     onShowMore={() =>
                       router.push(
                         `/admin/products/create?edit_id=${product.id}`
