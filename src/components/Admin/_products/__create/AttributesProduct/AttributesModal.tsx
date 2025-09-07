@@ -26,9 +26,15 @@ type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
   onSubmit: (data: AttributeData) => void;
+  isDisabledEdit?: boolean;
 };
 
-const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
+const AttributesModal = ({
+  isOpen,
+  onOpenChange,
+  onSubmit,
+  isDisabledEdit = true,
+}: Props) => {
   const [selectedAttrGroup, setSelectedAttrGroup] = useState<
     number | undefined
   >(undefined);
@@ -51,9 +57,9 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
     });
 
     if (attr) {
-      onSubmit({...attr, values: attrValues});
+      onSubmit({ ...attr, values: attrValues });
       resetModalInfos();
-      onOpenChange()
+      onOpenChange();
     }
   };
 
@@ -85,19 +91,17 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                 onChange={(value) => {
                   setSelectedAttrGroup(value);
                   setSelectedAttr(undefined);
-                  //setSelectedAttrValue(undefined);
-                  //setAttrValues([]);
                 }}
                 attrGroup={attributeGroup?.data}
+                isDisabledEdit
               />
               <AddNewAttribute
                 onChange={(value) => {
                   setSelectedAttr(value);
-                  //setAttrValues([]);
                 }}
                 attr={attributes?.data}
                 selectedAttrId={selectedAttr}
-                groupedId={selectedAttrGroup}
+                isDisabledEdit
               />
               {selectedAttr ? (
                 <AddNewAttributeValue
@@ -107,6 +111,7 @@ const AttributesModal = ({ isOpen, onOpenChange, onSubmit }: Props) => {
                   }}
                   selectedValues={selectedAttrValueIds}
                   selectedAttrId={selectedAttr}
+                  isDisabledEdit
                 />
               ) : (
                 ""

@@ -10,9 +10,10 @@ import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 type Props = {
   onChange: (value: number | undefined) => void;
   attrGroup: Record<string, any>[];
+  isDisabledEdit: boolean
 };
 
-const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup }) => {
+const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup, isDisabledEdit }) => {
   const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
     number | undefined
   >(undefined);
@@ -61,7 +62,7 @@ const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup }) => {
             setType("add");
           }}
         />
-        {selectedAttrGroupId ? (
+        {selectedAttrGroupId && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">
             <DoubleClickBtn
               onPress={handleDeleteAttrGroup}

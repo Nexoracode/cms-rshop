@@ -10,15 +10,15 @@ import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 type Props = {
   onChange: (value: number | undefined) => void;
   attr: Record<string, any>[];
-  groupedId: number | undefined;
   selectedAttrId: number | undefined;
+  isDisabledEdit: boolean
 };
 
 const AddNewAttribute: React.FC<Props> = ({
   onChange,
   attr,
-  groupedId,
   selectedAttrId,
+  isDisabledEdit
 }) => {
   const [type, setType] = useState<"edit" | "add">("add");
   //? Hooks
@@ -65,7 +65,7 @@ const AddNewAttribute: React.FC<Props> = ({
           }}
         />
 
-        {selectedAttrId ? (
+        {selectedAttrId && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">
             <DoubleClickBtn
               onPress={handleDeleteAttr}

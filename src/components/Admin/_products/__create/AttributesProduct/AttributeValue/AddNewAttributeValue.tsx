@@ -12,14 +12,16 @@ type Props = {
   attrValues: Record<string, any>[]; // list of possible values from server
   selectedValues: number[]; // selected value ids (from parent state)
   onChange: (values: number[]) => void; // notify parent with array of selected ids
-  selectedAttrId: number | undefined
+  selectedAttrId: number | undefined;
+  isDisabledEdit: boolean
 };
 
 const AddNewAttributeValue: React.FC<Props> = ({
   attrValues,
   selectedValues,
   onChange,
-  selectedAttrId
+  selectedAttrId,
+  isDisabledEdit
 }) => {
   const [editAttrValue, setEditAttrValue] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -102,7 +104,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
           ""
         )}
 
-        {selectedValues && selectedValues.length ? (
+        {selectedValues && selectedValues.length && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">
             <Button
               size="sm"
