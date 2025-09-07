@@ -1,4 +1,3 @@
-import { SizeGuideProp } from "@/components/Admin/_products/__create/SizeGuide/type";
 import { Product } from "@/components/Admin/_products/types/create-product";
 import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,7 +7,7 @@ export const useGetProducts = (page: number = 1) => {
     queryKey: ["all-products", page],
     queryFn: () =>
       fetcher({
-        route: `/product?page=${page}`,
+        route: `/product?page=${page}&limit=10`,
         isActiveToast: false,
       }),
   });

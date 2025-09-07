@@ -21,13 +21,15 @@ import { useGetProducts } from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { GETProduct } from "@/components/Admin/_products/types/edit-product";
 import { useState } from "react";
-import { log } from "node:console";
+import { usePaginationParams } from "@/hooks/usePaginationParams";
+import AppPagination from "@/components/Helper/AppPagination";
 
 const Products = () => {
   const router = useRouter();
   const [productId, setProductId] = useState(0);
-  const { data: products, isPending } = useGetProducts();
-  
+  const { page } = usePaginationParams();
+  const { data: products, isLoading } = useGetProducts(page);
+
   const {
     isOpen: isSortOpen,
     onOpen: onOpenSort,
@@ -46,8 +48,7 @@ const Products = () => {
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
 
-  console.log("BBBB", products);
-  
+  console.log("GGGGGGGGGG", products);
 
   return (
     <>
@@ -103,7 +104,9 @@ const Products = () => {
             icon={<AiOutlineShop className="text-3xl" />}
           />
           <CardBody>
-            {products?.data ? (
+            {isLoading ? (
+              <LoadingApiCall />
+            ) : products?.data ? (
               <div className="flex flex-col gap-4">
                 {(products.data as GETProduct).items.map((product) => (
                   <ProductBox
@@ -113,7 +116,9 @@ const Products = () => {
                     title={product.name}
                     pathImg={product.media_pinned.url}
                     price={product.price}
-                    varientsCount={product.stock === 0 ? "نامحدود" : product.stock}
+                    varientsCount={
+                      product.stock === 0 ? "نامحدود" : product.stock
+                    }
                     onShowMore={() =>
                       router.push(
                         `/admin/products/create?edit_id=${product.id}`
@@ -123,10 +128,12 @@ const Products = () => {
                 ))}
               </div>
             ) : (
-              <LoadingApiCall />
+              <p className="text-center py-6">فعلا هنوز محصولی وجود ندارد</p>
             )}
           </CardBody>
         </Card>
+
+        <AppPagination meta={products?.data.meta} />
       </section>
       {/* Modals */}
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
