@@ -20,13 +20,11 @@ import { LuBox } from "react-icons/lu";
 import { useGetProducts } from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { GETProduct } from "@/components/Admin/_products/types/edit-product";
-import { useState } from "react";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import AppPagination from "@/components/Helper/AppPagination";
 
 const Products = () => {
   const router = useRouter();
-  const [productId, setProductId] = useState(0);
   const { page } = usePaginationParams();
   const { data: products, isLoading } = useGetProducts(page);
 
@@ -47,8 +45,6 @@ const Products = () => {
     onOpen: onOpenFeature,
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
-
-  console.log("GGGGGGGGGG", products);
 
   return (
     <>

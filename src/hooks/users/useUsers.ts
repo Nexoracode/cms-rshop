@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 
-export const useGetAllUsers = () => {
+export const useGetAllUsers = (page: number) => {
   return useQuery({
-    queryKey: ["all-users"],
+    queryKey: ["all-users", page],
     queryFn: () =>
       fetcher({
-        route: "/users",
+        route: `/users?page=${page}`,
         successText: "لیست کاربران با موفقیت دریافت شد",
         loadingText: "در حال دریافت لیست کاربران",
       }),

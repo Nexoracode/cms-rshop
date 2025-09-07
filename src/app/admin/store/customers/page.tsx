@@ -20,12 +20,15 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { IoFilter } from "react-icons/io5";
 import { LuBox, LuUsersRound } from "react-icons/lu";
+import { usePaginationParams } from "@/hooks/usePaginationParams";
+import AppPagination from "@/components/Helper/AppPagination";
 
 const Customers = () => {
   // State
   const [userId, setUserId] = useState(0);
   //? Hooks
-  const { data: users } = useGetAllUsers();
+  const { page } = usePaginationParams();
+  const { data: users, isLoading } = useGetAllUsers(page);
   const { data: oneUser } = useGetOneUser(userId);
 
   //? Disclosures
@@ -99,9 +102,11 @@ const Customers = () => {
               icon={<LuUsersRound className="text-3xl" />}
             />
             <CardBody className="p-4 flex flex-col gap-6">
-              {users?.data ? (
+              {isLoading ? (
+                <LoadingApiCall />
+              ) : users?.data ? (
                 <div className="flex flex-col gap-4">
-                  {users.data.map((user: any) => (
+                  {users.data.items.map((user: any) => (
                     <GeneralUserInformation
                       key={user.id}
                       firstName={user.first_name || "نام"}
@@ -114,10 +119,13 @@ const Customers = () => {
                   ))}
                 </div>
               ) : (
-                <LoadingApiCall />
+                <p className="text-center py-6">
+                  فعلا هنوز کاربری ثبت نام نکرده است
+                </p>
               )}
             </CardBody>
           </Card>
+          <AppPagination meta={users?.data.meta} />
         </section>
       ) : (
         <section className="flex flex-col gap-6">
