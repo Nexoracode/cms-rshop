@@ -57,6 +57,8 @@ const AttributesModal = ({
     });
 
     if (attr) {
+      console.log("EEEEEEEEEEEEEEE", { ...attr, values: attrValues });
+      
       onSubmit({ ...attr, values: attrValues });
       resetModalInfos();
       onOpenChange();

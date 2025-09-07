@@ -12,6 +12,7 @@ import { cartesian } from "@/utils/cartesian";
 import { useAddNewVariantProduct, useUpdateVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
+import { useGetOneProduct } from "@/hooks/products/useProduct";
 
 type Variant = {
   id: number | string;
@@ -22,10 +23,14 @@ const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
+  //
+  const { page } = usePaginationParams("edit_id");
+  const {data: productData} = useGetOneProduct(page)
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const updateqVariantProductMutation = useUpdateVariantProduct();
-  const { page } = usePaginationParams("edit_id");
   const router = useRouter();
+
+  console.log(productData);
 
   useEffect(() => {
     console.log(attributes);
