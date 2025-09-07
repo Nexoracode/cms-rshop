@@ -9,7 +9,7 @@ import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
-import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
+import { useAddNewVariantProduct, useUpdateVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 
@@ -23,6 +23,7 @@ const AttributesProducts = () => {
   const [attributes, setAttributes] = useState<any[]>([]);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
   const addNewVariantProductMutation = useAddNewVariantProduct();
+  const updateqVariantProductMutation = useUpdateVariantProduct();
   const { page } = usePaginationParams("edit_id");
   const router = useRouter();
 
