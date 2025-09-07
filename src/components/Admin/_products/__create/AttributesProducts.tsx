@@ -11,6 +11,7 @@ import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
+import { usePaginationParams } from "@/hooks/usePaginationParams";
 
 type Variant = {
   id: number | string;
@@ -22,7 +23,8 @@ const AttributesProducts = () => {
   const [attributes, setAttributes] = useState<any[]>([]);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
   const addNewVariantProductMutation = useAddNewVariantProduct();
-  const router = useRouter()
+  const { page } = usePaginationParams("edit_id");
+  const router = useRouter();
 
   useEffect(() => {
     console.log(attributes);
@@ -31,7 +33,6 @@ const AttributesProducts = () => {
   const variantAttributes = attributes.filter((attr) => attr.is_variant);
   const variantValues = variantAttributes.map((attr) => attr.values);
   const allCombinations = variantValues.length ? cartesian(variantValues) : [];
-
 
   const handleChangesAttributes = async () => {
     const variantsInfo = variantsData.map(({ id, ...rest }) => rest);
@@ -45,7 +46,7 @@ const AttributesProducts = () => {
     );
 
     const allCombinations = cartesian(variantValues);
-    const product_id = 53;
+    const product_id = page;
 
     const variants = allCombinations.map((combo, index) => ({
       product_id,
@@ -64,7 +65,7 @@ const AttributesProducts = () => {
           addNewVariantProductMutation.mutateAsync(variant)
         )
       );
-      router.push('/admin/products')
+      router.push("/admin/products");
     } catch (error) {
       console.error("خطا در افزودن variants:", error);
     }

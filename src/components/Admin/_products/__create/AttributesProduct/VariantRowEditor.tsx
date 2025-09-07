@@ -17,10 +17,14 @@ import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 type Props = {
   variantName: string;
   onHandleSubmit?: (data: Record<string, any>) => void;
-  onRemove:(id: string) => void
+  onRemove: (id: string) => void;
 };
 
-const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemove }) => {
+const VariantRowEditor: React.FC<Props> = ({
+  variantName,
+  onHandleSubmit,
+  onRemove,
+}) => {
   const [formData, setFormData] = useState({
     price: 10000,
     discountValue: 0,
@@ -59,8 +63,8 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemo
             <div className="flex items-center gap-4">
               <div className="w-full flex flex-col items-start">
                 <NumberInput
-                  label="قیمت"
-                  placeholder="10,000"
+                  size="sm"
+                  placeholder="قیمت را وارد نمایید"
                   min={1}
                   isRequired
                   endContent={
@@ -89,10 +93,9 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemo
                 )}
               </div>
 
-              {/*  <NumberInput
-                label="موجودی"
-                labelPlacement="outside"
-                placeholder="1"
+              <NumberInput
+                size="sm"
+                placeholder="موجودی را وارد کنید"
                 minValue={1}
                 isRequired
                 //isDisabled={formData.unlimitedStock}
@@ -108,7 +111,8 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemo
                   setFormData((prev) => ({ ...prev, stock }))
                 }
               />
-              <Checkbox
+
+              {/* <Checkbox
                 //isSelected={formData.unlimitedStock}
                 onValueChange={(unlimitedStock) =>
                   setFormData((prev) => ({ ...prev, unlimitedStock }))
@@ -119,9 +123,9 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemo
 
               <div className="w-full flex flex-col gap-2">
                 <NumberInput
+                  size="sm"
                   className="w-full"
-                  label="تخفیف"
-                  placeholder="10"
+                  placeholder="تخفیف"
                   minValue={1}
                   endContent={
                     <select
@@ -159,8 +163,7 @@ const VariantRowEditor: React.FC<Props> = ({ variantName, onHandleSubmit, onRemo
             <Input
               isClearable
               className="bg-white rounded-xl"
-              label="کد انبار"
-              placeholder="کد را وارد نمایید"
+              placeholder="کد انبار را وارد نمایید"
               value={formData.sku}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, sku: e.target.value }))
