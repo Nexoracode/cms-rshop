@@ -7,61 +7,29 @@ import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
+import { replaceOrAddById } from "@/utils/replaceOrAddById";
+import { cartesian } from "@/utils/cartesian";
 
-// تابع ساده برای گرفتن تمام ترکیب‌های ممکن از attributeهای variant
-function cartesianObject(arrays: any[][]): any[][] {
-  if (!arrays.length) return [];
-  let result: any[][] = [[]];
-  for (const group of arrays) {
-    const temp: any[][] = [];
-    for (const combination of result) {
-      for (const item of group) {
-        temp.push([...combination, item]);
-      }
-    }
-    result = temp;
-  }
-  return result;
-}
+type Variant = {
+  id: number | string;
+  [key: string]: any;
+};
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [attributes, setAttributes] = useState<any[]>([]);
-  const [variantsData, setVariantsData] = useState<Record<string, any>[]>([]);
+  const [variantsData, setVariantsData] = useState<Variant[]>([]);
 
   useEffect(() => {
     console.log(attributes);
   }, [attributes]);
 
-  // فیلتر attributeهایی که is_variant: true دارند
   const variantAttributes = attributes.filter((attr) => attr.is_variant);
-
-  // آرایه‌ای از تمام مقادیر برای ساخت ترکیب‌ها
   const variantValues = variantAttributes.map((attr) => attr.values);
-
-  // تمام ترکیب‌ها
-  const allCombinations = cartesianObject(variantValues);
-
-  const findItemForReplaceInArray = (
-    datas: any[],
-    obj: Record<string, any>
-  ) => {
-    const index = datas.findIndex((a) => a.id === obj.id);
-    if (index !== -1) {
-      const updated = [...datas];
-      updated[index] = obj;
-      return updated;
-    }
-
-    return [...datas, obj];
-  };
+  const allCombinations = variantValues.length ? cartesian(variantValues) : [];
 
   const handleChangesAttributes = () => {
-    // اطلاعات variant بدون id
     const variantsInfo = variantsData.map(({ id, ...rest }) => rest);
-
-    // فقط attributeهایی که is_variant هستند
-    const variantAttributes = attributes.filter((attr) => attr.is_variant);
 
     // آماده‌سازی valueها
     const variantValues = variantAttributes.map((attr) =>
@@ -71,13 +39,6 @@ const AttributesProducts = () => {
         label: v.value,
       }))
     );
-
-    // تابع کراس‌پروداکت
-    const cartesian = (arrays: any[][]) =>
-      arrays.reduce(
-        (acc, curr) => acc.flatMap((a) => curr.map((c) => [...a, c])),
-        [[]]
-      );
 
     const allCombinations = cartesian(variantValues);
 
@@ -113,18 +74,15 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          {/* رندر ترکیب‌های variant */}
           {allCombinations.map((combo, idx) => {
-            // ساخت اسم ترکیبی برای VariantRowEditor
-            const variantName = combo.map((c) => c.value).join(" / ");
+            const variantName = combo.map((c: any) => c.value).join(" / ");
             return (
               <VariantRowEditor
                 key={idx}
                 variantName={variantName}
                 onHandleSubmit={(data) => {
-                  setVariantsData((prev) =>
-                    findItemForReplaceInArray(prev, data)
-                  );
+                  const itemWithId = { id: data.id ?? Date.now(), ...data };
+                  setVariantsData((prev) => replaceOrAddById(prev, itemWithId));
                 }}
                 onRemove={(id) => {
                   setVariantsData((prev) => {
@@ -164,7 +122,7 @@ const AttributesProducts = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onSubmit={(data: Record<string, any>) =>
-          setAttributes((prev) => findItemForReplaceInArray(prev, data))
+          setAttributes((prev) => replaceOrAddById(prev, data))
         }
       />
     </>
