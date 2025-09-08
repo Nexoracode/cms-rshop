@@ -9,14 +9,21 @@ import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
-import { useAddNewVariantProduct, useUpdateVariantProduct } from "@/hooks/attributes/useVariantProduct";
+import {
+  useAddNewVariantProduct,
+  useUpdateVariantProduct,
+} from "@/hooks/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
 
 type Variant = {
-  id: number | string;
-  [key: string]: any;
+  id: string, 
+  price: number, 
+  sku: string, 
+  stock: number, 
+  discount_percent: number,
+  discount_amount: number,
 };
 
 const AttributesProducts = () => {
@@ -25,12 +32,10 @@ const AttributesProducts = () => {
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
   //
   const { page } = usePaginationParams("edit_id");
-  const {data: productData} = useGetOneProduct(page)
+  const { data: productData } = useGetOneProduct(page);
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const updateqVariantProductMutation = useUpdateVariantProduct();
   const router = useRouter();
-
-  console.log(productData);
 
   useEffect(() => {
     console.log(attributes);
@@ -41,7 +46,12 @@ const AttributesProducts = () => {
   const allCombinations = variantValues.length ? cartesian(variantValues) : [];
 
   const handleChangesAttributes = async () => {
-    const variantsInfo = variantsData.map(({ id, ...rest }) => rest);
+    
+    const varientDatasOld = [...variantsData].filter(val => val?.id)
+    const varientDatasNew = [...variantsData].filter(val => !val?.id)
+
+    console.log("variantsData =>>>>>>>>>>>>>", variantsData);
+    console.log("varientDatasOld & varientDatasNew =>>>>>>>>>>>>>", varientDatasOld, varientDatasNew);
 
     const variantValues = variantAttributes.map((attr) =>
       attr.values.map((v: any) => ({
@@ -50,21 +60,25 @@ const AttributesProducts = () => {
         label: v.value,
       }))
     );
+    console.log("variantAttributes =>>>>>>>>>", variantAttributes);
+    console.log("variantValues =>>>>>>>>>", variantValues);
 
     const allCombinations = cartesian(variantValues);
     const product_id = page;
+    console.log("allCombinations =>>>>>>>>>", allCombinations);
 
     const variants = allCombinations.map((combo, index) => ({
       product_id,
-      ...variantsInfo[index],
+      ...varientDatasNew[index],
       attributes: combo.map((c: any) => ({
         attribute_id: c.attribute_id,
         value_id: c.value_id,
         label: c.label,
       })),
     }));
+    console.log("variants =>>>>>>>>>", variants);
 
-    try {
+    /*  try {
       // همه variantها رو همزمان ارسال کن
       await Promise.all(
         variants.map((variant) =>
@@ -74,7 +88,7 @@ const AttributesProducts = () => {
       router.push("/admin/products");
     } catch (error) {
       console.error("خطا در افزودن variants:", error);
-    }
+    } */
   };
 
   return (
@@ -99,8 +113,8 @@ const AttributesProducts = () => {
                 key={idx}
                 variantName={variantName}
                 onHandleSubmit={(data) => {
-                  const itemWithId = { id: data.id ?? Date.now(), ...data };
-                  setVariantsData((prev) => replaceOrAddById(prev, itemWithId));
+                  console.log(data);
+                  setVariantsData((prev) => replaceOrAddById(prev, data));
                 }}
                 onRemove={(id) => {
                   setVariantsData((prev) => {

@@ -2,10 +2,8 @@
 
 import { memo, useEffect, useState } from "react";
 import {
-  Button,
   Card,
   CardBody,
-  Checkbox,
   Input,
   NumberInput,
 } from "@heroui/react";
@@ -13,37 +11,54 @@ import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import { formatDiscountedPrice } from "@/utils/global";
 
 type Props = {
   variantName: string;
   onHandleSubmit?: (data: Record<string, any>) => void;
-  onRemove: (id: string) => void;
+  onRemove: (id: string | number) => void;
+  defaultValues: Variant;
+};
+
+type Variant = {
+  id: number | string;
+  price: number;
+  sku: string;
+  stock: number;
+  discount_percent?: number;
+  discount_amount?: number;
 };
 
 const VariantRowEditorComponent: React.FC<Props> = ({
   variantName,
   onHandleSubmit,
   onRemove,
+  defaultValues,
 }) => {
-  const [formData, setFormData] = useState({
+  const [discountType, setDiscountType] = useState<Stock>("percent");
+  const [formData, setFormData] = useState<Variant>({
+    id: crypto.randomUUID(),
     price: 10000,
-    discountValue: 0,
-    discountType: "percent" as Stock,
-    stock: 5,
+    stock: 0,
     sku: "",
   });
 
   useEffect(() => {
-    const { discountType, discountValue, price, stock, sku } = formData;
+    if (defaultValues) {
+      setFormData(defaultValues);
+    }
+  }, [defaultValues]);
+
+  useEffect(() => {
+    const { price, stock, sku, id, discount_amount, discount_percent } =
+      formData;
 
     const obj = {
-      id: variantName,
+      ...(!id ? { id: crypto.randomUUID() } : { id }),
       price,
       sku,
       stock: +stock,
-      ...(discountType === "percent"
-        ? { discount_percent: discountValue }
-        : { discount_amount: discountValue }),
+      ...(discount_percent ? { discount_percent } : { discount_amount }),
     };
 
     onHandleSubmit?.(obj);
@@ -76,19 +91,17 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                     setFormData((prev) => ({ ...prev, price }))
                   }
                 />
-                {formData.price && formData.discountValue !== 0 && (
+
+                {formData.price ? (
                   <p className="text-green-600 text-sm mt-2 mr-3">
-                    قیمت با تخفیف:{" "}
-                    {formData.discountType === "percent"
-                      ? (
-                          +formData.price *
-                          (1 - formData.discountValue / 100)
-                        ).toLocaleString()
-                      : (
-                          +formData.price - formData.discountValue
-                        ).toLocaleString()}{" "}
-                    تومان
+                   {/*  {formatDiscountedPrice(
+                      formData.price,
+                      formData.discount_percent,
+                      formData.discount_amount
+                    )} */}
                   </p>
+                ) : (
+                  ""
                 )}
               </div>
 
@@ -130,13 +143,8 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                     <select
                       aria-label="Select discount type"
                       className="outline-none border-0 bg-transparent text-default-400 text-small"
-                      value={formData.discountType}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          discountType: e.target.value as Stock,
-                        }))
-                      }
+                      value={discountType}
+                      onChange={(e) => setDiscountType(e.target.value as Stock)}
                     >
                       <option value="percent">درصد</option>
                       <option value="money">مبلغ ثابت (تومان)</option>
@@ -145,7 +153,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                   onValueChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
-                      discountValue: value,
+                    ...(discountType === "percent" ? {discount_percent: value} : {discount_amount: value} ),
                     }))
                   }
                   isDisabled={!formData.price}
@@ -171,7 +179,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
             <div className="flex items-center justify-end">
               <DoubleClickBtn
                 size="sm"
-                onPress={() => onRemove(variantName)}
+                onPress={() => onRemove(formData.id)}
                 textBtn="حذف"
                 color="danger"
                 isActiveDoubleClick
