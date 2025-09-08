@@ -136,7 +136,14 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                       aria-label="Select discount type"
                       className="outline-none border-0 bg-transparent text-default-400 text-small"
                       value={discountType}
-                      onChange={(e) => setDiscountType(e.target.value as Stock)}
+                      onChange={(e) => {
+                        setDiscountType(e.target.value as Stock)
+                        if (e.target.value as Stock === "percent") {
+                          setFormData(prev => ({...prev, discount_amount: undefined}))
+                        } else {
+                           setFormData(prev => ({...prev, discount_percent: undefined}))
+                        }
+                      }}
                     >
                       <option value="percent">درصد</option>
                       <option value="money">مبلغ ثابت (تومان)</option>

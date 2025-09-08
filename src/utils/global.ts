@@ -5,15 +5,16 @@ export function formatDiscountedPrice(
 ) {
   if (!price) return null;
 
-  let discounted: number | null = null;
+  let discounted = price;
 
-  if (discount_percent && discount_percent > 0) {
-    discounted = price * (1 - discount_percent / 100);
-  } else if (discount_amount && discount_amount > 0) {
-    discounted = price - discount_amount;
+  if (discount_amount && discount_amount > 0) {
+    discounted = Math.max(0, price - discount_amount);
+  } else if (discount_percent && discount_percent > 0) {
+    discounted = Math.max(0, price * (1 - discount_percent / 100));
   }
-
-  return discounted !== null
-    ? `قیمت با تخفیف: ${discounted.toLocaleString()} تومان`
+  console.log(discounted, price, discount_amount, discount_percent);
+  
+  return discounted !== price
+    ? `قیمت با تخفیف: ${Math.round(discounted).toLocaleString()} تومان`
     : null;
 }
