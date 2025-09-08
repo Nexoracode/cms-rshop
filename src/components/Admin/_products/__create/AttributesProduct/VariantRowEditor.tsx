@@ -12,21 +12,13 @@ import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { formatDiscountedPrice } from "@/utils/global";
+import { Variant } from "@/types/attributes";
 
 type Props = {
   variantName: string;
-  onHandleSubmit?: (data: Record<string, any>) => void;
+  onHandleSubmit?: (data: Variant) => void;
   onRemove: (id: string | number) => void;
-  defaultValues: Variant;
-};
-
-type Variant = {
-  id: number | string;
-  price: number;
-  sku: string;
-  stock: number;
-  discount_percent?: number;
-  discount_amount?: number;
+  defaultValues: Variant | null;
 };
 
 const VariantRowEditorComponent: React.FC<Props> = ({
@@ -94,11 +86,11 @@ const VariantRowEditorComponent: React.FC<Props> = ({
 
                 {formData.price ? (
                   <p className="text-green-600 text-sm mt-2 mr-3">
-                   {/*  {formatDiscountedPrice(
+                    {formatDiscountedPrice(
                       formData.price,
                       formData.discount_percent,
                       formData.discount_amount
-                    )} */}
+                    )}
                   </p>
                 ) : (
                   ""

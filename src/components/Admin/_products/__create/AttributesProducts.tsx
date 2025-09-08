@@ -16,15 +16,7 @@ import {
 import { useRouter } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
-
-type Variant = {
-  id: string, 
-  price: number, 
-  sku: string, 
-  stock: number, 
-  discount_percent: number,
-  discount_amount: number,
-};
+import { Variant } from "@/types/attributes";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -121,6 +113,7 @@ const AttributesProducts = () => {
                     return prev.filter((a) => a.id !== id);
                   });
                 }}
+                defaultValues={null}
               />
             );
           })}
