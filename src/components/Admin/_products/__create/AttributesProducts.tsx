@@ -52,6 +52,8 @@ const AttributesProducts = () => {
   };
 
   const combinationsDefaultValues = () => {
+    console.log("productData =>", productData);
+
     const defaultVariants: Record<string, any>[] = productData?.data.variants;
     if (!defaultVariants.length) return;
     // get all Attribute
@@ -72,9 +74,8 @@ const AttributesProducts = () => {
   };
 
   const handleChangesAttributes = async () => {
-    const varientDatasOld = [...variantsData].filter((val) => val?.id);
-    const varientDatasNew = [...variantsData].filter((val) => !val?.id);
     const variantAttributes = attributes.filter((attr) => attr.is_variant);
+    const variantsFilter = variantsData.map(({ id, ...rest }) => rest);
 
     const variantValues = variantAttributes.map((attr) =>
       attr.values.map((v: any) => ({
@@ -83,16 +84,14 @@ const AttributesProducts = () => {
         label: v.value,
       }))
     );
-    console.log("variantAttributes =>>>>>>>>>", variantAttributes);
-    console.log("variantValues =>>>>>>>>>", variantValues);
 
     const allCombinations = cartesian(variantValues);
     const product_id = page;
-    console.log("allCombinations =>>>>>>>>>", allCombinations);
 
+    console.log("allCombinations =>", allCombinations);
     const variants = allCombinations.map((combo, index) => ({
       product_id,
-      ...varientDatasNew[index],
+      ...variantsFilter[index],
       attributes: combo.map((c: any) => ({
         attribute_id: c.attribute_id,
         value_id: c.value_id,
@@ -100,8 +99,7 @@ const AttributesProducts = () => {
       })),
     }));
     console.log("variants =>>>>>>>>>", variants);
-
-     try {
+    try {
       await Promise.all(
         variants.map((variant) =>
           addNewVariantProductMutation.mutateAsync(variant)
@@ -112,6 +110,8 @@ const AttributesProducts = () => {
       console.error("خطا در افزودن variants:", error);
     }
   };
+
+  console.log(productData?.data?.variants);
 
   return (
     <>
@@ -154,23 +154,15 @@ const AttributesProducts = () => {
               : ""}
           </div>
 
-          {cartesianDefaultAttributes.length
-            ? cartesianDefaultAttributes.map((combo, idx) => {
-                const variantName = combo.map((c: any) => c.value).join(" / ");
+          {productData?.data?.variants
+            ? productData?.data.variants.map((variant: any, index: number) => {
                 return (
                   <VariantRowEditor
-                    key={idx}
-                    variantName={variantName}
-                    onHandleSubmit={(data) => {
-                      console.log(data);
-                      //setVariantsData((prev) => replaceOrAddById(prev, data));
-                    }}
-                    onRemove={(id) => {
-                      /* setVariantsData((prev) => {
-                        return prev.filter((a) => a.id !== id);
-                      }); */
-                    }}
-                    defaultValues={null}
+                    key={index}
+                    variantName={variant.name}
+                    onHandleSubmit={(data) => {}}
+                    onRemove={(id) => {}}
+                    defaultValues={variant}
                   />
                 );
               })

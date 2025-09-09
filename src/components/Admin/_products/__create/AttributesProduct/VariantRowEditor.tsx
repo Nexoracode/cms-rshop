@@ -38,6 +38,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
   useEffect(() => {
     if (defaultValues) {
       setFormData(defaultValues);
+      setDiscountType(defaultValues.discount_amount ? "money" : "percent")
     }
   }, [defaultValues]);
 
@@ -131,6 +132,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                   className="w-full"
                   placeholder="تخفیف"
                   minValue={1}
+                  value={discountType === "percent" ? formData.discount_percent : formData.discount_amount}
                   endContent={
                     <select
                       aria-label="Select discount type"
