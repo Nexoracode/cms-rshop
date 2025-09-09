@@ -20,30 +20,63 @@ import { Variant } from "@/types/attributes";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const router = useRouter();
+  ///
   const [attributes, setAttributes] = useState<any[]>([]);
+  const [cartesianAttributes, setCartesianAttributes] = useState<any[]>([]);
+  const [cartesianDefaultAttributes, setCartesianDefaultAttributes] = useState<
+    any[]
+  >([]);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
   //
   const { page } = usePaginationParams("edit_id");
   const { data: productData } = useGetOneProduct(page);
   const addNewVariantProductMutation = useAddNewVariantProduct();
-  const updateqVariantProductMutation = useUpdateVariantProduct();
-  const router = useRouter();
+  const updateVariantProductMutation = useUpdateVariantProduct();
+
+  useEffect(() => {
+    combinationsDefaultValues();
+    combinationsAttrValues();
+  }, []);
 
   useEffect(() => {
     console.log(attributes);
   }, [attributes]);
 
-  const variantAttributes = attributes.filter((attr) => attr.is_variant);
-  const variantValues = variantAttributes.map((attr) => attr.values);
-  const allCombinations = variantValues.length ? cartesian(variantValues) : [];
+  const combinationsAttrValues = () => {
+    const variantAttributes = attributes.filter((attr) => attr.is_variant);
+    const variantValues = variantAttributes.map((attr) => attr.values);
+    if (!variantValues.length) return;
+    setCartesianAttributes(cartesian(variantValues));
+  };
+
+  const combinationsDefaultValues = () => {
+    const defaultVariants: Record<string, any>[] = productData?.data.variants;
+    if (!defaultVariants.length) return;
+    // get all Attribute
+    const allAttributes = defaultVariants[0].attributes.map(
+      (variant: any) => variant.attribute
+    );
+    // get unique Attributes
+    const uniqueAttributes = allAttributes.filter(
+      (attr: any, index: any, self: any[]) =>
+        index === self.findIndex((a: any) => a.id === attr.id)
+    );
+    // get AttributeValues
+    const attrValues = uniqueAttributes.map((attr: any) => attr.values);
+    setCartesianDefaultAttributes(cartesian(attrValues));
+  };
 
   const handleChangesAttributes = async () => {
-    
-    const varientDatasOld = [...variantsData].filter(val => val?.id)
-    const varientDatasNew = [...variantsData].filter(val => !val?.id)
+    const varientDatasOld = [...variantsData].filter((val) => val?.id);
+    const varientDatasNew = [...variantsData].filter((val) => !val?.id);
 
     console.log("variantsData =>>>>>>>>>>>>>", variantsData);
-    console.log("varientDatasOld & varientDatasNew =>>>>>>>>>>>>>", varientDatasOld, varientDatasNew);
+    console.log(
+      "varientDatasOld & varientDatasNew =>>>>>>>>>>>>>",
+      varientDatasOld,
+      varientDatasNew
+    );
 
     const variantValues = variantAttributes.map((attr) =>
       attr.values.map((v: any) => ({
@@ -98,25 +131,53 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          {allCombinations.map((combo, idx) => {
-            const variantName = combo.map((c: any) => c.value).join(" / ");
-            return (
-              <VariantRowEditor
-                key={idx}
-                variantName={variantName}
-                onHandleSubmit={(data) => {
-                  console.log(data);
-                  setVariantsData((prev) => replaceOrAddById(prev, data));
-                }}
-                onRemove={(id) => {
-                  setVariantsData((prev) => {
-                    return prev.filter((a) => a.id !== id);
-                  });
-                }}
-                defaultValues={null}
-              />
-            );
-          })}
+          <div className="bg-slate-200 rounded-xl p-4 flex flex-col gap-6">
+            {cartesianAttributes.length
+              ? cartesianAttributes.map((combo, idx) => {
+                  const variantName = combo
+                    .map((c: any) => c.value)
+                    .join(" / ");
+                  return (
+                    <VariantRowEditor
+                      key={idx}
+                      variantName={variantName}
+                      onHandleSubmit={(data) => {
+                        console.log(data);
+                        setVariantsData((prev) => replaceOrAddById(prev, data));
+                      }}
+                      onRemove={(id) => {
+                        setVariantsData((prev) => {
+                          return prev.filter((a) => a.id !== id);
+                        });
+                      }}
+                      defaultValues={null}
+                    />
+                  );
+                })
+              : ""}
+          </div>
+
+          {cartesianDefaultAttributes.length
+            ? cartesianDefaultAttributes.map((combo, idx) => {
+                const variantName = combo.map((c: any) => c.value).join(" / ");
+                return (
+                  <VariantRowEditor
+                    key={idx}
+                    variantName={variantName}
+                    onHandleSubmit={(data) => {
+                      console.log(data);
+                      //setVariantsData((prev) => replaceOrAddById(prev, data));
+                    }}
+                    onRemove={(id) => {
+                      /* setVariantsData((prev) => {
+                        return prev.filter((a) => a.id !== id);
+                      }); */
+                    }}
+                    defaultValues={null}
+                  />
+                );
+              })
+            : ""}
 
           {/* attributeهای معمولی (is_variant: false) */}
           {attributes

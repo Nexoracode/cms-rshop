@@ -11,7 +11,7 @@ import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
-import { formatDiscountedPrice } from "@/utils/global";
+import { formatDiscountedPrice } from "@/utils/helpers";
 import { Variant } from "@/types/attributes";
 
 type Props = {

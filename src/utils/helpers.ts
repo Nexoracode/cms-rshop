@@ -12,7 +12,6 @@ export function formatDiscountedPrice(
   } else if (discount_percent && discount_percent > 0) {
     discounted = Math.max(0, price * (1 - discount_percent / 100));
   }
-  console.log(discounted, price, discount_amount, discount_percent);
   
   return discounted !== price
     ? `قیمت با تخفیف: ${Math.round(discounted).toLocaleString()} تومان`
