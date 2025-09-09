@@ -41,6 +41,7 @@ const AttributesProducts = () => {
 
   useEffect(() => {
     console.log(attributes);
+    attributes.length && combinationsAttrValues();
   }, [attributes]);
 
   const combinationsAttrValues = () => {
@@ -63,20 +64,17 @@ const AttributesProducts = () => {
         index === self.findIndex((a: any) => a.id === attr.id)
     );
     // get AttributeValues
+
     const attrValues = uniqueAttributes.map((attr: any) => attr.values);
+    console.log("attrValues => ", attrValues);
     setCartesianDefaultAttributes(cartesian(attrValues));
+    console.log("cartesian => ", cartesian(attrValues));
   };
 
   const handleChangesAttributes = async () => {
     const varientDatasOld = [...variantsData].filter((val) => val?.id);
     const varientDatasNew = [...variantsData].filter((val) => !val?.id);
-
-    console.log("variantsData =>>>>>>>>>>>>>", variantsData);
-    console.log(
-      "varientDatasOld & varientDatasNew =>>>>>>>>>>>>>",
-      varientDatasOld,
-      varientDatasNew
-    );
+    const variantAttributes = attributes.filter((attr) => attr.is_variant);
 
     const variantValues = variantAttributes.map((attr) =>
       attr.values.map((v: any) => ({
@@ -103,8 +101,7 @@ const AttributesProducts = () => {
     }));
     console.log("variants =>>>>>>>>>", variants);
 
-    /*  try {
-      // همه variantها رو همزمان ارسال کن
+     try {
       await Promise.all(
         variants.map((variant) =>
           addNewVariantProductMutation.mutateAsync(variant)
@@ -113,7 +110,7 @@ const AttributesProducts = () => {
       router.push("/admin/products");
     } catch (error) {
       console.error("خطا در افزودن variants:", error);
-    } */
+    }
   };
 
   return (
