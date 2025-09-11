@@ -128,30 +128,24 @@ const AttributesProducts = () => {
       if (!productData?.data.variants || !defaultVariantsData) return;
 
       // ترکیب attributes با هر واریانت
-      const combined = defaultVariantsData.map(
-        (variant: any, index: number) => {
-          const currentAttributes =
-            productData.data.variants[index]?.attributes || [];
-
-          const filteredAttributes = currentAttributes.filter(
-            (a: any, idx: number, self: any[]) =>
-              idx ===
-              self.findIndex((v: any) => v.attribute_id === a.attribute_id)
-          );
-
-          const attributes = filteredAttributes.map((v: any) => ({
+      const combined = defaultVariantsData.map((variant, idx) => {
+        const source = productData?.data.variants?.[idx];
+        const currentAttributes = source?.attributes ?? [];
+        // dedupe اگر لازم است:
+        const filtered = currentAttributes.filter(
+          (a: any, i: number, self: any[]) =>
+            i === self.findIndex((v) => v.attribute_id === a.attribute_id)
+        );
+        return {
+          ...variant,
+          product_id,
+          attributes: filtered.map((v:any) => ({
             attribute_id: v.attribute_id,
-            value_id: v.value_id,
-            label: v.label || "any",
-          }));
-
-          return {
-            ...variant,
-            attributes,
-            product_id,
-          };
-        }
-      );
+            value_id: v.value_id, // دقت کن همین فیلد را بفرستی
+            label: v.label ?? "any",
+          })),
+        };
+      });
 
       console.log("Combined variants:", combined);
 
@@ -159,7 +153,7 @@ const AttributesProducts = () => {
       await Promise.all(
         combined.map((variant) =>
           updateVariantProductMutation.mutateAsync({
-            id: variant.id,
+            id: +variant.id,
             data: variant,
           })
         )
