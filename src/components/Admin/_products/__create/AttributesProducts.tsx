@@ -30,6 +30,7 @@ const AttributesProducts = () => {
     any[]
   >([]);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
+  const [defaultVariantsData, setDefaultVariantsData] = useState<Variant[]>([]);
   //
   const { page } = usePaginationParams("edit_id");
   const { data: productData } = useGetOneProduct(page);
@@ -76,7 +77,7 @@ const AttributesProducts = () => {
     console.log("cartesian => ", cartesian(attrValues));
   };
 
-  const handleChangesAttributes = async () => {
+  const apiCallAddNewVariants = async () => {
     const variantAttributes = attributes.filter((attr) => attr.is_variant);
     const variantsFilter = variantsData.map(({ id, ...rest }) => rest);
 
@@ -103,7 +104,9 @@ const AttributesProducts = () => {
     }));
     console.log("variants =>>>>>>>>>", variants);
     try {
-      const checkValidate = variants.every(variant => variant.sku.length && variant.price)
+      const checkValidate = variants.every(
+        (variant) => variant.sku.length && variant.price
+      );
       if (checkValidate) {
         await Promise.all(
           variants.map((variant) =>
@@ -112,15 +115,28 @@ const AttributesProducts = () => {
         );
         router.push("/admin/products");
       } else {
-        toast.error("لطفا مقادیر خواسته شده را وارد کنید")
+        toast.error("لطفا مقادیر خواسته شده را وارد کنید");
       }
     } catch (error) {
       console.error("خطا در افزودن variants:", error);
     }
   };
 
+  const  apiCallUpdateVariants = () => {
+    
+  }
+
   const apiCallDeleteVariant = (id: number | string) => {
     deleteVariant(id);
+  };
+
+  const deleteVariantInDom = (id: string | number, indexRow: number) => {
+    setVariantsData((prev) => prev.filter((a) => a.id !== id));
+    setCartesianAttributes((prev) => {
+      const filterItems = prev.filter((a, index) => index !== indexRow);
+      !filterItems.length && setAttributes([]);
+      return filterItems;
+    });
   };
 
   console.log(productData?.data?.variants);
@@ -145,28 +161,15 @@ const AttributesProducts = () => {
               ? cartesianAttributes.map((combo, idx) => {
                   const variantName = combo
                     .map((c: any) => c.value)
-                    .join(" / ");
+                    .join(" ، ");
                   return (
                     <VariantRowEditor
                       key={idx}
                       variantName={variantName}
-                      onHandleSubmit={(data) => {
-                        console.log(data);
-                        setVariantsData((prev) => replaceOrAddById(prev, data));
-                      }}
-                      onRemove={(id) => {
-                        setVariantsData((prev) => {
-                          return prev.filter((a) => a.id !== id);
-                        });
-                        
-                        setCartesianAttributes((prev) => {
-                          const filterItems = prev.filter(
-                            (a, index) => index !== idx
-                          );
-                          !filterItems.length && setAttributes([])
-                          return filterItems;
-                        });
-                      }}
+                      onHandleSubmit={(data) =>
+                        setVariantsData((prev) => replaceOrAddById(prev, data))
+                      }
+                      onRemove={(id) => deleteVariantInDom(id, idx)}
                       defaultValues={null}
                     />
                   );
@@ -180,7 +183,11 @@ const AttributesProducts = () => {
                   <VariantRowEditor
                     key={index}
                     variantName={variant.name}
-                    onHandleSubmit={(data) => {}}
+                    onHandleSubmit={(data) =>
+                      setDefaultVariantsData((prev) =>
+                        replaceOrAddById(prev, data)
+                      )
+                    }
                     onRemove={apiCallDeleteVariant}
                     defaultValues={variant}
                   />
@@ -199,13 +206,16 @@ const AttributesProducts = () => {
               </Card>
             ))}
 
-          {attributes.length ? (
+          {cartesianAttributes.length || cartesianDefaultAttributes.length ? (
             <Button
               color="success"
               className="text-white"
-              onPress={handleChangesAttributes}
+              onPress={() => {
+                cartesianAttributes.length && apiCallAddNewVariants()
+                cartesianDefaultAttributes.length && apiCallUpdateVariants()
+              }}
             >
-              ثبت ویژگی های محصولات
+              ثبت تغیرات ویژگی ها
             </Button>
           ) : (
             ""
