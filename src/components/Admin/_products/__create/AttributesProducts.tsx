@@ -122,12 +122,57 @@ const AttributesProducts = () => {
     }
   };
 
-  const  apiCallUpdateVariants = () => {
-    
-  }
+  const apiCallUpdateVariants = async () => {
+    console.log(defaultVariantsData);
+    console.log(productData?.data.variants);
 
-  const apiCallDeleteVariant = (id: number | string) => {
-    deleteVariant(id);
+    const variantValues = productData?.data.variants.map((variant: any) => {
+      const filtered = variant.attributes.filter(
+        (a: any, index: number, self: any[]) =>
+          index ===
+          self.findIndex((v: any) => a.attribute_id === v.attribute_id)
+      );
+      const arr = filtered.map((v: any) => ({
+        attribute_id: v.attribute_id,
+        value_id: v.value_id,
+        label: "any",
+      }));
+
+      return arr;
+    });
+    console.log(variantValues);
+
+    /*   const allCombinations = cartesian(variantValues);
+    const product_id = page;
+
+    console.log("allCombinations =>", allCombinations);
+    const variants = allCombinations.map((combo, index) => ({
+      product_id,
+      ...variantsFilter[index],
+      attributes: combo.map((c: any) => ({
+        attribute_id: c.attribute_id,
+        value_id: c.value_id,
+        label: c.label,
+      })),
+    }));
+    console.log("variants =>>>>>>>>>", variants);
+    try {
+      const checkValidate = variants.every(
+        (variant) => variant.sku.length && variant.price
+      );
+      if (checkValidate) {
+        await Promise.all(
+          variants.map((variant) =>
+            addNewVariantProductMutation.mutateAsync(variant)
+          )
+        );
+        router.push("/admin/products");
+      } else {
+        toast.error("لطفا مقادیر خواسته شده را وارد کنید");
+      }
+    } catch (error) {
+      console.error("خطا در افزودن variants:", error);
+    } */
   };
 
   const deleteVariantInDom = (id: string | number, indexRow: number) => {
@@ -138,8 +183,6 @@ const AttributesProducts = () => {
       return filterItems;
     });
   };
-
-  console.log(productData?.data?.variants);
 
   return (
     <>
@@ -183,12 +226,13 @@ const AttributesProducts = () => {
                   <VariantRowEditor
                     key={index}
                     variantName={variant.name}
-                    onHandleSubmit={(data) =>
+                    onHandleSubmit={(data) => {
+                      if (typeof data.id !== "number") return;
                       setDefaultVariantsData((prev) =>
                         replaceOrAddById(prev, data)
-                      )
-                    }
-                    onRemove={apiCallDeleteVariant}
+                      );
+                    }}
+                    onRemove={(id) => deleteVariant(id)}
                     defaultValues={variant}
                   />
                 );
@@ -211,8 +255,8 @@ const AttributesProducts = () => {
               color="success"
               className="text-white"
               onPress={() => {
-                cartesianAttributes.length && apiCallAddNewVariants()
-                cartesianDefaultAttributes.length && apiCallUpdateVariants()
+                cartesianAttributes.length && apiCallAddNewVariants();
+                cartesianDefaultAttributes.length && apiCallUpdateVariants();
               }}
             >
               ثبت تغیرات ویژگی ها
