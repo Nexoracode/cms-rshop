@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { Variant } from "@/types/attributes";
+import toast from "react-hot-toast";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -102,12 +103,17 @@ const AttributesProducts = () => {
     }));
     console.log("variants =>>>>>>>>>", variants);
     try {
-      await Promise.all(
-        variants.map((variant) =>
-          addNewVariantProductMutation.mutateAsync(variant)
-        )
-      );
-      router.push("/admin/products");
+      const checkValidate = variants.every(variant => variant.sku.length && variant.price)
+      if (checkValidate) {
+        await Promise.all(
+          variants.map((variant) =>
+            addNewVariantProductMutation.mutateAsync(variant)
+          )
+        );
+        router.push("/admin/products");
+      } else {
+        toast.error("لطفا مقادیر خواسته شده را وارد کنید")
+      }
     } catch (error) {
       console.error("خطا در افزودن variants:", error);
     }
