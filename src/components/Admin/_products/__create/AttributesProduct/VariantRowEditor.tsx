@@ -51,7 +51,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
       price,
       sku,
       stock: +stock,
-      ...(discount_percent ? { discount_percent } : { discount_amount }),
+      ...(discount_percent ? { discount_percent: +discount_percent } : discount_amount ? { discount_amount: +discount_amount } : {}),
     };
 
     onHandleSubmit?.(obj);

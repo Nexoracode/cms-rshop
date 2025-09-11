@@ -92,7 +92,6 @@ const AttributesProducts = () => {
     const allCombinations = cartesian(variantValues);
     const product_id = page;
 
-    console.log("allCombinations =>", allCombinations);
     const variants = allCombinations.map((combo, index) => ({
       product_id,
       ...variantsFilter[index],
@@ -102,7 +101,7 @@ const AttributesProducts = () => {
         label: c.label,
       })),
     }));
-    console.log("variants =>>>>>>>>>", variants);
+
     try {
       const checkValidate = variants.every(
         (variant) => variant.sku.length && variant.price
@@ -123,47 +122,38 @@ const AttributesProducts = () => {
   };
 
   const apiCallUpdateVariants = async () => {
-    console.log(defaultVariantsData);
-    console.log(productData?.data.variants);
-
-    const variantValues = productData?.data.variants.map((variant: any) => {
-      const filtered = variant.attributes.filter(
-        (a: any, index: number, self: any[]) =>
-          index ===
-          self.findIndex((v: any) => a.attribute_id === v.attribute_id)
-      );
-      const arr = filtered.map((v: any) => ({
-        attribute_id: v.attribute_id,
-        value_id: v.value_id,
-        label: "any",
-      }));
-
-      return arr;
-    });
-    console.log(variantValues);
-
-    /*   const allCombinations = cartesian(variantValues);
     const product_id = page;
 
-    console.log("allCombinations =>", allCombinations);
-    const variants = allCombinations.map((combo, index) => ({
-      product_id,
-      ...variantsFilter[index],
-      attributes: combo.map((c: any) => ({
-        attribute_id: c.attribute_id,
-        value_id: c.value_id,
-        label: c.label,
-      })),
+    const filtered = productData?.data.variants[0].attributes.filter(
+      (a: any, index: number, self: any[]) =>
+        index === self.findIndex((v: any) => a.attribute_id === v.attribute_id)
+    );
+
+    const arr = filtered.map((v: any) => ({
+      attribute_id: v.attribute_id,
+      value_id: v.value_id,
+      label: "any",
     }));
-    console.log("variants =>>>>>>>>>", variants);
+
+    const combined = defaultVariantsData.map((variant: any, index: number) => ({
+      ...variant,
+      attributes: arr,
+      product_id,
+    }));
+
+    console.log(combined);
+
     try {
-      const checkValidate = variants.every(
+      const checkValidate = combined.every(
         (variant) => variant.sku.length && variant.price
       );
       if (checkValidate) {
         await Promise.all(
-          variants.map((variant) =>
-            addNewVariantProductMutation.mutateAsync(variant)
+          combined.map((variant) =>
+            updateVariantProductMutation.mutateAsync({
+              id: variant.id,
+              data: variant,
+            })
           )
         );
         router.push("/admin/products");
@@ -171,8 +161,8 @@ const AttributesProducts = () => {
         toast.error("لطفا مقادیر خواسته شده را وارد کنید");
       }
     } catch (error) {
-      console.error("خطا در افزودن variants:", error);
-    } */
+      console.error("خطا در آپدیت variants:", error);
+    }
   };
 
   const deleteVariantInDom = (id: string | number, indexRow: number) => {

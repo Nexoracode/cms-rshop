@@ -21,7 +21,7 @@ export const useUpdateVariantProduct = () => {
   return useMutation({
     mutationFn: async ({ id, data }: { id: number; data: any }) => {
       return fetcher({
-        route: `/variant-product/${id}`,
+        route: `/variant-product/${+id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
