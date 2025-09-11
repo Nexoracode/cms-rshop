@@ -124,44 +124,51 @@ const AttributesProducts = () => {
   const apiCallUpdateVariants = async () => {
     const product_id = page;
 
-    const filtered = productData?.data.variants[0].attributes.filter(
-      (a: any, index: number, self: any[]) =>
-        index === self.findIndex((v: any) => a.attribute_id === v.attribute_id)
-    );
-
-    const arr = filtered.map((v: any) => ({
-      attribute_id: v.attribute_id,
-      value_id: v.value_id,
-      label: "any",
-    }));
-
-    const combined = defaultVariantsData.map((variant: any, index: number) => ({
-      ...variant,
-      attributes: arr,
-      product_id,
-    }));
-
-    console.log(combined);
-
     try {
-      const checkValidate = combined.every(
-        (variant) => variant.sku.length && variant.price
+      if (!productData?.data.variants || !defaultVariantsData) return;
+
+      // ترکیب attributes با هر واریانت
+      const combined = defaultVariantsData.map(
+        (variant: any, index: number) => {
+          const currentAttributes =
+            productData.data.variants[index]?.attributes || [];
+
+          const filteredAttributes = currentAttributes.filter(
+            (a: any, idx: number, self: any[]) =>
+              idx ===
+              self.findIndex((v: any) => v.attribute_id === a.attribute_id)
+          );
+
+          const attributes = filteredAttributes.map((v: any) => ({
+            attribute_id: v.attribute_id,
+            value_id: v.value_id,
+            label: v.label || "any",
+          }));
+
+          return {
+            ...variant,
+            attributes,
+            product_id,
+          };
+        }
       );
-      if (checkValidate) {
-        await Promise.all(
-          combined.map((variant) =>
-            updateVariantProductMutation.mutateAsync({
-              id: variant.id,
-              data: variant,
-            })
-          )
-        );
-        router.push("/admin/products");
-      } else {
-        toast.error("لطفا مقادیر خواسته شده را وارد کنید");
-      }
+
+      console.log("Combined variants:", combined);
+
+      // ارسال API برای هر واریانت
+      await Promise.all(
+        combined.map((variant) =>
+          updateVariantProductMutation.mutateAsync({
+            id: variant.id,
+            data: variant,
+          })
+        )
+      );
+
+      router.push("/admin/products");
     } catch (error) {
       console.error("خطا در آپدیت variants:", error);
+      toast.error("آپدیت واریانت‌ها با خطا مواجه شد");
     }
   };
 
