@@ -11,6 +11,7 @@ import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
 import {
   useAddNewVariantProduct,
+  useDeleteVariant,
   useUpdateVariantProduct,
 } from "@/hooks/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
@@ -33,6 +34,7 @@ const AttributesProducts = () => {
   const { data: productData } = useGetOneProduct(page);
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const updateVariantProductMutation = useUpdateVariantProduct();
+  const { mutate: deleteVariant } = useDeleteVariant();
 
   useEffect(() => {
     combinationsDefaultValues();
@@ -111,6 +113,10 @@ const AttributesProducts = () => {
     }
   };
 
+  const apiCallDeleteVariant = (id: number | string) => {
+    deleteVariant(id);
+  };
+
   console.log(productData?.data?.variants);
 
   return (
@@ -146,6 +152,14 @@ const AttributesProducts = () => {
                         setVariantsData((prev) => {
                           return prev.filter((a) => a.id !== id);
                         });
+                        
+                        setCartesianAttributes((prev) => {
+                          const filterItems = prev.filter(
+                            (a, index) => index !== idx
+                          );
+                          !filterItems.length && setAttributes([])
+                          return filterItems;
+                        });
                       }}
                       defaultValues={null}
                     />
@@ -161,7 +175,7 @@ const AttributesProducts = () => {
                     key={index}
                     variantName={variant.name}
                     onHandleSubmit={(data) => {}}
-                    onRemove={(id) => {}}
+                    onRemove={apiCallDeleteVariant}
                     defaultValues={variant}
                   />
                 );

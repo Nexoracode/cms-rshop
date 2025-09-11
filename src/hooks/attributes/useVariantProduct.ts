@@ -1,5 +1,5 @@
 import { fetcher } from "@/utils/fetcher";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 /* 🎭 Variant Products Start */
 
@@ -28,6 +28,23 @@ export const useUpdateVariantProduct = () => {
         successText: "با موفقیت آپدیت شد",
         loadingText: "درحال آپدیت...",
       });
+    },
+  });
+};
+
+export const useDeleteVariant = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number | string) =>
+      fetcher({
+        route: `/variant-product/${+id}`,
+        method: "DELETE",
+        successText: "با موفقیت حذف شد",
+        loadingText: "در حال حذف...",
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
     },
   });
 };
