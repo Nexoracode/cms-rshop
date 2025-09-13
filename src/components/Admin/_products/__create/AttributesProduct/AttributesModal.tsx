@@ -12,10 +12,12 @@ import { TbSettings } from "react-icons/tb";
 import { useGetAllAttribute } from "@/hooks/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
+import { useAttributeContext } from "../../context/AttributeContext";
+import { replaceOrAddById } from "@/utils/replaceOrAddById";
 
 type AttributeData = {
   attr: Record<string, any>;
@@ -45,19 +47,31 @@ const AttributesModal = ({
     []
   );
   //? Hooks
+  const { attrInfos, setAttrInfos } = useAttributeContext();
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
   const { data: attributeValues } = useGetAttributeValues(selectedAttr);
 
   const handleSubmit = () => {
-    const attr = attributes?.data.find((a: any) => a.id === selectedAttr);
-    const attrValues = attributeValues?.data.filter((val: any) => {
+    if (!attributes?.data || !attributeValues?.data) return;
+    //
+    const selectedAttrInfos = attributes.data.find(
+      (attr: any) => attr.id === selectedAttr
+    );
+    const selectedAttrValueInfos = attributeValues.data.filter((val: any) => {
       const vals = selectedAttrValueIds.find((id) => val.id === id && val);
       return vals;
     });
 
-    if (attr) {
-      onSubmit({ ...attr, values: attrValues });
+    if (selectedAttrInfos) {
+      const attrInfos = {
+        ...selectedAttrInfos,
+        values: selectedAttrValueInfos,
+      };
+      onSubmit(attrInfos);
+      //? for Context
+      setAttrInfos((prev) => replaceOrAddById(prev, attrInfos));
+      //?
       resetModalInfos();
       onOpenChange();
     }
@@ -93,7 +107,7 @@ const AttributesModal = ({
                   setSelectedAttr(undefined);
                 }}
                 attrGroup={attributeGroup?.data}
-                isDisabledEdit
+                isDisabledEdit={isDisabledEdit}
               />
               <AddNewAttribute
                 onChange={(value) => {
@@ -101,7 +115,7 @@ const AttributesModal = ({
                 }}
                 attr={attributes?.data}
                 selectedAttrId={selectedAttr}
-                isDisabledEdit
+                isDisabledEdit={isDisabledEdit}
               />
               {selectedAttr ? (
                 <AddNewAttributeValue
@@ -111,7 +125,7 @@ const AttributesModal = ({
                   }}
                   selectedValues={selectedAttrValueIds}
                   selectedAttrId={selectedAttr}
-                  isDisabledEdit
+                  isDisabledEdit={isDisabledEdit}
                 />
               ) : (
                 ""

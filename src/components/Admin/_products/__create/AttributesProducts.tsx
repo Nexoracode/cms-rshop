@@ -19,10 +19,12 @@ import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { Variant } from "@/types/attributes";
 import toast from "react-hot-toast";
+import { useAttributeContext } from "../context/AttributeContext";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
+  const { attrInfos, setAttrInfos } = useAttributeContext();
   ///
   const [attributes, setAttributes] = useState<any[]>([]);
   const [cartesianAttributes, setCartesianAttributes] = useState<any[]>([]);
@@ -44,8 +46,32 @@ const AttributesProducts = () => {
   }, []);
 
   useEffect(() => {
-    console.log(attributes);
-    attributes.length && combinationsAttrValues();
+    console.log("Attributes in AttributeProduct PAGE", attributes);
+
+    if (!attributes.length) return;
+
+    combinationsAttrValues();
+
+    if (attrInfos.length) {
+      setAttrInfos((prev) => {
+        const updated = prev.map((info) => {
+          const attr = attributes.find((attr) => attr.id === info.attrId);
+          if (!attr) return info;
+
+          const updateObj = {
+            ...info,
+            selectedAttrValues: attr.values
+          };
+
+          return updateObj;
+        });
+
+        return [...updated];
+      });
+    } else
+      setAttrInfos([
+        { attrId: attributes[0].id, selectedAttrValues: attributes[0].values },
+      ]);
   }, [attributes]);
 
   const combinationsAttrValues = () => {
@@ -139,7 +165,7 @@ const AttributesProducts = () => {
         return {
           ...variant,
           product_id,
-          attributes: filtered.map((v:any) => ({
+          attributes: filtered.map((v: any) => ({
             attribute_id: v.attribute_id,
             value_id: v.value_id, // دقت کن همین فیلد را بفرستی
             label: v.label ?? "any",

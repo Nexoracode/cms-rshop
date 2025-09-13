@@ -4,6 +4,7 @@ import { useState } from "react";
 import BackToPage from "@/components/Helper/BackToPage";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import ProductInitialForm from "@/components/Admin/_products/__create/ProductInitialForm";
+import { AttributeProvider } from "@/components/Admin/_products/context/AttributeContext";
 
 const CreateNewProduct = () => {
   const [activeForm, setActiveForm] = useState<"infos" | "attributes">("infos");
@@ -15,7 +16,9 @@ const CreateNewProduct = () => {
         {activeForm === "infos" ? (
           <ProductInitialForm onApiCalled={() => setActiveForm("attributes")} />
         ) : (
-          <AttributesProducts />
+          <AttributeProvider>
+            <AttributesProducts />
+          </AttributeProvider>
         )}
       </section>
     </div>

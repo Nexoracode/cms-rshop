@@ -7,13 +7,14 @@ import HeaderAction from "../../helpers/HeaderAction";
 import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
+import { useAttributeContext } from "../../../context/AttributeContext";
 
 type Props = {
   attrValues: Record<string, any>[]; // list of possible values from server
   selectedValues: number[]; // selected value ids (from parent state)
   onChange: (values: number[]) => void; // notify parent with array of selected ids
   selectedAttrId: number | undefined;
-  isDisabledEdit: boolean
+  isDisabledEdit: boolean;
 };
 
 const AddNewAttributeValue: React.FC<Props> = ({
@@ -21,22 +22,22 @@ const AddNewAttributeValue: React.FC<Props> = ({
   selectedValues,
   onChange,
   selectedAttrId,
-  isDisabledEdit
+  isDisabledEdit,
 }) => {
   const [editAttrValue, setEditAttrValue] = useState(false);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [type, setType] = useState<"edit" | "add">("add");
   const [selectedAttrValueId, setSelectedAttrValueId] = useState<
     number | undefined
   >(undefined);
-    const deleteAttributeValue = useDeleteAttributeValue();
+  //? Hooks
+  const deleteAttributeValue = useDeleteAttributeValue();
+  const { attrInfos, setAttrInfos } = useAttributeContext();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleDeleteAttrValue = () => {
     if (!selectedAttrValueId) return;
     deleteAttributeValue.mutate(selectedAttrValueId, {
-      onSuccess: () => {
-        
-      },
+      onSuccess: () => {},
     });
   };
 
@@ -65,7 +66,16 @@ const AddNewAttributeValue: React.FC<Props> = ({
             onChange={handleChange}
           >
             {attrValues && attrValues.length ? (
-              attrValues.map((data: any) => (
+              attrValues
+              .filter(val => {
+                if (attrInfos.length) {
+                  const attrInfo = attrInfos.find(attr => attr.id === selectedAttrId)
+                  if (!attrInfo) return val
+                  return attrInfo.values.filter((t:any) => t.id !== val.id)
+                }
+                return val
+              })
+              .map((data: any) => (
                 <SelectItem key={data.id}>{data.value}</SelectItem>
               ))
             ) : (

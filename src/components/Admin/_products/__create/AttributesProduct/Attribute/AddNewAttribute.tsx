@@ -6,22 +6,24 @@ import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import { useAttributeContext } from "../../../context/AttributeContext";
 
 type Props = {
   onChange: (value: number | undefined) => void;
   attr: Record<string, any>[];
   selectedAttrId: number | undefined;
-  isDisabledEdit: boolean
+  isDisabledEdit: boolean;
 };
 
 const AddNewAttribute: React.FC<Props> = ({
   onChange,
   attr,
   selectedAttrId,
-  isDisabledEdit
+  isDisabledEdit,
 }) => {
   const [type, setType] = useState<"edit" | "add">("add");
   //? Hooks
+  const { attrInfos, setAttrInfos } = useAttributeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const deleteAttribute = useDeleteAttribute();
 
@@ -95,7 +97,7 @@ const AddNewAttribute: React.FC<Props> = ({
         onOpenChange={() => {
           onOpenChange();
         }}
-        defaultDatas={attr?.find(attr => attr.id === selectedAttrId)}
+        defaultDatas={attr?.find((attr) => attr.id === selectedAttrId)}
         type={type}
       />
     </>
