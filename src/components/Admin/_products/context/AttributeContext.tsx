@@ -1,10 +1,16 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 type AttributeContextType = {
-  attrInfos: Record<string, any>[];
-  setAttrInfos: React.Dispatch<React.SetStateAction<Record<string, any>[]>>;
+  attrInfos: any[];
+  setAttrInfos: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 const AttributeContext = createContext<AttributeContextType | undefined>(
@@ -12,9 +18,11 @@ const AttributeContext = createContext<AttributeContextType | undefined>(
 );
 
 export const AttributeProvider = ({ children }: { children: ReactNode }) => {
-  const [attrInfos, setAttrInfos] = useState<Record<string, any>[]>([]);
+  const [attrInfos, setAttrInfos] = useState<any[]>([]);
 
-  console.log("%%%%%%%%%%%%%%%%%%", attrInfos);
+  useEffect(() => {
+    console.log("CONTEXT", attrInfos);
+  }, [attrInfos]);
 
   return (
     <AttributeContext.Provider value={{ attrInfos, setAttrInfos }}>

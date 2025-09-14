@@ -7,7 +7,10 @@ import BoxHeader from "./helpers/BoxHeader";
 import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
-import { replaceOrAddById } from "@/utils/replaceOrAddById";
+import {
+  mergeOrAddAttribute,
+  replaceOrAddById,
+} from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
 import {
   useAddNewVariantProduct,
@@ -49,10 +52,10 @@ const AttributesProducts = () => {
     console.log("Attributes in AttributeProduct PAGE", attributes);
 
     if (!attributes.length) return;
-
+    setAttrInfos(attributes);
     combinationsAttrValues();
 
-    if (attrInfos.length) {
+    /*     if (attrInfos.length) {
       setAttrInfos((prev) => {
         const updated = prev.map((info) => {
           const attr = attributes.find((attr) => attr.id === info.attrId);
@@ -60,7 +63,7 @@ const AttributesProducts = () => {
 
           const updateObj = {
             ...info,
-            selectedAttrValues: attr.values
+            selectedAttrValues: attr.values,
           };
 
           return updateObj;
@@ -71,7 +74,7 @@ const AttributesProducts = () => {
     } else
       setAttrInfos([
         { attrId: attributes[0].id, selectedAttrValues: attributes[0].values },
-      ]);
+      ]); */
   }, [attributes]);
 
   const combinationsAttrValues = () => {
@@ -82,8 +85,6 @@ const AttributesProducts = () => {
   };
 
   const combinationsDefaultValues = () => {
-    console.log("productData =>", productData);
-
     const defaultVariants: Record<string, any>[] = productData?.data.variants;
     if (!defaultVariants.length) return;
     // get all Attribute
@@ -98,9 +99,7 @@ const AttributesProducts = () => {
     // get AttributeValues
 
     const attrValues = uniqueAttributes.map((attr: any) => attr.values);
-    console.log("attrValues => ", attrValues);
     setCartesianDefaultAttributes(cartesian(attrValues));
-    console.log("cartesian => ", cartesian(attrValues));
   };
 
   const apiCallAddNewVariants = async () => {
@@ -173,8 +172,6 @@ const AttributesProducts = () => {
         };
       });
 
-      console.log("Combined variants:", combined);
-
       // ارسال API برای هر واریانت
       await Promise.all(
         combined.map((variant) =>
@@ -192,11 +189,42 @@ const AttributesProducts = () => {
     }
   };
 
-  const deleteVariantInDom = (id: string | number, indexRow: number) => {
-    setVariantsData((prev) => prev.filter((a) => a.id !== id));
+  const deleteVariantInDom = (
+    variantId: string | number,
+    indexRow: number,
+    combo: Record<string, any>
+  ) => {
+    setVariantsData((prev) => prev.filter((a) => a.id !== variantId));
+
     setCartesianAttributes((prev) => {
       const filterItems = prev.filter((a, index) => index !== indexRow);
-      !filterItems.length && setAttributes([]);
+
+      if (!filterItems.length) {
+        setAttributes([]);
+        return filterItems;
+      }
+
+      combo.forEach((deletedValue: any) => {
+        const stillExists = filterItems.some((row) =>
+          row.some((val: any) => val.id === deletedValue.id)
+        );
+
+        if (!stillExists) {
+          setAttributes((prevAttrs) =>
+            prevAttrs.map((attr) =>
+              attr.id === deletedValue.attribute_id
+                ? {
+                    ...attr,
+                    values: attr.values.filter(
+                      (val: any) => val.id !== deletedValue.id
+                    ),
+                  }
+                : attr
+            )
+          );
+        }
+      });
+
       return filterItems;
     });
   };
@@ -229,7 +257,7 @@ const AttributesProducts = () => {
                       onHandleSubmit={(data) =>
                         setVariantsData((prev) => replaceOrAddById(prev, data))
                       }
-                      onRemove={(id) => deleteVariantInDom(id, idx)}
+                      onRemove={(id) => deleteVariantInDom(id, idx, combo)}
                       defaultValues={null}
                     />
                   );
@@ -287,9 +315,9 @@ const AttributesProducts = () => {
       <AddNewAttributesModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onSubmit={(data: Record<string, any>) =>
-          setAttributes((prev) => replaceOrAddById(prev, data))
-        }
+        onSubmit={(data: Record<string, any>) => {
+          setAttributes((prev) => mergeOrAddAttribute(prev, data));
+        }}
       />
     </>
   );

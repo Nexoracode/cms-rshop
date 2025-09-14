@@ -67,17 +67,19 @@ const AddNewAttributeValue: React.FC<Props> = ({
           >
             {attrValues && attrValues.length ? (
               attrValues
-              .filter(val => {
-                if (attrInfos.length) {
-                  const attrInfo = attrInfos.find(attr => attr.id === selectedAttrId)
-                  if (!attrInfo) return val
-                  return attrInfo.values.filter((t:any) => t.id !== val.id)
-                }
-                return val
-              })
-              .map((data: any) => (
-                <SelectItem key={data.id}>{data.value}</SelectItem>
-              ))
+                .filter((val) => {
+                  if (!attrInfos.length) return true;
+
+                  const attrInfo = attrInfos.find(
+                    (attr) => attr.id === selectedAttrId
+                  );
+                  if (!attrInfo) return true;
+
+                  return !attrInfo.values.includes(val);
+                })
+                .map((data: any) => (
+                  <SelectItem key={data.id}>{data.value}</SelectItem>
+                ))
             ) : (
               <SelectItem key={-1} isDisabled>
                 فعلا آیتمی وجود ندارد

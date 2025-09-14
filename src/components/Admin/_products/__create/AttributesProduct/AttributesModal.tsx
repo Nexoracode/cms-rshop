@@ -69,8 +69,6 @@ const AttributesModal = ({
         values: selectedAttrValueInfos,
       };
       onSubmit(attrInfos);
-      //? for Context
-      setAttrInfos((prev) => replaceOrAddById(prev, attrInfos));
       //?
       resetModalInfos();
       onOpenChange();
@@ -137,6 +135,7 @@ const AttributesModal = ({
                 variant="solid"
                 color="secondary"
                 onPress={handleSubmit}
+                isDisabled={!selectedAttr || !selectedAttrValueIds.length}
               >
                 ثبت تغیرات
               </Button>
