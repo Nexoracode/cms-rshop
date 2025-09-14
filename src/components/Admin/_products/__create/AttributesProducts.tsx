@@ -35,6 +35,7 @@ const AttributesProducts = () => {
     any[]
   >([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [attributesChanged, setAttributesChanged] = useState(false);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
   const [defaultVariantsData, setDefaultVariantsData] = useState<Variant[]>([]);
   //
@@ -126,7 +127,7 @@ const AttributesProducts = () => {
     setCartesianAttributes(cartesian(variantValues));
   };
 
-  const combinationsDefaultValues = () => {
+  const   = () => {
     const defaultVariants: Record<string, any>[] = productData?.data.variants;
     if (!defaultVariants.length) return;
     // get all Attribute
@@ -179,6 +180,9 @@ const AttributesProducts = () => {
             addNewVariantProductMutation.mutateAsync(variant)
           )
         );
+        
+        // پس از ایجاد variants جدید، state را reset کنید
+        setAttributesChanged(false);
         router.push("/admin/products");
       } else {
         toast.error("لطفا مقادیر خواسته شده را وارد کنید");
@@ -194,9 +198,14 @@ const AttributesProducts = () => {
     try {
       if (!productData?.data.variants || !defaultVariantsData) return;
 
+      // فقط واریانت‌هایی که id دارند را آپدیت کنید (یعنی واریانت‌های موجود)
+      const variantsToUpdate = defaultVariantsData.filter(
+        (variant) => typeof variant.id === "number"
+      );
+
       // ترکیب attributes با هر واریانت
-      const combined = defaultVariantsData.map((variant, idx) => {
-        const source = productData?.data.variants?.[idx];
+      const combined = variantsToUpdate.map((variant, idx) => {
+        const source = productData?.data.variants?.find((v: any) => v.id === variant.id);
         const currentAttributes = source?.attributes ?? [];
         // dedupe اگر لازم است:
         const filtered = currentAttributes.filter(
@@ -208,7 +217,7 @@ const AttributesProducts = () => {
           product_id,
           attributes: filtered.map((v: any) => ({
             attribute_id: v.attribute_id,
-            value_id: v.value_id, // دقت کن همین فیلد را بفرستی
+            value_id: v.value_id,
             label: v.label ?? "any",
           })),
         };
@@ -286,29 +295,32 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          <div className="bg-slate-200 rounded-xl p-4 flex flex-col gap-6">
-            {(!isEditMode && cartesianAttributes.length)
-              ? cartesianAttributes.map((combo, idx) => {
-                  const variantName = combo
-                    .map((c: any) => c.value)
-                    .join(" ، ");
-                  return (
-                    <VariantRowEditor
-                      key={idx}
-                      variantName={variantName}
-                      onHandleSubmit={(data) =>
-                        setVariantsData((prev) => replaceOrAddById(prev, data))
-                      }
-                      onRemove={(id) => deleteVariantInDom(id, idx, combo)}
-                      defaultValues={null}
-                    />
-                  );
-                })
-              : ""}
-          </div>
+          {/* نمایش variants جدید (حتی در حالت edit) */}
+          {(cartesianAttributes.length > 0 && attributesChanged) && (
+            <div className="bg-slate-200 rounded-xl p-4 flex flex-col gap-6">
+              {cartesianAttributes.map((combo, idx) => {
+                const variantName = combo
+                  .map((c: any) => c.value)
+                  .join(" ، ");
+                return (
+                  <VariantRowEditor
+                    key={idx}
+                    variantName={variantName}
+                    onHandleSubmit={(data) =>
+                      setVariantsData((prev) => replaceOrAddById(prev, data))
+                    }
+                    onRemove={(id) => deleteVariantInDom(id, idx, combo)}
+                    defaultValues={null}
+                  />
+                );
+              })}
+            </div>
+          )}
 
-          {isEditMode && productData?.data?.variants
-            ? productData?.data.variants.map((variant: any, index: number) => {
+          {/* نمایش variants موجود (فقط در حالت edit و وقتی ویژگی‌ها تغییر نکرده‌اند) */}
+          {isEditMode && productData?.data?.variants && !attributesChanged && (
+            <>
+              {productData.data.variants.map((variant: any, index: number) => {
                 return (
                   <VariantRowEditor
                     key={index}
@@ -323,8 +335,9 @@ const AttributesProducts = () => {
                     defaultValues={variant}
                   />
                 );
-              })
-            : ""}
+              })}
+            </>
+          )}
 
           {/* attributeهای معمولی (is_variant: false) */}
           {attributes
@@ -337,19 +350,27 @@ const AttributesProducts = () => {
               </Card>
             ))}
 
-          {cartesianAttributes.length || cartesianDefaultAttributes.length ? (
+          {(cartesianAttributes.length || cartesianDefaultAttributes.length) && (
             <Button
               color="success"
               className="text-white"
               onPress={() => {
-                cartesianAttributes.length && apiCallAddNewVariants();
-                cartesianDefaultAttributes.length && apiCallUpdateVariants();
+                if (isEditMode) {
+                  if (attributesChanged) {
+                    // ایجاد variants جدید
+                    cartesianAttributes.length && apiCallAddNewVariants();
+                  } else {
+                    // آپدیت variants موجود
+                    cartesianDefaultAttributes.length && apiCallUpdateVariants();
+                  }
+                } else {
+                  // ایجاد variants جدید
+                  cartesianAttributes.length && apiCallAddNewVariants();
+                }
               }}
             >
               ثبت تغیرات ویژگی ها
             </Button>
-          ) : (
-            ""
           )}
         </CardBody>
       </Card>
@@ -359,6 +380,7 @@ const AttributesProducts = () => {
         onOpenChange={onOpenChange}
         onSubmit={(data: Record<string, any>) => {
           setAttributes((prev) => mergeOrAddAttribute(prev, data));
+          setAttributesChanged(true);
         }}
       />
     </>
