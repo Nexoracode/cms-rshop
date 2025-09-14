@@ -34,6 +34,7 @@ const AttributesProducts = () => {
   const [cartesianDefaultAttributes, setCartesianDefaultAttributes] = useState<
     any[]
   >([]);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [variantsData, setVariantsData] = useState<Variant[]>([]);
   const [defaultVariantsData, setDefaultVariantsData] = useState<Variant[]>([]);
   //
@@ -50,32 +51,73 @@ const AttributesProducts = () => {
 
   useEffect(() => {
     console.log("Attributes in AttributeProduct PAGE", attributes);
-
     if (!attributes.length) return;
     setAttrInfos(attributes);
     combinationsAttrValues();
-
-    /*     if (attrInfos.length) {
-      setAttrInfos((prev) => {
-        const updated = prev.map((info) => {
-          const attr = attributes.find((attr) => attr.id === info.attrId);
-          if (!attr) return info;
-
-          const updateObj = {
-            ...info,
-            selectedAttrValues: attr.values,
-          };
-
-          return updateObj;
-        });
-
-        return [...updated];
-      });
-    } else
-      setAttrInfos([
-        { attrId: attributes[0].id, selectedAttrValues: attributes[0].values },
-      ]); */
   }, [attributes]);
+
+  useEffect(() => {
+    if (productData?.data?.variants) {
+      const variants = productData.data.variants;
+      setIsEditMode(true);
+      // استخراج تمام ویژگی‌های منحصر به فرد از variants
+      const uniqueAttributes: Record<number, any> = {};
+
+      variants.forEach((variant: any) => {
+        variant.attributes.forEach((attr: any) => {
+          const attribute = attr.attribute;
+
+          if (!uniqueAttributes[attribute.id]) {
+            uniqueAttributes[attribute.id] = {
+              ...attribute,
+              values: [],
+              is_variant: attribute.is_variant,
+            };
+          }
+
+          // یافتن مقدار value واقعی از داده‌های attribute اصلی
+          if (
+            attr.value_id &&
+            attribute.values &&
+            attribute.values.length > 0
+          ) {
+            const realValue = attribute.values.find(
+              (v: any) => v.id === attr.value_id
+            );
+            if (
+              realValue &&
+              !uniqueAttributes[attribute.id].values.some(
+                (v: any) => v.id === realValue.id
+              )
+            ) {
+              uniqueAttributes[attribute.id].values.push({
+                ...realValue,
+                attribute_id: attribute.id,
+              });
+            }
+          } else if (attr.label) {
+            // اگر valueهای اصلی در دسترس نیستند، از label استفاده کنیم
+            const valueExists = uniqueAttributes[attribute.id].values.some(
+              (v: any) => v.value === attr.label || v.id === attr.value_id
+            );
+
+            if (!valueExists) {
+              uniqueAttributes[attribute.id].values.push({
+                id: attr.value_id || Date.now(), // استفاده از timestamp اگر id وجود ندارد
+                value: attr.label,
+                attribute_id: attribute.id,
+                display_color: attribute.type === "color" ? attr.label : null,
+              });
+            }
+          }
+        });
+      });
+
+      const attributesArray = Object.values(uniqueAttributes);
+      setAttributes(attributesArray);
+      setAttrInfos(attributesArray);
+    } else setIsEditMode(false);
+  }, [productData]);
 
   const combinationsAttrValues = () => {
     const variantAttributes = attributes.filter((attr) => attr.is_variant);
@@ -245,7 +287,7 @@ const AttributesProducts = () => {
           />
 
           <div className="bg-slate-200 rounded-xl p-4 flex flex-col gap-6">
-            {cartesianAttributes.length
+            {(!isEditMode && cartesianAttributes.length)
               ? cartesianAttributes.map((combo, idx) => {
                   const variantName = combo
                     .map((c: any) => c.value)
@@ -265,7 +307,7 @@ const AttributesProducts = () => {
               : ""}
           </div>
 
-          {productData?.data?.variants
+          {isEditMode && productData?.data?.variants
             ? productData?.data.variants.map((variant: any, index: number) => {
                 return (
                   <VariantRowEditor

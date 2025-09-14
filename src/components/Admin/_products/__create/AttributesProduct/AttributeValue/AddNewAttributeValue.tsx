@@ -73,12 +73,23 @@ const AddNewAttributeValue: React.FC<Props> = ({
                   const attrInfo = attrInfos.find(
                     (attr) => attr.id === selectedAttrId
                   );
-                  if (!attrInfo) return true;
 
-                  return !attrInfo.values.includes(val);
+                  if (!attrInfo || !attrInfo.values) return true;
+
+                  return !attrInfo.values.some((v: any) => v.id === val.id);
                 })
                 .map((data: any) => (
-                  <SelectItem key={data.id}>{data.value}</SelectItem>
+                  <SelectItem key={data.id} textValue={data.value}>
+                    <div className="flex items-center gap-2">
+                      {data.display_color && (
+                        <div
+                          className="w-4 h-4 rounded-full border"
+                          style={{ backgroundColor: data.display_color }}
+                        />
+                      )}
+                      <span>{data.value}</span>
+                    </div>
+                  </SelectItem>
                 ))
             ) : (
               <SelectItem key={-1} isDisabled>
