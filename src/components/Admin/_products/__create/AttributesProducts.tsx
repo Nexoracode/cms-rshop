@@ -185,6 +185,7 @@ const AttributesProducts = () => {
   const { mutate: deleteVariant } = useDeleteVariant();
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const updateVariantProductMutation = useUpdateVariantProduct();
+  console.log(productData);
 
   return (
     <>
@@ -220,26 +221,24 @@ const AttributesProducts = () => {
               })}
             </div>
           )} */}
-          {/* {isEditMode && productData?.data?.variants && !attributesChanged && (
-            <>
-              {productData.data.variants.map((variant: any, index: number) => {
+          {productData?.data?.variants
+            ? productData.data.variants.map((variant: any, index: number) => {
                 return (
                   <VariantRowEditor
                     key={index}
-                    variantName={variant.name}
+                    variantName={variant?.name}
                     onHandleSubmit={(data) => {
-                      if (typeof data.id !== "number") return;
+                      /* if (typeof data.id !== "number") return;
                       setDefaultVariantsData((prev) =>
                         replaceOrAddById(prev, data)
-                      );
+                      ); */
                     }}
                     onRemove={(id) => deleteVariant(id)}
                     defaultValues={variant}
                   />
                 );
-              })}
-            </>
-          )} */}
+              })
+            : ""}
           <Button color="success" className="text-white" onPress={() => {}}>
             ثبت تغیرات ویژگی ها
           </Button>
