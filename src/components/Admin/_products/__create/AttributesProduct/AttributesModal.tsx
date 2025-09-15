@@ -12,12 +12,13 @@ import { TbSettings } from "react-icons/tb";
 import { useGetAllAttribute } from "@/hooks/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
-import { replaceOrAddById } from "@/utils/replaceOrAddById";
+import { usePaginationParams } from "@/hooks/usePaginationParams";
+import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 
 type AttributeData = {
   attr: Record<string, any>;
@@ -31,55 +32,63 @@ type Props = {
   isDisabledEdit?: boolean;
 };
 
+const initialSelecteds = {
+  attrGroupId: 0 as undefined | number,
+  attrId: 0 as undefined | number,
+  valueIds: [] as any,
+};
+
 const AttributesModal = ({
   isOpen,
   onOpenChange,
   onSubmit,
   isDisabledEdit = true,
 }: Props) => {
-  const [selectedAttrGroup, setSelectedAttrGroup] = useState<
-    number | undefined
-  >(undefined);
-  const [selectedAttr, setSelectedAttr] = useState<number | undefined>(
-    undefined
-  );
-  const [selectedAttrValueIds, setSelectedAttrValueIds] = useState<number[]>(
-    []
-  );
+  //
+  const [selecteds, setSelecteds] = useState(initialSelecteds);
   //? Hooks
-  const { attrInfos, setAttrInfos } = useAttributeContext();
+  //const { attrInfos, setAttrInfos } = useAttributeContext();
+  const { page } = usePaginationParams("edit_id");
   const { data: attributeGroup } = useGetAllAttributeGroup();
-  const { data: attributes } = useGetAllAttribute(selectedAttrGroup);
-  const { data: attributeValues } = useGetAttributeValues(selectedAttr);
+  const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
+  const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
+  const addNewVariantProductMutation = useAddNewVariantProduct();
 
-  const handleSubmit = () => {
-    if (!attributes?.data || !attributeValues?.data) return;
+  const handleSubmit = async () => {
+    const { attrId, attrGroupId, valueIds } = selecteds;
+    if (!attributes?.data || !attributeValues?.data || !attrGroupId) return;
     //
-    const selectedAttrInfos = attributes.data.find(
-      (attr: any) => attr.id === selectedAttr
-    );
-    const selectedAttrValueInfos = attributeValues.data.filter((val: any) => {
-      const vals = selectedAttrValueIds.find((id) => val.id === id && val);
-      return vals;
-    });
+    const attrIsVariant = attributes.data.find(
+      (attr: Record<string, any>) => attr.id === attrId
+    ).is_variant;
 
-    if (selectedAttrInfos) {
-      const attrInfos = {
-        ...selectedAttrInfos,
-        values: selectedAttrValueInfos,
-      };
-      onSubmit(attrInfos);
-      //?
-      resetModalInfos();
-      onOpenChange();
+    if (attrIsVariant) {
+      const variantProduct = valueIds.map((val: number) => ({
+        product_id: page,
+        sku: crypto.randomUUID(),
+        price: 10000,
+        discount_amount: 0,
+        discount_percent: 0,
+        stock: 0,
+        attributes: [{ attribute_id: attrId, value_id: val, label: "label" }],
+      }));
+
+      try {
+        await Promise.all(
+          variantProduct.map((variant: any) =>
+            addNewVariantProductMutation.mutateAsync(variant)
+          )
+        );
+        resetModalInfos();
+      } catch (error) {
+        console.error("خطا در افزودن variants:", error);
+      }
     }
   };
 
   const resetModalInfos = () => {
     onOpenChange();
-    setSelectedAttrGroup(undefined);
-    setSelectedAttr(undefined);
-    setSelectedAttrValueIds([]);
+    setSelecteds(initialSelecteds);
   };
 
   return (
@@ -88,7 +97,9 @@ const AttributesModal = ({
         {(onClose) => (
           <>
             <ModalHeader className="w-full px-8 flex items-center justify-between">
-              <p className="font-normal text-[16px]">افزودن ویژگی محصول</p>
+              <p className="font-normal text-[16px] text-gray-600">
+                ویژگی های محصول مورد نظر را کنترل کنید
+              </p>
               <Button
                 variant="flat"
                 className="text-xl"
@@ -98,36 +109,35 @@ const AttributesModal = ({
                 <TbSettings />
               </Button>
             </ModalHeader>
-            <ModalBody className="flex flex-col gap-4">
+            <ModalBody className="flex flex-col gap-8 px-8">
               <AddNewAttrGroup
-                onChange={(value) => {
-                  setSelectedAttrGroup(value);
-                  setSelectedAttr(undefined);
-                }}
                 attrGroup={attributeGroup?.data}
                 isDisabledEdit={isDisabledEdit}
+                onChange={(groupId) => {
+                  setSelecteds({
+                    attrGroupId: groupId,
+                    attrId: 0,
+                    valueIds: [],
+                  });
+                }}
               />
               <AddNewAttribute
-                onChange={(value) => {
-                  setSelectedAttr(value);
-                }}
+                onChange={(value) =>
+                  setSelecteds((prev) => ({ ...prev, attrId: value }))
+                }
                 attr={attributes?.data}
-                selectedAttrId={selectedAttr}
+                selectedAttrId={selecteds.attrId}
                 isDisabledEdit={isDisabledEdit}
               />
-              {selectedAttr ? (
-                <AddNewAttributeValue
-                  attrValues={attributeValues?.data}
-                  onChange={(ids) => {
-                    setSelectedAttrValueIds(ids);
-                  }}
-                  selectedValues={selectedAttrValueIds}
-                  selectedAttrId={selectedAttr}
-                  isDisabledEdit={isDisabledEdit}
-                />
-              ) : (
-                ""
-              )}
+              <AddNewAttributeValue
+                attrValues={attributeValues?.data}
+                onChange={(ids) =>
+                  setSelecteds((prev) => ({ ...prev, valueIds: ids }))
+                }
+                selectedAttrId={selecteds.attrId}
+                selectedValues={selecteds.valueIds}
+                isDisabledEdit={isDisabledEdit}
+              />
             </ModalBody>
             <ModalFooter>
               <Button
@@ -135,7 +145,8 @@ const AttributesModal = ({
                 variant="solid"
                 color="secondary"
                 onPress={handleSubmit}
-                isDisabled={!selectedAttr || !selectedAttrValueIds.length}
+                isDisabled={!selecteds.valueIds.length}
+                isLoading={addNewVariantProductMutation.isPending}
               >
                 ثبت تغیرات
               </Button>

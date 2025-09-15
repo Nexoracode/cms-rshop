@@ -1,12 +1,10 @@
 "use client";
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
-import HeaderAction from "../../helpers/HeaderAction";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
-import { useAttributeContext } from "../../../context/AttributeContext";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -23,7 +21,6 @@ const AddNewAttribute: React.FC<Props> = ({
 }) => {
   const [type, setType] = useState<"edit" | "add">("add");
   //? Hooks
-  const { attrInfos, setAttrInfos } = useAttributeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const deleteAttribute = useDeleteAttribute();
 
@@ -38,7 +35,7 @@ const AddNewAttribute: React.FC<Props> = ({
 
   return (
     <>
-      <div className="mt-2 bg-gray-50 rounded-xl p-4">
+      <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
         <Select
           isRequired
           label="ویژگی"
@@ -48,6 +45,19 @@ const AddNewAttribute: React.FC<Props> = ({
           onChange={(e) => {
             onChange(+e.target.value);
           }}
+          endContent={
+            <Button
+              color="secondary"
+              variant="flat"
+              size="sm"
+              onPress={() => {
+                onOpen();
+                setType("add");
+              }}
+            >
+              + افزودن
+            </Button>
+          }
         >
           {attr && attr?.length ? (
             attr.map((item: any) => (
@@ -57,15 +67,6 @@ const AddNewAttribute: React.FC<Props> = ({
             <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
           )}
         </Select>
-
-        <HeaderAction
-          title={"در صورت نیاز میتوانید ویژگی جدیدی را اضافه کنید"}
-          textBtn={"+ افزودن"}
-          onPress={() => {
-            onOpen();
-            setType("add");
-          }}
-        />
 
         {selectedAttrId && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">

@@ -11,9 +11,7 @@ export const useAddNewVariantProduct = () => {
         route: "/variant-product",
         method: "POST",
         body: data,
-        isActiveToast: true,
-        successText: "با موفقیت اضافه شد",
-        loadingText: "درحال افزودن...",
+        isActiveToast: false,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["one-product"] });

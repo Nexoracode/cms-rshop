@@ -3,7 +3,6 @@
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
-import HeaderAction from "../../helpers/HeaderAction";
 import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
@@ -31,7 +30,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
   >(undefined);
   //? Hooks
   const deleteAttributeValue = useDeleteAttributeValue();
-  const { attrInfos, setAttrInfos } = useAttributeContext();
+  const { attrInfos } = useAttributeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleDeleteAttrValue = () => {
@@ -55,15 +54,26 @@ const AddNewAttributeValue: React.FC<Props> = ({
 
   return (
     <>
-      <div className="mt-2 bg-gray-50 rounded-xl p-4">
+      <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
         <div className="flex w-full flex-col gap-2">
           <Select
-            label="مقادیر مورد نظر را انتخاب کنید"
+            label="مقادیر ویژگی"
             labelPlacement="outside"
-            placeholder="مقادیر ویژگی"
+            placeholder="مقادیر مورد نظر را انتخاب نمایید"
             selectedKeys={selectedValues?.map(String) ?? []}
             selectionMode="multiple"
             onChange={handleChange}
+            isRequired
+            endContent={
+              <Button
+                color="secondary"
+                variant="flat"
+                size="sm"
+                onPress={onOpen}
+              >
+                + افزودن
+              </Button>
+            }
           >
             {attrValues && attrValues.length ? (
               attrValues
@@ -98,12 +108,6 @@ const AddNewAttributeValue: React.FC<Props> = ({
             )}
           </Select>
         </div>
-
-        <HeaderAction
-          title={"در صورت نیاز میتوانید مقدار جدیدی اضافه کنید"}
-          textBtn={"+ افزودن"}
-          onPress={onOpen}
-        />
 
         {editAttrValue ? (
           <Select

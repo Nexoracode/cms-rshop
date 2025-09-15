@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
-import HeaderAction from "../../helpers/HeaderAction";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
@@ -10,10 +9,14 @@ import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 type Props = {
   onChange: (value: number | undefined) => void;
   attrGroup: Record<string, any>[];
-  isDisabledEdit: boolean
+  isDisabledEdit: boolean;
 };
 
-const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup, isDisabledEdit }) => {
+const AddNewAttrGroup: React.FC<Props> = ({
+  onChange,
+  attrGroup,
+  isDisabledEdit,
+}) => {
   const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
     number | undefined
   >(undefined);
@@ -34,16 +37,29 @@ const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup, isDisabledEdit 
 
   return (
     <>
-      <div className="mt-2 bg-gray-50 rounded-xl p-4">
+      <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
         <Select
           isRequired
-          label="دسته بندی ویژگی"
-          placeholder="دسته بندی ویژگی را انتخاب کنید"
+          label="گروه ویژگی"
+          placeholder="گروه را انتخاب کنید"
           labelPlacement="outside"
           onChange={(e) => {
             onChange(+e.target.value);
             setSelectedAttrGroupId(+e.target.value);
           }}
+          endContent={
+            <Button
+              color="secondary"
+              variant="flat"
+              size="sm"
+              onPress={() => {
+                onOpen();
+                setType("add");
+              }}
+            >
+              + افزودن
+            </Button>
+          }
         >
           {attrGroup && attrGroup.length ? (
             attrGroup.map((item: any) => (
@@ -54,19 +70,11 @@ const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup, isDisabledEdit 
           )}
         </Select>
 
-        <HeaderAction
-          title={"در صورت نیاز میتوانید دسته بندی جدیدی اضافه کنید"}
-          textBtn={"+ افزودن"}
-          onPress={() => {
-            onOpen();
-            setType("add");
-          }}
-        />
         {selectedAttrGroupId && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">
             <DoubleClickBtn
               onPress={handleDeleteAttrGroup}
-              textBtn="حذف دسته بندی فعلی"
+              textBtn="حذف گروه فعلی"
               color="danger"
               size="sm"
               isActiveDoubleClick
@@ -80,7 +88,7 @@ const AddNewAttrGroup: React.FC<Props> = ({ onChange, attrGroup, isDisabledEdit 
                 setType("edit");
               }}
             >
-              ویرایش دسته بندی فعلی
+              ویرایش گروه فعلی
             </Button>
           </div>
         ) : (
