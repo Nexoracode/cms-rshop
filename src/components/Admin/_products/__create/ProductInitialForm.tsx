@@ -56,7 +56,7 @@ const initProduct: Product = {
   media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
-  media: [],
+  medias: [],
 };
 
 type Props = {
@@ -102,7 +102,7 @@ const ProductInitialForm = ({ onApiCalled }: Props) => {
 
   const handleChangeProduct = () => {
     const {
-      media,
+      medias,
       helper,
       media_pinned,
       brand,
@@ -173,7 +173,7 @@ const ProductInitialForm = ({ onApiCalled }: Props) => {
           onMedia_pinned_id={(id) =>
             setProduct((prev) => ({ ...prev, media_pinned_id: id }))
           }
-          initialMedias={product.media}
+          initialMedias={product.medias}
           initialPinnedId={product.media_pinned_id}
         />
         <Card className={cardStyle}>
