@@ -34,6 +34,32 @@ export const useAddNewAttributeGroup = () => {
   });
 };
 
+export const useReorderAttributeGroup = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      display_order,
+    }: {
+      id: number;
+      display_order: any;
+    }) => {
+      return fetcher({
+        route: `/attribute-group/${id}/order`,
+        method: "PATCH",
+        body: { display_order },
+        isActiveToast: true,
+        successText: "با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
+    },
+  });
+};
+
 export const useUpdateAttributeGroup = (id: number) => {
   const queryClient = useQueryClient();
 
