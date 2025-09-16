@@ -2,16 +2,80 @@ import { Product } from "@/components/Admin/_products/types/create-product";
 import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useGetProducts = (page: number = 1) => {
+/*  */
+
+type ProductFilter = {
+  isVisible?: string[];
+  stock?: string[];
+  categoryId?: string[];
+  price?: string[];
+  discount?: string[];
+  createdAt?: string[];
+  weight?: string[];
+  requiresPreparation?: string[];
+};
+
+type UseGetProductsParams = {
+  page?: number;
+  limit?: number;
+  filter?: ProductFilter;
+  search?: string;
+  searchBy?: string[];
+  sortBy?: ProductSortBy;
+};
+
+export type ProductSortBy = Array<
+  "id:ASC" | "id:DESC" | "name:ASC" | "name:DESC" | "price:ASC" | "price:DESC" | "stock:ASC" | "stock:DESC"
+>;
+
+export function buildQueryString(params: Record<string, any>) {
+  const query = new URLSearchParams();
+  for (const key in params) {
+    const value = params[key];
+    if (value === undefined || value === null) continue;
+    if (Array.isArray(value)) {
+      value.forEach((v) => query.append(key, v));
+    } else {
+      query.append(key, value);
+    }
+  }
+  return query.toString();
+}
+
+/*  */
+
+export const useGetProducts = ({
+  page = 1,
+  filter,
+  search,
+  searchBy,
+  sortBy
+}: Omit<UseGetProductsParams, "limit">) => {
   return useQuery({
-    queryKey: ["all-products", page],
-    queryFn: () =>
-      fetcher({
-        route: `/product?page=${page}&limit=10`,
-        isActiveToast: false,
-      }),
+    queryKey: ["all-products", page, filter, search, sortBy],
+    queryFn: () => {
+      const params: Record<string, any> = { page, limit: 10 };
+
+      // اضافه کردن فیلترها
+      if (filter) {
+        for (const key in filter) {
+          const values = filter[key as keyof ProductFilter];
+          if (values) {
+            params[`filter.${key}`] = values;
+          }
+        }
+      }
+
+      if (search) params.search = search;
+      if (searchBy) params.searchBy = searchBy;
+      if (sortBy) params.sortBy = sortBy;
+
+      const queryString = buildQueryString(params);
+      return fetcher({ route: `/product?${queryString}`, isActiveToast: false });
+    },
   });
 };
+
 
 export const useGetOneProduct = (id?: number) => {
   return useQuery({
