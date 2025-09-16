@@ -79,15 +79,9 @@ const AddNewAttributeValue: React.FC<Props> = ({
               attrValues
                 .filter((val) => {
                   if (!attrInfos.length) return true;
-
-                  const attrInfo = attrInfos.find(
-                    (attr) => attr.id === selectedAttrId
-                  );
-
-                  if (!attrInfo || !attrInfo.values) return true;
-
-                  return !attrInfo.values.some((v: any) => v.id === val.id);
-                })
+                  const existVal = attrInfos.find(value => value.id === val.id)
+                  return !existVal && val
+                 })
                 .map((data: any) => (
                   <SelectItem key={data.id} textValue={data.value}>
                     <div className="flex items-center gap-2">

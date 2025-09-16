@@ -29,7 +29,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
 }) => {
   const [discountType, setDiscountType] = useState<Stock>("percent");
   const [formData, setFormData] = useState<Variant>({
-    id: crypto.randomUUID(),
+    id: 0,
     price: 10000,
     stock: 0,
     sku: "",
@@ -37,6 +37,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
 
   useEffect(() => {
     if (defaultValues) {
+      console.log(defaultValues);
       setFormData(defaultValues);
       setDiscountType(defaultValues.discount_amount ? "money" : "percent")
     }
@@ -47,7 +48,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
       formData;
 
     const obj = {
-      ...(!id ? { id: crypto.randomUUID() } : { id }),
+      id,
       price,
       sku,
       stock: +stock,
@@ -116,15 +117,6 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                   setFormData((prev) => ({ ...prev, stock }))
                 }
               />
-
-              {/* <Checkbox
-                //isSelected={formData.unlimitedStock}
-                onValueChange={(unlimitedStock) =>
-                  setFormData((prev) => ({ ...prev, unlimitedStock }))
-                }
-              >
-                <p className="text-sm">موجودی نامحدود</p>
-              </Checkbox> */}
 
               <div className="w-full flex flex-col gap-2">
                 <NumberInput

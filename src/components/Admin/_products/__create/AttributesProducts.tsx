@@ -4,27 +4,20 @@ import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import { TbCategory2 } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
-import { useEffect, useState } from "react";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
-import {
-  mergeOrAddAttribute,
-  replaceOrAddById,
-} from "@/utils/replaceOrAddById";
 import { cartesian } from "@/utils/cartesian";
 import {
-  useAddNewVariantProduct,
   useDeleteVariant,
   useUpdateVariantProduct,
 } from "@/hooks/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
-import { Variant } from "@/types/attributes";
-import toast from "react-hot-toast";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { AttributeTree } from "./attribute-tree ";
+import { useEffect } from "react";
 
 export const attributeNodes: AttributeTree = [
   {
@@ -179,13 +172,22 @@ const AttributesProducts = () => {
   const { page } = usePaginationParams("edit_id");
   const { attrInfos, setAttrInfos } = useAttributeContext();
   ///
-
   //? Api Calls
   const { data: productData } = useGetOneProduct(page);
   const { mutate: deleteVariant } = useDeleteVariant();
-  const addNewVariantProductMutation = useAddNewVariantProduct();
   const updateVariantProductMutation = useUpdateVariantProduct();
   console.log(productData);
+
+  useEffect(() => {
+    if (productData?.data?.attribute_nodes) {
+      const attrValues = productData?.data.attribute_nodes.flatMap(
+        (group: any) => group.attributes.flatMap((attr: any) => attr.values)
+      );
+      setAttrInfos(attrValues);
+    }
+  }, [productData?.data]);
+
+  const updateVariantProduct = () => {};
 
   return (
     <>
@@ -202,56 +204,30 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
           <SortableAttributeNodes attributeNodes={attributeNodes} />
-          {/* 
-          {cartesianAttributes.length > 0 && (
-            <div className="bg-slate-200 rounded-xl p-4 flex flex-col gap-6">
-              {cartesianAttributes.map((combo, idx) => {
-                const variantName = combo.map((c: any) => c.value).join(" ، ");
-                return (
-                  <VariantRowEditor
-                    key={idx}
-                    variantName={variantName}
-                    onHandleSubmit={(data) =>
-                      setVariantsData((prev) => replaceOrAddById(prev, data))
-                    }
-                    onRemove={(id) => deleteVariantInDom(id, idx, combo)}
-                    defaultValues={null}
-                  />
-                );
-              })}
-            </div>
-          )} */}
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {
                 return (
                   <VariantRowEditor
                     key={index}
                     variantName={variant?.name}
-                    onHandleSubmit={(data) => {
-                      /* if (typeof data.id !== "number") return;
-                      setDefaultVariantsData((prev) =>
-                        replaceOrAddById(prev, data)
-                      ); */
-                    }}
+                    onHandleSubmit={(data) => {}}
                     onRemove={(id) => deleteVariant(id)}
                     defaultValues={variant}
                   />
                 );
               })
             : ""}
-          <Button color="success" className="text-white" onPress={() => {}}>
+          <Button
+            color="success"
+            className="text-white"
+            onPress={updateVariantProduct}
+          >
             ثبت تغیرات ویژگی ها
           </Button>
         </CardBody>
       </Card>
 
-      <AddNewAttributesModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onSubmit={(data: Record<string, any>) => {
-          //setAttributes((prev) => mergeOrAddAttribute(prev, data));
-        }}
-      />
+      <AddNewAttributesModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };

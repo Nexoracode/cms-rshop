@@ -28,7 +28,6 @@ type AttributeData = {
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onSubmit: (data: AttributeData) => void;
   isDisabledEdit?: boolean;
 };
 
@@ -41,7 +40,6 @@ const initialSelecteds = {
 const AttributesModal = ({
   isOpen,
   onOpenChange,
-  onSubmit,
   isDisabledEdit = true,
 }: Props) => {
   //
