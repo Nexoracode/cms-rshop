@@ -2,21 +2,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  DndContext,
-  DragEndEvent,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { AttributeValue } from "../attribute-tree ";
-import { useReorderAttributeValue } from "@/hooks/attributes/useAttributeValue";
-import { performSwapAndMutate } from "./reorderSwap";
+import SortableItem from "./SortableItem";
 
 type Props = {
   values: AttributeValue[];
@@ -37,49 +25,26 @@ const ValueRow: React.FC<{ val: AttributeValue; disabled?: boolean }> = ({ val, 
 
 const SortableAttributeValues: React.FC<Props> = ({ values, parentAttributeId, onValuesChange }) => {
   const [items, setItems] = useState<AttributeValue[]>(values);
-  const [busy, setBusy] = useState(false);
-  const reorderValue = useReorderAttributeValue();
+  const [busy] = useState(false);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  useEffect(() => setItems(values), [values]);
 
   useEffect(() => {
-    setItems(values);
-  }, [values]);
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const activeId = Number(event.active.id);
-    const overId = Number(event.over?.id);
-    if (!overId || activeId === overId) return;
-
-    try {
-      await performSwapAndMutate({
-        items,
-        activeId,
-        overId,
-        mutateFn: ({ id, display_order }) => reorderValue.mutateAsync({ id, display_order }),
-        setLocalState: (next) => {
-          const cast = next as AttributeValue[];
-          setItems(cast);
-          onValuesChange?.(cast);
-        },
-        setIsBusy: setBusy,
-      });
-    } catch (err) {
-      // error
-    }
-  };
+    onValuesChange?.(items);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
 
   return (
     <div className="ml-4 mt-1">
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={items.map((v) => String(v.id))} strategy={verticalListSortingStrategy}>
-          {items.map((val) => (
-            <div key={val.id} id={String(val.id)}>
+      <SortableContext items={items.map((v) => String(v.id))} strategy={verticalListSortingStrategy}>
+        {items.map((val) => (
+          <div key={val.id} id={String(val.id)}>
+            <SortableItem id={val.id} className="mb-1">
               <ValueRow val={val} disabled={busy} />
-            </div>
-          ))}
-        </SortableContext>
-      </DndContext>
+            </SortableItem>
+          </div>
+        ))}
+      </SortableContext>
     </div>
   );
 };

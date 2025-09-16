@@ -203,7 +203,7 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
-          <SortableAttributeNodes attributeNodes={attributeNodes} />
+          <SortableAttributeNodes attributeNodes={productData?.data?.attribute_nodes} />
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {
                 return (

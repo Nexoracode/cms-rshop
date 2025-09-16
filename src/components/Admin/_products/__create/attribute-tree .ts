@@ -1,3 +1,4 @@
+// types/attribute-tree.ts
 export type AttributeValue = {
   id: number;
   value: string;

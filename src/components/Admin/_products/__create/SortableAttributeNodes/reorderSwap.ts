@@ -19,7 +19,7 @@ export function swapArrayItems<T extends ItemWithOrder>(
   const b = copy[idxB];
   copy[idxA] = { ...b };
   copy[idxB] = { ...a };
-  // keep their display_order values swapped (we assume backend already accepted swap)
+  // keep their display_order values swapped
   const tmpOrder = copy[idxA].display_order;
   copy[idxA].display_order = copy[idxB].display_order;
   copy[idxB].display_order = tmpOrder;
@@ -31,10 +31,8 @@ export function swapArrayItems<T extends ItemWithOrder>(
  * - items: آرایه محلی
  * - activeId, overId: شناسه‌های دو آیتم که swap میشن
  * - mutateFn: تابعی که mutateAsync({id, display_order}) برمی‌گرداند
- * - setLocalState: تابع setState برای آرایه
+ * - setLocalState: تابع setState برای آرایه (محلی یا درختی)
  * - setIsBusy: (اختیاری) برای disable کردن UI هنگام درخواست‌ها
- *
- * نکته: فرض می‌کنیم هر دو آیتم display_order از backend داشته باشند.
  */
 export async function performSwapAndMutate<T extends ItemWithOrder>({
   items,
@@ -60,9 +58,11 @@ export async function performSwapAndMutate<T extends ItemWithOrder>({
 
   if (
     typeof itemA.display_order === "undefined" ||
-    typeof itemB.display_order === "undefined"
+    typeof itemB.display_order === "undefined" ||
+    itemA.display_order === null ||
+    itemB.display_order === null
   ) {
-    throw new Error("display_order missing. cannot swap.");
+    throw new Error("display_order missing or null. cannot swap.");
   }
 
   const payloadA = {
