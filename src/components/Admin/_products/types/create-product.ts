@@ -32,7 +32,7 @@ export interface Product {
   media_ids: number[];
   order_limit: number;
   media_pinned_id: number;
-  medias?: Media[];
+  media?: Media[];
   media_pinned?: Record<string, any>;
   category?: Record<string, any>;
   updated_at?: string;
