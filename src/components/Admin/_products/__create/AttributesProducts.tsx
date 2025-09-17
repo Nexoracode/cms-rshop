@@ -16,6 +16,9 @@ import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";
+import { useReorderAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
+import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
+import { useReorderAttributeValue } from "@/hooks/attributes/useAttributeValue";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -55,12 +58,10 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
           <SortableAttributeNodes
-            attributeNodes={nodes}
-            onChange={(next) => {
-              console.log(next);
-
-              setNodes(next);
-            }}
+            attributeNodes={productData?.data?.attribute_nodes}
+            reorderGroup={useReorderAttributeGroup()}
+            reorderAttribute={useReorderAttribute()}
+            reorderValue={useReorderAttributeValue()}
           />
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {

@@ -6,61 +6,79 @@ import SortableAttributeValues from "./SortableAttributeValues";
 
 type Props = {
   attributes: Attribute[];
-  onAttributesChange?: (next: Attribute[]) => void;
+  onAttributesChange?: (attrs: Attribute[]) => void;
+  reorderAttribute: {
+    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
+  };
+  reorderValue: {
+    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
+  };
 };
 
-const SortableAttributes: React.FC<Props> = ({ attributes, onAttributesChange }) => {
-  const [items, setItems] = useState([...attributes]);
+const SortableAttributes: React.FC<Props> = ({
+  attributes,
+  onAttributesChange,
+  reorderAttribute,
+  reorderValue,
+}) => {
+  const [items, setItems] = useState(attributes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
 
-  const sortedItems = [...items].sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0));
+  const handleDragStart = (id: number) => setDraggingId(id);
 
-  const handleMouseDown = (id: number) => setDraggingId(id);
-  const handleMouseUp = (overId: number) => {
+  const handleDrop = async (overId: number) => {
     if (draggingId === null || draggingId === overId) return;
     const idxA = items.findIndex((i) => i.id === draggingId);
     const idxB = items.findIndex((i) => i.id === overId);
     if (idxA === -1 || idxB === -1) return;
 
-    const newItems = [...items];
-    const tmp = newItems[idxA];
-    newItems[idxA] = { ...newItems[idxB], display_order: newItems[idxA].display_order };
-    newItems[idxB] = { ...tmp, display_order: newItems[idxB].display_order };
+    const itemA = items[idxA];
+    const itemB = items[idxB];
 
-    setItems(newItems);
-    onAttributesChange?.(newItems);
-    setDraggingId(null);
-  };
+    const payloadA = { id: itemA.id, display_order: itemB.display_order! };
+    const payloadB = { id: itemB.id, display_order: itemA.display_order! };
 
-  const handleValuesChange = (attrId: number, nextValues: any[]) => {
-    const newItems = items.map((a) => (a.id === attrId ? { ...a, values: nextValues } : a));
-    setItems(newItems);
-    onAttributesChange?.(newItems);
+    try {
+      await Promise.all([
+        reorderAttribute.mutateAsync(payloadA),
+        reorderAttribute.mutateAsync(payloadB),
+      ]);
+
+      const newItems = [...items];
+      newItems[idxA] = { ...itemB, display_order: payloadA.display_order };
+      newItems[idxB] = { ...itemA, display_order: payloadB.display_order };
+      setItems(newItems);
+      onAttributesChange?.(newItems);
+    } catch (err) {
+      console.error("Swap failed:", err);
+    } finally {
+      setDraggingId(null);
+    }
   };
 
   return (
     <div className="ml-4 mt-2">
-      {sortedItems.map((attr) => (
-        <div
-          key={attr.id}
-          onMouseDown={() => handleMouseDown(attr.id)}
-          onMouseUp={() => handleMouseUp(attr.id)}
-          className={`mb-2 p-2 border rounded bg-white ${
-            draggingId === attr.id ? "opacity-50 border-green-500" : ""
-          }`}
-        >
-          <div className="flex justify-between">
-            <strong>{attr.name}</strong>
-            <span className="text-xs">{attr.type}</span>
-            <span className="text-xs text-gray-500">order: {attr.display_order}</span>
+      {items
+        .slice()
+        .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .map((attr) => (
+          <div
+            key={attr.id}
+            draggable
+            onDragStart={() => handleDragStart(attr.id)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(attr.id)}
+            className={`mb-2 p-2 border rounded ${
+              draggingId === attr.id ? "bg-blue-100" : ""
+            }`}
+          >
+            <strong>{attr.name}</strong> ({attr.type})
+            <SortableAttributeValues
+              values={attr.values}
+              reorderValue={reorderValue}
+            />
           </div>
-
-          <SortableAttributeValues
-            values={attr.values}
-            onValuesChange={(next) => handleValuesChange(attr.id, next)}
-          />
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

@@ -5,50 +5,71 @@ import { AttributeValue } from "../attribute-tree ";
 
 type Props = {
   values: AttributeValue[];
-  onValuesChange?: (next: AttributeValue[]) => void;
+  onValuesChange?: (values: AttributeValue[]) => void;
+  reorderValue: {
+    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
+  };
 };
 
-const SortableAttributeValues: React.FC<Props> = ({ values, onValuesChange }) => {
-  const [items, setItems] = useState([...values]);
+const SortableAttributeValues: React.FC<Props> = ({
+  values,
+  onValuesChange,
+  reorderValue,
+}) => {
+  const [items, setItems] = useState(values);
   const [draggingId, setDraggingId] = useState<number | null>(null);
 
-  const sortedItems = [...items].sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0));
+  const handleDragStart = (id: number) => setDraggingId(id);
 
-  const handleMouseDown = (id: number) => setDraggingId(id);
-  const handleMouseUp = (overId: number) => {
+  const handleMouseUp = async (overId: number) => {
     if (draggingId === null || draggingId === overId) return;
     const idxA = items.findIndex((i) => i.id === draggingId);
     const idxB = items.findIndex((i) => i.id === overId);
     if (idxA === -1 || idxB === -1) return;
 
-    const newItems = [...items];
-    // swap display_order
-    const tmp = newItems[idxA];
-    newItems[idxA] = { ...newItems[idxB], display_order: newItems[idxA].display_order };
-    newItems[idxB] = { ...tmp, display_order: newItems[idxB].display_order };
+    const itemA = items[idxA];
+    const itemB = items[idxB];
 
-    setItems(newItems);
-    onValuesChange?.(newItems);
-    setDraggingId(null);
+    const payloadA = { id: itemA.id, display_order: itemB.display_order! };
+    const payloadB = { id: itemB.id, display_order: itemA.display_order! };
+
+    try {
+      await Promise.all([
+        reorderValue.mutateAsync(payloadA),
+        reorderValue.mutateAsync(payloadB),
+      ]);
+
+      const newItems = [...items];
+      newItems[idxA] = { ...itemB, display_order: payloadA.display_order };
+      newItems[idxB] = { ...itemA, display_order: payloadB.display_order };
+      setItems(newItems);
+      onValuesChange?.(newItems);
+    } catch (err) {
+      console.error("Swap failed:", err);
+    } finally {
+      setDraggingId(null);
+    }
   };
 
   return (
     <div className="ml-4 mt-1">
-      {sortedItems.map((val) => (
-        <div
-          key={val.id}
-          onMouseDown={() => handleMouseDown(val.id)}
-          onMouseUp={() => handleMouseUp(val.id)}
-          className={`p-1 border rounded mb-1 bg-white ${
-            draggingId === val.id ? "opacity-50 border-blue-500" : ""
-          }`}
-        >
-          <div className="flex justify-between">
-            <div>{val.value}</div>
-            <div className="text-xs text-gray-500">order: {val.display_order}</div>
+      {items
+        .slice()
+        .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .map((val) => (
+          <div
+            key={val.id}
+            draggable
+            onDragStart={() => handleDragStart(val.id)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleMouseUp(val.id)}
+            className={`p-1 border rounded mb-1 ${
+              draggingId === val.id ? "bg-purple-100" : ""
+            }`}
+          >
+            {val.value}
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

@@ -6,58 +6,81 @@ import SortableAttributes from "./SortableAttributes";
 
 type Props = {
   attributeNodes: AttributeNode[];
-  onChange?: (next: AttributeNode[]) => void;
+  reorderGroup: {
+    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
+  };
+  reorderAttribute: {
+    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
+  };
+  reorderValue: {
+    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
+  };
 };
 
-const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes, onChange }) => {
-  const [nodes, setNodes] = useState([...attributeNodes]);
+const SortableAttributeNodes: React.FC<Props> = ({
+  attributeNodes,
+  reorderGroup,
+  reorderAttribute,
+  reorderValue,
+}) => {
+  const [items, setItems] = useState(attributeNodes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
 
-  const sortedNodes = [...nodes].sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0));
+  const handleDragStart = (id: number) => setDraggingId(id);
 
-  const handleMouseDown = (id: number) => setDraggingId(id);
-  const handleMouseUp = (overId: number) => {
+  const handleDrop = async (overId: number) => {
     if (draggingId === null || draggingId === overId) return;
-    const idxA = nodes.findIndex((n) => n.id === draggingId);
-    const idxB = nodes.findIndex((n) => n.id === overId);
+    const idxA = items.findIndex((i) => i.id === draggingId);
+    const idxB = items.findIndex((i) => i.id === overId);
     if (idxA === -1 || idxB === -1) return;
 
-    const newNodes = [...nodes];
-    const tmp = newNodes[idxA];
-    newNodes[idxA] = { ...newNodes[idxB], display_order: newNodes[idxA].display_order };
-    newNodes[idxB] = { ...tmp, display_order: newNodes[idxB].display_order };
+    const itemA = items[idxA];
+    const itemB = items[idxB];
 
-    setNodes(newNodes);
-    onChange?.(newNodes);
-    setDraggingId(null);
-  };
+    const payloadA = { id: itemA.id, display_order: itemB.display_order! };
+    const payloadB = { id: itemB.id, display_order: itemA.display_order! };
 
-  const handleAttributesChange = (groupId: number, nextAttrs: any[]) => {
-    const newNodes = nodes.map((n) => (n.id === groupId ? { ...n, attributes: nextAttrs } : n));
-    setNodes(newNodes);
-    onChange?.(newNodes);
+    try {
+      await Promise.all([
+        reorderGroup.mutateAsync(payloadA),
+        reorderGroup.mutateAsync(payloadB),
+      ]);
+
+      const newItems = [...items];
+      newItems[idxA] = { ...itemB, display_order: payloadA.display_order };
+      newItems[idxB] = { ...itemA, display_order: payloadB.display_order };
+      setItems(newItems);
+    } catch (err) {
+      console.error("Swap failed:", err);
+    } finally {
+      setDraggingId(null);
+    }
   };
 
   return (
     <div>
-      {sortedNodes.map((group) => (
-        <div
-          key={group.id}
-          onMouseDown={() => handleMouseDown(group.id)}
-          onMouseUp={() => handleMouseUp(group.id)}
-          className={`mb-4 p-3 border rounded bg-white ${
-            draggingId === group.id ? "opacity-50 border-red-500" : ""
-          }`}
-        >
-          <strong>{group.name}</strong>
-          <span className="text-xs text-gray-500 ml-2">order: {group.display_order}</span>
-
-          <SortableAttributes
-            attributes={group.attributes}
-            onAttributesChange={(nextAttrs) => handleAttributesChange(group.id, nextAttrs)}
-          />
-        </div>
-      ))}
+      {items
+        .slice()
+        .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .map((group) => (
+          <div
+            key={group.id}
+            draggable
+            onDragStart={() => handleDragStart(group.id)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(group.id)}
+            className={`mb-6 p-4 border rounded ${
+              draggingId === group.id ? "bg-green-100" : ""
+            }`}
+          >
+            <h3 className="font-bold">{group.name}</h3>
+            <SortableAttributes
+              attributes={group.attributes}
+              reorderAttribute={reorderAttribute}
+              reorderValue={reorderValue}
+            />
+          </div>
+        ))}
     </div>
   );
 };
