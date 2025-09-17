@@ -16,9 +16,6 @@ import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";
-import { useReorderAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
-import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
-import { useReorderAttributeValue } from "@/hooks/attributes/useAttributeValue";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

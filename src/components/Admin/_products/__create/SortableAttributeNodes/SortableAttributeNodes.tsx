@@ -13,7 +13,8 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
   const [items, setItems] = useState(attributeNodes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const reorderGroup = useReorderAttributeGroup();
-
+  console.log(":::::::::::::::::::::::::", attributeNodes);
+  
   // همگام‌سازی با prop وقتی از parent تغییر کرد
   useEffect(() => {
     setItems(attributeNodes);

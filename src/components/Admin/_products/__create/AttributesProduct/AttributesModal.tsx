@@ -70,7 +70,7 @@ const AttributesModal = ({
         stock: 0,
         attributes: [{ attribute_id: attrId, value_ids: valueIds }],
       };
-      
+
       addNewVariantProductMutation.mutate(newAttr, {
         onSuccess: () => {
           resetModalInfos();
@@ -122,15 +122,19 @@ const AttributesModal = ({
                 selectedAttrId={selecteds.attrId}
                 isDisabledEdit={isDisabledEdit}
               />
-              <AddNewAttributeValue
-                attrValues={attributeValues?.data}
-                onChange={(ids) =>
-                  setSelecteds((prev) => ({ ...prev, valueIds: ids }))
-                }
-                selectedAttrId={selecteds.attrId}
-                selectedValues={selecteds.valueIds}
-                isDisabledEdit={isDisabledEdit}
-              />
+              {selecteds.attrId ? (
+                <AddNewAttributeValue
+                  attrValues={attributeValues?.data}
+                  onChange={(ids) =>
+                    setSelecteds((prev) => ({ ...prev, valueIds: ids }))
+                  }
+                  selectedAttrId={selecteds.attrId}
+                  selectedValues={selecteds.valueIds}
+                  isDisabledEdit={isDisabledEdit}
+                />
+              ) : (
+                ""
+              )}
             </ModalBody>
             <ModalFooter>
               <Button

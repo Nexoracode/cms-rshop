@@ -42,6 +42,7 @@ const SortableAttributeValues: React.FC<Props> = ({ values }) => {
       [newItems[idxA], newItems[idxB]] = [newItems[idxB], newItems[idxA]];
       newItems[idxA].display_order = payloadA.display_order;
       newItems[idxB].display_order = payloadB.display_order;
+      console.log("???????????????????????????????", newItems);
       setItems(newItems);
     } catch (err) {
       console.error("Swap failed:", err);
