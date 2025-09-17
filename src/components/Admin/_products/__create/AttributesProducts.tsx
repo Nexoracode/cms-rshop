@@ -15,7 +15,7 @@ import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -27,7 +27,7 @@ const AttributesProducts = () => {
   const { data: productData } = useGetOneProduct(page);
   const { mutate: deleteVariant } = useDeleteVariant();
   const updateVariantProductMutation = useUpdateVariantProduct();
-  console.log(productData);
+  const [nodes, setNodes] = useState(productData?.data.attribute_nodes ?? []);
 
   useEffect(() => {
     if (productData?.data?.attribute_nodes) {
@@ -54,7 +54,14 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
-          <SortableAttributeNodes attributeNodes={productData?.data?.attribute_nodes} />
+          <SortableAttributeNodes
+            attributeNodes={nodes}
+            onChange={(next) => {
+              console.log(next);
+
+              setNodes(next);
+            }}
+          />
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {
                 return (
@@ -62,9 +69,9 @@ const AttributesProducts = () => {
                     key={index}
                     variantName={variant?.name}
                     onHandleSubmit={(data) => {}}
-                    onRemove={(id) =>{
+                    onRemove={(id) => {
                       console.log(id);
-                      deleteVariant(id)
+                      deleteVariant(id);
                     }}
                     defaultValues={variant}
                   />
