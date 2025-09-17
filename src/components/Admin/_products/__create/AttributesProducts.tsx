@@ -28,7 +28,8 @@ const AttributesProducts = () => {
   const { mutate: deleteVariant } = useDeleteVariant();
   const updateVariantProductMutation = useUpdateVariantProduct();
   const [nodes, setNodes] = useState(productData?.data.attribute_nodes ?? []);
-
+  console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", productData);
+  
   useEffect(() => {
     if (productData?.data?.attribute_nodes) {
       const attrValues = productData?.data.attribute_nodes.flatMap(
