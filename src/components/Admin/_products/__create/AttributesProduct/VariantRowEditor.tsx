@@ -37,7 +37,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
 
   useEffect(() => {
     if (defaultValues) {
-      console.log(defaultValues);
+      console.log("DDDDDDD",defaultValues);
       setFormData(defaultValues);
       setDiscountType(defaultValues.discount_amount ? "money" : "percent")
     }
@@ -102,7 +102,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
               <NumberInput
                 size="sm"
                 placeholder="موجودی را وارد کنید"
-                minValue={1}
+                minValue={0}
                 isRequired
                 //isDisabled={formData.unlimitedStock}
                 endContent={
@@ -123,7 +123,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                   size="sm"
                   className="w-full"
                   placeholder="تخفیف"
-                  minValue={1}
+                  minValue={0}
                   value={discountType === "percent" ? formData.discount_percent : formData.discount_amount}
                   endContent={
                     <select
@@ -172,7 +172,10 @@ const VariantRowEditorComponent: React.FC<Props> = ({
             <div className="flex items-center justify-end">
               <DoubleClickBtn
                 size="sm"
-                onPress={() => onRemove(formData.id)}
+                onPress={() => {
+                  console.log("FFFFFFFF", formData);
+                  onRemove(formData.id)
+                }}
                 textBtn="حذف"
                 color="danger"
                 isActiveDoubleClick

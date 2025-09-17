@@ -61,26 +61,21 @@ const AttributesModal = ({
     ).is_variant;
 
     if (attrIsVariant) {
-      const variantProduct = valueIds.map((val: number) => ({
+      const newAttr = {
         product_id: page,
         sku: crypto.randomUUID(),
         price: 10000,
         discount_amount: 0,
         discount_percent: 0,
         stock: 0,
-        attributes: [{ attribute_id: attrId, value_id: val, label: "label" }],
-      }));
-
-      try {
-        await Promise.all(
-          variantProduct.map((variant: any) =>
-            addNewVariantProductMutation.mutateAsync(variant)
-          )
-        );
-        resetModalInfos();
-      } catch (error) {
-        console.error("خطا در افزودن variants:", error);
-      }
+        attributes: [{ attribute_id: attrId, value_ids: valueIds }],
+      };
+      
+      addNewVariantProductMutation.mutate(newAttr, {
+        onSuccess: () => {
+          resetModalInfos();
+        },
+      });
     }
   };
 
