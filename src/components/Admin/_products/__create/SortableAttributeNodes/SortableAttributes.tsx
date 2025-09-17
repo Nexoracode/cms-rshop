@@ -44,7 +44,7 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
             onDragStart={() => handleDragStart(attr.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(attr.id)}
-            className={`mb-2 p-2 border rounded ${
+            className={`mb-2 p-2 shadow-[0_0_15px_#f0f0f0] rounded-2xl ${
               draggingId === attr.id ? "bg-blue-100" : ""
             }`}
           >
