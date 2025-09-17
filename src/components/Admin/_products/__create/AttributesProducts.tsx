@@ -59,9 +59,6 @@ const AttributesProducts = () => {
           />
           <SortableAttributeNodes
             attributeNodes={productData?.data?.attribute_nodes}
-            reorderGroup={useReorderAttributeGroup()}
-            reorderAttribute={useReorderAttribute()}
-            reorderValue={useReorderAttributeValue()}
           />
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {

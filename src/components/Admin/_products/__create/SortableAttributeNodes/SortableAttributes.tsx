@@ -1,33 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Attribute } from "../attribute-tree ";
 import SortableAttributeValues from "./SortableAttributeValues";
+import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
 
 type Props = {
   attributes: Attribute[];
-  onAttributesChange?: (attrs: Attribute[]) => void;
-  reorderAttribute: {
-    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
-  };
-  reorderValue: {
-    mutateAsync: (data: { id: number; display_order: number }) => Promise<any>;
-  };
 };
 
-const SortableAttributes: React.FC<Props> = ({
-  attributes,
-  onAttributesChange,
-  reorderAttribute,
-  reorderValue,
-}) => {
+const SortableAttributes: React.FC<Props> = ({ attributes }) => {
   const [items, setItems] = useState(attributes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
+  const reorderAttribute = useReorderAttribute();
+
+  useEffect(() => {
+    setItems(attributes);
+  }, [attributes]);
 
   const handleDragStart = (id: number) => setDraggingId(id);
 
   const handleDrop = async (overId: number) => {
     if (draggingId === null || draggingId === overId) return;
+
     const idxA = items.findIndex((i) => i.id === draggingId);
     const idxB = items.findIndex((i) => i.id === overId);
     if (idxA === -1 || idxB === -1) return;
@@ -45,10 +40,10 @@ const SortableAttributes: React.FC<Props> = ({
       ]);
 
       const newItems = [...items];
-      newItems[idxA] = { ...itemB, display_order: payloadA.display_order };
-      newItems[idxB] = { ...itemA, display_order: payloadB.display_order };
+      [newItems[idxA], newItems[idxB]] = [newItems[idxB], newItems[idxA]];
+      newItems[idxA].display_order = payloadA.display_order;
+      newItems[idxB].display_order = payloadB.display_order;
       setItems(newItems);
-      onAttributesChange?.(newItems);
     } catch (err) {
       console.error("Swap failed:", err);
     } finally {
@@ -73,10 +68,7 @@ const SortableAttributes: React.FC<Props> = ({
             }`}
           >
             <strong>{attr.name}</strong> ({attr.type})
-            <SortableAttributeValues
-              values={attr.values}
-              reorderValue={reorderValue}
-            />
+            <SortableAttributeValues values={attr.values} />
           </div>
         ))}
     </div>
