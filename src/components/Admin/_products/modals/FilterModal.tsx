@@ -171,8 +171,11 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 dir="rtl"
                 labelPlacement="outside"
                 label="وضعیت نمایش"
-                value={filters.isVisible}
-                onChange={(v: any) => updateFilter("isVisible", v ?? "")}
+                selectedKeys={filters.isVisible ? [filters.isVisible] : []}
+                onSelectionChange={(keys) => {
+                  const val = Array.from(keys)[0] as "" | "true" | "false";
+                  updateFilter("isVisible", val ?? "");
+                }}
                 placeholder="انتخاب وضعیت"
               >
                 <SelectItem key="">همه</SelectItem>
@@ -205,18 +208,21 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 dir="rtl"
                 label="دسته بندی"
                 placeholder="انتخاب دسته بندی"
-                value={filters.categoryId}
-                onChange={(v: any) => updateFilter("categoryId", v ?? "")}
+                selectedKeys={filters.categoryId ? [filters.categoryId] : []}
+                onSelectionChange={(keys) => {
+                  const val = Array.from(keys)[0] as string;
+                  updateFilter("categoryId", val ?? "");
+                }}
               >
-                {categoriesData?.data && categoriesData.data.length ? (
-                  flatOptions.map((opt) => (
-                    <SelectItem key={opt.id}>{opt.title}</SelectItem>
-                  ))
-                ) : (
-                  <SelectItem key="-1" isDisabled>
-                    دسته‌بندی وجود ندارد
-                  </SelectItem>
-                )}
+              {categoriesData?.data && categoriesData.data.length ? (
+                flatOptions.map((opt) => (
+                  <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
+                ))
+              ) : (
+                <SelectItem key="-1" isDisabled>
+                  دسته‌بندی وجود ندارد
+                </SelectItem>
+              )}
               </Select>
 
               <DateRangePicker
@@ -317,10 +323,15 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 dir="rtl"
                 labelPlacement="outside"
                 label="نیاز به آماده‌سازی"
-                value={filters.requiresPreparation}
-                onChange={(v: any) =>
-                  updateFilter("requiresPreparation", v ?? "")
+                selectedKeys={
+                  filters.requiresPreparation
+                    ? [filters.requiresPreparation]
+                    : []
                 }
+                onSelectionChange={(keys) => {
+                  const val = Array.from(keys)[0] as "" | "true" | "false";
+                  updateFilter("requiresPreparation", val ?? "");
+                }}
                 placeholder="انتخاب"
               >
                 <SelectItem key="">همه</SelectItem>
@@ -328,7 +339,6 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 <SelectItem key="false">ندارد</SelectItem>
               </Select>
             </ModalBody>
-
             <ModalFooter>
               <Button color="danger" onClick={onClear}>
                 حذف فیلتر
