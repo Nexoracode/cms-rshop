@@ -17,6 +17,7 @@ import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
+import toast from "react-hot-toast";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -46,7 +47,21 @@ const AttributesProducts = () => {
     }
   }, [productData?.data]);
 
-  const updateVariantProduct = () => {};
+  const updateVariantProduct = async () => {
+    Promise.all(
+      variants.map((val) =>
+        updateVariantProductMutation.mutateAsync({ id: val.id, data: val })
+      )
+    )
+      .then(() => {
+        toast.success("همه آپدیت شدن ✅");
+        router.push("/admin/products")
+      })
+      .catch((err) => {
+        toast.error("مشکلی در آپدیت یکی از واریانت‌ها پیش اومد");
+        console.error(err);
+      });
+  };
 
   return (
     <>
@@ -79,7 +94,7 @@ const AttributesProducts = () => {
                     key={index}
                     variantName={variant?.name}
                     onHandleSubmit={(data) => {
-                      console.log("!!!!!!!!!!!",data);
+                      console.log("!!!!!!!!!!!", data);
                       setVariants((prev) => replaceOrAddById(prev, data));
                     }}
                     onRemove={(id) => {

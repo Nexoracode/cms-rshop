@@ -8,6 +8,7 @@ import { Stock } from "@/types";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { formatDiscountedPrice } from "@/utils/helpers";
 import { Variant } from "@/types/attributes";
+import { usePaginationParams } from "@/hooks/usePaginationParams";
 
 type Props = {
   variantName: string;
@@ -23,6 +24,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
   defaultValues,
 }) => {
   const [discountType, setDiscountType] = useState<Stock>("percent");
+  const { page } = usePaginationParams("edit_id");
   const [formData, setFormData] = useState<Variant>(
     defaultValues ?? {
       id: 0,
@@ -44,6 +46,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
       formData;
 
     const obj = {
+      product_id: page,
       id,
       price,
       sku,
@@ -53,6 +56,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
         : discount_amount
         ? { discount_amount: +discount_amount }
         : {}),
+      //attributes: (formData as any).attributes
     };
 
     onHandleSubmit?.(obj);

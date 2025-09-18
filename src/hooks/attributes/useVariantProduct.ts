@@ -20,20 +20,14 @@ export const useAddNewVariantProduct = () => {
 };
 
 export const useUpdateVariantProduct = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, data }: { id: number; data: any }) =>
       fetcher({
         route: `/variant-product/${+id}`,
         method: "PATCH",
         body: data,
-        isActiveToast: true,
-        successText: "با موفقیت آپدیت شد",
-        loadingText: "درحال آپدیت...",
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["one-product"] });
-    },
+        isActiveToast: false,
+      })
   });
 };
 
