@@ -29,7 +29,7 @@ const AttributesProducts = () => {
   const updateVariantProductMutation = useUpdateVariantProduct();
   const [nodes, setNodes] = useState(productData?.data.attribute_nodes ?? []);
   console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", productData);
-  
+
   useEffect(() => {
     if (productData?.data?.attribute_nodes) {
       const attrValues = productData?.data.attribute_nodes.flatMap(
@@ -55,9 +55,12 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
-          <SortableAttributeNodes
-            attributeNodes={productData?.data?.attribute_nodes}
-          />
+          <div className="flex flex-col gap-6 bg-gray-50 rounded-2xl p-4">
+            <p className="text-[16px]">مرتب سازی ویژگی ها</p>
+            <SortableAttributeNodes
+              attributeNodes={productData?.data?.attribute_nodes}
+            />
+          </div>
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {
                 return (

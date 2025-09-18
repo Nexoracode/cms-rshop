@@ -44,9 +44,9 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
             onDragStart={() => handleDragStart(attr.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(attr.id)}
-            className={`p-2 shadow-md shadow-sky-200 rounded-2xl border mb-4`}
+            className={`p-2 shadow-md shadow-orange-100 rounded-2xl border mb-4 cursor-grab`}
           >
-            <p className="text-lg text-sky-500 border-t border-sky-300 py-2 px-4 bg-sky-50 rounded-xl">{attr.name} <small className="text-black">({attr.type})</small></p>
+            <p className="text-lg text-orange-700 border-t border-orange-300 py-2 px-4 bg-orange-50 rounded-xl m-2">{attr.name} <small className="text-black">({attr.type})</small></p>
             <SortableAttributeValues values={attr.values} />
           </div>
         ))}
