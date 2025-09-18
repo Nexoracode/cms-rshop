@@ -55,12 +55,16 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
-          <div className="flex flex-col gap-6 bg-gray-50 rounded-2xl p-4">
-            <p className="text-[16px]">مرتب سازی ویژگی ها</p>
-            <SortableAttributeNodes
-              attributeNodes={productData?.data?.attribute_nodes}
-            />
-          </div>
+          {productData?.data?.attribute_nodes.length ? (
+            <div className="flex flex-col gap-6 bg-gray-50 rounded-2xl p-4">
+              <p className="text-[16px]">مرتب سازی ویژگی ها</p>
+              <SortableAttributeNodes
+                attributeNodes={productData?.data?.attribute_nodes}
+              />
+            </div>
+          ) : (
+            ""
+          )}
           {productData?.data?.variants
             ? productData.data.variants.map((variant: any, index: number) => {
                 return (
