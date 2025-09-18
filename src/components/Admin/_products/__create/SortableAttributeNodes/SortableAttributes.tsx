@@ -33,7 +33,7 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
   };
 
   return (
-    <div className="ml-4 mt-2">
+    <div className="mx-8 mt-6">
       {items
         .slice()
         .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -44,11 +44,9 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
             onDragStart={() => handleDragStart(attr.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(attr.id)}
-            className={`mb-2 p-2 shadow-[0_0_15px_#f0f0f0] rounded-2xl ${
-              draggingId === attr.id ? "bg-blue-100" : ""
-            }`}
+            className={`p-2 shadow-md shadow-sky-200 rounded-2xl border mb-4`}
           >
-            <strong>{attr.name}</strong> ({attr.type})
+            <p className="text-lg text-sky-500 border-t border-sky-300 py-2 px-4 bg-sky-50 rounded-xl">{attr.name} <small className="text-black">({attr.type})</small></p>
             <SortableAttributeValues values={attr.values} />
           </div>
         ))}

@@ -43,11 +43,22 @@ const SortableAttributeValues: React.FC<Props> = ({ values }) => {
             onDragStart={() => handleDragStart(val.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(val.id)}
-            className={`p-3 shadow-[0_0_15px_#f0f0f0] rounded-xl my-2 ${
-              draggingId === val.id ? "bg-purple-100" : ""
-            }`}
+            className={`shadow-md rounded-xl my-4 mx-6 cursor-grab`}
           >
-            {val.value}
+            <div
+              className="flex items-center gap-2 py-3 px-4 rounded-xl"
+              style={{ borderTop: `1px solid ${val.display_color || "lightgray"}`, color: `${val.display_color || "gray"}`}}
+            >
+              {val.display_color && (
+                <div
+                  className="w-4 h-4 rounded-full border"
+                  style={{
+                    backgroundColor: val.display_color,
+                  }}
+                />
+              )}
+              <p className="text-[16px]">{val.value}</p>
+            </div>
           </div>
         ))}
     </div>

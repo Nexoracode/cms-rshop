@@ -44,11 +44,9 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
             onDragStart={() => handleDragStart(group.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(group.id)}
-            className={`mb-6 p-4 shadow-[0_0_15px_#f0f0f0] rounded-2xl ${
-              draggingId === group.id ? "bg-green-100" : ""
-            }`}
+            className={`mb-6 p-4 shadow-md shadow-purple-300 rounded-2xl border`}
           >
-            <h3 className="font-bold">{group.name}</h3>
+            <h3 className="text-lg text-purple-500 border-t border-purple-300 py-2 px-4 bg-purple-50 rounded-xl">{group.name} <small className="text-black">({group.slug})</small></h3>
             <SortableAttributes attributes={group.attributes} />
           </div>
         ))}
