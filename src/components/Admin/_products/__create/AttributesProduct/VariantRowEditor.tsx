@@ -1,12 +1,7 @@
 "use client";
 
 import { memo, useEffect, useState } from "react";
-import {
-  Card,
-  CardBody,
-  Input,
-  NumberInput,
-} from "@heroui/react";
+import { Card, CardBody, Input, NumberInput } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
@@ -28,18 +23,19 @@ const VariantRowEditorComponent: React.FC<Props> = ({
   defaultValues,
 }) => {
   const [discountType, setDiscountType] = useState<Stock>("percent");
-  const [formData, setFormData] = useState<Variant>({
-    id: 0,
-    price: 10000,
-    stock: 0,
-    sku: "",
-  });
+  const [formData, setFormData] = useState<Variant>(
+    defaultValues ?? {
+      id: 0,
+      price: 10000,
+      stock: 0,
+      sku: "",
+    }
+  );
 
   useEffect(() => {
     if (defaultValues) {
-      console.log("DDDDDDD",defaultValues);
       setFormData(defaultValues);
-      setDiscountType(defaultValues.discount_amount ? "money" : "percent")
+      setDiscountType(defaultValues.discount_amount ? "money" : "percent");
     }
   }, [defaultValues]);
 
@@ -52,7 +48,11 @@ const VariantRowEditorComponent: React.FC<Props> = ({
       price,
       sku,
       stock: +stock,
-      ...(discount_percent ? { discount_percent: +discount_percent } : discount_amount ? { discount_amount: +discount_amount } : {}),
+      ...(discount_percent
+        ? { discount_percent: +discount_percent }
+        : discount_amount
+        ? { discount_amount: +discount_amount }
+        : {}),
     };
 
     onHandleSubmit?.(obj);
@@ -124,18 +124,28 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                   className="w-full"
                   placeholder="تخفیف"
                   minValue={0}
-                  value={discountType === "percent" ? formData.discount_percent : formData.discount_amount}
+                  value={
+                    discountType === "percent"
+                      ? formData.discount_percent
+                      : formData.discount_amount
+                  }
                   endContent={
                     <select
                       aria-label="Select discount type"
                       className="outline-none border-0 bg-transparent text-default-400 text-small"
                       value={discountType}
                       onChange={(e) => {
-                        setDiscountType(e.target.value as Stock)
-                        if (e.target.value as Stock === "percent") {
-                          setFormData(prev => ({...prev, discount_amount: undefined}))
+                        setDiscountType(e.target.value as Stock);
+                        if ((e.target.value as Stock) === "percent") {
+                          setFormData((prev) => ({
+                            ...prev,
+                            discount_amount: undefined,
+                          }));
                         } else {
-                           setFormData(prev => ({...prev, discount_percent: undefined}))
+                          setFormData((prev) => ({
+                            ...prev,
+                            discount_percent: undefined,
+                          }));
                         }
                       }}
                     >
@@ -146,7 +156,9 @@ const VariantRowEditorComponent: React.FC<Props> = ({
                   onValueChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
-                    ...(discountType === "percent" ? {discount_percent: value} : {discount_amount: value} ),
+                      ...(discountType === "percent"
+                        ? { discount_percent: value }
+                        : { discount_amount: value }),
                     }))
                   }
                   isDisabled={!formData.price}
@@ -172,10 +184,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
             <div className="flex items-center justify-end">
               <DoubleClickBtn
                 size="sm"
-                onPress={() => {
-                  console.log("FFFFFFFF", formData);
-                  onRemove(formData.id)
-                }}
+                onPress={() => onRemove(formData.id)}
                 textBtn="حذف"
                 color="danger"
                 isActiveDoubleClick

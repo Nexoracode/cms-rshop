@@ -16,19 +16,26 @@ import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";
+import { replaceOrAddById } from "@/utils/replaceOrAddById";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
   const { page } = usePaginationParams("edit_id");
-  const { attrInfos, setAttrInfos } = useAttributeContext();
+  const { setAttrInfos } = useAttributeContext();
+  const [variants, setVariants] = useState<any[]>([]);
   ///
   //? Api Calls
   const { data: productData } = useGetOneProduct(page);
   const { mutate: deleteVariant } = useDeleteVariant();
   const updateVariantProductMutation = useUpdateVariantProduct();
-  const [nodes, setNodes] = useState(productData?.data.attribute_nodes ?? []);
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", productData);
+  console.log("LOG =>", productData);
+
+  useEffect(() => {
+    if (variants.length) {
+      console.log("Variants => ", variants);
+    }
+  }, [variants]);
 
   useEffect(() => {
     if (productData?.data?.attribute_nodes) {
@@ -71,7 +78,10 @@ const AttributesProducts = () => {
                   <VariantRowEditor
                     key={index}
                     variantName={variant?.name}
-                    onHandleSubmit={(data) => {}}
+                    onHandleSubmit={(data) => {
+                      console.log("!!!!!!!!!!!",data);
+                      setVariants((prev) => replaceOrAddById(prev, data));
+                    }}
                     onRemove={(id) => {
                       console.log(id);
                       deleteVariant(id);
