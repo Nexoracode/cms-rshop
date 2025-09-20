@@ -1,7 +1,7 @@
 "use client";
 
 // Components
-import { Button, Card, CardBody, Input, useDisclosure } from "@heroui/react";
+import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import OptionBox from "@/components/Admin/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import FilterModal from "@/components/Admin/_products/modals/FilterModal";
@@ -11,7 +11,6 @@ import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { useRouter, useSearchParams } from "next/navigation";
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 // Icons
-import { FiSearch } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
@@ -27,16 +26,19 @@ import { GETProduct } from "@/components/Admin/_products/types/edit-product";
 import AppPagination from "@/components/Helper/AppPagination";
 import { useEffect, useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
+import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 
 const Products = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
   //? Hooks
   const deleteGroupProduct = useDeleteGroupProduct();
+
   useEffect(() => {
-    console.log(selectedItems);
-  }, [selectedItems]);
+    console.log(searchInp);
+  }, [searchInp]);
 
   // get page
   const page = useMemo(() => {
@@ -127,21 +129,16 @@ const Products = () => {
 
         <Card className="shadow-none">
           <BoxHeader
-            title="باکس فیلر"
+            title="باکس فیلتر"
             color="text-white bg-gray-800"
             icon={<LuBox className="text-3xl" />}
           />
           <CardBody className="flex flex-col gap-4">
             <section className="w-full">
-              <Input
-                isClearable
-                size="lg"
-                variant="bordered"
-                className="bg-white rounded-xl"
-                color="secondary"
-                placeholder="جستجو در محصول ها..."
-                startContent={<FiSearch className="text-xl" />}
-              ></Input>
+              <SearchInput
+                placeholder="جستجو در محصول‌ها..."
+                onSearch={setSearchInp}
+              />
             </section>
             <section className="flex flex-wrap items-center gap-2 justify-between">
               <OptionBox
