@@ -36,10 +36,6 @@ const Products = () => {
   //? Hooks
   const deleteGroupProduct = useDeleteGroupProduct();
 
-  useEffect(() => {
-    console.log(searchInp);
-  }, [searchInp]);
-
   // get page
   const page = useMemo(() => {
     const p = searchParams.get("page");
@@ -55,10 +51,7 @@ const Products = () => {
   }, [searchParams?.toString()]);
 
   // search & searchBy
-  const search = useMemo(
-    () => searchParams.get("search") ?? undefined,
-    [searchParams?.toString()]
-  );
+  const search = searchInp;
   const searchBy = useMemo(() => {
     const s = searchParams.getAll("searchBy");
     return s.length ? s : undefined;
@@ -86,6 +79,7 @@ const Products = () => {
     searchBy,
     sortBy,
   });
+  console.log(products?.data.items);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -169,7 +163,7 @@ const Products = () => {
           <CardBody>
             {isLoading ? (
               <LoadingApiCall />
-            ) : products?.data ? (
+            ) : products?.data?.items?.length ? (
               <div className="flex flex-col gap-4">
                 {(products.data as GETProduct).items.map((product) => (
                   <ProductBox
@@ -208,7 +202,11 @@ const Products = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-center py-6">فعلا هنوز محصولی وجود ندارد</p>
+              <p className="text-center py-6">
+                {searchInp?.length
+                  ? "برای سرچ شما محصولی وجود ندارد"
+                  : "فعلا محصولی وحود ندارد"}
+              </p>
             )}
             {selectedItems.length ? (
               <div className="flex gap-2">
@@ -238,8 +236,11 @@ const Products = () => {
             )}
           </CardBody>
         </Card>
-
-        <AppPagination meta={products?.data.meta} />
+        {products?.data?.items?.length > 10 ? (
+          <AppPagination meta={products?.data.meta} />
+        ) : (
+          ""
+        )}
       </section>
       {/* Modals */}
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
