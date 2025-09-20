@@ -8,7 +8,7 @@ import FilterModal from "@/components/Admin/_products/modals/FilterModal";
 import SortingModal from "@/components/Admin/_products/modals/SortingModal";
 import MoreFeaturesModal from "@/components/Admin/_products/modals/MoreFeaturesModal";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 // Icons
 import { FiSearch } from "react-icons/fi";
@@ -17,17 +17,65 @@ import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import { AiOutlineShop } from "react-icons/ai";
 import { LuBox } from "react-icons/lu";
-import { useGetProducts } from "@/hooks/products/useProduct";
+import { ProductSortBy, useGetProducts } from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { GETProduct } from "@/components/Admin/_products/types/edit-product";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
 import AppPagination from "@/components/Helper/AppPagination";
+import { useMemo } from "react";
 
 const Products = () => {
   const router = useRouter();
-  const { page } = usePaginationParams();
-  const { data: products, isLoading } = useGetProducts(page);
+  const searchParams = useSearchParams();
 
+  // get page
+  const page = useMemo(() => {
+    const p = searchParams.get("page");
+    const n = Number(p ?? 1);
+    return Number.isFinite(n) && n > 0 ? n : 1;
+  }, [searchParams?.toString()]);
+
+  // sortBy
+  const sortBy = useMemo(() => {
+    // searchParams.getAll exists on URLSearchParams - در next/navigation هم کار می‌کند
+    const sorts = searchParams.getAll("sortBy") as ProductSortBy | string[];
+    return sorts.length ? (sorts as ProductSortBy) : undefined;
+  }, [searchParams?.toString()]);
+
+  // search & searchBy
+  const search = useMemo(
+    () => searchParams.get("search") ?? undefined,
+    [searchParams?.toString()]
+  );
+  const searchBy = useMemo(() => {
+    const s = searchParams.getAll("searchBy");
+    return s.length ? s : undefined;
+  }, [searchParams?.toString()]);
+
+  // Filters
+  const filter = useMemo(() => {
+    const f: Record<string, string[]> = {};
+    // 'entries()' را به آرایه تبدیل می‌کنیم تا dependency string کار کند
+    for (const [key, value] of Array.from(searchParams.entries())) {
+      if (!key.startsWith("filter.")) continue;
+      const [, field] = key.split(".");
+      if (!field) continue;
+      if (!f[field]) f[field] = [];
+      f[field].push(value);
+    }
+    // cast به type مناسب (همان ProductFilter)
+    return Object.keys(f).length ? (f as any) : undefined;
+  }, [searchParams?.toString()]);
+  console.log(filter);
+
+  const { data: products, isLoading } = useGetProducts({
+    page,
+    filter,
+    search,
+    searchBy,
+    sortBy,
+  });
+  console.log("products Data => ", products?.data);
+  
   const {
     isOpen: isSortOpen,
     onOpen: onOpenSort,

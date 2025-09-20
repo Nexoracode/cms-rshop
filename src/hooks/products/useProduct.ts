@@ -5,14 +5,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 /*  */
 
 type ProductFilter = {
-  isVisible?: string[];
+  is_visible?: string[];
   stock?: string[];
-  categoryId?: string[];
+  category_id?: string[];
   price?: string[];
   discount?: string[];
   createdAt?: string[];
   weight?: string[];
-  requiresPreparation?: string[];
+  requires_preparation?: string[];
 };
 
 type UseGetProductsParams = {
@@ -25,7 +25,14 @@ type UseGetProductsParams = {
 };
 
 export type ProductSortBy = Array<
-  "id:ASC" | "id:DESC" | "name:ASC" | "name:DESC" | "price:ASC" | "price:DESC" | "stock:ASC" | "stock:DESC"
+  | "id:ASC"
+  | "id:DESC"
+  | "name:ASC"
+  | "name:DESC"
+  | "price:ASC"
+  | "price:DESC"
+  | "stock:ASC"
+  | "stock:DESC"
 >;
 
 export function buildQueryString(params: Record<string, any>) {
@@ -49,14 +56,13 @@ export const useGetProducts = ({
   filter,
   search,
   searchBy,
-  sortBy
+  sortBy,
 }: Omit<UseGetProductsParams, "limit">) => {
   return useQuery({
     queryKey: ["all-products", page, filter, search, sortBy],
     queryFn: () => {
       const params: Record<string, any> = { page, limit: 10 };
 
-      // اضافه کردن فیلترها
       if (filter) {
         for (const key in filter) {
           const values = filter[key as keyof ProductFilter];
@@ -71,11 +77,13 @@ export const useGetProducts = ({
       if (sortBy) params.sortBy = sortBy;
 
       const queryString = buildQueryString(params);
-      return fetcher({ route: `/product?${queryString}`, isActiveToast: false });
+      return fetcher({
+        route: `/product?${queryString}`,
+        isActiveToast: false,
+      });
     },
   });
 };
-
 
 export const useGetOneProduct = (id?: number) => {
   return useQuery({
@@ -84,7 +92,7 @@ export const useGetOneProduct = (id?: number) => {
       fetcher({
         route: `/product/${id}`,
         isActiveToast: true,
-        loadingText: "درحال دریافت اطلاعات محصول"
+        loadingText: "درحال دریافت اطلاعات محصول",
       }),
     enabled: !!id,
   });

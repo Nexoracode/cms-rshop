@@ -28,46 +28,41 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { data: categoriesData } = useGetAllCategories();
-  // یک state برای همه فیلترها
+
   const [filters, setFilters] = useState({
-    isVisible: "" as "" | "true" | "false",
+    is_visible: "" as "" | "true" | "false",
     stockMin: "" as number | "",
     stockMax: "" as number | "",
-    categoryId: "" as string | "",
+    category_id: "" as string | "",
     priceMin: "" as number | "",
     priceMax: "" as number | "",
     discountMin: "" as number | "",
     discountMax: "" as number | "",
     weightMin: "" as number | "",
     weightMax: "" as number | "",
-    requiresPreparation: "" as "" | "true" | "false",
+    requires_preparation: "" as "" | "true" | "false",
     createdAtRange: null as { start?: string; end?: string } | null,
   });
 
+  // فلت کردن دسته‌ها
   const flatOptions = useMemo(() => {
     const result: { id: number; title: string }[] = [];
-
-    // تبدیل تابع به متغیر
     const traverse = (list: Category[], depth = 0) => {
       list.forEach((cat) => {
         result.push({
           id: cat.id,
-          title: `${"  ".repeat(depth)}${cat.title}`,
+          title: `${"  ".repeat(depth)}${cat.title}`,
         });
-        if (cat.children && cat.children.length) {
+        if (cat.children?.length) {
           traverse(cat.children, depth + 1);
         }
       });
     };
-
-    if (categoriesData?.data) {
-      traverse(categoriesData.data);
-    }
-
+    if (categoriesData?.data) traverse(categoriesData.data);
     return result;
   }, [categoriesData]);
 
-  // تابع جنریک آپدیت
+  // آپدیت استیت فیلترها
   const updateFilter = <K extends keyof typeof filters>(
     key: K,
     value: (typeof filters)[K]
@@ -75,57 +70,66 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  // helper برای ساخت کوئری
   const appendFilter = (
     params: URLSearchParams,
     key: string,
-    op: string,
-    value: string | number
+    op: "eq" | "gt" | "lt" | "gte" | "lte",
+    value: string | number | boolean
   ) => {
-    params.append(`filter.${key}`, `${op}:${value}`);
+    const val = typeof value === "boolean" ? String(value) : value;
+    params.append(`filter.${key}`, `$${op}:${val}`);
   };
 
   const onApply = () => {
     const params = new URLSearchParams();
     params.set("page", "1");
 
-    if (filters.isVisible)
-      appendFilter(params, "isVisible", "eq", filters.isVisible);
-    if (filters.stockMin !== "")
-      appendFilter(params, "stock", "gt", String(filters.stockMin));
-    if (filters.stockMax !== "")
-      appendFilter(params, "stock", "lt", String(filters.stockMax));
-
-    if (filters.categoryId)
-      appendFilter(params, "categoryId", "eq", filters.categoryId);
-
-    if (filters.priceMin !== "")
-      appendFilter(params, "price", "gt", String(filters.priceMin));
-    if (filters.priceMax !== "")
-      appendFilter(params, "price", "lt", String(filters.priceMax));
-
-    if (filters.discountMin !== "")
-      appendFilter(params, "discount", "gt", String(filters.discountMin));
-    if (filters.discountMax !== "")
-      appendFilter(params, "discount", "lt", String(filters.discountMax));
-
-    if (filters.weightMin !== "")
-      appendFilter(params, "weight", "gt", String(filters.weightMin));
-    if (filters.weightMax !== "")
-      appendFilter(params, "weight", "lt", String(filters.weightMax));
-
-    if (filters.requiresPreparation)
+    if (filters.is_visible) {
       appendFilter(
         params,
-        "requiresPreparation",
+        "is_visible",
         "eq",
-        filters.requiresPreparation
+        filters.is_visible === "true" ? "true" : "false"
       );
+    }
 
+    if (filters.stockMin !== "")
+      appendFilter(params, "stock", "gt", Number(filters.stockMin));
+    if (filters.stockMax !== "")
+      appendFilter(params, "stock", "lt", Number(filters.stockMax));
+
+    if (filters.category_id)
+      appendFilter(params, "category_id", "eq", filters.category_id);
+
+    if (filters.priceMin !== "")
+      appendFilter(params, "price", "gt", Number(filters.priceMin));
+    if (filters.priceMax !== "")
+      appendFilter(params, "price", "lt", Number(filters.priceMax));
+
+    if (filters.discountMin !== "")
+      appendFilter(params, "discount", "gt", Number(filters.discountMin));
+    if (filters.discountMax !== "")
+      appendFilter(params, "discount", "lt", Number(filters.discountMax));
+
+    if (filters.weightMin !== "")
+      appendFilter(params, "weight", "gt", Number(filters.weightMin));
+    if (filters.weightMax !== "")
+      appendFilter(params, "weight", "lt", Number(filters.weightMax));
+
+    if (filters.requires_preparation) {
+      appendFilter(
+        params,
+        "requires_preparation",
+        "eq",
+        filters.requires_preparation === "true"
+      );
+    }
+
+    // createdAt → created_at
     if (filters.createdAtRange?.start)
-      appendFilter(params, "createdAt", "gte", filters.createdAtRange.start);
+      appendFilter(params, "created_at", "gte", filters.createdAtRange.start);
     if (filters.createdAtRange?.end)
-      appendFilter(params, "createdAt", "lte", filters.createdAtRange.end);
+      appendFilter(params, "created_at", "lte", filters.createdAtRange.end);
 
     const q = params.toString();
     const url = q ? `${pathname}?${q}` : pathname;
@@ -133,19 +137,20 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     onOpenChange();
   };
 
+  // پاک کردن همه فیلترها
   const onClear = () => {
     setFilters({
-      isVisible: "",
+      is_visible: "",
       stockMin: "",
       stockMax: "",
-      categoryId: "",
+      category_id: "",
       priceMin: "",
       priceMax: "",
       discountMin: "",
       discountMax: "",
       weightMin: "",
       weightMax: "",
-      requiresPreparation: "",
+      requires_preparation: "",
       createdAtRange: null,
     });
     router.push(pathname);
@@ -171,10 +176,10 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 dir="rtl"
                 labelPlacement="outside"
                 label="وضعیت نمایش"
-                selectedKeys={filters.isVisible ? [filters.isVisible] : []}
+                selectedKeys={filters.is_visible ? [filters.is_visible] : []}
                 onSelectionChange={(keys) => {
                   const val = Array.from(keys)[0] as "" | "true" | "false";
-                  updateFilter("isVisible", val ?? "");
+                  updateFilter("is_visible", val ?? "");
                 }}
                 placeholder="انتخاب وضعیت"
               >
@@ -208,21 +213,21 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 dir="rtl"
                 label="دسته بندی"
                 placeholder="انتخاب دسته بندی"
-                selectedKeys={filters.categoryId ? [filters.categoryId] : []}
+                selectedKeys={filters.category_id ? [filters.category_id] : []}
                 onSelectionChange={(keys) => {
                   const val = Array.from(keys)[0] as string;
-                  updateFilter("categoryId", val ?? "");
+                  updateFilter("category_id", val ?? "");
                 }}
               >
-              {categoriesData?.data && categoriesData.data.length ? (
-                flatOptions.map((opt) => (
-                  <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
-                ))
-              ) : (
-                <SelectItem key="-1" isDisabled>
-                  دسته‌بندی وجود ندارد
-                </SelectItem>
-              )}
+                {categoriesData?.data && categoriesData.data.length ? (
+                  flatOptions.map((opt) => (
+                    <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
+                  ))
+                ) : (
+                  <SelectItem key="-1" isDisabled>
+                    دسته‌بندی وجود ندارد
+                  </SelectItem>
+                )}
               </Select>
 
               <DateRangePicker
@@ -324,13 +329,13 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 labelPlacement="outside"
                 label="نیاز به آماده‌سازی"
                 selectedKeys={
-                  filters.requiresPreparation
-                    ? [filters.requiresPreparation]
+                  filters.requires_preparation
+                    ? [filters.requires_preparation]
                     : []
                 }
                 onSelectionChange={(keys) => {
                   const val = Array.from(keys)[0] as "" | "true" | "false";
-                  updateFilter("requiresPreparation", val ?? "");
+                  updateFilter("requires_preparation", val ?? "");
                 }}
                 placeholder="انتخاب"
               >
