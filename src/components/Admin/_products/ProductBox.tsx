@@ -69,7 +69,7 @@ const ProductBox: React.FC<Props> = ({
           className="relative cursor-pointer"
         >
           {/* Checkbox */}
-          <div className="absolute bg-black pr-3 pl-1 py-2 rounded-xl z-10">
+          <div className="absolute bg-black/30 pr-3 pl-1 py-2 rounded-xl z-10">
             {(hovered || selected) && (
               <Checkbox
                 isSelected={selected}

@@ -1,7 +1,7 @@
 "use client";
 
 // Components
-import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
+import { Button, Card, CardBody, Input, useDisclosure } from "@heroui/react";
 import OptionBox from "@/components/Admin/OptionBox";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import FilterModal from "@/components/Admin/_products/modals/FilterModal";
@@ -17,15 +17,26 @@ import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import { AiOutlineShop } from "react-icons/ai";
 import { LuBox } from "react-icons/lu";
-import { ProductSortBy, useGetProducts } from "@/hooks/products/useProduct";
+import {
+  ProductSortBy,
+  useDeleteGroupProduct,
+  useGetProducts,
+} from "@/hooks/products/useProduct";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { GETProduct } from "@/components/Admin/_products/types/edit-product";
 import AppPagination from "@/components/Helper/AppPagination";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import DynamicModal from "@/components/Helper/DynamicModal";
 
 const Products = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  //? Hooks
+  const deleteGroupProduct = useDeleteGroupProduct();
+  useEffect(() => {
+    console.log(selectedItems);
+  }, [selectedItems]);
 
   // get page
   const page = useMemo(() => {
@@ -65,7 +76,6 @@ const Products = () => {
     // cast به type مناسب (همان ProductFilter)
     return Object.keys(f).length ? (f as any) : undefined;
   }, [searchParams?.toString()]);
-  console.log(filter);
 
   const { data: products, isLoading } = useGetProducts({
     page,
@@ -75,6 +85,8 @@ const Products = () => {
     sortBy,
   });
   console.log("products Data => ", products?.data);
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const {
     isOpen: isSortOpen,
@@ -93,6 +105,17 @@ const Products = () => {
     onOpen: onOpenFeature,
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
+
+  const deleteGroupProducts = () => {
+    deleteGroupProduct.mutate(
+      { ids: selectedItems },
+      {
+        onSuccess: () => {
+          setSelectedItems([]);
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -173,11 +196,36 @@ const Products = () => {
                         `/admin/products/create?edit_id=${product.id}&type=variant`
                       );
                     }}
+                    onSelect={(id, selected) => {
+                      setSelectedItems((prev) => {
+                        if (selected) {
+                          // اگر انتخاب شد → اضافه کن
+                          return [...prev, id];
+                        } else {
+                          // اگر لغو شد → حذف کن
+                          return prev.filter((item) => item !== id);
+                        }
+                      });
+                    }}
                   />
                 ))}
               </div>
             ) : (
               <p className="text-center py-6">فعلا هنوز محصولی وجود ندارد</p>
+            )}
+            {selectedItems.length ? (
+              <Button
+                color="danger"
+                variant="solid"
+                className="w-full mt-8"
+                onPress={(e) => {
+                  onOpen();
+                }}
+              >
+                حذف محصولات انتخاب شده
+              </Button>
+            ) : (
+              ""
             )}
           </CardBody>
         </Card>
@@ -191,6 +239,20 @@ const Products = () => {
         isOpen={isFeatureOpen}
         onOpenChange={onFeatureOpenChange}
       />
+      <DynamicModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        title="تایید حذف محصولات انتخابی"
+        confirmText="حذف محصولات"
+        onConfirm={deleteGroupProducts}
+        confirmColor="danger"
+        confirmVariant="solid"
+      >
+        <p className="leading-7 text-danger-600">
+          با حذف محصولات انتخاب شده دیگر این محصولات قابل برگشت نیست!! آیا از
+          حذف اطمینان دارید؟
+        </p>
+      </DynamicModal>
     </>
   );
 };

@@ -165,3 +165,25 @@ export const useDeleteProduct = (id: number) => {
     },
   });
 };
+
+export const useDeleteGroupProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ ids }: { ids: number[] }) =>
+      fetcher({
+        route: "/product/bulk",
+        method: "DELETE",
+        body: ids,
+        successText: "محصول های انتخاب شده با موفقیت حذف شدند",
+        loadingText: "در حال حذف محصولات انتخاب شده",
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-products",
+      });
+    },
+  });
+};
