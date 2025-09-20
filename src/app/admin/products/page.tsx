@@ -84,7 +84,6 @@ const Products = () => {
     searchBy,
     sortBy,
   });
-  console.log("products Data => ", products?.data);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -222,7 +221,6 @@ const Products = () => {
                   className="w-full mt-8"
                   onPress={(e) => {
                     setSelectedItems([]);
-
                   }}
                 >
                   لغو حذف محصولات انتخابی
