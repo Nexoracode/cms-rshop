@@ -75,7 +75,7 @@ const Products = () => {
     sortBy,
   });
   console.log("products Data => ", products?.data);
-  
+
   const {
     isOpen: isSortOpen,
     onOpen: onOpenSort,
@@ -100,7 +100,7 @@ const Products = () => {
         <HeaderAction
           title="لیست محصولات"
           textBtn="+ محصول جدید"
-          onPress={() => router.push("/admin/products/create")}
+          onPress={() => router.push("/admin/products/create?type=infos")}
         />
 
         <Card className="shadow-none">
@@ -163,11 +163,16 @@ const Products = () => {
                     varientsCount={
                       product.stock === 0 ? "نامحدود یا هیچ" : product.stock
                     }
-                    onShowMore={() =>
+                    onShowInfos={() =>
                       router.push(
-                        `/admin/products/create?edit_id=${product.id}`
+                        `/admin/products/create?edit_id=${product.id}&type=infos`
                       )
                     }
+                    onShowVariant={() => {
+                      router.push(
+                        `/admin/products/create?edit_id=${product.id}&type=variant`
+                      );
+                    }}
                   />
                 ))}
               </div>

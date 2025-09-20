@@ -27,7 +27,7 @@ import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
 import { useGetBrands } from "@/hooks/useBrandItem";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useGetOneProduct,
   useProductCreate,
@@ -59,11 +59,8 @@ const initProduct: Product = {
   medias: [],
 };
 
-type Props = {
-  onApiCalled: () => void;
-};
-
-const ProductInitialForm = ({ onApiCalled }: Props) => {
+const ProductInitialForm = () => {
+  const router = useRouter()
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
   //
@@ -145,19 +142,13 @@ const ProductInitialForm = ({ onApiCalled }: Props) => {
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
-          if (res.ok) {
-            console.log("✅ محصول ایجاد شد", res.data);
-            onApiCalled();
-          }
+          res.ok && router.push("/admin/products");
         },
       });
     } else {
       updateProduct(result, {
         onSuccess: (res) => {
-          if (res.ok) {
-            console.log("✅ محصول آپدیت شد", res.data);
-            onApiCalled();
-          }
+          res.ok && router.push("/admin/products");
         },
       });
     }

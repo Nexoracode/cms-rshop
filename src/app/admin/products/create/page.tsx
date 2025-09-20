@@ -1,20 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import BackToPage from "@/components/Helper/BackToPage";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import ProductInitialForm from "@/components/Admin/_products/__create/ProductInitialForm";
 import { AttributeProvider } from "@/components/Admin/_products/context/AttributeContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const CreateNewProduct = () => {
-  const [activeForm, setActiveForm] = useState<"infos" | "attributes">("infos");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    !searchParams.get("type") && router.push("/admin/products");
+  }, []);
 
   return (
     <div>
       <BackToPage title="برگشت" link="/admin/products" />
       <section className="flex flex-col gap-6 py-6">
-        {activeForm === "infos" ? (
-          <ProductInitialForm onApiCalled={() => setActiveForm("attributes")} />
+        {searchParams.get("type") === "infos" ? (
+          <ProductInitialForm />
         ) : (
           <AttributeProvider>
             <AttributesProducts />

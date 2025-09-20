@@ -19,6 +19,7 @@ type Props = {
   onPress: () => void;
   textBtn: string | React.ReactNode;
   isDisabled?: boolean;
+  msg?: string
 };
 
 const DoubleClickBtn: React.FC<Props> = ({
@@ -31,13 +32,14 @@ const DoubleClickBtn: React.FC<Props> = ({
   onPress,
   textBtn,
   isDisabled: isDisabledBtn = false,
+  msg= "دوباره کلیک کنید"
 }) => {
   const [textButton, setTextButton] = useState(textBtn);
   const [isDisabled, setIsDisabled] = useState(isDisabledBtn);
   const submitedRef = useRef<boolean>(false);
 
   const handleDoubleClick = () => {
-    setTextButton("دوباره کلیک کنید");
+    setTextButton(msg);
     setTimeout(() => {
       if (!submitedRef.current) {
         setTextButton(textBtn);
@@ -58,7 +60,7 @@ const DoubleClickBtn: React.FC<Props> = ({
   };
 
   const handlePress = () => {
-    if (!isActiveDoubleClick || textButton === "دوباره کلیک کنید") {
+    if (!isActiveDoubleClick || textButton === msg) {
       handleClick();
     } else {
       handleDoubleClick();
@@ -72,7 +74,7 @@ const DoubleClickBtn: React.FC<Props> = ({
       onPress={handlePress}
       size={size}
       className={`${className} ${
-        textButton === "دوباره کلیک کنید" ? "animate-bounce" : ""
+        textButton === msg ? "animate-bounce" : ""
       }`}
       startContent={startContent}
       isDisabled={isDisabled}
