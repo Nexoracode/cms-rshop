@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -28,6 +28,7 @@ type Props = {
   varientsCount: string | number;
   created_at: string;
   onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
+  cancleRemove: any[]
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -40,12 +41,20 @@ const ProductBox: React.FC<Props> = ({
   pathImg,
   onShowVariant,
   onSelect,
+  cancleRemove
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [hovered, setHovered] = useState(false);
   const [selected, setSelected] = useState(false);
+
+  useEffect(() => {
+    if (!cancleRemove.length) {
+      setHovered(false)
+      setSelected(false)
+    }
+  }, [cancleRemove])
 
   // توگل کردن selected و اطلاع به parent
   const toggleSelected = () => {

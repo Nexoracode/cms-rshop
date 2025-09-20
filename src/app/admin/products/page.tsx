@@ -207,6 +207,7 @@ const Products = () => {
                         }
                       });
                     }}
+                    cancleRemove={selectedItems}
                   />
                 ))}
               </div>
@@ -214,16 +215,29 @@ const Products = () => {
               <p className="text-center py-6">فعلا هنوز محصولی وجود ندارد</p>
             )}
             {selectedItems.length ? (
-              <Button
-                color="danger"
-                variant="solid"
-                className="w-full mt-8"
-                onPress={(e) => {
-                  onOpen();
-                }}
-              >
-                حذف محصولات انتخاب شده
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  color="default"
+                  variant="flat"
+                  className="w-full mt-8"
+                  onPress={(e) => {
+                    setSelectedItems([]);
+
+                  }}
+                >
+                  لغو حذف محصولات انتخابی
+                </Button>
+                <Button
+                  color="danger"
+                  variant="solid"
+                  className="w-full mt-8"
+                  onPress={(e) => {
+                    onOpen();
+                  }}
+                >
+                  حذف محصولات انتخاب شده
+                </Button>
+              </div>
             ) : (
               ""
             )}
