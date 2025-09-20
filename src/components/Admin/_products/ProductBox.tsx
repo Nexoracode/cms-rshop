@@ -59,23 +59,23 @@ const ProductBox: React.FC<Props> = ({
       <Card
         isBlurred
         className={`border-none shadow-[0_0_7px_lightgray] relative ${
-          selected ? "bg-gray-100" : ""
+          selected ? "bg-slate-50" : ""
         }`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
         <CardBody
           onClick={toggleSelected} // کلیک روی بدنه -> select
-          className="relative"
+          className="relative cursor-pointer"
         >
           {/* Checkbox */}
-          <div className="absolute top-2 left-2 z-10">
+          <div className="absolute bg-black pr-3 pl-1 py-2 rounded-xl z-10">
             {(hovered || selected) && (
               <Checkbox
-                checked={selected}
-                onChange={(e) => {
-                  e.stopPropagation(); // جلوگیری از propagation به CardBody
-                  toggleSelected();
+                isSelected={selected}
+                onValueChange={(newValue) => {
+                  setSelected(newValue);
+                  onSelect?.(id, newValue);
                 }}
               />
             )}
