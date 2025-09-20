@@ -1,14 +1,21 @@
 "use client";
 
-import React from "react";
-import { Card, CardBody, Button, useDisclosure } from "@heroui/react";
+import React, { useState } from "react";
+import {
+  Card,
+  CardBody,
+  Button,
+  useDisclosure,
+  Checkbox,
+  Tooltip,
+} from "@heroui/react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import MiniBoxInfo from "@/components/Helper/MiniBoxInfo";
 import { PiMoneyWavy } from "react-icons/pi";
 import { LuBox, LuScrollText } from "react-icons/lu";
 import { CgCalendarDates } from "react-icons/cg";
-import { useDeleteProduct } from "@/hooks/products/useProduct";
 import { MdOutlineCategory } from "react-icons/md";
+import { useDeleteProduct } from "@/hooks/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
 
 type Props = {
@@ -20,6 +27,7 @@ type Props = {
   price: string | number;
   varientsCount: string | number;
   created_at: string;
+  onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -31,18 +39,52 @@ const ProductBox: React.FC<Props> = ({
   varientsCount,
   pathImg,
   onShowVariant,
+  onSelect,
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const [hovered, setHovered] = useState(false);
+  const [selected, setSelected] = useState(false);
+
+  // توگل کردن selected و اطلاع به parent
+  const toggleSelected = () => {
+    const newSelected = !selected;
+    setSelected(newSelected);
+    onSelect?.(id, newSelected);
+  };
+
   return (
     <>
-      <Card isBlurred className="border-none shadow-[0_0_7px_lightgray]">
-        <CardBody>
+      <Card
+        isBlurred
+        className={`border-none shadow-[0_0_7px_lightgray] relative ${
+          selected ? "bg-gray-100" : ""
+        }`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <CardBody
+          onClick={toggleSelected} // کلیک روی بدنه -> select
+          className="relative"
+        >
+          {/* Checkbox */}
+          <div className="absolute top-2 left-2 z-10">
+            {(hovered || selected) && (
+              <Checkbox
+                checked={selected}
+                onChange={(e) => {
+                  e.stopPropagation(); // جلوگیری از propagation به CardBody
+                  toggleSelected();
+                }}
+              />
+            )}
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="w-fit h-full">
               <img
-                alt="productr cover"
+                alt="product cover"
                 className="object-cover w-[150px] h-[150px] sm:h-[128px] rounded-xl"
                 src={pathImg}
               />
@@ -51,36 +93,71 @@ const ProductBox: React.FC<Props> = ({
             <div className="w-full flex h-full flex-col gap-4 text-start">
               <div className="flex flex-col sm:flex-row justify-between items-center w-full">
                 <p className="text-[17px] text-gray-700">{title}</p>
-                <div className="border rounded-xl hidden sm:flex">
-                  <Button
-                    size="sm"
+
+                <div className="border rounded-xl flex">
+                  <Tooltip
+                    closeDelay={2000}
                     color="success"
-                    variant="light"
-                    className="w-full sm:w-fit"
-                    onPress={onShowInfos}
+                    showArrow
+                    placement="right-start"
+                    content="ویرایش اطلاعات محصول"
+                    className="text-white"
                   >
-                    <LuScrollText className="text-lg" />
-                  </Button>
-                  <Button
-                    size="sm"
+                    <Button
+                      size="sm"
+                      color="success"
+                      variant="light"
+                      className="w-full sm:w-fit"
+                      onPress={(e) => {
+                        onShowInfos();
+                      }}
+                    >
+                      <LuScrollText className="text-lg" />
+                    </Button>
+                  </Tooltip>
+
+                  <Tooltip
+                    closeDelay={2000}
                     color="secondary"
-                    variant="flat"
-                    className="w-full sm:w-fit"
-                    onPress={onShowVariant}
+                    showArrow
+                    content="ویرایش ویژگی های محصول"
+                    className="text-white"
                   >
-                    <MdOutlineCategory className="text-xl" />
-                  </Button>
-                  <Button
-                    size="sm"
+                    <Button
+                      size="sm"
+                      color="secondary"
+                      variant="flat"
+                      className="w-full sm:w-fit"
+                      onPress={(e) => {
+                        onShowVariant();
+                      }}
+                    >
+                      <MdOutlineCategory className="text-xl" />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip
+                    closeDelay={2000}
                     color="danger"
-                    variant="light"
-                    className="w-full sm:w-fit"
-                    onPress={onOpen}
+                    showArrow
+                    content="حذف محصول"
+                    className="text-white"
+                    placement="bottom"
                   >
-                    <RiDeleteBinLine className="text-xl" />
-                  </Button>
+                    <Button
+                      size="sm"
+                      color="danger"
+                      variant="light"
+                      className="w-full sm:w-fit"
+                      onPress={(e) => {
+                        onOpen();
+                      }}
+                    >
+                      <RiDeleteBinLine className="text-xl" />
+                    </Button>
+                  </Tooltip>
                 </div>
               </div>
+
               <div className="flex flex-wrap items-center gap-2">
                 <MiniBoxInfo
                   name={created_at}
@@ -95,39 +172,11 @@ const ProductBox: React.FC<Props> = ({
                   icon={<PiMoneyWavy className="text-xl" />}
                 />
               </div>
-              <div className="border rounded-xl flex sm:hidden">
-                <Button
-                  size="sm"
-                  color="success"
-                  variant="light"
-                  className="w-full sm:w-fit"
-                  onPress={onShowInfos}
-                >
-                  <LuScrollText className="text-lg" />
-                </Button>
-                <Button
-                  size="sm"
-                  color="secondary"
-                  variant="flat"
-                  className="w-full sm:w-fit"
-                  onPress={onShowVariant}
-                >
-                  <MdOutlineCategory className="text-xl" />
-                </Button>
-                <Button
-                  size="sm"
-                  color="danger"
-                  variant="light"
-                  className="w-full sm:w-fit"
-                  onPress={onOpen}
-                >
-                  <RiDeleteBinLine className="text-xl" />
-                </Button>
-              </div>
             </div>
           </div>
         </CardBody>
       </Card>
+
       <DynamicModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
