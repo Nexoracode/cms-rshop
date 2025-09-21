@@ -27,7 +27,7 @@ export const useUpdateVariantProduct = () => {
         method: "PATCH",
         body: data,
         isActiveToast: false,
-      })
+      }),
   });
 };
 
@@ -37,6 +37,31 @@ export const useDeleteVariant = () => {
     mutationFn: async (id: number | string) =>
       fetcher({
         route: `/variant-product/${+id}`,
+        method: "DELETE",
+        successText: "با موفقیت حذف شد",
+        loadingText: "در حال حذف...",
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+    },
+  });
+};
+
+export const useDeleteAttributeNode = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      productId,
+      attributeId,
+      valueId,
+    }: {
+      productId: number;
+      attributeId: number;
+      valueId: number;
+    }) =>
+      fetcher({
+        route: `/variant-product/product/${productId}/attributes/${attributeId}/values/${valueId}`,
         method: "DELETE",
         successText: "با موفقیت حذف شد",
         loadingText: "در حال حذف...",

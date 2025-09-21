@@ -47,7 +47,7 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
             className={`shadow-md rounded-2xl mb-6 cursor-grab border-2 border-orange-100 hover:border-orange-300 transition-all`}
           >
             <p className="text-lg text-orange-500 py-2 px-4 bg-orange-50 rounded-xl">{attr.name} <small className="text-black">({attr.type})</small></p>
-            <SortableAttributeValues values={attr.values} />
+            <SortableAttributeValues attribute={attr} />
           </div>
         ))}
     </div>
