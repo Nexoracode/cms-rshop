@@ -33,6 +33,7 @@ const AttributesProducts = () => {
   const updateVariantProductMutation = useUpdateVariantProduct();
 
   useEffect(() => {
+    console.log("All Attributes Nodes =>",productData?.data.attribute_nodes);
     setVariants([]);
     if (productData?.data?.attribute_nodes) {
       const attrValues = productData?.data.attribute_nodes.flatMap(
@@ -72,6 +73,20 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
+
+          <SectionCard
+            show={!productData?.data?.attribute_nodes?.length}
+            title="مرتب سازی متغیرها"
+            empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+          >
+            {productData?.data?.attribute_nodes?.length ? (
+              <SortableAttributeNodes
+                attributeNodes={productData.data.attribute_nodes}
+              />
+            ) : (
+              ""
+            )}
+          </SectionCard>
 
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
