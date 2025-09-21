@@ -18,6 +18,7 @@ import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNo
 import { useEffect, useState } from "react";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import toast from "react-hot-toast";
+import SectionCard from "./helpers/SectionCard";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -77,43 +78,46 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
-          {productData?.data?.attribute_nodes.length ? (
-            <div className="flex flex-col gap-6 bg-gray-50 rounded-2xl p-4">
-              <p className="text-[16px]">مرتب سازی ویژگی ها</p>
+
+          <SectionCard
+            show={!productData?.data?.attribute_nodes?.length}
+            title="مرتب سازی ویژگی ها"
+            empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+          >
+            {productData?.data?.attribute_nodes?.length ? (
               <SortableAttributeNodes
-                attributeNodes={productData?.data?.attribute_nodes}
+                attributeNodes={productData.data.attribute_nodes}
               />
-            </div>
-          ) : (
-            ""
-          )}
-          <div className="flex flex-col gap-6 bg-gray-50 rounded-2xl p-4">
-            <p className="text-[16px]">ویژگی های متغیر</p>
-            <div className="grid grid-cols gap-6 md:grid-cols-2">
-              {productData?.data?.variants
+            ) : (
+              ""
+            )}
+          </SectionCard>
+
+          <SectionCard
+            title="ویژگی های متغیر"
+            show={!productData?.data?.variants?.length}
+            empty="هنوز متغیری انتخاب نکرده اید!!"
+          >
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {productData?.data?.variants?.length
                 ? productData.data.variants.map(
-                    (variant: any, index: number) => {
-                      return (
-                        <VariantRowEditor
-                          key={index}
-                          variantName={variant?.name}
-                          onHandleSubmit={(data) => {
-                            console.log("!!!!!!!!!!!", data);
-                            setVariants((prev) => replaceOrAddById(prev, data));
-                          }}
-                          onRemove={(id) => {
-                            console.log(id);
-                            deleteVariant(id);
-                          }}
-                          defaultValues={variant}
-                        />
-                      );
-                    }
+                    (variant: any, index: number) => (
+                      <VariantRowEditor
+                        key={variant?.id ?? index} // ترجیحاً id
+                        variantName={variant?.name}
+                        onHandleSubmit={(data) =>
+                          setVariants((prev) => replaceOrAddById(prev, data))
+                        }
+                        onRemove={(id) => deleteVariant(id)}
+                        defaultValues={variant}
+                      />
+                    )
                   )
                 : ""}
             </div>
-          </div>
-          {(productData?.data?.variants.length || variants.length) ? (
+          </SectionCard>
+
+          {productData?.data?.variants.length || variants.length ? (
             <Button
               color="success"
               className="text-white"
