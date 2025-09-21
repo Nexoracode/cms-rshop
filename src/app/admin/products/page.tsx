@@ -222,7 +222,7 @@ const Products = () => {
                 </Button>
                 <Button
                   color="danger"
-                  variant="solid"
+                  variant="flat"
                   className="w-full mt-8"
                   onPress={(e) => {
                     onOpen();

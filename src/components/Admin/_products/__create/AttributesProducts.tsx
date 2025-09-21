@@ -31,15 +31,9 @@ const AttributesProducts = () => {
   const { data: productData } = useGetOneProduct(page);
   const { mutate: deleteVariant } = useDeleteVariant();
   const updateVariantProductMutation = useUpdateVariantProduct();
-  console.log("LOG =>", productData);
 
   useEffect(() => {
-    if (variants.length) {
-      console.log("Variants => ", variants);
-    }
-  }, [variants]);
-
-  useEffect(() => {
+    setVariants([]);
     if (productData?.data?.attribute_nodes) {
       const attrValues = productData?.data.attribute_nodes.flatMap(
         (group: any) => group.attributes.flatMap((attr: any) => attr.values)
@@ -55,7 +49,7 @@ const AttributesProducts = () => {
       )
     )
       .then(() => {
-        toast.success("همه آپدیت شدن ✅");
+        toast.success("متغیرها با موفقیت بروزرسانی شدند");
         router.push("/admin/products");
       })
       .catch((err) => {
@@ -100,19 +94,17 @@ const AttributesProducts = () => {
           >
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {productData?.data?.variants?.length
-                ? productData.data.variants.map(
-                    (variant: any, index: number) => (
-                      <VariantRowEditor
-                        key={variant?.id ?? index} // ترجیحاً id
-                        variantName={variant?.name}
-                        onHandleSubmit={(data) =>
-                          setVariants((prev) => replaceOrAddById(prev, data))
-                        }
-                        onRemove={(id) => deleteVariant(id)}
-                        defaultValues={variant}
-                      />
-                    )
-                  )
+                ? productData.data.variants.map((variant: any) => (
+                    <VariantRowEditor
+                      key={variant.id}
+                      variantName={variant?.name}
+                      onHandleSubmit={(data) =>
+                        setVariants((prev) => replaceOrAddById(prev, data))
+                      }
+                      onRemove={(id) => deleteVariant(id)}
+                      defaultValues={variant}
+                    />
+                  ))
                 : ""}
             </div>
           </SectionCard>
