@@ -32,7 +32,7 @@ const SortableAttributeValues: React.FC<Props> = ({ values }) => {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-4 mx-8">
+    <div className="gap-4 mx-8 my-6">
       {items
         .slice()
         .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -43,7 +43,7 @@ const SortableAttributeValues: React.FC<Props> = ({ values }) => {
             onDragStart={() => handleDragStart(val.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(val.id)}
-            className={`w-fit shadow-md rounded-xl my-2.5 cursor-grab`}
+            className={`shadow border rounded-xl my-3 cursor-grab hover:bg-slate-50 transition-all`}
           >
             <div
               className="flex items-center gap-2 py-3 px-4 rounded-xl"
