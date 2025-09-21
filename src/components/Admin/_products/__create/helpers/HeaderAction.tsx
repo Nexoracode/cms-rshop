@@ -13,10 +13,10 @@ const HeaderAction: React.FC<Props> = ({ title, onPress, isDisabled = false, tex
 
     return (
         <div className="w-full flex items-center justify-between mt-2">
-            <span className="text-gray-600 text-[13px]">{title}</span>
+            <span className="text-gray-600 text-[15px]">{title}</span>
             <Button
                 color="secondary"
-                variant="light"
+                variant="flat"
                 onPress={onPress}
                 isDisabled={isDisabled}
             >

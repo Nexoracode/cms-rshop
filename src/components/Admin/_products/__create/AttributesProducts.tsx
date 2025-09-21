@@ -55,7 +55,7 @@ const AttributesProducts = () => {
     )
       .then(() => {
         toast.success("همه آپدیت شدن ✅");
-        router.push("/admin/products")
+        router.push("/admin/products");
       })
       .catch((err) => {
         toast.error("مشکلی در آپدیت یکی از واریانت‌ها پیش اومد");
@@ -71,7 +71,7 @@ const AttributesProducts = () => {
           color="bg-purple-700/10 text-purple-700"
           icon={<TbCategory2 className="text-3xl" />}
         />
-        <CardBody dir="rtl" className="flex flex-col gap-4 text-start">
+        <CardBody dir="rtl" className="flex flex-col gap-6 text-start">
           <HeaderAction
             title="ویژگی ها"
             textBtn={"+ افزودن ویژگی"}
@@ -87,32 +87,43 @@ const AttributesProducts = () => {
           ) : (
             ""
           )}
-          {productData?.data?.variants
-            ? productData.data.variants.map((variant: any, index: number) => {
-                return (
-                  <VariantRowEditor
-                    key={index}
-                    variantName={variant?.name}
-                    onHandleSubmit={(data) => {
-                      console.log("!!!!!!!!!!!", data);
-                      setVariants((prev) => replaceOrAddById(prev, data));
-                    }}
-                    onRemove={(id) => {
-                      console.log(id);
-                      deleteVariant(id);
-                    }}
-                    defaultValues={variant}
-                  />
-                );
-              })
-            : ""}
-          <Button
-            color="success"
-            className="text-white"
-            onPress={updateVariantProduct}
-          >
-            ثبت تغیرات ویژگی ها
-          </Button>
+          <div className="flex flex-col gap-6 bg-gray-50 rounded-2xl p-4">
+            <p className="text-[16px]">ویژگی های متغیر</p>
+            <div className="grid grid-cols gap-6 md:grid-cols-2">
+              {productData?.data?.variants
+                ? productData.data.variants.map(
+                    (variant: any, index: number) => {
+                      return (
+                        <VariantRowEditor
+                          key={index}
+                          variantName={variant?.name}
+                          onHandleSubmit={(data) => {
+                            console.log("!!!!!!!!!!!", data);
+                            setVariants((prev) => replaceOrAddById(prev, data));
+                          }}
+                          onRemove={(id) => {
+                            console.log(id);
+                            deleteVariant(id);
+                          }}
+                          defaultValues={variant}
+                        />
+                      );
+                    }
+                  )
+                : ""}
+            </div>
+          </div>
+          {(productData?.data?.variants.length || variants.length) ? (
+            <Button
+              color="success"
+              className="text-white"
+              onPress={updateVariantProduct}
+            >
+              ثبت تغیرات ویژگی ها
+            </Button>
+          ) : (
+            ""
+          )}
         </CardBody>
       </Card>
 

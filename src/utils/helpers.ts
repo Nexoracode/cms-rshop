@@ -14,6 +14,6 @@ export function formatDiscountedPrice(
   }
   
   return discounted !== price
-    ? `قیمت با تخفیف: ${Math.round(discounted).toLocaleString()} تومان`
+    ? `با تخفیف: ${Math.round(discounted).toLocaleString()} تومان`
     : null;
 }
