@@ -24,13 +24,12 @@ type Props = {
   pathImg: string;
   onShowInfos: () => void;
   onShowVariant: () => void;
-  price: string | number;
   varientsCount: string | number;
   created_at: string;
   onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
   cancleRemove: any[];
-  discount: number;
-  originalPrice: number;
+  price: string | number;
+  originalPrice: number | undefined;
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -44,7 +43,6 @@ const ProductBox: React.FC<Props> = ({
   onShowVariant,
   onSelect,
   cancleRemove,
-  discount,
   originalPrice,
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
@@ -66,7 +64,6 @@ const ProductBox: React.FC<Props> = ({
     setSelected(newSelected);
     onSelect?.(id, newSelected);
   };
-  console.log("DDDDDDDDDD", discount);
 
   return (
     <>
@@ -184,6 +181,7 @@ const ProductBox: React.FC<Props> = ({
                   icon={<LuBox className="text-xl" />}
                 />
                 <MiniBoxInfo
+                  style={originalPrice != null ? "bg-gradient-to-br from-orange-200 via-white to-purple-300 shadow-lg" : ""}
                   name={
                     originalPrice != null ? (
                       <div className="flex items-baseline gap-2">

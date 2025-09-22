@@ -191,9 +191,6 @@ const Products = () => {
                       pathImg={product.media_pinned.url}
                       price={finalPrice}
                       originalPrice={originalPrice}
-                      discountPercent={
-                        originalPrice ? effectivePercent : undefined
-                      }
                       varientsCount={
                         product.is_limited_stock
                           ? "نامحدود"
