@@ -22,16 +22,22 @@ const ShippingModeSwitcher: FC<Props> = ({
   childrenMood1,
   childrenMood2,
   onChangeType,
-  defaultMood
+  defaultMood,
 }) => {
-  const [selectedMode, setSelectedMode] = useState<ShippingMode>(defaultMood || "mood2");
+  const [selectedMode, setSelectedMode] = useState<ShippingMode>("mood2");
 
   useEffect(() => {
-    onChangeType(selectedMode);
-  }, [selectedMode]);
+    if (defaultMood) {
+      setSelectedMode(defaultMood);
+    }
+  }, [defaultMood]);
 
   const toggleMode = () => {
-    setSelectedMode((prev) => (prev === "mood2" ? "mood1" : "mood2"));
+    setSelectedMode((prev) => {
+      const status = prev === "mood2" ? "mood1" : "mood2";
+      onChangeType(status);
+      return status;
+    });
   };
 
   return (

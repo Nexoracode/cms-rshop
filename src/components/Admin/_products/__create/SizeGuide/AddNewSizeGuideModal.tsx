@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
@@ -27,12 +27,18 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     id: 0,
     title: "",
     description: "",
-    image: null,
-    ...(defaultValues ? defaultValues : {}),
+    image: null
   });
+  
   const { mutate: uploadMedias } = useProductUpload();
   const { mutate: createSizeGuid } = useCreateSizeGuid();
   const { mutate: updateSizeGuid } = useUpdateSizeGuid(defaultValues?.id || 0);
+
+  useEffect(() => {
+    if (defaultValues) {
+      setDatas(defaultValues)
+    }
+  }, [defaultValues])
 
   const handleUpload = () => {
     if (!datas.image) return;

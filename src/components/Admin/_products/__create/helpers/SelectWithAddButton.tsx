@@ -29,39 +29,31 @@ const SelectWithAddButton: FC<Props> = ({
   isRequired = true,
 }) => {
   return (
-    <div className="flex flex-col gap-3">
-      <Select
-        isRequired={isRequired}
-        labelPlacement="outside"
-        startContent={<FiSearch className="text-lg pointer-events-none" />}
-        label={label}
-        placeholder={placeholder}
-        selectedKeys={[String(selectedId)]}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {options.length ? (
-          options.map((opt) => (
-            <SelectItem key={opt.id}>{opt.title}</SelectItem>
-          ))
-        ) : (
-          <SelectItem isDisabled>آیتمی موجود نیست</SelectItem>
-        )}
-      </Select>
-
-      <div className="w-full flex items-center justify-between">
-        <p className="text-[13px] text-gray-600">
-          درصورت نیاز آیتم جدیدی را اضافه کنید
-        </p>
+    <Select
+      isRequired={isRequired}
+      labelPlacement="outside"
+      startContent={<FiSearch className="text-lg pointer-events-none" />}
+      label={label}
+      placeholder={placeholder}
+      selectedKeys={[String(selectedId)]}
+      onChange={(e) => onChange(e.target.value)}
+      endContent={
         <Button
           variant="flat"
           color="primary"
           size="sm"
           onPress={onAddNewClick}
         >
-          + افزودن 
+          + افزودن
         </Button>
-      </div>
-    </div>
+      }
+    >
+      {options.length ? (
+        options.map((opt) => <SelectItem key={opt.id}>{opt.title}</SelectItem>)
+      ) : (
+        <SelectItem isDisabled>آیتمی موجود نیست</SelectItem>
+      )}
+    </Select>
   );
 };
 
