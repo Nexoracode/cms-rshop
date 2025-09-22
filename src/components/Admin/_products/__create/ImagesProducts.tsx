@@ -45,8 +45,22 @@ const ImagesProducts = ({
     }
   }, [medias]);
 
+  console.log(pinnedId);
+
   useEffect(() => {
     onMedia_ids(mediasUrl.map((media) => media.id));
+
+    const images = mediasUrl.filter((media) => media.type === "image");
+    !images.length && setPinnedId(null);
+
+    if (!initialMedias.length && images.length && !pinnedId) {
+      mediasUrl.some((media) => {
+        if (media.type === "image") {
+          setPinnedId(media.id);
+          return;
+        }
+      });
+    }
   }, [mediasUrl]);
 
   const handleUpload = () => {
@@ -75,9 +89,10 @@ const ImagesProducts = ({
             setPinnedId(id);
             onMedia_pinned_id(id);
           }}
-          onChange={(id) =>
-            setMediasUrl((prev) => prev.filter((media) => media.id !== id))
-          }
+          onRemove={(id) => {
+            setMediasUrl((prev) => prev.filter((media) => media.id !== id));
+            id === pinnedId && setPinnedId(null)
+          }}
           items={mediasUrl}
           pinnedId={pinnedId}
         />

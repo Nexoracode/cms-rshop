@@ -5,14 +5,14 @@ import { Media } from "@/types";
 interface Props {
   items: Media[];
   onItemPinned: (id: number) => void;
-  onChange: (id: number) => void;
+  onRemove: (id: number) => void;
   pinnedId?: number | null;
 }
 
 const MediaPreview: React.FC<Props> = ({
   items,
   pinnedId,
-  onChange,
+  onRemove,
   onItemPinned,
 }) => {
   const [imgs, setImgs] = useState<Media[]>(items);
@@ -28,7 +28,7 @@ const MediaPreview: React.FC<Props> = ({
   const handleRemove = (idx: number) => {
     const updated = imgs.filter((_, i) => i !== idx);
     setImgs(updated);
-    onChange(idx);
+    onRemove(idx);
   };
 
   return (
