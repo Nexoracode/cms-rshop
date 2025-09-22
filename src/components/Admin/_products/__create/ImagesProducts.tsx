@@ -11,7 +11,7 @@ import MediaPreview from "@/components/Helper/Uploader/MediaPreview";
 
 type Props = {
   onMedia_ids: (medias: number[]) => void;
-  onMedia_pinned_id: (id: number) => void;
+  onMedia_pinned_id: (id: number | null) => void;
   initialMedias?: Media[];
   initialPinnedId?: number | null;
 };
@@ -43,15 +43,16 @@ const ImagesProducts = ({
     onMedia_ids(mediasUrl.map((media) => media.id));
 
     const images = mediasUrl.filter((media) => media.type === "image");
-    !images.length && setPinnedId(null);
-    console.log("FFFFFFFFFFF", images);
+    if (!images.length) {
+      setPinnedId(null);
+      onMedia_pinned_id(null);
+    }
 
     if (images.length && !pinnedId) {
-      console.log("GGGGGGGGGGGGGGGG");
-
       mediasUrl.some((media) => {
         if (media.type === "image") {
           setPinnedId(media.id);
+          onMedia_pinned_id(media.id);
           return;
         }
       });
@@ -86,7 +87,10 @@ const ImagesProducts = ({
           }}
           onRemove={(id) => {
             setMediasUrl((prev) => prev.filter((media) => media.id !== id));
-            id === pinnedId && setPinnedId(null);
+            if (id === pinnedId) {
+              setPinnedId(null);
+              onMedia_pinned_id(null);
+            }
           }}
           items={mediasUrl}
           pinnedId={pinnedId}

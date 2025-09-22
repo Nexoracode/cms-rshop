@@ -31,7 +31,7 @@ export interface Product {
   created_at?: string;
   media_ids: number[];
   order_limit: number;
-  media_pinned_id: number;
+  media_pinned_id: number | null;
   medias?: Media[];
   media_pinned?: Record<string, any>;
   category?: Record<string, any>;

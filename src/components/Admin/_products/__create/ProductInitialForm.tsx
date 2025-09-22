@@ -53,7 +53,7 @@ const initProduct: Product = {
   order_limit: 0,
   is_visible: false,
   media_ids: [],
-  media_pinned_id: 0,
+  media_pinned_id: null,
   helper_id: 0,
   brand_id: 0,
   medias: [],
@@ -131,7 +131,7 @@ const ProductInitialForm = () => {
       discount_amount: (discount_amount && +discount_amount) || 0,
       ...(helper_id ? { helper_id: +helper_id } : {}),
       ...(brand_id ? { brand_id: +brand_id } : {}),
-      media_pinned_id: +media_pinned_id,
+      media_pinned_id: media_pinned_id,
       category_id: +category_id,
       order_limit: +order_limit,
       weight: +weight,
@@ -139,6 +139,7 @@ const ProductInitialForm = () => {
       stock: +stock,
       ...other,
     };
+    console.log("Result => ", result);
 
     if (!editId) {
       createProduct(result, {
@@ -162,9 +163,11 @@ const ProductInitialForm = () => {
           onMedia_ids={(datas) =>
             setProduct((prev) => ({ ...prev, media_ids: datas }))
           }
-          onMedia_pinned_id={(id) =>
-            setProduct((prev) => ({ ...prev, media_pinned_id: id }))
-          }
+          onMedia_pinned_id={(id) => {
+            console.log("$$$$$$$$$$$$$", id);
+
+            setProduct((prev) => ({ ...prev, media_pinned_id: id }));
+          }}
           initialMedias={product.medias}
           initialPinnedId={product.media_pinned_id}
         />
