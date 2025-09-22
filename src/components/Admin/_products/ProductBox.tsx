@@ -29,6 +29,8 @@ type Props = {
   created_at: string;
   onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
   cancleRemove: any[];
+  discount: number;
+  originalPrice: number;
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -42,6 +44,8 @@ const ProductBox: React.FC<Props> = ({
   onShowVariant,
   onSelect,
   cancleRemove,
+  discount,
+  originalPrice,
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -62,6 +66,7 @@ const ProductBox: React.FC<Props> = ({
     setSelected(newSelected);
     onSelect?.(id, newSelected);
   };
+  console.log("DDDDDDDDDD", discount);
 
   return (
     <>
@@ -179,7 +184,20 @@ const ProductBox: React.FC<Props> = ({
                   icon={<LuBox className="text-xl" />}
                 />
                 <MiniBoxInfo
-                  name={`${Number(price).toLocaleString("fa-IR")} تومان`}
+                  name={
+                    originalPrice != null ? (
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-[18px] text-emerald-600">
+                          {Number(price).toLocaleString("fa-IR")} تومان
+                        </span>
+                        <span className="text-sm text-gray-500 line-through decoration-2 decoration-gray-400">
+                          {Number(originalPrice).toLocaleString("fa-IR")} تومان
+                        </span>
+                      </div>
+                    ) : (
+                      <span>{Number(price).toLocaleString("fa-IR")} تومان</span>
+                    )
+                  }
                   icon={<PiMoneyWavy className="text-xl" />}
                 />
               </div>

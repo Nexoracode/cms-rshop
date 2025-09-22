@@ -11,8 +11,10 @@ type ProductItem = {
   media_pinned: Media;
   is_visible: boolean;
   name: string;
-  price: string;
+  price: number;
   stock: number;
+  discount_amount: number,
+  discount_percent: number,
   is_limited_stock: boolean;
   helper: {
     id: number,

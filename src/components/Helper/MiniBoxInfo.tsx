@@ -1,7 +1,7 @@
 "use client";
 
 type Props = {
-  name: string;
+  name: any;
   icon?: React.ReactNode;
 };
 

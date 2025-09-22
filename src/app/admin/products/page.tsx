@@ -165,41 +165,63 @@ const Products = () => {
               <LoadingApiCall />
             ) : products?.data?.items?.length ? (
               <div className="flex flex-col gap-4">
-                {(products.data as GETProduct).items.map((product) => (
-                  <ProductBox
-                    key={product.id}
-                    id={product.id}
-                    created_at={product.created_at.slice(0, 10)}
-                    title={product.name}
-                    pathImg={product.media_pinned.url}
-                    price={product.price}
-                    varientsCount={
-                      product.is_limited_stock ? "نامحدود" : product.stock === 0 ? "ندارد" : `${product.stock} عدد`
-                    }
-                    onShowInfos={() =>
-                      router.push(
-                        `/admin/products/create?edit_id=${product.id}&type=infos`
-                      )
-                    }
-                    onShowVariant={() => {
-                      router.push(
-                        `/admin/products/create?edit_id=${product.id}&type=variant`
-                      );
-                    }}
-                    onSelect={(id, selected) => {
-                      setSelectedItems((prev) => {
-                        if (selected) {
-                          // اگر انتخاب شد → اضافه کن
-                          return [...prev, id];
-                        } else {
-                          // اگر لغو شد → حذف کن
-                          return prev.filter((item) => item !== id);
-                        }
-                      });
-                    }}
-                    cancleRemove={selectedItems}
-                  />
-                ))}
+                {(products.data as GETProduct).items.map((product) => {
+                  // ⬇️ محاسبه‌ی ساده در والد
+                  const discountValue =
+                    product.discount_amount > 0
+                      ? product.discount_amount
+                      : ((product.discount_percent ?? 0) / 100) * product.price;
+
+                  const finalPrice = Math.max(
+                    0,
+                    Math.round(product.price - discountValue)
+                  );
+                  const originalPrice =
+                    discountValue > 0 ? product.price : undefined;
+                  const effectivePercent = originalPrice
+                    ? Math.round((discountValue / product.price) * 100)
+                    : 0;
+
+                  return (
+                    <ProductBox
+                      key={product.id}
+                      id={product.id}
+                      created_at={product.created_at.slice(0, 10)}
+                      title={product.name}
+                      pathImg={product.media_pinned.url}
+                      price={finalPrice}
+                      originalPrice={originalPrice}
+                      discountPercent={
+                        originalPrice ? effectivePercent : undefined
+                      }
+                      varientsCount={
+                        product.is_limited_stock
+                          ? "نامحدود"
+                          : product.stock === 0
+                          ? "ندارد"
+                          : `${product.stock} عدد`
+                      }
+                      onShowInfos={() =>
+                        router.push(
+                          `/admin/products/create?edit_id=${product.id}&type=infos`
+                        )
+                      }
+                      onShowVariant={() =>
+                        router.push(
+                          `/admin/products/create?edit_id=${product.id}&type=variant`
+                        )
+                      }
+                      onSelect={(id, selected) => {
+                        setSelectedItems((prev) =>
+                          selected
+                            ? [...prev, id]
+                            : prev.filter((x) => x !== id)
+                        );
+                      }}
+                      cancleRemove={selectedItems}
+                    />
+                  );
+                })}
               </div>
             ) : (
               <p className="text-center py-6">
