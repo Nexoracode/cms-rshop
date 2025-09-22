@@ -8,7 +8,7 @@ type Props = {
 
 const MiniBoxInfo: React.FC<Props> = ({ name, icon, style }) => {
   return (
-    <span className={`bg-slate-100 rounded-xl p-2 px-4 flex-grow flex items-center gap-1 ${style}`}>
+    <span className={`bg-white border shadow-md rounded-xl p-2 px-4 flex-grow flex items-center gap-1 ${style}`}>
       {icon}
       {name}
     </span>

@@ -32,6 +32,7 @@ type Props = {
   originalPrice: number | undefined;
   isVisible: boolean;
   category: string;
+  isFeatured: boolean;
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -46,6 +47,7 @@ const ProductBox: React.FC<Props> = ({
   onSelect,
   isVisible,
   cancleRemove,
+  isFeatured,
   originalPrice,
   category,
 }) => {
@@ -73,9 +75,13 @@ const ProductBox: React.FC<Props> = ({
     <>
       <Card
         isBlurred
-        className={`border shadow-lg relative ${
-          selected ? "shadow-sky-200" : ""
-        } ${!isVisible ? "opacity-70 shadow-none" : ""}`}
+        className={`border shadow-lg relative hover:shadow-xl !transition-all ${
+          selected ? "shadow-none border border-sky-500 hover:shadow-none scale-95" : ""
+        } ${
+          isFeatured
+            ? `bg-gradient-to-br from-violet-300 via-violet-50 to-white ring-1 ring-white/20`
+            : ""
+        }`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -108,12 +114,19 @@ const ProductBox: React.FC<Props> = ({
           )}
 
           <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <div className="w-fit h-full">
+            <div className="relative w-fit h-full">
               <img
                 alt="product cover"
-                className="object-cover w-[150px] h-[150px] sm:h-[128px] rounded-xl"
+                className={`object-cover w-[150px] h-[150px] sm:h-[128px] rounded-xl`}
                 src={pathImg}
               />
+              {!isVisible ? (
+                <div className="absolute inset-0 text-center flex items-center justify-center text-lg px-3 py-1 bg-gray-600/60 text-white shadow-lg rounded-lg">
+                  <p className="animate-bounce">عدم نمایش</p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="w-full flex h-full flex-col gap-4 text-start">
@@ -200,7 +213,7 @@ const ProductBox: React.FC<Props> = ({
                 <MiniBoxInfo
                   style={
                     originalPrice != null
-                      ? "bg-gradient-to-br from-orange-200 via-white to-purple-300 shadow-lg"
+                      ? "bg-gradient-to-br from-orange-200 via-white to-purple-300"
                       : ""
                   }
                   name={

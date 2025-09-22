@@ -13,15 +13,16 @@ type ProductItem = {
   name: string;
   price: number;
   stock: number;
-  discount_amount: number,
-  discount_percent: number,
+  discount_amount: number;
+  discount_percent: number;
   is_limited_stock: boolean;
+  is_featured: boolean;
   helper: {
-    id: number,
-    title: string,
-    description: string,
-    image: string
-  }
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+  };
   created_at: string;
 };
 
