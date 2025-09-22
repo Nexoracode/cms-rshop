@@ -30,7 +30,8 @@ type Props = {
   cancleRemove: any[];
   price: string | number;
   originalPrice: number | undefined;
-  isVisible: boolean
+  isVisible: boolean;
+  category: string;
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -46,6 +47,7 @@ const ProductBox: React.FC<Props> = ({
   isVisible,
   cancleRemove,
   originalPrice,
+  category,
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -83,15 +85,24 @@ const ProductBox: React.FC<Props> = ({
         >
           {/* Checkbox */}
           {hovered || selected ? (
-            <div className="absolute bg-sky-500/30 pr-3 pl-0.5 py-2 rounded-xl z-10">
-              <Checkbox
-                isSelected={selected}
-                onValueChange={(newValue) => {
-                  setSelected(newValue);
-                  onSelect?.(id, newValue);
-                }}
-              />
-            </div>
+            <Tooltip
+              closeDelay={2000}
+              color="primary"
+              showArrow
+              placement="left"
+              content="انتخاب محصول (حذف گروهی)"
+              className="text-white"
+            >
+              <div className="absolute bg-sky-500/30 pr-3 pl-0.5 py-2 rounded-xl z-10">
+                <Checkbox
+                  isSelected={selected}
+                  onValueChange={(newValue) => {
+                    setSelected(newValue);
+                    onSelect?.(id, newValue);
+                  }}
+                />
+              </div>
+            </Tooltip>
           ) : (
             ""
           )}
@@ -107,14 +118,17 @@ const ProductBox: React.FC<Props> = ({
 
             <div className="w-full flex h-full flex-col gap-4 text-start">
               <div className="flex flex-col sm:flex-row justify-between items-center w-full">
-                <p className="text-[17px] text-gray-700">{title}</p>
+                <p className="text-[17px] text-gray-700">
+                  {title}{" "}
+                  <span className="text-gray-500 text-sm">({category})</span>
+                </p>
 
                 <div className="border rounded-xl flex">
                   <Tooltip
                     closeDelay={2000}
                     color="success"
                     showArrow
-                    placement="right-start"
+                    placement="top"
                     content="ویرایش اطلاعات محصول"
                     className="text-white"
                   >
@@ -135,6 +149,7 @@ const ProductBox: React.FC<Props> = ({
                     closeDelay={2000}
                     color="secondary"
                     showArrow
+                    placement="top"
                     content="ویرایش ویژگی های محصول"
                     className="text-white"
                   >
@@ -156,7 +171,7 @@ const ProductBox: React.FC<Props> = ({
                     showArrow
                     content="حذف محصول"
                     className="text-white"
-                    placement="bottom"
+                    placement="top"
                   >
                     <Button
                       size="sm"
@@ -183,7 +198,11 @@ const ProductBox: React.FC<Props> = ({
                   icon={<LuBox className="text-xl" />}
                 />
                 <MiniBoxInfo
-                  style={originalPrice != null ? "bg-gradient-to-br from-orange-200 via-white to-purple-300 shadow-lg" : ""}
+                  style={
+                    originalPrice != null
+                      ? "bg-gradient-to-br from-orange-200 via-white to-purple-300 shadow-lg"
+                      : ""
+                  }
                   name={
                     originalPrice != null ? (
                       <div className="flex items-baseline gap-2">

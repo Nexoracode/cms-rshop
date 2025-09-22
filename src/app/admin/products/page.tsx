@@ -192,6 +192,7 @@ const Products = () => {
                       price={finalPrice}
                       originalPrice={originalPrice}
                       isVisible={product.is_visible}
+                      category={product.category.title}
                       varientsCount={
                         product.is_limited_stock
                           ? "نامحدود"
