@@ -60,7 +60,7 @@ const initProduct: Product = {
 };
 
 const ProductInitialForm = () => {
-  const router = useRouter()
+  const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
   //
@@ -93,6 +93,7 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct) {
+      console.log("Product => ", oneProduct.data);
       setProduct(oneProduct.data);
     }
   }, [oneProduct]);

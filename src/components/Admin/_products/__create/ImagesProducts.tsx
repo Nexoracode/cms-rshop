@@ -28,24 +28,16 @@ const ImagesProducts = ({
   const { mutate: uploadMedias, isPending } = useProductUpload();
 
   useEffect(() => {
-    if (initialMedias) {
-      setMediasUrl(initialMedias);
-    }
+    initialMedias && setMediasUrl(initialMedias);
   }, [initialMedias]);
 
   useEffect(() => {
-    if (initialPinnedId) {
-      setPinnedId(initialPinnedId);
-    }
+    initialPinnedId && setPinnedId(initialPinnedId);
   }, [initialPinnedId]);
 
   useEffect(() => {
-    if (medias.length) {
-      handleUpload();
-    }
+    medias.length && handleUpload();
   }, [medias]);
-
-  console.log(pinnedId);
 
   useEffect(() => {
     onMedia_ids(mediasUrl.map((media) => media.id));
@@ -91,7 +83,7 @@ const ImagesProducts = ({
           }}
           onRemove={(id) => {
             setMediasUrl((prev) => prev.filter((media) => media.id !== id));
-            id === pinnedId && setPinnedId(null)
+            id === pinnedId && setPinnedId(null);
           }}
           items={mediasUrl}
           pinnedId={pinnedId}
