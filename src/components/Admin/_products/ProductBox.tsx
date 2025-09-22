@@ -30,6 +30,7 @@ type Props = {
   cancleRemove: any[];
   price: string | number;
   originalPrice: number | undefined;
+  isVisible: boolean
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -42,6 +43,7 @@ const ProductBox: React.FC<Props> = ({
   pathImg,
   onShowVariant,
   onSelect,
+  isVisible,
   cancleRemove,
   originalPrice,
 }) => {
@@ -71,7 +73,7 @@ const ProductBox: React.FC<Props> = ({
         isBlurred
         className={`border shadow-lg relative ${
           selected ? "shadow-sky-200" : ""
-        }`}
+        } ${!isVisible ? "opacity-70 shadow-none" : ""}`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >

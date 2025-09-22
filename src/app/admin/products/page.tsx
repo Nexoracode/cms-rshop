@@ -191,6 +191,7 @@ const Products = () => {
                       pathImg={product.media_pinned.url}
                       price={finalPrice}
                       originalPrice={originalPrice}
+                      isVisible={product.is_visible}
                       varientsCount={
                         product.is_limited_stock
                           ? "نامحدود"
