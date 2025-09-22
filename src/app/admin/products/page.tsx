@@ -174,7 +174,7 @@ const Products = () => {
                     pathImg={product.media_pinned.url}
                     price={product.price}
                     varientsCount={
-                      product.stock === 0 ? "نامحدود یا هیچ" : product.stock
+                      product.is_limited_stock ? "نامحدود" : product.stock === 0 ? "ندارد" : `${product.stock} عدد`
                     }
                     onShowInfos={() =>
                       router.push(

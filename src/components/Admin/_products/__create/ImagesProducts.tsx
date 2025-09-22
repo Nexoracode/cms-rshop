@@ -44,8 +44,11 @@ const ImagesProducts = ({
 
     const images = mediasUrl.filter((media) => media.type === "image");
     !images.length && setPinnedId(null);
+    console.log("FFFFFFFFFFF", images);
 
-    if (!initialMedias.length && images.length && !pinnedId) {
+    if (images.length && !pinnedId) {
+      console.log("GGGGGGGGGGGGGGGG");
+
       mediasUrl.some((media) => {
         if (media.type === "image") {
           setPinnedId(media.id);

@@ -173,7 +173,7 @@ const ProductBox: React.FC<Props> = ({
                   icon={<CgCalendarDates className="text-xl" />}
                 />
                 <MiniBoxInfo
-                  name={`موجودی ${varientsCount} عدد`}
+                  name={`موجودی ${varientsCount}`}
                   icon={<LuBox className="text-xl" />}
                 />
                 <MiniBoxInfo

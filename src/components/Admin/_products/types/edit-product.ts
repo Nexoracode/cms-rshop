@@ -13,6 +13,7 @@ type ProductItem = {
   name: string;
   price: string;
   stock: number;
+  is_limited_stock: boolean;
   helper: {
     id: number,
     title: string,
