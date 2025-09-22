@@ -28,7 +28,7 @@ type Props = {
   varientsCount: string | number;
   created_at: string;
   onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
-  cancleRemove: any[]
+  cancleRemove: any[];
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -41,7 +41,7 @@ const ProductBox: React.FC<Props> = ({
   pathImg,
   onShowVariant,
   onSelect,
-  cancleRemove
+  cancleRemove,
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -51,10 +51,10 @@ const ProductBox: React.FC<Props> = ({
 
   useEffect(() => {
     if (!cancleRemove.length) {
-      setHovered(false)
-      setSelected(false)
+      setHovered(false);
+      setSelected(false);
     }
-  }, [cancleRemove])
+  }, [cancleRemove]);
 
   // توگل کردن selected و اطلاع به parent
   const toggleSelected = () => {
@@ -67,8 +67,8 @@ const ProductBox: React.FC<Props> = ({
     <>
       <Card
         isBlurred
-        className={`border-none shadow-[0_0_7px_lightgray] relative ${
-          selected ? "bg-slate-50" : ""
+        className={`border shadow-lg relative ${
+          selected ? "shadow-sky-200" : ""
         }`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -78,8 +78,8 @@ const ProductBox: React.FC<Props> = ({
           className="relative cursor-pointer"
         >
           {/* Checkbox */}
-          <div className="absolute bg-black/30 pr-3 pl-1 py-2 rounded-xl z-10">
-            {(hovered || selected) && (
+          {hovered || selected ? (
+            <div className="absolute bg-sky-500/30 pr-3 pl-0.5 py-2 rounded-xl z-10">
               <Checkbox
                 isSelected={selected}
                 onValueChange={(newValue) => {
@@ -87,8 +87,10 @@ const ProductBox: React.FC<Props> = ({
                   onSelect?.(id, newValue);
                 }}
               />
-            )}
-          </div>
+            </div>
+          ) : (
+            ""
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="w-fit h-full">
