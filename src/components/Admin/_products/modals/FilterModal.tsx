@@ -219,6 +219,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               <Select
                 dir="rtl"
                 label="برند"
+                labelPlacement="outside"
                 placeholder="انتخاب برند"
                 selectedKeys={
                   filters.brand_id ? [String(filters.brand_id)] : []
