@@ -31,7 +31,7 @@ export default function Home() {
       />
 
       {/* هدر بیرون باکس */}
-      <div className="flex flex-col justify-between h-[100vh] pt-12 pb-3">
+      <div className="flex flex-col items-center justify-center h-[100vh]">
         {/* بدنه */}
         <div className="mx-auto flex max-w-7xl items-center justify-center px-4">
           {/* گرادیان‌بوردر دور باکس */}
@@ -87,96 +87,6 @@ export default function Home() {
             </section>
           </div>
         </div>
-
-        {/* فوتر */}
-        <footer className="">
-          <div className="mx-auto max-w-7xl px-4 pb-4">
-            <div>
-              <section className="flex flex-wrap justify-center gap-6">
-                <div className="flex w-full max-w-[350px] flex-col gap-3 p-3 sm:p-4 rounded-2xl border-2 shadow-lg bg-white/70">
-                  <div className="flex flex-col items-center gap-3">
-                    <img
-                      src="https://avatars.githubusercontent.com/u/101788797?v=4"
-                      alt="عکس گیت‌هاب Mohammad Hossein Khadem al Mahdi"
-                      className="h-16 w-16 rounded-full ring-2 ring-offset-1 ring-indigo-500/50 ring-offset-white dark:ring-offset-neutral-900"
-                    />
-                    <div className="leading-tight text-center">
-                      <div className="font-bold text-sm sm:text-base text-gray-900 dark:text-gray-100">
-                        Mohammad Hossein Khadem al Mahdi
-                      </div>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                        Front-End Developer (React / Next.js)
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <a
-                      href="https://github.com/khadem-mh"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow hover:from-indigo-500 hover:to-blue-500"
-                      aria-label="مشاهده پروفایل گیت‌هاب"
-                    >
-                      <FaGithub className="h-4 w-4" />
-                      GitHub
-                    </a>
-
-                    <a
-                      href="tel:09031335939"
-                      className="text-center w-full gap-2 rounded-xl border border-indigo-300/50 px-3 py-2 text-sm text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-white/5"
-                      aria-label="تماس با برنامه‌نویس"
-                    >
-                      تماس: 09031335939
-                    </a>
-                  </div>
-                </div>
-                <div className="flex w-full max-w-[350px] flex-col gap-3 p-3 sm:p-4 rounded-2xl border-2 shadow-lg bg-white/70">
-                  <div className="flex flex-col items-center gap-3">
-                    <img
-                      src="/images/maddahi.jpg"
-                      alt="عکس گیت‌هاب Mohammad Hossein Khadem al Mahdi"
-                      className="h-16 w-16 rounded-full ring-2 ring-offset-1 ring-indigo-500/50 ring-offset-white dark:ring-offset-neutral-900"
-                    />
-                    <div className="leading-tight text-center">
-                      <div className="font-bold text-sm sm:text-base text-gray-900 dark:text-gray-100">
-                        Mohammad Maddahi
-                      </div>
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                        Bak-End Developer (NodeJs / Nest)
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <a
-                      href="https://github.com/khadem-mh"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow hover:from-indigo-500 hover:to-blue-500"
-                      aria-label="مشاهده پروفایل گیت‌هاب"
-                    >
-                      <FaGithub className="h-4 w-4" />
-                      GitHub
-                    </a>
-
-                    <a
-                      href="tel:09031335939"
-                      className="text-center w-full gap-2 rounded-xl border border-indigo-300/50 px-3 py-2 text-sm text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-white/5"
-                      aria-label="تماس با برنامه‌نویس"
-                    >
-                      تماس: 09372013208
-                    </a>
-                  </div>
-                </div>
-              </section>
-
-              <p className="px-4 py-2 mt-4 text-center text-xs text-gray-600 dark:text-gray-400">
-                در صورت بروز مشکل با برنامه‌نویس تماس بگیرید.
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );
