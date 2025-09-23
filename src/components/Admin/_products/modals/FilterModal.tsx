@@ -25,7 +25,6 @@ import { FiSearch } from "react-icons/fi";
 import { flattenCategories } from "@/utils/flattenCategories";
 // بالای فایل
 
-
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
@@ -205,10 +204,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               >
                 {flatOptions.length ? (
                   flatOptions.map((opt) => (
-                    <SelectItem key={String(opt.id)}>
-                      {/* اگر helper ایندنت متنی می‌دهد: */}
-                      <span className="whitespace-pre">{opt.title}</span>
-                    </SelectItem>
+                    <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
                   ))
                 ) : (
                   <SelectItem key="-1" isDisabled>
@@ -246,27 +242,25 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <NumberInput
                   minValue={0}
-                  label="موجودی از"
-                  labelPlacement="outside"
+                  size="sm"
                   value={
                     filters.stockMin === "" ? undefined : +filters.stockMin
                   }
                   onValueChange={(v) =>
                     updateFilter("stockMin", v === undefined ? "" : v)
                   }
-                  placeholder="حداقل موجودی"
+                  label="موجودی از"
                 />
                 <NumberInput
                   minValue={0}
-                  label="موجودی تا"
-                  labelPlacement="outside"
+                  size="sm"
                   value={
                     filters.stockMax === "" ? undefined : +filters.stockMax
                   }
                   onValueChange={(v) =>
                     updateFilter("stockMax", v === undefined ? "" : v)
                   }
-                  placeholder="حداکثر موجودی"
+                  label="موجودی تا"
                 />
               </div>
 
@@ -274,6 +268,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <NumberInput
                   minValue={0}
+                  size="sm"
                   label="قیمت از (تومان)"
                   value={
                     filters.priceMin === "" ? undefined : +filters.priceMin
@@ -284,6 +279,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 />
                 <NumberInput
                   minValue={0}
+                  size="sm"
                   label="قیمت تا (تومان)"
                   value={
                     filters.priceMax === "" ? undefined : +filters.priceMax
@@ -298,6 +294,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <NumberInput
                   minValue={0}
+                  size="sm"
                   label="وزن از (گرم)"
                   value={
                     filters.weightMin === "" ? undefined : +filters.weightMin
@@ -308,6 +305,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 />
                 <NumberInput
                   minValue={0}
+                  size="sm"
                   label="وزن تا (گرم)"
                   value={
                     filters.weightMax === "" ? undefined : +filters.weightMax
