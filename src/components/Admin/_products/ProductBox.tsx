@@ -136,7 +136,7 @@ const ProductBox: React.FC<Props> = ({
                   <span className="text-gray-500 text-sm">({category})</span>
                 </p>
 
-                <div className="border rounded-xl flex">
+                <div className="border mt-6 w-full sm:w-fit sm:mt-0 rounded-xl flex">
                   <Tooltip
                     closeDelay={2000}
                     color="success"

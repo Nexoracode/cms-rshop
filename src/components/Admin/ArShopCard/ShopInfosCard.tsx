@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Button,
   Modal,
@@ -18,7 +17,6 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
 import { GrAnnounce } from "react-icons/gr";
 import BoxLink from "../_settings/BoxLink";
-import { FaGithub } from "react-icons/fa";
 
 const ShopInfosCard = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
