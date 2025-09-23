@@ -18,7 +18,6 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useGetAllCategories } from "@/hooks/categories/useCategory";
 import { useGetBrands } from "@/hooks/useBrandItem";
-import { Category } from "../__categories/category-types";
 import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUnitInput";
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";
@@ -28,6 +27,8 @@ type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
 };
+
+type DiscountType = "percent" | "amount";
 
 const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();
@@ -55,7 +56,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     weightMax: "" as number | "",
 
     // تخفیف
-    discountType: "percent" as any,
+    discountType: "percent" as DiscountType,
     discountMin: "" as number | "",
     discountMax: "" as number | "",
 
@@ -185,21 +186,32 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
               {/* دسته‌بندی */}
               <Select
+                dir="rtl"
                 labelPlacement="outside"
                 startContent={
                   <FiSearch className="text-lg pointer-events-none" />
                 }
                 label="دسته بندی"
                 placeholder="دسته بندی موردنظر را انتخاب کنید"
-                selectedKeys={[String(0)]}
-                onChange={(e) => {}}
+                selectedKeys={
+                  filters.category_id ? [String(filters.category_id)] : []
+                }
+                onSelectionChange={(keys) => {
+                  const val = Array.from(keys)[0] as string;
+                  updateFilter("category_id", val ?? "");
+                }}
               >
                 {flatOptions.length ? (
                   flatOptions.map((opt) => (
-                    <SelectItem key={opt.id}>{opt.title}</SelectItem>
+                    <SelectItem key={String(opt.id)}>
+                      {/* اگر helper ایندنت متنی می‌دهد: */}
+                      <span className="whitespace-pre">{opt.title}</span>
+                    </SelectItem>
                   ))
                 ) : (
-                  <SelectItem isDisabled>آیتمی موجود نیست</SelectItem>
+                  <SelectItem key="-1" isDisabled>
+                    آیتمی موجود نیست
+                  </SelectItem>
                 )}
               </Select>
 
@@ -208,7 +220,9 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 dir="rtl"
                 label="برند"
                 placeholder="انتخاب برند"
-                selectedKeys={filters.brand_id ? [filters.brand_id] : []}
+                selectedKeys={
+                  filters.brand_id ? [String(filters.brand_id)] : []
+                }
                 onSelectionChange={(keys) => {
                   const val = Array.from(keys)[0] as string;
                   updateFilter("brand_id", val ?? "");
@@ -281,7 +295,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <NumberInput
                   minValue={0}
-                  label="وزن از (kg)"
+                  label="وزن از (گرم)"
                   value={
                     filters.weightMin === "" ? undefined : +filters.weightMin
                   }
@@ -291,7 +305,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 />
                 <NumberInput
                   minValue={0}
-                  label="وزن تا (kg)"
+                  label="وزن تا (کیلوگرم)"
                   value={
                     filters.weightMax === "" ? undefined : +filters.weightMax
                   }

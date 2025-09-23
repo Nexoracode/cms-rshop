@@ -227,7 +227,7 @@ const Products = () => {
               <p className="text-center py-6">
                 {searchInp?.length
                   ? "برای سرچ شما محصولی وجود ندارد"
-                  : "فعلا محصولی وحود ندارد"}
+                  : "فعلا محصولی وجود ندارد"}
               </p>
             )}
             {selectedItems.length ? (

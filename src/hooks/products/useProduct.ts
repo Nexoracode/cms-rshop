@@ -5,14 +5,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 /*  */
 
 type ProductFilter = {
-  is_visible?: string[];
-  stock?: string[];
-  category_id?: string[];
-  price?: string[];
-  discount?: string[];
-  createdAt?: string[];
-  weight?: string[];
-  requires_preparation?: string[];
+  is_visible?: string[];            // $eq:1|0
+  requires_preparation?: string[];  // $eq:1|0
+  category_id?: string[];           // $eq:...
+  brand_id?: string[];              // $eq:...
+  price?: string[];                 // $gte/$lte
+  stock?: string[];                 // $gte/$lte
+  weight?: string[];                // $gte/$lte
+  discount_amount?: string[];       // $gte/$lte
+  discount_percent?: string[];      // $gte/$lte
+  created_at?: string[];            // $gte/$lte/$btw
 };
 
 type UseGetProductsParams = {
