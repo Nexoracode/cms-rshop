@@ -3,19 +3,21 @@
 import { FC } from "react";
 import { NumberInput, Select, SelectItem } from "@heroui/react";
 
+type DiscountKey = "percent" | "amount";
+
 type Option = {
-  key: string;
+  key: DiscountKey;
   title: string;
 };
 
 type Props = {
   label: string;
   placeholder?: string;
-  value: number;
-  onValueChange: (val: number) => void;
-  selectedKey: string;
-  onSelectChange: (val: string) => void;
-  options: Option[]
+  value?: number;                                // ← می‌تواند undefined باشد
+  onValueChange: (val: number | undefined) => void;
+  selectedKey: DiscountKey;
+  onSelectChange: (val: DiscountKey) => void;
+  options: Option[];
 };
 
 const LabeledNumberWithUnitInput: FC<Props> = ({
@@ -25,7 +27,7 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
   onValueChange,
   selectedKey,
   onSelectChange,
-  options
+  options,
 }) => {
   return (
     <div className="flex flex-col gap-4">
@@ -35,7 +37,17 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
         placeholder={placeholder}
         minValue={0}
         value={value}
-        onValueChange={(val) => onValueChange(+val)}
+        onValueChange={(val: any) => {
+          // val ممکن است string یا number یا undefined باشد
+          if (typeof val === "number") {
+            onValueChange(val);
+          } else if (typeof val === "string") {
+            const trimmed = val.trim();
+            onValueChange(trimmed === "" ? undefined : Number(trimmed));
+          } else {
+            onValueChange(undefined);
+          }
+        }}
         labelPlacement="outside"
         endContent={
           <div className="min-w-[110px]">
@@ -45,9 +57,9 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
               aria-label="select"
               placeholder="مقداری را وارد کنید"
               selectedKeys={[selectedKey]}
-              onChange={(e) => onSelectChange(e.target.value)}
+              onChange={(e) => onSelectChange(e.target.value as DiscountKey)}
             >
-              {options && options.length ? (
+              {options.length ? (
                 options.map((opt) => (
                   <SelectItem key={opt.key}>{opt.title}</SelectItem>
                 ))
