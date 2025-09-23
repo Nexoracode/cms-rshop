@@ -203,7 +203,7 @@ const ProductBox: React.FC<Props> = ({
 
               <div className="flex flex-wrap items-center gap-2">
                 <MiniBoxInfo
-                  name={created_at}
+                  name={new Date(created_at).toLocaleDateString("fa")}
                   icon={<CgCalendarDates className="text-xl" />}
                 />
                 <MiniBoxInfo
