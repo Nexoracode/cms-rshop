@@ -22,6 +22,7 @@ import { Category } from "../__categories/category-types";
 import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUnitInput";
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";
+import { flattenCategories } from "@/utils/flattenCategories";
 
 type Props = {
   isOpen: boolean;
@@ -36,27 +37,8 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const { data: brandsData } = useGetBrands();
 
   const flatOptions = useMemo(() => {
-    const result: { id: number; title: string }[] = [];
-
-    // تبدیل تابع به متغیر
-    const traverse = (list: Category[], depth = 0) => {
-      list.forEach((cat) => {
-        result.push({
-          id: cat.id,
-          title: `${"  ".repeat(depth)}${cat.title}`,
-        });
-        if (cat.children && cat.children.length) {
-          traverse(cat.children, depth + 1);
-        }
-      });
-    };
-
-    if (categoriesData?.data) {
-      traverse(categoriesData.data);
-    }
-
-    return result;
-  }, [categoriesData]);
+    return flattenCategories(categoriesData?.data);
+  }, [categoriesData?.data]);
 
   const [filters, setFilters] = useState({
     is_visible: "" as "" | "1" | "0", // Backend: true=1, false=0
