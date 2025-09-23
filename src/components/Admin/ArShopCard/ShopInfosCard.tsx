@@ -99,7 +99,7 @@ const ShopInfosCard = () => {
                         />
                         <div className="leading-tight text-center">
                           <div className="font-bold text-sm sm:text-base text-gray-900">
-                            Mohammad Maddahi
+                            Mohammad Reza <br /> Maddahi
                           </div>
                           <div className="text-xs sm:text-sm text-gray-600">
                             BackEnd Developer (NodeJs / Nest)
