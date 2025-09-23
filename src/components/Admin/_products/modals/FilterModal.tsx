@@ -8,6 +8,7 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
+import type { CalendarDate } from "@internationalized/date";
 import {
   Modal,
   ModalContent,
@@ -22,11 +23,16 @@ import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUni
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";
 import { flattenCategories } from "@/utils/flattenCategories";
+// بالای فایل
+
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
 };
+
+const calToJs = (c?: CalendarDate) =>
+  c ? new Date(c.year, c.month - 1, c.day) : undefined;
 
 type DiscountType = "percent" | "amount";
 
@@ -61,7 +67,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     discountMax: "" as number | "",
 
     // تاریخ میلادی
-    createdAtRange: null as { start?: Date; end?: Date } | null,
+    createdAtRange: null as { start?: CalendarDate; end?: CalendarDate } | null,
   });
 
   const updateFilter = <K extends keyof typeof filters>(
@@ -97,13 +103,9 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
         : "discount_amount";
     rangeNum(params, discountField, filters.discountMin, filters.discountMax);
 
-    // تاریخ میلادی (gte/lte یا btw)
-    rangeDate(
-      params,
-      "created_at",
-      filters.createdAtRange?.start,
-      filters.createdAtRange?.end
-    );
+    const s = calToJs(filters.createdAtRange?.start);
+    const e = calToJs(filters.createdAtRange?.end);
+    rangeDate(params, "created_at", s, e);
 
     const q = params.toString();
     router.push(q ? `${pathname}?${q}` : pathname);
@@ -306,7 +308,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 />
                 <NumberInput
                   minValue={0}
-                  label="وزن تا (کیلوگرم)"
+                  label="وزن تا (گرم)"
                   value={
                     filters.weightMax === "" ? undefined : +filters.weightMax
                   }
@@ -320,22 +322,22 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               <DateRangePicker
                 label="تاریخ ثبت"
                 labelPlacement="outside"
-                onChange={(range: any) => {
-                  if (!range) return updateFilter("createdAtRange", null);
-                  // heroui ممکن است Date یا {start,end} بدهد
-                  if (range.start || range.end) {
-                    updateFilter("createdAtRange", {
-                      start: range.start ? new Date(range.start) : undefined,
-                      end: range.end ? new Date(range.end) : undefined,
-                    });
-                  } else if (Array.isArray(range)) {
-                    const [s, e] = range;
-                    updateFilter("createdAtRange", {
-                      start: s ? new Date(s) : undefined,
-                      end: e ? new Date(e) : undefined,
-                    });
-                  }
-                }}
+                value={
+                  filters.createdAtRange &&
+                  (filters.createdAtRange.start || filters.createdAtRange.end)
+                    ? {
+                        start:
+                          filters.createdAtRange.start ??
+                          filters.createdAtRange.end!,
+                        end:
+                          filters.createdAtRange.end ??
+                          filters.createdAtRange.start!,
+                      }
+                    : undefined
+                }
+                onChange={(range: any) =>
+                  updateFilter("createdAtRange", range ?? null)
+                }
               />
 
               {/* تخفیف - با LabeledNumberWithUnitInput */}
