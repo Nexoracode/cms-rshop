@@ -87,20 +87,20 @@ const AttributesProducts = () => {
               ""
             )}
           </SectionCard>
-          {/* 
+          
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
             title="مرتب سازی ویژگی ها"
-            empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+            empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
           >
-            {productData?.data?.attribute_nodes?.length ? (
+            {productData?.data?.specifications?.length ? (
               <SortableAttributeNodes
-                attributeNodes={productData.data.attribute_nodes}
+                attributeNodes={productData.data.specifications}
               />
             ) : (
               ""
             )}
-          </SectionCard> */}
+          </SectionCard>
 
           <SectionCard
             title="ویژگی های متغیر"
