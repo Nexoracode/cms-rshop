@@ -1,0 +1,80 @@
+import { fetcher } from "@/utils/fetcher";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+export const useGetSimapleAttribute = (productId?: number) => {
+  return useQuery({
+    queryKey: ["product-attributes", productId],
+    enabled: !!productId,
+    queryFn: () =>
+      fetcher({
+        route: `/product-attributes/product/${productId}`,
+        isActiveToast: false,
+      }),
+  });
+};
+
+export const useAddNewSimapleAttribute = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: any) =>
+      fetcher({
+        route: `/product-attributes`,
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+        loadingText: "در حال اتصال ویژگی‌ها...",
+        successText: "ویژگی‌ها ذخیره شد",
+      }),
+    onSuccess: (_res, variables: any) => {
+      if (variables?.productId) {
+        queryClient.invalidateQueries({ queryKey: ["product-attributes"] });
+      }
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+    },
+  });
+};
+
+export const useUpdateSimapleAttribute = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: any }) =>
+      fetcher({
+        route: `/product-attributes/${id}`,
+        method: "PATCH",
+        body: data, // { productId, attributeId, valueIds? }
+        isActiveToast: true,
+        loadingText: "در حال بروزرسانی ویژگی...",
+        successText: "ویژگی بروزرسانی شد",
+      }),
+    onSuccess: (_res, { data }) => {
+      if (data?.productId) {
+        queryClient.invalidateQueries({
+          queryKey: ["product-attributes", data.productId],
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+    },
+  });
+};
+
+export const useDeleteSimapleAttribute = (productId?: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) =>
+      fetcher({
+        route: `/product-attributes/${id}`,
+        method: "DELETE",
+        isActiveToast: true,
+        loadingText: "در حال حذف ویژگی...",
+        successText: "ویژگی حذف شد",
+      }),
+    onSuccess: () => {
+      if (productId) {
+        queryClient.invalidateQueries({
+          queryKey: ["product-attributes", productId],
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+    },
+  });
+};

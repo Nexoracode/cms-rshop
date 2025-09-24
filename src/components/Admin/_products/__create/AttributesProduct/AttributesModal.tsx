@@ -12,13 +12,14 @@ import { TbSettings } from "react-icons/tb";
 import { useGetAllAttribute } from "@/hooks/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
+import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
 
 type AttributeData = {
   attr: Record<string, any>;
@@ -51,6 +52,7 @@ const AttributesModal = ({
   const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
   const addNewVariantProductMutation = useAddNewVariantProduct();
+  const addNewSimapleAttribute = useAddNewSimapleAttribute();
 
   const handleSubmit = async () => {
     const { attrId, attrGroupId, valueIds } = selecteds;
@@ -72,6 +74,18 @@ const AttributesModal = ({
       };
 
       addNewVariantProductMutation.mutate(newAttr, {
+        onSuccess: () => {
+          resetModalInfos();
+        },
+      });
+    } else {
+      const newAttrSimple = {
+        product_id: page,
+        attributeId: selecteds.attrId,
+        valueIds: valueIds,
+      };
+
+      addNewSimapleAttribute.mutate(newAttrSimple, {
         onSuccess: () => {
           resetModalInfos();
         },
