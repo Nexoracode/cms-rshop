@@ -2,7 +2,8 @@
 
 import React, { useRef } from "react";
 import { Button } from "@heroui/react";
-import { LuImage, LuVideo } from "react-icons/lu";
+import { LuImage, LuImagePlus, LuVideo } from "react-icons/lu";
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 
 interface Props {
   onSelect: (files: File[]) => void;
@@ -15,7 +16,8 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
   const handlePick = (type: "image" | "video") => {
     if (!inputRef.current) return;
     currentType.current = type;
-    inputRef.current.accept = type === "image" ? ".jpg,.jpeg,.png,.webp" : ".mp4";
+    inputRef.current.accept =
+      type === "image" ? ".jpg,.jpeg,.png,.webp" : ".mp4";
     inputRef.current.multiple = type === "image";
     inputRef.current.click();
   };
@@ -46,25 +48,34 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
   return (
     <>
       <input ref={inputRef} type="file" hidden onChange={handleChange} />
-      <div className="w-full flex flex-col xs:flex-row flex-wrap xs:flex-nowrap items-center justify-center gap-4">
-        <Button
-          color="secondary"
-          variant="ghost"
-          className="w-full xs:w-1/2 border border-dashed h-[60px] rounded-md"
-          endContent={<LuImage className="text-2xl" />}
-          onPress={() => handlePick("image")}
-        >
-          افزودن تصویر
-        </Button>
-        <Button
-          color="secondary"
-          variant="ghost"
-          className="w-full xs:w-1/2 border border-dashed h-[60px] rounded-md"
-          endContent={<LuVideo className="text-2xl" />}
-          onPress={() => handlePick("video")}
-        >
-          افزودن ویدیو
-        </Button>
+      <div className="flex items-center justify-between">
+        <div className="text-right">
+          <p className="text-gray-600">افزودن تصویر و ویدیو</p>
+          <div className="w-full flex items-center mt-2">
+            <p className="text-[11px] text-orange-700 animate-pulse">
+              حداکثر حجم فایل تصویر 5.5 و ویدئو 50MB است. برای هر محصول 20 تصویر
+              و 5 ویدئو میتوانید بارگذاری کنید.
+            </p>
+          </div>
+        </div>
+        <div className="w-fit flex gap-2">
+          <Button
+            size="sm"
+            color="secondary"
+            variant="flat"
+            onPress={() => handlePick("image")}
+          >
+            <LuImagePlus className="text-xl" />
+          </Button>
+          <Button
+            size="sm"
+            color="secondary"
+            variant="flat"
+            onPress={() => handlePick("video")}
+          >
+            <AiOutlineVideoCameraAdd className="text-xl" />
+          </Button>
+        </div>
       </div>
     </>
   );

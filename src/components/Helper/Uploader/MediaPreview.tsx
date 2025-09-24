@@ -67,7 +67,7 @@ const MediaPreview: React.FC<Props> = ({
               ×
             </button>
             {pinnedId === item.id ? (
-              <LuPin className="absolute top-1 left-1 ..." />
+              <LuPin className="absolute top-1 left-1 -rotate-45 bg-white rounded-md border text-2xl py-0.5" />
             ) : (
               ""
             )}

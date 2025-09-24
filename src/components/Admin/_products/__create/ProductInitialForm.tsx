@@ -225,35 +225,37 @@ const ProductInitialForm = () => {
               }
             />
 
-            <SelectWithAddButton
-              label="دسته بندی"
-              placeholder="دسته بندی مورد نظر را انتخاب کنید"
-              options={categories}
-              selectedId={product.category_id}
-              onChange={(id) =>
-                setProduct((prev) => ({ ...prev, category_id: +id }))
-              }
-              onAddNewClick={onOpenCategory}
-            />
+            <div className="flex flex-col md:flex-row gap-4">
+              <SelectWithAddButton
+                label="دسته بندی"
+                placeholder="دسته بندی مورد نظر را انتخاب کنید"
+                options={categories}
+                selectedId={product.category_id}
+                onChange={(id) =>
+                  setProduct((prev) => ({ ...prev, category_id: +id }))
+                }
+                onAddNewClick={onOpenCategory}
+              />
 
-            <SelectWithAddButton
-              label="برند"
-              placeholder="برند مورد نظر را انتخاب کنید"
-              options={
-                allBrands?.data?.map((brand: any) => ({
-                  id: brand.id,
-                  title: brand.name,
-                })) ?? []
-              }
-              selectedId={product.brand_id ?? 0}
-              onChange={(id) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  brand_id: +id,
-                }))
-              }
-              onAddNewClick={onOpenBrand}
-            />
+              <SelectWithAddButton
+                label="برند"
+                placeholder="برند مورد نظر را انتخاب کنید"
+                options={
+                  allBrands?.data?.map((brand: any) => ({
+                    id: brand.id,
+                    title: brand.name,
+                  })) ?? []
+                }
+                selectedId={product.brand_id ?? 0}
+                onChange={(id) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    brand_id: +id,
+                  }))
+                }
+                onAddNewClick={onOpenBrand}
+              />
+            </div>
 
             <LabeledNumberWithUnitInput
               isRequired

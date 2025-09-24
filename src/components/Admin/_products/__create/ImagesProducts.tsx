@@ -72,7 +72,7 @@ const ImagesProducts = ({
 
   return (
     <Card className="w-full shadow-none">
-      <CardBody>
+      <CardBody className="p-0">
         <MediaPreview
           onItemPinned={(id) => {
             setPinnedId(id);
@@ -90,28 +90,19 @@ const ImagesProducts = ({
         />
 
         <MediaPicker onSelect={(files) => setMedias(files)} />
-
-        <div className="w-full flex items-center mt-4">
-          <p className="text-[12px] text-orange-700 animate-pulse">
-            حداکثر حجم فایل تصویر 5.5 و ویدئو 50MB است. برای هر محصول 20 تصویر و
-            5 ویدئو میتوانید بارگذاری کنید.
-          </p>
-        </div>
-      </CardBody>
-      {medias.length ? (
-        <CardFooter>
+        {medias.length ? (
           <Button
             isLoading={isPending}
             variant="flat"
             color="secondary"
-            className={`w-full ${!isPending ? "hidden" : ""}`}
+            className={`w-full mt-4 ${!isPending ? "hidden" : ""}`}
           >
             بارگذاری (پس از اتمام تغییرات)
           </Button>
-        </CardFooter>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )}
+      </CardBody>
     </Card>
   );
 };
