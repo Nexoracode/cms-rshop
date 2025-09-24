@@ -103,7 +103,6 @@ const ProductInitialForm = () => {
 
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
-  const headerStyle = "bg-black text-white";
 
   useEffect(() => {
     if (oneProduct) {
@@ -173,25 +172,26 @@ const ProductInitialForm = () => {
   return (
     <>
       <section className="flex flex-col gap-6">
-        <ImagesProducts
-          onMedia_ids={(datas) =>
-            setProduct((prev) => ({ ...prev, media_ids: datas }))
-          }
-          onMedia_pinned_id={(id) => {
-            console.log("$$$$$$$$$$$$$", id);
-
-            setProduct((prev) => ({ ...prev, media_pinned_id: id }));
-          }}
-          initialMedias={product.medias}
-          initialPinnedId={product.media_pinned_id}
-        />
         <Card className={cardStyle}>
           <BoxHeader
-            title="اطلاعات کلیدی ( پایه )"
-            color="text-white bg-gradient-to-r from-slate-800 via-slate-500 to-slate-800"
+            title="اطلاعات کلیدی محصول"
+            color="text-white bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
             icon={<LuTextCursorInput className="text-3xl" />}
           />
           <CardBody className={cardBodyStyle}>
+            <ImagesProducts
+              onMedia_ids={(datas) =>
+                setProduct((prev) => ({ ...prev, media_ids: datas }))
+              }
+              onMedia_pinned_id={(id) => {
+                console.log("$$$$$$$$$$$$$", id);
+
+                setProduct((prev) => ({ ...prev, media_pinned_id: id }));
+              }}
+              initialMedias={product.medias}
+              initialPinnedId={product.media_pinned_id}
+            />
+            <hr />
             <Input
               isRequired
               label="نام"
@@ -287,7 +287,7 @@ const ProductInitialForm = () => {
         <Card className={cardStyle}>
           <BoxHeader
             title="اطلاعات تکمیلی محصول"
-            color={headerStyle}
+            color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
             icon={<FiShoppingBag className="text-3xl" />}
           />
           <CardBody className={cardBodyStyle}>

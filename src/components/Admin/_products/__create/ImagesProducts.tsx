@@ -73,12 +73,7 @@ const ImagesProducts = ({
   };
 
   return (
-    <Card className="w-full shadow-md">
-      <BoxHeader
-        title="تصویر و ویدیو محصول"
-        color="bg-orange-700/10 text-orange-700"
-        icon={<FaRegImages className="text-3xl" />}
-      />
+    <Card className="w-full shadow-none">
       <CardBody>
         <MediaPreview
           onItemPinned={(id) => {
