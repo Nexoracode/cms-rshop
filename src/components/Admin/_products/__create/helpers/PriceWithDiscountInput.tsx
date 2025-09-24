@@ -45,8 +45,8 @@ const PriceWithDiscountInput: FC<Props> = ({
       : price - discountValue;
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col items-start">
+    <div className="flex gap-4">
+      <div className="w-full flex flex-col items-start">
         <NumberInput
           hideStepper
           label="قیمت"
@@ -77,8 +77,8 @@ const PriceWithDiscountInput: FC<Props> = ({
         placeholder="10"
         value={discountValue}
         onValueChange={(val) => {
-          setDiscountValue(val);
-          onDiscountChange(discountType, val);
+          setDiscountValue(val ?? 0);
+          onDiscountChange(discountType, val ?? 0);
         }}
         selectedKey={discountType}
         onSelectChange={(val) => {
@@ -89,6 +89,7 @@ const PriceWithDiscountInput: FC<Props> = ({
           { key: "percent", title: "درصد" },
           { key: "amount", title: "مبلغ ثابت" },
         ]}
+        style="w-full"
       />
 
       {!price && (

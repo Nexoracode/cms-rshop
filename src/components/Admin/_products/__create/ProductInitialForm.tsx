@@ -286,7 +286,7 @@ const ProductInitialForm = () => {
         </Card>
         <Card className={cardStyle}>
           <BoxHeader
-            title="اطلاعات میانی محصول"
+            title="اطلاعات تکمیلی محصول"
             color={headerStyle}
             icon={<FiShoppingBag className="text-3xl" />}
           />
@@ -329,6 +329,55 @@ const ProductInitialForm = () => {
                 </small>
               }
             />
+            <hr />
+            <OrderLimitSwitcher
+              title="محدودیت تعداد برای هر سفارش"
+              initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
+              onChange={(val) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  order_limit:
+                    val === "enabled" ? +product.order_limit || 1 : 0,
+                }))
+              }
+            >
+              <NumberInput
+                label="حداکثر تعداد قابل سفارش"
+                placeholder="3"
+                minValue={1}
+                value={product.order_limit ?? 0}
+                labelPlacement="outside"
+                onValueChange={(val) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    order_limit: +val || 1,
+                  }))
+                }
+              />
+            </OrderLimitSwitcher>
+
+            <Select
+              dir="rtl"
+              labelPlacement="outside"
+              label="وضعیت نمایش در وبسایت"
+              placeholder="انتخاب وضعیت محصول"
+              className="!mt-8"
+              onChange={(e) => {
+                setProduct((prev) => ({
+                  ...prev,
+                  is_visible: e.target.value ? true : false,
+                }));
+              }}
+              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
+            >
+              <SelectItem key="visible">
+                نمایش - در فروشگاه نمایش داده میشود
+              </SelectItem>
+              <SelectItem key="hidden">
+                عدم نمایش - در فروشگاه نمایش داده نمی شود
+              </SelectItem>
+            </Select>
+            <hr />
             <ToggleableSection
               label="موجودی نامحدود"
               onOptionalToggle={(checked) =>
@@ -360,63 +409,6 @@ const ProductInitialForm = () => {
             >
               <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
             </Checkbox>
-          </CardBody>
-        </Card>
-        <Card className={cardStyle}>
-          <BoxHeader
-            title="اطلاعات تکمیلی محصول"
-            color={headerStyle}
-            icon={<LuScrollText className="text-3xl" />}
-          />
-          <CardBody className={cardBodyStyle}>
-            <Select
-              dir="rtl"
-              labelPlacement="outside"
-              label="وضعیت نمایش در وبسایت"
-              placeholder="انتخاب وضعیت محصول"
-              className="!mt-8"
-              onChange={(e) => {
-                setProduct((prev) => ({
-                  ...prev,
-                  is_visible: e.target.value ? true : false,
-                }));
-              }}
-              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
-            >
-              <SelectItem key="visible">
-                نمایش - در فروشگاه نمایش داده میشود
-              </SelectItem>
-              <SelectItem key="hidden">
-                عدم نمایش - در فروشگاه نمایش داده نمی شود
-              </SelectItem>
-            </Select>
-
-            <OrderLimitSwitcher
-              title="محدودیت تعداد برای هر سفارش"
-              initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
-              onChange={(val) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  order_limit:
-                    val === "enabled" ? +product.order_limit || 1 : 0,
-                }))
-              }
-            >
-              <NumberInput
-                label="حداکثر تعداد قابل سفارش"
-                placeholder="3"
-                minValue={1}
-                value={product.order_limit ?? 0}
-                labelPlacement="outside"
-                onValueChange={(val) =>
-                  setProduct((prev) => ({
-                    ...prev,
-                    order_limit: +val || 1,
-                  }))
-                }
-              />
-            </OrderLimitSwitcher>
-
             <SizeGuide
               onHelperId={(id) => {
                 setProduct((prev) => ({ ...prev, helper_id: id }));

@@ -16,7 +16,8 @@ type Props = {
   selectedKey: string;                           // ← آزاد
   onSelectChange: (val: string) => void;         // ← آزاد
   options: Option[];
-  isRequired?: boolean
+  isRequired?: boolean,
+  style?: string
 };
 
 const LabeledNumberWithUnitInput: FC<Props> = ({
@@ -27,10 +28,11 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
   selectedKey,
   onSelectChange,
   options,
-  isRequired=false
+  isRequired=false,
+  style
 }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className={`flex flex-col gap-4 ${style}`}>
       <NumberInput
         hideStepper
         isRequired={isRequired}
