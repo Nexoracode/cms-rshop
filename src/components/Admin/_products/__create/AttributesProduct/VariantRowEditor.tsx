@@ -65,7 +65,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
   console.log(formData.discount_percent);
 
   return (
-    <Card className="w-full border shadow-md">
+    <Card className="w-full border shadow-md transition-all hover:scale-105">
       <BoxHeader
         title={variantName}
         color="bg-purple-700/10 text-purple-700"

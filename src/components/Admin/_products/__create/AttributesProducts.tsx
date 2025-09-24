@@ -33,7 +33,7 @@ const AttributesProducts = () => {
   const updateVariantProductMutation = useUpdateVariantProduct();
 
   useEffect(() => {
-    console.log("All Attributes Nodes =>",productData?.data.attribute_nodes);
+    console.log("All Attributes Nodes =>", productData?.data);
     setVariants([]);
     if (productData?.data?.attribute_nodes) {
       const attrValues = productData?.data.attribute_nodes.flatMap(
@@ -87,7 +87,7 @@ const AttributesProducts = () => {
               ""
             )}
           </SectionCard>
-
+          {/* 
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
             title="مرتب سازی ویژگی ها"
@@ -100,7 +100,7 @@ const AttributesProducts = () => {
             ) : (
               ""
             )}
-          </SectionCard>
+          </SectionCard> */}
 
           <SectionCard
             title="ویژگی های متغیر"
