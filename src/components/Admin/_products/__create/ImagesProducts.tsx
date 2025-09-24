@@ -1,8 +1,6 @@
 "use client";
 
-import { Alert, Button, Card, CardBody, CardFooter } from "@heroui/react";
-import { FaRegImages } from "react-icons/fa6";
-import BoxHeader from "./helpers/BoxHeader";
+import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { Media } from "@/types";
 import { useProductUpload } from "@/hooks/products/useProduct";
@@ -93,20 +91,11 @@ const ImagesProducts = ({
 
         <MediaPicker onSelect={(files) => setMedias(files)} />
 
-        <div className="w-full flex items-center animate-pulse text-right mt-3">
-          <Alert
-            className="h-[40px] flex items-center p-0 bg-transparent"
-            variant="flat"
-            radius="full"
-            color="secondary"
-            dir="rtl"
-            title={
-              <p className="text-[10px] xs:text-[12px]" dir="rtl">
-                حداکثر حجم فایل تصویر 5.5 و ویدئو 50MB است. برای هر محصول 20
-                تصویر و 5 ویدئو میتوانید بارگذاری کنید.
-              </p>
-            }
-          />
+        <div className="w-full flex items-center mt-4">
+          <p className="text-[12px] text-orange-700 animate-pulse">
+            حداکثر حجم فایل تصویر 5.5 و ویدئو 50MB است. برای هر محصول 20 تصویر و
+            5 ویدئو میتوانید بارگذاری کنید.
+          </p>
         </div>
       </CardBody>
       {medias.length ? (

@@ -64,6 +64,8 @@ const ProductInitialForm = () => {
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
   //
+  const [step, setStep] = useState<"edit" | "new">(editId ? "edit" : "new");
+  const [continueSteps, setContinueSteps] = useState(editId ? true : false);
   const [product, setProduct] = useState<Product>(initProduct);
   const [categories, setCategories] = useState<{ id: number; title: string }[]>(
     []
@@ -284,7 +286,7 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        <Card className={cardStyle}>
+        <Card className={`${cardStyle} ${step === "new" && !continueSteps ? "hidden" : ""}`}>
           <BoxHeader
             title="اطلاعات تکمیلی محصول"
             color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
@@ -417,14 +419,41 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        <Button
-          color="success"
-          className="text-white"
-          onPress={handleChangeProduct}
-          isDisabled={isDisabled}
-        >
-          ثبت تغیرات
-        </Button>
+        {step === "new" && !isDisabled && !continueSteps ? (
+          <div className="flex gap-4">
+            <Button
+              color="success"
+              className="text-white"
+              onPress={handleChangeProduct}
+            >
+              ثبت حداقلی
+            </Button>
+            <Button
+              color="success"
+              className="text-white"
+              onPress={() => setContinueSteps(true)}
+            >
+              ثبت و ادامهٔ تکمیل
+            </Button>
+          </div>
+        ) : step === "new" && isDisabled && !continueSteps ? (
+          <Button
+            color="success"
+            className="text-white"
+            isDisabled={isDisabled}
+          >
+            ثبت حداقلی
+          </Button>
+        ) : (
+          <Button
+            color="success"
+            className="text-white"
+            isDisabled={isDisabled}
+            onPress={handleChangeProduct}
+          >
+            ثبت تغیرات
+          </Button>
+        )}
       </section>
       <AddNewCategoryModal
         isOpen={isOpenCategory}

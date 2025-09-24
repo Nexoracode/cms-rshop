@@ -72,31 +72,32 @@ const PriceWithDiscountInput: FC<Props> = ({
         )}
       </div>
 
-      <LabeledNumberWithUnitInput
-        label="تخفیف"
-        placeholder="10"
-        value={discountValue}
-        onValueChange={(val) => {
-          setDiscountValue(val ?? 0);
-          onDiscountChange(discountType, val ?? 0);
-        }}
-        selectedKey={discountType}
-        onSelectChange={(val) => {
-          setDiscountType(val as DiscountType);
-          onDiscountChange(val as DiscountType, discountValue);
-        }}
-        options={[
-          { key: "percent", title: "درصد" },
-          { key: "amount", title: "مبلغ ثابت" },
-        ]}
-        style="w-full"
-      />
+      <div className="flex flex-col gap-2 w-full">
+        <LabeledNumberWithUnitInput
+          label="تخفیف"
+          placeholder="10"
+          value={discountValue}
+          onValueChange={(val) => {
+            setDiscountValue(val ?? 0);
+            onDiscountChange(discountType, val ?? 0);
+          }}
+          selectedKey={discountType}
+          onSelectChange={(val) => {
+            setDiscountType(val as DiscountType);
+            onDiscountChange(val as DiscountType, discountValue);
+          }}
+          options={[
+            { key: "percent", title: "درصد" },
+            { key: "amount", title: "مبلغ ثابت" },
+          ]}
+        />
 
-      {!price && (
-        <p className="text-gray-500 text-[13px]">
-          برای تعریف تخفیف ابتدا قیمت را وارد کنید.
-        </p>
-      )}
+        {!price || price !== 0 && (
+          <p className="text-gray-500 text-[12px]">
+            برای تعریف تخفیف ابتدا قیمت را وارد کنید.
+          </p>
+        )}
+      </div>
     </div>
   );
 };
