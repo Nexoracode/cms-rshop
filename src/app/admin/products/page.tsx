@@ -258,11 +258,8 @@ const Products = () => {
             )}
           </CardBody>
         </Card>
-        {products?.data?.items?.length > 10 ? (
-          <AppPagination meta={products?.data.meta} />
-        ) : (
-          ""
-        )}
+
+        <AppPagination meta={products?.data.meta} />
       </section>
       {/* Modals */}
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />

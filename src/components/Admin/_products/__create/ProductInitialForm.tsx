@@ -90,18 +90,19 @@ const ProductInitialForm = () => {
   );
   //
 
-  const isDisabled =
-    !(product.media_ids?.length > 0) ||
-    !(
+  const isDisabled = useMemo(() => {
+    return !(
+      product.media_ids?.length > 0 &&
       product.media_pinned_id &&
-      product.media_ids?.includes(product.media_pinned_id)
-    ) ||
-    !product.name?.trim().length ||
-    !(+product.price > 0) ||
-    !(+product.category_id > 0) ||
-    !(+product.weight > 0) ||
-    !product.description?.trim().length ||
-    !product.brand_id;
+      product.media_ids.includes(product.media_pinned_id) &&
+      product.name?.trim().length &&
+      +product.price > 0 &&
+      +product.category_id > 0 &&
+      +product.weight > 0 &&
+      product.description?.trim().length &&
+      product.brand_id
+    );
+  }, [product]);
 
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
@@ -286,7 +287,11 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        <Card className={`${cardStyle} ${step === "new" && !continueSteps ? "hidden" : ""}`}>
+        <Card
+          className={`${cardStyle} ${
+            step === "new" && !continueSteps ? "hidden" : ""
+          }`}
+        >
           <BoxHeader
             title="اطلاعات تکمیلی محصول"
             color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
@@ -419,39 +424,37 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        {step === "new" && !isDisabled && !continueSteps ? (
-          <div className="flex gap-4">
+        {step === "new" && !continueSteps ? (
+          // مرحله‌ی اول (کلیدی)
+          <div className="flex gap-4 w-full">
+            <Button
+              className="w-full"
+              color="primary"
+              variant="flat"
+              isDisabled={isDisabled}
+              onPress={() => setContinueSteps(true)} // فقط ادامه، بدون ثبت
+              title="بعد از تکمیل فیلدهای ضروری می‌تونی ادامه بدی"
+            >
+              ثبت و ادامهٔ تکمیل
+            </Button>
             <Button
               color="success"
-              className="text-white"
+              className="text-white w-full"
+              isDisabled={isDisabled}
               onPress={handleChangeProduct}
             >
               ثبت حداقلی
             </Button>
-            <Button
-              color="success"
-              className="text-white"
-              onPress={() => setContinueSteps(true)}
-            >
-              ثبت و ادامهٔ تکمیل
-            </Button>
           </div>
-        ) : step === "new" && isDisabled && !continueSteps ? (
-          <Button
-            color="success"
-            className="text-white"
-            isDisabled={isDisabled}
-          >
-            ثبت حداقلی
-          </Button>
         ) : (
+          // مرحله‌ی دوم (تکمیلی) یا حالت ویرایش
           <Button
             color="success"
             className="text-white"
             isDisabled={isDisabled}
             onPress={handleChangeProduct}
           >
-            ثبت تغیرات
+            ثبت تغییرات
           </Button>
         )}
       </section>
