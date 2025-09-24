@@ -264,7 +264,7 @@ const ProductInitialForm = () => {
               label="وزن"
               value={product.weight}
               onValueChange={(val) =>
-                setProduct((prev) => ({ ...prev, weight: +val }))
+                setProduct((prev) => ({ ...prev, weight: val ?? 0 }))
               }
               selectedKey={product.weight_unit}
               onSelectChange={(val) =>

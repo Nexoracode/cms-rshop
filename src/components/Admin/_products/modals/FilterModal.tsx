@@ -350,7 +350,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                   updateFilter("discountMin", val === undefined ? "" : val)
                 }
                 selectedKey={filters.discountType}
-                onSelectChange={(val: "percent" | "amount") =>
+                onSelectChange={(val: any) =>
                   updateFilter("discountType", val)
                 }
                 options={[
@@ -369,7 +369,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                   updateFilter("discountMax", val === undefined ? "" : val)
                 }
                 selectedKey={filters.discountType}
-                onSelectChange={(val: "percent" | "amount") =>
+                onSelectChange={(val: any) =>
                   updateFilter("discountType", val)
                 }
                 options={[

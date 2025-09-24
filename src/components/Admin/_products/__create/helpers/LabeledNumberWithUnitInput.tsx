@@ -3,10 +3,8 @@
 import { FC } from "react";
 import { NumberInput, Select, SelectItem } from "@heroui/react";
 
-type DiscountKey = "percent" | "amount";
-
 type Option = {
-  key: DiscountKey;
+  key: string;    // ← آزاد (نه DiscountKey)
   title: string;
 };
 
@@ -15,8 +13,8 @@ type Props = {
   placeholder?: string;
   value?: number;                                // ← می‌تواند undefined باشد
   onValueChange: (val: number | undefined) => void;
-  selectedKey: DiscountKey;
-  onSelectChange: (val: DiscountKey) => void;
+  selectedKey: string;                           // ← آزاد
+  onSelectChange: (val: string) => void;         // ← آزاد
   options: Option[];
 };
 
@@ -38,15 +36,11 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
         minValue={0}
         value={value}
         onValueChange={(val: any) => {
-          // val ممکن است string یا number یا undefined باشد
-          if (typeof val === "number") {
-            onValueChange(val);
-          } else if (typeof val === "string") {
+          if (typeof val === "number") onValueChange(val);
+          else if (typeof val === "string") {
             const trimmed = val.trim();
             onValueChange(trimmed === "" ? undefined : Number(trimmed));
-          } else {
-            onValueChange(undefined);
-          }
+          } else onValueChange(undefined);
         }}
         labelPlacement="outside"
         endContent={
@@ -57,7 +51,7 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
               aria-label="select"
               placeholder="مقداری را وارد کنید"
               selectedKeys={[selectedKey]}
-              onChange={(e) => onSelectChange(e.target.value as DiscountKey)}
+              onChange={(e) => onSelectChange(e.target.value)}
             >
               {options.length ? (
                 options.map((opt) => (
