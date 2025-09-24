@@ -17,7 +17,7 @@ import { LuScrollText, LuTextCursorInput } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import PriceWithDiscountInput from "./helpers/PriceWithDiscountInput";
 import SelectWithAddButton from "./helpers/SelectWithAddButton";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Product } from "../types/create-product";
 import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
@@ -87,6 +87,20 @@ const ProductInitialForm = () => {
     editId ? +editId : undefined
   );
   //
+
+  const isDisabled =
+    !(product.media_ids?.length > 0) ||
+    !(
+      product.media_pinned_id &&
+      product.media_ids?.includes(product.media_pinned_id)
+    ) ||
+    !product.name?.trim().length ||
+    !(+product.price > 0) ||
+    !(+product.category_id > 0) ||
+    !(+product.weight > 0) ||
+    !product.description?.trim().length ||
+    !product.brand_id;
+
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
   const headerStyle = "bg-black text-white";
@@ -173,8 +187,8 @@ const ProductInitialForm = () => {
         />
         <Card className={cardStyle}>
           <BoxHeader
-            title="اطلاعات اولیه محصول"
-            color={headerStyle}
+            title="اطلاعات کلیدی ( پایه )"
+            color="text-white bg-gradient-to-r from-slate-800 via-slate-500 to-slate-800"
             icon={<LuTextCursorInput className="text-3xl" />}
           />
           <CardBody className={cardBodyStyle}>
@@ -208,30 +222,6 @@ const ProductInitialForm = () => {
               }
             />
 
-            <ToggleableSection
-              label="موجودی نامحدود"
-              onOptionalToggle={(checked) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  is_limited_stock: checked,
-                  stock: checked ? 0 : +product.stock,
-                }))
-              }
-              isChecked={product.is_limited_stock}
-            >
-              <NumberInput
-                label="موجودی"
-                placeholder="1"
-                minValue={0}
-                isRequired
-                value={product.stock}
-                onValueChange={(val) =>
-                  setProduct((prev) => ({ ...prev, stock: +val }))
-                }
-                labelPlacement="outside"
-              />
-            </ToggleableSection>
-
             <SelectWithAddButton
               label="دسته بندی"
               placeholder="دسته بندی مورد نظر را انتخاب کنید"
@@ -243,24 +233,27 @@ const ProductInitialForm = () => {
               onAddNewClick={onOpenCategory}
             />
 
-            <Checkbox
-              isSelected={product.is_featured}
-              onValueChange={(is_featured) =>
-                setProduct((prev) => ({ ...prev, is_featured }))
+            <SelectWithAddButton
+              label="برند"
+              placeholder="برند مورد نظر را انتخاب کنید"
+              options={
+                allBrands?.data?.map((brand: any) => ({
+                  id: brand.id,
+                  title: brand.name,
+                })) ?? []
               }
-            >
-              <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
-            </Checkbox>
-          </CardBody>
-        </Card>
-        <Card className={cardStyle}>
-          <BoxHeader
-            title="اطلاعات میانی محصول"
-            color={headerStyle}
-            icon={<FiShoppingBag className="text-3xl" />}
-          />
-          <CardBody className={cardBodyStyle}>
+              selectedId={product.brand_id ?? 0}
+              onChange={(id) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  brand_id: +id,
+                }))
+              }
+              onAddNewClick={onOpenBrand}
+            />
+
             <LabeledNumberWithUnitInput
+              isRequired
               label="وزن"
               value={product.weight}
               onValueChange={(val) =>
@@ -275,6 +268,29 @@ const ProductInitialForm = () => {
                 { key: "کیلوگرم", title: "کیلوگرم" },
               ]}
             />
+
+            <Textarea
+              isRequired
+              placeholder="توضیحات را وارد نمایید"
+              labelPlacement="outside"
+              label="توضیحات"
+              value={product.description ?? ""}
+              onChange={(e) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+            />
+          </CardBody>
+        </Card>
+        <Card className={cardStyle}>
+          <BoxHeader
+            title="اطلاعات میانی محصول"
+            color={headerStyle}
+            icon={<FiShoppingBag className="text-3xl" />}
+          />
+          <CardBody className={cardBodyStyle}>
             <ShippingModeSwitcher
               defaultMood={product.requires_preparation ? "mood2" : "mood1"}
               onChangeType={(type) =>
@@ -313,6 +329,37 @@ const ProductInitialForm = () => {
                 </small>
               }
             />
+            <ToggleableSection
+              label="موجودی نامحدود"
+              onOptionalToggle={(checked) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  is_limited_stock: checked,
+                  stock: checked ? 0 : +product.stock,
+                }))
+              }
+              isChecked={product.is_limited_stock}
+            >
+              <NumberInput
+                label="موجودی"
+                placeholder="1"
+                minValue={0}
+                value={product.stock}
+                onValueChange={(val) =>
+                  setProduct((prev) => ({ ...prev, stock: +val }))
+                }
+                labelPlacement="outside"
+              />
+            </ToggleableSection>
+
+            <Checkbox
+              isSelected={product.is_featured}
+              onValueChange={(is_featured) =>
+                setProduct((prev) => ({ ...prev, is_featured }))
+              }
+            >
+              <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
+            </Checkbox>
           </CardBody>
         </Card>
         <Card className={cardStyle}>
@@ -322,19 +369,6 @@ const ProductInitialForm = () => {
             icon={<LuScrollText className="text-3xl" />}
           />
           <CardBody className={cardBodyStyle}>
-            <Textarea
-              placeholder="توضیحات را وارد نمایید"
-              labelPlacement="outside"
-              label="توضیحات"
-              value={product.description ?? ""}
-              onChange={(e) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  description: e.target.value,
-                }))
-              }
-            />
-
             <Select
               dir="rtl"
               labelPlacement="outside"
@@ -383,25 +417,6 @@ const ProductInitialForm = () => {
               />
             </OrderLimitSwitcher>
 
-            <SelectWithAddButton
-              label="برند"
-              placeholder="برند مورد نظر را انتخاب کنید"
-              options={
-                allBrands?.data?.map((brand: any) => ({
-                  id: brand.id,
-                  title: brand.name,
-                })) ?? []
-              }
-              selectedId={product.brand_id ?? 0}
-              onChange={(id) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  brand_id: +id,
-                }))
-              }
-              onAddNewClick={onOpenBrand}
-            />
-
             <SizeGuide
               onHelperId={(id) => {
                 setProduct((prev) => ({ ...prev, helper_id: id }));
@@ -414,6 +429,7 @@ const ProductInitialForm = () => {
           color="success"
           className="text-white"
           onPress={handleChangeProduct}
+          isDisabled={isDisabled}
         >
           ثبت تغیرات
         </Button>
