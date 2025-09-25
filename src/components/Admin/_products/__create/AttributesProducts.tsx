@@ -8,7 +8,11 @@ import {
   Tabs,
   useDisclosure,
 } from "@heroui/react";
-import { TbCategory2, TbSortAscendingSmallBig, TbSortDescendingShapes } from "react-icons/tb";
+import {
+  TbCategory2,
+  TbSortAscendingSmallBig,
+  TbSortDescendingShapes,
+} from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
@@ -95,7 +99,7 @@ const AttributesProducts = () => {
               key="variants"
               title={
                 <div className="flex justify-center items-center gap-2">
-                  <MdOutlineCategory className="text-xl"/>
+                  <MdOutlineCategory className="text-xl" />
                   <span>لیست متغیرها</span>
                 </div>
               }
@@ -104,7 +108,7 @@ const AttributesProducts = () => {
               key="sort-variants"
               title={
                 <div className="flex justify-center items-center gap-2">
-                  <TbSortDescendingShapes className="text-xl"/>
+                  <TbSortDescendingShapes className="text-xl" />
                   <span>مرتب سازی متغیرها</span>
                 </div>
               }
@@ -113,7 +117,7 @@ const AttributesProducts = () => {
               key="attributes"
               title={
                 <div className="flex justify-center items-center gap-2">
-                  <BiCategoryAlt className="text-xl"/>
+                  <BiCategoryAlt className="text-xl" />
                   <span>لیست ویژگی ها</span>
                 </div>
               }
@@ -122,45 +126,14 @@ const AttributesProducts = () => {
               key="sort-attributes"
               title={
                 <div className="flex justify-center items-center gap-2">
-                  <TbSortAscendingSmallBig className="text-xl"/>
+                  <TbSortAscendingSmallBig className="text-xl" />
                   <span>مرتب سازی ویژگی ها</span>
                 </div>
               }
             />
           </Tabs>
 
-          <SectionCard
-            show={!productData?.data?.attribute_nodes?.length}
-            title="مرتب سازی متغیرها"
-            empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
-          >
-            {productData?.data?.attribute_nodes?.length ? (
-              <SortableAttributeNodes
-                attributeNodes={productData.data.attribute_nodes}
-              />
-            ) : (
-              ""
-            )}
-          </SectionCard>
-
-          <SectionCard
-            show={!productData?.data?.specifications?.length}
-            title="مرتب سازی ویژگی ها"
-            empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
-          >
-            {productData?.data?.specifications?.length ? (
-              <div>
-                <SpecTree specs={productData?.data?.specifications} />
-
-                <SortableAttributeNodes
-                  attributeNodes={productData.data.specifications}
-                />
-              </div>
-            ) : (
-              ""
-            )}
-          </SectionCard>
-
+          {/* لیست متغیرها */}
           <SectionCard
             title="ویژگی های متغیر"
             show={!productData?.data?.variants?.length}
@@ -181,6 +154,39 @@ const AttributesProducts = () => {
                   ))
                 : ""}
             </div>
+          </SectionCard>
+
+          {/* مرتب سازی متغیرها */}
+          <SectionCard
+            show={!productData?.data?.attribute_nodes?.length}
+            title="مرتب سازی متغیرها"
+            empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+          >
+            {productData?.data?.attribute_nodes?.length ? (
+              <SortableAttributeNodes
+                attributeNodes={productData.data.attribute_nodes}
+              />
+            ) : (
+              ""
+            )}
+          </SectionCard>
+
+          {/* لیست ویژگی ها */}
+          <SpecTree specs={productData?.data?.specifications} />
+
+          {/* مرتب سازی ویژگی ها */}
+          <SectionCard
+            show={!productData?.data?.specifications?.length}
+            title="مرتب سازی ویژگی ها"
+            empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
+          >
+            {productData?.data?.specifications?.length ? (
+              <SortableAttributeNodes
+                attributeNodes={productData.data.specifications}
+              />
+            ) : (
+              ""
+            )}
           </SectionCard>
 
           {productData?.data?.variants.length || variants.length ? (
