@@ -84,7 +84,9 @@
 
 /* کارت‌ها و افکت‌ها */
 .tree li a {
-  box-shadow: 0 0 10px lightgray;
+  box-shadow: 0 0 8px lightgray;
+  background-color: white;
+  z-index: 10;
   padding: .5em .75em !important;
   text-decoration: none !important;
   display: inline-block !important;
@@ -97,14 +99,5 @@
 
 .tree li a:hover,
 .tree li a:hover + ul li a {
-  background: rgb(227, 227, 227) !important;
-  box-shadow: 0 0 0px lightgray;
   transform: scale(1.1);
-}
-
-.tree li a:hover + ul li::after,
-.tree li a:hover + ul li::before,
-.tree li a:hover + ul::before,
-.tree li a:hover + ul ul::before {
-  border-color: gray !important;
 }

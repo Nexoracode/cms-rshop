@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import toast from "react-hot-toast";
 import SectionCard from "./helpers/SectionCard";
+import SpecTree from "./helpers/SpecTree";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -74,51 +75,6 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          <div className="tree" dir="ltr">
-            <ul>
-              <li>
-                <a href="#">Parent</a>
-                <ul>
-                  <li>
-                    <a href="#">Child</a>
-                    <ul>
-                      <li>
-                        <a href="#">Grand Child</a>
-                      </li>
-                      <li>
-                        <a href="#">Grand Child</a>
-                        <ul>
-                          <li>
-                            <a href="#">Grand Child</a>
-                          </li>
-                          <li>
-                            <a href="#">Grand Child</a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="#">Child</a>
-                    <ul>
-                      <li>
-                        <a href="#">Grand Child</a>
-                        <ul>
-                          <li>
-                            <a href="#">Grand Grand Child</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#">Grand Child</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
             title="مرتب سازی متغیرها"
@@ -134,14 +90,18 @@ const AttributesProducts = () => {
           </SectionCard>
 
           <SectionCard
-            show={!productData?.data?.attribute_nodes?.length}
+            show={!productData?.data?.specifications?.length}
             title="مرتب سازی ویژگی ها"
             empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
           >
             {productData?.data?.specifications?.length ? (
-              <SortableAttributeNodes
-                attributeNodes={productData.data.specifications}
-              />
+              <div>
+                <SpecTree specs={productData?.data?.specifications} />
+
+                <SortableAttributeNodes
+                  attributeNodes={productData.data.specifications}
+                />
+              </div>
             ) : (
               ""
             )}
