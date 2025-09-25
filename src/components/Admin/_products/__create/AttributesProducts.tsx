@@ -74,6 +74,51 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
+          <div className="tree" dir="ltr">
+            <ul>
+              <li>
+                <a href="#">Parent</a>
+                <ul>
+                  <li>
+                    <a href="#">Child</a>
+                    <ul>
+                      <li>
+                        <a href="#">Grand Child</a>
+                      </li>
+                      <li>
+                        <a href="#">Grand Child</a>
+                        <ul>
+                          <li>
+                            <a href="#">Grand Child</a>
+                          </li>
+                          <li>
+                            <a href="#">Grand Child</a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#">Child</a>
+                    <ul>
+                      <li>
+                        <a href="#">Grand Child</a>
+                        <ul>
+                          <li>
+                            <a href="#">Grand Grand Child</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a href="#">Grand Child</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
             title="مرتب سازی متغیرها"
@@ -87,7 +132,7 @@ const AttributesProducts = () => {
               ""
             )}
           </SectionCard>
-          
+
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
             title="مرتب سازی ویژگی ها"

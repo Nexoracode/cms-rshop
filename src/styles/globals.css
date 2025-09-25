@@ -1,4 +1,5 @@
 @import "./packages.css";
+@import "./tree.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,9 +19,8 @@
     @apply !bg-gray-100
   }
 
-  * {
-    direction: rtl
-  }
+ :where(*):not(.ltr, .ltr *) { direction: rtl; }
+
 
   body {
     @apply max-w-[1080px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans] bg-gray-100 text-sm;
