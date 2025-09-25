@@ -1,5 +1,4 @@
 .tree {
-  background-color: white !important;
   border-radius: 10px !important;
   padding: 4px !important;
   direction: rtl !important; /* ← RTL */
@@ -84,8 +83,7 @@
 
 /* کارت‌ها و افکت‌ها */
 .tree li a {
-  box-shadow: 0 0 8px lightgray;
-  background-color: white;
+  background-color: rgb(246, 246, 246);
   z-index: 10;
   padding: .5em .75em !important;
   text-decoration: none !important;
@@ -100,5 +98,5 @@
 
 .tree li a:hover,
 .tree li a:hover + ul li a {
-  transform: scale(1.1);
+  transform: scale(1);
 }

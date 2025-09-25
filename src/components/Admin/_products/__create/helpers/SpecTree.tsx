@@ -8,8 +8,13 @@ const SpecTree = ({ specs }: { specs?: any[] }) => {
     o?.title || o?.name || o?.slug || fall;
 
   return (
-    <PanZoom className="my-4 !bg-gradient-to-tr !from-slate-600 !to-neutral-900">
-      <div className="tree" dir="ltr">
+    <PanZoom
+      className="my-4 !rounded-2xl ring-1 ring-white/10
+  bg-[#474747]
+  [background-image:radial-gradient(#ffffff22_1px,transparent_2px)]
+  [background-size:16px_16px]"
+    >
+      <div className="tree !bg-transparent" dir="ltr">
         <ul>
           {(specs || []).map((group: any) => (
             <li key={`g-${group.id}`}>
