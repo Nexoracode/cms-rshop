@@ -85,7 +85,7 @@
 .tree li a {
   background-color: rgb(246, 246, 246);
   z-index: 10;
-  padding: .5em .75em !important;
+  padding: .4rem .8rem !important;
   text-decoration: none !important;
   display: inline-block !important;
   border-radius: 8px !important;
