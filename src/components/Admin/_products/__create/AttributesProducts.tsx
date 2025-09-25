@@ -1,7 +1,14 @@
 "use client";
 
-import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
-import { TbCategory2 } from "react-icons/tb";
+import {
+  Button,
+  Card,
+  CardBody,
+  Tab,
+  Tabs,
+  useDisclosure,
+} from "@heroui/react";
+import { TbCategory2, TbSortAscendingSmallBig, TbSortDescendingShapes } from "react-icons/tb";
 import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
@@ -20,6 +27,8 @@ import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import toast from "react-hot-toast";
 import SectionCard from "./helpers/SectionCard";
 import SpecTree from "./helpers/SpecTree";
+import { MdOutlineCategory } from "react-icons/md";
+import { BiCategoryAlt } from "react-icons/bi";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -74,6 +83,51 @@ const AttributesProducts = () => {
             textBtn={"+ افزودن ویژگی"}
             onPress={onOpen}
           />
+
+          <Tabs
+            aria-label="Options"
+            color="secondary"
+            variant="bordered"
+            fullWidth
+            className="w-full"
+          >
+            <Tab
+              key="variants"
+              title={
+                <div className="flex justify-center items-center gap-2">
+                  <MdOutlineCategory className="text-xl"/>
+                  <span>لیست متغیرها</span>
+                </div>
+              }
+            />
+            <Tab
+              key="sort-variants"
+              title={
+                <div className="flex justify-center items-center gap-2">
+                  <TbSortDescendingShapes className="text-xl"/>
+                  <span>مرتب سازی متغیرها</span>
+                </div>
+              }
+            />
+            <Tab
+              key="attributes"
+              title={
+                <div className="flex justify-center items-center gap-2">
+                  <BiCategoryAlt className="text-xl"/>
+                  <span>لیست ویژگی ها</span>
+                </div>
+              }
+            />
+            <Tab
+              key="sort-attributes"
+              title={
+                <div className="flex justify-center items-center gap-2">
+                  <TbSortAscendingSmallBig className="text-xl"/>
+                  <span>مرتب سازی ویژگی ها</span>
+                </div>
+              }
+            />
+          </Tabs>
 
           <SectionCard
             show={!productData?.data?.attribute_nodes?.length}
