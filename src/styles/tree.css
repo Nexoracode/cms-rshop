@@ -94,6 +94,7 @@
   color: #333 !important;
   position: relative !important;
   top: 1px !important;
+  user-select: none;
   transition: all .3s;
 }
 
