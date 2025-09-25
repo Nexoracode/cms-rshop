@@ -88,13 +88,15 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
+          {/* تب‌ها + محتوای هر تب داخل خودش */}
           <Tabs
-            aria-label="Options"
+            aria-label="options"
             color="secondary"
             variant="bordered"
             fullWidth
             className="w-full"
           >
+            {/* تب 1: لیست متغیرها */}
             <Tab
               key="variants"
               title={
@@ -103,7 +105,41 @@ const AttributesProducts = () => {
                   <span>لیست متغیرها</span>
                 </div>
               }
-            />
+            >
+              <SectionCard
+                title="لیست متغیرها"
+                show={!productData?.data?.variants?.length}
+                empty="هنوز متغیری انتخاب نکرده اید!!"
+              >
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  {productData?.data?.variants?.length
+                    ? productData.data.variants.map((variant: any) => (
+                        <VariantRowEditor
+                          key={variant.id}
+                          variantName={variant?.name}
+                          onHandleSubmit={(data) =>
+                            setVariants((prev) => replaceOrAddById(prev, data))
+                          }
+                          onRemove={(id) => deleteVariant(id)}
+                          defaultValues={variant}
+                        />
+                      ))
+                    : null}
+                </div>
+
+                {productData?.data?.variants?.length || variants.length ? (
+                  <Button
+                    color="success"
+                    className="mt-4 text-white"
+                    onPress={updateVariantProduct}
+                  >
+                    ثبت تغیرات ویژگی ها
+                  </Button>
+                ) : null}
+              </SectionCard>
+            </Tab>
+
+            {/* تب 2: مرتب‌سازی متغیرها */}
             <Tab
               key="sort-variants"
               title={
@@ -112,7 +148,21 @@ const AttributesProducts = () => {
                   <span>مرتب سازی متغیرها</span>
                 </div>
               }
-            />
+            >
+              <SectionCard
+                show={!productData?.data?.attribute_nodes?.length}
+                title="مرتب سازی متغیرها"
+                empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+              >
+                {productData?.data?.attribute_nodes?.length ? (
+                  <SortableAttributeNodes
+                    attributeNodes={productData.data.attribute_nodes}
+                  />
+                ) : null}
+              </SectionCard>
+            </Tab>
+
+            {/* تب 3: لیست ویژگی‌ها (specifications tree) */}
             <Tab
               key="attributes"
               title={
@@ -121,7 +171,11 @@ const AttributesProducts = () => {
                   <span>لیست ویژگی ها</span>
                 </div>
               }
-            />
+            >
+              <SpecTree specs={productData?.data?.specifications} />
+            </Tab>
+
+            {/* تب 4: مرتب‌سازی ویژگی‌ها */}
             <Tab
               key="sort-attributes"
               title={
@@ -130,76 +184,20 @@ const AttributesProducts = () => {
                   <span>مرتب سازی ویژگی ها</span>
                 </div>
               }
-            />
-          </Tabs>
-
-          {/* لیست متغیرها */}
-          <SectionCard
-            title="ویژگی های متغیر"
-            show={!productData?.data?.variants?.length}
-            empty="هنوز متغیری انتخاب نکرده اید!!"
-          >
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {productData?.data?.variants?.length
-                ? productData.data.variants.map((variant: any) => (
-                    <VariantRowEditor
-                      key={variant.id}
-                      variantName={variant?.name}
-                      onHandleSubmit={(data) =>
-                        setVariants((prev) => replaceOrAddById(prev, data))
-                      }
-                      onRemove={(id) => deleteVariant(id)}
-                      defaultValues={variant}
-                    />
-                  ))
-                : ""}
-            </div>
-          </SectionCard>
-
-          {/* مرتب سازی متغیرها */}
-          <SectionCard
-            show={!productData?.data?.attribute_nodes?.length}
-            title="مرتب سازی متغیرها"
-            empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
-          >
-            {productData?.data?.attribute_nodes?.length ? (
-              <SortableAttributeNodes
-                attributeNodes={productData.data.attribute_nodes}
-              />
-            ) : (
-              ""
-            )}
-          </SectionCard>
-
-          {/* لیست ویژگی ها */}
-          <SpecTree specs={productData?.data?.specifications} />
-
-          {/* مرتب سازی ویژگی ها */}
-          <SectionCard
-            show={!productData?.data?.specifications?.length}
-            title="مرتب سازی ویژگی ها"
-            empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
-          >
-            {productData?.data?.specifications?.length ? (
-              <SortableAttributeNodes
-                attributeNodes={productData.data.specifications}
-              />
-            ) : (
-              ""
-            )}
-          </SectionCard>
-
-          {productData?.data?.variants.length || variants.length ? (
-            <Button
-              color="success"
-              className="text-white"
-              onPress={updateVariantProduct}
             >
-              ثبت تغیرات ویژگی ها
-            </Button>
-          ) : (
-            ""
-          )}
+              <SectionCard
+                show={!productData?.data?.specifications?.length}
+                title="مرتب سازی ویژگی ها"
+                empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
+              >
+                {productData?.data?.specifications?.length ? (
+                  <SortableAttributeNodes
+                    attributeNodes={productData.data.specifications}
+                  />
+                ) : null}
+              </SectionCard>
+            </Tab>
+          </Tabs>
         </CardBody>
       </Card>
 
