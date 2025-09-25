@@ -21,7 +21,7 @@ import {
   useDeleteVariant,
   useUpdateVariantProduct,
 } from "@/hooks/attributes/useVariantProduct";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
@@ -36,11 +36,16 @@ import { BiCategoryAlt } from "react-icons/bi";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { page } = usePaginationParams("edit_id");
   const { setAttrInfos } = useAttributeContext();
   const [variants, setVariants] = useState<any[]>([]);
   ///
+  const [activeTab, setActiveTab] = useState<string>(
+    searchParams.get("tab") ?? "variants"
+  );
   //? Api Calls
   const { data: productData } = useGetOneProduct(page);
   const { mutate: deleteVariant } = useDeleteVariant();
@@ -88,13 +93,22 @@ const AttributesProducts = () => {
             onPress={onOpen}
           />
 
-          {/* تب‌ها + محتوای هر تب داخل خودش */}
           <Tabs
             aria-label="options"
             color="secondary"
             variant="bordered"
             fullWidth
             className="w-full"
+            selectedKey={activeTab}
+            onSelectionChange={(key) => {
+              const k = String(key);
+              setActiveTab(k);
+              const params = new URLSearchParams(searchParams.toString()); // ← کپی قابل‌نوشتن
+              params.set("tab", k);
+              router.replace(`${pathname}?${params.toString()}`, {
+                scroll: false,
+              });
+            }}
           >
             {/* تب 1: لیست متغیرها */}
             <Tab

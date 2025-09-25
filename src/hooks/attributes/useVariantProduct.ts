@@ -73,4 +73,29 @@ export const useDeleteAttributeNode = () => {
   });
 };
 
+export const useDeleteAttributeNodeSimple = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      productId,
+      attributeId,
+      valueId,
+    }: {
+      productId: number;
+      attributeId: number;
+      valueId: number;
+    }) =>
+      fetcher({
+        route: `/product-attributes/product/${productId}/attributes/${attributeId}/values/${valueId}`,
+        method: "DELETE",
+        successText: "با موفقیت حذف شد",
+        loadingText: "در حال حذف...",
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+    },
+  });
+};
+
 /* 🎭 Variant Products End */

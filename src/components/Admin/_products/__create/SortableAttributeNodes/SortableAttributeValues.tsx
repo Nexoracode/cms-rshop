@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import { Attribute } from "../attribute-tree ";
 import { useReorderAttributeValue } from "@/hooks/attributes/useAttributeValue";
 import { handleDropHelper } from "./handleDropHelper";
-import { useDeleteAttributeNode } from "@/hooks/attributes/useVariantProduct";
+import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/hooks/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
 import { TiDeleteOutline } from "react-icons/ti";
+import toast from "react-hot-toast";
 
 type Props = {
   attribute: Attribute;
@@ -17,6 +18,7 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const reorderValue = useReorderAttributeValue();
   const deleteAttributeNode = useDeleteAttributeNode();
+  const deleteAttributeNodeSimple = useDeleteAttributeNodeSimple();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -36,10 +38,32 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
     );
   };
 
+  const handleDeleteNode = (id: number) => {
+    const tab = searchParams.get("tab");
+    if (!tab) {
+      toast.error("تب فعالی جهت پاک کردن این فرزند وجود ندارد");
+      return;
+    }
+
+    if (tab === "sort-variants") handleDeleteAttributeNode(id);
+    else if (tab === "sort-attributes") handleDeleteAttributeNodeSimple(id);
+    else toast.error("تب فعالی جهت پاک کردن این فرزند وجود ندارد");
+  };
+
   const handleDeleteAttributeNode = (valId: number) => {
     const productId = searchParams.get("edit_id");
     if (!productId) return;
     deleteAttributeNode.mutate({
+      attributeId: attribute.id,
+      productId: +productId,
+      valueId: valId,
+    });
+  };
+
+  const handleDeleteAttributeNodeSimple = (valId: number) => {
+    const productId = searchParams.get("edit_id");
+    if (!productId) return;
+    deleteAttributeNodeSimple.mutate({
       attributeId: attribute.id,
       productId: +productId,
       valueId: valId,
@@ -78,7 +102,7 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
             <div>
               <TiDeleteOutline
                 className="cursor-pointer text-3xl bg-red-50 rounded-xl transition-all hover:scale-110 p-1 text-red-500"
-                onClick={() => handleDeleteAttributeNode(val.id)}
+                onClick={() => handleDeleteNode(val.id)}
               />
             </div>
           </div>
