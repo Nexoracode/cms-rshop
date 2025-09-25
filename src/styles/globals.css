@@ -18,6 +18,7 @@
   html {
     @apply !bg-gray-100;
     scrollbar-gutter: stable both-edges;
+    scroll-behavior: smooth;
   }
 
  :where(*):not(.ltr, .ltr *) { direction: rtl; }
