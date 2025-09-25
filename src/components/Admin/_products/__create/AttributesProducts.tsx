@@ -172,7 +172,13 @@ const AttributesProducts = () => {
                 </div>
               }
             >
-              <SpecTree specs={productData?.data?.specifications} />
+              <SectionCard
+                title="لیست ویژگی ها"
+                show={!productData?.data?.specifications?.length}
+                empty="هنوز ویژگی انتخاب نکرده اید!!"
+              >
+                <SpecTree specs={productData?.data?.specifications} />
+              </SectionCard>
             </Tab>
 
             {/* تب 4: مرتب‌سازی ویژگی‌ها */}
