@@ -463,7 +463,7 @@ const ProductInitialForm = () => {
       <AddNewCategoryModal
         isOpen={isOpenCategory}
         onOpenChange={onOpenChangeCategory}
-        onCategoryPayload={(cats) => setCategories(cats)}
+        onSelected={(id) => console.log(id)}
       />
       <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>
