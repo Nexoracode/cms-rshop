@@ -107,8 +107,7 @@ export const useProductUpload = () => {
         route: "/product/upload",
         method: "POST",
         body: data,
-        successText: "فایل ها با موفقیت بارگذاری شدند",
-        loadingText: "در حال بارگذاری فایل ها",
+        isActiveToast: false
       });
     },
   });

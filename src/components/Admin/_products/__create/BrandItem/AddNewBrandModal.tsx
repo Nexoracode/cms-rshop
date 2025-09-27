@@ -7,6 +7,9 @@ import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { BrandItemProp } from "./type";
 import { useProductUpload } from "@/hooks/products/useProduct";
 import { useCreateBrandItem, useUpdateBrand } from "@/hooks/useBrandItem";
+import ModalHeaderNavigator from "../../ModalHeaderNavigator";
+import { TbBrandArc } from "react-icons/tb";
+import toast from "react-hot-toast";
 
 type Props = {
   isOpen: boolean;
@@ -27,76 +30,93 @@ const AddNewBrandModal: React.FC<Props> = ({
     logo: null,
     ...(defaultValues ? defaultValues : {}),
   });
-  const { mutate: uploadMedias } = useProductUpload();
-  const { mutate: createBrand } = useCreateBrandItem();
-  const { mutate: updateBrand } = useUpdateBrand(brandId || 0);
+  //? Hooks
+  const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
+    useProductUpload();
+  const { mutateAsync: createBrand, isPending: isPendingCreate } =
+    useCreateBrandItem();
+  const { mutateAsync: updateBrand, isPending: isPendingUpdate } =
+    useUpdateBrand(brandId || 0);
 
-  const handleUpload = () => {
+  const isDisabled = !datas.name.trim() || !datas.slug.trim() || !datas.logo;
+
+  const handleCreateNewBrand = async () => {
     if (!datas.logo) return;
-    const formData = new FormData();
-    formData.append("files", datas.logo);
 
-    uploadMedias(formData, {
-      onSuccess: (response) => {
-        const img = response.data[0];
-        if (img) {
-          if (brandId) {
-            updateBrand(
-              { ...datas, logo: img.url },
-              {
-                onSuccess: (response) => {
-                  onOpenChange();
-                },
-              }
-            );
-          } else {
-            createBrand(
-              { ...datas, logo: img.url },
-              {
-                onSuccess: (response) => {
-                  onOpenChange();
-                },
-              }
-            );
-          }
-        }
-      },
-    });
+    try {
+      const formData = new FormData();
+      formData.append("files", datas.logo);
+
+      const response = await uploadMedias(formData);
+      if (!response.ok) return;
+
+      const img = response.data[0];
+      if (!img) return;
+
+      if (brandId) {
+        const updateRes = await updateBrand({ ...datas, logo: img.url });
+        if (!updateRes.ok) return;
+      } else {
+        const createRes = await createBrand({ ...datas, logo: img.url });
+        if (!createRes.ok) return;
+      }
+      //
+      setDatas({ name: "", logo: null, slug: "" });
+      onOpenChange();
+      toast.success(
+        brandId ? "برند با موفقیت بروزرسانی شد" : "برند با موفقیت افزوده شد"
+      );
+    } catch (error) {
+      console.error("خطا:", error);
+      toast.error("خطای ناشناخته. با برنامه نویس تماس بگیرید");
+    }
   };
 
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[700px] w-full">
+    <Modal
+      dir="rtl"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      placement="auto"
+      isDismissable={false}
+      size="xl"
+    >
+      <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader>
-              <p className="font-normal text-[16px]">
-                {defaultValues ? "ویرایش برند" : "افزودن برند"}
-              </p>
+              <ModalHeaderNavigator
+                mainTitle="برند"
+                title="افزودن برند جدید"
+                navigateTo="/admin/products/brands"
+                icon={<TbBrandArc className="text-2xl" />}
+              />
             </ModalHeader>
             <ModalBody>
-              <Input
-                labelPlacement="outside"
-                isRequired
-                label="عنوان برند (فارسی)"
-                placeholder="عنوان را وارد کنید"
-                value={datas.name}
-                onChange={(e) =>
-                  setDatas((prev) => ({ ...prev, name: e.target.value }))
-                }
-                className="mb-2"
-              />
-              <Input
-                dir="ltr"
-                labelPlacement="outside"
-                isRequired
-                label="عنوان برند (انگلیسی)"
-                placeholder="title"
-                value={datas.slug}
-                onChange={(e) =>
-                  setDatas((prev) => ({ ...prev, slug: e.target.value }))
-                }
-              />
+              <div className="flex flex-col gap-6 sm:flex-row items-center sm:gap-4 mb-2">
+                <Input
+                  labelPlacement="outside"
+                  isRequired
+                  label="عنوان"
+                  placeholder="عنوان برند را وارد کنید"
+                  value={datas.name}
+                  onChange={(e) =>
+                    setDatas((prev) => ({ ...prev, name: e.target.value }))
+                  }
+                  className="mb-2"
+                />
+                <Input
+                  style={{ direction: "ltr" }}
+                  labelPlacement="outside"
+                  isRequired
+                  label="نامک"
+                  placeholder="slug"
+                  value={datas.slug}
+                  onChange={(e) =>
+                    setDatas((prev) => ({ ...prev, slug: e.target.value }))
+                  }
+                />
+              </div>
               <ImageBoxUploader
                 textBtn={datas.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
                 title="تصویر لوگو"
@@ -109,12 +129,13 @@ const AddNewBrandModal: React.FC<Props> = ({
                 className="w-full"
                 variant="solid"
                 color="secondary"
-                isDisabled={
-                  !datas.name.trim() || !datas.slug.trim() || !datas.logo
-                }
-                onPress={handleUpload}
+                isDisabled={isDisabled}
+                isLoading={isPendingCreate || isPendingUpload}
+                onPress={handleCreateNewBrand}
               >
-                تایید و ثبت
+                {isPendingCreate || isPendingUpload
+                  ? "در حال ثبت…"
+                  : "ایجاد برند"}{" "}
               </Button>
             </ModalFooter>
           </>

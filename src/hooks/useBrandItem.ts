@@ -21,9 +21,7 @@ export const useCreateBrandItem = () => {
         route: "/brand",
         method: "POST",
         body: data,
-        isActiveToast: true,
-        successText: "برند با موفقیت ایجاد شد",
-        loadingText: "در حال ایجاد برند جدید",
+        isActiveToast: false,
       });
     },
     onSuccess: () => {
