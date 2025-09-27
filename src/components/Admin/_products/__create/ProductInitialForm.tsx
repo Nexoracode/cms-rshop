@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import BoxHeader from "./helpers/BoxHeader";
-import { LuScrollText, LuTextCursorInput } from "react-icons/lu";
+import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import PriceWithDiscountInput from "./helpers/PriceWithDiscountInput";
 import SelectWithAddButton from "./helpers/SelectWithAddButton";
@@ -34,6 +34,8 @@ import {
   useProductUpdate,
 } from "@/hooks/products/useProduct";
 import ToggleableSection from "./helpers/ToggleableSection";
+import { flattenCategories } from "@/utils/flattenCategories";
+import { useGetAllCategories } from "@/hooks/categories/useCategory";
 
 const initProduct: Product = {
   name: "",
@@ -67,9 +69,6 @@ const ProductInitialForm = () => {
   const [step, setStep] = useState<"edit" | "new">(editId ? "edit" : "new");
   const [continueSteps, setContinueSteps] = useState(editId ? true : false);
   const [product, setProduct] = useState<Product>(initProduct);
-  const [categories, setCategories] = useState<{ id: number; title: string }[]>(
-    []
-  );
   //?Disclosure
   const {
     isOpen: isOpenCategory,
@@ -83,12 +82,17 @@ const ProductInitialForm = () => {
   } = useDisclosure();
   //? Hooks
   const { data: allBrands } = useGetBrands();
+  const { data: categoriesData } = useGetAllCategories();
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
   const { mutate: updateProduct } = useProductUpdate(
     editId ? +editId : undefined
   );
   //
+
+  const flatOptions = useMemo(() => {
+    return flattenCategories(categoriesData?.data);
+  }, [categoriesData?.data]);
 
   const isDisabled = useMemo(() => {
     return !(
@@ -179,7 +183,7 @@ const ProductInitialForm = () => {
           <BoxHeader
             title="اطلاعات کلیدی محصول"
             color="text-white bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
-            icon={<LuTextCursorInput className="text-3xl" />}
+            icon={<LuScrollText className="text-3xl" />}
           />
           <CardBody className={cardBodyStyle}>
             <ImagesProducts
@@ -229,7 +233,7 @@ const ProductInitialForm = () => {
               <SelectWithAddButton
                 label="دسته بندی"
                 placeholder="دسته بندی مورد نظر را انتخاب کنید"
-                options={categories}
+                options={flatOptions}
                 selectedId={product.category_id}
                 onChange={(id) =>
                   setProduct((prev) => ({ ...prev, category_id: +id }))
@@ -463,7 +467,6 @@ const ProductInitialForm = () => {
       <AddNewCategoryModal
         isOpen={isOpenCategory}
         onOpenChange={onOpenChangeCategory}
-        onSelected={(id) => console.log(id)}
       />
       <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>

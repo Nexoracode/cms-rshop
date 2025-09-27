@@ -29,10 +29,9 @@ import { TbCategoryPlus } from "react-icons/tb";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  onSelected: (id: number) => void;
 };
 
-const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
+const AddNewCategoryModal = ({ isOpen, onOpenChange }: Props) => {
   const [data, setData] = useState({
     title: "",
     slug: "",
@@ -104,8 +103,6 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
       });
       if (!response.ok) return;
       //
-      onSelected(response?.data?.id);
-
       setData({
         title: "",
         slug: "",
