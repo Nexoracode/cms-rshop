@@ -19,6 +19,7 @@ import {
   useGetAllCategories,
   useCreateCategory,
   useCategoryImageUpload,
+  useGetCategory,
 } from "@/hooks/categories/useCategory";
 import { flattenCategories } from "@/utils/flattenCategories";
 import toast from "react-hot-toast";
@@ -41,10 +42,32 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   //? Hooks
   const { data: categoriesData } = useGetAllCategories();
+  const { data: category, isLoading, refetch } = useGetCategory(data.parentId);
   const { mutateAsync: createCategory, isPending: isPendingCategory } =
     useCreateCategory();
   const { mutateAsync: uplaodImageCategory, isPending: isPendingUpload } =
     useCategoryImageUpload();
+
+  useEffect(() => {
+    if (!category?.ok) return;
+    const { slug, title, parent_id, discount, media } = category.data;
+    console.log(category.data);
+    
+    console.log({
+      title,
+      mediaId: media.url,
+      discount,
+      parentId: parent_id,
+      slug,
+    });
+    setData({
+      title,
+      mediaId: media.url,
+      discount,
+      parentId: parent_id,
+      slug,
+    });
+  }, [category?.data]);
 
   const flatOptions = useMemo(() => {
     return flattenCategories(categoriesData?.data);
@@ -90,7 +113,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
       });
       setImageFile(null);
       onOpenChange();
-      toast.success("دسته بندی با موفقیت افزوده شد")
+      toast.success("دسته بندی با موفقیت افزوده شد");
     } catch (error) {
       console.error("خطا:", error);
       toast.error("خطای ناشناخته. با برنامه نویس تماس بگیرید");
@@ -115,7 +138,6 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
             <ModalBody className="flex flex-col gap-6">
               <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-2xl">
                 <Select
-                  isRequired
                   isDisabled={isSelected}
                   labelPlacement="outside"
                   label="دسته بندی"
@@ -183,6 +205,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
                 placeholder="مقدار تخفیف را وارد کنید"
                 minValue={0}
                 endContent={<>%</>}
+                value={+data.discount}
                 onValueChange={(value) =>
                   setData({ ...data, discount: String(value) || "0" })
                 }
@@ -192,10 +215,24 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
                 textBtn="+ افزودن تصویر"
                 title="تصویر دسته بندی"
                 changeStatusFile={imageFile}
+                defaultImg={data.mediaId}
                 onFile={(file) => setImageFile(file)}
               />
             </ModalBody>
             <ModalFooter>
+              {data.parentId ? (
+                <Button
+                  color="primary"
+                  className="w-full"
+                  variant="solid"
+                  onPress={() => refetch()}
+                  isLoading={isLoading}
+                >
+                  بروزرسانی دسته بندی فعلی
+                </Button>
+              ) : (
+                ""
+              )}
               <Button
                 isDisabled={isDisabled}
                 className="w-full"

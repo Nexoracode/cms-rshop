@@ -19,12 +19,19 @@ const ImageBoxUploader: React.FC<Props> = ({
   onFile,
   changeStatusFile,
   sizeText,
+  defaultImg
 }) => {
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   useEffect(() => {
     setImageFile(changeStatusFile);
   }, [changeStatusFile]);
+
+  useEffect(() => {
+    if (defaultImg) {
+      setImageFile(defaultImg)
+    }
+  }, [defaultImg])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

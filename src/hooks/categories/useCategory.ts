@@ -14,6 +14,20 @@ export const useGetAllCategories = () => {
   });
 };
 
+export const useGetCategory = (id?: number) => {
+  return useQuery({
+    queryKey: ["category", id],
+    queryFn: () =>
+      fetcher({
+        route: `/category/${id}`,
+        isActiveToast: true,
+        loadingText: "درحال گرفتن مقادیر دسته بندی فعلی",
+        successText: "دسته‌بندی آماده ویرایش است"
+      }),
+    enabled: false,
+  });
+};
+
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
@@ -40,7 +54,7 @@ export const useCategoryImageUpload = () => {
         route: "/category/upload",
         method: "POST",
         body: data,
-        isActiveToast: false
+        isActiveToast: false,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-categories"] });
