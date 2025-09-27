@@ -14,6 +14,7 @@ const Categories = () => {
   const { data: categories, isLoading } = useGetAllCategories();
 
   //? Functions
+  console.log(categories);
 
   return (
     <>
