@@ -23,6 +23,8 @@ import {
 } from "@/hooks/categories/useCategory";
 import { flattenCategories } from "@/utils/flattenCategories";
 import toast from "react-hot-toast";
+import ModalHeaderNavigator from "../ModalHeaderNavigator";
+import { TbCategoryPlus } from "react-icons/tb";
 
 type Props = {
   isOpen: boolean;
@@ -42,17 +44,17 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   //? Hooks
   const { data: categoriesData } = useGetAllCategories();
-  const { data: category, isLoading, refetch } = useGetCategory(data.parentId);
+  //const { data: category, isLoading, refetch } = useGetCategory(data.parentId);
   const { mutateAsync: createCategory, isPending: isPendingCategory } =
     useCreateCategory();
   const { mutateAsync: uplaodImageCategory, isPending: isPendingUpload } =
     useCategoryImageUpload();
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!category?.ok) return;
     const { slug, title, parent_id, discount, media } = category.data;
     console.log(category.data);
-    
+
     console.log({
       title,
       mediaId: media.url,
@@ -67,7 +69,7 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
       parentId: parent_id,
       slug,
     });
-  }, [category?.data]);
+  }, [category?.data]); */
 
   const flatOptions = useMemo(() => {
     return flattenCategories(categoriesData?.data);
@@ -133,7 +135,12 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
         {(onClose) => (
           <>
             <ModalHeader>
-              <p className="font-normal text-[16px]">افزودن دسته بندی جدید</p>
+              <ModalHeaderNavigator
+                mainTitle="دسته بندی"
+                title="افزودن دسته بندی جدید"
+                navigateTo="/admin/products/categories"
+                icon={<TbCategoryPlus className="text-2xl" />}
+              />
             </ModalHeader>
             <ModalBody className="flex flex-col gap-6">
               <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-2xl">
@@ -220,30 +227,17 @@ const AddNewCategoryModal = ({ isOpen, onOpenChange, onSelected }: Props) => {
               />
             </ModalBody>
             <ModalFooter>
-              {data.parentId ? (
-                <Button
-                  color="primary"
-                  className="w-full"
-                  variant="solid"
-                  onPress={() => refetch()}
-                  isLoading={isLoading}
-                >
-                  بروزرسانی دسته بندی فعلی
-                </Button>
-              ) : (
-                ""
-              )}
               <Button
                 isDisabled={isDisabled}
                 className="w-full"
-                variant="solid"
+                variant="flat"
                 color="secondary"
                 isLoading={isPendingCategory || isPendingUpload}
                 onPress={handleCreateNewCategory}
               >
                 {isPendingCategory || isPendingUpload
                   ? "در حال ثبت…"
-                  : "ثبت تغییرات"}{" "}
+                  : "ایجاد دسته بندی"}{" "}
               </Button>
             </ModalFooter>
           </>
