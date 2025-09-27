@@ -29,31 +29,35 @@ const SelectWithAddButton: FC<Props> = ({
   isRequired = true,
 }) => {
   return (
-    <Select
-      isRequired={isRequired}
-      labelPlacement="outside"
-      startContent={<FiSearch className="text-lg pointer-events-none" />}
-      label={label}
-      placeholder={placeholder}
-      selectedKeys={[String(selectedId)]}
-      onChange={(e) => onChange(e.target.value)}
-      endContent={
-        <Button
-          variant="flat"
-          color="primary"
-          size="sm"
-          onPress={onAddNewClick}
-        >
-          + افزودن
-        </Button>
-      }
-    >
-      {options.length ? (
-        options.map((opt) => <SelectItem key={opt.id}>{opt.title}</SelectItem>)
-      ) : (
-        <SelectItem isDisabled>آیتمی موجود نیست</SelectItem>
-      )}
-    </Select>
+    <div className="flex gap-2 items-center justify-center w-full">
+      <Select
+        isRequired={isRequired}
+        labelPlacement="outside"
+        startContent={<FiSearch className="text-lg pointer-events-none" />}
+        label={label}
+        placeholder={placeholder}
+        selectedKeys={[String(selectedId)]}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {options.length ? (
+          options.map((opt) => (
+            <SelectItem key={opt.id}>{opt.title}</SelectItem>
+          ))
+        ) : (
+          <SelectItem isDisabled>آیتمی موجود نیست</SelectItem>
+        )}
+      </Select>
+      <p
+        className="w-24 z-10 text-center text-purple-700 bg-purple-200 rounded-xl mt-[24px] py-1.5 cursor-pointer truncate"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onAddNewClick();
+        }}
+      >
+        + افزودن
+      </p>
+    </div>
   );
 };
 
