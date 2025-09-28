@@ -43,28 +43,33 @@ const AddNewBrandModal: React.FC<Props> = ({
     if (!datas.logo) return;
 
     try {
-      const formData = new FormData();
-      formData.append("files", datas.logo);
+      let logoUrl = typeof datas.logo === "string" ? datas.logo : null;
 
-      const response = await uploadMedias(formData);
-      if (!response.ok) return;
+      if (datas.logo instanceof File) {
+        const formData = new FormData();
+        formData.append("files", datas.logo);
 
-      const img = response.data[0];
-      if (!img) return;
+        const uploadRes = await uploadMedias(formData);
+        if (!uploadRes.ok) return;
+
+        const img = uploadRes.data?.[0];
+        if (!img) return;
+
+        logoUrl = img.url;
+      }
 
       if (brandId) {
-        const updateRes = await updateBrand({ ...datas, logo: img.url });
+        const updateRes = await updateBrand({ ...datas, logo: logoUrl });
         if (!updateRes.ok) return;
+        toast.success("برند با موفقیت بروزرسانی شد");
       } else {
-        const createRes = await createBrand({ ...datas, logo: img.url });
+        const createRes = await createBrand({ ...datas, logo: logoUrl });
         if (!createRes.ok) return;
+        toast.success("برند با موفقیت افزوده شد");
       }
-      //
+
       setDatas({ name: "", logo: null, slug: "" });
       onOpenChange();
-      toast.success(
-        brandId ? "برند با موفقیت بروزرسانی شد" : "برند با موفقیت افزوده شد"
-      );
     } catch (error) {
       console.error("خطا:", error);
       toast.error("خطای ناشناخته. با برنامه نویس تماس بگیرید");
@@ -86,7 +91,11 @@ const AddNewBrandModal: React.FC<Props> = ({
             <ModalHeader>
               <ModalHeaderNavigator
                 mainTitle="برند"
-                title="افزودن برند جدید"
+                title={
+                  defaultValues
+                    ? `بروزرسانی برند ${defaultValues?.name}`
+                    : "افزودن برند جدید"
+                }
                 navigateTo="/admin/products/brands"
                 icon={<TbBrandArc className="text-2xl" />}
               />
@@ -131,12 +140,16 @@ const AddNewBrandModal: React.FC<Props> = ({
                 variant="solid"
                 color="secondary"
                 isDisabled={isDisabled}
-                isLoading={isPendingCreate || isPendingUpload}
+                isLoading={
+                  isPendingCreate || isPendingUpload || isPendingUpdate
+                }
                 onPress={handleCreateNewBrand}
               >
-                {isPendingCreate || isPendingUpload
+                {isPendingCreate || isPendingUpload || isPendingUpdate
                   ? "در حال ثبت…"
-                  : "ایجاد برند"}{" "}
+                  : defaultValues
+                  ? "ثبت تغیرات"
+                  : "ایجاد برند"}
               </Button>
             </ModalFooter>
           </>

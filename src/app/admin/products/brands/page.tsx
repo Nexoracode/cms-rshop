@@ -94,7 +94,6 @@ const BrandsProduct = () => {
                 className="cursor-auto shadow-lg border"
                 isPressable
                 shadow="sm"
-                onPress={() => {}}
               >
                 <CardBody className="overflow-hidden p-0">
                   <Image
@@ -128,7 +127,9 @@ const BrandsProduct = () => {
                         radius="none"
                         color="success"
                         variant="flat"
-                        onPress={() => onOpenBrandModal}
+                        onPress={() => {
+                          onOpenBrandModal();
+                        }}
                       >
                         <TbEdit className="text-xl" />
                       </Button>
@@ -149,16 +150,19 @@ const BrandsProduct = () => {
                       اطمینان دارید؟
                     </p>
                   </DynamicModal>
+                  {/* Update Brand Modal */}
+                  <AddNewBrandModal
+                    isOpen={isOpenBrandModal}
+                    onOpenChange={onOpenChangeBrandModal}
+                    defaultValues={b}
+                    brandId={b.id}
+                  />
                 </CardBody>
               </Card>
             );
           })}
         </CardContent>
       </section>
-      <AddNewBrandModal
-        isOpen={isOpenBrandModal}
-        onOpenChange={onOpenChangeBrandModal}
-      />
     </>
   );
 };

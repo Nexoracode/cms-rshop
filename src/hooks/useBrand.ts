@@ -33,9 +33,7 @@ export const useCreateBrand = () => {
         route: "/brand",
         method: "POST",
         body: data,
-        isActiveToast: true,
-        loadingText: "در حال ایجاد برند",
-        successText: "برند با موفقیت ایجاد شد",
+        isActiveToast: false,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-brands"] });
@@ -53,9 +51,7 @@ export const useUpdateBrand = (id: number) => {
         route: `/brand/${id}`,
         method: "PATCH",
         body: data,
-        isActiveToast: true,
-        loadingText: "در حال به‌روزرسانی برند",
-        successText: "برند با موفقیت به‌روزرسانی شد",
+        isActiveToast: false,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-brands"] });
