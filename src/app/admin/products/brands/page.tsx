@@ -5,7 +5,7 @@ import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import CardContent from "@/components/Admin/CardContent";
 import OptionBox from "@/components/Admin/OptionBox";
-import { useGetBrands } from "@/hooks/useBrand";
+import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
 import {
   Button,
   Card,
@@ -28,6 +28,7 @@ const BrandsProduct = () => {
   const searchParams = useSearchParams();
   const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { mutate: deleteBrand } = useDeleteBrand();
 
   const { data: brands, isLoading } = useGetBrands(
     searchParams.get("page") ? +searchParams.get("page")! : 1
@@ -107,7 +108,7 @@ const BrandsProduct = () => {
                         radius="none"
                         color="danger"
                         variant="flat"
-                        onPress={() => {}}
+                        onPress={() => deleteBrand(b.id)}
                       >
                         <RiDeleteBin5Line className="text-xl" />
                       </Button>

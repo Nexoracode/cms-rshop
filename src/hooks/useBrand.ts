@@ -65,11 +65,11 @@ export const useUpdateBrand = (id: number) => {
   });
 };
 
-export const useDeleteBrand = (id: number) => {
+export const useDeleteBrand = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () =>
+    mutationFn: (id: number) =>
       fetcher({
         route: `/brand/${id}`,
         method: "DELETE",
@@ -77,7 +77,7 @@ export const useDeleteBrand = (id: number) => {
         loadingText: "در حال حذف برند",
         successText: "برند حذف شد",
       }),
-    onSuccess: () => {
+    onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: ["all-brands"] });
       queryClient.invalidateQueries({ queryKey: ["brands"] });
       queryClient.invalidateQueries({ queryKey: ["brand", id] });
