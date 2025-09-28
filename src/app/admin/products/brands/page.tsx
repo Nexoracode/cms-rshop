@@ -29,6 +29,7 @@ const BrandsProduct = () => {
   const searchParams = useSearchParams();
   const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
   const { mutate: deleteBrand } = useDeleteBrand();
+  const [brand, setBrand] = useState<any>(null);
   const { data: brands, isLoading } = useGetBrands(
     searchParams.get("page") ? +searchParams.get("page")! : 1
   );
@@ -117,7 +118,10 @@ const BrandsProduct = () => {
                         radius="none"
                         color="danger"
                         variant="flat"
-                        onPress={() => onOpenDeleteModal()}
+                        onPress={() => {
+                          setBrand(b);
+                          onOpenDeleteModal();
+                        }}
                       >
                         <RiDeleteBin5Line className="text-xl" />
                       </Button>
@@ -128,6 +132,7 @@ const BrandsProduct = () => {
                         color="success"
                         variant="flat"
                         onPress={() => {
+                          setBrand(b);
                           onOpenBrandModal();
                         }}
                       >
@@ -135,34 +140,34 @@ const BrandsProduct = () => {
                       </Button>
                     </div>
                   </div>
-                  {/* Delete Modal */}
-                  <DynamicModal
-                    isOpen={isOpenDeleteModal}
-                    onOpenChange={onOpenChangeDeleteModal}
-                    title="تایید حذف برند"
-                    confirmText="حذف برند"
-                    onConfirm={() => deleteBrand(b.id)}
-                    confirmColor="danger"
-                    confirmVariant="solid"
-                  >
-                    <p className="leading-7 text-danger-600">
-                      با حذف برند دیگر این برند قابل برگشت نیست!! آیا از حذف
-                      اطمینان دارید؟
-                    </p>
-                  </DynamicModal>
-                  {/* Update Brand Modal */}
-                  <AddNewBrandModal
-                    isOpen={isOpenBrandModal}
-                    onOpenChange={onOpenChangeBrandModal}
-                    defaultValues={b}
-                    brandId={b.id}
-                  />
                 </CardBody>
               </Card>
             );
           })}
         </CardContent>
       </section>
+      {/* Delete Modal */}
+      <DynamicModal
+        isOpen={isOpenDeleteModal}
+        onOpenChange={onOpenChangeDeleteModal}
+        title="تایید حذف برند"
+        confirmText="حذف برند"
+        onConfirm={() => deleteBrand(brand?.id)}
+        confirmColor="danger"
+        confirmVariant="solid"
+      >
+        <p className="leading-7 text-danger-600">
+          با حذف برند دیگر این برند قابل برگشت نیست!! آیا از حذف اطمینان دارید؟
+        </p>
+      </DynamicModal>
+      {/* Update Brand Modal */}
+      <AddNewBrandModal
+        key={brand?.id ?? "new"}
+        isOpen={isOpenBrandModal}
+        onOpenChange={onOpenChangeBrandModal}
+        defaultValues={brand}
+        brandId={brand?.id}
+      />
     </>
   );
 };
