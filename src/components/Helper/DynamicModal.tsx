@@ -10,7 +10,7 @@ import {
   Button,
 } from "@heroui/react";
 
-type SimpleModalProps = {
+type DynamicModalProps = {
   isOpen: boolean;
   onOpenChange: () => void;
   title?: React.ReactNode;
@@ -28,7 +28,7 @@ type SimpleModalProps = {
   placement?: "auto" | "center" | "top" | "bottom";
 };
 
-const SimpleModal: React.FC<SimpleModalProps> = ({
+const DynamicModal: React.FC<DynamicModalProps> = ({
   isOpen,
   onOpenChange,
   title,
@@ -68,4 +68,4 @@ const SimpleModal: React.FC<SimpleModalProps> = ({
   );
 };
 
-export default SimpleModal;
+export default DynamicModal;

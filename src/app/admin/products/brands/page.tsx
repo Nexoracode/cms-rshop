@@ -5,6 +5,7 @@ import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import CardContent from "@/components/Admin/CardContent";
 import OptionBox from "@/components/Admin/OptionBox";
+import DynamicModal from "@/components/Helper/DynamicModal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
 import {
   Button,
@@ -27,12 +28,21 @@ import { TbBrandArc, TbEdit } from "react-icons/tb";
 const BrandsProduct = () => {
   const searchParams = useSearchParams();
   const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { mutate: deleteBrand } = useDeleteBrand();
-
   const { data: brands, isLoading } = useGetBrands(
     searchParams.get("page") ? +searchParams.get("page")! : 1
   );
+  //? Disclosure
+  const {
+    isOpen: isOpenBrandModal,
+    onOpen: onOpenBrandModal,
+    onOpenChange: onOpenChangeBrandModal,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onOpenChange: onOpenChangeDeleteModal,
+  } = useDisclosure();
 
   console.log(brands);
 
@@ -72,7 +82,7 @@ const BrandsProduct = () => {
           isLoading={isLoading}
           title="لیست برندها"
           keyTitle="برند"
-          onAdd={onOpen}
+          onAdd={onOpenBrandModal}
           icon={<TbBrandArc className="text-3xl animate-pulse" />}
           searchInp={!!searchInp?.length}
           styleContent="grid grid-cols-3 gap-4"
@@ -108,7 +118,7 @@ const BrandsProduct = () => {
                         radius="none"
                         color="danger"
                         variant="flat"
-                        onPress={() => deleteBrand(b.id)}
+                        onPress={() => onOpenDeleteModal()}
                       >
                         <RiDeleteBin5Line className="text-xl" />
                       </Button>
@@ -118,21 +128,37 @@ const BrandsProduct = () => {
                         radius="none"
                         color="success"
                         variant="flat"
-                        onPress={() => {
-                          onOpen();
-                        }}
+                        onPress={() => onOpenBrandModal}
                       >
                         <TbEdit className="text-xl" />
                       </Button>
                     </div>
                   </div>
+                  {/* Delete Modal */}
+                  <DynamicModal
+                    isOpen={isOpenDeleteModal}
+                    onOpenChange={onOpenChangeDeleteModal}
+                    title="تایید حذف برند"
+                    confirmText="حذف برند"
+                    onConfirm={() => deleteBrand(b.id)}
+                    confirmColor="danger"
+                    confirmVariant="solid"
+                  >
+                    <p className="leading-7 text-danger-600">
+                      با حذف برند دیگر این برند قابل برگشت نیست!! آیا از حذف
+                      اطمینان دارید؟
+                    </p>
+                  </DynamicModal>
                 </CardBody>
               </Card>
             );
           })}
         </CardContent>
       </section>
-      <AddNewBrandModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AddNewBrandModal
+        isOpen={isOpenBrandModal}
+        onOpenChange={onOpenChangeBrandModal}
+      />
     </>
   );
 };
