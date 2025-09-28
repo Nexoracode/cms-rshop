@@ -85,6 +85,7 @@ const ProductInitialForm = () => {
   const { data: categoriesData } = useGetAllCategories();
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
+  const [isDisabled, setIsDisabled] = useState<any>(false);
   const { mutate: updateProduct } = useProductUpdate(
     editId ? +editId : undefined
   );
@@ -94,22 +95,24 @@ const ProductInitialForm = () => {
     return flattenCategories(categoriesData?.data);
   }, [categoriesData?.data]);
 
-  const isDisabled = useMemo(() => {
-    return !(
-      product.media_ids?.length > 0 &&
-      product.media_pinned_id &&
-      product.media_ids.includes(product.media_pinned_id) &&
-      product.name?.trim().length &&
-      +product.price > 0 &&
-      +product.category_id > 0 &&
-      +product.weight > 0 &&
-      product.description?.trim().length &&
-      product.brand_id
-    );
-  }, [product]);
-
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
+
+  useEffect(() => {
+    setIsDisabled((prev: any) => {
+      const isDisabled =
+        product.media_ids?.length > 0 &&
+        product.media_pinned_id &&
+        product.media_ids.includes(product.media_pinned_id) &&
+        product.name?.trim().length &&
+        +product.price > 0 &&
+        +product.category_id > 0 &&
+        +product.weight > 0 &&
+        product.description?.trim().length &&
+        product.brand_id;
+      return isDisabled;
+    });
+  }, [product]);
 
   useEffect(() => {
     if (oneProduct) {
@@ -375,13 +378,14 @@ const ProductInitialForm = () => {
               label="وضعیت نمایش در وبسایت"
               placeholder="انتخاب وضعیت محصول"
               className="!mt-8"
-              onChange={(e) => {
+              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
+              onSelectionChange={(keys) => {
+                const value = Array.from(keys)[0];
                 setProduct((prev) => ({
                   ...prev,
-                  is_visible: e.target.value ? true : false,
+                  is_visible: value === "visible",
                 }));
               }}
-              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
             >
               <SelectItem key="visible">
                 نمایش - در فروشگاه نمایش داده میشود
@@ -437,7 +441,7 @@ const ProductInitialForm = () => {
               className="w-full"
               color="primary"
               variant="flat"
-              isDisabled={isDisabled}
+              isDisabled={isDisabled === 1 ? false : true}
               onPress={() => setContinueSteps(true)} // فقط ادامه، بدون ثبت
               title="بعد از تکمیل فیلدهای ضروری می‌تونی ادامه بدی"
             >
@@ -446,7 +450,7 @@ const ProductInitialForm = () => {
             <Button
               color="success"
               className="text-white w-full"
-              isDisabled={isDisabled}
+              isDisabled={isDisabled === 1 ? false : true}
               onPress={handleChangeProduct}
             >
               ثبت حداقلی
@@ -457,7 +461,7 @@ const ProductInitialForm = () => {
           <Button
             color="success"
             className="text-white"
-            isDisabled={isDisabled}
+            isDisabled={isDisabled === 1 ? false : true}
             onPress={handleChangeProduct}
           >
             ثبت تغییرات

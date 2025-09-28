@@ -19,7 +19,7 @@ const ModalHeaderNavigator: React.FC<ModalHeaderNavigatorProps> = ({
   mainTitle,
 }) => {
   return (
-    <ModalHeader className="w-full flex items-center border-b p-3 bg-gray-50 rounded-xl mt-4 justify-between">
+    <div className="w-full flex items-center border-b p-3 bg-gray-50 rounded-xl mt-4 justify-between">
       <div className="flex items-center gap-2">
         {icon}
         <p className="font-normal text-[15px] text-gray-600">{title}</p>
@@ -36,7 +36,7 @@ const ModalHeaderNavigator: React.FC<ModalHeaderNavigatorProps> = ({
           <VscGithubAction className="text-2xl" />
         </Link>
       </Tooltip>
-    </ModalHeader>
+    </div>
   );
 };
 
