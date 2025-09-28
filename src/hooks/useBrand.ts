@@ -1,13 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 
-
-export const useGetBrands = (page = 1, limit = 20) => {
+export const useGetBrands = (page = 1) => {
   return useQuery({
-    queryKey: ["brands", { page, limit }],
+    queryKey: ["brands", page],
     queryFn: () =>
       fetcher({
-        route: `/brand?page=${page}&limit=${limit}`,
+        route: `/brand?page=${page}`,
         isActiveToast: false,
       }),
   });
