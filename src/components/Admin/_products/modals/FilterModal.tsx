@@ -18,7 +18,7 @@ import {
 } from "@heroui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetAllCategories } from "@/hooks/categories/useCategory";
-import { useGetBrands } from "@/hooks/useBrandItem";
+import { useGetBrands } from "@/hooks/useBrand";
 import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUnitInput";
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";

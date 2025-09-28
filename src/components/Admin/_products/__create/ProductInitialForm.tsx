@@ -24,7 +24,7 @@ import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
-import { useGetBrands } from "@/hooks/useBrandItem";
+import { useGetBrands } from "@/hooks/useBrand";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
 import { useRouter, useSearchParams } from "next/navigation";

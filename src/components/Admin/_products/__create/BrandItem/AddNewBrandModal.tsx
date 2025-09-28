@@ -6,7 +6,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { BrandItemProp } from "./type";
 import { useProductUpload } from "@/hooks/products/useProduct";
-import { useCreateBrandItem, useUpdateBrand } from "@/hooks/useBrandItem";
+import { useCreateBrand, useUpdateBrand } from "@/hooks/useBrand";
 import ModalHeaderNavigator from "../../ModalHeaderNavigator";
 import { TbBrandArc } from "react-icons/tb";
 import toast from "react-hot-toast";
@@ -34,7 +34,7 @@ const AddNewBrandModal: React.FC<Props> = ({
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useProductUpload();
   const { mutateAsync: createBrand, isPending: isPendingCreate } =
-    useCreateBrandItem();
+    useCreateBrand();
   const { mutateAsync: updateBrand, isPending: isPendingUpdate } =
     useUpdateBrand(brandId || 0);
 
