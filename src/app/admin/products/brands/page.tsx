@@ -1,6 +1,7 @@
 "use client";
 
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
+import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import OptionBox from "@/components/Admin/OptionBox";
 import AppPagination from "@/components/Helper/AppPagination";
@@ -23,7 +24,6 @@ const BrandsProduct = () => {
   );
 
   console.log(brands);
-  
 
   return (
     <section className="flex flex-col gap-6">
@@ -61,6 +61,14 @@ const BrandsProduct = () => {
           icon={<TbBrandArc className="text-3xl" />}
         />
         <CardBody>
+          <div className="border-b pb-3 mb-6">
+            <HeaderAction
+              title="لیست برندها"
+              textBtn="+ برند جدید"
+              onPress={() => {}}
+            />
+          </div>
+
           {isLoading ? (
             <LoadingApiCall />
           ) : brands?.data?.items?.length ? (
