@@ -85,15 +85,7 @@ const BrandsProduct = () => {
                 shadow="sm"
                 onPress={() => {}}
               >
-                <CardBody className="relative overflow-hidden p-0">
-                  <Chip
-                    color="secondary"
-                    variant="flat"
-                    className="absolute left-1 top-1 bg-white z-20 border border-purple-500"
-                  >
-                    <TbBrandArc className="text-lg" />
-                  </Chip>
-
+                <CardBody className="overflow-hidden p-0">
                   <Image
                     alt={b.title}
                     className="w-full object-cover h-[140px]"
@@ -103,7 +95,9 @@ const BrandsProduct = () => {
                   />
                   <div className="flex flex-col justify-center items-center gap-2">
                     <div className="flex flex-col items-center leading-7 mt-2 w-[200px] py-2 bg-gray-50 rounded-2xl">
-                      <b>{b.name}</b>
+                      <div className="flex items-center gap-1">
+                        <p className="text-[15px]">{b.name}</p>
+                      </div>
                       <p className="text-default-500">{b.slug}</p>
                     </div>
                     <div className="w-[200px] flex">
@@ -123,7 +117,9 @@ const BrandsProduct = () => {
                         radius="none"
                         color="success"
                         variant="flat"
-                        onPress={() => {}}
+                        onPress={() => {
+                          onOpen();
+                        }}
                       >
                         <TbEdit className="text-xl" />
                       </Button>
