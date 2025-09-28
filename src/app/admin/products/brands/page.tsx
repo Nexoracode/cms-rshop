@@ -7,10 +7,13 @@ import CardContent from "@/components/Admin/CardContent";
 import OptionBox from "@/components/Admin/OptionBox";
 import { useGetBrands } from "@/hooks/useBrand";
 import {
+  Button,
   Card,
   CardBody,
   CardFooter,
+  Chip,
   Image,
+  Tooltip,
   useDisclosure,
 } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
@@ -18,7 +21,8 @@ import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoFilter } from "react-icons/io5";
 import { LuBox } from "react-icons/lu";
-import { TbBrandArc } from "react-icons/tb";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { TbBrandArc, TbEdit } from "react-icons/tb";
 
 const BrandsProduct = () => {
   const searchParams = useSearchParams();
@@ -74,21 +78,58 @@ const BrandsProduct = () => {
         >
           {brands?.data?.items?.map((b: any) => {
             return (
-              <Card key={b.id} isPressable shadow="sm" onPress={() => {}}>
-                <CardBody className="overflow-visible p-0">
+              <Card
+                key={b.id}
+                className="cursor-auto shadow-lg border"
+                isPressable
+                shadow="sm"
+                onPress={() => {}}
+              >
+                <CardBody className="relative overflow-hidden p-0">
+                  <Chip
+                    color="secondary"
+                    variant="flat"
+                    className="absolute left-1 top-1 bg-white z-20 border border-purple-500"
+                  >
+                    <TbBrandArc className="text-lg" />
+                  </Chip>
+
                   <Image
                     alt={b.title}
                     className="w-full object-cover h-[140px]"
                     radius="lg"
-                    shadow="sm"
                     src={b.logo}
-                    width="100%"
+                    width={"100%"}
                   />
+                  <div className="flex flex-col justify-center items-center gap-2">
+                    <div className="flex flex-col items-center leading-7 mt-2 w-[200px] py-2 bg-gray-50 rounded-2xl">
+                      <b>{b.name}</b>
+                      <p className="text-default-500">{b.slug}</p>
+                    </div>
+                    <div className="w-[200px] flex">
+                      <Button
+                        size="sm"
+                        className="rounded-tr-lg w-full"
+                        radius="none"
+                        color="danger"
+                        variant="flat"
+                        onPress={() => {}}
+                      >
+                        <RiDeleteBin5Line className="text-xl" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="rounded-tl-xl w-full"
+                        radius="none"
+                        color="success"
+                        variant="flat"
+                        onPress={() => {}}
+                      >
+                        <TbEdit className="text-xl" />
+                      </Button>
+                    </div>
+                  </div>
                 </CardBody>
-                <CardFooter className="text-small justify-between">
-                  <b>{b.name}</b>
-                  <p className="text-default-500">{b.slug}</p>
-                </CardFooter>
               </Card>
             );
           })}
