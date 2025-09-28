@@ -23,7 +23,7 @@ export default function AppPagination({ meta }: Props) {
     router.push(`?${params.toString()}`);
   };
 
-  return (
+  return meta?.total_pages > 1 ? (
     <div className="flex justify-center py-6">
       <Pagination
         total={meta?.total_pages}
@@ -33,5 +33,7 @@ export default function AppPagination({ meta }: Props) {
         showControls
       />
     </div>
+  ) : (
+    ""
   );
 }

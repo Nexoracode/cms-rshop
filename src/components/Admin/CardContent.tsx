@@ -37,7 +37,7 @@ const CardContent: React.FC<CardContentProps> = ({
       {header}
       <Card>
         <CardBody className="overflow-hidden">
-          <div className="w-full flex items-center border-b p-3 animate-appearance-in bg-gray-50 rounded-xl mb-6 justify-between">
+          <div className="w-full flex items-center border-b shadow-md p-3 animate-appearance-in bg-gray-50 rounded-xl mb-6 justify-between">
             <div className="flex items-center gap-2">
               {icon}
               <p className="font-normal text-[15px] text-gray-600">{title}</p>
