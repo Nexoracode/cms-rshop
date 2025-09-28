@@ -1,6 +1,6 @@
 "use client";
 
-import AddNewBrandModal from "@/components/Admin/_products/__create/BrandItem/AddNewBrandModal";
+import AddNewBrandModal from "@/components/Admin/_products/__brands/AddNewBrandModal";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import CardContent from "@/components/Admin/CardContent";

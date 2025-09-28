@@ -23,7 +23,7 @@ import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
 import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
-import AddNewBrandModal from "./BrandItem/AddNewBrandModal";
+import AddNewBrandModal from "../__brands/AddNewBrandModal";
 import { useGetBrands } from "@/hooks/useBrand";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
