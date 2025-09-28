@@ -9,7 +9,7 @@ type CardContentProps = {
   icon?: any;
   title: string;
   keyTitle: string;
-  onClicked: () => void;
+  onAdd: () => void;
   isLoading: boolean;
   datas: any;
   header?: any;
@@ -23,7 +23,7 @@ const CardContent: React.FC<CardContentProps> = ({
   keyTitle,
   title,
   icon,
-  onClicked,
+  onAdd,
   isLoading,
   datas,
   header,
@@ -52,7 +52,7 @@ const CardContent: React.FC<CardContentProps> = ({
             >
               <div
                 className="bg-gray-200 rounded-md p-1.5 cursor-pointer"
-                onClick={onClicked}
+                onClick={onAdd}
               >
                 <HiOutlineSquaresPlus className="text-2xl" />
               </div>

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
-import { BrandItemProp } from "./type";
 import { useProductUpload } from "@/hooks/products/useProduct";
 import { useCreateBrand, useUpdateBrand } from "@/hooks/useBrand";
 import ModalHeaderNavigator from "../../ModalHeaderNavigator";
@@ -14,7 +13,7 @@ import toast from "react-hot-toast";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  defaultValues?: BrandItemProp | null;
+  defaultValues?: any;
   brandId?: number | null;
 };
 
@@ -24,7 +23,7 @@ const AddNewBrandModal: React.FC<Props> = ({
   defaultValues,
   brandId,
 }) => {
-  const [datas, setDatas] = useState<BrandItemProp>({
+  const [datas, setDatas] = useState({
     name: "",
     slug: "",
     logo: null,
@@ -101,7 +100,7 @@ const AddNewBrandModal: React.FC<Props> = ({
                   placeholder="عنوان برند را وارد کنید"
                   value={datas.name}
                   onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, name: e.target.value }))
+                    setDatas((prev: any) => ({ ...prev, name: e.target.value }))
                   }
                   className="mb-2"
                 />
@@ -113,7 +112,7 @@ const AddNewBrandModal: React.FC<Props> = ({
                   placeholder="slug"
                   value={datas.slug}
                   onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, slug: e.target.value }))
+                    setDatas((prev: any) => ({ ...prev, slug: e.target.value }))
                   }
                 />
               </div>
@@ -121,7 +120,9 @@ const AddNewBrandModal: React.FC<Props> = ({
                 textBtn={datas.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
                 title="تصویر لوگو"
                 changeStatusFile={datas.logo}
-                onFile={(file) => setDatas((prev) => ({ ...prev, logo: file }))}
+                onFile={(file) =>
+                  setDatas((prev: any) => ({ ...prev, logo: file }))
+                }
               />
             </ModalBody>
             <ModalFooter>
