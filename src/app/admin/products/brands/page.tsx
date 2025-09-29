@@ -151,7 +151,10 @@ const BrandsProduct = () => {
       <AddNewBrandModal
         key={brand?.id ?? "new"}
         isOpen={isOpenBrandModal}
-        onOpenChange={onOpenChangeBrandModal}
+        onOpenChange={() => {
+          setTimeout(() => setBrand(null), 200);
+          onOpenChangeBrandModal();
+        }}
         defaultValues={brand}
         brandId={brand?.id}
       />
