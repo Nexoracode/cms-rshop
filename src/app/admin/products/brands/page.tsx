@@ -76,13 +76,13 @@ const BrandsProduct = () => {
           onAdd={onOpenBrandModal}
           icon={<TbBrandArc className="text-3xl animate-pulse" />}
           searchInp={!!searchInp?.length}
-          styleContent="grid grid-cols-3 gap-4"
+          styleContent="flex flex-wrap justify-center gap-4"
         >
           {brands?.data?.items?.map((b: any) => {
             return (
               <Card
                 key={b.id}
-                className="cursor-auto shadow-lg border"
+                className="cursor-auto shadow-lg border w-[235px]"
                 shadow="sm"
               >
                 <CardBody className="overflow-hidden p-0">
