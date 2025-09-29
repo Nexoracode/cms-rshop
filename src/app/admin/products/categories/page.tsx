@@ -1,43 +1,82 @@
 "use client";
 
-// Components
 import AddNewCategoryModal from "@/components/Admin/_products/__categories/AddNewCategoryModal";
-import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
-import BackToPage from "@/components/Helper/BackToPage";
-import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import { useGetAllCategories } from "@/hooks/categories/useCategory";
-//? Hooks
+import CategoryTree from "@/components/Admin/_products/__categories/CategoryCard";
+import CardContent from "@/components/Admin/CardContent";
+import DynamicModal from "@/components/Helper/DynamicModal";
+import { useDeleteCategory, useGetCategories } from "@/hooks/categories/useCategory";
 import { useDisclosure } from "@heroui/react";
+import { useState } from "react";
+import { TbCategory2 } from "react-icons/tb";
 
 const Categories = () => {
-  const { onOpen, isOpen, onOpenChange } = useDisclosure();
-  const { data: categories, isLoading } = useGetAllCategories();
+  const [editCategory, setEditCategory] = useState<any>(null);
+  const [deleteCategoryId, setDeleteCategoryId] = useState<number | null>(null);
+  const { mutate: deleteCategory } = useDeleteCategory();
 
-  //? Functions
-  console.log(categories);
+  const { data: categories, isLoading } = useGetCategories();
+
+  //? Disclosure
+  const {
+    isOpen: isOpenCategoryModal,
+    onOpen: onOpenCategoryModal,
+    onOpenChange: onOpenChangeCategoryModal,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeleteModal,
+    onOpen: onOpenDeleteModal,
+    onOpenChange: onOpenChangeDeleteModal,
+  } = useDisclosure();
 
   return (
     <>
-      <section>
-        <BackToPage title="بازگشت" link="/admin/products" />
-
-        <div className="bg-white p-4 rounded-2xl mt-6">
-          <HeaderAction
-            title="دسته بندی ها"
-            textBtn="+ جدید"
-            onPress={onOpen}
+      <section className="flex flex-col gap-6">
+        <CardContent
+          datas={categories}
+          isExistItems={categories?.data?.length}
+          isLoading={isLoading}
+          title="لیست دسته‌بندی‌ها"
+          keyTitle="دسته‌بندی"
+          onAdd={onOpenCategoryModal}
+          icon={<TbCategory2 className="text-3xl animate-pulse" />}
+        >
+          {/* ✅ فقط یک بار CategoryTree */}
+          <CategoryTree
+            categories={categories?.data || []}
+            onDelete={(id) => {
+              setDeleteCategoryId(id);
+              onOpenDeleteModal();
+            }}
+            onEdit={(cat) => {
+              setEditCategory(cat);
+              onOpenCategoryModal();
+            }}
           />
-
-          <div className="flex flex-col gap-6 mt-6">
-            {isLoading ? (
-              <LoadingApiCall />
-            ) : (
-              "j"
-            )}
-          </div>
-        </div>
+        </CardContent>
       </section>
-      <AddNewCategoryModal isOpen={isOpen} onOpenChange={onOpenChange} />
+
+      {/* Delete Modal */}
+      <DynamicModal
+        isOpen={isOpenDeleteModal}
+        onOpenChange={onOpenChangeDeleteModal}
+        icon={<TbCategory2 className="text-3xl" />}
+        title={"تایید حذف دسته‌بندی"}
+        onConfirm={() => deleteCategory(deleteCategoryId || -1)}
+      >
+        آیا مطمئن هستید می‌خواهید این دسته‌بندی را حذف کنید؟ پس از حذف، امکان بازیابی آن وجود نخواهد داشت.
+      </DynamicModal>
+
+      {/* Update Category Modal */}
+      <AddNewCategoryModal
+        key={editCategory?.id ?? "new"}
+        isOpen={isOpenCategoryModal}
+        onOpenChange={() => {
+          setTimeout(() => setEditCategory(null), 200);
+          onOpenChangeCategoryModal();
+        }}
+        defaultValues={editCategory}
+        categoryId={editCategory?.id}
+      />
     </>
   );
 };
