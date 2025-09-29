@@ -15,9 +15,10 @@ type DynamicModalProps = {
   onOpenChange: () => void;
   title?: React.ReactNode;
   children?: React.ReactNode;
-  confirmText: string; // متن دکمه اصلی
-  onConfirm: () => void; // تابع وقتی دکمه اصلی کلیک شد
-  confirmColor?: 
+  confirmText?: string;
+  onConfirm: () => void;
+  icon: React.ReactNode
+  confirmColor?:
     | "danger"
     | "default"
     | "primary"
@@ -33,21 +34,36 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
   onOpenChange,
   title,
   children,
-  confirmText,
+  confirmText = "حذف",
   onConfirm,
-  confirmColor = "primary", // پیش‌فرض primary
-  confirmVariant = "solid",  // پیش‌فرض solid
+  confirmColor = "danger",
+  confirmVariant = "flat",
   placement = "auto",
+  icon
 }) => {
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement={placement}>
+    <Modal
+      dir="rtl"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      placement={placement}
+    >
       <ModalContent>
         {(onClose) => (
           <>
-            {title && <ModalHeader className="flex flex-col gap-1"><p className="font-normal">{title}</p></ModalHeader>}
-            <ModalBody>{children}</ModalBody>
+            {title ? (
+              <ModalHeader className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 font-normal">
+                  {icon}
+                  <p>{title}</p>
+                </div>
+              </ModalHeader>
+            ) : (
+              ""
+            )}
+            <ModalBody className="leading-7">{children}</ModalBody>
             <ModalFooter className="flex gap-2 justify-end">
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="default" variant="flat" onPress={onClose}>
                 لغو
               </Button>
               <Button

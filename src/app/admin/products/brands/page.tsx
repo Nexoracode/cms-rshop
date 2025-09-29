@@ -7,16 +7,7 @@ import CardContent from "@/components/Admin/CardContent";
 import OptionBox from "@/components/Admin/OptionBox";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  Chip,
-  Image,
-  Tooltip,
-  useDisclosure,
-} from "@heroui/react";
+import { Button, Card, CardBody, Image, useDisclosure } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
@@ -93,7 +84,6 @@ const BrandsProduct = () => {
               <Card
                 key={b.id}
                 className="cursor-auto shadow-lg border"
-                isPressable
                 shadow="sm"
               >
                 <CardBody className="overflow-hidden p-0">
@@ -150,15 +140,12 @@ const BrandsProduct = () => {
       <DynamicModal
         isOpen={isOpenDeleteModal}
         onOpenChange={onOpenChangeDeleteModal}
-        title="تایید حذف برند"
-        confirmText="حذف برند"
+        icon={<TbBrandArc className="text-3xl" />}
+        title={"تایید حذف برند"}
         onConfirm={() => deleteBrand(brand?.id)}
-        confirmColor="danger"
-        confirmVariant="solid"
       >
-        <p className="leading-7 text-danger-600">
-          با حذف برند دیگر این برند قابل برگشت نیست!! آیا از حذف اطمینان دارید؟
-        </p>
+        آیا مطمئن هستید می‌خواهید این برند را حذف کنید؟ پس از حذف، امکان بازیابی
+        آن وجود نخواهد داشت.
       </DynamicModal>
       {/* Update Brand Modal */}
       <AddNewBrandModal
