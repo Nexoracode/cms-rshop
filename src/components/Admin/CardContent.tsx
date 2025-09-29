@@ -15,7 +15,6 @@ type CardContentProps = {
   header?: any;
   children: React.ReactNode;
   searchInp?: boolean;
-  styleContent?: string;
   isExistItems: boolean;
 };
 
@@ -29,7 +28,6 @@ const CardContent: React.FC<CardContentProps> = ({
   header,
   children,
   searchInp,
-  styleContent,
   isExistItems,
 }) => {
   return (
@@ -62,7 +60,7 @@ const CardContent: React.FC<CardContentProps> = ({
           {isLoading ? (
             <LoadingApiCall />
           ) : isExistItems ? (
-            <div className={styleContent}>{children}</div>
+            children
           ) : (
             <p className="text-center py-6">
               {searchInp ? "سرچ شمل نتیجه ای نداشت" : "هنوز آیتمی ساخته نشده!!"}

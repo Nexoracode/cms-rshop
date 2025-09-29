@@ -1,30 +1,30 @@
 "use client";
 
 import AddNewBrandModal from "@/components/Admin/_products/__brands/AddNewBrandModal";
+import BrandCard from "@/components/Admin/_products/__brands/BrandCard";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import CardContent from "@/components/Admin/CardContent";
 import OptionBox from "@/components/Admin/OptionBox";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
-import { Button, Card, CardBody, Image, useDisclosure } from "@heroui/react";
+import { Card, CardBody, useDisclosure } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoFilter } from "react-icons/io5";
 import { LuBox } from "react-icons/lu";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { TbBrandArc, TbEdit } from "react-icons/tb";
 
 const BrandsProduct = () => {
   const searchParams = useSearchParams();
   const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
-  const { mutate: deleteBrand } = useDeleteBrand();
   const [editBrand, setEditBrand] = useState<any>(null);
   const [deleteBrandId, setDeleteBrandId] = useState<number | null>(null);
   const { data: brands, isLoading } = useGetBrands(
     searchParams.get("page") ? +searchParams.get("page")! : 1
   );
+  const { mutate: deleteBrand } = useDeleteBrand();
   //? Disclosure
   const {
     isOpen: isOpenBrandModal,
@@ -76,63 +76,25 @@ const BrandsProduct = () => {
           onAdd={onOpenBrandModal}
           icon={<TbBrandArc className="text-3xl animate-pulse" />}
           searchInp={!!searchInp?.length}
-          styleContent="flex flex-wrap justify-center gap-4"
         >
-          {brands?.data?.items?.map((b: any) => {
-            return (
-              <Card
-                key={b.id}
-                className="cursor-auto shadow-lg border w-[235px]"
-                shadow="sm"
-              >
-                <CardBody className="overflow-hidden p-0">
-                  <Image
-                    alt={b.title}
-                    className="w-full object-cover h-[140px]"
-                    radius="lg"
-                    src={b.logo}
-                    width={"100%"}
-                  />
-                  <div className="flex flex-col justify-center items-center gap-2">
-                    <div className="flex flex-col items-center leading-7 mt-2 w-[200px] py-2 bg-gray-50 rounded-2xl">
-                      <div className="flex items-center gap-1">
-                        <p className="text-[15px]">{b.name}</p>
-                      </div>
-                      <p className="text-default-500">{b.slug}</p>
-                    </div>
-                    <div className="w-[200px] flex">
-                      <Button
-                        size="sm"
-                        className="rounded-tr-lg w-full"
-                        radius="none"
-                        color="danger"
-                        variant="flat"
-                        onPress={() => {
-                          setDeleteBrandId(b.id)
-                          onOpenDeleteModal();
-                        }}
-                      >
-                        <RiDeleteBin5Line className="text-xl" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="rounded-tl-xl w-full"
-                        radius="none"
-                        color="success"
-                        variant="flat"
-                        onPress={() => {
-                          setEditBrand(b);
-                          onOpenBrandModal();
-                        }}
-                      >
-                        <TbEdit className="text-xl" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            );
-          })}
+          <div className="flex flex-wrap justify-center gap-4">
+            {brands?.data?.items?.map((b: any) => {
+              return (
+                <BrandCard
+                  key={b.id}
+                  brand={b}
+                  onDelete={(id) => {
+                    setDeleteBrandId(id);
+                    onOpenDeleteModal();
+                  }}
+                  onEdit={(brand) => {
+                    setEditBrand(brand);
+                    onOpenBrandModal();
+                  }}
+                />
+              );
+            })}
+          </div>
         </CardContent>
       </section>
       {/* Delete Modal */}

@@ -12,18 +12,6 @@ export const useGetBrands = (page = 1) => {
   });
 };
 
-export const useGetBrand = (id?: number) => {
-  return useQuery({
-    queryKey: ["brand", id],
-    queryFn: () =>
-      fetcher({
-        route: `/brand/${id}`,
-        isActiveToast: false,
-      }),
-    enabled: !!id,
-  });
-};
-
 export const useCreateBrand = () => {
   const queryClient = useQueryClient();
 
@@ -36,27 +24,36 @@ export const useCreateBrand = () => {
         isActiveToast: false,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-brands"] });
       queryClient.invalidateQueries({ queryKey: ["brands"] });
     },
   });
 };
 
-export const useUpdateBrand = (id: number) => {
+export type BrandInput = {
+  id: number;
+  name: string;
+  slug: string;
+  logo: string;
+};
+
+export const useUpdateBrand = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { name: string; slug: string; logo: string }) =>
+    mutationFn: async (data: BrandInput) =>
       fetcher({
-        route: `/brand/${id}`,
+        route: `/brand/${data.id}`,
         method: "PATCH",
-        body: data,
+        body: {
+          name: data.name,
+          slug: data.slug,
+          logo: data.logo,
+        },
         isActiveToast: false,
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-brands"] });
+    onSuccess: (_res, variables) => {
       queryClient.invalidateQueries({ queryKey: ["brands"] });
-      queryClient.invalidateQueries({ queryKey: ["brand", id] });
+      queryClient.invalidateQueries({ queryKey: ["brand", variables.id] });
     },
   });
 };
@@ -74,7 +71,6 @@ export const useDeleteBrand = () => {
         successText: "برند حذف شد",
       }),
     onSuccess: (_data, id) => {
-      queryClient.invalidateQueries({ queryKey: ["all-brands"] });
       queryClient.invalidateQueries({ queryKey: ["brands"] });
       queryClient.invalidateQueries({ queryKey: ["brand", id] });
     },

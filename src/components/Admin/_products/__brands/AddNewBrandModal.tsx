@@ -34,23 +34,15 @@ const AddNewBrandModal: React.FC<Props> = ({
   const { mutateAsync: createBrand, isPending: isPendingCreate } =
     useCreateBrand();
   const { mutateAsync: updateBrand, isPending: isPendingUpdate } =
-    useUpdateBrand(brandId || 0);
+    useUpdateBrand();
 
   const isDisabled = !datas.name.trim() || !datas.slug.trim() || !datas.logo;
 
   useEffect(() => {
-    setDatas({ name: "", slug: "", logo: null });
-  }, []);
-
-  useEffect(() => {
-    if (defaultValues) {
-      setDatas({
-        name: defaultValues.name || "",
-        slug: defaultValues.slug || "",
-        logo: defaultValues.logo || null,
-      });
+    if (isOpen) {
+      setDatas(defaultValues ?? { name: "", slug: "", logo: null });
     }
-  }, [defaultValues]);
+  }, [isOpen, defaultValues]);
 
   const handleCreateNewBrand = async () => {
     if (!datas.logo) return;
