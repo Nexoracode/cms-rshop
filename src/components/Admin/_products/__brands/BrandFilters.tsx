@@ -20,18 +20,14 @@ const BrandFilters = () => {
           color="text-white bg-gray-800"
           icon={<LuBox className="text-3xl" />}
         />
-        <CardBody className="flex flex-col gap-4">
-          <section className="w-full">
-            <DebouncedSearchURL placeholder="جستجو در برندها..." />
-          </section>
+        <CardBody className="flex flex-row gap-4">
+          <DebouncedSearchURL placeholder="جستجو در برندها..." />
 
-          <section className="flex flex-wrap items-center gap-2 justify-between">
-            <OptionBox
-              title="مرتب سازی"
-              icon={<BiSortAlt2 className="!text-[16px]" />}
-              onClick={onOpen}
-            />
-          </section>
+          <OptionBox
+            title="مرتب سازی"
+            icon={<BiSortAlt2 className="text-xl" />}
+            onClick={onOpen}
+          />
         </CardBody>
       </Card>
       <SortingBrandsModal isOpen={isOpen} onOpenChange={onOpenChange} />
