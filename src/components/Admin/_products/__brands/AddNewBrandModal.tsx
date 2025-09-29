@@ -39,15 +39,16 @@ const AddNewBrandModal: React.FC<Props> = ({
   const isDisabled = !datas.name.trim() || !datas.slug.trim() || !datas.logo;
 
   useEffect(() => {
+    setDatas({ name: "", slug: "", logo: null });
+  }, []);
+
+  useEffect(() => {
     if (defaultValues) {
       setDatas({
         name: defaultValues.name || "",
         slug: defaultValues.slug || "",
         logo: defaultValues.logo || null,
       });
-    } else {
-      // اگر برند جدید باشه، فرم خالی بشه
-      setDatas({ name: "", slug: "", logo: null });
     }
   }, [defaultValues]);
 

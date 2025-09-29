@@ -20,7 +20,8 @@ const BrandsProduct = () => {
   const searchParams = useSearchParams();
   const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
   const { mutate: deleteBrand } = useDeleteBrand();
-  const [brand, setBrand] = useState<any>(null);
+  const [editBrand, setEditBrand] = useState<any>(null);
+  const [deleteBrandId, setDeleteBrandId] = useState<number | null>(null);
   const { data: brands, isLoading } = useGetBrands(
     searchParams.get("page") ? +searchParams.get("page")! : 1
   );
@@ -35,8 +36,6 @@ const BrandsProduct = () => {
     onOpen: onOpenDeleteModal,
     onOpenChange: onOpenChangeDeleteModal,
   } = useDisclosure();
-
-  console.log(brands);
 
   return (
     <>
@@ -109,7 +108,7 @@ const BrandsProduct = () => {
                         color="danger"
                         variant="flat"
                         onPress={() => {
-                          setBrand(b);
+                          setDeleteBrandId(b.id)
                           onOpenDeleteModal();
                         }}
                       >
@@ -122,7 +121,7 @@ const BrandsProduct = () => {
                         color="success"
                         variant="flat"
                         onPress={() => {
-                          setBrand(b);
+                          setEditBrand(b);
                           onOpenBrandModal();
                         }}
                       >
@@ -142,21 +141,21 @@ const BrandsProduct = () => {
         onOpenChange={onOpenChangeDeleteModal}
         icon={<TbBrandArc className="text-3xl" />}
         title={"تایید حذف برند"}
-        onConfirm={() => deleteBrand(brand?.id)}
+        onConfirm={() => deleteBrand(deleteBrandId || -1)}
       >
         آیا مطمئن هستید می‌خواهید این برند را حذف کنید؟ پس از حذف، امکان بازیابی
         آن وجود نخواهد داشت.
       </DynamicModal>
       {/* Update Brand Modal */}
       <AddNewBrandModal
-        key={brand?.id ?? "new"}
+        key={editBrand?.id ?? "new"}
         isOpen={isOpenBrandModal}
         onOpenChange={() => {
-          setTimeout(() => setBrand(null), 200);
+          setTimeout(() => setEditBrand(null), 200);
           onOpenChangeBrandModal();
         }}
-        defaultValues={brand}
-        brandId={brand?.id}
+        defaultValues={editBrand}
+        brandId={editBrand?.id}
       />
     </>
   );
