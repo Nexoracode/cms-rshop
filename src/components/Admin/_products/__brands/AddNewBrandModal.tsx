@@ -23,11 +23,10 @@ const AddNewBrandModal: React.FC<Props> = ({
   defaultValues,
   brandId,
 }) => {
-  const [datas, setDatas] = useState({
+  const [datas, setDatas] = useState<any>({
     name: "",
     slug: "",
     logo: null,
-    ...(defaultValues ? defaultValues : {}),
   });
   //? Hooks
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
@@ -38,6 +37,19 @@ const AddNewBrandModal: React.FC<Props> = ({
     useUpdateBrand(brandId || 0);
 
   const isDisabled = !datas.name.trim() || !datas.slug.trim() || !datas.logo;
+
+  useEffect(() => {
+    if (defaultValues) {
+      setDatas({
+        name: defaultValues.name || "",
+        slug: defaultValues.slug || "",
+        logo: defaultValues.logo || null,
+      });
+    } else {
+      // اگر برند جدید باشه، فرم خالی بشه
+      setDatas({ name: "", slug: "", logo: null });
+    }
+  }, [defaultValues]);
 
   const handleCreateNewBrand = async () => {
     if (!datas.logo) return;
