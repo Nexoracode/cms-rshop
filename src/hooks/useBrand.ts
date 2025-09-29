@@ -5,7 +5,6 @@ import { buildQueryString } from "@/utils/buildQueryString";
 type UseGetBrandsParams = {
   page?: number;
   search?: string;
-  searchBy?: string[];
   sortBy?: Array<
     "id:ASC" | "id:DESC" | "name:ASC" | "name:DESC" | "logo:ASC" | "logo:DESC"
   >;
@@ -14,15 +13,13 @@ type UseGetBrandsParams = {
 export const useGetBrands = ({
   page = 1,
   search,
-  searchBy,
   sortBy,
 }: UseGetBrandsParams) => {
   return useQuery({
-    queryKey: ["brands", { page, search, searchBy, sortBy }],
+    queryKey: ["brands", { page, search, sortBy }],
     queryFn: () => {
       const params: Record<string, any> = { page };
       if (search) params.search = search;
-      if (searchBy?.length) params.searchBy = searchBy;
       if (sortBy?.length) params.sortBy = sortBy;
       const qs = buildQueryString(params);
       return fetcher({ route: `/brand?${qs}`, isActiveToast: false });

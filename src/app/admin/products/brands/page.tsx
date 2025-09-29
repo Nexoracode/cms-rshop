@@ -28,10 +28,6 @@ const BrandsProduct = () => {
 
   // search / searchBy / sortBy
   const search = searchParams.get("search") ?? undefined;
-  const searchBy = useMemo(() => {
-    const s = searchParams.getAll("searchBy");
-    return s.length ? s : undefined;
-  }, [searchParamsStr]);
 
   const sortBy = useMemo(() => {
     const s = searchParams.getAll("sortBy") as Array<
@@ -43,7 +39,6 @@ const BrandsProduct = () => {
   const { data: brands, isLoading } = useGetBrands({
     page,
     search,
-    searchBy,
     sortBy,
   });
   //? Disclosure
