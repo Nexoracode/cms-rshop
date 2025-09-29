@@ -1,17 +1,15 @@
+// components/Admin/_products/__brands/BrandFilters.tsx
 "use client";
 
 import { Card, CardBody } from "@heroui/react";
 import BoxHeader from "../__create/helpers/BoxHeader";
 import { LuBox } from "react-icons/lu";
-import SearchInput from "../__create/helpers/SearchInput";
 import OptionBox from "../../OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoFilter } from "react-icons/io5";
-import { useState } from "react";
+import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
 
 const BrandFilters = () => {
-  const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
-
   return (
     <Card className="shadow-none">
       <BoxHeader
@@ -21,11 +19,10 @@ const BrandFilters = () => {
       />
       <CardBody className="flex flex-col gap-4">
         <section className="w-full">
-          <SearchInput
-            placeholder="جستجو در برندها..."
-            onSearch={setSearchInp}
-          />
+          {/* فقط اینو می‌خوایم */}
+          <DebouncedSearchURL placeholder="جستجو در برندها..." />
         </section>
+
         <section className="flex flex-wrap items-center gap-2 justify-between">
           <OptionBox
             title="فیلتر"

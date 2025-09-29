@@ -8,17 +8,44 @@ import DynamicModal from "@/components/Helper/DynamicModal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
 import { useDisclosure } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TbBrandArc } from "react-icons/tb";
 
 const BrandsProduct = () => {
   const searchParams = useSearchParams();
   const [editBrand, setEditBrand] = useState<any>(null);
   const [deleteBrandId, setDeleteBrandId] = useState<number | null>(null);
-  const { data: brands, isLoading } = useGetBrands(
-    searchParams.get("page") ? +searchParams.get("page")! : 1
-  );
   const { mutate: deleteBrand } = useDeleteBrand();
+  //
+  // صفحه لیست برندها (فقط بخش مرتبط)
+  const searchParamsStr = searchParams.toString();
+
+  // page
+  const page = useMemo(() => {
+    const n = Number(searchParams.get("page") ?? 1);
+    return Number.isFinite(n) && n > 0 ? n : 1;
+  }, [searchParamsStr]);
+
+  // search / searchBy / sortBy
+  const search = searchParams.get("search") ?? undefined;
+  const searchBy = useMemo(() => {
+    const s = searchParams.getAll("searchBy");
+    return s.length ? s : undefined;
+  }, [searchParamsStr]);
+
+  const sortBy = useMemo(() => {
+    const s = searchParams.getAll("sortBy") as Array<
+      "id:ASC" | "id:DESC" | "name:ASC" | "name:DESC" | "logo:ASC" | "logo:DESC"
+    >;
+    return s.length ? s : undefined;
+  }, [searchParamsStr]);
+
+  const { data: brands, isLoading } = useGetBrands({
+    page,
+    search,
+    searchBy,
+    sortBy,
+  });
   //? Disclosure
   const {
     isOpen: isOpenBrandModal,

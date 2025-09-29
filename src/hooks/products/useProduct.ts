@@ -1,20 +1,21 @@
 import { Product } from "@/components/Admin/_products/types/create-product";
+import { buildQueryString } from "@/utils/buildQueryString";
 import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /*  */
 
 type ProductFilter = {
-  is_visible?: string[];            // $eq:1|0
-  requires_preparation?: string[];  // $eq:1|0
-  category_id?: string[];           // $eq:...
-  brand_id?: string[];              // $eq:...
-  price?: string[];                 // $gte/$lte
-  stock?: string[];                 // $gte/$lte
-  weight?: string[];                // $gte/$lte
-  discount_amount?: string[];       // $gte/$lte
-  discount_percent?: string[];      // $gte/$lte
-  created_at?: string[];            // $gte/$lte/$btw
+  is_visible?: string[]; // $eq:1|0
+  requires_preparation?: string[]; // $eq:1|0
+  category_id?: string[]; // $eq:...
+  brand_id?: string[]; // $eq:...
+  price?: string[]; // $gte/$lte
+  stock?: string[]; // $gte/$lte
+  weight?: string[]; // $gte/$lte
+  discount_amount?: string[]; // $gte/$lte
+  discount_percent?: string[]; // $gte/$lte
+  created_at?: string[]; // $gte/$lte/$btw
 };
 
 type UseGetProductsParams = {
@@ -23,35 +24,17 @@ type UseGetProductsParams = {
   filter?: ProductFilter;
   search?: string;
   searchBy?: string[];
-  sortBy?: ProductSortBy;
+  sortBy?: Array<
+    | "id:ASC"
+    | "id:DESC"
+    | "name:ASC"
+    | "name:DESC"
+    | "price:ASC"
+    | "price:DESC"
+    | "stock:ASC"
+    | "stock:DESC"
+  >;
 };
-
-export type ProductSortBy = Array<
-  | "id:ASC"
-  | "id:DESC"
-  | "name:ASC"
-  | "name:DESC"
-  | "price:ASC"
-  | "price:DESC"
-  | "stock:ASC"
-  | "stock:DESC"
->;
-
-export function buildQueryString(params: Record<string, any>) {
-  const query = new URLSearchParams();
-  for (const key in params) {
-    const value = params[key];
-    if (value === undefined || value === null) continue;
-    if (Array.isArray(value)) {
-      value.forEach((v) => query.append(key, v));
-    } else {
-      query.append(key, value);
-    }
-  }
-  return query.toString();
-}
-
-/*  */
 
 export const useGetProducts = ({
   page = 1,
@@ -107,7 +90,7 @@ export const useProductUpload = () => {
         route: "/product/upload",
         method: "POST",
         body: data,
-        isActiveToast: false
+        isActiveToast: false,
       });
     },
   });
