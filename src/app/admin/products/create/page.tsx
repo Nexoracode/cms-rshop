@@ -22,9 +22,7 @@ const CreateNewProduct = () => {
         {searchParams.get("type") === "infos" ? (
           <ProductInitialForm />
         ) : (
-          <AttributeProvider>
-            <AttributesProducts />
-          </AttributeProvider>
+          <AttributesProducts />
         )}
       </section>
     </div>
