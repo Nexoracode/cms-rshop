@@ -22,7 +22,7 @@ const Variants = () => {
               keyTitle={"ویژگی"}
               onAdd={() => {}}
             />
-            <div className="px-4">
+            <div className="px-4 mb-4">
               <AttributesContent
                 isActiveHeader={false}
                 isDisabledEdit={false}

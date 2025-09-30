@@ -111,7 +111,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
             onChange={(e) => {
               setSelectedAttrValueId(+e.target.value);
             }}
-            className="mb-4"
+            className="my-4"
           >
             {attrValues ? (
               attrValues.map((data: any) => (

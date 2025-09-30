@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import BackToPage from "@/components/Helper/BackToPage";
 import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
 import ProductInitialForm from "@/components/Admin/_products/__create/ProductInitialForm";
-import { AttributeProvider } from "@/components/Admin/_products/context/AttributeContext";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const CreateNewProduct = () => {

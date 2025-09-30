@@ -128,17 +128,20 @@ export const AttributesContent = ({
           isDisabledEdit={isDisabledEdit}
         />
       ) : null}
-
-      <Button
-        className="w-full"
-        variant="solid"
-        color="secondary"
-        onPress={handleSubmit}
-        isDisabled={!selecteds.valueIds.length}
-        isLoading={addNewVariantProductMutation.isPending}
-      >
-        ثبت تغییرات
-      </Button>
+      {isActiveHeader ? (
+        <Button
+          className="w-full"
+          variant="solid"
+          color="secondary"
+          onPress={handleSubmit}
+          isDisabled={!selecteds.valueIds.length}
+          isLoading={addNewVariantProductMutation.isPending}
+        >
+          ثبت تغییرات
+        </Button>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
