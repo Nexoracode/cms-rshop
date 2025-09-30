@@ -60,45 +60,47 @@ const CategoryNode: React.FC<{
     <div className="relative">
       {/* کارت هر نود */}
       <Card
-        className={`shadow-md border ${
+        className={`shadow-md border w-[270px] sm:w-full ${
           isRoot ? "shadow-[0_3px_5px_skyblue]" : ""
         }`}
       >
         <CardBody className="p-3">
-          <div className="flex items-center gap-3">
-            {/* Toggle children */}
-            <button
-              className="mt-1 shrink-0 rounded-md border px-1.5 py-1 hover:bg-default-100 transition-colors"
-              onClick={() => setOpen((p) => !p)}
-              aria-label={open ? "بستن زیرشاخه‌ها" : "باز کردن زیرشاخه‌ها"}
-              type="button"
-            >
-              {hasChildren ? (
-                open ? (
-                  <BiChevronDown size={16} />
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <div className="flex items-center gap-2">
+              {/* Toggle children */}
+              <button
+                className="mt-1 shrink-0 rounded-md border px-1.5 py-1 hover:bg-default-100 transition-colors"
+                onClick={() => setOpen((p) => !p)}
+                aria-label={open ? "بستن زیرشاخه‌ها" : "باز کردن زیرشاخه‌ها"}
+                type="button"
+              >
+                {hasChildren ? (
+                  open ? (
+                    <BiChevronDown size={16} />
+                  ) : (
+                    <BiChevronRight size={16} />
+                  )
                 ) : (
-                  <BiChevronRight size={16} />
-                )
-              ) : (
-                <span className="opacity-30">○</span>
-              )}
-            </button>
+                  <span className="opacity-30">○</span>
+                )}
+              </button>
 
-            {/* تصویر */}
-            <div className="w-[72px] h-[72px] overflow-hidden rounded-xl bg-default-100 shrink-0">
-              {node.media?.url ? (
-                <Image
-                  alt={node.media.alt ?? node.title}
-                  src={node.media.url}
-                  className="object-cover w-full h-full"
-                  radius="none"
-                  removeWrapper
-                />
-              ) : (
-                <div className="w-full h-full grid place-items-center text-xs text-default-400">
-                  بدون تصویر
-                </div>
-              )}
+              {/* تصویر */}
+              <div className="w-28 h-28 sm:w-[72px] sm:h-[72px] overflow-hidden rounded-xl bg-default-100 shrink-0">
+                {node.media?.url ? (
+                  <Image
+                    alt={node.media.alt ?? node.title}
+                    src={node.media.url}
+                    className="object-cover w-full h-full"
+                    radius="none"
+                    removeWrapper
+                  />
+                ) : (
+                  <div className="w-full h-full grid place-items-center text-xs text-default-400">
+                    بدون تصویر
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* اطلاعات */}
@@ -117,7 +119,7 @@ const CategoryNode: React.FC<{
                 <p className="text-[15px]">{node.title}</p>
                 <p className="text-xs text-default-500">({node.slug})</p>
               </div>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
                 {isRoot && (
                   <Chip size="sm" color="primary" variant="flat" radius="sm">
                     والد
@@ -135,7 +137,7 @@ const CategoryNode: React.FC<{
                 )}
               </div>
               {/* اکشن‌ها */}
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
                 <button
                   onClick={() => onEdit(node)}
                   className="bg-gray-100 rounded-md p-1 hover:opacity-70 transition-all"
