@@ -58,7 +58,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onDelete,
 }) => {
   return (
-    <div dir="rtl" className="flex flex-col items-center gap-3">
+    <div dir="rtl" className="flex flex-col items-center sm:items-stretch gap-3">
       {categories.map((cat) => (
         <CategoryNode
           key={cat.id}
