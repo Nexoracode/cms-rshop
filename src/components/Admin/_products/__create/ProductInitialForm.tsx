@@ -102,20 +102,39 @@ const ProductInitialForm = () => {
   const cardStyle = "w-full shadow-md";
   const cardBodyStyle = "flex flex-col gap-6 text-right";
 
-  useEffect(() => {
-    setIsDisabled((prev: any) => {
-      const isDisabled =
-        product.media_ids?.length > 0 &&
-        product.media_pinned_id &&
-        product.media_ids.includes(product.media_pinned_id) &&
-        product.name?.trim().length &&
-        +product.price > 0 &&
-        +product.category_id > 0 &&
-        +product.weight > 0 &&
-        product.description?.trim().length &&
-        product.brand_id;
-      return isDisabled;
-    });
+  const stripHtml = (html?: string) =>
+    (html ?? "")
+      .replace(/<[^>]*>/g, "") // حذف تگ‌ها
+      .replace(/&nbsp;/g, " ") // حذف nbsp
+      .trim();
+
+  const canSubmit = useMemo(() => {
+    const hasMedia = (product.media_ids?.length ?? 0) > 0;
+    const hasPinned =
+      !!product.media_pinned_id &&
+      !!product.media_ids?.includes(product.media_pinned_id!);
+    const hasName = !!product.name?.trim();
+    const hasPrice = Number(product.price) > 0;
+    const hasCategory = Number(product.category_id) > 0;
+    const hasWeight = Number(product.weight) > 0;
+    const hasBrand = Number(product.brand_id) > 0;
+
+    // TinyMCE معمولاً متن خالی رو مثل "<p></p>" می‌فرسته:
+    const hasDesc = stripHtml(product.description || "").length > 0;
+
+    // اگر در حالت ویرایش می‌خوای بعضی شروط آزادتر باشن، اینجا شرط بگذار:
+    // if (step === "edit") { ... }
+
+    return (
+      hasMedia &&
+      hasPinned &&
+      hasName &&
+      hasPrice &&
+      hasCategory &&
+      hasWeight &&
+      hasDesc &&
+      hasBrand
+    );
   }, [product]);
 
   useEffect(() => {
@@ -435,33 +454,32 @@ const ProductInitialForm = () => {
           </CardBody>
         </Card>
         {step === "new" && !continueSteps ? (
-          // مرحله‌ی اول (کلیدی)
           <div className="flex gap-4 w-full">
             <Button
               className="w-full"
               color="primary"
               variant="flat"
-              isDisabled={isDisabled === 1 ? false : true}
-              onPress={() => setContinueSteps(true)} // فقط ادامه، بدون ثبت
+              isDisabled={!canSubmit} // فقط این خط
+              onPress={() => setContinueSteps(true)}
               title="بعد از تکمیل فیلدهای ضروری می‌تونی ادامه بدی"
             >
               ثبت و ادامهٔ تکمیل
             </Button>
+
             <Button
               color="success"
               className="text-white w-full"
-              isDisabled={isDisabled === 1 ? false : true}
+              isDisabled={!canSubmit} // و این خط
               onPress={handleChangeProduct}
             >
               ثبت حداقلی
             </Button>
           </div>
         ) : (
-          // مرحله‌ی دوم (تکمیلی) یا حالت ویرایش
           <Button
             color="success"
             className="text-white"
-            isDisabled={isDisabled === 1 ? false : true}
+            isDisabled={!canSubmit} // و این خط
             onPress={handleChangeProduct}
           >
             ثبت تغییرات
