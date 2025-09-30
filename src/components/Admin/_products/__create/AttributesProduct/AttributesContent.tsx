@@ -13,6 +13,8 @@ import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
 import ModalHeaderNavigator from "../../ModalHeaderNavigator";
 import { MdOutlineCategory } from "react-icons/md";
+import { useAddNewCategoryAttribute } from "@/hooks/attributes/useAttributeCategory";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   isDisabledEdit?: boolean;
@@ -31,15 +33,24 @@ export const AttributesContent = ({
   onSubmitted,
   isActiveHeader = true,
 }: Props) => {
-  const [selecteds, setSelecteds] = useState(initialSelecteds);
-
   const { page } = usePaginationParams("edit_id");
+  const searchParams = useSearchParams();
+  const [selecteds, setSelecteds] = useState(initialSelecteds);
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
 
+  const categoryId = searchParams.get("category_id")
+    ? Number(searchParams.get("category_id"))
+    : undefined;
+
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const addNewSimapleAttribute = useAddNewSimapleAttribute();
+  const addNewCategoryAttribute = useAddNewCategoryAttribute(
+    selecteds.attrId,
+    categoryId,
+    selecteds.attrGroupId
+  );
 
   const handleSubmit = async () => {
     const { attrId, attrGroupId, valueIds } = selecteds;

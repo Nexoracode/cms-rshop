@@ -52,6 +52,15 @@ const AttributesProducts = () => {
   const updateVariantProductMutation = useUpdateVariantProduct();
 
   useEffect(() => {
+    if (!productData?.data?.category_id) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("category_id", String(productData.data.category_id));
+
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [productData?.data, router, pathname, searchParams]);
+
+  useEffect(() => {
     console.log("All Attributes Nodes =>", productData?.data);
     setVariants([]);
     if (productData?.data?.attribute_nodes) {
