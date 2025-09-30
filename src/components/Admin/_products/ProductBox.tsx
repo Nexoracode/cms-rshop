@@ -17,6 +17,7 @@ import { CgCalendarDates } from "react-icons/cg";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
+import { FiShoppingBag } from "react-icons/fi";
 
 type Props = {
   id: number;
@@ -244,8 +245,7 @@ const ProductBox: React.FC<Props> = ({
         title="تایید حذف محصول"
         confirmText="حذف محصول"
         onConfirm={() => deleteProduct()}
-        confirmColor="danger"
-        confirmVariant="solid"
+        icon={<FiShoppingBag className="text-3xl"/>}
       >
         <p className="leading-7 text-danger-600">
           با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان

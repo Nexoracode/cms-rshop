@@ -10,18 +10,16 @@ type UseGetBrandsParams = {
   >;
 };
 
-export const useGetBrands = ({
-  page = 1,
-  search,
-  sortBy,
-}: UseGetBrandsParams) => {
+export const useGetBrands = (params: UseGetBrandsParams = {}) => {
   return useQuery({
-    queryKey: ["brands", { page, search, sortBy }],
-    queryFn: () => {
-      const params: Record<string, any> = { page };
-      if (search) params.search = search;
-      if (sortBy?.length) params.sortBy = sortBy;
-      const qs = buildQueryString(params);
+    queryKey: ["brands", params],
+    queryFn: ({ queryKey }) => {
+      const [, { page = 1, search, sortBy }] = queryKey as [
+        string,
+        UseGetBrandsParams
+      ];
+
+      const qs = buildQueryString({ page, search, sortBy });
       return fetcher({ route: `/brand?${qs}`, isActiveToast: false });
     },
   });

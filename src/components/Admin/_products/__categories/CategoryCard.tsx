@@ -109,12 +109,9 @@ const CategoryNode: React.FC<{
                 </div>
               )}
 
-              {/* عنوان + اسلاگ + مدال‌ها */}
+              {/* عنوان + مدال‌ها */}
               <div className="flex flex-wrap items-center gap-2">
                 <p className="font-medium">{node.title}</p>
-                <span className="text-xs text-default-500 ltr:font-mono">
-                  /{node.slug}
-                </span>
                 {isRoot && (
                   <Chip size="sm" color="secondary" variant="flat">
                     والد
@@ -131,6 +128,10 @@ const CategoryNode: React.FC<{
                   </Chip>
                 )}
               </div>
+
+              <span className="text-xs text-default-500 ltr:font-mono">
+                {node.slug}
+              </span>
 
               {/* اکشن‌ها */}
               <div className="mt-3 flex gap-2">

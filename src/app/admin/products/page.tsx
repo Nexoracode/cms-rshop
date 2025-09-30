@@ -42,6 +42,7 @@ const Products = () => {
     const n = Number(p ?? 1);
     return Number.isFinite(n) && n > 0 ? n : 1;
   }, [searchParams?.toString()]);
+  console.log("DDDDDD", page);
 
   // sortBy
   const sortBy = useMemo(() => {
@@ -79,7 +80,7 @@ const Products = () => {
     searchBy,
     sortBy,
   });
-  console.log(products?.data.items);
+  console.log(products?.data?.items);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -274,8 +275,7 @@ const Products = () => {
         title="تایید حذف محصولات انتخابی"
         confirmText="حذف محصولات"
         onConfirm={deleteGroupProducts}
-        confirmColor="danger"
-        confirmVariant="solid"
+        icon={<AiOutlineShop className="text-3xl" />}
       >
         <p className="leading-7 text-danger-600">
           با حذف محصولات انتخاب شده دیگر این محصولات قابل برگشت نیست!! آیا از

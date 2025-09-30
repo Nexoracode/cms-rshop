@@ -18,22 +18,24 @@ type ProductFilter = {
   created_at?: string[]; // $gte/$lte/$btw
 };
 
+export type ProductSortBy = Array<
+  | "id:ASC"
+  | "id:DESC"
+  | "name:ASC"
+  | "name:DESC"
+  | "price:ASC"
+  | "price:DESC"
+  | "stock:ASC"
+  | "stock:DESC"
+>;
+
 type UseGetProductsParams = {
   page?: number;
   limit?: number;
   filter?: ProductFilter;
   search?: string;
   searchBy?: string[];
-  sortBy?: Array<
-    | "id:ASC"
-    | "id:DESC"
-    | "name:ASC"
-    | "name:DESC"
-    | "price:ASC"
-    | "price:DESC"
-    | "stock:ASC"
-    | "stock:DESC"
-  >;
+  sortBy?: ProductSortBy;
 };
 
 export const useGetProducts = ({

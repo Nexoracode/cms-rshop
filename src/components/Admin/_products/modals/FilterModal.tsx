@@ -76,7 +76,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
   // برندها
   const brandOptions =
-    brandsData?.data?.map((b: any) => ({ id: b.id, title: b.name })) ?? [];
+    brandsData?.data?.items?.map((b: any) => ({ id: b.id, title: b.name })) ?? [];
 
   const onApply = () => {
     const params = new URLSearchParams();
@@ -350,9 +350,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                   updateFilter("discountMin", val === undefined ? "" : val)
                 }
                 selectedKey={filters.discountType}
-                onSelectChange={(val: any) =>
-                  updateFilter("discountType", val)
-                }
+                onSelectChange={(val: any) => updateFilter("discountType", val)}
                 options={[
                   { key: "percent", title: "درصد" },
                   { key: "amount", title: "مبلغ ثابت" },
@@ -369,9 +367,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                   updateFilter("discountMax", val === undefined ? "" : val)
                 }
                 selectedKey={filters.discountType}
-                onSelectChange={(val: any) =>
-                  updateFilter("discountType", val)
-                }
+                onSelectChange={(val: any) => updateFilter("discountType", val)}
                 options={[
                   { key: "percent", title: "درصد" },
                   { key: "amount", title: "مبلغ ثابت" },
