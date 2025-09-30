@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import {
   Button,
   Card,
@@ -9,7 +10,6 @@ import {
   NumberInput,
   Select,
   SelectItem,
-  Textarea,
   useDisclosure,
 } from "@heroui/react";
 import BoxHeader from "./helpers/BoxHeader";
@@ -36,7 +36,10 @@ import {
 import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/categories/useCategory";
-import TextEditor from "../../TextEditor";
+
+const TextEditor = dynamic(() => import("../../TextEditor"), {
+  ssr: false,
+});
 
 const initProduct: Product = {
   name: "",
