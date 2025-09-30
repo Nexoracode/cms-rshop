@@ -16,7 +16,6 @@ export const useAddNewCategoryAttribute = (
         route: "/category-attribute",
         method: "POST",
         body: data,
-        isActiveToast: false,
       }),
     onSuccess: () => {
       if (groupedId) {

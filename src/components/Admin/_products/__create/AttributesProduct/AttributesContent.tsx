@@ -71,12 +71,23 @@ export const AttributesContent = ({
         attributes: [{ attribute_id: attrId, value_ids: valueIds }],
       };
 
-      addNewVariantProductMutation.mutate(newAttr, {
-        onSuccess: () => {
-          resetInfos();
-          onSubmitted?.();
+      addNewCategoryAttribute.mutate(
+        {
+          categoryId: categoryId,
+          attributeId: attrId,
         },
-      });
+        {
+          onSuccess: () => {
+            // بعد variant-product
+            addNewVariantProductMutation.mutate(newAttr, {
+              onSuccess: () => {
+                resetInfos();
+                onSubmitted?.();
+              },
+            });
+          },
+        }
+      );
     } else {
       const newAttrSimple = {
         product_id: page,
