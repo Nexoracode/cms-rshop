@@ -242,6 +242,7 @@ const AddNewCategoryModal = ({
                 label="تخفیف"
                 placeholder="مقدار تخفیف"
                 minValue={0}
+                maxValue={99}
                 endContent={<>%</>}
                 value={+data.discount}
                 onValueChange={(value) =>

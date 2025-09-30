@@ -59,9 +59,13 @@ const CategoryNode: React.FC<{
   return (
     <div className="relative">
       {/* کارت هر نود */}
-      <Card className="shadow-md border">
+      <Card
+        className={`shadow-md border ${
+          isRoot ? "shadow-[0_3px_5px_skyblue]" : ""
+        }`}
+      >
         <CardBody className="p-3">
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             {/* Toggle children */}
             <button
               className="mt-1 shrink-0 rounded-md border px-1.5 py-1 hover:bg-default-100 transition-colors"
@@ -76,7 +80,7 @@ const CategoryNode: React.FC<{
                   <BiChevronRight size={16} />
                 )
               ) : (
-                <span className="opacity-30">•</span>
+                <span className="opacity-30">○</span>
               )}
             </button>
 
@@ -98,53 +102,52 @@ const CategoryNode: React.FC<{
             </div>
 
             {/* اطلاعات */}
-            <div className="flex-1 min-w-0">
+            <div className="relative flex-1 min-w-0">
               {/* مسیر والدین */}
               {chainTitles.length > 0 && (
-                <div className="text-xs text-default-500 truncate flex items-center justify-end">
-                  <div className="w-fit">
+                <div className="text-xs absolute left-0 text-default-500 truncate flex items-center justify-end">
+                  <div className="w-fit bg-gray-100 rounded-lg py-2 px-3">
                     {pathTitles}
                     {node.title}
                   </div>
                 </div>
               )}
-
               {/* عنوان + مدال‌ها */}
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="font-medium">{node.title}</p>
+              <div className="flex items-center gap-2 p-2">
+                <p className="text-[15px]">{node.title}</p>
+                <p className="text-xs text-default-500">({node.slug})</p>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
                 {isRoot && (
-                  <Chip size="sm" color="secondary" variant="flat">
+                  <Chip size="sm" color="primary" variant="flat" radius="sm">
                     والد
                   </Chip>
                 )}
-                {node.discount && node.discount !== "0" && (
-                  <Chip size="sm" color="warning" variant="flat">
-                    %{node.discount} تخفیف
-                  </Chip>
-                )}
                 {hasChildren && (
-                  <Chip size="sm" variant="flat">
+                  <Chip size="sm" variant="flat" radius="sm">
                     {node.children.length} زیرمجموعه
                   </Chip>
                 )}
+                {node.discount && node.discount !== "0" && (
+                  <Chip size="sm" color="warning" variant="flat" radius="sm">
+                    %{node.discount} تخفیف
+                  </Chip>
+                )}
               </div>
-
-              <span className="text-xs text-default-500 ltr:font-mono">
-                {node.slug}
-              </span>
-
               {/* اکشن‌ها */}
-              <div className="mt-3 flex gap-2">
-                <Tooltip content="ویرایش">
-                  <button onClick={() => onEdit(node)}>
-                    <TbEdit size={17} />
-                  </button>
-                </Tooltip>
-                <Tooltip color="danger" content="حذف">
-                  <button onClick={() => onDelete(node.id)}>
-                    <RiDeleteBin5Line size={17} />
-                  </button>
-                </Tooltip>
+              <div className="flex items-center justify-end gap-2">
+                <button
+                  onClick={() => onEdit(node)}
+                  className="bg-gray-100 rounded-md p-1 hover:opacity-70 transition-all"
+                >
+                  <TbEdit size={18} />
+                </button>
+                <button
+                  onClick={() => onDelete(node.id)}
+                  className="bg-gray-100 rounded-md p-1 hover:opacity-70 transition-all"
+                >
+                  <RiDeleteBin5Line size={18} />
+                </button>
               </div>
             </div>
           </div>
