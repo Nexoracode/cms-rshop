@@ -1,5 +1,6 @@
 "use client";
 
+import { AttributesContent } from "@/components/Admin/_products/__create/AttributesProduct/AttributesContent";
 import BackToPage from "@/components/Helper/BackToPage";
 import HeaderActionCard from "@/components/Helper/HeaderActionCard";
 import { Card, CardBody } from "@heroui/react";
@@ -21,7 +22,12 @@ const Variants = () => {
               keyTitle={"ویژگی"}
               onAdd={() => {}}
             />
-            <div>Test</div>
+            <div className="px-4">
+              <AttributesContent
+                isActiveHeader={false}
+                isDisabledEdit={false}
+              />
+            </div>
           </CardBody>
         </Card>
       </section>
