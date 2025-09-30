@@ -72,7 +72,7 @@ const BrandsProduct = () => {
           icon={<TbBrandArc className="text-3xl animate-pulse" />}
           //searchInp={!!searchInp?.length}
         >
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center sm:justify-start pr-2 gap-4">
             {brands?.data?.items?.map((b: any) => {
               return (
                 <BrandCard

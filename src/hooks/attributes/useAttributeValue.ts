@@ -40,7 +40,7 @@ export const useUpdateAttributeValue = (id: number | undefined) => {
 
   return useMutation({
     mutationFn: async (data: any) => {
-      fetcher({
+      return fetcher({
         route: `/attribute-value/${id}`,
         method: "PATCH",
         body: data,
