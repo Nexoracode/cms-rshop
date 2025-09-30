@@ -5,6 +5,7 @@ import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -36,7 +37,28 @@ const AddNewAttribute: React.FC<Props> = ({
   return (
     <>
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-        <Select
+        <SelectWithAddButton
+          label="ویژگی"
+          placeholder="ویژگی را انتخاب کنید"
+          options={
+            attr?.length
+              ? attr.map((item: any) => ({
+                  id: item.id,
+                  title: item.name,
+                }))
+              : []
+          }
+          selectedId={selectedAttrId || -1}
+          onChange={(id) => {
+            onChange(+id);
+          }}
+          onAddNewClick={() => {
+            onOpen();
+            setType("add");
+          }}
+        />
+
+        {/*  <Select
           isRequired
           label="ویژگی"
           placeholder="ویژگی را انتخاب کنید"
@@ -66,7 +88,7 @@ const AddNewAttribute: React.FC<Props> = ({
           ) : (
             <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
           )}
-        </Select>
+        </Select> */}
 
         {selectedAttrId && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">

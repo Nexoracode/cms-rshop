@@ -55,7 +55,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
   return (
     <>
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-        <div className="flex w-full flex-col gap-2">
+        <div className="flex gap-2 items-center justify-center w-full">
           <Select
             label="مقادیر ویژگی"
             labelPlacement="outside"
@@ -64,24 +64,16 @@ const AddNewAttributeValue: React.FC<Props> = ({
             selectionMode="multiple"
             onChange={handleChange}
             isRequired
-            endContent={
-              <Button
-                color="secondary"
-                variant="flat"
-                size="sm"
-                onPress={onOpen}
-              >
-                + افزودن
-              </Button>
-            }
           >
             {attrValues && attrValues.length ? (
               attrValues
                 .filter((val) => {
                   if (!attrInfos.length) return true;
-                  const existVal = attrInfos.find(value => value.id === val.id)
-                  return !existVal && val
-                 })
+                  const existVal = attrInfos.find(
+                    (value) => value.id === val.id
+                  );
+                  return !existVal && val;
+                })
                 .map((data: any) => (
                   <SelectItem key={data.id} textValue={data.value}>
                     <div className="flex items-center gap-2">
@@ -101,6 +93,12 @@ const AddNewAttributeValue: React.FC<Props> = ({
               </SelectItem>
             )}
           </Select>
+          <p
+            className="w-24 z-10 text-center text-purple-700 bg-purple-200 rounded-xl mt-[24px] py-1.5 cursor-pointer truncate"
+            onClick={onOpen}
+          >
+            + افزودن
+          </p>
         </div>
 
         {editAttrValue ? (

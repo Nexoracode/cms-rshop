@@ -12,6 +12,8 @@ import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
+import ModalHeaderNavigator from "../../ModalHeaderNavigator";
+import { MdOutlineCategory } from "react-icons/md";
 
 type Props = {
   isDisabledEdit?: boolean;
@@ -88,14 +90,12 @@ export const AttributesContent = ({
   return (
     <div className="flex flex-col gap-8">
       {isActiveHeader ? (
-        <div className="flex items-center justify-between">
-          <p className="font-normal text-[16px] text-gray-600">
-            ویژگی‌های محصول مورد نظر را کنترل کنید
-          </p>
-          <Button variant="flat" className="text-xl" size="sm">
-            <TbSettings />
-          </Button>
-        </div>
+        <ModalHeaderNavigator
+          mainTitle="ویژگی"
+          title={"مدیریت کامل ویژگی"}
+          navigateTo="/admin/products/variants"
+          icon={<MdOutlineCategory className="text-2xl" />}
+        />
       ) : (
         ""
       )}

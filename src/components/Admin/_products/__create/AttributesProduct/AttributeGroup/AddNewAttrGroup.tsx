@@ -5,6 +5,7 @@ import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
+import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -38,7 +39,28 @@ const AddNewAttrGroup: React.FC<Props> = ({
   return (
     <>
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-        <Select
+        <SelectWithAddButton
+          label="گروه ویژگی"
+          placeholder="گروه را انتخاب کنید"
+          options={
+            attrGroup?.length
+              ? attrGroup.map((item: any) => ({
+                  id: item.id,
+                  title: item.name,
+                }))
+              : []
+          }
+          selectedId={selectedAttrGroupId || -1}
+          onChange={(id) => {
+            onChange(+id);
+            setSelectedAttrGroupId(+id);
+          }}
+          onAddNewClick={() => {
+            onOpen();
+            setType("add");
+          }}
+        />
+        {/* <Select
           isRequired
           label="گروه ویژگی"
           placeholder="گروه را انتخاب کنید"
@@ -68,7 +90,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
           ) : (
             <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
           )}
-        </Select>
+        </Select> */}
 
         {selectedAttrGroupId && !isDisabledEdit ? (
           <div className="flex items-center gap-4 mt-2">
