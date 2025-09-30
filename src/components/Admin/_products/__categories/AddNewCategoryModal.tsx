@@ -29,9 +29,7 @@ import { TbCategoryPlus } from "react-icons/tb";
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-  /** داده‌های اولیه برای حالت ویرایش */
   defaultValues?: any;
-  /** id دسته‌بندی برای ویرایش */
   categoryId?: number;
 };
 
@@ -49,7 +47,7 @@ const AddNewCategoryModal = ({
     mediaId: "",
   });
   const [isSelected, setIsSelected] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null | string>(null);
 
   //? Hooks
   const { data: categoriesData } = useGetAllCategories();
@@ -60,7 +58,6 @@ const AddNewCategoryModal = ({
   const { mutateAsync: uploadImageCategory, isPending: isPendingUpload } =
     useCategoryImageUpload();
 
-  // وقتی defaultValues تغییر کرد → فرم رو پر کن
   useEffect(() => {
     if (!defaultValues) {
       setData({
@@ -74,16 +71,17 @@ const AddNewCategoryModal = ({
       setIsSelected(false);
       return;
     }
+    const { discount, media, slug, title, parent_id } = defaultValues;
 
     setData({
-      title: defaultValues.title ?? "",
-      slug: defaultValues.slug ?? "",
-      discount: defaultValues.discount ?? "0",
-      parentId: defaultValues.parentId ?? 0,
-      mediaId: defaultValues.media?.url ?? "",
+      title,
+      slug,
+      discount,
+      parentId: parent_id,
+      mediaId: media?.id ?? -1,
     });
-    setIsSelected(defaultValues.parentId === 0); // اگر parentId=0 → مادر
-    setImageFile(null);
+    setIsSelected(parent_id === 0);
+    setImageFile(media?.url);
   }, [defaultValues]);
 
   const flatOptions = useMemo(() => {
@@ -105,13 +103,13 @@ const AddNewCategoryModal = ({
     try {
       let mediaId = data.mediaId;
 
-      // اگر عکس جدید انتخاب شده → آپلود
-      if (imageFile) {
+      if (typeof imageFile !== "string" && imageFile) {
         const formData = new FormData();
         formData.append("files", imageFile);
         const res = await uploadImageCategory(formData);
         if (!res.ok) return;
         mediaId = res.data[0].id;
+        console.log("FFF");
       }
 
       const payload = {
@@ -122,6 +120,7 @@ const AddNewCategoryModal = ({
         mediaId,
         id: categoryId,
       };
+      console.log(payload);
 
       const response = categoryId
         ? await updateCategory(payload)
@@ -256,7 +255,7 @@ const AddNewCategoryModal = ({
                 textBtn="+ افزودن تصویر"
                 title="تصویر دسته‌بندی"
                 changeStatusFile={imageFile}
-                defaultImg={data.mediaId}
+                defaultImg={imageFile}
                 onFile={(file) => setImageFile(file)}
               />
             </ModalBody>

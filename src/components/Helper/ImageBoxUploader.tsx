@@ -10,7 +10,7 @@ type Props = {
   onFile: (file: File) => void;
   changeStatusFile?: any;
   sizeText?: string;
-  defaultImg?: string;
+  defaultImg?: File | string | null;
 };
 
 const ImageBoxUploader: React.FC<Props> = ({
@@ -19,19 +19,19 @@ const ImageBoxUploader: React.FC<Props> = ({
   onFile,
   changeStatusFile,
   sizeText,
-  defaultImg
+  defaultImg,
 }) => {
   const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   useEffect(() => {
-    setImageFile(changeStatusFile);
-  }, [changeStatusFile]);
-
-  useEffect(() => {
-    if (defaultImg) {
-      setImageFile(defaultImg)
+    if (changeStatusFile) {
+      setImageFile(changeStatusFile);
+    } else if (defaultImg) {
+      setImageFile(defaultImg);
+    } else {
+      setImageFile(null);
     }
-  }, [defaultImg])
+  }, [changeStatusFile, defaultImg]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
