@@ -25,6 +25,33 @@ type CategoryTreeProps = {
   onDelete: (id: number) => void;
 };
 
+const ToggleButton = ({
+  open,
+  hasChildren,
+  onClick,
+}: {
+  open: boolean;
+  hasChildren: boolean;
+  onClick: () => void;
+}) => (
+  <button
+    className="bg-gray-100 rounded-md p-1 cursor-auto"
+    onClick={onClick}
+    aria-label={open ? "بستن زیرشاخه‌ها" : "باز کردن زیرشاخه‌ها"}
+    type="button"
+  >
+    {hasChildren ? (
+      open ? (
+        <BiChevronDown size={17} className="cursor-pointer hover:opacity-70 transition-all"/>
+      ) : (
+        <BiChevronRight size={17} className="cursor-pointer hover:opacity-70 transition-all"/>
+      )
+    ) : (
+      <BiChevronRight size={17} className="opacity-30 pointer-events-none"/>
+    )}
+  </button>
+);
+
 const CategoryTree: React.FC<CategoryTreeProps> = ({
   categories,
   onEdit,
@@ -67,23 +94,13 @@ const CategoryNode: React.FC<{
         <CardBody className="p-3">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <div className="flex items-center gap-2">
-              {/* Toggle children */}
-              <button
-                className="mt-1 shrink-0 rounded-md border px-1.5 py-1 hover:bg-default-100 transition-colors"
-                onClick={() => setOpen((p) => !p)}
-                aria-label={open ? "بستن زیرشاخه‌ها" : "باز کردن زیرشاخه‌ها"}
-                type="button"
-              >
-                {hasChildren ? (
-                  open ? (
-                    <BiChevronDown size={16} />
-                  ) : (
-                    <BiChevronRight size={16} />
-                  )
-                ) : (
-                  <span className="opacity-30">○</span>
-                )}
-              </button>
+              <div className="hidden sm:flex">
+                <ToggleButton
+                  open={open}
+                  hasChildren={hasChildren}
+                  onClick={() => setOpen((p) => !p)}
+                />
+              </div>
 
               {/* تصویر */}
               <div className="w-28 h-28 sm:w-[72px] sm:h-[72px] overflow-hidden rounded-xl bg-default-100 shrink-0">
@@ -138,6 +155,13 @@ const CategoryNode: React.FC<{
               </div>
               {/* اکشن‌ها */}
               <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
+                <div className="flex sm:hidden">
+                  <ToggleButton
+                    open={open}
+                    hasChildren={hasChildren}
+                    onClick={() => setOpen((p) => !p)}
+                  />
+                </div>
                 <button
                   onClick={() => onEdit(node)}
                   className="bg-gray-100 rounded-md p-1 hover:opacity-70 transition-all"
