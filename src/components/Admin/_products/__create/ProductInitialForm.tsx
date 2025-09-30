@@ -36,6 +36,7 @@ import {
 import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/categories/useCategory";
+import TextEditor from "../../TextEditor";
 
 const initProduct: Product = {
   name: "",
@@ -281,16 +282,12 @@ const ProductInitialForm = () => {
               ]}
             />
 
-            <Textarea
-              isRequired
-              placeholder="توضیحات را وارد نمایید"
-              labelPlacement="outside"
-              label="توضیحات"
+            <TextEditor
               value={product.description ?? ""}
-              onChange={(e) =>
+              onChange={(content) =>
                 setProduct((prev) => ({
                   ...prev,
-                  description: e.target.value,
+                  description: content,
                 }))
               }
             />
