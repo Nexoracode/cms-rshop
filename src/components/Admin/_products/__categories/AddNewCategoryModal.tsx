@@ -120,7 +120,6 @@ const AddNewCategoryModal = ({
         mediaId,
         id: categoryId,
       };
-      console.log(payload);
 
       const response = categoryId
         ? await updateCategory(payload)

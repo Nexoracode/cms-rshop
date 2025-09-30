@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardBody, Button, Image, Chip, Tooltip } from "@heroui/react";
+import { Card, CardBody, Image, Chip, Tooltip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -101,10 +101,12 @@ const CategoryNode: React.FC<{
             <div className="flex-1 min-w-0">
               {/* مسیر والدین */}
               {chainTitles.length > 0 && (
-                <p className="text-xs text-default-500 truncate">
-                  {pathTitles}
-                  {node.title}
-                </p>
+                <div className="text-xs text-default-500 truncate flex items-center justify-end">
+                  <div className="w-fit">
+                    {pathTitles}
+                    {node.title}
+                  </div>
+                </div>
               )}
 
               {/* عنوان + اسلاگ + مدال‌ها */}
@@ -115,7 +117,7 @@ const CategoryNode: React.FC<{
                 </span>
                 {isRoot && (
                   <Chip size="sm" color="secondary" variant="flat">
-                    مادر
+                    والد
                   </Chip>
                 )}
                 {node.discount && node.discount !== "0" && (
@@ -133,24 +135,14 @@ const CategoryNode: React.FC<{
               {/* اکشن‌ها */}
               <div className="mt-3 flex gap-2">
                 <Tooltip content="ویرایش">
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    color="success"
-                    onPress={() => onEdit(node)}
-                  >
-                    <TbEdit size={16} />
-                  </Button>
+                  <button onClick={() => onEdit(node)}>
+                    <TbEdit size={17} />
+                  </button>
                 </Tooltip>
                 <Tooltip color="danger" content="حذف">
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    color="danger"
-                    onPress={() => onDelete(node.id)}
-                  >
-                    <RiDeleteBin5Line size={16} />
-                  </Button>
+                  <button onClick={() => onDelete(node.id)}>
+                    <RiDeleteBin5Line size={17} />
+                  </button>
                 </Tooltip>
               </div>
             </div>

@@ -37,7 +37,7 @@ export const fetcher = async ({
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
       credentials
     });
-
+    
     const data = await res.json();
     toastId && toast.dismiss(toastId);
 
