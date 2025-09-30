@@ -4,6 +4,7 @@ import AddNewBrandModal from "@/components/Admin/_products/__brands/AddNewBrandM
 import BrandCard from "@/components/Admin/_products/__brands/BrandCard";
 import BrandFilters from "@/components/Admin/_products/__brands/BrandFilters";
 import CardContent from "@/components/Admin/CardContent";
+import BackToPage from "@/components/Helper/BackToPage";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
 import { useDisclosure } from "@heroui/react";
@@ -55,6 +56,10 @@ const BrandsProduct = () => {
 
   return (
     <>
+      <div className="mb-4">
+        <BackToPage title="برگشت به لیست محصولات" link="/admin/products" />
+      </div>
+
       <section className="flex flex-col gap-6">
         <BrandFilters />
         <CardContent

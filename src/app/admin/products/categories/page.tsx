@@ -3,8 +3,12 @@
 import AddNewCategoryModal from "@/components/Admin/_products/__categories/AddNewCategoryModal";
 import CategoryTree from "@/components/Admin/_products/__categories/CategoryCard";
 import CardContent from "@/components/Admin/CardContent";
+import BackToPage from "@/components/Helper/BackToPage";
 import DynamicModal from "@/components/Helper/DynamicModal";
-import { useDeleteCategory, useGetCategories } from "@/hooks/categories/useCategory";
+import {
+  useDeleteCategory,
+  useGetCategories,
+} from "@/hooks/categories/useCategory";
 import { useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { TbCategory2 } from "react-icons/tb";
@@ -30,6 +34,10 @@ const Categories = () => {
 
   return (
     <>
+      <div className="mb-4">
+        <BackToPage title="برگشت به لیست محصولات" link="/admin/products" />
+      </div>
+
       <section className="flex flex-col gap-6">
         <CardContent
           datas={categories}
@@ -63,7 +71,8 @@ const Categories = () => {
         title={"تایید حذف دسته‌بندی"}
         onConfirm={() => deleteCategory(deleteCategoryId || -1)}
       >
-        آیا مطمئن هستید می‌خواهید این دسته‌بندی را حذف کنید؟ پس از حذف، امکان بازیابی آن وجود نخواهد داشت.
+        آیا مطمئن هستید می‌خواهید این دسته‌بندی را حذف کنید؟ پس از حذف، امکان
+        بازیابی آن وجود نخواهد داشت.
       </DynamicModal>
 
       {/* Update Category Modal */}

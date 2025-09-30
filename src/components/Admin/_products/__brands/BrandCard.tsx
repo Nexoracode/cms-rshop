@@ -35,29 +35,23 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit, onDelete }) => {
             <div className="flex items-center gap-1">
               <p className="text-[15px]">{brand.name}</p>
             </div>
-            <p className="text-default-500">{brand.slug}</p>
           </div>
-          <div className="w-[200px] flex">
-            <Button
-              size="sm"
-              className="rounded-tr-lg w-full"
-              radius="none"
-              color="danger"
-              variant="flat"
-              onPress={() => onDelete(brand.id)}
-            >
-              <RiDeleteBin5Line className="text-xl" />
-            </Button>
-            <Button
-              size="sm"
-              className="rounded-tl-xl w-full"
-              radius="none"
-              color="success"
-              variant="flat"
-              onPress={() => onEdit(brand)}
-            >
-              <TbEdit className="text-xl" />
-            </Button>
+          <div className="flex justify-between items-center w-full mb-2 px-5">
+            <p className="text-default-500">{brand.slug}</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => onEdit(brand)}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <TbEdit size={18} />
+              </button>
+              <button
+                onClick={() => onDelete(brand.id)}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <RiDeleteBin5Line size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </CardBody>
