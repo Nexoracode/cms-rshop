@@ -1,10 +1,6 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@heroui/react";
+"use client";
+
+import { Modal, ModalContent } from "@heroui/react";
 import { AttributesContent } from "./AttributesContent";
 
 type Props = {

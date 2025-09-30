@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { TbSettings } from "react-icons/tb";
 import { useGetAllAttribute } from "@/hooks/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";

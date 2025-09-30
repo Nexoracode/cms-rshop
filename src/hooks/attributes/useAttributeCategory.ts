@@ -16,20 +16,22 @@ export const useAddNewCategoryAttribute = (
         route: "/category-attribute",
         method: "POST",
         body: data,
-        isActiveToast: true,
-        successText: "با موفقیت اضافه شد",
-        loadingText: "درحال افزودن...",
+        isActiveToast: false,
       }),
     onSuccess: () => {
-      if (attributeId) {
-        queryClient.invalidateQueries({
-          queryKey: ["attribute-values", attributeId],
-        });
-      }
-
       if (groupedId) {
         queryClient.invalidateQueries({
           queryKey: ["all-attribute", groupedId],
+        });
+      }
+      if (categoryId) {
+        queryClient.invalidateQueries({
+          queryKey: ["category-attributes", categoryId],
+        });
+      }
+      if (attributeId) {
+        queryClient.invalidateQueries({
+          queryKey: ["attribute-values", attributeId],
         });
       }
     },
