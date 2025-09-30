@@ -22,12 +22,7 @@ const Variants = () => {
               keyTitle={"ویژگی"}
               onAdd={() => {}}
             />
-            <div className="px-4 mb-4">
-              <AttributesContent
-                isActiveHeader={false}
-                isDisabledEdit={false}
-              />
-            </div>
+            <AttributesContent isActiveHeader={false} isDisabledEdit={false} />
           </CardBody>
         </Card>
       </section>

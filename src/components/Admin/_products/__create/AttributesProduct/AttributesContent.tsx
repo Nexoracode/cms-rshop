@@ -88,7 +88,7 @@ export const AttributesContent = ({
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 my-4 mx-6">
       {isActiveHeader ? (
         <ModalHeaderNavigator
           mainTitle="ویژگی"

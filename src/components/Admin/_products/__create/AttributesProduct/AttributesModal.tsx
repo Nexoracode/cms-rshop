@@ -16,11 +16,7 @@ const AttributesModal = ({ isOpen, onOpenChange }: Props) => {
   return (
     <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent className="max-w-[700px] w-full">
-        <ModalHeader />
-        <ModalBody>
-          <AttributesContent onSubmitted={onOpenChange} />
-        </ModalBody>
-        <ModalFooter />
+        <AttributesContent onSubmitted={onOpenChange} />
       </ModalContent>
     </Modal>
   );
