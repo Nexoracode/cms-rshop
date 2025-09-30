@@ -248,7 +248,7 @@ const ProductInitialForm = () => {
                 label="برند"
                 placeholder="برند مورد نظر را انتخاب کنید"
                 options={
-                  allBrands?.data?.map((brand: any) => ({
+                  allBrands?.data?.items?.map((brand: any) => ({
                     id: brand.id,
                     title: brand.name,
                   })) ?? []
