@@ -135,7 +135,7 @@ const Products = () => {
                 onSearch={setSearchInp}
               />
             </section>
-            <section className="flex flex-wrap items-center gap-2 justify-between">
+            <section className="flex flex-wrap items-center gap-2 justify-start">
               <OptionBox
                 title="فیلتر"
                 icon={<IoFilter className="!text-[16px]" />}
