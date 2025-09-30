@@ -58,7 +58,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onDelete,
 }) => {
   return (
-    <div dir="rtl" className="flex flex-col gap-3">
+    <div dir="rtl" className="flex flex-col items-center gap-3">
       {categories.map((cat) => (
         <CategoryNode
           key={cat.id}
@@ -124,7 +124,7 @@ const CategoryNode: React.FC<{
             <div className="relative flex-1 min-w-0">
               {/* مسیر والدین */}
               {chainTitles.length > 0 && (
-                <div className="text-xs absolute left-0 text-default-500 truncate flex items-center justify-end">
+                <div className="text-xs hidden sm:flex absolute left-0 text-default-500 truncate items-center justify-end">
                   <div className="w-fit bg-gray-100 rounded-lg py-2 px-3">
                     {pathTitles}
                     {node.title}
