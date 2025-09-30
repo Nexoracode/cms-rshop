@@ -132,7 +132,7 @@ const CategoryNode: React.FC<{
                 </div>
               )}
               {/* عنوان + مدال‌ها */}
-              <div className="flex items-center gap-2 p-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2 p-2">
                 <p className="text-[15px]">{node.title}</p>
                 <p className="text-xs text-default-500">({node.slug})</p>
               </div>
