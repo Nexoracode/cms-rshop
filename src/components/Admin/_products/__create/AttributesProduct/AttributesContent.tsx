@@ -8,7 +8,6 @@ import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
 import ModalHeaderNavigator from "../../ModalHeaderNavigator";
@@ -33,7 +32,8 @@ export const AttributesContent = ({
   onSubmitted,
   isActiveHeader = true,
 }: Props) => {
-  const { page } = usePaginationParams("edit_id");
+  const sp = useSearchParams();
+  const page = +(sp.get("edit_id") ?? 1);
   const searchParams = useSearchParams();
   const [selecteds, setSelecteds] = useState(initialSelecteds);
   const { data: attributeGroup } = useGetAllAttributeGroup();

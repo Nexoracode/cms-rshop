@@ -20,14 +20,15 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { IoFilter } from "react-icons/io5";
 import { LuBox, LuUsersRound } from "react-icons/lu";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
 import AppPagination from "@/components/Helper/AppPagination";
+import { useSearchParams } from "next/navigation";
 
 const Customers = () => {
   // State
   const [userId, setUserId] = useState(0);
   //? Hooks
-  const { page } = usePaginationParams();
+  const sp = useSearchParams();
+  const page = +(sp.get("page") ?? 1);
   const { data: users, isLoading } = useGetAllUsers(page);
   const { data: oneUser } = useGetOneUser(userId);
 

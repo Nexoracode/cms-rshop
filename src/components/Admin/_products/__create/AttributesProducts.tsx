@@ -22,7 +22,6 @@ import {
   useUpdateVariantProduct,
 } from "@/hooks/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useGetOneProduct } from "@/hooks/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
@@ -39,7 +38,8 @@ const AttributesProducts = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { page } = usePaginationParams("edit_id");
+  const sp = useSearchParams();
+  const page = +(sp.get("edit_id") ?? 1);
   const { setAttrInfos } = useAttributeContext();
   const [variants, setVariants] = useState<any[]>([]);
   ///

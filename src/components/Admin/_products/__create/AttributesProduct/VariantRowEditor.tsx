@@ -7,7 +7,7 @@ import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
 import { formatDiscountedPrice } from "@/utils/helpers";
 import { Variant } from "@/types/attributes";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   variantName: string;
@@ -23,7 +23,8 @@ const VariantRowEditorComponent: React.FC<Props> = ({
   defaultValues,
 }) => {
   const [discountType, setDiscountType] = useState<Stock>("percent");
-  const { page } = usePaginationParams("edit_id");
+  const sp = useSearchParams();
+  const page = +(sp.get("edit_id") ?? 1);
   const [formData, setFormData] = useState<Variant>(
     defaultValues ?? {
       id: 0,
