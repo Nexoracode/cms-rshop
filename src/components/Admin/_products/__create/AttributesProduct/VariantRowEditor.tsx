@@ -5,7 +5,6 @@ import { Card, CardBody, Input, NumberInput } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
-import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { formatDiscountedPrice } from "@/utils/helpers";
 import { Variant } from "@/types/attributes";
 import { usePaginationParams } from "@/hooks/usePaginationParams";

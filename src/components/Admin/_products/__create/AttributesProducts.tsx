@@ -61,14 +61,28 @@ const AttributesProducts = () => {
   }, [productData?.data, router, pathname, searchParams]);
 
   useEffect(() => {
-    console.log("All Attributes Nodes =>", productData?.data);
+    console.log("All Product Data =>", productData?.data);
+
     setVariants([]);
+
+    let attrValues: any[] = [];
+
     if (productData?.data?.attribute_nodes) {
-      const attrValues = productData?.data.attribute_nodes.flatMap(
-        (group: any) => group.attributes.flatMap((attr: any) => attr.values)
+      const nodeValues = productData.data.attribute_nodes.flatMap(
+        (group: any) =>
+          group.attributes.flatMap((attr: any) => attr.values ?? [])
       );
-      setAttrInfos(attrValues);
+      attrValues = [...attrValues, ...nodeValues];
     }
+
+    if (productData?.data?.specifications) {
+      const specValues = productData.data.specifications.flatMap((group: any) =>
+        group.attributes.flatMap((attr: any) => attr.values ?? [])
+      );
+      attrValues = [...attrValues, ...specValues];
+    }
+
+    setAttrInfos(attrValues);
   }, [productData?.data]);
 
   const updateVariantProduct = async () => {
