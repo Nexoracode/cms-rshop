@@ -1,7 +1,6 @@
 "use client";
 
-import { Card, CardBody, Tooltip } from "@heroui/react";
-import { HiOutlineSquaresPlus } from "react-icons/hi2";
+import { Card, CardBody } from "@heroui/react";
 import LoadingApiCall from "../Helper/LoadingApiCall";
 import AppPagination from "../Helper/AppPagination";
 import HeaderActionCard from "../Helper/HeaderActionCard";
