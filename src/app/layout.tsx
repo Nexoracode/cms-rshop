@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HeroUIProvider } from "@heroui/system";
 import { Toaster } from "react-hot-toast";
+import SplashScreen from "@/components/Helper/SplashScreen";
+
 export default function RootLayout({
   children,
 }: {
@@ -29,7 +31,8 @@ export default function RootLayout({
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <HeroUIProvider navigate={router.push} locale="fa-IR">
-            {children}
+            <SplashScreen />
+            <React.Suspense fallback={<p></p>}>{children}</React.Suspense>
           </HeroUIProvider>
         </QueryClientProvider>
       </body>
