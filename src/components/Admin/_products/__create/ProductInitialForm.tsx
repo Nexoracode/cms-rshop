@@ -185,13 +185,19 @@ const ProductInitialForm = () => {
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
-          res.ok && router.push("/admin/products");
+          if (res.ok) {
+            router.replace("/admin/products");
+            router.refresh();
+          }
         },
       });
     } else {
       updateProduct(result, {
         onSuccess: (res) => {
-          res.ok && router.push("/admin/products");
+          if (res.ok) {
+            router.replace("/admin/products");
+            router.refresh();
+          }
         },
       });
     }

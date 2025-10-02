@@ -106,7 +106,7 @@ const Products = () => {
   const deleteGroupProducts = () => {
     console.log({ ids: selectedItems });
     console.log(selectedItems);
-    
+
     deleteGroupProduct.mutate(
       { ids: selectedItems },
       {
@@ -160,7 +160,7 @@ const Products = () => {
               title="لیست محصولات"
               navigateTo="/admin/products/create?type=infos"
               icon={<AiOutlineShop className="text-3xl" />}
-              link={<TbCategoryPlus className="text-2xl"/>}
+              link={<TbCategoryPlus className="text-2xl" />}
             />
           </div>
           <CardBody>
@@ -204,16 +204,18 @@ const Products = () => {
                           ? "ندارد"
                           : `${product.stock} عدد`
                       }
-                      onShowInfos={() =>
-                        router.push(
+                      onShowInfos={() => {
+                        router.replace(
                           `/admin/products/create?edit_id=${product.id}&type=infos`
-                        )
-                      }
-                      onShowVariant={() =>
-                        router.push(
+                        );
+                        router.refresh();
+                      }}
+                      onShowVariant={() => {
+                        router.replace(
                           `/admin/products/create?edit_id=${product.id}&type=variant`
-                        )
-                      }
+                        );
+                        router.refresh();
+                      }}
                       onSelect={(id, selected) => {
                         setSelectedItems((prev) =>
                           selected
