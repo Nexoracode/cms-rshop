@@ -160,7 +160,7 @@ export const useDeleteGroupProduct = () => {
       fetcher({
         route: "/product/bulk",
         method: "DELETE",
-        body: ids,
+        body: { ids },
         successText: "محصول های انتخاب شده با موفقیت حذف شدند",
         loadingText: "در حال حذف محصولات انتخاب شده",
         isActiveToast: true,

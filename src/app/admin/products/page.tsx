@@ -104,6 +104,9 @@ const Products = () => {
   } = useDisclosure();
 
   const deleteGroupProducts = () => {
+    console.log({ ids: selectedItems });
+    console.log(selectedItems);
+    
     deleteGroupProduct.mutate(
       { ids: selectedItems },
       {
