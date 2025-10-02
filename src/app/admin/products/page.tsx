@@ -24,7 +24,7 @@ import {
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
 import { GETProduct } from "@/components/Admin/_products/types/edit-product";
 import AppPagination from "@/components/Helper/AppPagination";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 
@@ -101,7 +101,7 @@ const Products = () => {
     onOpen: onOpenFeature,
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
-
+  
   const deleteGroupProducts = () => {
     deleteGroupProduct.mutate(
       { ids: selectedItems },
