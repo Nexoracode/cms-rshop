@@ -2,8 +2,9 @@
 
 import React, { useRef } from "react";
 import { Button } from "@heroui/react";
-import { LuImage, LuImagePlus, LuVideo } from "react-icons/lu";
+import { LuImagePlus } from "react-icons/lu";
 import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 interface Props {
   onSelect: (files: File[]) => void;
@@ -28,11 +29,19 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
 
     const type = currentType.current;
     const maxSize = type === "image" ? 5.5 * 1024 * 1024 : 50 * 1024 * 1024;
-    const limit = type === "image" ? 20 : 5;
+    const limit = type === "image" ? 10 : 5;
+
+    if (files.length > limit) {
+      toast.error(
+        `حداکثر ${limit} ${type === "image" ? "تصویر" : "ویدیو"} میتوانید همزمان انتخاب کنید`
+      );
+      e.target.value = "";
+      return;
+    }
 
     const validFiles = files.slice(0, limit).filter((file) => {
       if (file.size > maxSize) {
-        alert(`حجم فایل "${file.name}" بیشتر از حد مجاز است`);
+        toast.error(`حجم فایل "${file.name}" بیشتر از حد مجاز است`);
         return false;
       }
       return true;
