@@ -342,6 +342,7 @@ const ProductInitialForm = () => {
               textMood2="می‌خواهم محصول “ارسال امروز” داشته باشد."
               childrenMood1={
                 <NumberInput
+                  hideStepper
                   label="زمان آماده‌سازی"
                   placeholder="3"
                   minValue={1}
@@ -377,6 +378,7 @@ const ProductInitialForm = () => {
               }
             >
               <NumberInput
+                hideStepper
                 label="حداکثر تعداد قابل سفارش"
                 placeholder="3"
                 minValue={1}
@@ -426,6 +428,7 @@ const ProductInitialForm = () => {
               isChecked={product.is_limited_stock}
             >
               <NumberInput
+                hideStepper
                 label="موجودی"
                 placeholder="1"
                 minValue={0}

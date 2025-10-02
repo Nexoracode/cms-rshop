@@ -2,7 +2,7 @@
 
 import { useDisclosure } from "@heroui/react";
 import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
-import CardBox from "../helpers/CardBox";
+import GuideBoxInfo from "./GuideBoxInfo";
 import HeaderAction from "../helpers/HeaderAction";
 import { SizeGuideProp } from "./type";
 import { useEffect, useState } from "react";
@@ -32,11 +32,10 @@ const SizeGuide = ({ sizeGuide, onHelperId }: Props) => {
           onPress={onOpen}
         />
         {helper ? (
-          <CardBox
+          <GuideBoxInfo
             title={helper.title}
             description={helper.description}
             imageFile={helper.image}
-            disableDelete
             onEdit={onOpen}
           />
         ) : (
