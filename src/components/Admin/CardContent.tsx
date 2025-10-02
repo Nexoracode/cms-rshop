@@ -37,8 +37,8 @@ const CardContent: React.FC<CardContentProps> = ({
         <CardBody className="overflow-hidden pb-4">
           <HeaderActionCard
             icon={icon}
-            title={`افزودن ${keyTitle} جدید`}
-            keyTitle={title}
+            title={`افزودن ${title} جدید`}
+            keyTitle={keyTitle}
             onAdd={onAdd}
           />
 
