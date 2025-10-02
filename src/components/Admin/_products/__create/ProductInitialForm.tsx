@@ -138,10 +138,7 @@ const ProductInitialForm = () => {
   }, [product]);
 
   useEffect(() => {
-    if (oneProduct) {
-      console.log("Product => ", oneProduct.data);
-      setProduct(oneProduct.data);
-    }
+    if (oneProduct) setProduct(oneProduct.data);
   }, [oneProduct]);
 
   const handleChangeProduct = () => {
@@ -185,8 +182,6 @@ const ProductInitialForm = () => {
       stock: +stock,
       ...other,
     };
-    console.log("Result => ", result);
-
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
@@ -217,8 +212,6 @@ const ProductInitialForm = () => {
                 setProduct((prev) => ({ ...prev, media_ids: datas }))
               }
               onMedia_pinned_id={(id) => {
-                console.log("$$$$$$$$$$$$$", id);
-
                 setProduct((prev) => ({ ...prev, media_pinned_id: id }));
               }}
               initialMedias={product.medias}
@@ -414,7 +407,7 @@ const ProductInitialForm = () => {
                 labelPlacement="outside"
               />
             </ToggleableSection>
-            
+
             <hr />
             <Select
               dir="rtl"

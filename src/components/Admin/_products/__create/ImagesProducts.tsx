@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, CardFooter } from "@heroui/react";
+import { Button, Card, CardBody } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { Media } from "@/types";
 import { useProductUpload } from "@/hooks/products/useProduct";

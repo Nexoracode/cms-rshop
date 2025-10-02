@@ -48,7 +48,7 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
   return (
     <>
       <input ref={inputRef} type="file" hidden onChange={handleChange} />
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-0 items-center justify-between">
         <div className="text-right">
           <p className="text-gray-600">افزودن تصویر و ویدیو</p>
           <div className="w-full flex items-center mt-2">
@@ -58,10 +58,11 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
             </p>
           </div>
         </div>
-        <div className="w-fit flex gap-2">
+        <div className="w-full sm:w-fit flex gap-2">
           <Button
             size="sm"
             color="secondary"
+            className="w-full"
             variant="flat"
             onPress={() => handlePick("image")}
           >
@@ -70,6 +71,7 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
           <Button
             size="sm"
             color="secondary"
+            className="w-full"
             variant="flat"
             onPress={() => handlePick("video")}
           >
