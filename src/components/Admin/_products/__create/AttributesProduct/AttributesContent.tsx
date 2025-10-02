@@ -10,7 +10,7 @@ import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
-import ModalHeaderNavigator from "../../ModalHeaderNavigator";
+import HeaderNavigator from "../../HeaderNavigator";
 import { MdOutlineCategory } from "react-icons/md";
 import { useAddNewCategoryAttribute } from "@/hooks/attributes/useAttributeCategory";
 import { useSearchParams } from "next/navigation";
@@ -111,8 +111,8 @@ export const AttributesContent = ({
   return (
     <div className="flex flex-col gap-8 my-4 mx-6">
       {isActiveHeader ? (
-        <ModalHeaderNavigator
-          mainTitle="ویژگی"
+        <HeaderNavigator
+          tooltipTitle="ویژگی"
           title={"مدیریت کامل ویژگی"}
           navigateTo="/admin/products/variants"
           icon={<MdOutlineCategory className="text-2xl" />}

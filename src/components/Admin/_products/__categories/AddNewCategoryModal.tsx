@@ -23,7 +23,7 @@ import {
 } from "@/hooks/categories/useCategory";
 import { flattenCategories } from "@/utils/flattenCategories";
 import toast from "react-hot-toast";
-import ModalHeaderNavigator from "../ModalHeaderNavigator";
+import HeaderNavigator from "../HeaderNavigator";
 import { TbCategoryPlus } from "react-icons/tb";
 
 type Props = {
@@ -161,8 +161,8 @@ const AddNewCategoryModal = ({
         {(onClose) => (
           <>
             <ModalHeader>
-              <ModalHeaderNavigator
-                mainTitle="دسته‌بندی"
+              <HeaderNavigator
+                tooltipTitle="دسته‌بندی"
                 title={
                   categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"
                 }

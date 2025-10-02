@@ -6,7 +6,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { useProductUpload } from "@/hooks/products/useProduct";
 import { useCreateBrand, useUpdateBrand } from "@/hooks/useBrand";
-import ModalHeaderNavigator from "../ModalHeaderNavigator";
+import HeaderNavigator from "../HeaderNavigator";
 import { TbBrandArc } from "react-icons/tb";
 import toast from "react-hot-toast";
 
@@ -94,8 +94,8 @@ const AddNewBrandModal: React.FC<Props> = ({
         {(onClose) => (
           <>
             <ModalHeader>
-              <ModalHeaderNavigator
-                mainTitle="برند"
+              <HeaderNavigator
+                tooltipTitle="برند"
                 title={
                   defaultValues
                     ? `بروزرسانی برند ${defaultValues?.name}`

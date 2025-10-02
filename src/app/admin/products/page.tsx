@@ -9,7 +9,6 @@ import SortingModal from "@/components/Admin/_products/modals/SortingModal";
 import MoreFeaturesModal from "@/components/Admin/_products/modals/MoreFeaturesModal";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { useRouter, useSearchParams } from "next/navigation";
-import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 // Icons
 import { IoMdMore } from "react-icons/io";
 import { IoFilter } from "react-icons/io5";
@@ -27,6 +26,8 @@ import AppPagination from "@/components/Helper/AppPagination";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
+import HeaderNavigator from "@/components/Admin/_products/HeaderNavigator";
+import { TbCategoryPlus } from "react-icons/tb";
 
 const Products = () => {
   const router = useRouter();
@@ -101,7 +102,7 @@ const Products = () => {
     onOpen: onOpenFeature,
     onOpenChange: onFeatureOpenChange,
   } = useDisclosure();
-  
+
   const deleteGroupProducts = () => {
     deleteGroupProduct.mutate(
       { ids: selectedItems },
@@ -116,12 +117,6 @@ const Products = () => {
   return (
     <>
       <section className="flex flex-col gap-6">
-        <HeaderAction
-          title="لیست محصولات"
-          textBtn="+ محصول جدید"
-          onPress={() => router.push("/admin/products/create?type=infos")}
-        />
-
         <Card className="shadow-none">
           <BoxHeader
             title="باکس فیلتر"
@@ -156,11 +151,15 @@ const Products = () => {
         </Card>
 
         <Card className="shadow-md">
-          <BoxHeader
-            title="محصولات"
-            color="text-orange-700 bg-orange-700/10"
-            icon={<AiOutlineShop className="text-3xl" />}
-          />
+          <div className="mx-4 mb-6">
+            <HeaderNavigator
+              tooltipTitle="افزودن محصول جدید"
+              title="لیست محصولات"
+              navigateTo="/admin/products/create?type=infos"
+              icon={<AiOutlineShop className="text-3xl" />}
+              link={<TbCategoryPlus className="text-2xl"/>}
+            />
+          </div>
           <CardBody>
             {isLoading ? (
               <LoadingApiCall />
