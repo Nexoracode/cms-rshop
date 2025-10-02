@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardBody, Image, Chip, Tooltip } from "@heroui/react";
+import { Card, CardBody, Image, Chip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -78,7 +78,7 @@ const CategoryNode: React.FC<{
   onEdit: (cat: Category) => void;
   onDelete: (id: number) => void;
 }> = ({ node, chainTitles, onEdit, onDelete }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
   const pathTitles = chainTitles.length ? `${chainTitles.join(" › ")} › ` : "";
   const isRoot = node.parent_id === 0;
