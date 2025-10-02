@@ -365,7 +365,6 @@ const ProductInitialForm = () => {
                 </small>
               }
             />
-            <hr />
             <OrderLimitSwitcher
               title="محدودیت تعداد برای هر سفارش"
               initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
@@ -392,30 +391,6 @@ const ProductInitialForm = () => {
                 }
               />
             </OrderLimitSwitcher>
-
-            <Select
-              dir="rtl"
-              labelPlacement="outside"
-              label="وضعیت نمایش در وبسایت"
-              placeholder="انتخاب وضعیت محصول"
-              className="!mt-8"
-              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
-              onSelectionChange={(keys) => {
-                const value = Array.from(keys)[0];
-                setProduct((prev) => ({
-                  ...prev,
-                  is_visible: value === "visible",
-                }));
-              }}
-            >
-              <SelectItem key="visible">
-                نمایش - در فروشگاه نمایش داده میشود
-              </SelectItem>
-              <SelectItem key="hidden">
-                عدم نمایش - در فروشگاه نمایش داده نمی شود
-              </SelectItem>
-            </Select>
-            <hr />
             <ToggleableSection
               label="موجودی نامحدود"
               onOptionalToggle={(checked) =>
@@ -439,6 +414,30 @@ const ProductInitialForm = () => {
                 labelPlacement="outside"
               />
             </ToggleableSection>
+            
+            <hr />
+            <Select
+              dir="rtl"
+              labelPlacement="outside"
+              label="وضعیت نمایش در وبسایت"
+              placeholder="انتخاب وضعیت محصول"
+              className="!mt-8"
+              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
+              onSelectionChange={(keys) => {
+                const value = Array.from(keys)[0];
+                setProduct((prev) => ({
+                  ...prev,
+                  is_visible: value === "visible",
+                }));
+              }}
+            >
+              <SelectItem key="visible">
+                نمایش - در فروشگاه نمایش داده میشود
+              </SelectItem>
+              <SelectItem key="hidden">
+                عدم نمایش - در فروشگاه نمایش داده نمی شود
+              </SelectItem>
+            </Select>
 
             <Checkbox
               isSelected={product.is_featured}

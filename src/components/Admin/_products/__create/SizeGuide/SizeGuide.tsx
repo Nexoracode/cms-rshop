@@ -6,6 +6,7 @@ import GuideBoxInfo from "./GuideBoxInfo";
 import HeaderAction from "../helpers/HeaderAction";
 import { SizeGuideProp } from "./type";
 import { useEffect, useState } from "react";
+import { PiNoteDuotone } from "react-icons/pi";
 
 type Props = {
   sizeGuide?: SizeGuideProp | null;
@@ -30,6 +31,8 @@ const SizeGuide = ({ sizeGuide, onHelperId }: Props) => {
           textBtn="+ افزودن راهنما"
           isDisabled={!!helper}
           onPress={onOpen}
+          size="sm"
+          icon={<PiNoteDuotone className="text-3xl"/>}
         />
         {helper ? (
           <GuideBoxInfo
