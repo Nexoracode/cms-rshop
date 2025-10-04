@@ -28,6 +28,7 @@ import DynamicModal from "@/components/Helper/DynamicModal";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import HeaderNavigator from "@/components/Admin/_products/HeaderNavigator";
 import { TbCategoryPlus } from "react-icons/tb";
+import CardContent from "@/components/Admin/CardContent";
 
 const Products = () => {
   const router = useRouter();
@@ -81,7 +82,15 @@ const Products = () => {
     searchBy,
     sortBy,
   });
-  console.log(products?.data?.items);
+
+  const isFilteredView = !!(
+    (
+      search ||
+      searchBy?.length ||
+      sortBy?.length ||
+      filter
+    )
+  );
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -153,118 +162,92 @@ const Products = () => {
           </CardBody>
         </Card>
 
-        <Card className="shadow-md">
-          <div className="mx-4 mb-6">
-            <HeaderNavigator
-              navigateTitle="افزودن محصول جدید"
-              title="لیست محصولات"
-              navigateTo="/admin/products/create?type=infos"
-              icon={<AiOutlineShop className="text-3xl" />}
-              link={<p>+ افزودن محصول</p>}
-            />
+        <CardContent
+          title="لیست محصولات"
+          icon={<AiOutlineShop className="text-3xl" />}
+          isLoading={isLoading}
+          datas={products}
+          onAdd={() => router.replace("/admin/products/create?type=infos")}
+          isExistItems={!!products?.data?.items?.length}
+          searchInp={isFilteredView}
+        >
+          {selectedItems.length > 0 && (
+            <div className="flex mb-4 gap-2 px-4">
+              <Button
+                color="default"
+                variant="flat"
+                className="w-full"
+                onPress={() => setSelectedItems([])}
+              >
+                لغو حذف محصولات انتخابی
+              </Button>
+              <Button
+                color="danger"
+                variant="flat"
+                className="w-full"
+                onPress={onOpen}
+              >
+                حذف محصولات انتخاب شده
+              </Button>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-4">
+            {products?.data?.items?.map((product: any) => {
+              const discountValue =
+                product.discount_amount > 0
+                  ? product.discount_amount
+                  : ((product.discount_percent ?? 0) / 100) * product.price;
+
+              const finalPrice = Math.max(
+                0,
+                Math.round(product.price - discountValue)
+              );
+              const originalPrice =
+                discountValue > 0 ? product.price : undefined;
+
+              return (
+                <ProductBox
+                  key={product.id}
+                  id={product.id}
+                  created_at={product.created_at.slice(0, 10)}
+                  title={product.name}
+                  pathImg={product.media_pinned.url}
+                  price={finalPrice}
+                  originalPrice={originalPrice}
+                  isVisible={product.is_visible}
+                  category={product.category.title}
+                  isFeatured={product.is_featured}
+                  varientsCount={
+                    product.is_limited_stock
+                      ? "نامحدود"
+                      : product.stock === 0
+                      ? "ندارد"
+                      : `${product.stock} عدد`
+                  }
+                  onShowInfos={() => {
+                    router.replace(
+                      `/admin/products/create?edit_id=${product.id}&type=infos`
+                    );
+                    router.refresh();
+                  }}
+                  onShowVariant={() => {
+                    router.replace(
+                      `/admin/products/create?edit_id=${product.id}&type=variant`
+                    );
+                    router.refresh();
+                  }}
+                  onSelect={(id, selected) =>
+                    setSelectedItems((prev) =>
+                      selected ? [...prev, id] : prev.filter((x) => x !== id)
+                    )
+                  }
+                  cancleRemove={selectedItems}
+                />
+              );
+            })}
           </div>
-          <CardBody>
-            {isLoading ? (
-              <LoadingApiCall />
-            ) : products?.data?.items?.length ? (
-              <div className="flex flex-col gap-4">
-                {(products.data as GETProduct).items.map((product) => {
-                  // ⬇️ محاسبه‌ی ساده در والد
-                  const discountValue =
-                    product.discount_amount > 0
-                      ? product.discount_amount
-                      : ((product.discount_percent ?? 0) / 100) * product.price;
-
-                  const finalPrice = Math.max(
-                    0,
-                    Math.round(product.price - discountValue)
-                  );
-                  const originalPrice =
-                    discountValue > 0 ? product.price : undefined;
-                  const effectivePercent = originalPrice
-                    ? Math.round((discountValue / product.price) * 100)
-                    : 0;
-
-                  return (
-                    <ProductBox
-                      key={product.id}
-                      id={product.id}
-                      created_at={product.created_at.slice(0, 10)}
-                      title={product.name}
-                      pathImg={product.media_pinned.url}
-                      price={finalPrice}
-                      originalPrice={originalPrice}
-                      isVisible={product.is_visible}
-                      category={product.category.title}
-                      isFeatured={product.is_featured}
-                      varientsCount={
-                        product.is_limited_stock
-                          ? "نامحدود"
-                          : product.stock === 0
-                          ? "ندارد"
-                          : `${product.stock} عدد`
-                      }
-                      onShowInfos={() => {
-                        router.replace(
-                          `/admin/products/create?edit_id=${product.id}&type=infos`
-                        );
-                        router.refresh();
-                      }}
-                      onShowVariant={() => {
-                        router.replace(
-                          `/admin/products/create?edit_id=${product.id}&type=variant`
-                        );
-                        router.refresh();
-                      }}
-                      onSelect={(id, selected) => {
-                        setSelectedItems((prev) =>
-                          selected
-                            ? [...prev, id]
-                            : prev.filter((x) => x !== id)
-                        );
-                      }}
-                      cancleRemove={selectedItems}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-center py-6">
-                {searchInp?.length
-                  ? "برای سرچ شما محصولی وجود ندارد"
-                  : "فعلا محصولی وجود ندارد"}
-              </p>
-            )}
-            {selectedItems.length ? (
-              <div className="flex gap-2">
-                <Button
-                  color="default"
-                  variant="flat"
-                  className="w-full mt-8"
-                  onPress={(e) => {
-                    setSelectedItems([]);
-                  }}
-                >
-                  لغو حذف محصولات انتخابی
-                </Button>
-                <Button
-                  color="danger"
-                  variant="flat"
-                  className="w-full mt-8"
-                  onPress={(e) => {
-                    onOpen();
-                  }}
-                >
-                  حذف محصولات انتخاب شده
-                </Button>
-              </div>
-            ) : (
-              ""
-            )}
-          </CardBody>
-        </Card>
-
-        <AppPagination meta={products?.data.meta} />
+        </CardContent>
       </section>
       {/* Modals */}
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />

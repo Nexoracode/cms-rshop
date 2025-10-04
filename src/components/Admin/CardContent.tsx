@@ -4,11 +4,11 @@ import { Card, CardBody } from "@heroui/react";
 import LoadingApiCall from "../Helper/LoadingApiCall";
 import AppPagination from "../Helper/AppPagination";
 import HeaderActionCard from "../Helper/HeaderActionCard";
+import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
 type CardContentProps = {
   icon?: any;
   title: string;
-  keyTitle: string;
   onAdd: () => void;
   isLoading: boolean;
   datas: any;
@@ -19,7 +19,6 @@ type CardContentProps = {
 };
 
 const CardContent: React.FC<CardContentProps> = ({
-  keyTitle,
   title,
   icon,
   onAdd,
@@ -35,21 +34,30 @@ const CardContent: React.FC<CardContentProps> = ({
       {header}
       <Card>
         <CardBody className="overflow-hidden pb-4">
-          <HeaderActionCard
-            icon={icon}
-            title={`افزودن ${title} جدید`}
-            keyTitle={keyTitle}
-            onAdd={onAdd}
-          />
+          <HeaderActionCard icon={icon} title={title} onAdd={onAdd} />
 
           {isLoading ? (
             <LoadingApiCall />
           ) : isExistItems ? (
             children
           ) : (
-            <p className="text-center py-6">
-              {searchInp ? "سرچ شمل نتیجه ای نداشت" : "هنوز آیتمی ساخته نشده!!"}
-            </p>
+            <div className="flex flex-col items-center justify-center text-gray-600 gap-2">
+              {searchInp ? (
+                <>
+                  <BiSearchAlt className="text-4xl text-warning-500" />
+                  <p className="text-center text-sm sm:text-base font-medium">
+                    جستجوی شما نتیجه‌ای نداشت!!
+                  </p>
+                </>
+              ) : (
+                <>
+                  <BiPackage className="text-4xl text-gray-400" />
+                  <p className="text-center text-sm sm:text-base font-medium">
+                    هنوز موردی اضافه نشده است!!
+                  </p>
+                </>
+              )}
+            </div>
           )}
         </CardBody>
       </Card>

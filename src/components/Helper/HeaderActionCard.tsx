@@ -1,20 +1,16 @@
 "use client";
 
-import { Tooltip } from "@heroui/react";
-import { HiOutlineSquaresPlus } from "react-icons/hi2";
 import { ReactNode } from "react";
 
 type HeaderActionCardProps = {
   icon: ReactNode;
   title: string;
-  keyTitle: string;
   onAdd: () => void;
 };
 
 const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
   icon,
   title,
-  keyTitle,
   onAdd,
 }) => {
   return (
@@ -24,20 +20,12 @@ const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
         <p className="font-normal text-[15px] text-gray-600">{title}</p>
       </div>
 
-      <Tooltip
-        color="foreground"
-        content={`افزودن ${keyTitle} جدید`}
-        placement="right"
-        closeDelay={1000}
-        showArrow
+      <div
+        className="bg-gray-800 animate-bounce rounded-xl p-2 px-4 cursor-pointer text-white"
+        onClick={onAdd}
       >
-        <div
-          className="bg-gray-200 rounded-md p-1.5 cursor-pointer"
-          onClick={onAdd}
-        >
-          <HiOutlineSquaresPlus className="text-2xl" />
-        </div>
-      </Tooltip>
+        + افزودن
+      </div>
     </div>
   );
 };
