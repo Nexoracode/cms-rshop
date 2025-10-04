@@ -121,7 +121,9 @@ const AttributesProducts = () => {
             color="secondary"
             variant="bordered"
             fullWidth
-            className="w-full"
+            classNames={{
+              tabList: "flex-wrap md:flex-nowrap",
+            }}
             selectedKey={activeTab}
             onSelectionChange={(key) => {
               const k = String(key);
@@ -157,7 +159,6 @@ const AttributesProducts = () => {
                           onHandleSubmit={(data) =>
                             setVariants((prev) => replaceOrAddById(prev, data))
                           }
-                          onRemove={(id) => deleteVariant(id)}
                           defaultValues={variant}
                         />
                       ))

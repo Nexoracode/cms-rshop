@@ -1,14 +1,14 @@
 "use client";
 
 import { memo, useEffect, useState } from "react";
-import { Card, CardBody, Input, NumberInput } from "@heroui/react";
+import { Card, CardBody, Input } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
-import { formatDiscountedPrice } from "@/utils/helpers";
 import { Variant } from "@/types/attributes";
 import { useSearchParams } from "next/navigation";
 import PriceNumberInput from "../helpers/PriceInput";
+import PriceWithDiscountInput from "../helpers/PriceWithDiscountInput";
 
 type Props = {
   variantName: string;
@@ -69,85 +69,28 @@ const VariantRowEditorComponent: React.FC<Props> = ({
         title={variantName}
         color="bg-purple-700/10 text-purple-700"
         textSize="text-[15px]"
-        icon={<MdOutlineCategory className="text-2xl" />}
+        icon={<></>}
       />
       <CardBody className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 text-right">
-          <NumberInput
-            hideStepper
-            label="قیمت"
-            min={1}
-            isRequired
-            labelPlacement="outside"
-            endContent={
-              <div className="pointer-events-none flex items-center">
-                {formData.price &&
-                (formData.discount_percent || formData.discount_amount) ? (
-                  <p className="text-green-600 text-[13px] truncate">
-                    {formatDiscountedPrice(
-                      formData.price,
-                      formData.discount_percent,
-                      formData.discount_amount
-                    )}
-                  </p>
-                ) : (
-                  <span className="text-default-400 text-small">تومان</span>
-                )}
-              </div>
-            }
-            value={+formData.price}
-            onValueChange={(price) =>
+          <PriceWithDiscountInput
+            price={formData.price}
+            discount_amount={formData.discount_amount ?? 0}
+            discount_percent={formData.discount_percent ?? 0}
+            onPriceChange={(price) =>
               setFormData((prev) => ({ ...prev, price }))
             }
+            onDiscountChange={(type, value) =>
+              setFormData((prev) => ({
+                ...prev,
+                discount_amount: type === "amount" ? +value : 0,
+                discount_percent: type === "percent" ? +value : 0,
+              }))
+            }
+            style="flex flex-col gap-4"
           />
         </div>
 
-        <NumberInput
-          hideStepper
-          className="w-full"
-          labelPlacement="outside"
-          label="تخفیف"
-          minValue={0}
-          value={
-            discountType === "percent"
-              ? formData.discount_percent
-              : formData.discount_amount
-          }
-          endContent={
-            <select
-              aria-label="Select discount type"
-              className="outline-none border-0 bg-transparent text-default-400 text-small"
-              value={discountType}
-              onChange={(e) => {
-                setDiscountType(e.target.value as Stock);
-                if ((e.target.value as Stock) === "percent") {
-                  setFormData((prev) => ({
-                    ...prev,
-                    discount_amount: undefined,
-                  }));
-                } else {
-                  setFormData((prev) => ({
-                    ...prev,
-                    discount_percent: undefined,
-                  }));
-                }
-              }}
-            >
-              <option value="percent">درصد</option>
-              <option value="money">مبلغ ثابت (تومان)</option>
-            </select>
-          }
-          onValueChange={(value) =>
-            setFormData((prev) => ({
-              ...prev,
-              ...(discountType === "percent"
-                ? { discount_percent: value }
-                : { discount_amount: value }),
-            }))
-          }
-          isDisabled={!formData.price}
-        />
-        
         <PriceNumberInput
           label="موجودی"
           placeholder="مثلاً 100"

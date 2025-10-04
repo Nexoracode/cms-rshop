@@ -12,6 +12,7 @@ type Props = {
   discount_percent: number;
   onPriceChange: (price: number) => void;
   onDiscountChange: (type: DiscountType, value: number) => void;
+  style?: string
 };
 
 const PriceWithDiscountInput: FC<Props> = ({
@@ -20,6 +21,7 @@ const PriceWithDiscountInput: FC<Props> = ({
   discount_percent,
   onPriceChange,
   onDiscountChange,
+  style
 }) => {
   const [discountType, setDiscountType] = useState<DiscountType>("percent");
   const [discountValue, setDiscountValue] = useState(0);
@@ -43,7 +45,7 @@ const PriceWithDiscountInput: FC<Props> = ({
       : price - (discountValue || 0);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
+    <div className={!style ? "flex flex-col md:flex-row gap-4" : style}>
       <div className="w-full flex flex-col items-start">
         <PriceNumberInput
           value={price}
