@@ -112,7 +112,7 @@ export const AttributesContent = ({
     <div className="flex flex-col gap-8 my-4 mx-6">
       {isActiveHeader ? (
         <HeaderNavigator
-          tooltipTitle="ویژگی"
+          navigateTitle="ویژگی"
           title={"مدیریت کامل ویژگی"}
           navigateTo="/admin/products/variants"
           icon={<MdOutlineCategory className="text-2xl" />}

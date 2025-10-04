@@ -95,7 +95,7 @@ const AddNewBrandModal: React.FC<Props> = ({
           <>
             <ModalHeader>
               <HeaderNavigator
-                tooltipTitle="برند"
+                navigateTitle="برند"
                 title={
                   defaultValues
                     ? `بروزرسانی برند ${defaultValues?.name}`

@@ -156,11 +156,11 @@ const Products = () => {
         <Card className="shadow-md">
           <div className="mx-4 mb-6">
             <HeaderNavigator
-              tooltipTitle="افزودن محصول جدید"
+              navigateTitle="افزودن محصول جدید"
               title="لیست محصولات"
               navigateTo="/admin/products/create?type=infos"
               icon={<AiOutlineShop className="text-3xl" />}
-              link={<TbCategoryPlus className="text-2xl" />}
+              link={<p>+ افزودن محصول</p>}
             />
           </div>
           <CardBody>

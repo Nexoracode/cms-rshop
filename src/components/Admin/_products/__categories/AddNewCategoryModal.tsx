@@ -162,7 +162,7 @@ const AddNewCategoryModal = ({
           <>
             <ModalHeader>
               <HeaderNavigator
-                tooltipTitle="دسته‌بندی"
+                navigateTitle="دسته‌بندی"
                 title={
                   categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"
                 }
