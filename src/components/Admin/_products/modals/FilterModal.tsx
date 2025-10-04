@@ -59,6 +59,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
     weightMin: "" as number | "",
     weightMax: "" as number | "",
+    weightUnit: "گرم" as "گرم" | "کیلوگرم",
 
     // تخفیف
     discountType: "percent" as DiscountType,
@@ -76,7 +77,8 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
   // برندها
   const brandOptions =
-    brandsData?.data?.items?.map((b: any) => ({ id: b.id, title: b.name })) ?? [];
+    brandsData?.data?.items?.map((b: any) => ({ id: b.id, title: b.name })) ??
+    [];
 
   const onApply = () => {
     const params = new URLSearchParams();
@@ -93,7 +95,9 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     // بازه‌های عددی
     rangeNum(params, "stock", filters.stockMin, filters.stockMax);
     rangeNum(params, "price", filters.priceMin, filters.priceMax);
-    rangeNum(params, "weight", filters.weightMin, filters.weightMax);
+    // ✅ وزن: کلید بر اساس واحد انتخاب‌شده
+    const weightKey = filters.weightUnit === "گرم" ? "weight_g" : "weight_kg";
+    rangeNum(params, weightKey, filters.weightMin, filters.weightMax);
 
     // تخفیف (فیلد مطابق انتخاب)
     const discountField =
@@ -123,6 +127,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
       priceMax: "",
       weightMin: "",
       weightMax: "",
+      weightUnit: "گرم",
       discountType: "percent",
       discountMin: "",
       discountMax: "",
@@ -130,6 +135,13 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     });
     router.push(pathname);
     onOpenChange();
+  };
+
+  const handleWeightUnitChange = (newUnit: "گرم" | "کیلوگرم") => {
+    setFilters((prev) => ({
+      ...prev,
+      weightUnit: newUnit, // فقط واحد عوض می‌شه؛ مقادیر ثابت می‌مونن
+    }));
   };
 
   return (
@@ -292,27 +304,50 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
               {/* وزن */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <NumberInput
-                  minValue={0}
-                  size="sm"
-                  label="وزن از (گرم)"
+                {/* وزن از */}
+                <LabeledNumberWithUnitInput
+                  label="وزن از"
+                  placeholder={
+                    filters.weightUnit === "گرم" ? "مثلاً 500" : "مثلاً 0.5"
+                  }
                   value={
                     filters.weightMin === "" ? undefined : +filters.weightMin
                   }
-                  onValueChange={(v) =>
-                    updateFilter("weightMin", v === undefined ? "" : v)
+                  onValueChange={(val: number | undefined) =>
+                    setFilters((p) => ({
+                      ...p,
+                      weightMin: val === undefined ? "" : val,
+                    }))
                   }
+                  selectedKey={filters.weightUnit}
+                  onSelectChange={(val: any) => handleWeightUnitChange(val)}
+                  options={[
+                    { key: "گرم", title: "گرم" },
+                    { key: "کیلوگرم", title: "کیلوگرم" },
+                  ]}
                 />
-                <NumberInput
-                  minValue={0}
-                  size="sm"
-                  label="وزن تا (گرم)"
+
+                {/* وزن تا */}
+                <LabeledNumberWithUnitInput
+                  label="وزن تا"
+                  placeholder={
+                    filters.weightUnit === "گرم" ? "مثلاً 2000" : "مثلاً 2"
+                  }
                   value={
                     filters.weightMax === "" ? undefined : +filters.weightMax
                   }
-                  onValueChange={(v) =>
-                    updateFilter("weightMax", v === undefined ? "" : v)
+                  onValueChange={(val: number | undefined) =>
+                    setFilters((p) => ({
+                      ...p,
+                      weightMax: val === undefined ? "" : val,
+                    }))
                   }
+                  selectedKey={filters.weightUnit}
+                  onSelectChange={(val: any) => handleWeightUnitChange(val)}
+                  options={[
+                    { key: "گرم", title: "گرم" },
+                    { key: "کیلوگرم", title: "کیلوگرم" },
+                  ]}
                 />
               </div>
 

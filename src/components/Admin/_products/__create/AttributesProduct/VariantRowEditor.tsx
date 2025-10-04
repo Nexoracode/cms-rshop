@@ -8,18 +8,17 @@ import { Stock } from "@/types";
 import { formatDiscountedPrice } from "@/utils/helpers";
 import { Variant } from "@/types/attributes";
 import { useSearchParams } from "next/navigation";
+import PriceNumberInput from "../helpers/PriceInput";
 
 type Props = {
   variantName: string;
   onHandleSubmit?: (data: Variant) => void;
-  onRemove: (id: string | number) => void;
   defaultValues: Variant | null;
 };
 
 const VariantRowEditorComponent: React.FC<Props> = ({
   variantName,
   onHandleSubmit,
-  onRemove,
   defaultValues,
 }) => {
   const [discountType, setDiscountType] = useState<Stock>("percent");
@@ -148,19 +147,15 @@ const VariantRowEditorComponent: React.FC<Props> = ({
           }
           isDisabled={!formData.price}
         />
-
-        <NumberInput
-          hideStepper
-          labelPlacement="outside"
+        
+        <PriceNumberInput
           label="موجودی"
-          minValue={0}
-          endContent={
-            <div className="pointer-events-none flex items-center">
-              <span className="text-default-400 text-small truncate">عدد</span>
-            </div>
-          }
-          value={+formData.stock}
-          onValueChange={(stock) => setFormData((prev) => ({ ...prev, stock }))}
+          placeholder="مثلاً 100"
+          suffix="عدد"
+          min={0}
+          required
+          value={formData.stock}
+          onChange={(stock) => setFormData((prev) => ({ ...prev, stock }))}
         />
 
         <Input

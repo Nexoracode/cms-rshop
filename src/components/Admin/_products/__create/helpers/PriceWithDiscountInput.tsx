@@ -1,8 +1,8 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { NumberInput } from "@heroui/react";
 import LabeledNumberWithUnitInput from "./LabeledNumberWithUnitInput";
+import PriceNumberInput from "./PriceInput";
 
 type DiscountType = "percent" | "amount";
 
@@ -24,8 +24,6 @@ const PriceWithDiscountInput: FC<Props> = ({
   const [discountType, setDiscountType] = useState<DiscountType>("percent");
   const [discountValue, setDiscountValue] = useState(0);
 
-  discountType === "amount" ? discount_amount : discount_percent;
-
   useEffect(() => {
     if (discount_amount > 0) {
       setDiscountType("amount");
@@ -41,35 +39,27 @@ const PriceWithDiscountInput: FC<Props> = ({
 
   const finalPrice =
     discountType === "percent"
-      ? price * (1 - discountValue / 100)
-      : price - discountValue;
+      ? price * (1 - (discountValue || 0) / 100)
+      : price - (discountValue || 0);
 
   return (
     <div className="flex flex-col md:flex-row gap-4">
       <div className="w-full flex flex-col items-start">
-        <NumberInput
-          hideStepper
+        <PriceNumberInput
+          value={price}
+          onChange={onPriceChange}
           label="قیمت"
-          labelPlacement="outside"
           placeholder="10,000"
+          suffix="تومان"
+          required
           min={0}
-          isRequired
-          endContent={
-            <div className="pointer-events-none flex items-center">
-              <span className="text-default-400 text-small">تومان</span>
-            </div>
-          }
-          value={+price}
-          onValueChange={(val) => onPriceChange(+val)}
         />
 
-        {price && discountValue !== 0 ? (
+        {price > 0 && discountValue > 0 ? (
           <p className="text-green-600 text-sm mt-2 mr-3">
-            قیمت با تخفیف: {Math.max(0, finalPrice).toLocaleString()} تومان
+            قیمت با تخفیف: {Math.max(0, Math.round(finalPrice)).toLocaleString("fa-IR")} تومان
           </p>
-        ) : (
-          ""
-        )}
+        ) : null}
       </div>
 
       <div className="flex flex-col gap-2 w-full">
@@ -78,13 +68,15 @@ const PriceWithDiscountInput: FC<Props> = ({
           placeholder="10"
           value={discountValue}
           onValueChange={(val) => {
-            setDiscountValue(val ?? 0);
-            onDiscountChange(discountType, val ?? 0);
+            const v = val ?? 0;
+            setDiscountValue(v);
+            onDiscountChange(discountType, v);
           }}
           selectedKey={discountType}
           onSelectChange={(val) => {
-            setDiscountType(val as DiscountType);
-            onDiscountChange(val as DiscountType, discountValue);
+            const t = val as DiscountType;
+            setDiscountType(t);
+            onDiscountChange(t, discountValue);
           }}
           options={[
             { key: "percent", title: "درصد" },
@@ -92,7 +84,7 @@ const PriceWithDiscountInput: FC<Props> = ({
           ]}
         />
 
-        {!price || price !== 0 && (
+        {(price === 0 || !price) && (
           <p className="text-gray-500 text-[12px]">
             برای تعریف تخفیف ابتدا قیمت را وارد کنید.
           </p>
