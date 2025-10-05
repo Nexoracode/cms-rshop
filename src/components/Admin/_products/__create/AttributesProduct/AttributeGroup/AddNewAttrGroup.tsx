@@ -59,7 +59,14 @@ const AddNewAttrGroup: React.FC<Props> = ({
         <AutocompleteWithAddButton
           label="گروه ویژگی"
           placeholder="گروه را انتخاب کنید"
-          options={attrGroup.map((g) => ({ id: g.id, title: g.name }))}
+          options={
+            attrGroup?.length
+              ? attrGroup.map((item: any) => ({
+                  id: item.id,
+                  title: item.name,
+                }))
+              : []
+          }
           selectedId={selectedAttrGroupId || ""}
           onChange={(id) => {
             onChange(+id);

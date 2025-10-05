@@ -8,6 +8,7 @@ import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import DynamicModal from "@/components/Helper/DynamicModal";
+import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -50,9 +51,10 @@ const AddNewAttribute: React.FC<Props> = ({
   return (
     <>
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-        <SelectWithAddButton
+
+        <AutocompleteWithAddButton
           label="ویژگی"
-          placeholder="ویژگی را انتخاب کنید"
+          placeholder="ویژگی را جستجو یا انتخاب کنید"
           options={
             attr?.length
               ? attr.map((item: any) => ({
@@ -61,7 +63,7 @@ const AddNewAttribute: React.FC<Props> = ({
                 }))
               : []
           }
-          selectedId={selectedAttrId || -1}
+          selectedId={selectedAttrId || ""}
           onChange={(id) => {
             onChange(+id);
           }}
