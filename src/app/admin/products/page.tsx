@@ -190,10 +190,7 @@ const Products = () => {
       <DynamicModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        title="تایید حذف محصولات انتخابی"
-        confirmText="حذف محصولات"
         onConfirm={deleteGroupProducts}
-        icon={<AiOutlineShop className="text-3xl" />}
       >
         <p className="leading-7 text-danger-600">
           با حذف محصولات انتخاب شده دیگر این محصولات قابل برگشت نیست!! آیا از

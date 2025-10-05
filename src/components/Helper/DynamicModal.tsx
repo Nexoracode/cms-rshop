@@ -9,6 +9,7 @@ import {
   ModalFooter,
   Button,
 } from "@heroui/react";
+import { FiAlertCircle } from "react-icons/fi";
 
 type DynamicModalProps = {
   isOpen: boolean;
@@ -17,7 +18,7 @@ type DynamicModalProps = {
   children?: React.ReactNode;
   confirmText?: string;
   onConfirm: () => void;
-  icon: React.ReactNode
+  icon?: React.ReactNode
   confirmColor?:
     | "danger"
     | "default"
@@ -32,14 +33,14 @@ type DynamicModalProps = {
 const DynamicModal: React.FC<DynamicModalProps> = ({
   isOpen,
   onOpenChange,
-  title,
+  title= "توجه",
   children,
-  confirmText = "حذف",
+  confirmText = "حذف همه",
   onConfirm,
   confirmColor = "danger",
   confirmVariant = "flat",
   placement = "auto",
-  icon
+  icon= <FiAlertCircle className="text-3xl text-yellow-500"/>
 }) => {
   return (
     <Modal
