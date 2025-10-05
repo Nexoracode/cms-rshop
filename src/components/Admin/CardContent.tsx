@@ -41,17 +41,17 @@ const CardContent: React.FC<CardContentProps> = ({
           ) : isExistItems ? (
             children
           ) : (
-            <div className="flex flex-col items-center justify-center text-gray-600 gap-2">
+            <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-2xl text-gray-600 gap-2">
               {searchInp ? (
                 <>
-                  <BiSearchAlt className="text-4xl text-warning-500" />
+                  <BiSearchAlt className="text-[50px] text-warning-500" />
                   <p className="text-center text-sm sm:text-base font-medium">
                     جستجوی شما نتیجه‌ای نداشت!!
                   </p>
                 </>
               ) : (
                 <>
-                  <BiPackage className="text-4xl text-gray-400" />
+                  <BiPackage className="text-[50px] text-gray-400" />
                   <p className="text-center text-sm sm:text-base font-medium">
                     هنوز موردی اضافه نشده است!!
                   </p>

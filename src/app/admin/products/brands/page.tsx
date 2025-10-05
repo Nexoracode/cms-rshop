@@ -67,7 +67,6 @@ const BrandsProduct = () => {
           isExistItems={brands?.data?.items?.length}
           isLoading={isLoading}
           title="لیست برندها"
-          keyTitle="برند"
           onAdd={onOpenBrandModal}
           icon={<TbBrandArc className="text-3xl animate-pulse" />}
           //searchInp={!!searchInp?.length}

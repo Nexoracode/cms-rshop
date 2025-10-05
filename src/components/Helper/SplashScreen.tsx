@@ -18,7 +18,7 @@ export default function SplashScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 5000);
+    }, 4000);
 
     // ساخت ذرات فقط روی کلاینت
     const arr: Particle[] = [...Array(25)].map(() => ({
@@ -114,7 +114,7 @@ export default function SplashScreen() {
               bg-gradient-to-r from-white via-sky-100 to-violet-200 
               bg-clip-text text-transparent animate-shine drop-shadow-md"
             >
-              ARShop CMS
+              پنل فروشگاهی آرشاپ
             </motion.h1>
 
             {/* Progress Bar */}

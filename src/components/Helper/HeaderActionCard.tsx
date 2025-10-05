@@ -21,7 +21,7 @@ const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
       </div>
 
       <div
-        className="bg-gray-800 animate-bounce rounded-xl p-2 px-4 cursor-pointer text-white"
+        className="bg-gray-800 animate-pulse rounded-xl p-2 px-4 cursor-pointer text-white"
         onClick={onAdd}
       >
         + افزودن

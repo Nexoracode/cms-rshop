@@ -20,14 +20,9 @@ import {
   useDeleteGroupProduct,
   useGetProducts,
 } from "@/hooks/products/useProduct";
-import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import { GETProduct } from "@/components/Admin/_products/types/edit-product";
-import AppPagination from "@/components/Helper/AppPagination";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
-import HeaderNavigator from "@/components/Admin/_products/HeaderNavigator";
-import { TbCategoryPlus } from "react-icons/tb";
 import CardContent from "@/components/Admin/CardContent";
 
 const Products = () => {
