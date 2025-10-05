@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Button, Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
 
 type Option = {

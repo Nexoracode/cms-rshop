@@ -1,13 +1,19 @@
 "use client";
 
-import { useDisclosure } from "@heroui/react";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  useDisclosure,
+} from "@heroui/react";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
 import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
-import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import DynamicModal from "@/components/Helper/DynamicModal";
+import { LuPlus } from "react-icons/lu";
+import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -50,19 +56,11 @@ const AddNewAttrGroup: React.FC<Props> = ({
   return (
     <>
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-        <SelectWithAddButton
+        <AutocompleteWithAddButton
           label="گروه ویژگی"
           placeholder="گروه را انتخاب کنید"
-          isRequired={isDisabledEdit}
-          options={
-            attrGroup?.length
-              ? attrGroup.map((item: any) => ({
-                  id: item.id,
-                  title: item.name,
-                }))
-              : []
-          }
-          selectedId={selectedAttrGroupId || -1}
+          options={attrGroup.map((g) => ({ id: g.id, title: g.name }))}
+          selectedId={selectedAttrGroupId || ""}
           onChange={(id) => {
             onChange(+id);
             setSelectedAttrGroupId(+id);
@@ -112,8 +110,8 @@ const AddNewAttrGroup: React.FC<Props> = ({
         onConfirm={handleDeleteAttrGroup}
       >
         <p className="leading-7 text-danger-600">
-          با حذف گروه ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف اطمینان
-          دارید؟
+          با حذف گروه ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف
+          اطمینان دارید؟
         </p>
       </DynamicModal>
     </>
