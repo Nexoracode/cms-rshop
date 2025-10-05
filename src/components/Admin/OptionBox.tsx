@@ -14,6 +14,7 @@ const OptionBox: React.FC<Props> = ({ icon, onClick, title }) => {
       color="primary"
       className="pl-5"
       variant="flat"
+      size="sm"
       onPress={onClick}
     >
       <div>

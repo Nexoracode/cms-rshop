@@ -1,20 +1,11 @@
 "use client";
 
 // Components
-import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
-import OptionBox from "@/components/Admin/OptionBox";
+import { Button, useDisclosure } from "@heroui/react";
 import ProductBox from "@/components/Admin/_products/ProductBox";
-import FilterModal from "@/components/Admin/_products/modals/FilterModal";
-import SortingModal from "@/components/Admin/_products/modals/SortingModal";
-import MoreFeaturesModal from "@/components/Admin/_products/modals/MoreFeaturesModal";
-import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { useRouter, useSearchParams } from "next/navigation";
 // Icons
-import { IoMdMore } from "react-icons/io";
-import { IoFilter } from "react-icons/io5";
-import { BiSortAlt2 } from "react-icons/bi";
 import { AiOutlineShop } from "react-icons/ai";
-import { LuBox } from "react-icons/lu";
 import {
   ProductSortBy,
   useDeleteGroupProduct,
@@ -22,14 +13,14 @@ import {
 } from "@/hooks/products/useProduct";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
-import SearchInput from "@/components/Admin/_products/__create/helpers/SearchInput";
 import CardContent from "@/components/Admin/CardContent";
+import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 
 const Products = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const [searchInp, setSearchInp] = useState<string | undefined>(undefined);
+
   //? Hooks
   const deleteGroupProduct = useDeleteGroupProduct();
 
@@ -49,7 +40,7 @@ const Products = () => {
   }, [searchParams?.toString()]);
 
   // search & searchBy
-  const search = searchInp;
+  const search = "";
   const searchBy = useMemo(() => {
     const s = searchParams.getAll("searchBy");
     return s.length ? s : undefined;
@@ -79,33 +70,13 @@ const Products = () => {
   });
 
   const isFilteredView = !!(
-    (
-      search ||
-      searchBy?.length ||
-      sortBy?.length ||
-      filter
-    )
+    search ||
+    searchBy?.length ||
+    sortBy?.length ||
+    filter
   );
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const {
-    isOpen: isSortOpen,
-    onOpen: onOpenSort,
-    onOpenChange: onSortOpenChange,
-  } = useDisclosure();
-
-  const {
-    isOpen: isFilterOpen,
-    onOpen: onOpenFilter,
-    onOpenChange: onFilterOpenChange,
-  } = useDisclosure();
-
-  const {
-    isOpen: isFeatureOpen,
-    onOpen: onOpenFeature,
-    onOpenChange: onFeatureOpenChange,
-  } = useDisclosure();
 
   const deleteGroupProducts = () => {
     console.log({ ids: selectedItems });
@@ -124,39 +95,7 @@ const Products = () => {
   return (
     <>
       <section className="flex flex-col gap-6">
-        <Card className="shadow-none">
-          <BoxHeader
-            title="باکس فیلتر"
-            color="text-white bg-gray-800"
-            icon={<LuBox className="text-3xl" />}
-          />
-          <CardBody className="flex flex-col gap-4">
-            <section className="w-full">
-              <SearchInput
-                placeholder="جستجو در محصول‌ها..."
-                onSearch={setSearchInp}
-              />
-            </section>
-            <section className="flex flex-wrap items-center gap-2 justify-start">
-              <OptionBox
-                title="فیلتر"
-                icon={<IoFilter className="!text-[16px]" />}
-                onClick={onOpenFilter}
-              />
-              <OptionBox
-                title="مرتب سازی"
-                icon={<BiSortAlt2 className="!text-[16px]" />}
-                onClick={onOpenSort}
-              />
-              <OptionBox
-                title="امکانات بیشتر"
-                icon={<IoMdMore className="!text-[16px]" />}
-                onClick={onOpenFeature}
-              />
-            </section>
-          </CardBody>
-        </Card>
-
+        <ProductsFilter />
         <CardContent
           title="لیست محصولات"
           icon={<AiOutlineShop className="text-3xl" />}
@@ -244,13 +183,6 @@ const Products = () => {
           </div>
         </CardContent>
       </section>
-      {/* Modals */}
-      <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
-      <FilterModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
-      <MoreFeaturesModal
-        isOpen={isFeatureOpen}
-        onOpenChange={onFeatureOpenChange}
-      />
       <DynamicModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
