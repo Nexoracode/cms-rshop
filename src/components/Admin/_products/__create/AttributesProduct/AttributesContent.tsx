@@ -10,7 +10,6 @@ import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
-import { useAddNewCategoryAttribute } from "@/hooks/attributes/useAttributeCategory";
 import { useSearchParams } from "next/navigation";
 
 type Props = {
@@ -32,23 +31,12 @@ export const AttributesContent = ({
 }: Props) => {
   const sp = useSearchParams();
   const page = +(sp.get("edit_id") ?? 1);
-  const searchParams = useSearchParams();
   const [selecteds, setSelecteds] = useState(initialSelecteds);
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
-
-  const categoryId = searchParams.get("category_id")
-    ? Number(searchParams.get("category_id"))
-    : undefined;
-
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const addNewSimapleAttribute = useAddNewSimapleAttribute();
-  const addNewCategoryAttribute = useAddNewCategoryAttribute(
-    selecteds.attrId,
-    categoryId,
-    selecteds.attrGroupId
-  );
 
   const handleSubmit = async () => {
     const { attrId, attrGroupId, valueIds } = selecteds;
@@ -69,23 +57,12 @@ export const AttributesContent = ({
         attributes: [{ attribute_id: attrId, value_ids: valueIds }],
       };
 
-      addNewCategoryAttribute.mutate(
-        {
-          categoryId: categoryId,
-          attributeId: attrId,
+      addNewVariantProductMutation.mutate(newAttr, {
+        onSuccess: () => {
+          resetInfos();
+          onSubmitted?.();
         },
-        {
-          onSuccess: () => {
-            // بعد variant-product
-            addNewVariantProductMutation.mutate(newAttr, {
-              onSuccess: () => {
-                resetInfos();
-                onSubmitted?.();
-              },
-            });
-          },
-        }
-      );
+      });
     } else {
       const newAttrSimple = {
         product_id: page,

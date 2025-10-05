@@ -1,8 +1,8 @@
 "use client";
 
 import { AttributesContent } from "@/components/Admin/_products/__create/AttributesProduct/AttributesContent";
+import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import BackToPage from "@/components/Helper/BackToPage";
-import HeaderActionCard from "@/components/Helper/HeaderActionCard";
 import { Card, CardBody } from "@heroui/react";
 import { MdOutlineCategory } from "react-icons/md";
 
@@ -15,13 +15,12 @@ const Variants = () => {
 
       <section className="flex flex-col gap-6">
         <Card>
-          <CardBody>
-            <HeaderActionCard
-              icon={<MdOutlineCategory className="text-3xl animate-pulse" />}
-              title={"مدیریت ویژگی ها"}
-              keyTitle={"ویژگی"}
-              onAdd={() => {}}
-            />
+          <BoxHeader
+            title="مدیریت ویژگی ها"
+            color="text-blue-700 bg-blue-700/10"
+            icon={<MdOutlineCategory className="text-3xl" />}
+          />
+          <CardBody className="-mt-12">
             <AttributesContent isActiveHeader={false} isDisabledEdit={false} />
           </CardBody>
         </Card>
