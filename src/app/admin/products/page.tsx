@@ -40,7 +40,11 @@ const Products = () => {
   }, [searchParams?.toString()]);
 
   // search & searchBy
-  const search = "";
+  const search = useMemo(() => {
+    const s = searchParams.get("search")?.trim();
+    return s ? s : undefined;
+  }, [searchParams?.toString()]);
+
   const searchBy = useMemo(() => {
     const s = searchParams.getAll("searchBy");
     return s.length ? s : undefined;

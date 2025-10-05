@@ -49,6 +49,7 @@ const DebouncedSearchURL: React.FC<Props> = ({ placeholder }) => {
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue(e.target.value)}
+      onClear={() => setValue("")}
     />
   );
 };
