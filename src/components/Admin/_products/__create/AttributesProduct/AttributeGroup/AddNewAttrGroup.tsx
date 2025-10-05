@@ -1,11 +1,13 @@
 "use client";
 
-import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
-import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import DynamicModal from "@/components/Helper/DynamicModal";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -22,9 +24,18 @@ const AddNewAttrGroup: React.FC<Props> = ({
     number | undefined
   >(undefined);
   const [type, setType] = useState<"edit" | "add">("add");
-  //? Hooks
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const deleteAttributeGroup = useDeleteAttributeGroup();
+  //? Hooks
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onOpenChange: onOpenChangeDelete,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAdd,
+    onOpen: onOpenAdd,
+    onOpenChange: onOpenChangeAdd,
+  } = useDisclosure();
 
   const handleDeleteAttrGroup = () => {
     if (!selectedAttrGroupId) return;
@@ -42,6 +53,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
         <SelectWithAddButton
           label="گروه ویژگی"
           placeholder="گروه را انتخاب کنید"
+          isRequired={isDisabledEdit}
           options={
             attrGroup?.length
               ? attrGroup.map((item: any) => ({
@@ -56,73 +68,54 @@ const AddNewAttrGroup: React.FC<Props> = ({
             setSelectedAttrGroupId(+id);
           }}
           onAddNewClick={() => {
-            onOpen();
+            onOpenAdd();
             setType("add");
           }}
         />
-        {/* <Select
-          isRequired
-          label="گروه ویژگی"
-          placeholder="گروه را انتخاب کنید"
-          labelPlacement="outside"
-          onChange={(e) => {
-            onChange(+e.target.value);
-            setSelectedAttrGroupId(+e.target.value);
-          }}
-          endContent={
-            <Button
-              color="secondary"
-              variant="flat"
-              size="sm"
-              onPress={() => {
-                onOpen();
-                setType("add");
-              }}
-            >
-              + افزودن
-            </Button>
-          }
-        >
-          {attrGroup && attrGroup.length ? (
-            attrGroup.map((item: any) => (
-              <SelectItem key={item.id}>{item.name}</SelectItem>
-            ))
-          ) : (
-            <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
-          )}
-        </Select> */}
 
         {selectedAttrGroupId && !isDisabledEdit ? (
-          <div className="flex items-center gap-4 mt-2">
-            <DoubleClickBtn
-              onPress={handleDeleteAttrGroup}
-              textBtn="حذف گروه فعلی"
-              color="danger"
-              size="sm"
-              isActiveDoubleClick
-              className="w-full"
-            />
-            <Button
-              size="sm"
-              className="w-full"
-              onPress={() => {
-                onOpen();
-                setType("edit");
-              }}
-            >
-              ویرایش گروه فعلی
-            </Button>
+          <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+            <p className="font-medium text-gray-700">عملیات</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  onOpenAdd();
+                  setType("edit");
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <TbEdit size={20} />
+              </button>
+              <button
+                onClick={() => {
+                  onOpenDelete();
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <RiDeleteBin5Line size={20} />
+              </button>
+            </div>
           </div>
         ) : (
           ""
         )}
       </div>
       <AddNewAttributeGroupModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={isOpenAdd}
+        onOpenChange={onOpenChangeAdd}
         defaultDatas={attrGroup?.find((g: any) => g.id === selectedAttrGroupId)}
         type={type}
       />
+      <DynamicModal
+        isOpen={isOpenDelete}
+        onOpenChange={onOpenChangeDelete}
+        onConfirm={handleDeleteAttrGroup}
+      >
+        <p className="leading-7 text-danger-600">
+          با حذف گروه ویژگی انتخاب شده دیگر قابل برگشت نیست!! آیا از حذف اطمینان
+          دارید؟
+        </p>
+      </DynamicModal>
     </>
   );
 };

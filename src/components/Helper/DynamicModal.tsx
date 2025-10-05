@@ -35,7 +35,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
   onOpenChange,
   title= "توجه",
   children,
-  confirmText = "حذف همه",
+  confirmText = "حذف",
   onConfirm,
   confirmColor = "danger",
   confirmVariant = "flat",

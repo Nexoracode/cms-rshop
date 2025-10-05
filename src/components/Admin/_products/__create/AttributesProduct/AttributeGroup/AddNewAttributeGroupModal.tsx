@@ -76,7 +76,7 @@ const AddNewAttributeGroupModal = ({
               <p className="font-normal text-[16px]">افزودن دسته بندی ویژگی</p>
             </ModalHeader>
             <ModalBody>
-              <div className="flex flex-col gap-5">
+              <div className="flex gap-4">
                 <Input
                   labelPlacement="outside"
                   isRequired
