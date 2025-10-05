@@ -1,18 +1,20 @@
-// AddNewAttributeValue.tsx
 "use client";
 
-import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import React, { useState } from "react";
-import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
 import { useAttributeContext } from "../../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import DynamicModal from "@/components/Helper/DynamicModal";
+import { Select, SelectItem } from "@heroui/react";
 
 type Props = {
-  attrValues: Record<string, any>[]; // list of possible values from server
-  selectedValues: number[]; // selected value ids (from parent state)
-  onChange: (values: number[]) => void; // notify parent with array of selected ids
+  attrValues: Record<string, any>[];
+  selectedValues: number[];
+  onChange: (values: number[]) => void;
   selectedAttrId: number | undefined;
   isDisabledEdit: boolean;
 };
@@ -24,20 +26,31 @@ const AddNewAttributeValue: React.FC<Props> = ({
   selectedAttrId,
   isDisabledEdit,
 }) => {
-  const [editAttrValue, setEditAttrValue] = useState(false);
   const [type, setType] = useState<"edit" | "add">("add");
   const [selectedAttrValueId, setSelectedAttrValueId] = useState<
     number | undefined
   >(undefined);
-  //? Hooks
+
   const deleteAttributeValue = useDeleteAttributeValue();
   const { attrInfos } = useAttributeContext();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onOpenChange: onOpenChangeDelete,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAdd,
+    onOpen: onOpenAdd,
+    onOpenChange: onOpenChangeAdd,
+  } = useDisclosure();
 
   const handleDeleteAttrValue = () => {
     if (!selectedAttrValueId) return;
     deleteAttributeValue.mutate(selectedAttrValueId, {
-      onSuccess: () => {},
+      onSuccess: () => {
+        setSelectedAttrValueId(undefined);
+      },
     });
   };
 
@@ -57,6 +70,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
     <>
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
         {isDisabledEdit ? (
+          // حالت فقط انتخاب
           <div className="flex gap-2 items-center justify-center w-full">
             <Select
               label="مقادیر ویژگی"
@@ -97,34 +111,14 @@ const AddNewAttributeValue: React.FC<Props> = ({
             </Select>
             <p
               className="w-24 z-10 text-center text-purple-700 bg-purple-200 rounded-xl mt-[24px] py-1.5 cursor-pointer truncate"
-              onClick={onOpen}
+              onClick={onOpenAdd}
             >
               + افزودن
             </p>
           </div>
         ) : (
-          ""
-        )}
-
-        {!isDisabledEdit ? (
+          // حالت قابل ویرایش
           <>
-            {/*  <Select
-            isRequired
-            placeholder="مقدار ویژگی را انتخاب کنید"
-            labelPlacement="outside"
-            onChange={(e) => {
-              setSelectedAttrValueId(+e.target.value);
-            }}
-            className="my-4"
-          >
-            {attrValues ? (
-              attrValues.map((data: any) => (
-                <SelectItem key={data.id}>{data.value}</SelectItem>
-              ))
-            ) : (
-              <SelectItem key={-1}>فعلا آیتمی وجود ندارد</SelectItem>
-            )}
-          </Select> */}
             <SelectWithAddButton
               label="مقدار ویژگی"
               placeholder="مقدار ویژگی را انتخاب کنید"
@@ -136,52 +130,60 @@ const AddNewAttributeValue: React.FC<Props> = ({
               }
               selectedId={selectedAttrValueId ?? ""}
               onChange={(id) => setSelectedAttrValueId(+id)}
-              onAddNewClick={onOpen} // اینو می‌دی تا همون +افزودن کار کنه
+              onAddNewClick={() => {
+                onOpenAdd();
+                setType("add");
+              }}
             />
-          </>
-        ) : (
-          ""
-        )}
 
-        {selectedValues && !isDisabledEdit ? (
-          <div className="flex items-center gap-4 mt-2">
-            {selectedAttrValueId ? (
-              <>
-                <DoubleClickBtn
-                  onPress={handleDeleteAttrValue}
-                  textBtn="حذف مقدار ویژگی فعلی"
-                  color="danger"
-                  size="sm"
-                  isActiveDoubleClick
-                  className="w-full"
-                />
-                <Button
-                  size="sm"
-                  className="w-full"
-                  onPress={() => {
-                    onOpen();
-                    setType("edit");
-                  }}
-                >
-                  ویرایش مقدار ویژگی فعلی
-                </Button>
-              </>
-            ) : (
-              ""
-            )}
-          </div>
-        ) : (
-          ""
+            {selectedAttrValueId && !isDisabledEdit ? (
+              <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+                <p className="font-medium text-gray-700">عملیات</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      onOpenAdd();
+                      setType("edit");
+                    }}
+                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                  >
+                    <TbEdit size={20} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      onOpenDelete();
+                    }}
+                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                  >
+                    <RiDeleteBin5Line size={20} />
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </>
         )}
       </div>
 
+      {/* افزودن / ویرایش */}
       <AddNewAttributeValueModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={isOpenAdd}
+        onOpenChange={onOpenChangeAdd}
         attributeId={selectedAttrId}
         defaultDatas={attrValues?.find((val) => val.id === selectedAttrValueId)}
         type={type}
       />
+
+      {/* حذف */}
+      <DynamicModal
+        isOpen={isOpenDelete}
+        onOpenChange={onOpenChangeDelete}
+        onConfirm={handleDeleteAttrValue}
+      >
+        <p className="leading-7 text-danger-600">
+          با حذف مقدار ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف
+          اطمینان دارید؟
+        </p>
+      </DynamicModal>
     </>
   );
 };
