@@ -32,6 +32,9 @@ import SectionCard from "./helpers/SectionCard";
 import SpecTree from "./helpers/SpecTree";
 import { MdOutlineCategory } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
+import { GoArrowUpRight } from "react-icons/go";
+import Link from "next/link";
+import { LuPlus } from "react-icons/lu";
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -48,7 +51,6 @@ const AttributesProducts = () => {
   );
   //? Api Calls
   const { data: productData } = useGetOneProduct(page);
-  const { mutate: deleteVariant } = useDeleteVariant();
   const updateVariantProductMutation = useUpdateVariantProduct();
 
   useEffect(() => {
@@ -110,138 +112,158 @@ const AttributesProducts = () => {
           icon={<TbCategory2 className="text-3xl" />}
         />
         <CardBody dir="rtl" className="flex flex-col gap-6 text-start">
-          <HeaderAction
-            title="ویژگی ها"
-            textBtn={"+ افزودن ویژگی"}
-            onPress={onOpen}
-          />
-
-          <Tabs
-            aria-label="options"
-            color="secondary"
-            variant="bordered"
-            fullWidth
-            classNames={{
-              tabList: "flex-wrap md:flex-nowrap",
-            }}
-            selectedKey={activeTab}
-            onSelectionChange={(key) => {
-              const k = String(key);
-              setActiveTab(k);
-              const params = new URLSearchParams(searchParams.toString()); // ← کپی قابل‌نوشتن
-              params.set("tab", k);
-              router.replace(`${pathname}?${params.toString()}`, {
-                scroll: false,
-              });
-            }}
-          >
-            {/* تب 1: لیست متغیرها */}
-            <Tab
-              key="variants"
-              title={
-                <div className="flex justify-center items-center gap-2">
-                  <MdOutlineCategory className="text-xl" />
-                  <span>لیست متغیرها</span>
-                </div>
-              }
-            >
-              <SectionCard
-                title="لیست متغیرها"
-                show={!productData?.data?.variants?.length}
-                empty="هنوز متغیری انتخاب نکرده اید!!"
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-3">
+            <p className="pr-2">مدیریت ویژگی‌ها</p>
+            <div className="flex flex-wrap gap-2 w-full sm:w-fit">
+              <Button
+                className="pl-5"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/products/variants"}
               >
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {productData?.data?.variants?.length
-                    ? productData.data.variants.map((variant: any) => (
-                        <VariantRowEditor
-                          key={variant.id}
-                          variantName={variant?.name}
-                          onHandleSubmit={(data) =>
-                            setVariants((prev) => replaceOrAddById(prev, data))
-                          }
-                          defaultValues={variant}
-                        />
-                      ))
-                    : null}
-                </div>
-
-                {productData?.data?.variants?.length || variants.length ? (
-                  <Button
-                    color="success"
-                    className="mt-4 text-white"
-                    onPress={updateVariantProduct}
-                  >
-                    ثبت تغیرات ویژگی ها
-                  </Button>
-                ) : null}
-              </SectionCard>
-            </Tab>
-
-            {/* تب 2: مرتب‌سازی متغیرها */}
-            <Tab
-              key="sort-variants"
-              title={
-                <div className="flex justify-center items-center gap-2">
-                  <TbSortDescendingShapes className="text-xl" />
-                  <span>مرتب سازی متغیرها</span>
-                </div>
-              }
-            >
-              <SectionCard
-                show={!productData?.data?.attribute_nodes?.length}
-                title="مرتب سازی متغیرها"
-                empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+                <GoArrowUpRight className="text-xl" />
+                ویژگی ها
+              </Button>
+              <Button
+                className="pl-5"
+                color="primary"
+                variant="flat"
+                size="sm"
+                onPress={onOpen}
               >
-                {productData?.data?.attribute_nodes?.length ? (
-                  <SortableAttributeNodes
-                    attributeNodes={productData.data.attribute_nodes}
-                  />
-                ) : null}
-              </SectionCard>
-            </Tab>
+                <LuPlus className="text-xl" />
+                افزودن
+              </Button>
+            </div>
+          </div>
 
-            {/* تب 3: لیست ویژگی‌ها (specifications tree) */}
-            <Tab
-              key="attributes"
-              title={
-                <div className="flex justify-center items-center gap-2">
-                  <BiCategoryAlt className="text-xl" />
-                  <span>لیست ویژگی ها</span>
-                </div>
-              }
+          <div className="bg-slate-50 p-4 rounded-xl">
+            <Tabs
+              aria-label="options"
+              color="secondary"
+              variant="bordered"
+              fullWidth
+              classNames={{
+                tabList: "flex-wrap md:flex-nowrap mb-4",
+              }}
+              selectedKey={activeTab}
+              onSelectionChange={(key) => {
+                const k = String(key);
+                setActiveTab(k);
+                const params = new URLSearchParams(searchParams.toString()); // ← کپی قابل‌نوشتن
+                params.set("tab", k);
+                router.replace(`${pathname}?${params.toString()}`, {
+                  scroll: false,
+                });
+              }}
             >
-              <SectionCard
-                title="لیست ویژگی ها"
-                show={!productData?.data?.specifications?.length}
-                empty="هنوز ویژگی انتخاب نکرده اید!!"
+              {/* تب 1: لیست متغیرها */}
+              <Tab
+                key="variants"
+                title={
+                  <div className="flex justify-center items-center gap-2">
+                    <MdOutlineCategory className="text-xl" />
+                    <span>لیست متغیرها</span>
+                  </div>
+                }
               >
-                <SpecTree specs={productData?.data?.specifications} />
-              </SectionCard>
-            </Tab>
+                <SectionCard
+                  show={!productData?.data?.variants?.length}
+                  empty="هنوز متغیری انتخاب نکرده اید!!"
+                >
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {productData?.data?.variants?.length
+                      ? productData.data.variants.map((variant: any) => (
+                          <VariantRowEditor
+                            key={variant.id}
+                            variantName={variant?.name}
+                            onHandleSubmit={(data) =>
+                              setVariants((prev) =>
+                                replaceOrAddById(prev, data)
+                              )
+                            }
+                            defaultValues={variant}
+                          />
+                        ))
+                      : null}
+                  </div>
 
-            {/* تب 4: مرتب‌سازی ویژگی‌ها */}
-            <Tab
-              key="sort-attributes"
-              title={
-                <div className="flex justify-center items-center gap-2">
-                  <TbSortAscendingSmallBig className="text-xl" />
-                  <span>مرتب سازی ویژگی ها</span>
-                </div>
-              }
-            >
-              <SectionCard
-                show={!productData?.data?.specifications?.length}
-                title="مرتب سازی ویژگی ها"
-                empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
+                  {productData?.data?.variants?.length || variants.length ? (
+                    <Button
+                      color="success"
+                      className="mt-4 text-white"
+                      onPress={updateVariantProduct}
+                    >
+                      ثبت تغیرات ویژگی ها
+                    </Button>
+                  ) : null}
+                </SectionCard>
+              </Tab>
+
+              {/* تب 2: مرتب‌سازی متغیرها */}
+              <Tab
+                key="sort-variants"
+                title={
+                  <div className="flex justify-center items-center gap-2">
+                    <TbSortDescendingShapes className="text-xl" />
+                    <span>مرتب سازی متغیرها</span>
+                  </div>
+                }
               >
-                {productData?.data?.specifications?.length ? (
-                  <SortableAttributeNodes
-                    attributeNodes={productData.data.specifications}
-                  />
-                ) : null}
-              </SectionCard>
-            </Tab>
-          </Tabs>
+                <SectionCard
+                  show={!productData?.data?.attribute_nodes?.length}
+                  empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
+                >
+                  {productData?.data?.attribute_nodes?.length ? (
+                    <SortableAttributeNodes
+                      attributeNodes={productData.data.attribute_nodes}
+                    />
+                  ) : null}
+                </SectionCard>
+              </Tab>
+
+              {/* تب 3: لیست ویژگی‌ها (specifications tree) */}
+              <Tab
+                key="attributes"
+                title={
+                  <div className="flex justify-center items-center gap-2">
+                    <BiCategoryAlt className="text-xl" />
+                    <span>لیست ویژگی ها</span>
+                  </div>
+                }
+              >
+                <SectionCard
+                  show={!productData?.data?.specifications?.length}
+                  empty="هنوز ویژگی انتخاب نکرده اید!!"
+                >
+                  <SpecTree specs={productData?.data?.specifications} />
+                </SectionCard>
+              </Tab>
+
+              {/* تب 4: مرتب‌سازی ویژگی‌ها */}
+              <Tab
+                key="sort-attributes"
+                title={
+                  <div className="flex justify-center items-center gap-2">
+                    <TbSortAscendingSmallBig className="text-xl" />
+                    <span>مرتب سازی ویژگی ها</span>
+                  </div>
+                }
+              >
+                <SectionCard
+                  show={!productData?.data?.specifications?.length}
+                  empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
+                >
+                  {productData?.data?.specifications?.length ? (
+                    <SortableAttributeNodes
+                      attributeNodes={productData.data.specifications}
+                    />
+                  ) : null}
+                </SectionCard>
+              </Tab>
+            </Tabs>
+          </div>
         </CardBody>
       </Card>
 

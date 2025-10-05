@@ -10,8 +10,6 @@ import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
 import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
-import HeaderNavigator from "../../HeaderNavigator";
-import { MdOutlineCategory } from "react-icons/md";
 import { useAddNewCategoryAttribute } from "@/hooks/attributes/useAttributeCategory";
 import { useSearchParams } from "next/navigation";
 
@@ -109,18 +107,7 @@ export const AttributesContent = ({
   };
 
   return (
-    <div className="flex flex-col gap-8 my-4 mx-6">
-      {isActiveHeader ? (
-        <HeaderNavigator
-          navigateTitle="ویژگی"
-          title={"مدیریت کامل ویژگی"}
-          navigateTo="/admin/products/variants"
-          icon={<MdOutlineCategory className="text-2xl" />}
-        />
-      ) : (
-        ""
-      )}
-
+    <div className="flex flex-col gap-6 p-4 mt-6">
       <AddNewAttrGroup
         attrGroup={attributeGroup?.data}
         isDisabledEdit={isDisabledEdit}
