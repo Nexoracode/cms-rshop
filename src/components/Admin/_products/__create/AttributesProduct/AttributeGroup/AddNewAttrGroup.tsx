@@ -112,7 +112,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
         onConfirm={handleDeleteAttrGroup}
       >
         <p className="leading-7 text-danger-600">
-          با حذف گروه ویژگی انتخاب شده دیگر قابل برگشت نیست!! آیا از حذف اطمینان
+          با حذف گروه ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف اطمینان
           دارید؟
         </p>
       </DynamicModal>

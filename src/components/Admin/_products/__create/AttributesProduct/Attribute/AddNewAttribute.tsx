@@ -1,11 +1,13 @@
 "use client";
 
-import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
-import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import DynamicModal from "@/components/Helper/DynamicModal";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -21,9 +23,20 @@ const AddNewAttribute: React.FC<Props> = ({
   isDisabledEdit,
 }) => {
   const [type, setType] = useState<"edit" | "add">("add");
-  //? Hooks
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const deleteAttribute = useDeleteAttribute();
+
+  // modals
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onOpenChange: onOpenChangeDelete,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAdd,
+    onOpen: onOpenAdd,
+    onOpenChange: onOpenChangeAdd,
+  } = useDisclosure();
 
   const handleDeleteAttr = () => {
     if (!selectedAttrId) return;
@@ -53,76 +66,56 @@ const AddNewAttribute: React.FC<Props> = ({
             onChange(+id);
           }}
           onAddNewClick={() => {
-            onOpen();
+            onOpenAdd();
             setType("add");
           }}
         />
 
-        {/*  <Select
-          isRequired
-          label="ویژگی"
-          placeholder="ویژگی را انتخاب کنید"
-          labelPlacement="outside"
-          selectedKeys={selectedAttrId ? [selectedAttrId.toString()] : []}
-          onChange={(e) => {
-            onChange(+e.target.value);
-          }}
-          endContent={
-            <Button
-              color="secondary"
-              variant="flat"
-              size="sm"
-              onPress={() => {
-                onOpen();
-                setType("add");
-              }}
-            >
-              + افزودن
-            </Button>
-          }
-        >
-          {attr && attr?.length ? (
-            attr.map((item: any) => (
-              <SelectItem key={item.id}>{item.name}</SelectItem>
-            ))
-          ) : (
-            <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
-          )}
-        </Select> */}
-
         {selectedAttrId && !isDisabledEdit ? (
-          <div className="flex items-center gap-4 mt-2">
-            <DoubleClickBtn
-              onPress={handleDeleteAttr}
-              textBtn="حذف ویژگی فعلی"
-              color="danger"
-              size="sm"
-              isActiveDoubleClick
-              className="w-full"
-            />
-            <Button
-              size="sm"
-              className="w-full"
-              onPress={() => {
-                onOpen();
-                setType("edit");
-              }}
-            >
-              ویرایش ویژگی فعلی
-            </Button>
+          <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+            <p className="font-medium text-gray-700">عملیات</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  onOpenAdd();
+                  setType("edit");
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <TbEdit size={20} />
+              </button>
+              <button
+                onClick={() => {
+                  onOpenDelete();
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <RiDeleteBin5Line size={20} />
+              </button>
+            </div>
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
       </div>
+
+      {/* ویرایش یا افزودن */}
       <AddNewAttributeModal
-        isOpen={isOpen}
-        onOpenChange={() => {
-          onOpenChange();
-        }}
-        defaultDatas={attr?.find((attr) => attr.id === selectedAttrId)}
+        isOpen={isOpenAdd}
+        onOpenChange={onOpenChangeAdd}
+        defaultDatas={attr?.find((a) => a.id === selectedAttrId)}
         type={type}
       />
+
+      {/* حذف */}
+      <DynamicModal
+        isOpen={isOpenDelete}
+        onOpenChange={onOpenChangeDelete}
+        onConfirm={handleDeleteAttr}
+      >
+        <p className="leading-7 text-danger-600">
+          با حذف ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف اطمینان
+          دارید؟
+        </p>
+      </DynamicModal>
     </>
   );
 };
