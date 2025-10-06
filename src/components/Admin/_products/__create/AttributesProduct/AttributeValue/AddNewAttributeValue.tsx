@@ -8,6 +8,8 @@ import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
 import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
 import { useAttributeContext } from "../../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
+import MultiSelectSearch from "@/components/Helper/SearchableMultiSelect";
+import AnimatedMultiSelect from "@/components/Helper/SearchableMultiSelect";
 
 type Props = {
   attrValues: Record<string, any>[]; // list of possible values from server
@@ -58,43 +60,24 @@ const AddNewAttributeValue: React.FC<Props> = ({
       <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
         {isDisabledEdit ? (
           <div className="flex gap-2 items-center justify-center w-full">
-            <Select
+            <AnimatedMultiSelect
               label="مقادیر ویژگی"
-              labelPlacement="outside"
-              placeholder="مقادیر مورد نظر را انتخاب نمایید"
-              selectedKeys={selectedValues?.map(String) ?? []}
-              selectionMode="multiple"
-              onChange={handleChange}
-              isRequired
-            >
-              {attrValues && attrValues.length ? (
-                attrValues
-                  .filter((val) => {
-                    if (!attrInfos.length) return true;
-                    const existVal = attrInfos.find(
-                      (value) => value.id === val.id
-                    );
-                    return !existVal && val;
-                  })
-                  .map((data: any) => (
-                    <SelectItem key={data.id} textValue={data.value}>
-                      <div className="flex items-center gap-2">
-                        {data.display_color && (
-                          <div
-                            className="w-4 h-4 rounded-full border"
-                            style={{ backgroundColor: data.display_color }}
-                          />
-                        )}
-                        <span>{data.value}</span>
-                      </div>
-                    </SelectItem>
-                  ))
-              ) : (
-                <SelectItem key={-1} isDisabled>
-                  فعلا آیتمی وجود ندارد
-                </SelectItem>
-              )}
-            </Select>
+              options={(attrValues ?? [])
+                .filter((val: any) => {
+                  if (!attrInfos.length) return true;
+                  const existVal = attrInfos.find((v: any) => v.id === val.id);
+                  return !existVal;
+                })
+                .map((v: any) => ({
+                  value: v.id,
+                  label: v.value,
+                  color: v.display_color,
+                }))}
+              selectedValues={selectedValues}
+              onChange={(vals) => onChange(vals.map(Number))}
+              placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
+            />
+
             <p
               className="w-24 z-10 text-center text-purple-700 bg-purple-200 rounded-xl mt-[24px] py-1.5 cursor-pointer truncate"
               onClick={onOpen}
@@ -108,23 +91,6 @@ const AddNewAttributeValue: React.FC<Props> = ({
 
         {!isDisabledEdit ? (
           <>
-            {/*  <Select
-            isRequired
-            placeholder="مقدار ویژگی را انتخاب کنید"
-            labelPlacement="outside"
-            onChange={(e) => {
-              setSelectedAttrValueId(+e.target.value);
-            }}
-            className="my-4"
-          >
-            {attrValues ? (
-              attrValues.map((data: any) => (
-                <SelectItem key={data.id}>{data.value}</SelectItem>
-              ))
-            ) : (
-              <SelectItem key={-1}>فعلا آیتمی وجود ندارد</SelectItem>
-            )}
-          </Select> */}
             <SelectWithAddButton
               label="مقدار ویژگی"
               placeholder="مقدار ویژگی را انتخاب کنید"

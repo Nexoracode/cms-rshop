@@ -1,110 +1,90 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Autocomplete, AutocompleteItem, Chip } from "@heroui/react";
-import { FiSearch } from "react-icons/fi";
+import React, { useMemo } from "react";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
 
 type Option = {
-  id: number | string;
-  title: string;
+  value: number | string;
+  label: string;
   color?: string;
 };
 
-type MultiSelectSearchProps = {
+type Props = {
   label?: string;
-  placeholder?: string;
   options: Option[];
-  selectedValues: (string | number)[];
-  onChange: (values: (string | number)[]) => void;
-  isRequired?: boolean;
+  selectedValues: (number | string)[];
+  onChange: (values: (number | string)[]) => void;
+  isDisabled?: boolean;
+  placeholder?: string;
 };
 
-export default function MultiSelectSearch({
+export default function AnimatedMultiSelect({
   label = "مقادیر ویژگی",
-  placeholder = "جستجو یا انتخاب کنید...",
   options,
   selectedValues,
   onChange,
-  isRequired = false,
-}: MultiSelectSearchProps) {
-  const [inputValue, setInputValue] = useState("");
-
-  // فیلتر زنده هنگام تایپ
-  const filteredItems = useMemo(() => {
-    const q = inputValue.trim().toLowerCase();
-    if (!q) return options;
-    return options.filter((o) => o.title.toLowerCase().includes(q));
-  }, [options, inputValue]);
-
-  const selectedSet = useMemo(
-    () => new Set(selectedValues.map((k) => String(k))),
-    [selectedValues]
+  isDisabled = false,
+  placeholder = "جستجو یا انتخاب کنید...",
+}: Props) {
+  // تبدیل selectedValues به فرمت react-select
+  const selectedOptions = useMemo(
+    () =>
+      options.filter((opt) =>
+        selectedValues.map(String).includes(String(opt.value))
+      ),
+    [options, selectedValues]
   );
 
   return (
-    <Autocomplete
-      label={label}
-      placeholder={placeholder}
-      labelPlacement="outside"
-      variant="flat"
-      isRequired={isRequired}
-      inputValue={inputValue}
-      onInputChange={setInputValue}
-      startContent={<FiSearch className="text-lg pointer-events-none" />}
-      listboxProps={{
-        selectionMode: "multiple",
-        selectedKeys: selectedSet,
-        onSelectionChange: (keys) => {
-          if (keys === "all") return;
-          const arr = Array.from(keys as Set<React.Key>);
-          onChange(arr.map(String));
-        },
-        emptyContent: inputValue ? "نتیجه‌ای یافت نشد" : "آیتمی موجود نیست",
-      }}
-      renderValue={(selectedItems) => {
-        const selected = selectedItems
-          .map((i) => i.data)
-          .filter(Boolean) as Option[];
-        return (
-          <div className="flex flex-wrap gap-2">
-            {selected.map((item) => (
-              <Chip
-                key={item.id}
-                size="sm"
-                color="secondary"
-                variant="flat"
-                className="rtl"
-              >
-                <div className="flex items-center gap-1">
-                  {item.color && (
-                    <span
-                      className="w-3 h-3 rounded-full border"
-                      style={{ backgroundColor: item.color }}
-                    />
-                  )}
-                  {item.title}
-                </div>
-              </Chip>
-            ))}
-          </div>
-        );
-      }}
-      className="w-full"
-      items={filteredItems}
-    >
-      {(item) => (
-        <AutocompleteItem key={item.id} textValue={item.title}>
-          <div className="flex items-center gap-2">
-            {item.color && (
-              <span
-                className="inline-block w-4 h-4 rounded-full border"
-                style={{ backgroundColor: item.color }}
-              />
-            )}
-            {item.title}
-          </div>
-        </AutocompleteItem>
+    <div className="w-full">
+      {label && (
+        <label className="block mb-2 text-sm font-medium text-gray-700">
+          {label}
+        </label>
       )}
-    </Autocomplete>
+      <Select
+        closeMenuOnSelect={false}
+        isMulti
+        isDisabled={isDisabled}
+        options={options}
+        value={selectedOptions}
+        onChange={(selected) => {
+          const ids = (selected || []).map((s: any) => s.value);
+          onChange(ids);
+        }}
+        placeholder={placeholder}
+        components={animatedComponents}
+        classNamePrefix="react-select"
+        styles={{
+          control: (base) => ({
+            ...base,
+            borderRadius: "0.75rem",
+            borderColor: "#d1d5db",
+            boxShadow: "none",
+            "&:hover": { borderColor: "#a78bfa" },
+          }),
+          option: (base, state) => ({
+            ...base,
+            backgroundColor: state.isSelected
+              ? "#a78bfa"
+              : state.isFocused
+              ? "#ede9fe"
+              : "white",
+            color: state.isSelected ? "white" : "#111827",
+          }),
+          multiValue: (base) => ({
+            ...base,
+            backgroundColor: "#f3e8ff",
+          }),
+          multiValueLabel: (base) => ({
+            ...base,
+            color: "#6b21a8",
+          }),
+        }}
+      />
+    </div>
   );
 }
