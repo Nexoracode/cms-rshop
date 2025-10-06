@@ -33,7 +33,7 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
   };
 
   return (
-    <div className="m-0">
+    <div className="-mt-6">
       {items
         .slice()
         .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -44,7 +44,7 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
             onDragStart={() => handleDragStart(group.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(group.id)}
-            className={`bg-white shadow-md rounded-2xl cursor-grab border-2 border-purple-100 hover:border-purple-300 transition-all`}
+            className={`bg-white shadow-md rounded-2xl mt-6 cursor-grab border-2 border-purple-100 hover:border-purple-300 transition-all`}
           >
             <h3 className="text-medium sm:text-lg text-purple-500 py-2 px-2 sm:px-4 bg-purple-50 rounded-xl">{group.name} <small className="text-black">({group.slug})</small></h3>
             <SortableAttributes attributes={group.attributes} />

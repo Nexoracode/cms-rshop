@@ -2,7 +2,7 @@ import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Not Used
-export const useGetSimapleAttribute = (productId?: number) => {
+export const useGetAttributeProduct = (productId?: number) => {
   return useQuery({
     queryKey: ["product-attributes", productId],
     enabled: !!productId,
@@ -62,13 +62,12 @@ export const useUpdateAttributeProduct = () => {
 export const useImportantAttributeProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: any }) =>
+    mutationFn: (data: any) =>
       fetcher({
-        route: `/product-attributes/${id}/important`,
+        route: `/product-attributes/important`,
         method: "PATCH",
         body: data,
-        isActiveToast: true,
-        loadingText: "درحال بروزرسانی...",
+        isActiveToast: false,
       }),
     onSuccess: (_res, { data }) => {
       if (data?.productId) {

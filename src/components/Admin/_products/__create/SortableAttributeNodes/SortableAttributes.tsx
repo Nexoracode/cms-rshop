@@ -8,6 +8,7 @@ import { handleDropHelper } from "./handleDropHelper";
 import { Button, Tooltip } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { useImportantAttributeProduct } from "@/hooks/attributes/useAttributeProducts";
 
 type Props = {
   attributes: Attribute[];
@@ -21,6 +22,8 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
   const [activeTab, setActiveTab] = useState<
     "sort-variants" | "sort-attributes"
   >("sort-variants");
+  //? Hooks
+  const { mutate: importantAttributeProduct } = useImportantAttributeProduct();
 
   useEffect(() => {
     const tab = searchParams.get("tab");
@@ -31,8 +34,7 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
 
     if (tab === "sort-variants") setActiveTab("sort-variants");
     else if (tab === "sort-attributes") setActiveTab("sort-attributes");
-    else toast.error("تب فعالی وجود ندارد");
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     setItems(attributes);
@@ -49,6 +51,21 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
       setItems,
       setDraggingId
     );
+  };
+
+  const handleImportantAttributeProduct = (status: boolean, attrId: number) => {
+    const productId = searchParams.get("edit_id");
+    console.log(productId);
+
+    if (!productId) {
+      toast.error("محصولی انتخاب نشده در تب");
+      return;
+    }
+    importantAttributeProduct({
+      product_id: +productId,
+      attribute_id: +attrId,
+      important: status,
+    });
   };
 
   return (
@@ -78,14 +95,23 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
                 <Button
                   size="sm"
                   variant="flat"
-                  color="primary"
+                  color={attr.is_important ? "success" : "default"}
                   className="rounded-xl"
+                  onPress={() =>
+                    handleImportantAttributeProduct(
+                      attr.is_important ? false : true,
+                      attr.id
+                    )
+                  }
                 >
-                  <span className="hidden md:flex">
-                    + افزودن به ویژگی‌های منتخب
-                  </span>
-                  <Tooltip content="افزودن به ویژگی‌های منتخب" showArrow offset={12} closeDelay={2000} placement="top">
-                    <span className="flex md:hidden">+ افزودن</span>
+                  <Tooltip
+                    content="ویژگی در کنار اسلایدر عکس محصولات قرار میگیرد"
+                    showArrow
+                    offset={12}
+                    closeDelay={2000}
+                    placement="top"
+                  >
+                    <span>ویژگی منتخب</span>
                   </Tooltip>
                 </Button>
               </div>

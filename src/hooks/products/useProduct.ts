@@ -78,8 +78,7 @@ export const useGetOneProduct = (id?: number) => {
     queryFn: () =>
       fetcher({
         route: `/product/${id}`,
-        isActiveToast: true,
-        loadingText: "درحال دریافت اطلاعات محصول",
+        isActiveToast: false,
       }),
     enabled: !!id,
   });

@@ -10,6 +10,7 @@ export type AttributeValue = {
 
 export type Attribute = {
   id: number;
+  is_important: boolean,
   name: string;
   slug: string;
   is_public: boolean;
