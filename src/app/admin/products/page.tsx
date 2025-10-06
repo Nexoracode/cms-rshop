@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AiOutlineShop } from "react-icons/ai";
 import {
   ProductSortBy,
+  useBulkUpdateProducts,
   useDeleteGroupProduct,
   useGetProducts,
 } from "@/hooks/products/useProduct";
@@ -23,6 +24,7 @@ const Products = () => {
 
   //? Hooks
   const deleteGroupProduct = useDeleteGroupProduct();
+  const bulkUpdateProducts = useBulkUpdateProducts();
 
   // get page
   const page = useMemo(() => {
@@ -81,6 +83,26 @@ const Products = () => {
   );
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const handleBulkUpdateProducts = () => {
+    console.log({ ids: selectedItems });
+    console.log(selectedItems);
+
+    bulkUpdateProducts.mutate(
+      {
+        ids: selectedItems,
+        is_visible: false,
+        is_featured: false,
+        is_same_day_shipping: false,
+        is_limited_stock: false,
+      },
+      {
+        onSuccess: () => {
+          setSelectedItems([]);
+        },
+      }
+    );
+  };
 
   const deleteGroupProducts = () => {
     console.log({ ids: selectedItems });

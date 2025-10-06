@@ -172,3 +172,25 @@ export const useDeleteGroupProduct = () => {
     },
   });
 };
+
+export const useBulkUpdateProducts = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: any) =>
+      fetcher({
+        route: "/product/update/bulk",
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        successText: "محصول های انتخاب شده با موفقیت آپدیت شدند",
+        loadingText: "در حال آپدیت محصولات انتخاب شده",
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-products",
+      });
+    },
+  });
+};
