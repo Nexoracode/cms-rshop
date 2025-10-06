@@ -9,8 +9,8 @@ import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
-import { useAddNewSimapleAttribute } from "@/hooks/attributes/useSimpleAttribute";
 import { useSearchParams } from "next/navigation";
+import { useAddNewAttributeProduct } from "@/hooks/attributes/useAttributeProducts";
 
 type Props = {
   isDisabledEdit?: boolean;
@@ -36,7 +36,7 @@ export const AttributesContent = ({
   const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
   const addNewVariantProductMutation = useAddNewVariantProduct();
-  const addNewSimapleAttribute = useAddNewSimapleAttribute();
+  const addNewSimapleAttribute = useAddNewAttributeProduct();
 
   const handleSubmit = async () => {
     const { attrId, attrGroupId, valueIds } = selecteds;

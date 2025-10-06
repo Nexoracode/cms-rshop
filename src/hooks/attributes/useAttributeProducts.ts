@@ -1,6 +1,7 @@
 import { fetcher } from "@/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+// Not Used
 export const useGetSimapleAttribute = (productId?: number) => {
   return useQuery({
     queryKey: ["product-attributes", productId],
@@ -13,7 +14,7 @@ export const useGetSimapleAttribute = (productId?: number) => {
   });
 };
 
-export const useAddNewSimapleAttribute = () => {
+export const useAddNewAttributeProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>
@@ -34,7 +35,8 @@ export const useAddNewSimapleAttribute = () => {
   });
 };
 
-export const useUpdateSimapleAttribute = () => {
+// Not Used
+export const useUpdateAttributeProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: number; data: any }) =>
@@ -57,7 +59,30 @@ export const useUpdateSimapleAttribute = () => {
   });
 };
 
-export const useDeleteSimapleAttribute = (productId?: number) => {
+export const useImportantAttributeProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: any }) =>
+      fetcher({
+        route: `/product-attributes/${id}/important`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        loadingText: "درحال بروزرسانی...",
+      }),
+    onSuccess: (_res, { data }) => {
+      if (data?.productId) {
+        queryClient.invalidateQueries({
+          queryKey: ["product-attributes", data.productId],
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
+    },
+  });
+};
+
+// Not Used
+export const useDeleteAttributeProduct = (productId?: number) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) =>

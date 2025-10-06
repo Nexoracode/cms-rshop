@@ -164,16 +164,14 @@ const Products = () => {
                       : `${product.stock} عدد`
                   }
                   onShowInfos={() => {
-                    router.replace(
+                    router.push(
                       `/admin/products/create?edit_id=${product.id}&type=infos`
                     );
-                    router.refresh();
                   }}
                   onShowVariant={() => {
-                    router.replace(
+                    router.push(
                       `/admin/products/create?edit_id=${product.id}&type=variant`
                     );
-                    router.refresh();
                   }}
                   onSelect={(id, selected) =>
                     setSelectedItems((prev) =>

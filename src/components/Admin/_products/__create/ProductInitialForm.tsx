@@ -186,8 +186,7 @@ const ProductInitialForm = () => {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
-            router.replace("/admin/products");
-            router.refresh();
+            router.push("/admin/products");
           }
         },
       });
@@ -195,8 +194,7 @@ const ProductInitialForm = () => {
       updateProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
-            router.replace("/admin/products");
-            router.refresh();
+            router.push("/admin/products");
           }
         },
       });
