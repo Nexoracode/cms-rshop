@@ -71,7 +71,7 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
   };
 
   return (
-    <div className="gap-4 mx-8 my-6">
+    <div className="gap-3 sm:gap-4 mx-4 mt-6">
       {items
         .slice()
         .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -82,7 +82,7 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
             onDragStart={() => handleDragStart(val.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(val.id)}
-            className={`shadow flex justify-between py-2 px-4 border rounded-xl my-3 cursor-grab hover:bg-slate-50 transition-all`}
+            className={`shadow flex justify-between py-2 px-2 sm:px-4 border rounded-xl my-3 cursor-grab hover:bg-slate-50 transition-all`}
             style={{
               borderTop: `1px solid ${val.display_color || "lightgray"}`,
               color: `${val.display_color || "gray"}`,
@@ -97,7 +97,7 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
                   }}
                 />
               )}
-              <p className="text-[16px]">{val.value}</p>
+              <p className="sm:text-[16px]">{val.value}</p>
             </div>
             <div>
               <TiDeleteOutline

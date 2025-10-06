@@ -5,6 +5,9 @@ import { Attribute } from "../attribute-tree ";
 import SortableAttributeValues from "./SortableAttributeValues";
 import { useReorderAttribute } from "@/hooks/attributes/useAttribute";
 import { handleDropHelper } from "./handleDropHelper";
+import { Button, Tooltip } from "@heroui/react";
+import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 type Props = {
   attributes: Attribute[];
@@ -14,6 +17,22 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
   const [items, setItems] = useState(attributes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const reorderAttribute = useReorderAttribute();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<
+    "sort-variants" | "sort-attributes"
+  >("sort-variants");
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (!tab) {
+      toast.error("تب فعالی وجود ندارد");
+      return;
+    }
+
+    if (tab === "sort-variants") setActiveTab("sort-variants");
+    else if (tab === "sort-attributes") setActiveTab("sort-attributes");
+    else toast.error("تب فعالی وجود ندارد");
+  }, []);
 
   useEffect(() => {
     setItems(attributes);
@@ -33,7 +52,7 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
   };
 
   return (
-    <div className="mx-8 mt-6">
+    <div className="mx-4 mt-6">
       {items
         .slice()
         .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -44,9 +63,34 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
             onDragStart={() => handleDragStart(attr.id)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(attr.id)}
-            className={`shadow-md rounded-2xl mb-6 cursor-grab border-2 border-orange-100 hover:border-orange-300 transition-all`}
+            className={`shadow-md rounded-2xl mb-3 cursor-grab border-2 border-orange-100 hover:border-orange-300 transition-all`}
           >
-            <p className="text-lg text-orange-500 py-2 px-4 bg-orange-50 rounded-xl">{attr.name} <small className="text-black">({attr.type})</small></p>
+            {activeTab === "sort-variants" ? (
+              <p className="text-medium sm:text-lg text-orange-500 py-2 px-4 bg-orange-50 rounded-xl">
+                {attr.name} <small className="text-black">({attr.type})</small>
+              </p>
+            ) : (
+              <div className="text-orange-500 py-2 px-2 sm:px-4 bg-orange-50 rounded-xl flex items-center justify-between">
+                <p className="text-medium sm:text-lg">
+                  {attr.name}{" "}
+                  <small className="text-black">({attr.type})</small>
+                </p>
+                <Button
+                  size="sm"
+                  variant="flat"
+                  color="primary"
+                  className="rounded-xl"
+                >
+                  <span className="hidden md:flex">
+                    + افزودن به ویژگی‌های منتخب
+                  </span>
+                  <Tooltip content="افزودن به ویژگی‌های منتخب" showArrow offset={12} closeDelay={2000} placement="top">
+                    <span className="flex md:hidden">+ افزودن</span>
+                  </Tooltip>
+                </Button>
+              </div>
+            )}
+
             <SortableAttributeValues attribute={attr} />
           </div>
         ))}

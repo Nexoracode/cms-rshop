@@ -138,7 +138,7 @@ const AttributesProducts = () => {
             </div>
           </div>
 
-          <div className="bg-slate-50 p-4 rounded-xl">
+          <div className="bg-slate-50 p-4 pt-6 rounded-xl">
             <Tabs
               aria-label="options"
               color="secondary"
