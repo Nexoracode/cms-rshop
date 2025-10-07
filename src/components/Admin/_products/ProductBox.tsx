@@ -132,7 +132,9 @@ const ProductBox: React.FC<Props> = ({
             <div className="w-full sm:h-[110px] flex flex-col justify-between pr-0 sm:p-2 gap-4">
               <div className="flex flex-col gap-3 sm:flex-row justify-between items-center w-full">
                 <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
-                  <p className="truncate max-w-[220px] sm:max-w-[240px]">{title}</p>{" "}
+                  <p className="truncate max-w-[220px] sm:max-w-[240px]">
+                    {title}
+                  </p>{" "}
                   <span className="text-gray-600 text-xs">({category})</span>
                 </div>
 
@@ -140,6 +142,7 @@ const ProductBox: React.FC<Props> = ({
                   <div className="flex gap-2">
                     <button
                       onClick={(e) => {
+                        e.stopPropagation();
                         onShowInfos();
                       }}
                       className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
@@ -148,6 +151,7 @@ const ProductBox: React.FC<Props> = ({
                     </button>
                     <button
                       onClick={(e) => {
+                        e.stopPropagation();
                         onShowVariant();
                       }}
                       className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
@@ -156,6 +160,7 @@ const ProductBox: React.FC<Props> = ({
                     </button>
                     <button
                       onClick={(e) => {
+                        e.stopPropagation();
                         onOpen();
                       }}
                       className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
@@ -173,7 +178,9 @@ const ProductBox: React.FC<Props> = ({
                       <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
                     )}
                   </div>
-                  <p className="text-gray-600 text-[13px]">موجودی {varientsCount}</p>
+                  <p className="text-gray-600 text-[13px]">
+                    موجودی {varientsCount}
+                  </p>
                 </div>
                 <div className="text-gray-600">
                   {originalPrice != null ? (
@@ -190,7 +197,9 @@ const ProductBox: React.FC<Props> = ({
                       </span>
                     </div>
                   ) : (
-                    <span className="text-[15px] text-gray-800">{Number(price).toLocaleString("fa-IR")} تومان</span>
+                    <span className="text-[15px] text-gray-800">
+                      {Number(price).toLocaleString("fa-IR")} تومان
+                    </span>
                   )}
                 </div>
               </div>

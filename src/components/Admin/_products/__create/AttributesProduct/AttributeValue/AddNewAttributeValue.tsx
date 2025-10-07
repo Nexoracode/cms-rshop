@@ -10,6 +10,8 @@ import { useAttributeContext } from "../../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import MultiSelectSearch from "@/components/Helper/SearchableMultiSelect";
 import AnimatedMultiSelect from "@/components/Helper/SearchableMultiSelect";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 type Props = {
   attrValues: Record<string, any>[]; // list of possible values from server
@@ -109,32 +111,26 @@ const AddNewAttributeValue: React.FC<Props> = ({
           ""
         )}
 
-        {selectedValues && !isDisabledEdit ? (
-          <div className="flex items-center gap-4 mt-2">
-            {selectedAttrValueId ? (
-              <>
-                <DoubleClickBtn
-                  onPress={handleDeleteAttrValue}
-                  textBtn="حذف مقدار ویژگی فعلی"
-                  color="danger"
-                  size="sm"
-                  isActiveDoubleClick
-                  className="w-full"
-                />
-                <Button
-                  size="sm"
-                  className="w-full"
-                  onPress={() => {
-                    onOpen();
-                    setType("edit");
-                  }}
-                >
-                  ویرایش مقدار ویژگی فعلی
-                </Button>
-              </>
-            ) : (
-              ""
-            )}
+        {selectedValues && !isDisabledEdit && selectedAttrValueId ? (
+          <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+            <p className="font-medium text-gray-700">عملیات</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  onOpen();
+                  setType("edit");
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <TbEdit size={20} />
+              </button>
+              <button
+                onClick={handleDeleteAttrValue}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <RiDeleteBin5Line size={20} />
+              </button>
+            </div>
           </div>
         ) : (
           ""

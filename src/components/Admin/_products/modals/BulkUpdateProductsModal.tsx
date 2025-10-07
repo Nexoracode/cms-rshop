@@ -78,15 +78,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
     const obj: Partial<Record<keyof BulkPayload, any>> = {};
     if (is_visible !== null) obj.is_visible = is_visible;
     if (is_featured !== null) obj.is_featured = is_featured;
-    if (is_same_day_shipping !== null)
-      obj.is_same_day_shipping = is_same_day_shipping;
 
-    if (is_limited_stock !== null) obj.is_limited_stock = is_limited_stock;
-    if (stock !== null) obj.stock = Number(stock);
-
-    if (order_limit !== null) obj.order_limit = Number(order_limit);
-
-    if (price !== null) obj.price = Number(price);
     if (discount_amount !== null) obj.discount_amount = Number(discount_amount);
     if (discount_percent !== null)
       obj.discount_percent = Number(discount_percent);
@@ -176,56 +168,6 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
                     >
                       بازنشانی به بدون تغییر
                     </Button>
-                  </div>
-                </AccordionItem>
-
-                {/* ارسال امروز / Same-day */}
-                <AccordionItem key="same-day" title="ارسال امروز">
-                  <Switch
-                    isSelected={is_same_day_shipping === true}
-                    onValueChange={(val) => setIsSameDayShipping(val)}
-                  >
-                    فعال‌سازی “ارسال امروز”
-                  </Switch>
-                  <div className="mt-2">
-                    <Button
-                      size="sm"
-                      variant="light"
-                      onPress={() => setIsSameDayShipping(null)}
-                    >
-                      بازنشانی به بدون تغییر
-                    </Button>
-                  </div>
-                </AccordionItem>
-
-                {/* موجودی / نامحدود */}
-                <AccordionItem key="stock" title="موجودی">
-                  <div className="flex flex-col gap-3">
-                    <Checkbox
-                      isSelected={is_limited_stock === true}
-                      onValueChange={(checked) => {
-                        // نام‌گذاری شما: is_limited_stock = true یعنی موجودی نامحدود؟
-                        // طبق فرم شما: is_limited_stock = checked (true یعنی “نامحدود”)
-                        setIsLimitedStock(checked);
-                        // اگر نامحدود شد، مقدار stock را (در صورت تمایل) null کنیم
-                        if (checked) setStock(0);
-                      }}
-                    >
-                      موجودی نامحدود
-                    </Checkbox>
-
-                    <div>
-                      <Button
-                        size="sm"
-                        variant="light"
-                        onPress={() => {
-                          setIsLimitedStock(null);
-                          setStock(null);
-                        }}
-                      >
-                        بازنشانی به بدون تغییر
-                      </Button>
-                    </div>
                   </div>
                 </AccordionItem>
               </Accordion>
