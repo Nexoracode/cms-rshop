@@ -175,7 +175,7 @@ const ProductBox: React.FC<Props> = ({
                   </div>
                   <p className="text-gray-600 text-[13px]">موجودی {varientsCount}</p>
                 </div>
-                <p className="text-gray-600">
+                <div className="text-gray-600">
                   {originalPrice != null ? (
                     <div className="flex flex-col items-end gap-2 sm:gap-1">
                       <div className="flex items-center gap-1">
@@ -192,7 +192,7 @@ const ProductBox: React.FC<Props> = ({
                   ) : (
                     <span className="text-[15px] text-gray-800">{Number(price).toLocaleString("fa-IR")} تومان</span>
                   )}
-                </p>
+                </div>
               </div>
             </div>
           </div>
