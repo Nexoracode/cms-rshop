@@ -90,22 +90,16 @@ const Products = () => {
     onOpenChange: onOpenChangeBulk,
   } = useDisclosure();
 
-  const handleBulkUpdateProducts = () => {
+  const handleBulkUpdateProducts = (changed: any) => {
     console.log({ ids: selectedItems });
-    console.log(selectedItems);
 
     bulkUpdateProducts.mutate(
       {
         ids: selectedItems,
-        is_visible: false,
-        is_featured: false,
-        is_same_day_shipping: false,
-        is_limited_stock: false,
+        ...changed,
       },
       {
-        onSuccess: () => {
-          setSelectedItems([]);
-        },
+        onSuccess: () => setSelectedItems([]),
       }
     );
   };
@@ -224,26 +218,7 @@ const Products = () => {
         isOpen={isOpenBulk}
         onOpenChange={onOpenChangeBulk}
         selectedCount={selectedItems.length}
-        onConfirm={(changed) => {
-          // فقط فیلدهایی که از null خارج شدن رو می‌فرستیم
-          // نمونه payload:
-          // {
-          //   ids: [..],
-          //   is_visible: true,
-          //   is_featured: false,
-          //   stock: 12,
-          //   ...
-          // }
-          bulkUpdateProducts.mutate(
-            {
-              ids: selectedItems,
-              ...changed,
-            },
-            {
-              onSuccess: () => setSelectedItems([]),
-            }
-          );
-        }}
+        onConfirm={handleBulkUpdateProducts}
       />
       <DynamicModal
         isOpen={isOpen}
