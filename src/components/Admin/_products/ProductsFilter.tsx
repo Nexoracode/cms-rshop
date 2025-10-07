@@ -27,68 +27,62 @@ const ProductsFilter = () => {
 
   return (
     <>
-      <Card className="shadow-none">
-        <BoxHeader
-          title="نوار ابزار محصولات"
-          color="text-white bg-gray-800"
-          icon={<LuSettings2 className="text-3xl" />}
-        />
+      <Card className="shadow-md">
         <CardBody className="flex flex-col gap-4">
-          <DebouncedSearchURL placeholder="جستجو در محصولات..." />
-          <section className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-sky-50 rounded-xl p-3">
-              <p className="pr-2 text-sky-600">فیلتر محصولات</p>
-              <div className="flex flex-wrap gap-2 w-full sm:w-fit">
-                <OptionBox
-                  title="فیلتر"
-                  icon={<IoFilter className="!text-[16px]" />}
-                  onClick={onOpenFilter}
-                />
-                <OptionBox
-                  title="مرتب سازی"
-                  icon={<BiSortAlt2 className="!text-[16px]" />}
-                  onClick={onOpenSort}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-3">
-              <p className="pr-2">صفحات مرتبط</p>
-              <div className="flex flex-wrap gap-2 w-full sm:w-fit">
-                <Button
-                  className="pl-5"
-                  variant="flat"
-                  size="sm"
-                  as={Link}
-                  href={"/admin/products/variants"}
-                >
-                  <GoArrowUpRight className="text-xl" />
-                  ویژگی ها
-                </Button>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-2">
+            <p className="pr-2">صفحات مرتبط</p>
+            <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
+              <Button
+                className="pl-5 w-full sm:w-fit"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/products/variants"}
+              >
+                <GoArrowUpRight className="text-xl" />
+                ویژگی ها
+              </Button>
 
-                <Button
-                  className="pl-5"
-                  variant="flat"
-                  size="sm"
-                  as={Link}
-                  href={"/admin/products/categories"}
-                >
-                  <GoArrowUpRight className="text-xl" />
-                  دسته بندی ها
-                </Button>
+              <Button
+                className="pl-5 w-full sm:w-fit"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/products/categories"}
+              >
+                <GoArrowUpRight className="text-xl" />
+                دسته بندی ها
+              </Button>
 
-                <Button
-                  className="pl-5"
-                  variant="flat"
-                  size="sm"
-                  as={Link}
-                  href={"/admin/products/brands"}
-                >
-                  <GoArrowUpRight className="text-xl" />
+              <Button
+                className="pl-5 w-full sm:w-fit"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/products/brands"}
+              >
+                <GoArrowUpRight className="text-xl" />
                 برندها
-                </Button>
-              </div>
+              </Button>
             </div>
-          </section>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
+            <DebouncedSearchURL placeholder="جستجو در محصولات..." />
+            <div className="w-full sm:w-fit flex items-center gap-2">
+              <OptionBox
+                title="فیلتر"
+                icon={<IoFilter className="!text-[16px]" />}
+                onClick={onOpenFilter}
+                style="w-full sm:w-fit"
+              />
+              <OptionBox
+                title="مرتب سازی"
+                icon={<BiSortAlt2 className="!text-[16px]" />}
+                onClick={onOpenSort}
+                style="w-full sm:w-fit"
+              />
+            </div>
+          </div>
         </CardBody>
       </Card>
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />

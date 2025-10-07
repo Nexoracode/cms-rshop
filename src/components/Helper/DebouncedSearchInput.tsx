@@ -44,6 +44,7 @@ const DebouncedSearchURL: React.FC<Props> = ({ placeholder }) => {
   return (
     <Input
       dir="rtl"
+      variant="bordered"
       labelPlacement="outside"
       startContent={<FiSearch className="text-lg pointer-events-none" />}
       placeholder={placeholder}

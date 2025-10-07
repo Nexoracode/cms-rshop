@@ -40,8 +40,4 @@
   .shadow-box {
     @apply shadow-[0_0_10px_lightgray]
   }
-
-  .arshop-card {
-    @apply bg-gradient-to-r from-gray-100 via-purple-100 rounded-2xl py-6
-  }
 }
