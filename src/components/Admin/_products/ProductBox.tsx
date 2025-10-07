@@ -9,15 +9,13 @@ import {
   Checkbox,
   Tooltip,
 } from "@heroui/react";
-import { RiDeleteBinLine } from "react-icons/ri";
-import MiniBoxInfo from "@/components/Helper/MiniBoxInfo";
-import { PiMoneyWavy } from "react-icons/pi";
-import { LuBox, LuScrollText } from "react-icons/lu";
-import { CgCalendarDates } from "react-icons/cg";
+import { RiDeleteBin5Line, RiDeleteBinLine } from "react-icons/ri";
+import { LuScrollText } from "react-icons/lu";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
+import { TbEdit } from "react-icons/tb";
 
 type Props = {
   id: number;
@@ -76,8 +74,10 @@ const ProductBox: React.FC<Props> = ({
     <>
       <Card
         isBlurred
-        className={`border shadow-lg relative hover:shadow-xl !transition-all ${
-          selected ? "shadow-none border border-sky-500 hover:shadow-none scale-95" : ""
+        className={`border shadow-md relative hover:shadow-lg !transition-all ${
+          selected
+            ? "shadow-none border border-sky-500 hover:shadow-none scale-95"
+            : ""
         } ${
           isFeatured
             ? `bg-gradient-to-br from-violet-300 via-violet-50 to-white ring-1 ring-white/20`
@@ -88,7 +88,7 @@ const ProductBox: React.FC<Props> = ({
       >
         <CardBody
           onClick={toggleSelected} // کلیک روی بدنه -> select
-          className="relative cursor-pointer"
+          className="relative cursor-pointer p-2"
         >
           {/* Checkbox */}
           {hovered || selected ? (
@@ -114,12 +114,14 @@ const ProductBox: React.FC<Props> = ({
             ""
           )}
 
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <div className="flex flex-col items-center sm:flex-row gap-4 text-start">
             <div className="relative w-fit h-full">
               <img
                 alt="product cover"
-                className={`object-cover w-[150px] h-[150px] sm:h-[128px] rounded-xl`}
-                src={pathImg}
+                className={`object-cover w-[130px] h-[110px] rounded-xl`}
+                src={
+                  "https://cloudinary-marketing-res.cloudinary.com/image/upload/w_1300/q_auto/f_auto/hiking_dog_mountain"
+                }
               />
               {!isVisible ? (
                 <div className="absolute inset-0 text-center flex items-center justify-center text-lg px-3 py-1 bg-gray-600/60 text-white shadow-lg rounded-lg">
@@ -130,109 +132,59 @@ const ProductBox: React.FC<Props> = ({
               )}
             </div>
 
-            <div className="w-full flex h-full flex-col gap-4 text-start">
+            <div className="w-full h-[110px] flex flex-col justify-between pr-0 p-2 gap-4">
               <div className="flex flex-col sm:flex-row justify-between items-center w-full">
-                <p className="text-[17px] text-gray-700">
+                <p className="text-black/80">
                   {title}{" "}
-                  <span className="text-gray-500 text-sm">({category})</span>
+                  <span className="text-gray-600 text-xs">({category})</span>
                 </p>
 
-                <div className="border bg-white mt-6 w-full sm:w-fit sm:mt-0 rounded-lg flex">
-                  <Tooltip
-                    closeDelay={2000}
-                    color="success"
-                    showArrow
-                    placement="top"
-                    content="ویرایش اطلاعات محصول"
-                    className="text-white"
-                  >
-                    <Button
-                      size="sm"
-                      color="success"
-                      variant="light"
-                      className="w-full sm:w-fit"
-                      onPress={(e) => {
+                <div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(e) => {
                         onShowInfos();
                       }}
+                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
                     >
-                      <LuScrollText className="text-lg" />
-                    </Button>
-                  </Tooltip>
-
-                  <Tooltip
-                    closeDelay={2000}
-                    color="secondary"
-                    showArrow
-                    placement="top"
-                    content="ویرایش ویژگی های محصول"
-                    className="text-white"
-                  >
-                    <Button
-                      size="sm"
-                      color="secondary"
-                      variant="flat"
-                      className="w-full sm:w-fit"
-                      onPress={(e) => {
+                      <TbEdit size={18} />
+                    </button>
+                    <button
+                      onClick={(e) => {
                         onShowVariant();
                       }}
+                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
                     >
-                      <MdOutlineCategory className="text-xl" />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    closeDelay={2000}
-                    color="danger"
-                    showArrow
-                    content="حذف محصول"
-                    className="text-white"
-                    placement="top"
-                  >
-                    <Button
-                      size="sm"
-                      color="danger"
-                      variant="light"
-                      className="w-full sm:w-fit"
-                      onPress={(e) => {
+                      <MdOutlineCategory size={18} />
+                    </button>
+                    <button
+                      onClick={(e) => {
                         onOpen();
                       }}
+                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
                     >
-                      <RiDeleteBinLine className="text-xl" />
-                    </Button>
-                  </Tooltip>
+                      <RiDeleteBin5Line size={18} />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <MiniBoxInfo
-                  name={new Date(created_at).toLocaleDateString("fa")}
-                  icon={<CgCalendarDates className="text-xl" />}
-                />
-                <MiniBoxInfo
-                  name={`موجودی ${varientsCount}`}
-                  icon={<LuBox className="text-xl" />}
-                />
-                <MiniBoxInfo
-                  style={
-                    originalPrice != null
-                      ? "bg-gradient-to-br from-orange-200 via-white to-purple-300"
-                      : ""
-                  }
-                  name={
-                    originalPrice != null ? (
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-[18px] text-emerald-600">
-                          {Number(price).toLocaleString("fa-IR")} تومان
-                        </span>
-                        <span className="text-sm text-gray-500 line-through decoration-2 decoration-gray-400">
-                          {Number(originalPrice).toLocaleString("fa-IR")} تومان
-                        </span>
-                      </div>
-                    ) : (
-                      <span>{Number(price).toLocaleString("fa-IR")} تومان</span>
-                    )
-                  }
-                  icon={<PiMoneyWavy className="text-xl" />}
-                />
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-gray-600">موجودی {varientsCount}</p>
+                <p className="text-gray-600">
+                  {originalPrice != null ? (
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[18px] text-emerald-600">
+                        {Number(price).toLocaleString("fa-IR")} تومان
+                      </span>
+                      <span className="text-sm text-gray-500 line-through decoration-2 decoration-gray-400">
+                        {Number(originalPrice).toLocaleString("fa-IR")} تومان
+                      </span>
+                    </div>
+                  ) : (
+                    <span>{Number(price).toLocaleString("fa-IR")} تومان</span>
+                  )}
+                </p>
               </div>
             </div>
           </div>
@@ -245,7 +197,7 @@ const ProductBox: React.FC<Props> = ({
         title="تایید حذف محصول"
         confirmText="حذف محصول"
         onConfirm={() => deleteProduct()}
-        icon={<FiShoppingBag className="text-3xl"/>}
+        icon={<FiShoppingBag className="text-3xl" />}
       >
         <p className="leading-7 text-danger-600">
           با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان
