@@ -14,13 +14,13 @@ const Variants = () => {
       </div>
 
       <section className="flex flex-col gap-6">
-        <Card>
+        <Card className="shadow-md">
           <BoxHeader
             title="مدیریت ویژگی ها"
             color="text-blue-700 bg-blue-700/10"
             icon={<MdOutlineCategory className="text-3xl" />}
           />
-          <CardBody className="-mt-12">
+          <CardBody className="-mt-12 p-0 pt-4">
             <AttributesContent isActiveHeader={false} isDisabledEdit={false} />
           </CardBody>
         </Card>
