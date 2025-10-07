@@ -75,7 +75,7 @@ const ProductBox: React.FC<Props> = ({
     <>
       <Card
         isBlurred
-        className={`border shadow-md relative hover:shadow-lg !transition-all ${
+        className={`max-w-[300px] w-full sm:max-w-full border shadow-md relative hover:shadow-lg !transition-all ${
           selected
             ? "shadow-none border border-sky-500 hover:shadow-none scale-95"
             : ""
@@ -115,7 +115,7 @@ const ProductBox: React.FC<Props> = ({
             <div className="relative w-fit h-full">
               <img
                 alt="product cover"
-                className={`object-cover w-[130px] h-[110px] rounded-xl`}
+                className={`object-cover w-full sm:w-[130px] h-[188px] sm:h-[110px] rounded-xl`}
                 src={
                   "https://cloudinary-marketing-res.cloudinary.com/image/upload/w_1300/q_auto/f_auto/hiking_dog_mountain"
                 }
@@ -129,10 +129,10 @@ const ProductBox: React.FC<Props> = ({
               )}
             </div>
 
-            <div className="w-full h-[110px] flex flex-col justify-between pr-0 p-2 gap-4">
-              <div className="flex flex-col sm:flex-row justify-between items-center w-full">
-                <div className="text-[15px] text-black/80 flex items-center gap-1">
-                  <p className="truncate sm:max-w-[240px]">{title}</p>{" "}
+            <div className="w-full sm:h-[110px] flex flex-col justify-between pr-0 sm:p-2 gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row justify-between items-center w-full">
+                <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
+                  <p className="truncate max-w-[220px] sm:max-w-[240px]">{title}</p>{" "}
                   <span className="text-gray-600 text-xs">({category})</span>
                 </div>
 
@@ -166,8 +166,8 @@ const ProductBox: React.FC<Props> = ({
                 </div>
               </div>
 
-              <div className="flex items-end justify-between gap-2">
-                <div className="flex flex-col gap-1">
+              <div className="flex items-end justify-between">
+                <div className="flex flex-col gap-2 sm:gap-1">
                   <div className="flex items-center gap-2">
                     {isFeatured && (
                       <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
@@ -177,7 +177,7 @@ const ProductBox: React.FC<Props> = ({
                 </div>
                 <p className="text-gray-600">
                   {originalPrice != null ? (
-                    <div className="flex flex-col items-end gap-1">
+                    <div className="flex flex-col items-end gap-2 sm:gap-1">
                       <div className="flex items-center gap-1">
                         <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
                           {Number(originalPrice).toLocaleString("fa-IR")}
