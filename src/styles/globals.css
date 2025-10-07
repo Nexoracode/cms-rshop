@@ -45,35 +45,3 @@
     @apply bg-gradient-to-r from-gray-100 via-purple-100 rounded-2xl py-6 pt-12
   }
 }
-
-@layer utilities {
-  @keyframes gradient-x {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  @keyframes float1 {
-    0% { transform: translateY(0) translateX(0) }
-    50% { transform: translateY(-14px) translateX(10px) }
-    100% { transform: translateY(0) translateX(0) }
-  }
-  @keyframes float2 {
-    0% { transform: translateY(0) translateX(0) }
-    50% { transform: translateY(16px) translateX(-12px) }
-    100% { transform: translateY(0) translateX(0) }
-  }
-  /* حرکت خیلی نرم چهارجهته برای باکس (با چرخش بسیار کم) */
-  @keyframes float-box {
-    0%   { transform: translate3d(0,0,0) rotate(.05deg); }
-    25%  { transform: translate3d(8px,-7px,0) rotate(.15deg); }
-    50%  { transform: translate3d(0,-10px,0) rotate(.05deg); }
-    75%  { transform: translate3d(-8px,-7px,0) rotate(.12deg); }
-    100% { transform: translate3d(0,0,0) rotate(.05deg); }
-  }
-  /* پن‌کردن گرادیان مرزی */
-  @keyframes border-pan {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-}
