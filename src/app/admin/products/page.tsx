@@ -16,6 +16,7 @@ import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CardContent from "@/components/Admin/CardContent";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
+import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal";
 
 const Products = () => {
   const router = useRouter();
@@ -83,6 +84,11 @@ const Products = () => {
   );
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenBulk,
+    onOpen: onOpenBulk,
+    onOpenChange: onOpenChangeBulk,
+  } = useDisclosure();
 
   const handleBulkUpdateProducts = () => {
     console.log({ ids: selectedItems });
@@ -134,12 +140,20 @@ const Products = () => {
           {selectedItems.length > 0 && (
             <div className="flex mb-4 gap-2 px-4">
               <Button
+                color="secondary"
+                variant="flat"
+                className="w-full"
+                onPress={onOpenBulk}
+              >
+                بروزرسانی گروهی
+              </Button>
+              <Button
                 color="default"
                 variant="flat"
                 className="w-full"
                 onPress={() => setSelectedItems([])}
               >
-                لغو حذف محصولات انتخابی
+                لغو انتخاب
               </Button>
               <Button
                 color="danger"
@@ -151,7 +165,6 @@ const Products = () => {
               </Button>
             </div>
           )}
-
           <div className="flex flex-col gap-4">
             {products?.data?.items?.map((product: any) => {
               const discountValue =
@@ -207,6 +220,31 @@ const Products = () => {
           </div>
         </CardContent>
       </section>
+      <BulkUpdateProductsModal
+        isOpen={isOpenBulk}
+        onOpenChange={onOpenChangeBulk}
+        selectedCount={selectedItems.length}
+        onConfirm={(changed) => {
+          // فقط فیلدهایی که از null خارج شدن رو می‌فرستیم
+          // نمونه payload:
+          // {
+          //   ids: [..],
+          //   is_visible: true,
+          //   is_featured: false,
+          //   stock: 12,
+          //   ...
+          // }
+          bulkUpdateProducts.mutate(
+            {
+              ids: selectedItems,
+              ...changed,
+            },
+            {
+              onSuccess: () => setSelectedItems([]),
+            }
+          );
+        }}
+      />
       <DynamicModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
