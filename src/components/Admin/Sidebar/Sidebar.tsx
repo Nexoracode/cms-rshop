@@ -1,52 +1,183 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import { HiOutlineHome } from "react-icons/hi";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineShop } from "react-icons/ai";
+import { motion } from "framer-motion";
 import Item from "./Item";
 
-export default function Sidebar() {
-    return (
-        <aside className="h-fit lg:h-[100vh] sticky top-0 p-2 bg-white shadow-lg">
-            <div className="hidden lg:flex pt-6 pb-4 border-b items-center justify-center">
-                <img src="/images/logo.png" alt="logo" className="w-32" />
-            </div>
+// انیمیشن‌ها
+import {
+  asideEnterMotion,
+  logoVariants,
+  navVariants,
+  navItemVariants,
+  itemHoverTap,
+  glowPulse,
+  activePillMotion,
+  iconFloat,
+} from "@/animations/sidebarVariants";
 
-            <nav className="bg-white p-0 xs:p-3 lg:p-0 rounded-t-2xl xs:rounded-t-3xl fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row lg:flex-col xs:gap-4 text-end mt-4">
-                <Item
-                    title="خانه"
-                    icon={<HiOutlineHome className="text-2xl animate-pulse" />}
-                    routeName="home"
-                    parentStyle="text-green-700 w-full hover:text-green-700 hover:bg-green-700/5"
-                    iconStyle="bg-green-700/10"
-                    active="bg-green-700/5"
-                />
-                <Item
-                    title="سفارشات"
-                    icon={<IoReceiptOutline className="text-2xl animate-bounce" />}
-                    routeName="orders"
-                    parentStyle="text-blue-700 w-full hover:text-blue-700 hover:bg-blue-700/5"
-                    iconStyle="bg-blue-700/10"
-                    active="bg-blue-700/5"
-                />
-                <Item
-                    title="محصولات"
-                    icon={<AiOutlineShop className="text-2xl" />}
-                    routeName="products"
-                    parentStyle="text-orange-700 w-full hover:text-orange-700 hover:bg-orange-700/5"
-                    iconStyle="bg-orange-700/10"
-                    active="bg-orange-700/5"
-                />
-                <Item
-                    title="تنظیمات"
-                    icon={<IoSettingsOutline className="text-2xl animate-spin" />}
-                    routeName="store"
-                    parentStyle="text-sky-700 w-full hover:text-sky-700 hover:bg-sky-700/5"
-                    iconStyle="bg-sky-700/10"
-                    active="bg-sky-700/5"
-                />
-            </nav>
-        </aside>
-    );
+export default function Sidebar() {
+  const pathname = usePathname();
+
+  // کمک‌تابع: تشخیص فعال بودن مسیر
+  const isActive = (routeName: string) =>
+    pathname?.includes(`/admin/${routeName}`);
+
+  return (
+    <motion.aside
+      className="h-fit lg:h-[100vh] sticky top-0 p-2 bg-white shadow-lg"
+      {...asideEnterMotion}
+    >
+      {/* لوگو */}
+      <motion.div
+        className="hidden lg:flex pt-6 pb-4 border-b items-center justify-center"
+        variants={logoVariants}
+        initial="hidden"
+        animate="show"
+      >
+        <img src="/images/logo.png" alt="logo" className="w-32" />
+      </motion.div>
+
+      {/* Nav: کلاس‌ها دقیقاً دست‌نخورده؛ فقط motion اضافه شده */}
+      <motion.nav
+        className="bg-white p-0 xs:p-3 lg:p-0 rounded-t-2xl xs:rounded-t-3xl fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row lg:flex-col xs:gap-4 text-end mt-4"
+        variants={navVariants}
+        initial="hidden"
+        animate="show"
+      >
+        {/* خانه */}
+        <motion.div
+          className="relative"
+          variants={navItemVariants}
+          {...itemHoverTap}
+        >
+          {/* اندیکاتور فعال با layoutId: یک بار رندر و بین آیتم‌ها جابه‌جا می‌شود */}
+          {isActive("home") && (
+            <motion.span
+              {...activePillMotion}
+              className="absolute inset-0 -z-10 rounded-2xl lg:rounded-md bg-gradient-to-r from-green-500/10 via-green-500/5 to-transparent ring-1 ring-green-600/10"
+            />
+          )}
+
+          {/* گلوو لطیف پس‌زمینه */}
+          <motion.span
+            className="pointer-events-none absolute inset-0 -z-20 rounded-2xl lg:rounded-md"
+            style={{
+              background:
+                "radial-gradient(65% 55% at 50% 50%, rgba(16,185,129,0.10), transparent 70%)",
+            }}
+            {...glowPulse}
+          />
+
+          <Item
+            title="خانه"
+            // آیکن را با motion درونش wrap می‌کنیم؛ کلاس‌های خودت حفظ می‌شوند
+            icon={
+              <motion.span {...iconFloat}>
+                <HiOutlineHome className="text-2xl animate-pulse" />
+              </motion.span>
+            }
+            routeName="home"
+            parentStyle="text-green-700 w-full hover:text-green-700 hover:bg-green-700/5"
+            iconStyle="bg-green-700/10"
+            active="bg-green-700/5"
+          />
+        </motion.div>
+
+        {/* سفارشات */}
+        <motion.div className="relative" variants={navItemVariants} {...itemHoverTap}>
+          {isActive("orders") && (
+            <motion.span
+              {...activePillMotion}
+              className="absolute inset-0 -z-10 rounded-2xl lg:rounded-md bg-gradient-to-r from-blue-500/10 via-blue-500/5 to-transparent ring-1 ring-blue-600/10"
+            />
+          )}
+          <motion.span
+            className="pointer-events-none absolute inset-0 -z-20 rounded-2xl lg:rounded-md"
+            style={{
+              background:
+                "radial-gradient(65% 55% at 50% 50%, rgba(59,130,246,0.10), transparent 70%)",
+            }}
+            {...glowPulse}
+          />
+          <Item
+            title="سفارشات"
+            icon={
+              <motion.span {...iconFloat}>
+                <IoReceiptOutline className="text-2xl animate-bounce" />
+              </motion.span>
+            }
+            routeName="orders"
+            parentStyle="text-blue-700 w-full hover:text-blue-700 hover:bg-blue-700/5"
+            iconStyle="bg-blue-700/10"
+            active="bg-blue-700/5"
+          />
+        </motion.div>
+
+        {/* محصولات */}
+        <motion.div className="relative" variants={navItemVariants} {...itemHoverTap}>
+          {isActive("products") && (
+            <motion.span
+              {...activePillMotion}
+              className="absolute inset-0 -z-10 rounded-2xl lg:rounded-md bg-gradient-to-r from-orange-500/10 via-orange-500/5 to-transparent ring-1 ring-orange-600/10"
+            />
+          )}
+          <motion.span
+            className="pointer-events-none absolute inset-0 -z-20 rounded-2xl lg:rounded-md"
+            style={{
+              background:
+                "radial-gradient(65% 55% at 50% 50%, rgba(249,115,22,0.12), transparent 70%)",
+            }}
+            {...glowPulse}
+          />
+          <Item
+            title="محصولات"
+            icon={
+              <motion.span {...iconFloat}>
+                <AiOutlineShop className="text-2xl" />
+              </motion.span>
+            }
+            routeName="products"
+            parentStyle="text-orange-700 w-full hover:text-orange-700 hover:bg-orange-700/5"
+            iconStyle="bg-orange-700/10"
+            active="bg-orange-700/5"
+          />
+        </motion.div>
+
+        {/* تنظیمات */}
+        <motion.div className="relative" variants={navItemVariants} {...itemHoverTap}>
+          {isActive("store") && (
+            <motion.span
+              {...activePillMotion}
+              className="absolute inset-0 -z-10 rounded-2xl lg:rounded-md bg-gradient-to-r from-sky-500/10 via-sky-500/5 to-transparent ring-1 ring-sky-600/10"
+            />
+          )}
+          <motion.span
+            className="pointer-events-none absolute inset-0 -z-20 rounded-2xl lg:rounded-md"
+            style={{
+              background:
+                "radial-gradient(65% 55% at 50% 50%, rgba(14,165,233,0.11), transparent 70%)",
+            }}
+            {...glowPulse}
+          />
+          <Item
+            title="تنظیمات"
+            icon={
+              <motion.span {...iconFloat}>
+                <IoSettingsOutline className="text-2xl animate-spin" />
+              </motion.span>
+            }
+            routeName="store"
+            parentStyle="text-sky-700 w-full hover:text-sky-700 hover:bg-sky-700/5"
+            iconStyle="bg-sky-700/10"
+            active="bg-sky-700/5"
+          />
+        </motion.div>
+      </motion.nav>
+    </motion.aside>
+  );
 }
