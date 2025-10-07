@@ -6,7 +6,7 @@ import BrandFilters from "@/components/Admin/_products/__brands/BrandFilters";
 import CardContent from "@/components/Admin/CardContent";
 import BackToPage from "@/components/Helper/BackToPage";
 import DynamicModal from "@/components/Helper/DynamicModal";
-import { useDeleteBrand, useGetBrands } from "@/hooks/useBrand";
+import { useDeleteBrand, useGetBrands } from "@/hooks/api/useBrand";
 import { useDisclosure } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";

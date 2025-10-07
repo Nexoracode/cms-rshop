@@ -5,7 +5,7 @@ import { Button, Select, SelectItem, useDisclosure } from "@heroui/react";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import React, { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
-import { useDeleteAttributeValue } from "@/hooks/attributes/useAttributeValue";
+import { useDeleteAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import MultiSelectSearch from "@/components/Helper/SearchableMultiSelect";

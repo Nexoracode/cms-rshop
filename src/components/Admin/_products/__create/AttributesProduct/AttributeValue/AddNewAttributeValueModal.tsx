@@ -14,7 +14,7 @@ import {
 import {
   useAddNewAttributeValue,
   useUpdateAttributeValue,
-} from "@/hooks/attributes/useAttributeValue";
+} from "@/hooks/api/attributes/useAttributeValue";
 
 type Props = {
   attributeId: number | undefined;

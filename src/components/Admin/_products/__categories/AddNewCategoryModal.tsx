@@ -20,7 +20,7 @@ import {
   useCreateCategory,
   useCategoryImageUpload,
   useUpdateCategory,
-} from "@/hooks/categories/useCategory";
+} from "@/hooks/api/categories/useCategory";
 import { flattenCategories } from "@/utils/flattenCategories";
 import toast from "react-hot-toast";
 import HeaderNavigator from "../HeaderNavigator";

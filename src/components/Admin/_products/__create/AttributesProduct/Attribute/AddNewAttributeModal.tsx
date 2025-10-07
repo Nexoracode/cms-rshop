@@ -16,8 +16,8 @@ import {
 import {
   useAddNewAttribute,
   useUpdateAttribute,
-} from "@/hooks/attributes/useAttribute";
-import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
+} from "@/hooks/api/attributes/useAttribute";
+import { useGetAllAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
 //? Icons
 import { AiOutlineFontColors } from "react-icons/ai";
 import { BsMenuDown, BsPalette } from "react-icons/bs";

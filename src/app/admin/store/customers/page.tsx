@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useGetAllUsers, useGetOneUser } from "@/hooks/users/useUsers";
+import { useGetAllUsers, useGetOneUser } from "@/hooks/api/users/useUsers";
 import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
 //? Components | Templates
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";

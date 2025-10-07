@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { Attribute } from "../attribute-tree ";
-import { useReorderAttributeValue } from "@/hooks/attributes/useAttributeValue";
+import { useReorderAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { handleDropHelper } from "./handleDropHelper";
-import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/hooks/attributes/useVariantProduct";
+import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
 import { TiDeleteOutline } from "react-icons/ti";
 import toast from "react-hot-toast";

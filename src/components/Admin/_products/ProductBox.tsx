@@ -15,7 +15,7 @@ import { PiMoneyWavy } from "react-icons/pi";
 import { LuBox, LuScrollText } from "react-icons/lu";
 import { CgCalendarDates } from "react-icons/cg";
 import { MdOutlineCategory } from "react-icons/md";
-import { useDeleteProduct } from "@/hooks/products/useProduct";
+import { useDeleteProduct } from "@/hooks/api/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
 

@@ -3,7 +3,7 @@
 import { useDisclosure } from "@heroui/react";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
-import { useDeleteAttribute } from "@/hooks/attributes/useAttribute";
+import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";

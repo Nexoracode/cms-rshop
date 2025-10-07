@@ -20,9 +20,9 @@ import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import {
   useDeleteVariant,
   useUpdateVariantProduct,
-} from "@/hooks/attributes/useVariantProduct";
+} from "@/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useGetOneProduct } from "@/hooks/products/useProduct";
+import { useGetOneProduct } from "@/hooks/api/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";

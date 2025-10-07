@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button, DatePicker, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import { useAddNewUser } from "@/hooks/users/useUsers";
+import { useAddNewUser } from "@/hooks/api/users/useUsers";
 
 type Props = {
   isOpen: boolean;

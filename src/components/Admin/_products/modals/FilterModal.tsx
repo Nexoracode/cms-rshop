@@ -17,8 +17,8 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import { usePathname, useRouter } from "next/navigation";
-import { useGetAllCategories } from "@/hooks/categories/useCategory";
-import { useGetBrands } from "@/hooks/useBrand";
+import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
+import { useGetBrands } from "@/hooks/api/useBrand";
 import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUnitInput";
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";

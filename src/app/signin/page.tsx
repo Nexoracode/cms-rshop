@@ -1,72 +1,26 @@
 "use client";
 
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { Tabs, Tab, Card, CardBody, InputOtp, Input, Button } from "@heroui/react";
+import {
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
+  InputOtp,
+  Input,
+  Button,
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   useRequestOtpMutation,
   useVerifyOtpMutation,
-} from "@/hooks/signin/useSignin";
+} from "@/hooks/api/signin/useSignin";
+import useOnlineStatus from "@/hooks/system/useOnlineStatus";
+import useCountdown from "@/hooks/system/useCountdown";
 
 type Auth = "phone" | "otp";
 
-/* -------------------------
-   Hooks (در همین فایل)
--------------------------- */
-// Online/Offline status
-function useOnlineStatus() {
-  const [online, setOnline] = useState<boolean>(
-    typeof navigator !== "undefined" ? navigator.onLine : true
-  );
-
-  useEffect(() => {
-    const on = () => setOnline(true);
-    const off = () => setOnline(false);
-    window.addEventListener("online", on);
-    window.addEventListener("offline", off);
-    return () => {
-      window.removeEventListener("online", on);
-      window.removeEventListener("offline", off);
-    };
-  }, []);
-
-  return online;
-}
-
-// 2-min countdown
-function useCountdown(initialSeconds: number = 120) {
-  const [seconds, setSeconds] = useState<number>(0);
-  const [running, setRunning] = useState(false);
-
-  useEffect(() => {
-    if (!running || seconds <= 0) return;
-    const id = setInterval(() => setSeconds((s) => (s > 0 ? s - 1 : 0)), 1000);
-    return () => clearInterval(id);
-  }, [running, seconds]);
-
-  const start = useCallback((secs?: number) => {
-    setSeconds(secs ?? initialSeconds);
-    setRunning(true);
-  }, [initialSeconds]);
-
-  const reset = useCallback(() => {
-    setSeconds(initialSeconds);
-    setRunning(true);
-  }, [initialSeconds]);
-
-  const stop = useCallback(() => setRunning(false), []);
-
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
-  const isFinished = seconds === 0;
-
-  return { seconds, running, start, reset, stop, mm, ss, isFinished };
-}
-
-/* -------------------------
-   Component
--------------------------- */
 export default function App() {
   const router = useRouter();
   const [selected, setSelected] = useState<Auth>("phone");
@@ -83,9 +37,13 @@ export default function App() {
 
   // همون الگوی stable خودت: اول isPending، بعد isLoading، در غیر این‌صورت false
   const requesting =
-    (requestOtpMutation as any)?.isPending ?? (requestOtpMutation as any)?.isLoading ?? false;
+    (requestOtpMutation as any)?.isPending ??
+    (requestOtpMutation as any)?.isLoading ??
+    false;
   const verifying =
-    (verifyOtpMutation as any)?.isPending ?? (verifyOtpMutation as any)?.isLoading ?? false;
+    (verifyOtpMutation as any)?.isPending ??
+    (verifyOtpMutation as any)?.isLoading ??
+    false;
 
   // وقتی ۶ رقم شد، تأیید کن
   useEffect(() => {
@@ -95,7 +53,10 @@ export default function App() {
 
   // آفلاین/آنلاین
   useEffect(() => {
-    if (!online) setLocalError("اتصال اینترنت برقرار نیست. لطفاً اینترنت خود را بررسی کنید.");
+    if (!online)
+      setLocalError(
+        "اتصال اینترنت برقرار نیست. لطفاً اینترنت خود را بررسی کنید."
+      );
     else setLocalError(null);
   }, [online]);
 
@@ -116,7 +77,9 @@ export default function App() {
 
   const sendPhoneApiCall = (phone: string, opts?: { startTimer?: boolean }) => {
     if (!online) {
-      setLocalError("شما آفلاین هستید. برای دریافت کد، اتصال اینترنت را برقرار کنید.");
+      setLocalError(
+        "شما آفلاین هستید. برای دریافت کد، اتصال اینترنت را برقرار کنید."
+      );
       return;
     }
     if (requesting) return;
@@ -132,7 +95,9 @@ export default function App() {
 
   const sendOtpCodeApiCall = () => {
     if (!online) {
-      setLocalError("شما آفلاین هستید. برای بررسی کد، اتصال اینترنت را برقرار کنید.");
+      setLocalError(
+        "شما آفلاین هستید. برای بررسی کد، اتصال اینترنت را برقرار کنید."
+      );
       return;
     }
     if (verifying || phoneValue.length !== 11 || code.length !== 6) return;
@@ -151,7 +116,10 @@ export default function App() {
   const container = useMemo(
     () => ({
       hidden: { opacity: 0 },
-      show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
+      show: {
+        opacity: 1,
+        transition: { staggerChildren: 0.08, delayChildren: 0.15 },
+      },
     }),
     []
   );
@@ -176,7 +144,10 @@ export default function App() {
   );
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center w-full px-4 overflow-hidden" dir="rtl">
+    <div
+      className="relative min-h-screen flex items-center justify-center w-full px-4 overflow-hidden"
+      dir="rtl"
+    >
       {/* subtle animated bg */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(35rem_35rem_at_20%_10%,rgba(99,102,241,.12),transparent),radial-gradient(40rem_40rem_at_80%_110%,rgba(56,189,248,.15),transparent)]" />
       <div className="pointer-events-none absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-40 bg-gradient-to-br from-sky-300/40 to-fuchsia-300/30" />
@@ -207,12 +178,24 @@ export default function App() {
           initial="hidden"
           animate="show"
         >
-          <Card shadow="md" className="rounded-3xl bg-transparent border border-white/40">
+          <Card
+            shadow="md"
+            className="rounded-3xl bg-transparent border border-white/40"
+          >
             <CardBody className="space-y-7 p-8">
               {/* header */}
-              <motion.div variants={item} className="flex flex-col items-center text-center">
-                <img src="/images/logo.png" alt="logo" className="w-40 mb-3 drop-shadow" />
-                <h1 className="font-extrabold tracking-tight text-[20px] text-slate-800">پنل ادمین آرشاپ</h1>
+              <motion.div
+                variants={item}
+                className="flex flex-col items-center text-center"
+              >
+                <img
+                  src="/images/logo.png"
+                  alt="logo"
+                  className="w-40 mb-3 drop-shadow"
+                />
+                <h1 className="font-extrabold tracking-tight text-[20px] text-slate-800">
+                  پنل ادمین آرشاپ
+                </h1>
                 <p className="text-slate-500 text-sm mt-2.5">
                   {selected === "phone"
                     ? "شماره تماس خود را وارد نمایید"
@@ -241,7 +224,11 @@ export default function App() {
                   className="flex justify-center items-center"
                   variant="underlined"
                   color="primary"
-                  classNames={{ tabList: "w-full flex", tabContent: "font-semibold", cursor: "rounded-full" }}
+                  classNames={{
+                    tabList: "w-full flex",
+                    tabContent: "font-semibold",
+                    cursor: "rounded-full",
+                  }}
                 >
                   <Tab key="phone" title="شماره تلفن" className="w-full">
                     <AnimatePresence mode="wait">
@@ -282,7 +269,7 @@ export default function App() {
                     <AnimatePresence mode="wait">
                       {selected === "otp" && (
                         <motion.div key="otp-pane" {...tabContent}>
-                          <div className="flex items-center justify-center">
+                          <div style={{ direction: "ltr" }} className="ltr flex items-center justify-center">
                             <InputOtp
                               length={6}
                               size="md"
@@ -299,19 +286,31 @@ export default function App() {
                               size="sm"
                               variant="flat"
                               color="primary"
-                              isDisabled={!otpTimer.isFinished || !online || requesting}
-                              onPress={() => sendPhoneApiCall(phoneValue, { startTimer: true })}
+                              isDisabled={
+                                !otpTimer.isFinished || !online || requesting
+                              }
+                              onPress={() =>
+                                sendPhoneApiCall(phoneValue, {
+                                  startTimer: true,
+                                })
+                              }
                               className="rounded-full"
                             >
                               {otpTimer.isFinished
                                 ? "ارسال مجدد کد"
                                 : `ارسال مجدد تا ${otpTimer.mm}:${otpTimer.ss}`}
                             </Button>
-                            {!online && <span className="text-amber-700 text-xs">آفلاین</span>}
+                            {!online && (
+                              <span className="text-amber-700 text-xs">
+                                آفلاین
+                              </span>
+                            )}
                           </div>
 
                           <div className="mt-3 text-xs text-slate-500 text-center">
-                            {verifying ? "در حال بررسی کد..." : "کد تا ۲ دقیقه معتبر است."}
+                            {verifying
+                              ? "در حال بررسی کد..."
+                              : "کد تا ۲ دقیقه معتبر است."}
                           </div>
                         </motion.div>
                       )}
@@ -321,13 +320,21 @@ export default function App() {
               </motion.div>
 
               {/* divider + footer */}
-              <motion.div variants={item} className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-              <motion.p variants={item} className="text-[11px] leading-5 text-slate-500 text-center">
+              <motion.div
+                variants={item}
+                className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent"
+              />
+              <motion.p
+                variants={item}
+                className="text-[11px] leading-5 text-slate-500 text-center"
+              >
                 با ورود، شرایط استفاده و حریم خصوصی آرشاپ را می‌پذیرید.
               </motion.p>
 
               {/* errors */}
-              {(localError || (requestOtpMutation as any)?.isError || (verifyOtpMutation as any)?.isError) && (
+              {(localError ||
+                (requestOtpMutation as any)?.isError ||
+                (verifyOtpMutation as any)?.isError) && (
                 <motion.div
                   initial={{ x: 0 }}
                   animate={{ x: [0, -6, 6, -4, 4, 0] }}

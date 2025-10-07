@@ -8,7 +8,7 @@ import {
 } from "@heroui/react";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
-import { useDeleteAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
+import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import DynamicModal from "@/components/Helper/DynamicModal";

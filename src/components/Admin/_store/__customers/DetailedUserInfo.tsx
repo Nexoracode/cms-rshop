@@ -5,7 +5,7 @@ import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
 import { useState } from "react";
 import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
-import { useDeleteUser, useUpdateUser } from "@/hooks/users/useUsers";
+import { useDeleteUser, useUpdateUser } from "@/hooks/api/users/useUsers";
 
 type Address = {
   city: string;

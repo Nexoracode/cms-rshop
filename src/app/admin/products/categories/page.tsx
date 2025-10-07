@@ -8,7 +8,7 @@ import DynamicModal from "@/components/Helper/DynamicModal";
 import {
   useDeleteCategory,
   useGetCategories,
-} from "@/hooks/categories/useCategory";
+} from "@/hooks/api/categories/useCategory";
 import { useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { TbCategory2 } from "react-icons/tb";

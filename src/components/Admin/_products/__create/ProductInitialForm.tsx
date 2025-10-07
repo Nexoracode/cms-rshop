@@ -24,7 +24,7 @@ import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import AddNewBrandModal from "../__brands/AddNewBrandModal";
-import { useGetBrands } from "@/hooks/useBrand";
+import { useGetBrands } from "@/hooks/api/useBrand";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -32,10 +32,10 @@ import {
   useGetOneProduct,
   useProductCreate,
   useProductUpdate,
-} from "@/hooks/products/useProduct";
+} from "@/hooks/api/products/useProduct";
 import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
-import { useGetAllCategories } from "@/hooks/categories/useCategory";
+import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 
 const TextEditor = dynamic(() => import("../../TextEditor"), {
   ssr: false,

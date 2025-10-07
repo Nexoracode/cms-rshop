@@ -1,16 +1,16 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { useGetAllAttribute } from "@/hooks/attributes/useAttribute";
-import { useGetAttributeValues } from "@/hooks/attributes/useAttributeValue";
-import { useGetAllAttributeGroup } from "@/hooks/attributes/useAttributeGroup";
+import { useGetAllAttribute } from "@/hooks/api/attributes/useAttribute";
+import { useGetAttributeValues } from "@/hooks/api/attributes/useAttributeValue";
+import { useGetAllAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
-import { useAddNewVariantProduct } from "@/hooks/attributes/useVariantProduct";
+import { useAddNewVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
-import { useAddNewAttributeProduct } from "@/hooks/attributes/useAttributeProducts";
+import { useAddNewAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
 
 type Props = {
   isDisabledEdit?: boolean;

@@ -11,7 +11,7 @@ import {
   useBulkUpdateProducts,
   useDeleteGroupProduct,
   useGetProducts,
-} from "@/hooks/products/useProduct";
+} from "@/hooks/api/products/useProduct";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CardContent from "@/components/Admin/CardContent";
