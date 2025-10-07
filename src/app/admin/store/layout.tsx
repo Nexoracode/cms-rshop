@@ -2,7 +2,7 @@
 
 import ShopInfosCard from "@/components/Admin/ArShopCard/ShopInfosCard";
 
-const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
+const StoreLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div className="mb-6">
@@ -15,4 +15,4 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default SettingsLayout;
+export default StoreLayout;

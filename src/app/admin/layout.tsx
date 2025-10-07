@@ -4,7 +4,7 @@ import Sidebar from "@/components/Admin/Sidebar/Sidebar";
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col-reverse lg:flex-row w-full bg-stone-100 px-2 !rounded-3xl">
-      <div className="fixed bottom-0 left-0 right-0 lg:relative w-3/12 z-50">
+      <div className="fixed lg:relative w-3/12 z-50 flex justify-center shadow-none">
         <Sidebar />
       </div>
       <div className="w-full lg:w-9/12 lg:pr-6">
