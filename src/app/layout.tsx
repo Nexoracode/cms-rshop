@@ -31,7 +31,7 @@ export default function RootLayout({
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <HeroUIProvider navigate={router.push} locale="fa-IR">
-            <SplashScreen />
+            {/* <SplashScreen /> */}
             <React.Suspense fallback={<p></p>}>{children}</React.Suspense>
           </HeroUIProvider>
         </QueryClientProvider>
