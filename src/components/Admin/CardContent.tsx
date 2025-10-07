@@ -32,7 +32,7 @@ const CardContent: React.FC<CardContentProps> = ({
   return (
     <section className="flex flex-col gap-6">
       {header}
-      <Card>
+      <Card className="shadow-md">
         <CardBody className="overflow-hidden pb-4">
           <HeaderActionCard icon={icon} title={title} onAdd={onAdd} />
 

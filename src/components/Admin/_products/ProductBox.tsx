@@ -16,6 +16,7 @@ import { useDeleteProduct } from "@/hooks/api/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
 import { TbEdit } from "react-icons/tb";
+import { IoEyeOffOutline, IoSparklesOutline } from "react-icons/io5";
 
 type Props = {
   id: number;
@@ -78,10 +79,6 @@ const ProductBox: React.FC<Props> = ({
           selected
             ? "shadow-none border border-sky-500 hover:shadow-none scale-95"
             : ""
-        } ${
-          isFeatured
-            ? `bg-gradient-to-br from-violet-300 via-violet-50 to-white ring-1 ring-white/20`
-            : ""
         }`}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -134,10 +131,10 @@ const ProductBox: React.FC<Props> = ({
 
             <div className="w-full h-[110px] flex flex-col justify-between pr-0 p-2 gap-4">
               <div className="flex flex-col sm:flex-row justify-between items-center w-full">
-                <p className="text-black/80">
-                  {title}{" "}
+                <div className="text-[15px] text-black/80 flex items-center gap-1">
+                  <p className="truncate sm:max-w-[240px]">{title}</p>{" "}
                   <span className="text-gray-600 text-xs">({category})</span>
-                </p>
+                </div>
 
                 <div>
                   <div className="flex gap-2">
@@ -169,20 +166,31 @@ const ProductBox: React.FC<Props> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-gray-600">موجودی {varientsCount}</p>
+              <div className="flex items-end justify-between gap-2">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    {isFeatured && (
+                      <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
+                    )}
+                  </div>
+                  <p className="text-gray-600 text-[13px]">موجودی {varientsCount}</p>
+                </div>
                 <p className="text-gray-600">
                   {originalPrice != null ? (
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-[18px] text-emerald-600">
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
+                          {Number(originalPrice).toLocaleString("fa-IR")}
+                        </span>
+                        <span>تومان</span>
+                      </div>
+
+                      <span className="text-[15px] text-gray-800">
                         {Number(price).toLocaleString("fa-IR")} تومان
-                      </span>
-                      <span className="text-sm text-gray-500 line-through decoration-2 decoration-gray-400">
-                        {Number(originalPrice).toLocaleString("fa-IR")} تومان
                       </span>
                     </div>
                   ) : (
-                    <span>{Number(price).toLocaleString("fa-IR")} تومان</span>
+                    <span className="text-[15px] text-gray-800">{Number(price).toLocaleString("fa-IR")} تومان</span>
                   )}
                 </p>
               </div>
