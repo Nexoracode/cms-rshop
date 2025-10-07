@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HeroUIProvider } from "@heroui/system";
 import { Toaster } from "react-hot-toast";
-import SplashScreen from "@/components/Helper/SplashScreen";
+/* import SplashScreen from "@/components/Helper/SplashScreen"; */
 
 export default function RootLayout({
   children,

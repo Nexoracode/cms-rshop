@@ -8,9 +8,9 @@ import Item from "./Item";
 
 export default function Sidebar() {
     return (
-        <aside className="h-fit lg:h-[calc(100vh-24px)] sticky top-3 p-2 bg-white shadow-lg mt-6 rounded-3xl bg-gradient-to-r from-white via-slate-100">
+        <aside className="h-fit lg:h-[100vh] sticky top-0 p-2 bg-white shadow-lg">
             <div className="hidden lg:flex pt-6 pb-4 border-b items-center justify-center">
-                <img src="/images/logo.png" alt="logo" className="w-28" />
+                <img src="/images/logo.png" alt="logo" className="w-32" />
             </div>
 
             <nav className="bg-white p-0 xs:p-3 lg:p-0 rounded-t-2xl xs:rounded-t-3xl fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row lg:flex-col xs:gap-4 text-end mt-4">
@@ -32,7 +32,7 @@ export default function Sidebar() {
                 />
                 <Item
                     title="محصولات"
-                    icon={<AiOutlineShop className="text-2xl animate-blink" />}
+                    icon={<AiOutlineShop className="text-2xl" />}
                     routeName="products"
                     parentStyle="text-orange-700 w-full hover:text-orange-700 hover:bg-orange-700/5"
                     iconStyle="bg-orange-700/10"

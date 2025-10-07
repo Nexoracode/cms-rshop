@@ -42,6 +42,6 @@
   }
 
   .arshop-card {
-    @apply bg-gradient-to-r from-gray-100 via-purple-100 rounded-2xl py-6 pt-12
+    @apply bg-gradient-to-r from-gray-100 via-purple-100 rounded-2xl py-6
   }
 }
