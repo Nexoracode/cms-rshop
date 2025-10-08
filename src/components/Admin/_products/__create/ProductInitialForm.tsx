@@ -74,7 +74,6 @@ const ProductInitialForm = () => {
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
   //
-  const [step, setStep] = useState<"edit" | "new">(editId ? "edit" : "new");
   const [product, setProduct] = useState<Product>(initProduct);
   //?Disclosure
   const {
@@ -239,14 +238,10 @@ const ProductInitialForm = () => {
                   return { ...prev, name };
                 })
               }
+              isInvalid={!product.name.trim()}
               errorMessage={
                 <FieldErrorText
-                  error={!product.name.trim() ? "نام محصول الزامی است." : null}
-                />
-              }
-              description={
-                <FieldErrorText
-                  error={!product.name.trim() ? "نام محصول الزامی است." : null}
+                  error={"نام محصول الزامی است."}
                 />
               }
             />
@@ -265,6 +260,7 @@ const ProductInitialForm = () => {
                   discount_percent: type === "percent" ? +value : 0,
                 }))
               }
+              isActiveError
             />
 
             <div className="flex flex-col md:flex-row gap-4">

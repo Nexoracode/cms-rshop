@@ -12,7 +12,8 @@ type Props = {
   discount_percent: number;
   onPriceChange: (price: number) => void;
   onDiscountChange: (type: DiscountType, value: number) => void;
-  style?: string
+  style?: string,
+  isActiveError?: boolean
 };
 
 const PriceWithDiscountInput: FC<Props> = ({
@@ -21,7 +22,8 @@ const PriceWithDiscountInput: FC<Props> = ({
   discount_percent,
   onPriceChange,
   onDiscountChange,
-  style
+  style,
+  isActiveError= false
 }) => {
   const [discountType, setDiscountType] = useState<DiscountType>("percent");
   const [discountValue, setDiscountValue] = useState(0);
