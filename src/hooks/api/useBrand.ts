@@ -89,3 +89,16 @@ export const useDeleteBrand = () => {
     },
   });
 };
+
+export const useBrandUpload = () => {
+  return useMutation({
+    mutationFn: (data: FormData) => {
+      return fetcher({
+        route: "/product/upload",
+        method: "POST",
+        body: data,
+        isActiveToast: false,
+      });
+    },
+  });
+};

@@ -5,8 +5,7 @@ import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
 import { SizeGuideProp } from "./type";
-import { useProductUpload } from "@/hooks/api/products/useProduct";
-import { useCreateSizeGuid, useUpdateSizeGuid } from "@/hooks/api/useSizeGuide";
+import { useCreateSizeGuid, useSizeGuideUpload, useUpdateSizeGuid } from "@/hooks/api/useSizeGuide";
 
 type Props = {
   isOpen: boolean;
@@ -30,7 +29,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     image: null
   });
   
-  const { mutate: uploadMedias } = useProductUpload();
+  const { mutate: uploadMedias } = useSizeGuideUpload();
   const { mutate: createSizeGuid } = useCreateSizeGuid();
   const { mutate: updateSizeGuid } = useUpdateSizeGuid(defaultValues?.id || 0);
 

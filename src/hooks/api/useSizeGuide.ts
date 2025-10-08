@@ -38,3 +38,16 @@ export const useUpdateSizeGuid = (id: number) => {
     },
   });
 };
+
+export const useSizeGuideUpload = () => {
+  return useMutation({
+    mutationFn: (data: FormData) => {
+      return fetcher({
+        route: "/helpers/upload",
+        method: "POST",
+        body: data,
+        isActiveToast: false,
+      });
+    },
+  });
+};
