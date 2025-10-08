@@ -56,7 +56,7 @@ const PriceWithDiscountInput: FC<Props> = ({
           placeholder="10,000"
           suffix="تومان"
           isRequired
-          isActiveError
+          isActiveError={isActiveError}
         />
 
         {price > 0 && discountValue > 0 ? (

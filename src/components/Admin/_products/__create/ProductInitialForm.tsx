@@ -37,6 +37,7 @@ import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import FieldErrorText from "@/components/Helper/FieldErrorText";
+import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 
 const TextEditor = dynamic(() => import("../../TextEditor"), {
   ssr: false,
@@ -135,7 +136,6 @@ const ProductInitialForm = () => {
     const hasCategory = Number(product.category_id) > 0;
     const hasWeight = Number(product.weight) > 0;
     const hasBrand = Number(product.brand_id) > 0;
-
     const hasDesc = stripHtml(product.description || "").length > 0;
 
     return (
@@ -188,6 +188,7 @@ const ProductInitialForm = () => {
       !hasDesc ||
       !hasBrand
     ) {
+      setTimeout(() => scrollToFirstErrorField(), 0);
       return;
     }
 
@@ -260,7 +261,7 @@ const ProductInitialForm = () => {
   return (
     <>
       <section className="flex flex-col gap-6">
-        <Card className={cardStyle}>
+        <Card className={cardStyle} data-error={isSubmitAttempted}>
           <BoxHeader
             title="اطلاعات کلیدی محصول"
             color="text-white bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
@@ -292,11 +293,7 @@ const ProductInitialForm = () => {
                 })
               }
               isInvalid={isSubmitAttempted && !fieldErrors.hasName}
-              errorMessage={
-                isSubmitAttempted && !fieldErrors.hasName ? (
-                  <FieldErrorText error="نام محصول الزامی است." />
-                ) : undefined
-              }
+              errorMessage={<FieldErrorText error="نام محصول الزامی است." />}
             />
 
             <PriceWithDiscountInput
@@ -520,7 +517,6 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-
         <Button
           color="success"
           className="text-white"

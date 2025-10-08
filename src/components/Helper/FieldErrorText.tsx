@@ -21,7 +21,7 @@ const FieldErrorText: React.FC<FieldErrorTextProps> = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className={`text-xs font-medium text-red-500 mt-1 px-1 ${
+          className={`text-xs font-medium text-red-500 mt-1 px-1 animate-pulse ${
             className ?? ""
           }`}
         >
