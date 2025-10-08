@@ -1,5 +1,6 @@
 "use client";
 
+import SlugInput from "@/components/Helper/SlugInput";
 import {
   useAddNewAttributeGroup,
   useUpdateAttributeGroup,
@@ -76,7 +77,7 @@ const AddNewAttributeGroupModal = ({
               <p className="font-normal text-[16px]">افزودن دسته بندی ویژگی</p>
             </ModalHeader>
             <ModalBody>
-              <div className="flex gap-4">
+              <div className="flex items-start gap-4">
                 <Input
                   labelPlacement="outside"
                   isRequired
@@ -88,16 +89,15 @@ const AddNewAttributeGroupModal = ({
                   }
                 />
 
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  style={{ direction: "ltr" }}
-                  label="نامک"
-                  placeholder="slug"
+                <SlugInput
                   value={datas.slug}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, slug: e.target.value }))
+                  onChange={(val) =>
+                    setDatas((prev: any) => ({
+                      ...prev,
+                      slug: val,
+                    }))
                   }
+                  isActiveError={true}
                 />
               </div>
             </ModalBody>

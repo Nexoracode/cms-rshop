@@ -14,14 +14,14 @@ const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
   onAdd,
 }) => {
   return (
-    <div className="w-full flex items-center border-b shadow-md p-3 animate-appearance-in bg-gray-50 rounded-xl mb-6 justify-between">
+    <div className="w-full flex items-center shadow-md p-2 animate-appearance-in bg-gray-50 rounded-xl mb-6 justify-between">
       <div className="flex items-center gap-2">
         {icon}
         <p className="font-normal text-[15px] text-gray-600">{title}</p>
       </div>
 
       <div
-        className="bg-gray-800 animate-pulse rounded-xl p-2 px-4 cursor-pointer text-white"
+        className="bg-sky-100 text-sky-500 rounded-xl p-2 px-4 cursor-pointer"
         onClick={onAdd}
       >
         + افزودن

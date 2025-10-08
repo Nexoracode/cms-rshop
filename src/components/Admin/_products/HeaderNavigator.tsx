@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
+import { GoArrowUpRight } from "react-icons/go";
 
 type HeaderNavigatorProps = {
   title: string;
@@ -19,13 +20,14 @@ const HeaderNavigator: React.FC<HeaderNavigatorProps> = ({
   navigateTitle,
 }) => {
   return (
-    <div className="w-full flex items-center bg-gray-50 border-b p-3 rounded-xl mt-4 justify-between">
+    <div className="w-full flex items-center bg-gray-50 border-b p-2 rounded-xl mt-4 justify-between">
       <div className="flex items-center gap-2">
         {icon}
         <p className="font-normal text-[16px] text-gray-600">{title}</p>
       </div>
 
-      <Link href={navigateTo} className="bg-purple-100 rounded-xl p-2 animate-bounce text-purple-500">
+      <Link href={navigateTo} className="bg-gray-200 flex items-center gap-1 rounded-lg px-3 py-1 text-[15px] font-normal">
+        <GoArrowUpRight className="text-lg" />
         {!link ? navigateTitle : link}
       </Link>
     </div>

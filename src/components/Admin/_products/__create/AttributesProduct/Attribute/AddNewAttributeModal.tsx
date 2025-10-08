@@ -24,6 +24,7 @@ import { BsMenuDown, BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle } from "react-icons/fi";
 import { MdNumbers } from "react-icons/md";
 import { ImCheckmark2 } from "react-icons/im";
+import SlugInput from "@/components/Helper/SlugInput";
 
 type Props = {
   isOpen: boolean;
@@ -156,16 +157,15 @@ const AddNewAttributeModal = ({
                   }
                 />
 
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  style={{ direction: "ltr" }}
-                  label="نامک"
-                  placeholder="slug"
+                <SlugInput
                   value={datas.slug}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, slug: e.target.value }))
+                  onChange={(val) =>
+                    setDatas((prev: any) => ({
+                      ...prev,
+                      slug: val,
+                    }))
                   }
+                  isActiveError={true}
                 />
 
                 <Select

@@ -25,6 +25,7 @@ import { flattenCategories } from "@/utils/flattenCategories";
 import toast from "react-hot-toast";
 import HeaderNavigator from "../HeaderNavigator";
 import { TbCategoryPlus } from "react-icons/tb";
+import SlugInput from "@/components/Helper/SlugInput";
 
 type Props = {
   isOpen: boolean;
@@ -213,8 +214,7 @@ const AddNewCategoryModal = ({
                 </Checkbox>
               </div>
 
-              {/* عنوان و نامک */}
-              <div className="flex flex-col gap-6 sm:flex-row items-center sm:gap-4">
+              <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
                 <Input
                   isRequired
                   label="عنوان"
@@ -224,14 +224,15 @@ const AddNewCategoryModal = ({
                   onChange={(e) => setData({ ...data, title: e.target.value })}
                 />
 
-                <Input
-                  isRequired
-                  label="نامک (Slug)"
-                  labelPlacement="outside"
+                <SlugInput
                   value={data.slug}
-                  placeholder="slug"
-                  style={{ direction: "ltr" }}
-                  onChange={(e) => setData({ ...data, slug: e.target.value })}
+                  onChange={(val) =>
+                    setData((prev: any) => ({
+                      ...prev,
+                      slug: val,
+                    }))
+                  }
+                  isActiveError={true}
                 />
               </div>
 

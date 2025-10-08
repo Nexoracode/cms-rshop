@@ -9,6 +9,7 @@ import { useCreateBrand, useUpdateBrand } from "@/hooks/api/useBrand";
 import HeaderNavigator from "../HeaderNavigator";
 import { TbBrandArc } from "react-icons/tb";
 import toast from "react-hot-toast";
+import SlugInput from "@/components/Helper/SlugInput";
 
 type Props = {
   isOpen: boolean;
@@ -106,7 +107,7 @@ const AddNewBrandModal: React.FC<Props> = ({
               />
             </ModalHeader>
             <ModalBody>
-              <div className="flex flex-col gap-6 sm:flex-row items-center sm:gap-4 mb-2">
+              <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4 mb-2">
                 <Input
                   labelPlacement="outside"
                   isRequired
@@ -118,16 +119,15 @@ const AddNewBrandModal: React.FC<Props> = ({
                   }
                   className="mb-2"
                 />
-                <Input
-                  style={{ direction: "ltr" }}
-                  labelPlacement="outside"
-                  isRequired
-                  label="نامک"
-                  placeholder="slug"
+                <SlugInput
                   value={datas.slug}
-                  onChange={(e) =>
-                    setDatas((prev: any) => ({ ...prev, slug: e.target.value }))
+                  onChange={(val) =>
+                    setDatas((prev: any) => ({
+                      ...prev,
+                      slug: val,
+                    }))
                   }
+                  isActiveError={true}
                 />
               </div>
               <ImageBoxUploader
