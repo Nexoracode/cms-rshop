@@ -48,7 +48,7 @@ export const useGetProducts = ({
   return useQuery({
     queryKey: ["all-products", page, filter, search, sortBy],
     queryFn: () => {
-      const params: Record<string, any> = { page, limit: 2 };
+      const params: Record<string, any> = { page, limit: 40 };
 
       if (filter) {
         for (const key in filter) {

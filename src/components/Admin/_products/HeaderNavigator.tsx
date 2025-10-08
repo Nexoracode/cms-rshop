@@ -20,7 +20,7 @@ const HeaderNavigator: React.FC<HeaderNavigatorProps> = ({
   navigateTitle,
 }) => {
   return (
-    <div className="w-full flex items-center bg-gray-50 border-b p-2 rounded-xl mt-4 justify-between">
+    <div className="w-full flex items-center bg-transparent border-b p-2 rounded-xl mt-4 justify-between">
       <div className="flex items-center gap-2">
         {icon}
         <p className="font-normal text-[16px] text-gray-600">{title}</p>
