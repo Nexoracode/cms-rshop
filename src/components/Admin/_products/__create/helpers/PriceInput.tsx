@@ -1,5 +1,6 @@
 "use client";
 
+import FieldErrorText from "@/components/Helper/FieldErrorText";
 import { Input } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -129,6 +130,10 @@ export default function PriceNumberInput({
       }
       // جلوگیری از autocomplete موبایل
       autoComplete="off"
+      errorMessage={
+        <FieldErrorText error={!value ? "قیمت الزامی است" : null} />
+      }
+      description={<FieldErrorText error={!value ? "قیمت الزامی است" : null} />}
     />
   );
 }

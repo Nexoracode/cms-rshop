@@ -36,6 +36,7 @@ import {
 import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
+import FieldErrorText from "@/components/Helper/FieldErrorText";
 
 const TextEditor = dynamic(() => import("../../TextEditor"), {
   ssr: false,
@@ -188,6 +189,7 @@ const ProductInitialForm = () => {
         onSuccess: (res) => {
           if (res.ok) {
             router.push("/admin/products");
+            setProduct(initProduct);
           }
         },
       });
@@ -196,11 +198,11 @@ const ProductInitialForm = () => {
         onSuccess: (res) => {
           if (res.ok) {
             router.push("/admin/products");
+            setProduct(initProduct);
           }
         },
       });
     }
-    setProduct(initProduct);
   };
 
   return (
@@ -222,6 +224,7 @@ const ProductInitialForm = () => {
               }}
               initialMedias={product.medias}
               initialPinnedId={product.media_pinned_id}
+              isActiveError
             />
             <hr />
             <Input
@@ -235,6 +238,16 @@ const ProductInitialForm = () => {
                   if (!prev) return prev;
                   return { ...prev, name };
                 })
+              }
+              errorMessage={
+                <FieldErrorText
+                  error={!product.name.trim() ? "نام محصول الزامی است." : null}
+                />
+              }
+              description={
+                <FieldErrorText
+                  error={!product.name.trim() ? "نام محصول الزامی است." : null}
+                />
               }
             />
 
@@ -264,6 +277,7 @@ const ProductInitialForm = () => {
                   setProduct((prev) => ({ ...prev, category_id: +id }))
                 }
                 onAddNewClick={onOpenCategory}
+                isActiveError
               />
 
               <SelectWithAddButton
@@ -283,6 +297,7 @@ const ProductInitialForm = () => {
                   }))
                 }
                 onAddNewClick={onOpenBrand}
+                isActiveError
               />
             </div>
 
@@ -301,6 +316,7 @@ const ProductInitialForm = () => {
                 { key: "گرم", title: "گرم" },
                 { key: "کیلوگرم", title: "کیلوگرم" },
               ]}
+              isActiveError
             />
 
             <TextEditor
@@ -311,6 +327,8 @@ const ProductInitialForm = () => {
                   description: content,
                 }))
               }
+              label="توضیحات"
+              isActiveError
             />
           </CardBody>
         </Card>

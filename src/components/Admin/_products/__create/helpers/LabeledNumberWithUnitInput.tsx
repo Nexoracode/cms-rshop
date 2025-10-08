@@ -2,22 +2,24 @@
 
 import { FC } from "react";
 import { NumberInput, Select, SelectItem } from "@heroui/react";
+import FieldErrorText from "@/components/Helper/FieldErrorText";
 
 type Option = {
-  key: string;    // ← آزاد (نه DiscountKey)
+  key: string; // ← آزاد (نه DiscountKey)
   title: string;
 };
 
 type Props = {
   label: string;
   placeholder?: string;
-  value?: number;                                // ← می‌تواند undefined باشد
+  value?: number; // ← می‌تواند undefined باشد
   onValueChange: (val: number | undefined) => void;
-  selectedKey: string;                           // ← آزاد
-  onSelectChange: (val: string) => void;         // ← آزاد
+  selectedKey: string; // ← آزاد
+  onSelectChange: (val: string) => void; // ← آزاد
   options: Option[];
-  isRequired?: boolean,
-  style?: string
+  isRequired?: boolean;
+  style?: string;
+  isActiveError?: boolean;
 };
 
 const LabeledNumberWithUnitInput: FC<Props> = ({
@@ -28,8 +30,9 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
   selectedKey,
   onSelectChange,
   options,
-  isRequired=false,
-  style
+  isRequired = false,
+  style,
+  isActiveError = false,
 }) => {
   return (
     <div className={`flex flex-col gap-4 ${style}`}>
@@ -48,6 +51,14 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
           } else onValueChange(undefined);
         }}
         labelPlacement="outside"
+        errorMessage={
+          isRequired &&
+          !value && <FieldErrorText error={`${label} الزامی است`} />
+        }
+        description={
+          isRequired &&
+          !value && isActiveError && <FieldErrorText error={`${label} الزامی است`} />
+        }
         endContent={
           <div className="min-w-[110px]">
             <Select
