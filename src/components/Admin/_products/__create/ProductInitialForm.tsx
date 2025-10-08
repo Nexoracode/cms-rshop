@@ -75,6 +75,19 @@ const ProductInitialForm = () => {
   const editId = searchParams.get("edit_id");
   //
   const [product, setProduct] = useState<Product>(initProduct);
+  //
+  const [isSubmitAttempted, setIsSubmitAttempted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({
+    hasMedia: false,
+    hasPinned: false,
+    hasName: false,
+    hasPrice: false,
+    hasCategory: false,
+    hasWeight: false,
+    hasBrand: false,
+    hasDesc: false,
+  });
+
   //?Disclosure
   const {
     isOpen: isOpenCategory,
@@ -138,6 +151,46 @@ const ProductInitialForm = () => {
   }, [product]);
 
   const handleChangeProduct = () => {
+    // بررسی فیلدها
+    const hasMedia =
+      ((product.media_ids?.length || oneProduct?.data?.medias?.length) ?? 0) >
+      0;
+    const hasPinned = !!product.media_pinned_id;
+    const hasName = !!product.name?.trim();
+    const hasPrice = Number(product.price) > 0;
+    const hasCategory = Number(product.category_id) > 0;
+    const hasWeight = Number(product.weight) > 0;
+    const hasBrand = Number(product.brand_id) > 0;
+    const hasDesc = stripHtml(product.description || "").length > 0;
+
+    // فعال کردن وضعیت بررسی
+    setIsSubmitAttempted(true);
+
+    // ذخیره وضعیت خطاها در state
+    setFieldErrors({
+      hasMedia,
+      hasPinned,
+      hasName,
+      hasPrice,
+      hasCategory,
+      hasWeight,
+      hasBrand,
+      hasDesc,
+    });
+
+    if (
+      !hasMedia ||
+      !hasPinned ||
+      !hasName ||
+      !hasPrice ||
+      !hasCategory ||
+      !hasWeight ||
+      !hasDesc ||
+      !hasBrand
+    ) {
+      return;
+    }
+
     const {
       medias,
       helper,
@@ -223,7 +276,7 @@ const ProductInitialForm = () => {
               }}
               initialMedias={product.medias}
               initialPinnedId={product.media_pinned_id}
-              isActiveError
+              isActiveError={isSubmitAttempted && !fieldErrors.hasMedia}
             />
             <hr />
             <Input
@@ -238,11 +291,11 @@ const ProductInitialForm = () => {
                   return { ...prev, name };
                 })
               }
-              isInvalid={!product.name.trim()}
+              isInvalid={isSubmitAttempted && !fieldErrors.hasName}
               errorMessage={
-                <FieldErrorText
-                  error={"نام محصول الزامی است."}
-                />
+                isSubmitAttempted && !fieldErrors.hasName ? (
+                  <FieldErrorText error="نام محصول الزامی است." />
+                ) : undefined
               }
             />
 
@@ -260,7 +313,10 @@ const ProductInitialForm = () => {
                   discount_percent: type === "percent" ? +value : 0,
                 }))
               }
-              isActiveError
+              isActiveError={
+                isSubmitAttempted &&
+                (!fieldErrors.hasPrice || !fieldErrors.hasPinned)
+              }
             />
 
             <div className="flex flex-col md:flex-row gap-4">
@@ -273,7 +329,7 @@ const ProductInitialForm = () => {
                   setProduct((prev) => ({ ...prev, category_id: +id }))
                 }
                 onAddNewClick={onOpenCategory}
-                isActiveError
+                isActiveError={isSubmitAttempted && !fieldErrors.hasCategory}
               />
 
               <SelectWithAddButton
@@ -293,7 +349,7 @@ const ProductInitialForm = () => {
                   }))
                 }
                 onAddNewClick={onOpenBrand}
-                isActiveError
+                isActiveError={isSubmitAttempted && !fieldErrors.hasBrand}
               />
             </div>
 
@@ -312,7 +368,7 @@ const ProductInitialForm = () => {
                 { key: "گرم", title: "گرم" },
                 { key: "کیلوگرم", title: "کیلوگرم" },
               ]}
-              isActiveError
+              isActiveError={isSubmitAttempted && !fieldErrors.hasWeight}
             />
 
             <TextEditor
@@ -324,7 +380,7 @@ const ProductInitialForm = () => {
                 }))
               }
               label="توضیحات"
-              isActiveError
+              isActiveError={isSubmitAttempted && !fieldErrors.hasDesc}
             />
           </CardBody>
         </Card>
