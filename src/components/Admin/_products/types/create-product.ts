@@ -25,6 +25,8 @@ export interface Product {
   is_featured: boolean;
   weight: number;
   weight_unit: string;
+  attribute_nodes?: any[];
+  specifications?: any[];
   description: string | null;
   is_visible: boolean;
   category_id: number;

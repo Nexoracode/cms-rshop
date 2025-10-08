@@ -66,12 +66,14 @@ const initProduct: Product = {
 };
 
 const ProductInitialForm = () => {
+  const cardStyle = "w-full shadow-md";
+  const cardBodyStyle = "flex flex-col gap-6 text-right";
+  //
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
   //
   const [step, setStep] = useState<"edit" | "new">(editId ? "edit" : "new");
-  const [continueSteps, setContinueSteps] = useState(editId ? true : false);
   const [product, setProduct] = useState<Product>(initProduct);
   //?Disclosure
   const {
@@ -89,18 +91,20 @@ const ProductInitialForm = () => {
   const { data: categoriesData } = useGetAllCategories();
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
-  const [isDisabled, setIsDisabled] = useState<any>(false);
   const { mutate: updateProduct } = useProductUpdate(
     editId ? +editId : undefined
   );
   //
 
+  useEffect(() => {
+    if (oneProduct?.data) {
+      setProduct(oneProduct.data);
+    }
+  }, [oneProduct]);
+
   const flatOptions = useMemo(() => {
     return flattenCategories(categoriesData?.data);
   }, [categoriesData?.data]);
-
-  const cardStyle = "w-full shadow-md";
-  const cardBodyStyle = "flex flex-col gap-6 text-right";
 
   const stripHtml = (html?: string) =>
     (html ?? "")
@@ -109,21 +113,17 @@ const ProductInitialForm = () => {
       .trim();
 
   const canSubmit = useMemo(() => {
-    const hasMedia = (product.media_ids?.length ?? 0) > 0;
-    const hasPinned =
-      !!product.media_pinned_id &&
-      !!product.media_ids?.includes(product.media_pinned_id!);
+    const hasMedia =
+      ((product.media_ids?.length || oneProduct?.data?.medias?.length) ?? 0) >
+      0;
+    const hasPinned = !!product.media_pinned_id;
     const hasName = !!product.name?.trim();
     const hasPrice = Number(product.price) > 0;
     const hasCategory = Number(product.category_id) > 0;
     const hasWeight = Number(product.weight) > 0;
     const hasBrand = Number(product.brand_id) > 0;
 
-    // TinyMCE معمولاً متن خالی رو مثل "<p></p>" می‌فرسته:
     const hasDesc = stripHtml(product.description || "").length > 0;
-
-    // اگر در حالت ویرایش می‌خوای بعضی شروط آزادتر باشن، اینجا شرط بگذار:
-    // if (step === "edit") { ... }
 
     return (
       hasMedia &&
@@ -137,10 +137,6 @@ const ProductInitialForm = () => {
     );
   }, [product]);
 
-  useEffect(() => {
-    if (oneProduct) setProduct(oneProduct.data);
-  }, [oneProduct]);
-
   const handleChangeProduct = () => {
     const {
       medias,
@@ -152,6 +148,8 @@ const ProductInitialForm = () => {
       created_at,
       variants,
       id,
+      specifications,
+      attribute_nodes,
       ...sendableData
     } = product;
 
@@ -174,7 +172,7 @@ const ProductInitialForm = () => {
       discount_amount: (discount_amount && +discount_amount) || 0,
       ...(helper_id ? { helper_id: +helper_id } : {}),
       ...(brand_id ? { brand_id: +brand_id } : {}),
-      media_pinned_id: media_pinned_id,
+      media_pinned_id,
       category_id: +category_id,
       order_limit: +order_limit,
       weight: +weight,
@@ -182,6 +180,9 @@ const ProductInitialForm = () => {
       stock: +stock,
       ...other,
     };
+
+    console.log(result);
+
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
@@ -199,6 +200,7 @@ const ProductInitialForm = () => {
         },
       });
     }
+    setProduct(initProduct);
   };
 
   return (
@@ -212,9 +214,9 @@ const ProductInitialForm = () => {
           />
           <CardBody className={cardBodyStyle}>
             <ImagesProducts
-              onMedia_ids={(datas) =>
-                setProduct((prev) => ({ ...prev, media_ids: datas }))
-              }
+              onMedia_ids={(datas) => {
+                setProduct((prev) => ({ ...prev, media_ids: datas }));
+              }}
               onMedia_pinned_id={(id) => {
                 setProduct((prev) => ({ ...prev, media_pinned_id: id }));
               }}
@@ -312,11 +314,7 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        <Card
-          className={`${cardStyle} ${
-            step === "new" && !continueSteps ? "hidden" : ""
-          }`}
-        >
+        <Card className={`${cardStyle}`}>
           <BoxHeader
             title="اطلاعات تکمیلی محصول"
             color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
@@ -452,38 +450,14 @@ const ProductInitialForm = () => {
             />
           </CardBody>
         </Card>
-        {step === "new" && !continueSteps ? (
-          <div className="flex gap-4 w-full">
-            <Button
-              className="w-full"
-              color="primary"
-              variant="flat"
-              isDisabled={!canSubmit} // فقط این خط
-              onPress={() => setContinueSteps(true)}
-              title="بعد از تکمیل فیلدهای ضروری می‌تونی ادامه بدی"
-            >
-              ثبت و ادامهٔ تکمیل
-            </Button>
 
-            <Button
-              color="success"
-              className="text-white w-full"
-              isDisabled={!canSubmit} // و این خط
-              onPress={handleChangeProduct}
-            >
-              ثبت حداقلی
-            </Button>
-          </div>
-        ) : (
-          <Button
-            color="success"
-            className="text-white"
-            isDisabled={!canSubmit} // و این خط
-            onPress={handleChangeProduct}
-          >
-            ثبت تغییرات
-          </Button>
-        )}
+        <Button
+          color="success"
+          className="text-white"
+          onPress={handleChangeProduct}
+        >
+          ثبت تغییرات
+        </Button>
       </section>
       <AddNewCategoryModal
         isOpen={isOpenCategory}

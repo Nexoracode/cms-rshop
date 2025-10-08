@@ -4,19 +4,17 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
-  Button,
   useDisclosure,
   Checkbox,
   Tooltip,
 } from "@heroui/react";
-import { RiDeleteBin5Line, RiDeleteBinLine } from "react-icons/ri";
-import { LuScrollText } from "react-icons/lu";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
 import { TbEdit } from "react-icons/tb";
-import { IoEyeOffOutline, IoSparklesOutline } from "react-icons/io5";
+import { IoSparklesOutline } from "react-icons/io5";
 
 type Props = {
   id: number;
@@ -117,7 +115,7 @@ const ProductBox: React.FC<Props> = ({
                 alt="product cover"
                 className={`object-cover w-full sm:w-[130px] h-[188px] sm:h-[110px] rounded-xl`}
                 src={
-                  "https://cloudinary-marketing-res.cloudinary.com/image/upload/w_1300/q_auto/f_auto/hiking_dog_mountain"
+                  pathImg
                 }
               />
               {!isVisible ? (

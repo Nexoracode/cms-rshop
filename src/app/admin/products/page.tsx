@@ -33,7 +33,6 @@ const Products = () => {
     const n = Number(p ?? 1);
     return Number.isFinite(n) && n > 0 ? n : 1;
   }, [searchParams?.toString()]);
-  console.log("DDDDDD", page);
 
   // sortBy
   const sortBy = useMemo(() => {
@@ -91,8 +90,6 @@ const Products = () => {
   } = useDisclosure();
 
   const handleBulkUpdateProducts = (changed: any) => {
-    console.log({ ids: selectedItems });
-
     bulkUpdateProducts.mutate(
       {
         ids: selectedItems,
@@ -105,9 +102,6 @@ const Products = () => {
   };
 
   const deleteGroupProducts = () => {
-    console.log({ ids: selectedItems });
-    console.log(selectedItems);
-
     deleteGroupProduct.mutate(
       { ids: selectedItems },
       {

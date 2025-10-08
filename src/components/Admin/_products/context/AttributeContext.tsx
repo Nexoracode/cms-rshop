@@ -20,10 +20,6 @@ const AttributeContext = createContext<AttributeContextType | undefined>(
 export const AttributeProvider = ({ children }: { children: ReactNode }) => {
   const [attrInfos, setAttrInfos] = useState<any[]>([]);
 
-  useEffect(() => {
-    console.log("CONTEXT", attrInfos);
-  }, [attrInfos]);
-
   return (
     <AttributeContext.Provider value={{ attrInfos, setAttrInfos }}>
       {children}
