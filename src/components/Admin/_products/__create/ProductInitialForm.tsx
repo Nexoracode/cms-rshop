@@ -38,6 +38,7 @@ import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import FieldErrorText from "@/components/Helper/FieldErrorText";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
+import TextInputWithError from "@/components/Helper/TextInputWithError";
 
 const TextEditor = dynamic(() => import("../../TextEditor"), {
   ssr: false,
@@ -280,20 +281,13 @@ const ProductInitialForm = () => {
               isActiveError={isSubmitAttempted && !fieldErrors.hasMedia}
             />
             <hr />
-            <Input
-              isRequired
+            <TextInputWithError
               label="نام"
-              labelPlacement="outside"
               placeholder="نام محصول را وارد کنید"
-              value={product?.name}
-              onValueChange={(name) =>
-                setProduct((prev) => {
-                  if (!prev) return prev;
-                  return { ...prev, name };
-                })
-              }
-              isInvalid={isSubmitAttempted && !fieldErrors.hasName}
-              errorMessage={<FieldErrorText error="نام محصول الزامی است." />}
+              value={product.name}
+              onChange={(name) => setProduct((p) => ({ ...p, name }))}
+              isRequired
+              isActiveError={isSubmitAttempted && !fieldErrors.hasName}
             />
 
             <PriceWithDiscountInput

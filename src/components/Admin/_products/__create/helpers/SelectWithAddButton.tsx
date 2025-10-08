@@ -46,12 +46,14 @@ const SelectWithAddButton: FC<Props> = ({
           placeholder={placeholder}
           selectedKeys={[String(selectedId)]}
           onChange={(e) => onChange(e.target.value)}
+          isInvalid={isActiveError && isRequired && !selectedId}
           errorMessage={
-            isRequired && !selectedId && (
-              <FieldErrorText
-                error={`${label} الزامی است`}
-              />
-            )
+            isRequired &&
+            !selectedId && <FieldErrorText error={`${label} الزامی است`} />
+          }
+          description={
+            isRequired &&
+            !selectedId && <FieldErrorText error={`${label} الزامی است.`} />
           }
         >
           {options.length ? (
@@ -62,13 +64,6 @@ const SelectWithAddButton: FC<Props> = ({
             <SelectItem isDisabled>آیتمی موجود نیست</SelectItem>
           )}
         </Select>
-        <div className="mt-1">
-          {isRequired && isActiveError && !selectedId && (
-            <FieldErrorText
-              error={`${label} الزامی است`}
-            />
-          )}
-        </div>
       </div>
       <p
         className={`${
