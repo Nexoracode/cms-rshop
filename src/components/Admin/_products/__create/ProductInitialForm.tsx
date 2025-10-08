@@ -44,7 +44,7 @@ const TextEditor = dynamic(() => import("../../TextEditor"), {
 
 const initProduct: Product = {
   name: "",
-  price: 0,
+  price: 10000,
   stock: 0,
   is_limited_stock: false,
   category_id: 0,

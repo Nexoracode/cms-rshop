@@ -10,9 +10,10 @@ type Props = {
   label?: string;
   placeholder?: string;
   suffix?: string; // مثلا "تومان"
-  required?: boolean;
+  isRequired?: boolean;
   min?: number;
   max?: number;
+  isActiveError: boolean;
 };
 
 function normalizeDigits(str: string) {
@@ -56,9 +57,10 @@ export default function PriceNumberInput({
   label = "قیمت",
   placeholder = "10,000",
   suffix = "تومان",
-  required,
-  min,
+  isRequired = true,
+  min = 0,
   max,
+  isActiveError,
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [display, setDisplay] = useState<string>("");
@@ -120,7 +122,7 @@ export default function PriceNumberInput({
       label={label}
       labelPlacement="outside"
       placeholder={placeholder}
-      isRequired={required}
+      isRequired={isRequired}
       value={display}
       onChange={handleChange}
       endContent={
@@ -128,12 +130,13 @@ export default function PriceNumberInput({
           <span className="text-default-400 text-small">{suffix}</span>
         </div>
       }
-      // جلوگیری از autocomplete موبایل
       autoComplete="off"
+      isInvalid={isRequired && isActiveError && (!value || +value < min)}
       errorMessage={
-        <FieldErrorText error={!value ? "قیمت الزامی است" : null} />
+        isRequired && isActiveError && (!value || +value < min) ? (
+          <FieldErrorText error={`قیمت الزامی است`} />
+        ) : undefined
       }
-      description={<FieldErrorText error={!value ? "قیمت الزامی است" : null} />}
     />
   );
 }
