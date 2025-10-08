@@ -1,4 +1,3 @@
-// components/Helper/DebouncedSearchURL.tsx
 "use client";
 
 import { Input } from "@heroui/react";
@@ -26,16 +25,22 @@ const DebouncedSearchURL: React.FC<Props> = ({ placeholder }) => {
   useEffect(() => {
     const t = setTimeout(() => {
       const p = new URLSearchParams(searchParams.toString());
-      // reset page
-      p.set("page", "1");
+      const currentSearch = searchParams.get("search") ?? "";
 
-      if (value.trim()) {
-        p.set("search", value.trim());
-      } else {
-        p.delete("search");
+      const searchChanged = currentSearch.trim() !== value.trim();
+
+      if (searchChanged) {
+        if (value.trim()) {
+          p.set("search", value.trim());
+        } else {
+          p.delete("search");
+        }
+
+        // فقط در صورت تغییر سرچ، page رو ریست کن
+        if (p.has("page")) p.set("page", "1");
+
+        router.replace(`${pathname}?${p.toString()}`, { scroll: false });
       }
-
-      router.replace(`${pathname}?${p.toString()}`);
     }, 500);
 
     return () => clearTimeout(t);

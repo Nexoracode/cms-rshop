@@ -121,7 +121,7 @@ const Products = () => {
           icon={<AiOutlineShop className="text-3xl" />}
           isLoading={isLoading}
           datas={products}
-          onAdd={() => router.replace("/admin/products/create?type=infos")}
+          onAdd={() => router.push("/admin/products/create?type=infos")}
           isExistItems={!!products?.data?.items?.length}
           searchInp={isFilteredView}
         >
