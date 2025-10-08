@@ -46,7 +46,6 @@ const SelectWithAddButton: FC<Props> = ({
           placeholder={placeholder}
           selectedKeys={[String(selectedId)]}
           onChange={(e) => onChange(e.target.value)}
-          isInvalid={isActiveError && isRequired && !selectedId}
           errorMessage={
             isRequired &&
             !selectedId && <FieldErrorText error={`${label} الزامی است`} />

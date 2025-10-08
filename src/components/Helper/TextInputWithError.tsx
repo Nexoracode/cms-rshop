@@ -27,7 +27,6 @@ export default function TextInputWithError({
       placeholder={placeholder}
       value={value}
       onValueChange={onChange}
-      isInvalid={isActiveError && isRequired && !value.trim()}
       errorMessage={
         isRequired &&
         !value.trim() && <FieldErrorText error={`${label} الزامی است.`} />
