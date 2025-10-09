@@ -118,7 +118,7 @@ const Products = () => {
         <ProductsFilter />
         <CardContent
           title="لیست محصولات"
-          icon={<BsShop className="text-3xl" />}
+          icon={<BsShop className="text-2xl" />}
           isLoading={isLoading}
           datas={products}
           onAdd={() => router.push("/admin/products/create?type=infos")}

@@ -21,7 +21,7 @@ const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
       </div>
 
       <div
-        className="bg-sky-100 text-sky-500 rounded-xl p-2 px-4 cursor-pointer"
+        className="bg-sky-100 text-sky-600 rounded-xl p-2 px-4 cursor-pointer"
         onClick={onAdd}
       >
         + افزودن
