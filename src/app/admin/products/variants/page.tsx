@@ -18,7 +18,7 @@ const Variants = () => {
           <BoxHeader
             title="مدیریت ویژگی ها"
             color="text-blue-700 bg-blue-700/10"
-            icon={<MdOutlineCategory className="text-3xl" />}
+            icon={<MdOutlineCategory className="text-2xl" />}
           />
           <CardBody className="-mt-12 p-0 pt-4">
             <AttributesContent isActiveHeader={false} isDisabledEdit={false} />
