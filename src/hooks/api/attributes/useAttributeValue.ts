@@ -59,7 +59,13 @@ export const useReorderAttributeValue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, display_order }: { id: number; display_order: number }) => {
+    mutationFn: async ({
+      id,
+      display_order,
+    }: {
+      id: number;
+      display_order: number;
+    }) => {
       return fetcher({
         route: `/attribute-value/${id}/order`,
         method: "PATCH",
@@ -80,7 +86,7 @@ export const useDeleteAttributeValue = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      fetcher({
+      return fetcher({
         route: `/attribute-value/${id}`,
         method: "DELETE",
         isActiveToast: true,
@@ -91,6 +97,7 @@ export const useDeleteAttributeValue = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["attribute-values"],
+        exact: false,
       });
     },
   });

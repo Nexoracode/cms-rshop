@@ -27,9 +27,9 @@ const AddNewAttributeValue: React.FC<Props> = ({
   isDisabledEdit,
 }) => {
   const [type, setType] = useState<"edit" | "add">("add");
-  const [selectedAttrValueId, setSelectedAttrValueId] = useState<number | undefined>(
-    undefined
-  );
+  const [selectedAttrValueId, setSelectedAttrValueId] = useState<
+    number | undefined
+  >(undefined);
 
   // hooks
   const deleteAttributeValue = useDeleteAttributeValue();
@@ -50,7 +50,12 @@ const AddNewAttributeValue: React.FC<Props> = ({
 
   const handleDeleteAttrValue = () => {
     if (!selectedAttrValueId) return;
-    deleteAttributeValue.mutate(selectedAttrValueId);
+    deleteAttributeValue.mutate(selectedAttrValueId, {
+      onSuccess: () => {
+        setSelectedAttrValueId(undefined);
+        onChange([]);
+      },
+    });
   };
 
   return (
@@ -154,8 +159,8 @@ const AddNewAttributeValue: React.FC<Props> = ({
         onConfirm={handleDeleteAttrValue}
       >
         <p className="leading-7 text-danger-600">
-          با حذف مقدار ویژگی انتخاب‌شده دیگر قابل بازگردانی نیست!  
-          آیا از حذف اطمینان دارید؟
+          با حذف مقدار ویژگی انتخاب‌شده دیگر قابل بازگردانی نیست! آیا از حذف
+          اطمینان دارید؟
         </p>
       </DynamicModal>
     </>
