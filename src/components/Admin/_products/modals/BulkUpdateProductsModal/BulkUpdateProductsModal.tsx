@@ -6,11 +6,13 @@ import { Button } from "@heroui/react";
 import { AiOutlineEye } from "react-icons/ai";
 import { TbAlignBoxRightStretch, TbShoppingCartDiscount } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
+import { TbCategory } from "react-icons/tb";
 //
 import BulkVisibilityModal from "./BulkVisibilityModal";
 import BulkDiscountModal from "./BulkDiscountModal";
 import BulkPriceModal from "./BulkPriceModal";
 import DynamicModal from "@/components/Helper/DynamicModal";
+import BulkCategoryModal from "./BulkCategoryModal";
 
 type Props = {
   isOpen: boolean;
@@ -35,6 +37,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
   const [isVisibilityModalOpen, setIsVisibilityModalOpen] = useState(false);
   const [isDiscountModalOpen, setIsDiscountModalOpen] = useState(false);
   const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const headerNote = useMemo(() => {
     if (selectedCount <= 0) return "محصولی انتخاب نشده است";
@@ -60,7 +63,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
     <>
       <DynamicModal
         isActiveFooter={false}
-        icon={<TbAlignBoxRightStretch size={22}/>}
+        icon={<TbAlignBoxRightStretch size={22} />}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         title={
@@ -106,6 +109,15 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
           >
             قیمت گروهی
           </Button>
+          <Button
+            color="success"
+            variant="flat"
+            startContent={<TbCategory size={18} />}
+            onPress={() => setIsCategoryModalOpen(true)}
+            isDisabled={selectedCount <= 0}
+          >
+            دسته‌بندی گروهی
+          </Button>
         </div>
       </DynamicModal>
 
@@ -126,6 +138,13 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
       <BulkPriceModal
         isOpen={isPriceModalOpen}
         onOpenChange={setIsPriceModalOpen}
+        selectedCount={selectedCount}
+        onConfirm={handleChildConfirm}
+      />
+
+      <BulkCategoryModal
+        isOpen={isCategoryModalOpen}
+        onOpenChange={setIsCategoryModalOpen}
         selectedCount={selectedCount}
         onConfirm={handleChildConfirm}
       />
