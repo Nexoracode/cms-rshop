@@ -6,7 +6,6 @@ import {
   Card,
   CardBody,
   Checkbox,
-  Input,
   NumberInput,
   Select,
   SelectItem,
@@ -36,7 +35,6 @@ import {
 import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
-import FieldErrorText from "@/components/Helper/FieldErrorText";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/Helper/TextInputWithError";
 
