@@ -126,31 +126,37 @@ const Products = () => {
           searchInp={isFilteredView}
         >
           {selectedItems.length > 0 && (
-            <div className="flex mb-4 gap-2 px-4">
-              <Button
-                color="secondary"
-                variant="flat"
-                className="w-full"
-                onPress={onOpenBulk}
-              >
-                بروزرسانی گروهی
-              </Button>
-              <Button
-                color="default"
-                variant="flat"
-                className="w-full"
-                onPress={() => setSelectedItems([])}
-              >
-                لغو انتخاب
-              </Button>
-              <Button
-                color="danger"
-                variant="flat"
-                className="w-full"
-                onPress={onOpen}
-              >
-                حذف محصولات انتخاب شده
-              </Button>
+            <div className="flex flex-col sm:flex-row sm:items-center mb-4 -mt-2 justify-between gap-4 text-start p-2">
+              <p className="pr-2">عملیات</p>
+              <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
+                <Button
+                  color="danger"
+                  variant="flat"
+                  className="w-full sm:w-fit"
+                  onPress={onOpen}
+                  size="sm"
+                >
+                  حذف محصولات
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="flat"
+                  className="w-full sm:w-fit"
+                  onPress={onOpenBulk}
+                  size="sm"
+                >
+                  بروزرسانی گروهی
+                </Button>
+                <Button
+                  color="default"
+                  variant="flat"
+                  className="w-full sm:w-fit"
+                  onPress={() => setSelectedItems([])}
+                  size="sm"
+                >
+                  لغو انتخاب
+                </Button>
+              </div>
             </div>
           )}
           <div className="flex flex-col justify-center items-center gap-4">
@@ -166,7 +172,7 @@ const Products = () => {
               );
               const originalPrice =
                 discountValue > 0 ? product.price : undefined;
-              
+
               return (
                 <ProductBox
                   key={product.id}
