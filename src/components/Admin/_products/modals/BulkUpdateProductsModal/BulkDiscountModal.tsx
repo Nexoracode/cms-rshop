@@ -51,7 +51,7 @@ const BulkDiscountModal: React.FC<Props> = ({
       icon={<TbShoppingCartDiscount size={22} className="text-yellow-500" />}
       title={
         <BulkModalHeader
-          title="تخفیف گروهی"
+          title="ویرایش گروهی تخفیف"
           selectedCount={selectedCount}
         />
       }
