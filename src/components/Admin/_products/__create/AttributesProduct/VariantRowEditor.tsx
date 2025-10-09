@@ -1,9 +1,8 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Card, CardBody, Input } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
-import { Stock } from "@/types";
 import { Variant } from "@/types/attributes";
 import { useSearchParams } from "next/navigation";
 import PriceNumberInput from "../helpers/PriceInput";
@@ -13,32 +12,55 @@ type Props = {
   variantName: string;
   onHandleSubmit?: (data: Variant) => void;
   defaultValues: Variant | null;
+  /** از والد می‌آد تا با کلیک دکمه ثبت، استایل خطا روشن بشه */
+  isSubmitAttempted?: boolean;
+  /** هر بار اعتبارسنجی تغییر کرد، نتیجه رو به والد بفرست */
+  onValidityChange?: (
+    id: number,
+    valid: { hasPrice: boolean; hasStock: boolean; hasSku: boolean }
+  ) => void;
+  /** برای اسکرول به کارت خطادار */
+  cardId?: string;
 };
 
 const VariantRowEditorComponent: React.FC<Props> = ({
   variantName,
   onHandleSubmit,
   defaultValues,
+  isSubmitAttempted = false,
+  onValidityChange,
+  cardId,
 }) => {
-  const [discountType, setDiscountType] = useState<Stock>("percent");
   const sp = useSearchParams();
   const page = +(sp.get("edit_id") ?? 1);
+
   const [formData, setFormData] = useState<Variant>(
-    defaultValues ?? {
-      id: 0,
-      price: 10000,
-      stock: 0,
-      sku: "",
-    }
+    defaultValues ?? { id: 0, price: 10000, stock: 0, sku: "" }
   );
 
   useEffect(() => {
-    if (defaultValues) {
-      setFormData(defaultValues);
-      setDiscountType(defaultValues.discount_amount ? "money" : "percent");
-    }
+    if (defaultValues) setFormData(defaultValues);
   }, [defaultValues]);
 
+  // ===== Validation
+  const hasPrice = useMemo(() => Number(formData.price) > 0, [formData.price]);
+  const hasSku = useMemo(
+    () => (formData.sku ?? "").trim().length > 0,
+    [formData.sku]
+  );
+  const hasStock = useMemo(
+    () =>
+      formData.stock !== null &&
+      formData.stock !== undefined &&
+      Number(formData.stock) >= 0,
+    [formData.stock]
+  );
+
+  useEffect(() => {
+    onValidityChange?.(+formData.id, { hasPrice, hasStock, hasSku });
+  }, [hasPrice, hasStock, hasSku, formData.id]);
+
+  // ===== Emit up-to-date payload to parent
   useEffect(() => {
     const { price, stock, sku, id, discount_amount, discount_percent } =
       formData;
@@ -46,7 +68,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
     const obj = {
       product_id: page,
       id,
-      price,
+      price: +price,
       sku,
       stock: +stock,
       ...(discount_percent
@@ -54,16 +76,20 @@ const VariantRowEditorComponent: React.FC<Props> = ({
         : discount_amount
         ? { discount_amount: +discount_amount }
         : {}),
-      //attributes: (formData as any).attributes
     };
 
-    onHandleSubmit?.(obj);
+    onHandleSubmit?.(obj as Variant);
   }, [formData, variantName]);
 
-  console.log(formData.discount_percent);
+  const isCardInvalid =
+    isSubmitAttempted && (!hasPrice || !hasSku || !hasStock);
 
   return (
-    <Card className="w-full border shadow-md transition-all hover:scale-105">
+    <Card
+      id={cardId}
+      data-error={isCardInvalid}
+      className="w-full border shadow-md transition-all hover:scale-105"
+    >
       <BoxHeader
         title={variantName}
         color="bg-purple-700/10 text-purple-700"
@@ -71,25 +97,28 @@ const VariantRowEditorComponent: React.FC<Props> = ({
         icon={<></>}
       />
       <CardBody className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3 text-right">
-          <PriceWithDiscountInput
-            price={formData.price}
-            discount_amount={formData.discount_amount ?? 0}
-            discount_percent={formData.discount_percent ?? 0}
-            onPriceChange={(price) =>
-              setFormData((prev) => ({ ...prev, price }))
-            }
-            onDiscountChange={(type, value) =>
-              setFormData((prev) => ({
-                ...prev,
-                discount_amount: type === "amount" ? +value : 0,
-                discount_percent: type === "percent" ? +value : 0,
-              }))
-            }
-            style="flex flex-col gap-4"
-          />
-        </div>
+        {/* قیمت + تخفیف */}
+        <PriceWithDiscountInput
+          price={formData.price}
+          discount_amount={formData.discount_amount ?? 0}
+          discount_percent={formData.discount_percent ?? 0}
+          onPriceChange={(price) =>
+            setFormData((prev) => ({ ...prev, price: +price }))
+          }
+          onDiscountChange={(type, value) =>
+            setFormData((prev) => ({
+              ...prev,
+              discount_amount: type === "amount" ? +value : 0,
+              discount_percent: type === "percent" ? +value : 0,
+            }))
+          }
+          // اگر این پراپ رو پشتیبانی می‌کنه:
+          isActiveError={isSubmitAttempted && !hasPrice}
+          // در غیر این صورت می‌تونی کلاس خطا به wrapper بدی
+          style="flex flex-col gap-4"
+        />
 
+        {/* موجودی */}
         <PriceNumberInput
           label="موجودی"
           placeholder="مثلاً 100"
@@ -98,8 +127,10 @@ const VariantRowEditorComponent: React.FC<Props> = ({
           isRequired
           value={formData.stock}
           onChange={(stock) => setFormData((prev) => ({ ...prev, stock }))}
+          isActiveError={isSubmitAttempted && !hasStock}
         />
 
+        {/* کد انبار */}
         <Input
           isClearable
           isRequired
@@ -111,6 +142,10 @@ const VariantRowEditorComponent: React.FC<Props> = ({
             setFormData((prev) => ({ ...prev, sku: e.target.value }))
           }
           onClear={() => setFormData((prev) => ({ ...prev, sku: "" }))}
+          isInvalid={isSubmitAttempted && !hasSku}
+          errorMessage={
+            isSubmitAttempted && !hasSku ? "کد انبار الزامی است" : undefined
+          }
         />
       </CardBody>
     </Card>
@@ -118,5 +153,4 @@ const VariantRowEditorComponent: React.FC<Props> = ({
 };
 
 const VariantRowEditor = memo(VariantRowEditorComponent);
-
 export default VariantRowEditor;

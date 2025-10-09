@@ -16,9 +16,7 @@ import {
 import BoxHeader from "./helpers/BoxHeader";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
-import {
-  useUpdateVariantProduct,
-} from "@/hooks/api/attributes/useVariantProduct";
+import { useUpdateVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetOneProduct } from "@/hooks/api/products/useProduct";
 import { useAttributeContext } from "../context/AttributeContext";
@@ -33,6 +31,9 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { GoArrowUpRight } from "react-icons/go";
 import Link from "next/link";
 import { LuPlus } from "react-icons/lu";
+import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
+
+type VariantValidity = { hasPrice: boolean; hasStock: boolean; hasSku: boolean };
 
 const AttributesProducts = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -42,35 +43,32 @@ const AttributesProducts = () => {
   const sp = useSearchParams();
   const page = +(sp.get("edit_id") ?? 1);
   const { setAttrInfos } = useAttributeContext();
+
   const [variants, setVariants] = useState<any[]>([]);
-  ///
+  const [variantErrors, setVariantErrors] = useState<Record<number, VariantValidity>>({});
+  const [isVariantsSubmitAttempted, setIsVariantsSubmitAttempted] = useState(false);
+
   const [activeTab, setActiveTab] = useState<string>(
     searchParams.get("tab") ?? "variants"
   );
-  //? Api Calls
+
   const { data: productData } = useGetOneProduct(page);
   const updateVariantProductMutation = useUpdateVariantProduct();
 
   useEffect(() => {
     if (!productData?.data?.category_id) return;
-
     const params = new URLSearchParams(searchParams.toString());
     params.set("category_id", String(productData.data.category_id));
-
     router.replace(`${pathname}?${params.toString()}`);
   }, [productData?.data, router, pathname, searchParams]);
 
   useEffect(() => {
-    console.log("All Product Data =>", productData?.data);
-
     setVariants([]);
-
     let attrValues: any[] = [];
 
     if (productData?.data?.attribute_nodes) {
-      const nodeValues = productData.data.attribute_nodes.flatMap(
-        (group: any) =>
-          group.attributes.flatMap((attr: any) => attr.values ?? [])
+      const nodeValues = productData.data.attribute_nodes.flatMap((group: any) =>
+        group.attributes.flatMap((attr: any) => attr.values ?? [])
       );
       attrValues = [...attrValues, ...nodeValues];
     }
@@ -83,9 +81,24 @@ const AttributesProducts = () => {
     }
 
     setAttrInfos(attrValues);
-  }, [productData?.data]);
+  }, [productData?.data, setAttrInfos]);
 
   const updateVariantProduct = async () => {
+    setIsVariantsSubmitAttempted(true);
+
+    const currentVariants: any[] = productData?.data?.variants ?? [];
+
+    const invalid = currentVariants.filter((v) => {
+      const e = variantErrors[v.id];
+      return !e || !e.hasPrice || !e.hasStock || !e.hasSku;
+    });
+
+    if (invalid.length) {
+      toast.error("لطفاً فیلدهای الزامی واریانت‌های ناقص را تکمیل کنید.");
+      setTimeout(() => scrollToFirstErrorField(), 0);
+      return;
+    }
+
     Promise.all(
       variants.map((val) =>
         updateVariantProductMutation.mutateAsync({ id: val.id, data: val })
@@ -93,10 +106,11 @@ const AttributesProducts = () => {
     )
       .then(() => {
         toast.success("متغیرها با موفقیت بروزرسانی شدند");
+        setIsVariantsSubmitAttempted(false);
         router.push("/admin/products");
       })
       .catch((err) => {
-        toast.error("مشکلی در آپدیت یکی از واریانت‌ها پیش اومد");
+        toast.error("مشکلی در آپدیت یکی از واریانت‌ها پیش آمد");
         console.error(err);
       });
   };
@@ -142,18 +156,14 @@ const AttributesProducts = () => {
               color="secondary"
               variant="bordered"
               fullWidth
-              classNames={{
-                tabList: "flex-wrap md:flex-nowrap mb-4",
-              }}
+              classNames={{ tabList: "flex-wrap md:flex-nowrap mb-4" }}
               selectedKey={activeTab}
               onSelectionChange={(key) => {
                 const k = String(key);
                 setActiveTab(k);
-                const params = new URLSearchParams(searchParams.toString()); // ← کپی قابل‌نوشتن
+                const params = new URLSearchParams(searchParams.toString());
                 params.set("tab", k);
-                router.replace(`${pathname}?${params.toString()}`, {
-                  scroll: false,
-                });
+                router.replace(`${pathname}?${params.toString()}`, { scroll: false });
               }}
             >
               {/* تب 1: لیست متغیرها */}
@@ -170,18 +180,24 @@ const AttributesProducts = () => {
                   show={!productData?.data?.variants?.length}
                   empty="هنوز متغیری انتخاب نکرده اید!!"
                 >
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  {/* این ظرف به عنوان scroll-parent مارک می‌شود */}
+                  <div
+                    className="grid grid-cols-1 gap-6 md:grid-cols-2"
+                    data-scroll-parent="true"
+                  >
                     {productData?.data?.variants?.length
                       ? productData.data.variants.map((variant: any) => (
                           <VariantRowEditor
                             key={variant.id}
                             variantName={variant?.name}
-                            onHandleSubmit={(data) =>
-                              setVariants((prev) =>
-                                replaceOrAddById(prev, data)
-                              )
-                            }
                             defaultValues={variant}
+                            onHandleSubmit={(data) =>
+                              setVariants((prev) => replaceOrAddById(prev, data))
+                            }
+                            isSubmitAttempted={isVariantsSubmitAttempted}
+                            onValidityChange={(id, valid) =>
+                              setVariantErrors((prev) => ({ ...prev, [id]: valid }))
+                            }
                           />
                         ))
                       : null}
@@ -221,7 +237,7 @@ const AttributesProducts = () => {
                 </SectionCard>
               </Tab>
 
-              {/* تب 3: لیست ویژگی‌ها (specifications tree) */}
+              {/* تب 3: لیست ویژگی‌ها */}
               <Tab
                 key="attributes"
                 title={
