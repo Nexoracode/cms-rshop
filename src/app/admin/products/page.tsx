@@ -17,6 +17,7 @@ import DynamicModal from "@/components/Helper/DynamicModal";
 import CardContent from "@/components/Admin/CardContent";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
+import { Product } from "@/components/Admin/_products/types/create-product";
 
 const Products = () => {
   const router = useRouter();
@@ -166,14 +167,14 @@ const Products = () => {
               );
               const originalPrice =
                 discountValue > 0 ? product.price : undefined;
-
+              
               return (
                 <ProductBox
                   key={product.id}
                   id={product.id}
-                  created_at={product.created_at.slice(0, 10)}
                   title={product.name}
                   pathImg={product.media_pinned.url}
+                  isSameDayShipping={product?.is_same_day_shipping}
                   price={finalPrice}
                   originalPrice={originalPrice}
                   isVisible={product.is_visible}

@@ -13,7 +13,7 @@ import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
-import { TbEdit } from "react-icons/tb";
+import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 
 type Props = {
@@ -23,7 +23,6 @@ type Props = {
   onShowInfos: () => void;
   onShowVariant: () => void;
   varientsCount: string | number;
-  created_at: string;
   onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
   cancleRemove: any[];
   price: string | number;
@@ -31,11 +30,11 @@ type Props = {
   isVisible: boolean;
   category: string;
   isFeatured: boolean;
+  isSameDayShipping: boolean,
 };
 
 const ProductBox: React.FC<Props> = ({
   id,
-  created_at,
   title,
   onShowInfos,
   price,
@@ -48,6 +47,7 @@ const ProductBox: React.FC<Props> = ({
   isFeatured,
   originalPrice,
   category,
+  isSameDayShipping
 }) => {
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -175,6 +175,9 @@ const ProductBox: React.FC<Props> = ({
                     {isFeatured && (
                       <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
                     )}
+                    {isSameDayShipping ? (
+                      <TbTruckDelivery className="text-orange-500 text-xl" />
+                    ) : ""}
                   </div>
                   <p className="text-gray-600 text-[13px]">
                     موجودی {varientsCount}
