@@ -19,7 +19,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit, onDelete }) => {
   return (
     <Card
       key={brand.id}
-      className="cursor-auto shadow-lg border w-[235px]"
+      className="cursor-auto shadow-md border w-[235px]"
       shadow="sm"
     >
       <CardBody className="overflow-hidden p-0">

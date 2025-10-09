@@ -43,9 +43,9 @@ const Categories = () => {
           datas={categories}
           isExistItems={categories?.data?.length}
           isLoading={isLoading}
-          title="دسته بندی"
+          title="دسته بندی ها"
           onAdd={onOpenCategoryModal}
-          icon={<TbCategory2 className="text-3xl animate-pulse" />}
+          icon={<TbCategory2 className="text-2xl" />}
         >
           {/* ✅ فقط یک بار CategoryTree */}
           <CategoryTree

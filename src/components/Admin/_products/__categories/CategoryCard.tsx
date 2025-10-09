@@ -88,7 +88,7 @@ const CategoryNode: React.FC<{
       {/* کارت هر نود */}
       <Card
         className={`shadow-md border w-[270px] sm:w-full ${
-          isRoot ? "shadow-[0_3px_5px_skyblue]" : ""
+          isRoot ? "shadow-[0_0_2px_orange]" : ""
         }`}
       >
         <CardBody className="p-3">

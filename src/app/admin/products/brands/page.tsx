@@ -37,6 +37,11 @@ const BrandsProduct = () => {
     return s.length ? s : undefined;
   }, [searchParamsStr]);
 
+  const isFilteredView = !!(
+    search ||
+    sortBy?.length
+  );
+
   const { data: brands, isLoading } = useGetBrands({
     page,
     search,
@@ -68,8 +73,8 @@ const BrandsProduct = () => {
           isLoading={isLoading}
           title="لیست برندها"
           onAdd={onOpenBrandModal}
-          icon={<TbBrandArc className="text-3xl animate-pulse" />}
-          //searchInp={!!searchInp?.length}
+          icon={<TbBrandArc className="text-2xl" />}
+          searchInp={isFilteredView}
         >
           <div className="flex flex-wrap justify-center pr-2 gap-4">
             {brands?.data?.items?.map((b: any) => {
