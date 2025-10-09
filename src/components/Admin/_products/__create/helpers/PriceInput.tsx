@@ -13,7 +13,7 @@ type Props = {
   isRequired?: boolean;
   min?: number;
   max?: number;
-  isActiveError: boolean;
+  isActiveError?: boolean;
 };
 
 function normalizeDigits(str: string) {

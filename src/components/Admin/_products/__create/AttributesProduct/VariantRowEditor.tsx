@@ -3,7 +3,6 @@
 import { memo, useEffect, useState } from "react";
 import { Card, CardBody, Input } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
-import { MdOutlineCategory } from "react-icons/md";
 import { Stock } from "@/types";
 import { Variant } from "@/types/attributes";
 import { useSearchParams } from "next/navigation";
@@ -96,7 +95,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
           placeholder="مثلاً 100"
           suffix="عدد"
           min={0}
-          required
+          isRequired
           value={formData.stock}
           onChange={(stock) => setFormData((prev) => ({ ...prev, stock }))}
         />

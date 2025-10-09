@@ -13,12 +13,10 @@ import {
   TbSortAscendingSmallBig,
   TbSortDescendingShapes,
 } from "react-icons/tb";
-import HeaderAction from "./helpers/HeaderAction";
 import BoxHeader from "./helpers/BoxHeader";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import {
-  useDeleteVariant,
   useUpdateVariantProduct,
 } from "@/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

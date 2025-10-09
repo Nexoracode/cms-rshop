@@ -106,6 +106,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
               selectedId={selectedAttrValueId ?? ""}
               onChange={(id) => setSelectedAttrValueId(+id)}
               onAddNewClick={onOpenAdd}
+              isRequired={false}
             />
           </>
         ) : (
