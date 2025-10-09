@@ -5,7 +5,6 @@ import { Button, useDisclosure } from "@heroui/react";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import { useRouter, useSearchParams } from "next/navigation";
 // Icons
-import { AiOutlineShop } from "react-icons/ai";
 import {
   ProductSortBy,
   useBulkUpdateProducts,
@@ -17,7 +16,7 @@ import DynamicModal from "@/components/Helper/DynamicModal";
 import CardContent from "@/components/Admin/CardContent";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
-import { Product } from "@/components/Admin/_products/types/create-product";
+import { BsShop } from "react-icons/bs";
 
 const Products = () => {
   const router = useRouter();
@@ -119,7 +118,7 @@ const Products = () => {
         <ProductsFilter />
         <CardContent
           title="لیست محصولات"
-          icon={<AiOutlineShop className="text-3xl" />}
+          icon={<BsShop className="text-3xl" />}
           isLoading={isLoading}
           datas={products}
           onAdd={() => router.push("/admin/products/create?type=infos")}

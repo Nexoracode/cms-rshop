@@ -37,7 +37,7 @@ const SelectWithAddButton: FC<Props> = ({
         isRequired && isActiveError ? "items-start" : "items-center"
       }`}
     >
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col text-right">
         <Select
           isRequired={isRequired}
           labelPlacement="outside"
