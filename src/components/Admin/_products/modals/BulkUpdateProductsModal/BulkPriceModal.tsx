@@ -44,7 +44,7 @@ const BulkPriceModal: React.FC<Props> = ({
     <DynamicModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      icon={<BiMoneyWithdraw size={22} className="text-purple-500"/>}
+      icon={<BiMoneyWithdraw size={22} className="text-green-500"/>}
       title={
         <BulkModalHeader title="ویرایش گروهی قیمت" selectedCount={selectedCount} />
       }

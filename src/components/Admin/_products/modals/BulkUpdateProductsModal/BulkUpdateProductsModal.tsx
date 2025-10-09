@@ -81,11 +81,12 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
       >
         <div className="flex flex-col gap-4 mb-4">
           <Button
-            color="primary"
             variant="flat"
-            startContent={<AiOutlineEye size={18} />}
+            color="primary"
+            endContent={<AiOutlineEye size={20} />}
             onPress={() => setIsVisibilityModalOpen(true)}
             isDisabled={selectedCount <= 0}
+            className="flex justify-between"
           >
             وضعیت نمایش
           </Button>
@@ -93,28 +94,31 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
           <Button
             color="warning"
             variant="flat"
-            startContent={<TbShoppingCartDiscount size={18} />}
+            endContent={<TbShoppingCartDiscount size={20} />}
             onPress={() => setIsDiscountModalOpen(true)}
             isDisabled={selectedCount <= 0}
+            className="flex justify-between"
           >
             تخفیف گروهی
           </Button>
 
           <Button
-            color="secondary"
             variant="flat"
-            startContent={<BiMoneyWithdraw size={18} />}
+            color="success"
+            endContent={<BiMoneyWithdraw size={20} />}
             onPress={() => setIsPriceModalOpen(true)}
             isDisabled={selectedCount <= 0}
+            className="flex justify-between"
           >
             قیمت گروهی
           </Button>
           <Button
-            color="success"
             variant="flat"
-            startContent={<TbCategory size={18} />}
+            color="secondary"
+            endContent={<TbCategory size={20} />}
             onPress={() => setIsCategoryModalOpen(true)}
             isDisabled={selectedCount <= 0}
+            className="flex justify-between"
           >
             دسته‌بندی گروهی
           </Button>
