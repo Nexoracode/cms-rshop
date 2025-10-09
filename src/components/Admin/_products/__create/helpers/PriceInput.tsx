@@ -125,6 +125,7 @@ export default function PriceNumberInput({
       isRequired={isRequired}
       value={display}
       onChange={handleChange}
+      className="text-right"
       endContent={
         <div className="pointer-events-none flex items-center">
           <span className="text-default-400 text-small">{suffix}</span>

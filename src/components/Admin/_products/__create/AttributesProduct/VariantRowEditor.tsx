@@ -124,10 +124,9 @@ const VariantRowEditorComponent: React.FC<Props> = ({
           placeholder="مثلاً 100"
           suffix="عدد"
           min={0}
-          isRequired
+          isRequired={false}
           value={formData.stock}
           onChange={(stock) => setFormData((prev) => ({ ...prev, stock }))}
-          isActiveError={isSubmitAttempted && !hasStock}
         />
 
         {/* کد انبار */}
@@ -136,7 +135,7 @@ const VariantRowEditorComponent: React.FC<Props> = ({
           isRequired
           labelPlacement="outside"
           label="کد انبار"
-          className="bg-white rounded-xl"
+          className="bg-white rounded-xl text-right"
           value={formData.sku}
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, sku: e.target.value }))
