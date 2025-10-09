@@ -4,6 +4,7 @@ import { useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
 import BulkModalHeader from "./BulkModalHeader";
+import { TbShoppingCartDiscount } from "react-icons/tb";
 
 type DiscountType = "percent" | "amount";
 
@@ -47,6 +48,7 @@ const BulkDiscountModal: React.FC<Props> = ({
     <DynamicModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      icon={<TbShoppingCartDiscount size={22} className="text-yellow-500" />}
       title={
         <BulkModalHeader
           title="تخفیف گروهی"

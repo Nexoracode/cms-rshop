@@ -5,6 +5,7 @@ import { Select, SelectItem } from "@heroui/react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
 import BulkModalHeader from "./BulkModalHeader";
+import { BiMoneyWithdraw } from "react-icons/bi";
 
 type PriceMode = "set" | "increase" | "decrease";
 
@@ -43,6 +44,7 @@ const BulkPriceModal: React.FC<Props> = ({
     <DynamicModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      icon={<BiMoneyWithdraw size={22} className="text-purple-500"/>}
       title={
         <BulkModalHeader title="قیمت گروهی" selectedCount={selectedCount} />
       }

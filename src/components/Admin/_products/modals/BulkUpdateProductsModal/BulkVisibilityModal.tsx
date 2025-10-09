@@ -41,7 +41,7 @@ const BulkVisibilityModal: React.FC<Props> = ({
       onOpenChange={onOpenChange}
       title={
         <BulkModalHeader
-          title="تغییر گروهی وضعیت نمایش"
+          title="وضعیت نمایش"
           selectedCount={selectedCount}
         />
       }

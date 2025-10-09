@@ -31,6 +31,8 @@ type DynamicModalProps = {
   confirmVariant?: "flat" | "bordered" | "ghost" | "light" | "shadow" | "solid";
   placement?: "auto" | "center" | "top" | "bottom";
   isConfirmDisabled?: boolean;
+  isActiveFooter?: boolean;
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full"
 };
 
 const DynamicModal: React.FC<DynamicModalProps> = ({
@@ -47,9 +49,17 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
   placement = "auto",
   icon = <FiAlertCircle className="text-2xl text-orange-400" />,
   isConfirmDisabled = false,
+  isActiveFooter = true,
+  size= "md"
 }) => {
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement={placement}>
+    <Modal
+      dir="rtl"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      placement={placement}
+      size={size}
+    >
       <ModalContent>
         {(onClose) => (
           <>
@@ -57,37 +67,40 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
               <ModalHeader className="flex flex-col gap-1">
                 <div className="flex items-center gap-2 font-normal">
                   {icon}
-                  <p>{title}</p>
+                  <div>{title}</div>
                 </div>
               </ModalHeader>
             ) : null}
 
             <ModalBody className="leading-7">{children}</ModalBody>
+            {isActiveFooter ? (
+              <ModalFooter className="flex gap-2 justify-end">
+                <Button
+                  color="default"
+                  variant="flat"
+                  onPress={() => {
+                    onCancel?.();
+                    onClose();
+                  }}
+                >
+                  {cancelText}
+                </Button>
 
-            <ModalFooter className="flex gap-2 justify-end">
-              <Button
-                color="default"
-                variant="flat"
-                onPress={() => {
-                  onCancel?.();
-                  onClose();
-                }}
-              >
-                {cancelText}
-              </Button>
-
-              <Button
-                color={confirmColor}
-                variant={confirmVariant}
-                isDisabled={isConfirmDisabled}
-                onPress={() => {
-                  onConfirm();
-                  onClose();
-                }}
-              >
-                {confirmText}
-              </Button>
-            </ModalFooter>
+                <Button
+                  color={confirmColor}
+                  variant={confirmVariant}
+                  isDisabled={isConfirmDisabled}
+                  onPress={() => {
+                    onConfirm();
+                    onClose();
+                  }}
+                >
+                  {confirmText}
+                </Button>
+              </ModalFooter>
+            ) : (
+              ""
+            )}
           </>
         )}
       </ModalContent>
