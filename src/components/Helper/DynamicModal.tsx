@@ -40,7 +40,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
   confirmColor = "danger",
   confirmVariant = "flat",
   placement = "auto",
-  icon= <FiAlertCircle className="text-3xl text-yellow-500"/>
+  icon= <FiAlertCircle className="text-2xl text-orange-400"/>
 }) => {
   return (
     <Modal
@@ -54,7 +54,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
           <>
             {title ? (
               <ModalHeader className="flex flex-col gap-1">
-                <div className="flex items-center gap-2 font-normal">
+                <div className="flex text-orange-400 animate-bounce items-center gap-2 font-normal">
                   {icon}
                   <p>{title}</p>
                 </div>

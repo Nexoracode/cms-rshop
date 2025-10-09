@@ -49,11 +49,15 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
   const [discountType, setDiscountType] = useState<DiscountType>("percent");
   const [discountValue, setDiscountValue] = useState<number | null>(null);
 
-  const [priceMode, setPriceMode] = useState<"set" | "increase" | "decrease" | null>(null);
+  const [priceMode, setPriceMode] = useState<
+    "set" | "increase" | "decrease" | null
+  >(null);
   const [priceValue, setPriceValue] = useState<number | null>(null);
 
   // کدام آکوردئون‌ها باز باشند (اختیاری)
-  const [openKeys, setOpenKeys] = useState<Set<string>>(new Set(["visibility", "discount", "price"]));
+  const [openKeys, setOpenKeys] = useState<Set<string>>(
+    new Set(["visibility", "discount", "price"])
+  );
 
   const headerNote = useMemo(() => {
     if (selectedCount <= 0) return "محصولی انتخاب نشده است";
@@ -75,8 +79,10 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
     if (isFeatured !== null) payload.isFeatured = isFeatured;
 
     if (discountValue !== null && !Number.isNaN(discountValue)) {
-      if (discountType === "percent") payload.discountPercent = Number(discountValue);
-      if (discountType === "amount") payload.discountAmount = Number(discountValue);
+      if (discountType === "percent")
+        payload.discountPercent = Number(discountValue);
+      if (discountType === "amount")
+        payload.discountAmount = Number(discountValue);
     }
 
     if (priceMode && priceValue !== null && !Number.isNaN(priceValue)) {
@@ -110,7 +116,12 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="lg" placement="center">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      size="lg"
+      placement="center"
+    >
       <ModalContent>
         {() => (
           <>
@@ -125,14 +136,19 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
                 onSelectionChange={(keys) => setOpenKeys(new Set(keys as any))}
               >
                 {/* وضعیت نمایش */}
-                <AccordionItem key="visibility" title="وضعیت نمایش / ویژه">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <AccordionItem
+                  key="visibility"
+                  title="وضعیت نمایش / ویژه"
+                  className="relative"
+                >
+                  <div className="flex flex-col gap-4 mb-1">
                     <Select
-                      label="وضعیت نمایش در وبسایت"
                       labelPlacement="outside"
                       placeholder="انتخاب وضعیت"
                       selectedKeys={
-                        isVisible === null ? [] : [isVisible ? "visible" : "hidden"]
+                        isVisible === null
+                          ? []
+                          : [isVisible ? "visible" : "hidden"]
                       }
                       onSelectionChange={(keys) => {
                         const key = Array.from(keys)[0] as string | undefined;
@@ -144,56 +160,66 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
                       <SelectItem key="hidden">عدم نمایش</SelectItem>
                     </Select>
 
-                    <div className="flex items-end">
-                      <div className="flex flex-col gap-2">
-                        <Switch
-                          isSelected={isFeatured === true}
-                          onValueChange={(val) => setIsFeatured(val)}
-                        >
-                          افزودن به پیشنهاد ویژه
-                        </Switch>
-                        <Button size="sm" variant="light" onPress={() => setIsFeatured(null)}>
-                          بازنشانی به «بدون تغییر»
-                        </Button>
-                      </div>
-                    </div>
+                    <Switch
+                      isSelected={isFeatured === true}
+                      onValueChange={(val) => setIsFeatured(val)}
+                      size="sm"
+                    >
+                      افزودن به پیشنهاد ویژه
+                    </Switch>
+
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      className="absolute top-2.5 left-5"
+                      onPress={() => {
+                        setPriceMode(null);
+                        setPriceValue(null);
+                      }}
+                    >
+                      بازنشانی به حالت اول
+                    </Button>
                   </div>
                 </AccordionItem>
 
-                {/* تخفیف */}
-                <AccordionItem key="discount" title="تخفیف گروهی">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <AccordionItem
+                  className="relative"
+                  key="discount"
+                  title="تخفیف گروهی"
+                >
+                  <div className="mb-1">
                     <LabeledNumberWithUnitInput
-                      label="تخفیف"
+                      label=""
                       placeholder="10"
                       value={discountValue ?? undefined}
                       onValueChange={(val) => {
                         setDiscountValue(typeof val === "number" ? val : null);
                       }}
                       selectedKey={discountType}
-                      onSelectChange={(val) => setDiscountType(val as DiscountType)}
+                      onSelectChange={(val) =>
+                        setDiscountType(val as DiscountType)
+                      }
                       options={[
                         { key: "percent", title: "درصد" },
                         { key: "amount", title: "مبلغ ثابت" },
                       ]}
                     />
-                    <div className="flex items-end">
-                      <Button
-                        size="sm"
-                        variant="light"
-                        onPress={() => {
-                          setDiscountValue(null);
-                          setDiscountType("percent");
-                        }}
-                      >
-                        حذف تغییر تخفیف
-                      </Button>
-                    </div>
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      className="absolute top-2.5 left-5"
+                      onPress={() => {
+                        setPriceMode(null);
+                        setPriceValue(null);
+                      }}
+                    >
+                      بازنشانی به حالت اول
+                    </Button>
                   </div>
                 </AccordionItem>
 
                 {/* قیمت گروهی */}
-                <AccordionItem key="price" title="قیمت گروهی">
+                <AccordionItem key="price" title="قیمت گروهی" className="relative">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Select
                       label="حالت تغییر قیمت"
@@ -216,7 +242,9 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
 
                     <PriceNumberInput
                       value={priceValue ?? undefined}
-                      onChange={(val) => setPriceValue(typeof val === "number" ? val : null)}
+                      onChange={(val) =>
+                        setPriceValue(typeof val === "number" ? val : null)
+                      }
                       label="مقدار قیمت"
                       placeholder="10,000"
                       suffix="تومان"
@@ -225,18 +253,17 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
                     />
                   </div>
 
-                  <div className="mt-2">
-                    <Button
-                      size="sm"
-                      variant="light"
-                      onPress={() => {
-                        setPriceMode(null);
-                        setPriceValue(null);
-                      }}
-                    >
-                      حذف تغییر قیمت
-                    </Button>
-                  </div>
+                  <Button
+                    size="sm"
+                    variant="flat"
+                    className="absolute top-2.5 left-5"
+                    onPress={() => {
+                      setPriceMode(null);
+                      setPriceValue(null);
+                    }}
+                  >
+                    بازنشانی به حالت اول
+                  </Button>
                 </AccordionItem>
               </Accordion>
             </ModalBody>
@@ -245,7 +272,11 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
               <Button variant="light" onPress={handleCancel}>
                 انصراف
               </Button>
-              <Button color="primary" onPress={handleConfirm} isDisabled={selectedCount <= 0}>
+              <Button
+                color="primary"
+                onPress={handleConfirm}
+                isDisabled={selectedCount <= 0}
+              >
                 اعمال تغییرات
               </Button>
             </ModalFooter>

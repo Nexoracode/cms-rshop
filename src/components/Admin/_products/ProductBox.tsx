@@ -92,7 +92,7 @@ const ProductBox: React.FC<Props> = ({
               color="primary"
               showArrow
               placement="left"
-              content="انتخاب محصول (حذف گروهی)"
+              content="انتخاب محصول"
               className="text-white"
             >
               <div className="absolute bg-sky-500/30 pr-3 pl-0.5 py-2 rounded-xl z-10">
