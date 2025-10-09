@@ -13,12 +13,14 @@ import { FiAlertCircle } from "react-icons/fi";
 
 type DynamicModalProps = {
   isOpen: boolean;
-  onOpenChange: () => void;
+  onOpenChange: (open: boolean) => void;
   title?: React.ReactNode;
   children?: React.ReactNode;
   confirmText?: string;
+  cancelText?: string;
   onConfirm: () => void;
-  icon?: React.ReactNode
+  onCancel?: () => void;
+  icon?: React.ReactNode;
   confirmColor?:
     | "danger"
     | "default"
@@ -28,48 +30,56 @@ type DynamicModalProps = {
     | "warning";
   confirmVariant?: "flat" | "bordered" | "ghost" | "light" | "shadow" | "solid";
   placement?: "auto" | "center" | "top" | "bottom";
+  isConfirmDisabled?: boolean;
 };
 
 const DynamicModal: React.FC<DynamicModalProps> = ({
   isOpen,
   onOpenChange,
-  title= "توجه",
+  title = "توجه",
   children,
-  confirmText = "حذف",
+  confirmText = "تأیید",
+  cancelText = "لغو",
   onConfirm,
-  confirmColor = "danger",
+  onCancel,
+  confirmColor = "primary",
   confirmVariant = "flat",
   placement = "auto",
-  icon= <FiAlertCircle className="text-2xl text-orange-400"/>
+  icon = <FiAlertCircle className="text-2xl text-orange-400" />,
+  isConfirmDisabled = false,
 }) => {
   return (
-    <Modal
-      dir="rtl"
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      placement={placement}
-    >
+    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange} placement={placement}>
       <ModalContent>
         {(onClose) => (
           <>
             {title ? (
               <ModalHeader className="flex flex-col gap-1">
-                <div className="flex text-orange-400 animate-bounce items-center gap-2 font-normal">
+                <div className="flex items-center gap-2 font-normal">
                   {icon}
                   <p>{title}</p>
                 </div>
               </ModalHeader>
-            ) : (
-              ""
-            )}
+            ) : null}
+
             <ModalBody className="leading-7">{children}</ModalBody>
+
             <ModalFooter className="flex gap-2 justify-end">
-              <Button color="default" variant="flat" onPress={onClose}>
-                لغو
+              <Button
+                color="default"
+                variant="flat"
+                onPress={() => {
+                  onCancel?.();
+                  onClose();
+                }}
+              >
+                {cancelText}
               </Button>
+
               <Button
                 color={confirmColor}
                 variant={confirmVariant}
+                isDisabled={isConfirmDisabled}
                 onPress={() => {
                   onConfirm();
                   onClose();
