@@ -16,8 +16,8 @@ import {
 } from "@heroui/react";
 
 // کامپوننت‌های آماده خودت
-import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUnitInput";
-import PriceNumberInput from "../__create/helpers/PriceInput";
+import LabeledNumberWithUnitInput from "../../__create/helpers/LabeledNumberWithUnitInput";
+import PriceNumberInput from "../../__create/helpers/PriceInput";
 
 type DiscountType = "percent" | "amount";
 

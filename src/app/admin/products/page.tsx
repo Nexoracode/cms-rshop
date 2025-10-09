@@ -16,7 +16,7 @@ import { useMemo, useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CardContent from "@/components/Admin/CardContent";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
-import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal";
+import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
 
 const Products = () => {
   const router = useRouter();
