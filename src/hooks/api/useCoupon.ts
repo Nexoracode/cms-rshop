@@ -37,15 +37,21 @@ export type CouponSortBy = Array<
 type GetCouponsParams = {
   page?: number;
   sortBy?: CouponSortBy;
+  search?: string;
 };
 
-export const useGetCoupons = ({ page = 1, sortBy }: GetCouponsParams = {}) => {
+export const useGetCoupons = ({
+  page = 1,
+  sortBy,
+  search,
+}: GetCouponsParams = {}) => {
   return useQuery({
-    queryKey: ["all-coupons", page, sortBy],
+    queryKey: ["all-coupons", page, sortBy, search],
     queryFn: () => {
       const params: Record<string, any> = { page };
 
       if (sortBy) params.sortBy = sortBy;
+      if (search) params.search = search;
 
       const qs = buildQueryString(params);
 

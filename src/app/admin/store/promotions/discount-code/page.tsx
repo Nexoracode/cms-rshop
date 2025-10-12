@@ -6,7 +6,11 @@ import BackToPage from "@/components/Helper/BackToPage";
 import CardContent from "@/components/Admin/CardContent";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CouponsFilter from "@/components/Admin/_store/__promotions/DiscountCode/CouponsFilter";
-import { CouponSortBy, useDeleteCoupon, useGetCoupons } from "@/hooks/api/useCoupon";
+import {
+  CouponSortBy,
+  useDeleteCoupon,
+  useGetCoupons,
+} from "@/hooks/api/useCoupon";
 import {
   Table,
   TableHeader,
@@ -31,12 +35,23 @@ const Discount = () => {
     return Number.isFinite(n) && n > 0 ? n : 1;
   }, [searchParams?.toString()]);
 
+  // search & searchBy
+  const search = useMemo(() => {
+    const s = searchParams.get("search")?.trim();
+    return s ? s : undefined;
+  }, [searchParams?.toString()]);
+
   const sortBy = useMemo(() => {
     const sorts = searchParams.getAll("sortBy") as CouponSortBy;
     return sorts.length ? sorts : undefined;
   }, [searchParams?.toString()]);
 
-  const { data: coupons, isLoading } = useGetCoupons({ page, sortBy });
+  const { data: coupons, isLoading } = useGetCoupons({ page, sortBy, search });
+
+  const isFilteredView = !!(
+    search ||
+    sortBy?.length
+  );
 
   // delete modal state
   const [deleteId, setDeleteId] = useState<number | null>(null);
@@ -67,6 +82,7 @@ const Discount = () => {
           datas={coupons}
           onAdd={() => router.push("/admin/store/coupons/create")}
           isExistItems={!!coupons?.data?.items?.length}
+          searchInp={isFilteredView}
         >
           <Table
             aria-label="Coupons table"
