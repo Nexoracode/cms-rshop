@@ -38,27 +38,31 @@ type GetCouponsParams = {
   page?: number;
   sortBy?: CouponSortBy;
   search?: string;
+  filter?: Record<string, string[]>; // ← NEW
 };
 
 export const useGetCoupons = ({
   page = 1,
   sortBy,
   search,
+  filter,
 }: GetCouponsParams = {}) => {
   return useQuery({
-    queryKey: ["all-coupons", page, sortBy, search],
+    queryKey: ["all-coupons", page, sortBy, search, filter],
     queryFn: () => {
       const params: Record<string, any> = { page };
-
       if (sortBy) params.sortBy = sortBy;
       if (search) params.search = search;
 
-      const qs = buildQueryString(params);
+      if (filter) {
+        for (const key in filter) {
+          const values = filter[key];
+          if (values?.length) params[`filter.${key}`] = values;
+        }
+      }
 
-      return fetcher({
-        route: `/coupon?${qs}`,
-        isActiveToast: false,
-      });
+      const qs = buildQueryString(params);
+      return fetcher({ route: `/coupon?${qs}`, isActiveToast: false });
     },
   });
 };

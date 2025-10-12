@@ -35,6 +35,19 @@ const Discount = () => {
     return Number.isFinite(n) && n > 0 ? n : 1;
   }, [searchParams?.toString()]);
 
+  // Filters from URL -> Record<string, string[]>
+  const filter = useMemo(() => {
+    const f: Record<string, string[]> = {};
+    for (const [key, value] of Array.from(searchParams.entries())) {
+      if (!key.startsWith("filter.")) continue;
+      const [, field] = key.split(".");
+      if (!field) continue;
+      if (!f[field]) f[field] = [];
+      f[field].push(value);
+    }
+    return Object.keys(f).length ? (f as any) : undefined;
+  }, [searchParams?.toString()]);
+
   // search & searchBy
   const search = useMemo(() => {
     const s = searchParams.get("search")?.trim();
@@ -46,12 +59,14 @@ const Discount = () => {
     return sorts.length ? sorts : undefined;
   }, [searchParams?.toString()]);
 
-  const { data: coupons, isLoading } = useGetCoupons({ page, sortBy, search });
+  const { data: coupons, isLoading } = useGetCoupons({
+    page,
+    sortBy,
+    search,
+    filter,
+  });
 
-  const isFilteredView = !!(
-    search ||
-    sortBy?.length
-  );
+  const isFilteredView = !!(search || sortBy?.length || filter);
 
   // delete modal state
   const [deleteId, setDeleteId] = useState<number | null>(null);
