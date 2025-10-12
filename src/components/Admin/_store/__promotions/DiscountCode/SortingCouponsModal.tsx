@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -11,82 +10,78 @@ import {
   Button,
 } from "@heroui/react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-// ✅ همه از یک پکیج مطمئن:
+import { useMemo, useState } from "react";
 import {
   BiSortDown,
   BiSortUp,
-  BiTrendingUp,
-  BiTrendingDown,
-  BiBarChartAlt2,
+  BiCalendarAlt,
 } from "react-icons/bi";
-import { AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai";
+import { LuClock } from "react-icons/lu";
 
 type Props = { isOpen: boolean; onOpenChange: () => void };
 
-// گزینه‌ها مطابق Swagger
+// 🧭 گزینه‌های مرتب‌سازی مخصوص کوپن‌ها
 const SORT_OPTIONS = [
   {
     key: "id-desc",
     value: "id:DESC",
-    label: "جدیدترین (ID نزولی)",
+    label: "جدیدترین (شناسه نزولی)",
     icon: <BiSortDown className="text-xl" />,
   },
   {
     key: "id-asc",
     value: "id:ASC",
-    label: "قدیمی‌ترین (ID صعودی)",
+    label: "قدیمی‌ترین (شناسه صعودی)",
     icon: <BiSortUp className="text-xl" />,
   },
-
   {
-    key: "name-asc",
-    value: "name:ASC",
-    label: "نام (الف→ی)",
-    icon: <AiOutlineSortDescending className="text-xl" />,
+    key: "createdAt-desc",
+    value: "createdAt:DESC",
+    label: "جدیدترین زمان ایجاد",
+    icon: <LuClock className="text-xl" />,
   },
   {
-    key: "name-desc",
-    value: "name:DESC",
-    label: "نام (ی→الف)",
-    icon: <AiOutlineSortAscending className="text-xl" />,
-  },
-
-  {
-    key: "price-desc",
-    value: "price:DESC",
-    label: "بیشترین قیمت",
-    icon: <BiTrendingUp className="text-xl" />,
+    key: "createdAt-asc",
+    value: "createdAt:ASC",
+    label: "قدیمی‌ترین زمان ایجاد",
+    icon: <LuClock className="text-xl rotate-180" />,
   },
   {
-    key: "price-asc",
-    value: "price:ASC",
-    label: "کمترین قیمت",
-    icon: <BiTrendingDown className="text-xl" />,
-  },
-
-  {
-    key: "stock-desc",
-    value: "stock:DESC",
-    label: "بیشترین موجودی",
-    icon: <BiBarChartAlt2 className="text-xl" />,
+    key: "startDate-desc",
+    value: "startDate:DESC",
+    label: "تاریخ شروع (جدیدترین)",
+    icon: <BiCalendarAlt className="text-xl" />,
   },
   {
-    key: "stock-asc",
-    value: "stock:ASC",
-    label: "کمترین موجودی",
-    icon: <BiBarChartAlt2 className="text-xl rotate-180" />,
+    key: "startDate-asc",
+    value: "startDate:ASC",
+    label: "تاریخ شروع (قدیمی‌ترین)",
+    icon: <BiCalendarAlt className="text-xl rotate-180" />,
+  },
+  {
+    key: "endDate-desc",
+    value: "endDate:DESC",
+    label: "تاریخ پایان (جدیدترین)",
+    icon: <BiCalendarAlt className="text-xl text-danger-500" />,
+  },
+  {
+    key: "endDate-asc",
+    value: "endDate:ASC",
+    label: "تاریخ پایان (قدیمی‌ترین)",
+    icon: <BiCalendarAlt className="text-xl text-danger-500 rotate-180" />,
   },
 ];
 
+// 🔄 مپ برای نگاشت بین key و value
 const valueToKey = new Map(SORT_OPTIONS.map((o) => [o.value, o.key]));
 const keyToValue = new Map(SORT_OPTIONS.map((o) => [o.key, o.value]));
 
-const SortingCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const CouponsSortingModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // sortByهای فعلی از URL
+  // sortBy های فعلی از URL
   const currentSorts = useMemo(
     () => searchParams.getAll("sortBy"),
     [searchParams]
@@ -101,7 +96,7 @@ const SortingCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const [selected, setSelected] = useState<string>(selectedKey);
   if (selected !== selectedKey) setSelected(selectedKey);
 
-  // ساخت پارام با حفظ بقیه پارامترها
+  // ساخت پارامتر با حفظ بقیه پارامترها
   const buildParamsWithSort = (sortValues: string[] | null) => {
     const p = new URLSearchParams(searchParams.toString());
     p.delete("sortBy");
@@ -132,11 +127,11 @@ const SortingCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     >
       <ModalContent>
         <ModalHeader>
-          <p className="font-normal text-[16px]">مرتب‌سازی</p>
+          <p className="font-normal text-[16px]">مرتب‌سازی کدهای تخفیف</p>
         </ModalHeader>
         <ModalBody className="flex flex-col gap-3">
           <Listbox
-            aria-label="مرتب‌سازی محصولات"
+            aria-label="مرتب‌سازی کدهای تخفیف"
             selectionMode="single"
             selectedKeys={new Set([selected])}
             onSelectionChange={(keys) => {
@@ -163,4 +158,4 @@ const SortingCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   );
 };
 
-export default SortingCouponsModal;
+export default CouponsSortingModal;

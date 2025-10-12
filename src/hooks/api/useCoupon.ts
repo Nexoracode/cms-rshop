@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 import { buildQueryString } from "@/utils/buildQueryString";
 
@@ -23,18 +23,36 @@ export interface Coupon {
   updated_at?: string;
 }
 
-type GetCouponsParams = { page?: number; limit?: number };
+export type CouponSortBy = Array<
+  | "id:ASC"
+  | "id:DESC"
+  | "createdAt:ASC"
+  | "createdAt:DESC"
+  | "startDate:ASC"
+  | "startDate:DESC"
+  | "endDate:ASC"
+  | "endDate:DESC"
+>;
 
-// GET /api/coupon  => با page & limit
-export const useGetCoupons = ({
-  page = 1,
-  limit = 20,
-}: GetCouponsParams = {}) => {
+type GetCouponsParams = {
+  page?: number;
+  sortBy?: CouponSortBy;
+};
+
+export const useGetCoupons = ({ page = 1, sortBy }: GetCouponsParams = {}) => {
   return useQuery({
-    queryKey: ["all-coupons", page, limit],
+    queryKey: ["all-coupons", page, sortBy],
     queryFn: () => {
-      const qs = buildQueryString({ page, limit });
-      return fetcher({ route: `/coupon?${qs}`, isActiveToast: false });
+      const params: Record<string, any> = { page };
+
+      if (sortBy) params.sortBy = sortBy;
+
+      const qs = buildQueryString(params);
+
+      return fetcher({
+        route: `/coupon?${qs}`,
+        isActiveToast: false,
+      });
     },
   });
 };

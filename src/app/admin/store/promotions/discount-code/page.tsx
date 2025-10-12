@@ -6,7 +6,7 @@ import BackToPage from "@/components/Helper/BackToPage";
 import CardContent from "@/components/Admin/CardContent";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CouponsFilter from "@/components/Admin/_store/__promotions/DiscountCode/CouponsFilter";
-import { useDeleteCoupon, useGetCoupons } from "@/hooks/api/coupon";
+import { CouponSortBy, useDeleteCoupon, useGetCoupons } from "@/hooks/api/useCoupon";
 import {
   Table,
   TableHeader,
@@ -31,8 +31,12 @@ const Discount = () => {
     return Number.isFinite(n) && n > 0 ? n : 1;
   }, [searchParams?.toString()]);
 
-  // data
-  const { data: coupons, isLoading } = useGetCoupons({ page, limit: 20 });
+  const sortBy = useMemo(() => {
+    const sorts = searchParams.getAll("sortBy") as CouponSortBy;
+    return sorts.length ? sorts : undefined;
+  }, [searchParams?.toString()]);
+
+  const { data: coupons, isLoading } = useGetCoupons({ page, sortBy });
 
   // delete modal state
   const [deleteId, setDeleteId] = useState<number | null>(null);
