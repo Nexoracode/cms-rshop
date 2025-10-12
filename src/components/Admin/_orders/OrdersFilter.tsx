@@ -3,12 +3,12 @@
 import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import OptionBox from "@/components/Admin/OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
-import SortingModal from "@/components/Admin/_orders/modals/SortingModal";
 import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
 import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
 import { IoFilter } from "react-icons/io5";
 import FilterOrdersModal from "./modals/FilterOrdersModal";
+import SortingOrdersModal from "@/components/Admin/_orders/modals/SortingOrdersModal";
 
 const OrdersFilter = () => {
   const {
@@ -82,7 +82,7 @@ const OrdersFilter = () => {
         </CardBody>
       </Card>
 
-      <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
+      <SortingOrdersModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
       <FilterOrdersModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
     </>
   );

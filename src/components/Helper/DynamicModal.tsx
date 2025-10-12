@@ -18,7 +18,7 @@ type DynamicModalProps = {
   children?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   onCancel?: () => void;
   icon?: React.ReactNode;
   confirmColor?:
@@ -91,7 +91,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({
                   variant={confirmVariant}
                   isDisabled={isConfirmDisabled}
                   onPress={() => {
-                    onConfirm();
+                    onConfirm?.();
                     onClose();
                   }}
                 >
