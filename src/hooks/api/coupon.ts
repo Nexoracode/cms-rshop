@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
-
-/* ----------------------------- Type Definitions ----------------------------- */
+import { buildQueryString } from "@/utils/buildQueryString";
 
 export type CouponType = "percent" | "fixed";
 
@@ -12,8 +11,8 @@ export interface Coupon {
   amount: number;
   mid_order_amount?: number;
   max_discount_amount?: number;
-  start_date?: string; // ISO string
-  end_date?: string; // ISO string
+  start_date?: string; // ISO
+  end_date?: string; // ISO
   usage_limit?: number;
   is_active?: boolean;
   for_first_order?: boolean;
@@ -24,101 +23,83 @@ export interface Coupon {
   updated_at?: string;
 }
 
-/* ------------------------------ React Queries ------------------------------ */
+type GetCouponsParams = { page?: number; limit?: number };
 
-// 📄 دریافت همه کوپن‌ها
-export const useGetCoupons = () => {
+// GET /api/coupon  => با page & limit
+export const useGetCoupons = ({
+  page = 1,
+  limit = 20,
+}: GetCouponsParams = {}) => {
   return useQuery({
-    queryKey: ["all-coupons"],
-    queryFn: () =>
-      fetcher({
-        route: "/coupon",
-        isActiveToast: false,
-      }),
+    queryKey: ["all-coupons", page, limit],
+    queryFn: () => {
+      const qs = buildQueryString({ page, limit });
+      return fetcher({ route: `/coupon?${qs}`, isActiveToast: false });
+    },
   });
 };
 
-// 🔍 دریافت جزئیات یک کوپن
 export const useGetOneCoupon = (id?: number) => {
   return useQuery({
     queryKey: ["one-coupon", id],
-    queryFn: () =>
-      fetcher({
-        route: `/coupon/${id}`,
-        isActiveToast: false,
-      }),
+    queryFn: () => fetcher({ route: `/coupon/${id}`, isActiveToast: false }),
     enabled: !!id,
   });
 };
 
-// ➕ ایجاد کوپن جدید
 export const useCreateCoupon = () => {
-  const queryClient = useQueryClient();
-
+  const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: Coupon) => {
-      // بک‌اند به ISO 8601 حساسه → تبدیل تاریخ‌ها
-      const formattedData = {
-        ...data,
-        start_date: data.start_date
-          ? new Date(data.start_date).toISOString()
-          : undefined,
-        end_date: data.end_date
-          ? new Date(data.end_date).toISOString()
-          : undefined,
-      };
-
-      return fetcher({
+    mutationFn: (data: Coupon) =>
+      fetcher({
         route: "/coupon",
         method: "POST",
-        body: formattedData,
+        body: {
+          ...data,
+          start_date: data.start_date
+            ? new Date(data.start_date).toISOString()
+            : undefined,
+          end_date: data.end_date
+            ? new Date(data.end_date).toISOString()
+            : undefined,
+        },
         isActiveToast: true,
         loadingText: "در حال ایجاد کد تخفیف...",
         successText: "کد تخفیف با موفقیت ایجاد شد",
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-coupons"] });
-    },
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["all-coupons"] }),
   });
 };
 
-// 📝 ویرایش کوپن
 export const useUpdateCoupon = (id: number) => {
-  const queryClient = useQueryClient();
-
+  const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: Partial<Coupon>) => {
-      const formattedData = {
-        ...data,
-        start_date: data.start_date
-          ? new Date(data.start_date).toISOString()
-          : undefined,
-        end_date: data.end_date
-          ? new Date(data.end_date).toISOString()
-          : undefined,
-      };
-
-      return fetcher({
+    mutationFn: (data: Partial<Coupon>) =>
+      fetcher({
         route: `/coupon/${id}`,
         method: "PATCH",
-        body: formattedData,
+        body: {
+          ...data,
+          start_date: data.start_date
+            ? new Date(data.start_date).toISOString()
+            : undefined,
+          end_date: data.end_date
+            ? new Date(data.end_date).toISOString()
+            : undefined,
+        },
         isActiveToast: true,
         loadingText: "در حال بروزرسانی کد تخفیف...",
         successText: "کد تخفیف با موفقیت ویرایش شد",
-      });
-    },
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-coupons"] });
-      queryClient.invalidateQueries({ queryKey: ["one-coupon", id] });
+      qc.invalidateQueries({ queryKey: ["all-coupons"] });
+      qc.invalidateQueries({ queryKey: ["one-coupon", id] });
     },
   });
 };
 
-// ❌ حذف کوپن
 export const useDeleteCoupon = (id: number) => {
-  const queryClient = useQueryClient();
-
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: () =>
       fetcher({
@@ -129,8 +110,8 @@ export const useDeleteCoupon = (id: number) => {
         successText: "کد تخفیف با موفقیت حذف شد",
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-coupons"] });
-      queryClient.invalidateQueries({ queryKey: ["one-coupon", id] });
+      qc.invalidateQueries({ queryKey: ["all-coupons"] });
+      qc.invalidateQueries({ queryKey: ["one-coupon", id] });
     },
   });
 };
