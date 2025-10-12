@@ -1,177 +1,132 @@
 "use client";
 
+import { useState } from "react";
+import {
+  Button,
+  DateRangePicker,
+  NumberInput,
+  Select,
+  SelectItem,
+} from "@heroui/react";
+import type { CalendarDate } from "@internationalized/date";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
-  Select,
-  SelectItem,
-  Input,
-  DateRangePicker,
 } from "@heroui/react";
-import { useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-// اگر از LabeledNumberWithUnitInput یا utilهای eqBool10/rangeNum/... خواستی استفاده کنی هم میشه.
-// این نسخه مستقل و تمیزه.
+// همان کامپوننتی که در Product استفاده می‌کنی
+import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
+import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
+
+// همون helperهایی که در فیلتر محصولات استفاده می‌کنی
+import { add, rangeNum, rangeDate } from "@/utils/queryFilters";
 
 type Props = { isOpen: boolean; onOpenChange: () => void };
+type AmountType = "percent" | "fixed";
 
-const boolOptions = [
-  { key: "true", label: "بله" },
-  { key: "false", label: "خیر" },
-];
-
-const typeOptions = [
-  { key: "percent", label: "درصدی" },
-  { key: "fixed", label: "مبلغ ثابت" },
-];
-
-// DateRangePicker مقدار calendar-like می‌دهد؛ این کمک‌کننده‌ها به ISO تبدیل می‌کنند:
-const toISO = (val?: string) => (val ? new Date(val).toISOString() : "");
-const toRangeValue = (from?: string, to?: string) =>
-  from || to
-    ? {
-        start: from ? new Date(from) : new Date(to as string),
-        end: to ? new Date(to) : new Date(from as string),
-      }
-    : undefined;
+// CalendarDate → Date (مثل محصولات)
+const calToJs = (c?: CalendarDate) =>
+  c ? new Date(c.year, c.month - 1, c.day) : undefined;
 
 const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  // مقادیر فعلی (برای Prefill)
-  const preset = useMemo(() => {
-    const allOf = (k: string) => searchParams.getAll(k);
-    const oneEq = (k: string) =>
-      allOf(k)
-        .find((x) => x.startsWith("$eq:"))
-        ?.split(":")[1] ?? "";
+  // دقیقا الگوی محصولات: یک state شیء‌محور
+  const [filters, setFilters] = useState({
+    // بولین‌ها (swagger => true/false)
+    isActive: "" as "" | "true" | "false",
+    forFirstOrder: "" as "" | "true" | "false",
 
-    const fromTo = (k: string) => {
-      const arr = allOf(k);
-      const gte = arr.find((x) => x.startsWith("$gte:"))?.split(":")[1] ?? "";
-      const lte = arr.find((x) => x.startsWith("$lte:"))?.split(":")[1] ?? "";
-      return { gte, lte };
-    };
+    // مقدار تخفیف + نوع واحد (percent/fixed)
+    amountType: "percent" as AmountType,
+    amountMin: "" as number | "",
+    amountMax: "" as number | "",
 
-    return {
-      isActive: oneEq("filter.isActive"),
-      forFirstOrder: oneEq("filter.forFirstOrder"),
-      type: oneEq("filter.type"),
-      amount: fromTo("filter.amount"),
-      minOrderAmountEq: oneEq("filter.minOrderAmount"),
-      usageLimit: fromTo("filter.usageLimit"),
-      useCount: fromTo("filter.useCount"),
-      createdAt: fromTo("filter.createdAt"),
-      startDate: fromTo("filter.startDate"),
-      endDate: fromTo("filter.endDate"),
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams?.toString()]);
+    // حداقل مبلغ سفارش (=)
+    minOrderAmountEq: "" as number | "",
 
-  // state محلی فرم
-  const [isActive, setIsActive] = useState<string>(preset.isActive);
-  const [forFirstOrder, setForFirstOrder] = useState<string>(
-    preset.forFirstOrder
-  );
-  const [type, setType] = useState<string>(preset.type);
+    // محدودیت‌ها
+    usageMin: "" as number | "",
+    usageMax: "" as number | "",
+    useCountMin: "" as number | "",
+    useCountMax: "" as number | "",
 
-  const [amountGte, setAmountGte] = useState<string>(preset.amount.gte);
-  const [amountLte, setAmountLte] = useState<string>(preset.amount.lte);
+    // تاریخ‌ها
+    createdAtRange: null as { start?: CalendarDate; end?: CalendarDate } | null,
+    startDateRange: null as { start?: CalendarDate; end?: CalendarDate } | null,
+    endDateRange: null as { start?: CalendarDate; end?: CalendarDate } | null,
+  });
 
-  const [minOrderAmountEq, setMinOrderAmountEq] = useState<string>(
-    preset.minOrderAmountEq
-  );
-
-  const [usageGte, setUsageGte] = useState<string>(preset.usageLimit.gte);
-  const [usageLte, setUsageLte] = useState<string>(preset.usageLimit.lte);
-
-  const [useCountGte, setUseCountGte] = useState<string>(preset.useCount.gte);
-  const [useCountLte, setUseCountLte] = useState<string>(preset.useCount.lte);
-
-  // ورودی تاریخ‌ها را به شکل date/time می‌گیریم و در apply به ISO می‌فرستیم
-  const [createdFrom, setCreatedFrom] = useState<string>("");
-  const [createdTo, setCreatedTo] = useState<string>("");
-
-  const [startFrom, setStartFrom] = useState<string>("");
-  const [startTo, setStartTo] = useState<string>("");
-
-  const [endFrom, setEndFrom] = useState<string>("");
-  const [endTo, setEndTo] = useState<string>("");
-
-  const build = () => {
-    const p = new URLSearchParams(searchParams.toString());
-
-    // پاک‌کردن تمام filter.* قبلی
-    for (const [k] of Array.from(p.entries())) {
-      if (k.startsWith("filter.")) p.delete(k);
-    }
-
-    const appendIf = (k: string, v?: string) => {
-      if (v && v.trim() !== "") p.append(k, v.trim());
-    };
-
-    // boolean & type
-    if (isActive) appendIf("filter.isActive", `$eq:${isActive}`);
-    if (forFirstOrder) appendIf("filter.forFirstOrder", `$eq:${forFirstOrder}`);
-    if (type) appendIf("filter.type", `$eq:${type}`);
-
-    // amount
-    if (amountGte) appendIf("filter.amount", `$gte:${amountGte}`);
-    if (amountLte) appendIf("filter.amount", `$lte:${amountLte}`);
-
-    // minOrderAmount = (eq)
-    if (minOrderAmountEq)
-      appendIf("filter.minOrderAmount", `$eq:${minOrderAmountEq}`);
-
-    // usageLimit
-    if (usageGte) appendIf("filter.usageLimit", `$gte:${usageGte}`);
-    if (usageLte) appendIf("filter.usageLimit", `$lte:${usageLte}`);
-
-    // useCount
-    if (useCountGte) appendIf("filter.useCount", `$gte:${useCountGte}`);
-    if (useCountLte) appendIf("filter.useCount", `$lte:${useCountLte}`);
-
-    // createdAt / startDate / endDate → ISO
-    const createdFromISO = toISO(createdFrom);
-    const createdToISO = toISO(createdTo);
-    if (createdFromISO) appendIf("filter.createdAt", `$gte:${createdFromISO}`);
-    if (createdToISO) appendIf("filter.createdAt", `$lte:${createdToISO}`);
-
-    const startFromISO = toISO(startFrom);
-    const startToISO = toISO(startTo);
-    if (startFromISO) appendIf("filter.startDate", `$gte:${startFromISO}`);
-    if (startToISO) appendIf("filter.startDate", `$lte:${startToISO}`);
-
-    const endFromISO = toISO(endFrom);
-    const endToISO = toISO(endTo);
-    if (endFromISO) appendIf("filter.endDate", `$gte:${endFromISO}`);
-    if (endToISO) appendIf("filter.endDate", `$lte:${endToISO}`);
-
-    // reset page
-    p.set("page", "1");
-    return p;
-  };
+  const updateFilter = <K extends keyof typeof filters>(
+    key: K,
+    value: (typeof filters)[K]
+  ) => setFilters((prev) => ({ ...prev, [key]: value }));
 
   const onApply = () => {
-    const p = build();
-    router.push(`${pathname}?${p.toString()}`);
+    // مثل محصولات: از صفر می‌سازیم
+    const params = new URLSearchParams();
+    params.set("page", "1");
+
+    // بولین‌ها (true/false) → $eq:true|false
+    if (filters.isActive !== "")
+      add(params, "isActive", `$eq:${filters.isActive}`);
+    if (filters.forFirstOrder !== "")
+      add(params, "forFirstOrder", `$eq:${filters.forFirstOrder}`);
+
+    // نوع تخفیف (percent/fixed) → filter.type=$eq:<...>
+    if (filters.amountType) add(params, "type", `$eq:${filters.amountType}`);
+
+    // مقدار تخفیف (از/تا) → filter.amount=$gte/$lte
+    rangeNum(params, "amount", filters.amountMin, filters.amountMax);
+
+    // حداقل مبلغ سفارش (=) → $eq
+    if (filters.minOrderAmountEq !== "")
+      add(params, "minOrderAmount", `$eq:${Number(filters.minOrderAmountEq)}`);
+
+    // محدودیت‌ها
+    rangeNum(params, "usageLimit", filters.usageMin, filters.usageMax);
+    rangeNum(params, "useCount", filters.useCountMin, filters.useCountMax);
+
+    // تاریخ‌ها (CreatedAt / StartDate / EndDate)
+    const cS = calToJs(filters.createdAtRange?.start);
+    const cE = calToJs(filters.createdAtRange?.end);
+    rangeDate(params, "createdAt", cS, cE);
+
+    const sS = calToJs(filters.startDateRange?.start);
+    const sE = calToJs(filters.startDateRange?.end);
+    rangeDate(params, "startDate", sS, sE);
+
+    const eS = calToJs(filters.endDateRange?.start);
+    const eE = calToJs(filters.endDateRange?.end);
+    rangeDate(params, "endDate", eS, eE);
+
+    const q = params.toString();
+    router.push(q ? `${pathname}?${q}` : pathname);
     onOpenChange();
   };
 
   const onClear = () => {
-    const p = new URLSearchParams(searchParams.toString());
-    for (const [k] of Array.from(p.entries())) {
-      if (k.startsWith("filter.")) p.delete(k);
-    }
-    p.set("page", "1");
-    router.push(`${pathname}?${p.toString()}`);
+    setFilters({
+      isActive: "",
+      forFirstOrder: "",
+      amountType: "percent",
+      amountMin: "",
+      amountMax: "",
+      minOrderAmountEq: "",
+      usageMin: "",
+      usageMax: "",
+      useCountMin: "",
+      useCountMax: "",
+      createdAtRange: null,
+      startDateRange: null,
+      endDateRange: null,
+    });
+    router.push(pathname);
     onOpenChange();
   };
 
@@ -182,166 +137,226 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
       onOpenChange={onOpenChange}
       placement="auto"
     >
-      <ModalContent>
-        <ModalHeader>فیلتر کدهای تخفیف</ModalHeader>
-        <ModalBody className="flex flex-col gap-4">
-          {/* Boolean & Type */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Select
-              label="فعال باشد؟"
-              variant="bordered"
-              selectedKeys={isActive ? [isActive] : []}
-              onSelectionChange={(keys) =>
-                setIsActive(Array.from(keys)[0] as string)
-              }
-            >
-              <SelectItem key="">همه</SelectItem>
-              {boolOptions.map((o: any) => (
-                <SelectItem key={o.key}>{o.label}</SelectItem>
-              ))}
-            </Select>
+      <ModalContent className="max-w-[760px] w-full">
+        <>
+          <ModalHeader>
+            <p className="font-normal text-[16px]">فیلتر کدهای تخفیف</p>
+          </ModalHeader>
 
-            <Select
-              label="فقط اولین سفارش؟"
-              variant="bordered"
-              selectedKeys={forFirstOrder ? [forFirstOrder] : []}
-              onSelectionChange={(keys) =>
-                setForFirstOrder(Array.from(keys)[0] as string)
-              }
-            >
-              <SelectItem key="">همه</SelectItem>
-              {boolOptions.map((o) => (
-                <SelectItem key={o.key}>{o.label}</SelectItem>
-              ))}
-            </Select>
+          <ModalBody className="overflow-y-auto flex flex-col gap-6">
+            {/* وضعیت‌ها */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Select
+                dir="rtl"
+                labelPlacement="outside"
+                label="وضعیت فعال بودن"
+                selectedKeys={filters.isActive ? [filters.isActive] : []}
+                onSelectionChange={(keys) =>
+                  updateFilter(
+                    "isActive",
+                    (Array.from(keys)[0] as "" | "true" | "false") ?? ""
+                  )
+                }
+                placeholder="انتخاب وضعیت"
+              >
+                <SelectItem key="">همه</SelectItem>
+                <SelectItem key="true">فعال</SelectItem>
+                <SelectItem key="false">غیرفعال</SelectItem>
+              </Select>
 
-            <Select
-              label="نوع تخفیف"
-              variant="bordered"
-              selectedKeys={type ? [type] : []}
-              onSelectionChange={(keys) =>
-                setType(Array.from(keys)[0] as string)
-              }
-            >
-              <SelectItem key="">همه</SelectItem>
-              {typeOptions.map((o) => (
-                <SelectItem key={o.key}>{o.label}</SelectItem>
-              ))}
-            </Select>
-          </div>
+              <Select
+                dir="rtl"
+                labelPlacement="outside"
+                label="فقط اولین سفارش"
+                selectedKeys={
+                  filters.forFirstOrder ? [filters.forFirstOrder] : []
+                }
+                onSelectionChange={(keys) =>
+                  updateFilter(
+                    "forFirstOrder",
+                    (Array.from(keys)[0] as "" | "true" | "false") ?? ""
+                  )
+                }
+                placeholder="انتخاب"
+              >
+                <SelectItem key="">همه</SelectItem>
+                <SelectItem key="true">بله</SelectItem>
+                <SelectItem key="false">خیر</SelectItem>
+              </Select>
+            </div>
 
-          {/* Amount & MinOrderAmount */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Input
-              type="number"
-              label="Amount ≥"
-              variant="bordered"
-              value={amountGte}
-              onValueChange={setAmountGte}
-              min={0}
-            />
-            <Input
-              type="number"
-              label="Amount ≤"
-              variant="bordered"
-              value={amountLte}
-              onValueChange={setAmountLte}
-              min={0}
-            />
-            <Input
-              type="number"
-              label="Min Order Amount (=)"
-              variant="bordered"
-              value={minOrderAmountEq}
-              onValueChange={setMinOrderAmountEq}
-              min={0}
-            />
-          </div>
-
-          {/* UsageLimit & UseCount */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="grid grid-cols-2 gap-3">
-              <Input
-                type="number"
-                label="Usage Limit ≥"
-                variant="bordered"
-                value={usageGte}
-                onValueChange={setUsageGte}
-                min={0}
+            {/* مقدار تخفیف از/تا + نوع (percent/fixed) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <LabeledNumberWithUnitInput
+                label="مقدار تخفیف از"
+                placeholder={
+                  filters.amountType === "percent" ? "مثلاً 10" : "مثلاً 5,000"
+                }
+                value={
+                  filters.amountMin === "" ? undefined : +filters.amountMin
+                }
+                onValueChange={(v: number | undefined) =>
+                  updateFilter("amountMin", v === undefined ? "" : v)
+                }
+                selectedKey={filters.amountType}
+                onSelectChange={(val: any) => updateFilter("amountType", val)}
+                options={[
+                  { key: "percent", title: "درصد" },
+                  { key: "fixed", title: "مبلغ ثابت" },
+                ]}
               />
-              <Input
-                type="number"
-                label="Usage Limit ≤"
-                variant="bordered"
-                value={usageLte}
-                onValueChange={setUsageLte}
-                min={0}
+
+              <LabeledNumberWithUnitInput
+                label="مقدار تخفیف تا"
+                placeholder={
+                  filters.amountType === "percent" ? "مثلاً 50" : "مثلاً 80,000"
+                }
+                value={
+                  filters.amountMax === "" ? undefined : +filters.amountMax
+                }
+                onValueChange={(v: number | undefined) =>
+                  updateFilter("amountMax", v === undefined ? "" : v)
+                }
+                selectedKey={filters.amountType}
+                onSelectChange={(val: any) => updateFilter("amountType", val)}
+                options={[
+                  { key: "percent", title: "درصد" },
+                  { key: "fixed", title: "مبلغ ثابت" },
+                ]}
               />
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <Input
-                type="number"
-                label="Use Count ≥"
-                variant="bordered"
-                value={useCountGte}
-                onValueChange={setUseCountGte}
-                min={0}
+
+            {/* حداقل مبلغ سفارش (=) با PriceNumberInput */}
+            <PriceNumberInput
+              value={
+                filters.minOrderAmountEq === ""
+                  ? undefined
+                  : Number(filters.minOrderAmountEq)
+              }
+              onChange={(v: number | undefined) =>
+                updateFilter("minOrderAmountEq", v === undefined ? "" : v)
+              }
+              label="حداقل مبلغ سفارش"
+              placeholder="10,000"
+              suffix="تومان"
+              isRequired={false}
+            />
+
+            {/* محدودیت‌ها */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <NumberInput
+                minValue={0}
+                size="sm"
+                label="محدودیت تعداد (از)"
+                value={filters.usageMin === "" ? undefined : +filters.usageMin}
+                onValueChange={(v) =>
+                  updateFilter("usageMin", v === undefined ? "" : v)
+                }
               />
-              <Input
-                type="number"
-                label="Use Count ≤"
-                variant="bordered"
-                value={useCountLte}
-                onValueChange={setUseCountLte}
-                min={0}
+              <NumberInput
+                minValue={0}
+                size="sm"
+                label="محدودیت تعداد (تا)"
+                value={filters.usageMax === "" ? undefined : +filters.usageMax}
+                onValueChange={(v) =>
+                  updateFilter("usageMax", v === undefined ? "" : v)
+                }
+              />
+
+              <NumberInput
+                minValue={0}
+                size="sm"
+                label="تعداد استفاده شده (از)"
+                value={
+                  filters.useCountMin === "" ? undefined : +filters.useCountMin
+                }
+                onValueChange={(v) =>
+                  updateFilter("useCountMin", v === undefined ? "" : v)
+                }
+              />
+              <NumberInput
+                minValue={0}
+                size="sm"
+                label="تعداد استفاده شده (تا)"
+                value={
+                  filters.useCountMax === "" ? undefined : +filters.useCountMax
+                }
+                onValueChange={(v) =>
+                  updateFilter("useCountMax", v === undefined ? "" : v)
+                }
               />
             </div>
-          </div>
 
-          {/* Ranges: CreatedAt / StartDate / EndDate */}
-          <DateRangePicker
-            label="Created At (از/تا)"
-            labelPlacement="outside"
-            value={toRangeValue(preset.createdAt.gte, preset.createdAt.lte)}
-            onChange={(range: any) => {
-              setCreatedFrom(
-                range?.start ? new Date(range.start).toISOString() : ""
-              );
-              setCreatedTo(range?.end ? new Date(range.end).toISOString() : "");
-            }}
-          />
-          <DateRangePicker
-            label="Start Date (از/تا)"
-            labelPlacement="outside"
-            value={toRangeValue(preset.startDate.gte, preset.startDate.lte)}
-            onChange={(range: any) => {
-              setStartFrom(
-                range?.start ? new Date(range.start).toISOString() : ""
-              );
-              setStartTo(range?.end ? new Date(range.end).toISOString() : "");
-            }}
-          />
-          <DateRangePicker
-            label="End Date (از/تا)"
-            labelPlacement="outside"
-            value={toRangeValue(preset.endDate.gte, preset.endDate.lte)}
-            onChange={(range: any) => {
-              setEndFrom(
-                range?.start ? new Date(range.start).toISOString() : ""
-              );
-              setEndTo(range?.end ? new Date(range.end).toISOString() : "");
-            }}
-          />
-        </ModalBody>
+            {/* تاریخ‌ها */}
+            <DateRangePicker
+              label="تاریخ ایجاد"
+              labelPlacement="outside"
+              value={
+                filters.createdAtRange &&
+                (filters.createdAtRange.start || filters.createdAtRange.end)
+                  ? {
+                      start:
+                        filters.createdAtRange.start ??
+                        filters.createdAtRange.end!,
+                      end:
+                        filters.createdAtRange.end ??
+                        filters.createdAtRange.start!,
+                    }
+                  : undefined
+              }
+              onChange={(range: any) =>
+                updateFilter("createdAtRange", range ?? null)
+              }
+            />
+            <DateRangePicker
+              label="شروع اعتبار"
+              labelPlacement="outside"
+              value={
+                filters.startDateRange &&
+                (filters.startDateRange.start || filters.startDateRange.end)
+                  ? {
+                      start:
+                        filters.startDateRange.start ??
+                        filters.startDateRange.end!,
+                      end:
+                        filters.startDateRange.end ??
+                        filters.startDateRange.start!,
+                    }
+                  : undefined
+              }
+              onChange={(range: any) =>
+                updateFilter("startDateRange", range ?? null)
+              }
+            />
+            <DateRangePicker
+              label="پایان اعتبار"
+              labelPlacement="outside"
+              value={
+                filters.endDateRange &&
+                (filters.endDateRange.start || filters.endDateRange.end)
+                  ? {
+                      start:
+                        filters.endDateRange.start ?? filters.endDateRange.end!,
+                      end:
+                        filters.endDateRange.end ?? filters.endDateRange.start!,
+                    }
+                  : undefined
+              }
+              onChange={(range: any) =>
+                updateFilter("endDateRange", range ?? null)
+              }
+            />
+          </ModalBody>
 
-        <ModalFooter>
-          <Button variant="flat" onPress={onClear}>
-            حذف فیلترها
-          </Button>
-          <Button color="secondary" onPress={onApply}>
-            اعمال فیلتر
-          </Button>
-        </ModalFooter>
+          <ModalFooter>
+            <Button color="danger" variant="flat" onPress={onClear}>
+              حذف فیلتر
+            </Button>
+            <Button color="secondary" onPress={onApply}>
+              اعمال
+            </Button>
+          </ModalFooter>
+        </>
       </ModalContent>
     </Modal>
   );
