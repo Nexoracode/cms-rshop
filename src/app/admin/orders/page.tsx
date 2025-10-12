@@ -21,16 +21,37 @@ const Orders = () => {
     return Number.isFinite(n) && n > 0 ? n : 1;
   }, [searchParams?.toString()]);
 
-  // sortBy
+  // search & searchBy
+  const search = useMemo(() => {
+    const s = searchParams.get("search")?.trim();
+    return s ? s : undefined;
+  }, [searchParams?.toString()]);
+
   const sortBy = useMemo(() => {
     const sorts = searchParams.getAll("sortBy") as OrderSortBy | string[];
     return sorts.length ? (sorts as OrderSortBy) : undefined;
   }, [searchParams?.toString()]);
 
-  // API call
-  const { data: orders, isLoading } = useGetOrders({ page, limit: 20, sortBy });
+  const filter = useMemo(() => {
+    const f: Record<string, string[]> = {};
+    for (const [key, value] of Array.from(searchParams.entries())) {
+      if (!key.startsWith("filter.")) continue;
+      const [, field] = key.split(".");
+      if (!field) continue;
+      if (!f[field]) f[field] = [];
+      f[field].push(value);
+    }
+    return Object.keys(f).length ? (f as any) : undefined;
+  }, [searchParams?.toString()]);
 
-  const isFilteredView = !!(sortBy?.length);
+  const { data: orders, isLoading } = useGetOrders({
+    page,
+    sortBy,
+    filter,
+    search  
+  });
+
+  const isFilteredView = !!(search || sortBy?.length || filter);
 
   return (
     <>

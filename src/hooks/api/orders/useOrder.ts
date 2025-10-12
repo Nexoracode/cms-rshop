@@ -2,8 +2,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 import { buildQueryString } from "@/utils/buildQueryString";
 
-/* -------------------------------- Types -------------------------------- */
-
 export type Order = {
   id: number;
   user_id: number;
@@ -15,28 +13,44 @@ export type Order = {
   couponCode?: string;
 };
 
-export type OrderSortBy = Array<"id:ASC" | "id:DESC" | "createdAt:ASC" | "createdAt:DESC">;
+export type OrderSortBy = Array<
+  | "id:ASC"
+  | "id:DESC"
+  | "createdAt:ASC"
+  | "createdAt:DESC"
+  | "total:ASC"
+  | "total:DESC"
+>;
 
 type UseGetOrdersParams = {
   page?: number;
-  limit?: number;
   sortBy?: OrderSortBy;
+  filter?: Record<string, string[]>;
+  search?: string;
 };
 
-/* ------------------------------ Get All Orders ------------------------------ */
-
-export const useGetOrders = ({ page = 1, limit = 20, sortBy }: UseGetOrdersParams = {}) => {
+export const useGetOrders = ({
+  page = 1,
+  sortBy,
+  filter,
+  search,
+}: UseGetOrdersParams = {}) => {
   return useQuery({
-    queryKey: ["all-orders", page, limit, sortBy],
+    queryKey: ["all-orders", page, sortBy, filter, search],
     queryFn: () => {
-      const params: Record<string, any> = { page, limit };
+      const params: Record<string, any> = { page };
       if (sortBy) params.sortBy = sortBy;
+      if (search) params.search = search;
+      // ← پشتیبانی از filter.* شبیه بقیه صفحات
+      if (filter) {
+        for (const key in filter) {
+          const values = filter[key];
+          if (values?.length) params[`filter.${key}`] = values;
+        }
+      }
 
-      const queryString = buildQueryString(params);
-      return fetcher({
-        route: `/orders/all?${queryString}`,
-        isActiveToast: false,
-      });
+      const qs = buildQueryString(params);
+      return fetcher({ route: `/orders/all?${qs}`, isActiveToast: false });
     },
   });
 };
