@@ -97,27 +97,3 @@ export const useUpdateOrderStatus = () => {
     },
   });
 };
-
-/* ------------------------------ Delete One Order ------------------------------ */
-
-export const useDeleteOrder = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: number) => {
-      return fetcher({
-        route: `/orders/${id}`,
-        method: "DELETE",
-        isActiveToast: true,
-        loadingText: "در حال حذف سفارش...",
-        successText: "سفارش با موفقیت حذف شد",
-      });
-    },
-    onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: ["one-order", id] });
-      queryClient.invalidateQueries({
-        predicate: (query) => query.queryKey[0] === "all-orders",
-      });
-    },
-  });
-};

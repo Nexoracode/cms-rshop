@@ -86,7 +86,7 @@ const OrderBox: React.FC<Props> = ({ order, onClicked }) => {
   return (
     <Card
       isBlurred
-      className="border-none shadow-md cursor-pointer transition-all hover:shadow-lg"
+      className="border-none shadow-md cursor-pointer transition-all hover:shadow-lg w-full"
     >
       <div className="w-full h-[4px] bg-cyan-200 rounded-t-md" />
       <CardBody className="p-4" onClick={onClicked}>
