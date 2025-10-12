@@ -1,150 +1,72 @@
-"use client"
+"use client";
 
-// Other
-import Link from "next/link";
-import { Button, Card, CardBody, Input, Tab, Tabs, useDisclosure } from "@heroui/react"
-import OptionBox from "@/components/Admin/OptionBox";
+import { useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@heroui/react";
+import CardContent from "@/components/Admin/CardContent";
+import OrdersFilter from "@/components/Admin/_orders/OrdersFilter";
+import { useGetOrders, OrderSortBy } from "@/hooks/api/orders/useOrder";
+import { IoReceiptOutline } from "react-icons/io5";
 import OrderBox from "@/components/Admin/_orders/OrderBox";
-import FilterModal from "@/components/Admin/_orders/modals/FilterModal";
-import SortingModal from "@/components/Admin/_orders/modals/SortingModal";
-import MoreFeaturesModal from "@/components/Admin/_orders/modals/MoreFeaturesModal";
-// Icons
-import { FiPlus, FiSearch, } from "react-icons/fi";
-import { IoMdMore } from "react-icons/io";
-import { IoFilter, IoReceiptOutline } from "react-icons/io5";
-import { BiSortAlt2 } from "react-icons/bi";
-import { useState } from "react";
-import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
-import { TfiShoppingCartFull } from "react-icons/tfi";
-import BackToPage from "@/components/Helper/BackToPage";
-import OrderWizard from "@/components/Admin/_orders/OrderProccess/OrderWizard";
-import { LuBox } from "react-icons/lu";
 
 const Orders = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
-    const [orderId, setOrderId] = useState("")
+  // page
+  const page = useMemo(() => {
+    const p = searchParams.get("page");
+    const n = Number(p ?? 1);
+    return Number.isFinite(n) && n > 0 ? n : 1;
+  }, [searchParams?.toString()]);
 
-    const {
-        isOpen: isSortOpen,
-        onOpen: onOpenSort,
-        onOpenChange: onSortOpenChange,
-    } = useDisclosure();
+  // sortBy
+  const sortBy = useMemo(() => {
+    const sorts = searchParams.getAll("sortBy") as OrderSortBy | string[];
+    return sorts.length ? (sorts as OrderSortBy) : undefined;
+  }, [searchParams?.toString()]);
 
-    const {
-        isOpen: isFilterOpen,
-        onOpen: onOpenFilter,
-        onOpenChange: onFilterOpenChange,
-    } = useDisclosure();
+  // API call
+  const { data: orders, isLoading } = useGetOrders({ page, limit: 20, sortBy });
 
-    const {
-        isOpen: isFeatureOpen,
-        onOpen: onOpenFeature,
-        onOpenChange: onFeatureOpenChange,
-    } = useDisclosure();
+  const isFilteredView = !!(sortBy?.length);
 
-    return (
-        <>
-            {
-                !orderId.length
-                    ?
-                    <section className="flex flex-col gap-6">
-                        <header className="flex items-center justify-between">
-                            <p>لیست سفارشات</p>
-                            <Button color="secondary" variant="flat" endContent={<FiPlus />} type="button">
-                                <Link href={'/admin/orders/manual-order'}>
-                                    ثبت سفارش
-                                </Link>
-                            </Button>
-                        </header>
+  return (
+    <>
+      {!selectedOrderId ? (
+        <section className="flex flex-col gap-6">
+          <OrdersFilter />
 
-                        <Card className="shadow-none">
-                            <BoxHeader
-                                title="باکس فیلر"
-                                color="text-white bg-gray-800"
-                                icon={<LuBox className="text-3xl" />}
-                            />
-                            <CardBody className="flex flex-col gap-4">
-                                <Tabs aria-label="Tabs colors" color={"secondary"} radius="md" className="bg-white rounded-xl tabs-site w-full" variant="bordered">
-                                    <Tab key="all" title="همه"></Tab>
-                                    <Tab key="rewind" title="بررسی"></Tab>
-                                    <Tab key="test" title="پردازش"></Tab>
-                                    <Tab key="closed" title="بسته شده"></Tab>
-                                    <Tab key="back" title="مرجوعی"></Tab>
-                                </Tabs>
-                                <section className="w-full">
-                                    <Input
-                                        isClearable
-                                        size="lg"
-                                        variant="bordered"
-                                        className="bg-white rounded-xl"
-                                        color="secondary"
-                                        placeholder="جستجو کدسفارش یا نام مشتری یا نام محصول"
-                                        startContent={
-                                            <FiSearch className="text-xl" />
-                                        }
-                                    >
-                                    </Input>
-                                </section>
-                                <section className="flex flex-wrap items-center gap-2 justify-between">
-                                    <OptionBox title="فیلتر" icon={<IoFilter className="!text-[16px]" />} onClick={onOpenFilter} />
-                                    <OptionBox title="مرتب سازی" icon={<BiSortAlt2 className="!text-[16px]" />} onClick={onOpenSort} />
-                                    <OptionBox title="امکانات بیشتر" icon={<IoMdMore className="!text-[16px]" />} onClick={onOpenFeature} />
-                                </section>
-                            </CardBody>
-                        </Card>
+          <CardContent
+            title="لیست سفارشات"
+            icon={<IoReceiptOutline className="text-2xl" />}
+            isLoading={isLoading}
+            datas={orders}
+            onAdd={() => router.push("/admin/orders/manual-order")}
+            isExistItems={!!orders?.data?.items?.length}
+            searchInp={isFilteredView}
+          >
+            <div className="flex flex-col justify-center items-center gap-4 w-full">
+              {orders?.data?.items?.map((order: any) => (
+                <OrderBox
+                  key={order.id}
+                  order={order} // کل آبجکت رو مستقیم پاس می‌دیم
+                  onClicked={() => setSelectedOrderId(order.id)}
+                />
+              ))}
+            </div>
+          </CardContent>
+        </section>
+      ) : (
+        <div className="mt-6">
+          <Button variant="flat" onPress={() => setSelectedOrderId(null)}>
+            بازگشت
+          </Button>
+        </div>
+      )}
+    </>
+  );
+};
 
-                        <Card className="shadow-md">
-                            <BoxHeader
-                                title="سفارشات"
-                                color="text-blue-700 bg-blue-700/10"
-                                icon={<IoReceiptOutline className="text-3xl" />}
-                            />
-                            <CardBody>
-                                <OrderBox
-                                    image="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                                    orderId="DF-696620"
-                                    date="1404/4/12 - 12:21"
-                                    status="preparing"
-                                    name="محمدحسین خادم المهدی"
-                                    province="خراسان رضوی"
-                                    city="مشهد"
-                                    delivery="ارسال امروز"
-                                    price="۳۸۵,۰۰۰"
-                                    onClicked={() => setOrderId("DF-696620")}
-                                />
-                            </CardBody>
-                        </Card>
-                    </section>
-                    :
-                    <div>
-                        <BackToPage title="بازگشت" link="/admin/orders" onClick={() => setOrderId("")} />
-                        <Card className="shadow-md mt-6">
-                            <BoxHeader
-                                title={`سفارش ${orderId}`}
-                                color="text-blue-700 bg-blue-700/10"
-                                icon={<TfiShoppingCartFull className="text-3xl" />}
-                            />
-                            <CardBody>
-                                <OrderWizard />
-                            </CardBody>
-                        </Card>
-                    </div>
-            }
-
-            <SortingModal
-                isOpen={isSortOpen}
-                onOpenChange={onSortOpenChange}
-            />
-            <FilterModal
-                isOpen={isFilterOpen}
-                onOpenChange={onFilterOpenChange}
-            />
-            <MoreFeaturesModal
-                isOpen={isFeatureOpen}
-                onOpenChange={onFeatureOpenChange}
-            />
-        </>
-    )
-}
-
-export default Orders
+export default Orders;

@@ -1,22 +1,21 @@
 "use client";
 
 import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
-import OptionBox from "../OptionBox";
+import OptionBox from "@/components/Admin/OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
-import SortingModal from "./modals/SortingModal";
-import FilterModal from "./modals/FilterModal";
-import { IoFilter } from "react-icons/io5";
-import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
+import SortingModal from "@/components/Admin/_orders/modals/SortingModal";
 import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
+import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
+import { IoFilter } from "react-icons/io5";
+import FilterOrdersModal from "./modals/FilterOrdersModal";
 
-const ProductsFilter = () => {
+const OrdersFilter = () => {
   const {
     isOpen: isSortOpen,
     onOpen: onOpenSort,
     onOpenChange: onSortOpenChange,
   } = useDisclosure();
-
   const {
     isOpen: isFilterOpen,
     onOpen: onOpenFilter,
@@ -28,44 +27,33 @@ const ProductsFilter = () => {
       <Card className="shadow-md">
         <CardBody className="flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-2">
-            <p className="pr-2">صفحات مرتبط</p>
+            <p className="pr-2">دسترسی سریع</p>
             <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
               <Button
                 className="pl-5 w-full sm:w-fit"
                 variant="flat"
                 size="sm"
                 as={Link}
-                href={"/admin/products/variants"}
+                href={"/admin/store/promotions"}
               >
                 <GoArrowUpRight className="text-xl" />
-                ویژگی ها
+                پروموشن ها
               </Button>
-
               <Button
                 className="pl-5 w-full sm:w-fit"
                 variant="flat"
                 size="sm"
                 as={Link}
-                href={"/admin/products/categories"}
+                href={"/admin/store/customers"}
               >
                 <GoArrowUpRight className="text-xl" />
-                دسته بندی ها
-              </Button>
-
-              <Button
-                className="pl-5 w-full sm:w-fit"
-                variant="flat"
-                size="sm"
-                as={Link}
-                href={"/admin/products/brands"}
-              >
-                <GoArrowUpRight className="text-xl" />
-                برندها
+                مشتریان
               </Button>
             </div>
           </div>
+
           <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
-            <DebouncedSearchURL placeholder="جستجو در محصولات..." />
+            <DebouncedSearchURL placeholder="جستجو کدسفارش ، نام مشتری ، نام محصول..." />
             <div className="w-full sm:w-fit flex items-center gap-2">
               <OptionBox
                 title="فیلتر"
@@ -74,19 +62,30 @@ const ProductsFilter = () => {
                 style="w-full sm:w-fit"
               />
               <OptionBox
-                title="مرتب سازی"
+                title="مرتب‌سازی"
                 icon={<BiSortAlt2 className="!text-[16px]" />}
                 onClick={onOpenSort}
                 style="w-full sm:w-fit"
               />
+              {/* <Button
+                as={Link}
+                href="/admin/settings/orders"
+                className="w-full sm:w-fit"
+                size="sm"
+                variant="flat"
+              >
+                <LuSettings2 className="text-lg ml-2" />
+                تنظیمات سفارش
+              </Button> */}
             </div>
           </div>
         </CardBody>
       </Card>
+
       <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
-      <FilterModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
+      <FilterOrdersModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
     </>
   );
 };
 
-export default ProductsFilter;
+export default OrdersFilter;

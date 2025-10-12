@@ -25,7 +25,7 @@ const animals: SelectOption[] = [
   { key: "elephant", title: "تازه" },
 ];
 
-const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   return (
     <Modal
       dir="rtl"
@@ -41,8 +41,6 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             </ModalHeader>
             <ModalBody className="overflow-y-auto">
               <GenericMultiSelect label="وضعیت" items={animals} />
-              <GenericMultiSelect label="روش پرداخت" items={animals} />
-              <GenericMultiSelect label="روش ارسال" items={animals} />
               <GenericMultiSelect label="شهر" items={animals} />
               <DateRangePicker label="تاریخ ثبت" labelPlacement="outside" />
             </ModalBody>
@@ -57,4 +55,4 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   );
 };
 
-export default FilterModal;
+export default FilterOrdersModal;
