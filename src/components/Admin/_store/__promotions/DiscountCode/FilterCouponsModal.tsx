@@ -287,27 +287,6 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               />
             </div>
 
-            {/* تاریخ‌ها */}
-            <DateRangePicker
-              label="تاریخ ایجاد"
-              labelPlacement="outside"
-              value={
-                filters.createdAtRange &&
-                (filters.createdAtRange.start || filters.createdAtRange.end)
-                  ? {
-                      start:
-                        filters.createdAtRange.start ??
-                        filters.createdAtRange.end!,
-                      end:
-                        filters.createdAtRange.end ??
-                        filters.createdAtRange.start!,
-                    }
-                  : undefined
-              }
-              onChange={(range: any) =>
-                updateFilter("createdAtRange", range ?? null)
-              }
-            />
             <DateRangePicker
               label="شروع اعتبار"
               labelPlacement="outside"
