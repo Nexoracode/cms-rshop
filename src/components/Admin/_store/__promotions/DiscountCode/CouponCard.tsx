@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardBody, Button } from "@heroui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -116,11 +117,8 @@ const CouponCard: React.FC<Props> = ({ item, onDelete }) => {
           <Button
             size="sm"
             variant="flat"
-            onPress={() =>
-              router.push(
-                `/admin/store/promotions/discount-code/create?edit_id=${item.id}`
-              )
-            }
+            as={Link}
+            href={`/admin/store/promotions/discount-code/create?edit_id=${item.id}`}
           >
             ویرایش
           </Button>

@@ -85,7 +85,7 @@ const Discount = () => {
           icon={<LuTicket className="text-2xl" />}
           isLoading={isLoading}
           datas={coupons}
-          onAdd={() => router.push("/admin/store/coupons/create")}
+          onAdd={() => router.push("/admin/store/promotions/discount-code/create")}
           isExistItems={!!coupons?.data?.items?.length}
           searchInp={isFilteredView}
         >
