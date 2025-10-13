@@ -286,6 +286,8 @@ const ProductInitialForm = () => {
               onChange={(name) => setProduct((p) => ({ ...p, name }))}
               isRequired
               isActiveError={isSubmitAttempted && !fieldErrors.hasName}
+              inputAlign="right"
+              allowEnglishOnly={false}
             />
 
             <PriceWithDiscountInput
