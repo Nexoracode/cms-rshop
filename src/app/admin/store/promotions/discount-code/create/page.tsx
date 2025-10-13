@@ -1,22 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Card,
-  CardBody,
-  Input,
-  Select,
-  SelectItem,
-  Switch,
-  DatePicker,
-  Button,
-} from "@heroui/react";
+import { useState, useEffect } from "react";
+import { Card, CardBody, Switch, DatePicker, Button } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
-import { useRouter } from "next/navigation";
 import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
 import TextInput from "@/components/Helper/TextInput/TextInput";
+import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
+import { LuTicket } from "react-icons/lu";
+import {
+  useCreateCoupon,
+  useUpdateCoupon,
+  useGetOneCoupon,
+} from "@/hooks/api/useCoupon";
 
 type AmountType = "percent" | "fixed";
 
@@ -41,8 +40,18 @@ const calToISO = (c?: CalendarDate | null) => {
   return d.toISOString();
 };
 
-export default function CreateDiscountCode() {
+export default function CouponFormPage() {
   const router = useRouter();
+  const params = useSearchParams();
+
+  const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
+  const isEditMode = !!id;
+
+  //? Hooks
+  const createCoupon = useCreateCoupon();
+  const updateCoupon = useUpdateCoupon(id || 0);
+  const { data: couponData, isLoading: isLoadingCoupon } = useGetOneCoupon(id);
+  console.log(couponData);
 
   const [form, setForm] = useState<CouponFormState>({
     code: "",
@@ -58,7 +67,6 @@ export default function CreateDiscountCode() {
   });
 
   const [touched, setTouched] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
 
   const updateForm = <K extends keyof CouponFormState>(
     key: K,
@@ -66,6 +74,36 @@ export default function CreateDiscountCode() {
   ) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
+
+  // ✳️ پر کردن فرم در حالت ویرایش
+  useEffect(() => {
+    if (couponData?.data) {
+      const {
+        code,
+        for_first_order,
+        is_active,
+        type,
+        amount,
+        end_date,
+        max_discount_amount,
+        min_order_amount,
+        start_date,
+        usage_limit,
+      } = couponData?.data;
+      setForm({
+        code,
+        type,
+        amount,
+        minOrderAmount: min_order_amount,
+        maxDiscountAmount: max_discount_amount,
+        usageLimit: usage_limit,
+        startDate: start_date ? parseDate(start_date.split("T")[0]) : null,
+        endDate: end_date ? parseDate(end_date.split("T")[0]) : null,
+        isActive: is_active ?? true,
+        forFirstOrder: for_first_order ?? false,
+      });
+    }
+  }, [couponData]);
 
   const isValid = () =>
     form.code.trim().length > 0 &&
@@ -82,40 +120,22 @@ export default function CreateDiscountCode() {
       amount: form.amount,
       is_active: form.isActive,
       for_first_order: form.forFirstOrder,
+      start_date: calToISO(form.startDate),
+      end_date: calToISO(form.endDate),
+      usage_limit: form.usageLimit || undefined,
+      min_order_amount: form.minOrderAmount || undefined,
+      max_discount_amount: form.maxDiscountAmount || undefined,
     };
 
-    const sISO = calToISO(form.startDate);
-    const eISO = calToISO(form.endDate);
-    if (sISO) payload.start_date = sISO;
-    if (eISO) payload.end_date = eISO;
-
-    if (form.usageLimit && form.usageLimit > 0)
-      payload.usage_limit = form.usageLimit;
-
-    if (form.minOrderAmount && form.minOrderAmount > 0)
-      payload.min_order_amount = form.minOrderAmount;
-
-    if (form.maxDiscountAmount && form.maxDiscountAmount > 0)
-      payload.max_discount_amount = form.maxDiscountAmount;
-
     try {
-      setSubmitting(true);
-      const res = await fetch("/coupon", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const e = await res.json().catch(() => ({}));
-        throw new Error(e?.message || "خطا در ثبت کد تخفیف");
+      if (isEditMode) {
+        await updateCoupon.mutateAsync(payload);
+      } else {
+        await createCoupon.mutateAsync(payload);
       }
-
       router.push("/admin/store/promotions/discount-code");
     } catch (err) {
-      console.error(err);
-    } finally {
-      setSubmitting(false);
+      console.error("Coupon submit failed:", err);
     }
   };
 
@@ -135,6 +155,12 @@ export default function CreateDiscountCode() {
     setTouched(false);
   };
 
+  if (isEditMode && isLoadingCoupon) {
+    return <div className="text-center py-10">در حال بارگذاری اطلاعات...</div>;
+  }
+
+  const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
+
   return (
     <div className="flex flex-col gap-6">
       <BackToPage
@@ -143,7 +169,12 @@ export default function CreateDiscountCode() {
       />
 
       <Card className="shadow-md">
-        <CardBody className="flex flex-col gap-6">
+        <BoxHeader
+          title={isEditMode ? "ویرایش کد تخفیف" : "افزودن کد تخفیف"}
+          color="bg-slate-100"
+          icon={<LuTicket className="text-3xl" />}
+        />
+        <CardBody className="flex flex-col gap-6 mt-4">
           {/* اطلاعات اصلی */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
@@ -179,13 +210,15 @@ export default function CreateDiscountCode() {
                 { key: "percent", title: "درصد" },
                 { key: "fixed", title: "مبلغ ثابت" },
               ]}
+              isRequired
             />
 
-            <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* سایر ورودی‌ها */}
+            <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
               <PriceNumberInput
                 value={form.minOrderAmount}
                 onChange={(v) => updateForm("minOrderAmount", v || undefined)}
-                label="حداقل مبلغ سفارش (اختیاری)"
+                label="حداقل مبلغ سفارش"
                 placeholder="مثلاً 100,000"
                 suffix="تومان"
                 isRequired={false}
@@ -196,7 +229,7 @@ export default function CreateDiscountCode() {
                 onChange={(v) =>
                   updateForm("maxDiscountAmount", v || undefined)
                 }
-                label="سقف تخفیف (اختیاری)"
+                label="سقف تخفیف"
                 placeholder="مثلاً 50,000"
                 suffix="تومان"
                 isRequired={false}
@@ -205,7 +238,7 @@ export default function CreateDiscountCode() {
               <PriceNumberInput
                 value={form.usageLimit}
                 onChange={(v) => updateForm("usageLimit", v || undefined)}
-                label="محدودیت تعداد استفاده (اختیاری)"
+                label="محدودیت تعداد استفاده"
                 placeholder="مثلاً 100"
                 suffix="عدد"
                 isRequired={false}
@@ -216,7 +249,7 @@ export default function CreateDiscountCode() {
           {/* تاریخ‌ها */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <DatePicker
-              label="تاریخ شروع اعتبار (اختیاری)"
+              label="تاریخ شروع اعتبار"
               labelPlacement="outside"
               showMonthAndYearPickers
               variant="bordered"
@@ -224,7 +257,7 @@ export default function CreateDiscountCode() {
               onChange={(val: any) => updateForm("startDate", val ?? null)}
             />
             <DatePicker
-              label="تاریخ پایان اعتبار (اختیاری)"
+              label="تاریخ پایان اعتبار"
               labelPlacement="outside"
               showMonthAndYearPickers
               variant="bordered"
@@ -256,21 +289,24 @@ export default function CreateDiscountCode() {
 
           {/* دکمه‌ها */}
           <div className="flex items-center justify-end gap-2">
-            <Button
-              variant="flat"
-              color="default"
-              onPress={handleReset}
-              isDisabled={submitting}
-            >
-              پاک‌سازی فرم
-            </Button>
+            {!isEditMode && (
+              <Button
+                variant="flat"
+                color="default"
+                onPress={handleReset}
+                isDisabled={loading}
+              >
+                پاک‌سازی فرم
+              </Button>
+            )}
+
             <Button
               color="secondary"
               variant="solid"
-              isLoading={submitting}
+              isLoading={loading}
               onPress={handleSubmit}
             >
-              ثبت کد تخفیف
+              {isEditMode ? "ویرایش کد تخفیف" : "ثبت کد تخفیف"}
             </Button>
           </div>
         </CardBody>
