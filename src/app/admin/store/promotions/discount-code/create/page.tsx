@@ -16,6 +16,7 @@ import BackToPage from "@/components/Helper/BackToPage";
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
 import { useRouter } from "next/navigation";
 import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
+import TextInput from "@/components/Helper/TextInput/TextInput";
 
 type AmountType = "percent" | "fixed";
 
@@ -145,17 +146,19 @@ export default function CreateDiscountCode() {
         <CardBody className="flex flex-col gap-6">
           {/* اطلاعات اصلی */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Input
-              label="کد"
-              labelPlacement="outside"
+            <TextInput
+              label="کد تخفیف"
               placeholder="مثلاً WELCOME10"
               value={form.code}
-              onChange={(e) => updateForm("code", e.target.value)}
+              onChange={(val) => updateForm("code", val)}
               isRequired
-              isInvalid={touched && form.code.trim().length === 0}
-              errorMessage={
-                touched && form.code.trim().length === 0 ? "کد الزامی است." : ""
-              }
+              isActiveError={touched}
+              allowEnglishOnly
+              allowNumbers
+              allowSpaces={false}
+              allowSpecialChars
+              allowedSpecialChars={["-", "_"]}
+              description="کد فقط می‌تواند شامل حروف انگلیسی، عدد و نمادهای - و _ باشد."
             />
 
             {/* نوع و مقدار تخفیف */}
