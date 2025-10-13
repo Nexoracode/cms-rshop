@@ -15,40 +15,26 @@ import DynamicModal from "@/components/Helper/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
 import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  id: number;
-  title: string;
-  pathImg: string;
-  onShowInfos: () => void;
-  onShowVariant: () => void;
-  varientsCount: string | number;
+  product: any; // اگر خواستی بعدا تایپ دقیق بذار
+  onShowInfos?: (productId: number) => void;
+  onShowVariant?: (productId: number) => void;
   onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
   cancleRemove: any[];
-  price: string | number;
-  originalPrice: number | undefined;
-  isVisible: boolean;
-  category: string;
-  isFeatured: boolean;
-  isSameDayShipping: boolean,
 };
 
 const ProductBox: React.FC<Props> = ({
-  id,
-  title,
+  product,
   onShowInfos,
-  price,
-  varientsCount,
-  pathImg,
   onShowVariant,
   onSelect,
-  isVisible,
   cancleRemove,
-  isFeatured,
-  originalPrice,
-  category,
-  isSameDayShipping
 }) => {
+  const router = useRouter();
+  const id = product?.id;
+
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -62,7 +48,44 @@ const ProductBox: React.FC<Props> = ({
     }
   }, [cancleRemove]);
 
-  // توگل کردن selected و اطلاع به parent
+  // محاسبات داخلی (بِه‌همراه محافظت در برابر undefined)
+  const priceNum = Number(product?.price ?? 0);
+  const discountAmount = Number(product?.discount_amount ?? 0);
+  const discountPercent = Number(product?.discount_percent ?? 0);
+
+  const discountValue =
+    discountAmount > 0 ? discountAmount : (discountPercent / 100) * priceNum;
+
+  const finalPrice = Math.max(0, Math.round(priceNum - discountValue));
+  const originalPrice = discountValue > 0 ? priceNum : undefined;
+
+  const varientsCount = product?.is_limited_stock
+    ? "نامحدود"
+    : product?.stock === 0
+    ? "ندارد"
+    : `${product?.stock ?? 0} عدد`;
+
+  const pathImg = product?.media_pinned?.url ?? "";
+  const title = product?.name ?? "";
+  const category = product?.category?.title ?? "";
+  const isVisible = !!product?.is_visible;
+  const isFeatured = !!product?.is_featured;
+  const isSameDayShipping = !!product?.is_same_day_shipping;
+
+  // توابع پیش‌فرض برای باز کردن صفحهٔ ویرایش در صورت عدم ارسال از parent
+  const handleShowInfos = (e?: React.SyntheticEvent) => {
+    if (e) e.stopPropagation();
+    if (onShowInfos) return onShowInfos(id);
+    router.push(`/admin/products/create?edit_id=${id}&type=infos`);
+  };
+
+  const handleShowVariant = (e?: React.SyntheticEvent) => {
+    if (e) e.stopPropagation();
+    if (onShowVariant) return onShowVariant(id);
+    router.push(`/admin/products/create?edit_id=${id}&type=variant`);
+  };
+
+  // توگل selected و گزارش به parent
   const toggleSelected = () => {
     const newSelected = !selected;
     setSelected(newSelected);
@@ -114,9 +137,7 @@ const ProductBox: React.FC<Props> = ({
               <img
                 alt="product cover"
                 className={`object-cover w-full sm:w-[130px] h-[188px] sm:h-[110px] rounded-xl`}
-                src={
-                  pathImg
-                }
+                src={pathImg}
               />
               {!isVisible ? (
                 <div className="absolute inset-0 text-center flex items-center justify-center text-lg px-3 py-1 bg-gray-600/60 text-white shadow-lg rounded-lg">
@@ -141,7 +162,7 @@ const ProductBox: React.FC<Props> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onShowInfos();
+                        handleShowInfos(e);
                       }}
                       className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
                     >
@@ -150,7 +171,7 @@ const ProductBox: React.FC<Props> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onShowVariant();
+                        handleShowVariant(e);
                       }}
                       className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
                     >
@@ -177,7 +198,9 @@ const ProductBox: React.FC<Props> = ({
                     )}
                     {isSameDayShipping ? (
                       <TbTruckDelivery className="text-orange-500 text-xl" />
-                    ) : ""}
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <p className="text-gray-600 text-[13px]">
                     موجودی {varientsCount}
@@ -194,12 +217,12 @@ const ProductBox: React.FC<Props> = ({
                       </div>
 
                       <span className="text-[15px] text-gray-800">
-                        {Number(price).toLocaleString("fa-IR")} تومان
+                        {Number(finalPrice).toLocaleString("fa-IR")} تومان
                       </span>
                     </div>
                   ) : (
                     <span className="text-[15px] text-gray-800">
-                      {Number(price).toLocaleString("fa-IR")} تومان
+                      {Number(finalPrice).toLocaleString("fa-IR")} تومان
                     </span>
                   )}
                 </div>

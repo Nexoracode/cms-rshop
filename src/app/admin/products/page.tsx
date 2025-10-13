@@ -160,57 +160,18 @@ const Products = () => {
             </div>
           )}
           <div className="flex flex-col justify-center items-center gap-4">
-            {products?.data?.items?.map((product: any) => {
-              const discountValue =
-                product.discount_amount > 0
-                  ? product.discount_amount
-                  : ((product.discount_percent ?? 0) / 100) * product.price;
-
-              const finalPrice = Math.max(
-                0,
-                Math.round(product.price - discountValue)
-              );
-              const originalPrice =
-                discountValue > 0 ? product.price : undefined;
-
-              return (
-                <ProductBox
-                  key={product.id}
-                  id={product.id}
-                  title={product.name}
-                  pathImg={product.media_pinned.url}
-                  isSameDayShipping={product?.is_same_day_shipping}
-                  price={finalPrice}
-                  originalPrice={originalPrice}
-                  isVisible={product.is_visible}
-                  category={product.category.title}
-                  isFeatured={product.is_featured}
-                  varientsCount={
-                    product.is_limited_stock
-                      ? "نامحدود"
-                      : product.stock === 0
-                      ? "ندارد"
-                      : `${product.stock} عدد`
-                  }
-                  onShowInfos={() => {
-                    router.push(
-                      `/admin/products/create?edit_id=${product.id}&type=infos`
-                    );
-                  }}
-                  onShowVariant={() => {
-                    router.push(
-                      `/admin/products/create?edit_id=${product.id}&type=variant`
-                    );
-                  }}
-                  onSelect={(id, selected) =>
-                    setSelectedItems((prev) =>
-                      selected ? [...prev, id] : prev.filter((x) => x !== id)
-                    )
-                  }
-                  cancleRemove={selectedItems}
-                />
-              );
-            })}
+            {products?.data?.items?.map((product: any) => (
+              <ProductBox
+                key={product.id}
+                product={product}
+                onSelect={(id, selected) =>
+                  setSelectedItems((prev) =>
+                    selected ? [...prev, id] : prev.filter((x) => x !== id)
+                  )
+                }
+                cancleRemove={selectedItems}
+              />
+            ))}
           </div>
         </CardContent>
       </section>
