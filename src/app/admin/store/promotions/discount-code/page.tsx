@@ -11,18 +11,8 @@ import {
   useDeleteCoupon,
   useGetCoupons,
 } from "@/hooks/api/useCoupon";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  Chip,
-} from "@heroui/react";
 import { LuTicket } from "react-icons/lu";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import CouponCard from "@/components/Admin/_store/__promotions/DiscountCode/CouponCard";
 
 const Discount = () => {
   const router = useRouter();
@@ -99,104 +89,17 @@ const Discount = () => {
           isExistItems={!!coupons?.data?.items?.length}
           searchInp={isFilteredView}
         >
-          <Table
-            aria-label="Coupons table"
-            isStriped
-            removeWrapper
-            className="w-full"
-          >
-            <TableHeader>
-              <TableColumn>کد</TableColumn>
-              <TableColumn>نوع</TableColumn>
-              <TableColumn>مقدار</TableColumn>
-              <TableColumn>حداقل مبلغ سفارش</TableColumn>
-              <TableColumn>سقف تخفیف</TableColumn>
-              <TableColumn>شروع اعتبار</TableColumn>
-              <TableColumn>پایان اعتبار</TableColumn>
-              <TableColumn>محدودیت تعداد</TableColumn>
-              <TableColumn>وضعیت</TableColumn>
-              <TableColumn>اولین سفارش</TableColumn>
-              <TableColumn>اقدامات</TableColumn>
-            </TableHeader>
-
-            <TableBody
-              isLoading={isLoading}
-              emptyContent="کوپنی یافت نشد."
-              items={coupons?.data?.items ?? []}
-            >
-              {(item: any) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.code}</TableCell>
-                  <TableCell>
-                    {item.type === "percent" ? "درصدی" : "مبلغ ثابت"}
-                  </TableCell>
-                  <TableCell>
-                    {item.type === "percent"
-                      ? `${item.amount}%`
-                      : `${Number(item.amount ?? 0).toLocaleString(
-                          "fa-IR"
-                        )} تومان`}
-                  </TableCell>
-                  <TableCell>
-                    {item.mid_order_amount
-                      ? Number(item.mid_order_amount).toLocaleString("fa-IR")
-                      : "—"}
-                  </TableCell>
-                  <TableCell>
-                    {item.max_discount_amount
-                      ? Number(item.max_discount_amount).toLocaleString("fa-IR")
-                      : "—"}
-                  </TableCell>
-                  <TableCell>
-                    {item.start_date
-                      ? new Date(item.start_date).toLocaleString("fa-IR")
-                      : "—"}
-                  </TableCell>
-                  <TableCell>
-                    {item.end_date
-                      ? new Date(item.end_date).toLocaleString("fa-IR")
-                      : "—"}
-                  </TableCell>
-                  <TableCell>{item.usage_limit ?? "—"}</TableCell>
-                  <TableCell>
-                    <Chip
-                      size="sm"
-                      color={item.is_active ? "success" : "default"}
-                      variant="flat"
-                    >
-                      {item.is_active ? "فعال" : "غیرفعال"}
-                    </Chip>
-                  </TableCell>
-                  <TableCell>{item.for_first_order ? "بله" : "خیر"}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        variant="flat"
-                        onPress={() =>
-                          router.push(
-                            `/admin/store/coupons/create?edit_id=${item.id}`
-                          )
-                        }
-                        startContent={<FiEdit2 />}
-                      >
-                        ویرایش
-                      </Button>
-                      <Button
-                        size="sm"
-                        color="danger"
-                        variant="flat"
-                        onPress={() => setDeleteId(item.id)}
-                        startContent={<FiTrash2 />}
-                      >
-                        حذف
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {coupons?.data?.items?.length
+              ? coupons.data.items.map((item: any) => (
+                  <CouponCard
+                    key={item.id}
+                    item={item}
+                    onDelete={(id) => setDeleteId(id)}
+                  />
+                ))
+              : ""}
+          </div>
         </CardContent>
       </div>
 
