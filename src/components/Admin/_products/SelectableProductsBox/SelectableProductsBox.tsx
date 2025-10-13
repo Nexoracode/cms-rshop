@@ -57,6 +57,7 @@ const SelectableProductsBox: React.FC<Props> = ({
                   key={product.id}
                   product={product}
                   cancleRemove={[]}
+                  disableSelect
                 />
               ))}
             </div>

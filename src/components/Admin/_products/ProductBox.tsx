@@ -26,6 +26,7 @@ type Props = {
   onSelect?: (id: number, selected: boolean, product?: any) => void;
   cancleRemove: any[]; // parent selection list
   initialSelected?: boolean; // NEW: allow pre-selecting this card
+  disableSelect?: boolean;
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const ProductBox: React.FC<Props> = ({
   onSelect,
   cancleRemove,
   initialSelected = false,
+  disableSelect
 }) => {
   const router = useRouter();
   const id = product?.id;
@@ -113,8 +115,11 @@ const ProductBox: React.FC<Props> = ({
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <CardBody onClick={toggleSelected} className="relative cursor-pointer p-2">
-          {(hovered || selected) ? (
+        <CardBody
+          onClick={disableSelect ? undefined : toggleSelected}
+          className="relative cursor-pointer p-2"
+        >
+          {!disableSelect && (hovered || selected) ? (
             <Tooltip
               closeDelay={2000}
               color="primary"
@@ -152,7 +157,9 @@ const ProductBox: React.FC<Props> = ({
             <div className="w-full sm:h-[110px] flex flex-col justify-between pr-0 sm:p-2 gap-4">
               <div className="flex flex-col gap-3 sm:flex-row justify-between items-center w-full">
                 <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
-                  <p className="truncate max-w-[220px] sm:max-w-[240px]">{title}</p>{" "}
+                  <p className="truncate max-w-[220px] sm:max-w-[240px]">
+                    {title}
+                  </p>{" "}
                   <span className="text-gray-600 text-xs">({category})</span>
                 </div>
 
@@ -192,10 +199,16 @@ const ProductBox: React.FC<Props> = ({
               <div className="flex items-end justify-between">
                 <div className="flex flex-col gap-2 sm:gap-1">
                   <div className="flex items-center gap-2">
-                    {isFeatured && <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />}
-                    {isSameDayShipping && <TbTruckDelivery className="text-orange-500 text-xl" />}
+                    {isFeatured && (
+                      <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
+                    )}
+                    {isSameDayShipping && (
+                      <TbTruckDelivery className="text-orange-500 text-xl" />
+                    )}
                   </div>
-                  <p className="text-gray-600 text-[13px]">موجودی {varientsCount}</p>
+                  <p className="text-gray-600 text-[13px]">
+                    موجودی {varientsCount}
+                  </p>
                 </div>
 
                 <div className="text-gray-600">
@@ -233,7 +246,8 @@ const ProductBox: React.FC<Props> = ({
         icon={<FiShoppingBag className="text-3xl" />}
       >
         <p className="leading-7 text-danger-600">
-          با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان دارید؟
+          با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان
+          دارید؟
         </p>
       </DynamicModal>
     </>
