@@ -14,9 +14,6 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   onConfirm: (selectedIds: number[]) => void;
   selectedIds?: number[];
-  title?: string;
-  confirmText?: string;
-  cancelText?: string;
 };
 
 const ProductSelectionModal: React.FC<Props> = ({
@@ -24,9 +21,6 @@ const ProductSelectionModal: React.FC<Props> = ({
   onOpenChange,
   onConfirm,
   selectedIds = [],
-  title = "انتخاب محصولات",
-  confirmText = "تأیید انتخاب",
-  cancelText = "لغو",
 }) => {
   const [selected, setSelected] = useState<number[]>(selectedIds);
 
@@ -82,7 +76,9 @@ const ProductSelectionModal: React.FC<Props> = ({
   });
 
   const handleSelect = (id: number, checked: boolean) => {
-    setSelected((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)));
+    setSelected((prev) =>
+      checked ? [...prev, id] : prev.filter((x) => x !== id)
+    );
   };
 
   const handleConfirm = () => {
@@ -93,19 +89,15 @@ const ProductSelectionModal: React.FC<Props> = ({
     <DynamicModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      title={
-        <div className="flex items-center gap-2">
-          <BsShop className="text-xl" />
-          <span>{title}</span>
-        </div>
-      }
-      confirmText={confirmText}
-      cancelText={cancelText}
+      title="انتخاب محصولات"
+      confirmText="تأیید انتخاب"
+      cancelText="لغو"
       confirmColor="secondary"
       confirmVariant="solid"
       onConfirm={handleConfirm}
       isConfirmDisabled={!selected.length}
-      size="5xl"
+      icon={<BsShop className="text-2xl" />}
+      size="3xl"
     >
       <div className="flex flex-col gap-4">
         {/* Reuse existing ProductsFilter (it updates the URL search params) */}
@@ -116,12 +108,14 @@ const ProductSelectionModal: React.FC<Props> = ({
             <Spinner label="در حال بارگذاری محصولات..." color="secondary" />
           </div>
         ) : products?.data?.items?.length ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+          <div className="flex flex-col gap-4">
             {products.data.items.map((product: any) => (
               <ProductBox
                 key={product.id}
                 product={product}
-                onSelect={handleSelect}
+                onSelect={(id, selected) => {
+                  handleSelect(id, selected);
+                }}
                 cancleRemove={selected}
               />
             ))}

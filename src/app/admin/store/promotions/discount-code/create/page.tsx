@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardBody, Switch, DatePicker, Button } from "@heroui/react";
+import {
+  Card,
+  CardBody,
+  Switch,
+  DatePicker,
+  Button,
+  useDisclosure,
+} from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { parseDate } from "@internationalized/date";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,6 +24,7 @@ import {
   useUpdateCoupon,
   useGetOneCoupon,
 } from "@/hooks/api/useCoupon";
+import ProductSelectionModal from "@/components/Admin/_products/modals/ProductSelectionModal";
 
 type AmountType = "percent" | "fixed";
 
@@ -39,6 +47,12 @@ export default function CouponFormPage() {
 
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
   const isEditMode = !!id;
+
+  const {
+    isOpen: isProductsOpen,
+    onOpen: onProductsOpen,
+    onOpenChange: onOpenProductsChange,
+  } = useDisclosure();
 
   //? Hooks
   const createCoupon = useCreateCoupon();
@@ -166,6 +180,12 @@ export default function CouponFormPage() {
         />
         <CardBody className="flex flex-col gap-6 mt-4">
           {/* اطلاعات اصلی */}
+
+          <div>
+            <Button onPress={onProductsOpen}>افزودن</Button>
+            <ProductSelectionModal isOpen={isProductsOpen} onOpenChange={onOpenProductsChange} />
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
               label="کد تخفیف"
