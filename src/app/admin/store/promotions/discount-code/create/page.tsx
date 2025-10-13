@@ -50,7 +50,7 @@ export default function CouponFormPage() {
   //? Hooks
   const createCoupon = useCreateCoupon();
   const updateCoupon = useUpdateCoupon(id || 0);
-  const { data: couponData, isLoading: isLoadingCoupon } = useGetOneCoupon(id);
+  const { data: couponData } = useGetOneCoupon(id);
   console.log(couponData);
 
   const [form, setForm] = useState<CouponFormState>({
@@ -154,10 +154,6 @@ export default function CouponFormPage() {
     });
     setTouched(false);
   };
-
-  if (isEditMode && isLoadingCoupon) {
-    return <div className="text-center py-10">در حال بارگذاری اطلاعات...</div>;
-  }
 
   const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
 
