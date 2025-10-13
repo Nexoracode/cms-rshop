@@ -1,3 +1,4 @@
+// components/Admin/_products/SelectableProductsBox/ProductSelectionModal.tsx
 "use client";
 
 import React, { useMemo, useState, useEffect } from "react";
@@ -12,8 +13,9 @@ import { useSearchParams } from "next/navigation";
 type Props = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (selectedIds: number[]) => void;
-  selectedIds?: number[];
+  // now returns array of product objects (not only ids)
+  onConfirm: (selectedProducts: any[]) => void;
+  selectedIds?: number[]; // optional initial selection by id
 };
 
 const ProductSelectionModal: React.FC<Props> = ({
@@ -22,16 +24,26 @@ const ProductSelectionModal: React.FC<Props> = ({
   onConfirm,
   selectedIds = [],
 }) => {
-  const [selected, setSelected] = useState<number[]>(selectedIds);
+  // map of selected products by id
+  const [selectedMap, setSelectedMap] = useState<Record<number, any>>({});
+  const [selectedOrder, setSelectedOrder] = useState<number[]>(selectedIds);
 
-  // همگام‌سازی اولیه و هنگام باز شدن مدال یا تغییر prop
+  // sync initial selected ids when modal opens
   useEffect(() => {
     if (isOpen) {
-      setSelected(selectedIds ?? []);
+      setSelectedOrder(selectedIds ?? []);
+      // keep selectedMap only for ids that already exist (we'll fill when products load)
+      setSelectedMap((prev) => {
+        const copy: Record<number, any> = {};
+        (selectedIds || []).forEach((id) => {
+          if (prev[id]) copy[id] = prev[id];
+        });
+        return copy;
+      });
     }
   }, [isOpen, selectedIds]);
 
-  // read URL search params (ProductsFilter writes to URL) and forward them to the hook
+  // read URL search params for filtering
   const searchParams = useSearchParams();
 
   const page = useMemo(() => {
@@ -67,7 +79,7 @@ const ProductSelectionModal: React.FC<Props> = ({
     return Object.keys(f).length ? (f as any) : undefined;
   }, [searchParams?.toString()]);
 
-  const { data: products, isLoading } = useGetProducts({
+  const { data: productsResponse, isLoading } = useGetProducts({
     page,
     filter,
     search,
@@ -75,14 +87,45 @@ const ProductSelectionModal: React.FC<Props> = ({
     sortBy,
   });
 
-  const handleSelect = (id: number, checked: boolean) => {
-    setSelected((prev) =>
-      checked ? [...prev, id] : prev.filter((x) => x !== id)
-    );
+  const products = productsResponse?.data?.items ?? [];
+
+  // when products load, fill selectedMap entries with full product objects
+  useEffect(() => {
+    if (products.length) {
+      setSelectedMap((prev) => {
+        const copy = { ...prev };
+        products.forEach((p: any) => {
+          if (selectedOrder.includes(p.id)) copy[p.id] = p;
+        });
+        return copy;
+      });
+    }
+  }, [products, selectedOrder]);
+
+  const handleSelect = (product: any, checked: boolean) => {
+    setSelectedMap((prev) => {
+      const copy = { ...prev };
+      if (checked) copy[product.id] = product;
+      else delete copy[product.id];
+      return copy;
+    });
+    setSelectedOrder((prev) => {
+      if (checked) {
+        if (prev.includes(product.id)) return prev;
+        return [...prev, product.id];
+      } else {
+        return prev.filter((id) => id !== product.id);
+      }
+    });
   };
 
   const handleConfirm = () => {
-    onConfirm(selected);
+    // preserve order using selectedOrder
+    const selectedProducts = selectedOrder
+      .map((id) => selectedMap[id])
+      .filter(Boolean);
+    onConfirm(selectedProducts);
+    // optionally we can clear selection after confirm, but leave it to parent
   };
 
   return (
@@ -95,35 +138,34 @@ const ProductSelectionModal: React.FC<Props> = ({
       confirmColor="secondary"
       confirmVariant="solid"
       onConfirm={handleConfirm}
-      isConfirmDisabled={!selected.length}
+      isConfirmDisabled={selectedOrder.length === 0}
       icon={<BsShop className="text-2xl" />}
       size="3xl"
     >
       <div className="flex flex-col gap-4">
-        {/* Reuse existing ProductsFilter (it updates the URL search params) */}
         <ProductsFilter />
 
         {isLoading ? (
           <div className="flex justify-center py-10">
             <Spinner label="در حال بارگذاری محصولات..." color="secondary" />
           </div>
-        ) : products?.data?.items?.length ? (
+        ) : products.length ? (
           <div className="flex flex-col gap-4">
-            {products.data.items.map((product: any) => (
+            {products.map((product: any) => (
               <ProductBox
                 key={product.id}
                 product={product}
-                onSelect={(id, selected) => {
-                  handleSelect(id, selected);
+                onSelect={(id, sel, prod) => {
+                  // product is passed by ProductBox as third arg
+                  handleSelect(prod ?? product, !!sel);
                 }}
-                cancleRemove={selected}
+                cancleRemove={selectedOrder}
+                initialSelected={selectedOrder.includes(product.id)}
               />
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500 py-8">
-            محصولی برای نمایش وجود ندارد.
-          </p>
+          <p className="text-center text-gray-500 py-8">محصولی برای نمایش وجود ندارد.</p>
         )}
       </div>
     </DynamicModal>

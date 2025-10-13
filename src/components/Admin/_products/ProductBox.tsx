@@ -1,12 +1,13 @@
+// components/Admin/_products/ProductBox.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
-  useDisclosure,
   Checkbox,
   Tooltip,
+  useDisclosure,
 } from "@heroui/react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
@@ -18,11 +19,13 @@ import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  product: any; // اگر خواستی بعدا تایپ دقیق بذار
+  product: any;
   onShowInfos?: (productId: number) => void;
   onShowVariant?: (productId: number) => void;
-  onSelect?: (id: number, selected: boolean) => void; // ارسال به parent
-  cancleRemove: any[];
+  // onSelect now may receive (id, selected, product)
+  onSelect?: (id: number, selected: boolean, product?: any) => void;
+  cancleRemove: any[]; // parent selection list
+  initialSelected?: boolean; // NEW: allow pre-selecting this card
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -31,6 +34,7 @@ const ProductBox: React.FC<Props> = ({
   onShowVariant,
   onSelect,
   cancleRemove,
+  initialSelected = false,
 }) => {
   const router = useRouter();
   const id = product?.id;
@@ -39,23 +43,29 @@ const ProductBox: React.FC<Props> = ({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [hovered, setHovered] = useState(false);
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState<boolean>(!!initialSelected);
 
+  // sync when parent clears (cancleRemove) — keep minimal logic to avoid loops
   useEffect(() => {
-    if (!cancleRemove.length) {
+    if (!Array.isArray(cancleRemove) || cancleRemove.length === 0) {
       setHovered(false);
       setSelected(false);
+    } else {
+      // if parent includes this id, set selected
+      const found = cancleRemove.some(
+        (it: any) => it === id || (it && typeof it === "object" && it.id === id)
+      );
+      if (found !== selected) setSelected(found);
     }
-  }, [cancleRemove]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cancleRemove, id]);
 
-  // محاسبات داخلی (بِه‌همراه محافظت در برابر undefined)
+  // internal calculations
   const priceNum = Number(product?.price ?? 0);
   const discountAmount = Number(product?.discount_amount ?? 0);
   const discountPercent = Number(product?.discount_percent ?? 0);
-
   const discountValue =
     discountAmount > 0 ? discountAmount : (discountPercent / 100) * priceNum;
-
   const finalPrice = Math.max(0, Math.round(priceNum - discountValue));
   const originalPrice = discountValue > 0 ? priceNum : undefined;
 
@@ -65,14 +75,13 @@ const ProductBox: React.FC<Props> = ({
     ? "ندارد"
     : `${product?.stock ?? 0} عدد`;
 
-  const pathImg = product?.media_pinned?.url ?? "";
-  const title = product?.name ?? "";
+  const pathImg = product?.media_pinned?.url ?? product?.image ?? "";
+  const title = product?.name ?? product?.title ?? "بدون عنوان";
   const category = product?.category?.title ?? "";
   const isVisible = !!product?.is_visible;
   const isFeatured = !!product?.is_featured;
   const isSameDayShipping = !!product?.is_same_day_shipping;
 
-  // توابع پیش‌فرض برای باز کردن صفحهٔ ویرایش در صورت عدم ارسال از parent
   const handleShowInfos = (e?: React.SyntheticEvent) => {
     if (e) e.stopPropagation();
     if (onShowInfos) return onShowInfos(id);
@@ -85,11 +94,11 @@ const ProductBox: React.FC<Props> = ({
     router.push(`/admin/products/create?edit_id=${id}&type=variant`);
   };
 
-  // توگل selected و گزارش به parent
   const toggleSelected = () => {
     const newSelected = !selected;
     setSelected(newSelected);
-    onSelect?.(id, newSelected);
+    // send id, newSelected and the whole product object
+    onSelect?.(id, newSelected, product);
   };
 
   return (
@@ -104,12 +113,8 @@ const ProductBox: React.FC<Props> = ({
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <CardBody
-          onClick={toggleSelected} // کلیک روی بدنه -> select
-          className="relative cursor-pointer p-2"
-        >
-          {/* Checkbox */}
-          {hovered || selected ? (
+        <CardBody onClick={toggleSelected} className="relative cursor-pointer p-2">
+          {(hovered || selected) ? (
             <Tooltip
               closeDelay={2000}
               color="primary"
@@ -123,14 +128,12 @@ const ProductBox: React.FC<Props> = ({
                   isSelected={selected}
                   onValueChange={(newValue) => {
                     setSelected(newValue);
-                    onSelect?.(id, newValue);
+                    onSelect?.(id, newValue, product);
                   }}
                 />
               </div>
             </Tooltip>
-          ) : (
-            ""
-          )}
+          ) : null}
 
           <div className="flex flex-col items-center sm:flex-row gap-4 text-start">
             <div className="relative w-fit h-full">
@@ -143,17 +146,13 @@ const ProductBox: React.FC<Props> = ({
                 <div className="absolute inset-0 text-center flex items-center justify-center text-lg px-3 py-1 bg-gray-600/60 text-white shadow-lg rounded-lg">
                   <p className="animate-bounce">عدم نمایش</p>
                 </div>
-              ) : (
-                ""
-              )}
+              ) : null}
             </div>
 
             <div className="w-full sm:h-[110px] flex flex-col justify-between pr-0 sm:p-2 gap-4">
               <div className="flex flex-col gap-3 sm:flex-row justify-between items-center w-full">
                 <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
-                  <p className="truncate max-w-[220px] sm:max-w-[240px]">
-                    {title}
-                  </p>{" "}
+                  <p className="truncate max-w-[220px] sm:max-w-[240px]">{title}</p>{" "}
                   <span className="text-gray-600 text-xs">({category})</span>
                 </div>
 
@@ -193,19 +192,12 @@ const ProductBox: React.FC<Props> = ({
               <div className="flex items-end justify-between">
                 <div className="flex flex-col gap-2 sm:gap-1">
                   <div className="flex items-center gap-2">
-                    {isFeatured && (
-                      <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
-                    )}
-                    {isSameDayShipping ? (
-                      <TbTruckDelivery className="text-orange-500 text-xl" />
-                    ) : (
-                      ""
-                    )}
+                    {isFeatured && <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />}
+                    {isSameDayShipping && <TbTruckDelivery className="text-orange-500 text-xl" />}
                   </div>
-                  <p className="text-gray-600 text-[13px]">
-                    موجودی {varientsCount}
-                  </p>
+                  <p className="text-gray-600 text-[13px]">موجودی {varientsCount}</p>
                 </div>
+
                 <div className="text-gray-600">
                   {originalPrice != null ? (
                     <div className="flex flex-col items-end gap-2 sm:gap-1">
@@ -241,8 +233,7 @@ const ProductBox: React.FC<Props> = ({
         icon={<FiShoppingBag className="text-3xl" />}
       >
         <p className="leading-7 text-danger-600">
-          با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان
-          دارید؟
+          با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان دارید؟
         </p>
       </DynamicModal>
     </>

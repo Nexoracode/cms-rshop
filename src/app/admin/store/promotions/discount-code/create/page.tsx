@@ -24,7 +24,8 @@ import {
   useUpdateCoupon,
   useGetOneCoupon,
 } from "@/hooks/api/useCoupon";
-import ProductSelectionModal from "@/components/Admin/_products/modals/ProductSelectionModal";
+import ProductSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductSelectionModal";
+import SelectableProductsBox from "@/components/Admin/_products/SelectableProductsBox/SelectableProductsBox";
 
 type AmountType = "percent" | "fixed";
 
@@ -47,12 +48,6 @@ export default function CouponFormPage() {
 
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
   const isEditMode = !!id;
-
-  const {
-    isOpen: isProductsOpen,
-    onOpen: onProductsOpen,
-    onOpenChange: onOpenProductsChange,
-  } = useDisclosure();
 
   //? Hooks
   const createCoupon = useCreateCoupon();
@@ -181,10 +176,7 @@ export default function CouponFormPage() {
         <CardBody className="flex flex-col gap-6 mt-4">
           {/* اطلاعات اصلی */}
 
-          <div>
-            <Button onPress={onProductsOpen}>افزودن</Button>
-            <ProductSelectionModal isOpen={isProductsOpen} onOpenChange={onOpenProductsChange} />
-          </div>
+          <SelectableProductsBox initialProducts={couponData?.data?.allowed_products || []}/>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
