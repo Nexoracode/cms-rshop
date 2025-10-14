@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import ProductBox from "@/components/Admin/_products/ProductBox";
 import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import UserInfoCard from "../UserInfoCard";
