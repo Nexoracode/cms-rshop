@@ -7,11 +7,10 @@ import { Card, CardBody, Input, useDisclosure } from "@heroui/react";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction";
 import DetailedUserInfo from "@/components/Admin/_store/__customers/DetailedUserInfo";
-import UserOrders from "@/components/Admin/_store/__customers/UserOrders";
-import GeneralUserInformation from "@/components/Admin/_store/__customers/GeneralUserInfo";
+import UserInfoCard from "@/components/Admin/_store/__customers/UserInfoCard";
 import AddNewCustomerModal from "@/components/Admin/_store/__customers/modals/AddNewCustomerModal";
-import FilterModal from "@/components/Admin/_store/__customers/modals/FilterModal";
-import SortingModal from "@/components/Admin/_store/__customers/modals/SortingModal";
+import FilterModal from "@/components/Admin/_store/__customers/modals/FilterUsersModal";
+import SortingModal from "@/components/Admin/_store/__customers/modals/SortingUsersModal";
 import OptionBox from "@/components/Admin/OptionBox";
 import BackToPage from "@/components/Helper/BackToPage";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
@@ -22,6 +21,7 @@ import { IoFilter } from "react-icons/io5";
 import { LuBox, LuUsersRound } from "react-icons/lu";
 import AppPagination from "@/components/Helper/AppPagination";
 import { useSearchParams } from "next/navigation";
+import UsersFilter from "@/components/Admin/_store/__customers/UsersFilter";
 
 const Customers = () => {
   // State
@@ -39,62 +39,13 @@ const Customers = () => {
     onOpenChange: onAddOpenChange,
   } = useDisclosure();
 
-  const {
-    isOpen: isSortingOpen,
-    onOpen: onSortingOpen,
-    onOpenChange: onSortingOpenChange,
-  } = useDisclosure();
-
-  const {
-    isOpen: isFilterOpen,
-    onOpen: onFilterOpen,
-    onOpenChange: onFilterOpenChange,
-  } = useDisclosure();
-
   return (
     <>
       {!userId ? (
         <section className="flex flex-col gap-6">
           <BackToPage title="برگشت" link="/admin/store" />
 
-          <HeaderAction
-            title="لیست کاربران"
-            textBtn={"+ کاربر جدید"}
-            onPress={onAddOpen}
-          />
-
-          <Card className="shadow-none">
-            <BoxHeader
-              title="باکس فیلر"
-              color="text-white bg-gray-800"
-              icon={<LuBox className="text-3xl" />}
-            />
-            <CardBody className="flex flex-col gap-4">
-              <section className="w-full">
-                <Input
-                  isClearable
-                  size="lg"
-                  variant="bordered"
-                  className="bg-white rounded-xl"
-                  color="secondary"
-                  placeholder="جستجو در کاربران..."
-                  startContent={<FiSearch className="text-xl" />}
-                ></Input>
-              </section>
-              <section className="flex flex-wrap items-center gap-2 justify-between">
-                <OptionBox
-                  title="فیلتر"
-                  icon={<IoFilter className="!text-[16px]" />}
-                  onClick={onFilterOpen}
-                />
-                <OptionBox
-                  title="مرتب سازی"
-                  icon={<BiSortAlt2 className="!text-[16px]" />}
-                  onClick={onSortingOpen}
-                />
-              </section>
-            </CardBody>
-          </Card>
+          <UsersFilter/>
 
           <Card className="shadow-md">
             <BoxHeader
@@ -108,7 +59,7 @@ const Customers = () => {
               ) : users?.data ? (
                 <div className="flex flex-col gap-4">
                   {users.data.items.map((user: any) => (
-                    <GeneralUserInformation
+                    <UserInfoCard
                       key={user.id}
                       firstName={user.first_name || "نام"}
                       lastName={user.last_name || " | نام خوانوادگی"}
@@ -172,7 +123,6 @@ const Customers = () => {
                     },
                   ]}
                 />
-                <UserOrders />
               </div>
             );
           })()}
@@ -180,8 +130,6 @@ const Customers = () => {
       )}
 
       <AddNewCustomerModal isOpen={isAddOpen} onOpenChange={onAddOpenChange} />
-      <SortingModal isOpen={isSortingOpen} onOpenChange={onSortingOpenChange} />
-      <FilterModal isOpen={isFilterOpen} onOpenChange={onFilterOpenChange} />
     </>
   );
 };

@@ -8,7 +8,7 @@ type Props = {
     onOpenChange: () => void,
 }
 
-const SortingModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const SortingUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     return (
         <Modal
             dir="rtl"
@@ -54,4 +54,4 @@ const SortingModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
         </Modal>
     );
 }
-export default SortingModal
+export default SortingUsersModal

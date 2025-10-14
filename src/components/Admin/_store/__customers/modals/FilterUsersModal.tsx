@@ -8,7 +8,7 @@ type Props = {
   onOpenChange: () => void;
 };
 
-const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const FilterUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   return (
     <Modal
       dir="rtl"
@@ -39,4 +39,4 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     </Modal>
   );
 };
-export default FilterModal;
+export default FilterUsersModal;
