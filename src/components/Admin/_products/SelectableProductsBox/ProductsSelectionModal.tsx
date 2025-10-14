@@ -1,7 +1,6 @@
-// components/Admin/_products/SelectableProductsBox/ProductSelectionModal.tsx
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { Spinner } from "@heroui/react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import ProductBox from "@/components/Admin/_products/ProductBox";
@@ -9,13 +8,13 @@ import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 import { useSearchParams } from "next/navigation";
+import { useSelectableItems } from "@/hooks/system/useSelectableItems";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  // now returns array of product objects (not only ids)
   onConfirm: (selectedProducts: any[]) => void;
-  selectedIds?: number[]; // optional initial selection by id
+  selectedIds?: number[];
 };
 
 const ProductsSelectionModal: React.FC<Props> = ({
@@ -24,11 +23,6 @@ const ProductsSelectionModal: React.FC<Props> = ({
   onConfirm,
   selectedIds = [],
 }) => {
-  // map of selected products by id
-  const [selectedMap, setSelectedMap] = useState<Record<number, any>>({});
-  const [selectedOrder, setSelectedOrder] = useState<number[]>(selectedIds);
-
-  // read URL search params for filtering
   const searchParams = useSearchParams();
 
   const page = useMemo(() => {
@@ -74,42 +68,15 @@ const ProductsSelectionModal: React.FC<Props> = ({
 
   const products = productsResponse?.data?.items ?? [];
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    // باز شدن مدال → ریست انتخاب‌ها از props
-    const initialMap: Record<number, any> = {};
-    selectedIds.forEach((id) => {
-      const existing = products.find((p: any) => p.id === id);
-      if (existing) initialMap[id] = existing;
-    });
-
-    setSelectedOrder(selectedIds);
-    setSelectedMap(initialMap);
-  }, [isOpen, selectedIds, products]);
-
-  const handleSelect = (product: any, checked: boolean) => {
-    setSelectedOrder((prev) =>
-      checked
-        ? [...new Set([...prev, product.id])]
-        : prev.filter((id) => id !== product.id)
-    );
-
-    setSelectedMap((prev) => {
-      const copy = { ...prev };
-      if (checked) copy[product.id] = product;
-      else delete copy[product.id];
-      return copy;
-    });
-  };
+  const {
+    selectedOrder,
+    handleSelect,
+    handleConfirm: handleConfirmSelection,
+  } = useSelectableItems(products, selectedIds, isOpen);
 
   const handleConfirm = () => {
-    // preserve order using selectedOrder
-    const selectedProducts = selectedOrder
-      .map((id) => selectedMap[id])
-      .filter(Boolean);
+    const selectedProducts = handleConfirmSelection();
     onConfirm(selectedProducts);
-    // optionally we can clear selection after confirm, but leave it to parent
   };
 
   return (
@@ -139,9 +106,7 @@ const ProductsSelectionModal: React.FC<Props> = ({
                 key={product.id}
                 product={product}
                 selectedIds={selectedOrder}
-                onSelect={(id, sel, prod) =>
-                  handleSelect(prod ?? product, !!sel)
-                }
+                onSelect={(id, sel, p) => p && handleSelect(p, !!sel)}
                 disableAction
               />
             ))}
