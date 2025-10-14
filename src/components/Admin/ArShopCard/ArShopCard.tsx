@@ -11,17 +11,17 @@ const ArShopCard: React.FC<Props> = ({ activeOrderBadge= false, children }) => {
 
     return (
         <Card className="shadow-md bg-gradient-to-r from-white via-purple-400">
-            <CardBody className="p-2 sm:p-3">
+            <CardBody className="p-2">
                 <div className="flex flex-col xs:flex-row xs:items-center justify-between">
                     <div className="flex items-center gap-3 text-start">
                         <img
                             src="/images/logo.png"
                             alt="logo"
-                            className="w-20 h-20 sm:w-28 sm:h-28 object-contain bg-[rgba(255,255,255,.8)] border-4 rounded-2xl sm:rounded-full"
+                            className="w-20 h-20 object-contain bg-[rgba(255,255,255,.8)] rounded-2xl"
                         />
                         <div>
-                            <p className="text-medium sm:text-2xl text-white">فروشگاه آرشاپ</p>
-                            <p className="mt-1 text-[13px]">محصولات فرهنگی و مذهبی</p>
+                            <p className="text-xl text-white">فروشگاه آرشاپ</p>
+                            <p className="mt-1 text-sm">محصولات فرهنگی و مذهبی</p>
                             {
                                 activeOrderBadge
                                     ?
