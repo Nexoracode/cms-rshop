@@ -44,7 +44,10 @@ const ToggleButton = ({
 }) => (
   <button
     className="bg-gray-100 rounded-md p-1 cursor-auto"
-    onClick={onClick}
+    onClick={(e) => {
+      e.stopPropagation();
+      onClick();
+    }}
     aria-label={open ? "بستن زیرشاخه‌ها" : "باز کردن زیرشاخه‌ها"}
     type="button"
   >
