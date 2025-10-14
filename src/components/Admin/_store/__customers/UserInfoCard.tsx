@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, useDisclosure } from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import { useDeleteUser } from "@/hooks/api/users/useUsers";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
@@ -33,7 +33,7 @@ const UserBox: React.FC<Props> = ({
   disableSelect = false,
   disableAction = false,
 }) => {
-  const router = useRouter()
+  const router = useRouter();
   const { id, first_name, last_name, phone, email, created_at } = infos;
   const { mutate: deleteUser } = useDeleteUser(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -44,26 +44,30 @@ const UserBox: React.FC<Props> = ({
         id={id}
         selectedIds={selectedIds}
         disabled={disableSelect}
-        onSelectionChange={(idVal, sel) => onSelect?.(idVal, sel, infos)}
+        onSelectionChange={(idVal, sel) => onSelect?.(+idVal, sel, infos)}
         className="max-w-[300px] w-full sm:max-w-full"
       >
-        <div className="flex flex-col xs:flex-row items-center justify-between p-4 gap-4 border rounded-xl shadow-sm">
-          <div className="flex flex-col gap-2">
-            <p className="font-medium">
-              {first_name} {last_name}
-            </p>
-            <p className="text-gray-600 text-sm">{phone}</p>
-            <p className="text-gray-600 text-sm">{email}</p>
-            <p className="text-gray-500 text-xs">{created_at?.slice(0, 10)}</p>
+        <div className="flex flex-col xs:flex-row items-center justify-between">
+          <div className="w-full flex flex-col gap-6 px-10">
+            <div className="flex items-center justify-between">
+              <p className="font-medium">
+                {first_name} {last_name}
+              </p>
+              <p className="text-gray-600 text-sm">{phone}</p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-gray-600 text-sm">{email}</p>
+              <p className="text-gray-500 text-xs">
+                {created_at?.slice(0, 10)}
+              </p>
+            </div>
           </div>
           {!disableAction && (
             <div className="flex gap-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  router.push(
-                    `/admin/store/customers/create?edit_id=${id}`
-                  );
+                  router.push(`/admin/store/customers/create?edit_id=${id}`);
                 }}
                 className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
               >

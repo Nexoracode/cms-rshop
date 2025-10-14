@@ -7,8 +7,8 @@ import CardContent from "@/components/Admin/CardContent";
 import UserInfoCard from "@/components/Admin/_store/__customers/UserInfoCard";
 import AddNewCustomerModal from "@/components/Admin/_store/__customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/Helper/LoadingApiCall";
-import AppPagination from "@/components/Helper/AppPagination";
 import { useGetAllUsers } from "@/hooks/api/users/useUsers";
+import { FiUsers } from "react-icons/fi";
 
 const UsersListPage = () => {
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
@@ -22,7 +22,7 @@ const UsersListPage = () => {
 
       <CardContent
         title="لیست کاربران"
-        icon={<span className="text-2xl">👥</span>}
+        icon={<FiUsers className="text-2xl" />}
         isLoading={isLoading}
         datas={users}
         onAdd={onOpen}
@@ -46,8 +46,6 @@ const UsersListPage = () => {
           ))}
         </div>
       </CardContent>
-
-      <AppPagination meta={users?.data?.meta} />
 
       <AddNewCustomerModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </section>
