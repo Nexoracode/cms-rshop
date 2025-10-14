@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useDisclosure } from "@heroui/react";
 import UsersFilter from "@/components/Admin/_store/__customers/UsersFilter";
 import CardContent from "@/components/Admin/CardContent";
@@ -11,7 +10,6 @@ import { useGetAllUsers } from "@/hooks/api/users/useUsers";
 import { FiUsers } from "react-icons/fi";
 
 const UsersListPage = () => {
-  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const { data: users, isLoading } = useGetAllUsers(1);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -36,12 +34,7 @@ const UsersListPage = () => {
             <UserInfoCard
               key={user.id}
               infos={user}
-              selectedIds={selectedUsers}
-              onSelect={(id, selected) =>
-                setSelectedUsers((prev) =>
-                  selected ? [...prev, id] : prev.filter((x) => x !== id)
-                )
-              }
+              disableSelect
             />
           ))}
         </div>
