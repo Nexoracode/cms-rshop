@@ -169,7 +169,7 @@ const Products = () => {
                     selected ? [...prev, id] : prev.filter((x) => x !== id)
                   )
                 }
-                cancleRemove={selectedItems}
+                selectedIds={selectedItems}
               />
             ))}
           </div>
