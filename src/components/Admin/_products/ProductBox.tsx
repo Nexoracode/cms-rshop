@@ -140,34 +140,42 @@ const ProductBox: React.FC<Props> = ({
                 </p>
               </div>
 
-              <div className="text-gray-600">
-                {product.discount_amount > 0 || product.discount_percent > 0 ? (
-                  <div className="flex flex-col items-end gap-2 sm:gap-1">
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
-                        {Number(product.price).toLocaleString("fa-IR")}
-                      </span>
-                      <span>تومان</span>
-                    </div>
-                    <span className="text-[15px] text-gray-800">
-                      {Number(
-                        Math.max(
-                          0,
-                          product.price -
-                            (product.discount_amount > 0
-                              ? product.discount_amount
-                              : (product.discount_percent / 100) *
-                                product.price)
-                        )
-                      ).toLocaleString("fa-IR")}{" "}
-                      تومان
-                    </span>
+              <div className="flex items-end">
+                {product.variants && (
+                  <div className="border-l-2 pl-4 ml-4">
+                    <MdOutlineCategory className="text-purple-500 text-2xl bg-slate-100 p-1 rounded-md" />
                   </div>
-                ) : (
-                  <span className="text-[15px] text-gray-800">
-                    {Number(product.price).toLocaleString("fa-IR")} تومان
-                  </span>
                 )}
+                <div className="text-gray-600">
+                  {product.discount_amount > 0 ||
+                  product.discount_percent > 0 ? (
+                    <div className="flex flex-col items-end gap-2 sm:gap-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
+                          {Number(product.price).toLocaleString("fa-IR")}
+                        </span>
+                        <span>تومان</span>
+                      </div>
+                      <span className="text-[15px] text-gray-800">
+                        {Number(
+                          Math.max(
+                            0,
+                            product.price -
+                              (product.discount_amount > 0
+                                ? product.discount_amount
+                                : (product.discount_percent / 100) *
+                                  product.price)
+                          )
+                        ).toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-[15px] text-gray-800">
+                      {Number(product.price).toLocaleString("fa-IR")} تومان
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
