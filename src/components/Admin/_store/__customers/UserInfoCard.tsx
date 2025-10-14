@@ -26,7 +26,7 @@ type Props = {
   disableAction?: boolean;
 };
 
-const UserBox: React.FC<Props> = ({
+const UserInfoCard: React.FC<Props> = ({
   infos,
   onSelect,
   selectedIds = [],
@@ -102,4 +102,4 @@ const UserBox: React.FC<Props> = ({
   );
 };
 
-export default UserBox;
+export default UserInfoCard;

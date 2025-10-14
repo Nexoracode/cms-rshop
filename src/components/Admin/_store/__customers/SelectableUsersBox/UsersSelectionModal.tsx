@@ -1,14 +1,13 @@
 // components/Admin/_products/SelectableProductsBox/ProductSelectionModal.tsx
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Spinner } from "@heroui/react";
 import DynamicModal from "@/components/Helper/DynamicModal";
-import ProductBox from "@/components/Admin/_products/ProductBox";
-import { useGetProducts } from "@/hooks/api/products/useProduct";
-import { BsShop } from "react-icons/bs";
-import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
-import { useSearchParams } from "next/navigation";
+import { useGetAllUsers } from "@/hooks/api/users/useUsers";
+import { TbUsers } from "react-icons/tb";
+import UsersFilter from "../UsersFilter";
+import UserInfoCard from "../UserInfoCard";
 
 type Props = {
   isOpen: boolean;
@@ -18,7 +17,7 @@ type Props = {
   selectedIds?: number[]; // optional initial selection by id
 };
 
-const ProductSelectionModal: React.FC<Props> = ({
+const UsersSelectionModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
   onConfirm,
@@ -28,51 +27,9 @@ const ProductSelectionModal: React.FC<Props> = ({
   const [selectedMap, setSelectedMap] = useState<Record<number, any>>({});
   const [selectedOrder, setSelectedOrder] = useState<number[]>(selectedIds);
 
-  // read URL search params for filtering
-  const searchParams = useSearchParams();
+  const { data: usersResponse, isLoading } = useGetAllUsers(1);
 
-  const page = useMemo(() => {
-    const p = searchParams.get("page");
-    const n = Number(p ?? 1);
-    return Number.isFinite(n) && n > 0 ? n : 1;
-  }, [searchParams?.toString()]);
-
-  const sortBy = useMemo(() => {
-    const sorts = searchParams.getAll("sortBy");
-    return sorts.length ? (sorts as any) : undefined;
-  }, [searchParams?.toString()]);
-
-  const search = useMemo(() => {
-    const s = searchParams.get("search")?.trim();
-    return s ? s : undefined;
-  }, [searchParams?.toString()]);
-
-  const searchBy = useMemo(() => {
-    const s = searchParams.getAll("searchBy");
-    return s.length ? s : undefined;
-  }, [searchParams?.toString()]);
-
-  const filter = useMemo(() => {
-    const f: Record<string, string[]> = {};
-    for (const [key, value] of Array.from(searchParams.entries())) {
-      if (!key.startsWith("filter.")) continue;
-      const [, field] = key.split(".");
-      if (!field) continue;
-      if (!f[field]) f[field] = [];
-      f[field].push(value);
-    }
-    return Object.keys(f).length ? (f as any) : undefined;
-  }, [searchParams?.toString()]);
-
-  const { data: productsResponse, isLoading } = useGetProducts({
-    page,
-    filter,
-    search,
-    searchBy,
-    sortBy,
-  });
-
-  const products = productsResponse?.data?.items ?? [];
+  const users = usersResponse?.data?.items ?? [];
 
   useEffect(() => {
     if (!isOpen) return;
@@ -80,13 +37,13 @@ const ProductSelectionModal: React.FC<Props> = ({
     // باز شدن مدال → ریست انتخاب‌ها از props
     const initialMap: Record<number, any> = {};
     selectedIds.forEach((id) => {
-      const existing = products.find((p: any) => p.id === id);
+      const existing = users.find((p: any) => p.id === id);
       if (existing) initialMap[id] = existing;
     });
 
     setSelectedOrder(selectedIds);
     setSelectedMap(initialMap);
-  }, [isOpen, selectedIds, products]);
+  }, [isOpen, selectedIds, users]);
 
   const handleSelect = (product: any, checked: boolean) => {
     setSelectedOrder((prev) =>
@@ -116,31 +73,31 @@ const ProductSelectionModal: React.FC<Props> = ({
     <DynamicModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      title="انتخاب محصولات"
+      title="انتخاب کاربران"
       confirmText="تأیید انتخاب"
       cancelText="لغو"
       confirmColor="secondary"
       confirmVariant="solid"
       onConfirm={handleConfirm}
-      icon={<BsShop className="text-2xl" />}
+      icon={<TbUsers className="text-2xl" />}
       size="3xl"
     >
       <div className="flex flex-col gap-4">
-        <ProductsFilter />
+        <UsersFilter />
 
         {isLoading ? (
           <div className="flex justify-center py-10">
-            <Spinner label="در حال بارگذاری محصولات..." color="secondary" />
+            <Spinner label="در حال بارگذاری کاربران..." color="secondary" />
           </div>
-        ) : products.length ? (
+        ) : users.length ? (
           <div className="flex flex-col gap-4">
-            {products.map((product: any) => (
-              <ProductBox
-                key={product.id}
-                product={product}
+            {users.map((user: any) => (
+              <UserInfoCard
+                key={user.id}
+                infos={user}
                 selectedIds={selectedOrder}
                 onSelect={(id, sel, prod) =>
-                  handleSelect(prod ?? product, !!sel)
+                  handleSelect(prod ?? user, !!sel)
                 }
                 disableAction
               />
@@ -148,7 +105,7 @@ const ProductSelectionModal: React.FC<Props> = ({
           </div>
         ) : (
           <p className="text-center text-gray-500 py-8">
-            محصولی برای نمایش وجود ندارد.
+            کاربری برای نمایش وجود ندارد.
           </p>
         )}
       </div>
@@ -156,4 +113,4 @@ const ProductSelectionModal: React.FC<Props> = ({
   );
 };
 
-export default ProductSelectionModal;
+export default UsersSelectionModal;

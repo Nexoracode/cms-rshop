@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import ProductSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductSelectionModal";
+import ProductsSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductsSelectionModal";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
 import { TfiShoppingCartFull } from "react-icons/tfi";
@@ -33,7 +33,7 @@ const SelectableProductsBox: React.FC<Props> = ({
       initial={selectedProducts}
       onOpen={() => setIsProductsOpen(true)}
       modal={
-        <ProductSelectionModal
+        <ProductsSelectionModal
           isOpen={isProductsOpen}
           onOpenChange={setIsProductsOpen}
           onConfirm={handleConfirm}
