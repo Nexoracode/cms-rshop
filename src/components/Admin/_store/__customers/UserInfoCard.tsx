@@ -1,54 +1,101 @@
 "use client";
 
-import { Button, Card, CardBody } from "@heroui/react";
+import React from "react";
+import { Button, useDisclosure } from "@heroui/react";
+import { useDeleteUser } from "@/hooks/api/users/useUsers";
+import DynamicModal from "@/components/Helper/DynamicModal";
+import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
-type Props = {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  membership: string;
-  email: string;
-  onShowDetail: () => void;
+type UserInfo = {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  email?: string;
+  created_at?: string;
 };
 
-const UserInfoCard: React.FC<Props> = ({
-  firstName,
-  lastName,
-  phone,
-  membership,
-  email,
-  onShowDetail,
-}) => {
-  return (
-    <Card className="w-full border shadow-md">
-      <CardBody>
-        <div className="w-full flex flex-col xs:flex-row items-center justify-between mb-4">
-          <p className="hidden xs:flex">اطلاعات کلی کاربر</p>
-          <Button
-            onPress={onShowDetail}
-            className="text-sm w-full xs:w-fit"
-            variant="flat"
-            color="primary"
-          >
-            مشاهده جزئیات
-          </Button>
-        </div>
+type Props = {
+  infos: UserInfo;
+  onSelect?: (id: number, selected: boolean, user?: UserInfo) => void;
+  selectedIds?: number[];
+  disableSelect?: boolean;
+  disableAction?: boolean;
+};
 
-        <div className="w-full flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <p>
-              {firstName} {lastName}
+const UserBox: React.FC<Props> = ({
+  infos,
+  onSelect,
+  selectedIds = [],
+  disableSelect = false,
+  disableAction = false,
+}) => {
+  const router = useRouter()
+  const { id, first_name, last_name, phone, email, created_at } = infos;
+  const { mutate: deleteUser } = useDeleteUser(id);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  return (
+    <>
+      <SelectableCard
+        id={id}
+        selectedIds={selectedIds}
+        disabled={disableSelect}
+        onSelectionChange={(idVal, sel) => onSelect?.(idVal, sel, infos)}
+        className="max-w-[300px] w-full sm:max-w-full"
+      >
+        <div className="flex flex-col xs:flex-row items-center justify-between p-4 gap-4 border rounded-xl shadow-sm">
+          <div className="flex flex-col gap-2">
+            <p className="font-medium">
+              {first_name} {last_name}
             </p>
-            <p>{phone}</p>
+            <p className="text-gray-600 text-sm">{phone}</p>
+            <p className="text-gray-600 text-sm">{email}</p>
+            <p className="text-gray-500 text-xs">{created_at?.slice(0, 10)}</p>
           </div>
-          <div className="flex items-center justify-between">
-            <p>{email}</p>
-            <p>{membership}</p>
-          </div>
+          {!disableAction && (
+            <div className="flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(
+                    `/admin/store/customers/create?edit_id=${id}`
+                  );
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <TbEdit size={18} />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpen();
+                }}
+                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+              >
+                <RiDeleteBin5Line size={18} />
+              </button>
+            </div>
+          )}
         </div>
-      </CardBody>
-    </Card>
+      </SelectableCard>
+
+      <DynamicModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        title="تایید حذف کاربر"
+        confirmText="حذف کاربر"
+        onConfirm={() => deleteUser()}
+      >
+        <p className="leading-7 text-danger-600">
+          با حذف کاربر، اطلاعات او قابل برگشت نخواهد بود. آیا مطمئن هستید؟
+        </p>
+      </DynamicModal>
+    </>
   );
 };
 
-export default UserInfoCard;
+export default UserBox;
