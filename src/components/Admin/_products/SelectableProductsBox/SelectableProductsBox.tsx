@@ -10,17 +10,13 @@ import ProductBox from "@/components/Admin/_products/ProductBox";
 type Product = any;
 
 type Props = {
-  label?: string;
   onChange?: (products: Product[]) => void;
   initialProducts?: Product[];
-  addButtonText?: string;
 };
 
 const SelectableProductsBox: React.FC<Props> = ({
-  label = "محصولات انتخاب‌شده",
   onChange,
   initialProducts = [],
-  addButtonText = "افزودن محصول",
 }) => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>(initialProducts);
@@ -37,14 +33,14 @@ const SelectableProductsBox: React.FC<Props> = ({
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="flex items-center justify-between">
-        <p className="font-medium">{label}</p>
+        <p className="font-medium">محصولات انتخاب شده</p>
         <Button
           color="secondary"
           variant="flat"
           size="sm"
           onPress={() => setIsProductsOpen(true)}
         >
-          {selectedProducts.length ? "ویرایش" : addButtonText}
+          {selectedProducts.length ? "ویرایش" : "افزودن محصول"}
         </Button>
       </div>
 

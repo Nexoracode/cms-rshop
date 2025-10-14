@@ -28,21 +28,6 @@ const ProductSelectionModal: React.FC<Props> = ({
   const [selectedMap, setSelectedMap] = useState<Record<number, any>>({});
   const [selectedOrder, setSelectedOrder] = useState<number[]>(selectedIds);
 
-  // sync initial selected ids when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setSelectedOrder(selectedIds ?? []);
-      // keep selectedMap only for ids that already exist (we'll fill when products load)
-      setSelectedMap((prev) => {
-        const copy: Record<number, any> = {};
-        (selectedIds || []).forEach((id) => {
-          if (prev[id]) copy[id] = prev[id];
-        });
-        return copy;
-      });
-    }
-  }, [isOpen, selectedIds]);
-
   // read URL search params for filtering
   const searchParams = useSearchParams();
 
@@ -89,33 +74,32 @@ const ProductSelectionModal: React.FC<Props> = ({
 
   const products = productsResponse?.data?.items ?? [];
 
-  // when products load, fill selectedMap entries with full product objects
   useEffect(() => {
-    if (products.length) {
-      setSelectedMap((prev) => {
-        const copy = { ...prev };
-        products.forEach((p: any) => {
-          if (selectedOrder.includes(p.id)) copy[p.id] = p;
-        });
-        return copy;
-      });
-    }
-  }, [products, selectedOrder]);
+    if (!isOpen) return;
+
+    // باز شدن مدال → ریست انتخاب‌ها از props
+    const initialMap: Record<number, any> = {};
+    selectedIds.forEach((id) => {
+      const existing = products.find((p: any) => p.id === id);
+      if (existing) initialMap[id] = existing;
+    });
+
+    setSelectedOrder(selectedIds);
+    setSelectedMap(initialMap);
+  }, [isOpen, selectedIds, products]);
 
   const handleSelect = (product: any, checked: boolean) => {
+    setSelectedOrder((prev) =>
+      checked
+        ? [...new Set([...prev, product.id])]
+        : prev.filter((id) => id !== product.id)
+    );
+
     setSelectedMap((prev) => {
       const copy = { ...prev };
       if (checked) copy[product.id] = product;
       else delete copy[product.id];
       return copy;
-    });
-    setSelectedOrder((prev) => {
-      if (checked) {
-        if (prev.includes(product.id)) return prev;
-        return [...prev, product.id];
-      } else {
-        return prev.filter((id) => id !== product.id);
-      }
     });
   };
 
@@ -165,7 +149,9 @@ const ProductSelectionModal: React.FC<Props> = ({
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500 py-8">محصولی برای نمایش وجود ندارد.</p>
+          <p className="text-center text-gray-500 py-8">
+            محصولی برای نمایش وجود ندارد.
+          </p>
         )}
       </div>
     </DynamicModal>
