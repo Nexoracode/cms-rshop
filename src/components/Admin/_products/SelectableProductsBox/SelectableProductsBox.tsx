@@ -1,11 +1,10 @@
-// components/Admin/_products/SelectableProductsBox/SelectableProductsBox.tsx
 "use client";
 
 import React, { useState } from "react";
-import { Button, Card, CardBody } from "@heroui/react";
 import ProductSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductSelectionModal";
-import { FiShoppingBag } from "react-icons/fi";
 import ProductBox from "@/components/Admin/_products/ProductBox";
+import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
+import { TfiShoppingCartFull } from "react-icons/tfi";
 
 type Product = any;
 
@@ -21,9 +20,6 @@ const SelectableProductsBox: React.FC<Props> = ({
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>(initialProducts);
 
-  const handleOpenChange = (open: boolean) => setIsProductsOpen(open);
-
-  // now receives product objects from modal
   const handleConfirm = (products: Product[]) => {
     setSelectedProducts(products);
     onChange?.(products);
@@ -31,48 +27,31 @@ const SelectableProductsBox: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <div className="flex items-center justify-between">
-        <p className="font-medium">محصولات انتخاب شده</p>
-        <Button
-          color="secondary"
-          variant="flat"
-          size="sm"
-          onPress={() => setIsProductsOpen(true)}
-        >
-          {selectedProducts.length ? "ویرایش" : "افزودن محصول"}
-        </Button>
+    <SelectableBox
+      title="محصولات انتخاب شده"
+      icon={<TfiShoppingCartFull className="text-5xl" />}
+      initial={selectedProducts}
+      onOpen={() => setIsProductsOpen(true)}
+      modal={
+        <ProductSelectionModal
+          isOpen={isProductsOpen}
+          onOpenChange={setIsProductsOpen}
+          onConfirm={handleConfirm}
+          selectedIds={selectedProducts.map((p) => p.id)}
+        />
+      }
+    >
+      <div className="flex flex-col gap-4">
+        {selectedProducts.map((product) => (
+          <ProductBox
+            key={product.id}
+            product={product}
+            disableSelect
+            disableAction
+          />
+        ))}
       </div>
-
-      <Card className="shadow-sm border border-gray-100">
-        <CardBody className="flex flex-col gap-4">
-          {selectedProducts.length ? (
-            <div className="flex flex-col gap-4">
-              {selectedProducts.map((product) => (
-                <ProductBox
-                  key={product.id}
-                  product={product}
-                  disableSelect
-                  disableAction
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-6 text-gray-500">
-              <FiShoppingBag className="text-5xl mb-2" />
-              <p>هنوز محصولی انتخاب نکرده‌اید</p>
-            </div>
-          )}
-        </CardBody>
-      </Card>
-
-      <ProductSelectionModal
-        isOpen={isProductsOpen}
-        onOpenChange={handleOpenChange}
-        onConfirm={handleConfirm}
-        selectedIds={selectedProducts.map((p) => p.id)}
-      />
-    </div>
+    </SelectableBox>
   );
 };
 
