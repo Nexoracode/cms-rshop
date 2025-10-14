@@ -138,7 +138,6 @@ const ProductSelectionModal: React.FC<Props> = ({
       confirmColor="secondary"
       confirmVariant="solid"
       onConfirm={handleConfirm}
-      isConfirmDisabled={selectedOrder.length === 0}
       icon={<BsShop className="text-2xl" />}
       size="3xl"
     >
@@ -161,6 +160,7 @@ const ProductSelectionModal: React.FC<Props> = ({
                 }}
                 cancleRemove={selectedOrder}
                 initialSelected={selectedOrder.includes(product.id)}
+                disableAction
               />
             ))}
           </div>

@@ -27,6 +27,7 @@ type Props = {
   cancleRemove: any[]; // parent selection list
   initialSelected?: boolean; // NEW: allow pre-selecting this card
   disableSelect?: boolean;
+  disableAction?: boolean;
 };
 
 const ProductBox: React.FC<Props> = ({
@@ -36,7 +37,8 @@ const ProductBox: React.FC<Props> = ({
   onSelect,
   cancleRemove,
   initialSelected = false,
-  disableSelect
+  disableSelect,
+  disableAction=false
 }) => {
   const router = useRouter();
   const id = product?.id;
@@ -162,38 +164,41 @@ const ProductBox: React.FC<Props> = ({
                   </p>{" "}
                   <span className="text-gray-600 text-xs">({category})</span>
                 </div>
-
-                <div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleShowInfos(e);
-                      }}
-                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                    >
-                      <TbEdit size={18} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleShowVariant(e);
-                      }}
-                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                    >
-                      <MdOutlineCategory size={18} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onOpen();
-                      }}
-                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                    >
-                      <RiDeleteBin5Line size={18} />
-                    </button>
+                {!disableAction ? (
+                  <div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleShowInfos(e);
+                        }}
+                        className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                      >
+                        <TbEdit size={18} />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleShowVariant(e);
+                        }}
+                        className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                      >
+                        <MdOutlineCategory size={18} />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpen();
+                        }}
+                        className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                      >
+                        <RiDeleteBin5Line size={18} />
+                      </button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  ""
+                )}
               </div>
 
               <div className="flex items-end justify-between">
