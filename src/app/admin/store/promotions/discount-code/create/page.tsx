@@ -27,6 +27,7 @@ import {
 import ProductSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductsSelectionModal";
 import SelectableProductsBox from "@/components/Admin/_products/SelectableProductsBox/SelectableProductsBox";
 import SelectableUsersBox from "@/components/Admin/_store/__customers/SelectableUsersBox/SelectableUsersBox";
+import SelectableCategoriesBox from "@/components/Admin/_products/__categories/SelectableCategoriesBox/SelectableCategoriesBox";
 
 type AmountType = "percent" | "fixed";
 
@@ -179,6 +180,7 @@ export default function CouponFormPage() {
 
           <SelectableProductsBox initialProducts={couponData?.data?.allowed_products || []}/>
           <SelectableUsersBox initialUsers={couponData?.data?.allowed_users || []}/>
+          <SelectableCategoriesBox initialUsers={couponData?.data?.allowed_categories || []}/>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
