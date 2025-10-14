@@ -2,54 +2,52 @@
 
 import React, { useState } from "react";
 import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
-import UserInfoCard from "@/components/Admin/_store/__customers/UserInfoCard";
-import UsersSelectionModal from "@/components/Admin/_store/__customers/SelectableUsersBox/UsersSelectionModal";
 import { BiCategoryAlt } from "react-icons/bi";
+import CategoriesSelectionModal from "./CategoriesSelectionModal";
+import CategoryTree from "../CategoryCard";
 
-type Product = any;
+type Category = any;
 
 type Props = {
-  onChange?: (products: Product[]) => void;
-  initialUsers?: Product[];
+  onChange?: (categories: Category[]) => void;
+  initialCategories?: Category[];
 };
 
 const SelectableCategoriesBox: React.FC<Props> = ({
   onChange,
-  initialUsers = [],
+  initialCategories = [],
 }) => {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<Product[]>(initialUsers);
+  const [selectedCategories, setSelectedCategories] =
+    useState<Category[]>(initialCategories);
 
-  const handleConfirm = (products: Product[]) => {
-    setSelectedUsers(products);
-    onChange?.(products);
+  const handleConfirm = (categories: Category[]) => {
+    setSelectedCategories(categories);
+    onChange?.(categories);
     setIsUsersOpen(false);
   };
 
   return (
     <SelectableBox
-      title="دسته بندی ها انتخاب شده"
+      title="دسته‌بندی‌ها انتخاب‌شده"
       icon={<BiCategoryAlt className="text-5xl" />}
-      initial={selectedUsers}
+      initial={selectedCategories}
       onOpen={() => setIsUsersOpen(true)}
       modal={
-        <UsersSelectionModal
+        <CategoriesSelectionModal
           isOpen={isUsersOpen}
           onOpenChange={setIsUsersOpen}
           onConfirm={handleConfirm}
-          selectedIds={selectedUsers.map((p) => p.id)}
+          selectedIds={selectedCategories.map((c) => c.id)}
         />
       }
     >
       <div className="flex flex-col gap-4">
-        {selectedUsers.map((user) => (
-          <UserInfoCard
-            key={user.id}
-            infos={user}
-            disableSelect
-            disableAction
-          />
-        ))}
+        <CategoryTree
+          categories={selectedCategories}
+          disableSelect
+          disableAction
+        />
       </div>
     </SelectableBox>
   );

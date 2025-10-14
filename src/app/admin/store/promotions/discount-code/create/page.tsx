@@ -180,7 +180,7 @@ export default function CouponFormPage() {
 
           <SelectableProductsBox initialProducts={couponData?.data?.allowed_products || []}/>
           <SelectableUsersBox initialUsers={couponData?.data?.allowed_users || []}/>
-          <SelectableCategoriesBox initialUsers={couponData?.data?.allowed_categories || []}/>
+          <SelectableCategoriesBox initialCategories={couponData?.data?.allowed_categories || []}/>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
