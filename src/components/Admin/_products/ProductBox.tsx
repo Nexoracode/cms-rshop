@@ -1,14 +1,7 @@
-// components/Admin/_products/ProductBox.tsx
 "use client";
 
 import React from "react";
-import {
-  Card,
-  CardBody,
-  Checkbox,
-  Tooltip,
-  useDisclosure,
-} from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
@@ -24,8 +17,7 @@ type Props = {
   onShowInfos?: (productId: number) => void;
   onShowVariant?: (productId: number) => void;
   onSelect?: (id: number, selected: boolean, product?: any) => void;
-  cancleRemove?: any[]; // parent selection list (optional)
-  initialSelected?: boolean;
+  selectedIds?: number[];
   disableSelect?: boolean;
   disableAction?: boolean;
 };
@@ -35,47 +27,24 @@ const ProductBox: React.FC<Props> = ({
   onShowInfos,
   onShowVariant,
   onSelect,
-  cancleRemove = [],
-  initialSelected = false,
+  selectedIds = [],
   disableSelect = false,
   disableAction = false,
 }) => {
   const router = useRouter();
-  const id = product?.id;
+  const id = product.id;
 
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  // internal derived values (no change)
-  const priceNum = Number(product?.price ?? 0);
-  const discountAmount = Number(product?.discount_amount ?? 0);
-  const discountPercent = Number(product?.discount_percent ?? 0);
-  const discountValue =
-    discountAmount > 0 ? discountAmount : (discountPercent / 100) * priceNum;
-  const finalPrice = Math.max(0, Math.round(priceNum - discountValue));
-  const originalPrice = discountValue > 0 ? priceNum : undefined;
-
-  const varientsCount = product?.is_limited_stock
-    ? "نامحدود"
-    : product?.stock === 0
-    ? "ندارد"
-    : `${product?.stock ?? 0} عدد`;
-
-  const pathImg = product?.media_pinned?.url ?? product?.image ?? "";
-  const title = product?.name ?? product?.title ?? "بدون عنوان";
-  const category = product?.category?.title ?? "";
-  const isVisible = !!product?.is_visible;
-  const isFeatured = !!product?.is_featured;
-  const isSameDayShipping = !!product?.is_same_day_shipping;
-
   const handleShowInfos = (e?: React.SyntheticEvent) => {
-    if (e) e.stopPropagation();
+    e?.stopPropagation();
     if (onShowInfos) return onShowInfos(id);
     router.push(`/admin/products/create?edit_id=${id}&type=infos`);
   };
 
   const handleShowVariant = (e?: React.SyntheticEvent) => {
-    if (e) e.stopPropagation();
+    e?.stopPropagation();
     if (onShowVariant) return onShowVariant(id);
     router.push(`/admin/products/create?edit_id=${id}&type=variant`);
   };
@@ -84,7 +53,7 @@ const ProductBox: React.FC<Props> = ({
     <>
       <SelectableCard
         id={id}
-        selectedIds={cancleRemove}
+        selectedIds={selectedIds}
         disabled={disableSelect}
         onSelectionChange={(idVal, sel) =>
           onSelect?.(idVal as number, sel, product)
@@ -95,92 +64,108 @@ const ProductBox: React.FC<Props> = ({
           <div className="relative w-fit h-full">
             <img
               alt="product cover"
-              className={`object-cover w-full sm:w-[130px] h-[188px] sm:h-[110px] rounded-xl`}
-              src={pathImg}
+              className="object-cover w-full sm:w-[130px] h-[188px] sm:h-[110px] rounded-xl"
+              src={product.media_pinned?.url ?? product.image}
             />
-            {!isVisible ? (
+            {!product.is_visible && (
               <div className="absolute inset-0 text-center flex items-center justify-center text-lg px-3 py-1 bg-gray-600/60 text-white shadow-lg rounded-lg">
                 <p className="animate-bounce">عدم نمایش</p>
               </div>
-            ) : null}
+            )}
           </div>
 
           <div className="w-full sm:h-[110px] flex flex-col justify-between pr-0 sm:p-2 gap-4">
             <div className="flex flex-col gap-3 sm:flex-row justify-between items-center w-full">
               <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
                 <p className="truncate max-w-[220px] sm:max-w-[240px]">
-                  {title}
-                </p>{" "}
-                <span className="text-gray-600 text-xs">({category})</span>
+                  {product.name ?? product.title}
+                </p>
+                <span className="text-gray-600 text-xs">
+                  ({product.category?.title})
+                </span>
               </div>
 
               {!disableAction ? (
-                <div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleShowInfos(e);
-                      }}
-                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                    >
-                      <TbEdit size={18} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleShowVariant(e);
-                      }}
-                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                    >
-                      <MdOutlineCategory size={18} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onOpen();
-                      }}
-                      className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                    >
-                      <RiDeleteBin5Line size={18} />
-                    </button>
-                  </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShowInfos(e);
+                    }}
+                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                  >
+                    <TbEdit size={18} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShowVariant(e);
+                    }}
+                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                  >
+                    <MdOutlineCategory size={18} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onOpen();
+                    }}
+                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
+                  >
+                    <RiDeleteBin5Line size={18} />
+                  </button>
                 </div>
-              ) : null}
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="flex items-end justify-between">
               <div className="flex flex-col gap-2 sm:gap-1">
                 <div className="flex items-center gap-2">
-                  {isFeatured && (
+                  {product.is_featured && (
                     <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
                   )}
-                  {isSameDayShipping && (
+                  {product.is_same_day_shipping && (
                     <TbTruckDelivery className="text-orange-500 text-xl" />
                   )}
                 </div>
                 <p className="text-gray-600 text-[13px]">
-                  موجودی {varientsCount}
+                  موجودی{" "}
+                  {product.is_limited_stock
+                    ? "نامحدود"
+                    : product.stock === 0
+                    ? "ندارد"
+                    : `${product.stock} عدد`}
                 </p>
               </div>
 
               <div className="text-gray-600">
-                {originalPrice != null ? (
+                {product.discount_amount > 0 || product.discount_percent > 0 ? (
                   <div className="flex flex-col items-end gap-2 sm:gap-1">
                     <div className="flex items-center gap-1">
                       <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
-                        {Number(originalPrice).toLocaleString("fa-IR")}
+                        {Number(product.price).toLocaleString("fa-IR")}
                       </span>
                       <span>تومان</span>
                     </div>
-
                     <span className="text-[15px] text-gray-800">
-                      {Number(finalPrice).toLocaleString("fa-IR")} تومان
+                      {Number(
+                        Math.max(
+                          0,
+                          product.price -
+                            (product.discount_amount > 0
+                              ? product.discount_amount
+                              : (product.discount_percent / 100) *
+                                product.price)
+                        )
+                      ).toLocaleString("fa-IR")}{" "}
+                      تومان
                     </span>
                   </div>
                 ) : (
                   <span className="text-[15px] text-gray-800">
-                    {Number(finalPrice).toLocaleString("fa-IR")} تومان
+                    {Number(product.price).toLocaleString("fa-IR")} تومان
                   </span>
                 )}
               </div>

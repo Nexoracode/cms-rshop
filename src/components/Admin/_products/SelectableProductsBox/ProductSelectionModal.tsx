@@ -138,12 +138,10 @@ const ProductSelectionModal: React.FC<Props> = ({
               <ProductBox
                 key={product.id}
                 product={product}
-                onSelect={(id, sel, prod) => {
-                  // product is passed by ProductBox as third arg
-                  handleSelect(prod ?? product, !!sel);
-                }}
-                cancleRemove={selectedOrder}
-                initialSelected={selectedOrder.includes(product.id)}
+                selectedIds={selectedOrder}
+                onSelect={(id, sel, prod) =>
+                  handleSelect(prod ?? product, !!sel)
+                }
                 disableAction
               />
             ))}
