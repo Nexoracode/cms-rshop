@@ -173,13 +173,6 @@ const Products = () => {
                 selectedIds={selectedItems}
               />
             ))}
-            {products?.data?.items?.map((product: any) => (
-              <ProductWithVariantsBox
-                key={product.id}
-                product={product}
-                onSelect={(selected) => console.log(selected)}
-              />
-            ))}
           </div>
         </CardContent>
       </section>
