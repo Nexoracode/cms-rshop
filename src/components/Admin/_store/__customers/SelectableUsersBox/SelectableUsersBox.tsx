@@ -6,11 +6,11 @@ import { TbUsersGroup } from "react-icons/tb";
 import UserInfoCard from "../UserInfoCard";
 import UsersSelectionModal from "./UsersSelectionModal";
 
-type Product = any;
+type Users = any;
 
 type Props = {
-  onChange?: (products: Product[]) => void;
-  initialUsers?: Product[];
+  onChange?: (users: number[]) => void;
+  initialUsers?: Users[];
 };
 
 const SelectableUsersBox: React.FC<Props> = ({
@@ -18,11 +18,11 @@ const SelectableUsersBox: React.FC<Props> = ({
   initialUsers = [],
 }) => {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<Product[]>(initialUsers);
+  const [selectedUsers, setSelectedUsers] = useState<Users[]>(initialUsers);
 
-  const handleConfirm = (products: Product[]) => {
-    setSelectedUsers(products);
-    onChange?.(products);
+  const handleConfirm = (users: Users[]) => {
+    setSelectedUsers(users);
+    onChange?.(users.map((p) => p.id));
     setIsUsersOpen(false);
   };
 

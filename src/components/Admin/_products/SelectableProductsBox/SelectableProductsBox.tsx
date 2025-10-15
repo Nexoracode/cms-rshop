@@ -9,7 +9,7 @@ import { TfiShoppingCartFull } from "react-icons/tfi";
 type Product = any;
 
 type Props = {
-  onChange?: (products: Product[]) => void;
+  onChange?: (productIds: number[]) => void;
   initialProducts?: Product[];
 };
 
@@ -18,11 +18,12 @@ const SelectableProductsBox: React.FC<Props> = ({
   initialProducts = [],
 }) => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>(initialProducts);
+  const [selectedProducts, setSelectedProducts] =
+    useState<Product[]>(initialProducts);
 
   const handleConfirm = (products: Product[]) => {
     setSelectedProducts(products);
-    onChange?.(products);
+    onChange?.(products.map((p) => p.id));
     setIsProductsOpen(false);
   };
 
