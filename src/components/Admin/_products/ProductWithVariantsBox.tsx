@@ -1,0 +1,163 @@
+"use client";
+
+import React from "react";
+import { MdOutlineCategory } from "react-icons/md";
+import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
+import { RiDiscountPercentLine } from "react-icons/ri";
+
+type Props = {
+  product: any;
+  onSelect?: (id: number, selected: boolean, product?: any) => void;
+  selectedIds?: number[];
+};
+
+const ProductWithVariantsBox: React.FC<Props> = ({
+  product,
+  onSelect,
+  selectedIds = [],
+}) => {
+  const id = product.id;
+
+  return (
+    <>
+      <SelectableCard
+        id={id}
+        selectedIds={selectedIds}
+        disabled={false}
+        onSelectionChange={(idVal, sel) =>
+          onSelect?.(idVal as number, sel, product)
+        }
+        className="max-w-[300px] w-full sm:max-w-full"
+      >
+        <div className="flex flex-col items-center sm:flex-row gap-4 text-start">
+          <div className="relative w-fit h-full">
+            <img
+              alt="product cover"
+              className="object-cover w-full sm:w-[130px] h-[188px] sm:h-[110px] rounded-xl"
+              src={product.media_pinned?.url ?? product.image}
+            />
+            {!product.is_visible && (
+              <div className="absolute inset-0 text-center flex items-center justify-center text-lg px-3 py-1 bg-gray-600/60 text-white shadow-lg rounded-lg">
+                <p className="animate-bounce">عدم نمایش</p>
+              </div>
+            )}
+          </div>
+
+          <div className="w-full sm:h-[110px] flex flex-col justify-between pr-0 sm:p-2 gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row justify-between items-center w-full">
+              <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
+                <p className="truncate max-w-[220px] sm:max-w-[240px]">
+                  {product.name ?? product.title}
+                </p>
+                <span className="text-gray-600 text-xs">
+                  ({product.category?.title})
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-end justify-between">
+              <div className="flex flex-col gap-2 cursor-auto">
+                <p className="text-gray-600 text-[13px]">
+                  موجودی{" "}
+                  {product.is_limited_stock
+                    ? "نامحدود"
+                    : product.stock === 0
+                    ? "ندارد"
+                    : `${product.stock} عدد`}
+                </p>
+              </div>
+
+              <div className="flex items-end">
+                <div className="text-gray-600">
+                  {product.discount_amount > 0 ||
+                  product.discount_percent > 0 ? (
+                    <div className="flex flex-col items-end gap-2 sm:gap-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
+                          {Number(product.price).toLocaleString("fa-IR")}
+                        </span>
+                        <span>تومان</span>
+                      </div>
+                      <span className="text-[15px] text-gray-800">
+                        {Number(
+                          Math.max(
+                            0,
+                            product.price -
+                              (product.discount_amount > 0
+                                ? product.discount_amount
+                                : (product.discount_percent / 100) *
+                                  product.price)
+                          )
+                        ).toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-[15px] text-gray-800">
+                      {Number(product.price).toLocaleString("fa-IR")} تومان
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {product.variants?.length > 0 ? (
+          <div className="flex flex-col gap-2 border-t pt-2 mt-3 mx-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-gray-600">تنوع محصول ها</p>
+              <MdOutlineCategory className="text-purple-500 text-xl" />
+            </div>
+            {product.variants.map((variant: any) => (
+              <div
+                key={variant.id}
+                className="flex flex-wrap sm:flex-nowrap items-center justify-between rounded-xl py-3 px-4 bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-500"
+              >
+                <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+                  {variant.name}
+                </div>
+
+                <div className="flex items-end">
+                  <div className="text-gray-600">
+                    {variant.discount_amount > 0 ||
+                    variant.discount_percent > 0 ? (
+                      <div className="flex flex-row-reverse items-center gap-1">
+                        <RiDiscountPercentLine className="text-orange-500 text-xl" />
+                        <span className="text-[15px] text-gray-800">
+                          {Number(
+                            Math.max(
+                              0,
+                              variant.price -
+                                (variant.discount_amount > 0
+                                  ? variant.discount_amount
+                                  : (variant.discount_percent / 100) *
+                                    variant.price)
+                            )
+                          ).toLocaleString("fa-IR")}{" "}
+                          تومان
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-[15px] text-gray-800">
+                        {Number(variant.price).toLocaleString("fa-IR")} تومان
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+           <div className="flex flex-col gap-2 border-t pt-2 mt-3 mx-4">
+            <div className="flex items-center justify-between">
+              <p className="text-gray-600">تنوع محصولی ندارد</p>
+              <MdOutlineCategory className="text-purple-500 text-xl" />
+            </div>
+          </div>
+        )}
+      </SelectableCard>
+    </>
+  );
+};
+
+export default ProductWithVariantsBox;

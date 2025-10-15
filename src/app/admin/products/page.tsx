@@ -17,6 +17,7 @@ import CardContent from "@/components/Admin/CardContent";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import { BsShop } from "react-icons/bs";
+import ProductWithVariantsBox from "@/components/Admin/_products/ProductWithVariantsBox";
 
 const Products = () => {
   const router = useRouter();
@@ -170,6 +171,12 @@ const Products = () => {
                   )
                 }
                 selectedIds={selectedItems}
+              />
+            ))}
+            {products?.data?.items?.map((product: any) => (
+              <ProductWithVariantsBox
+                key={product.id}
+                product={product}
               />
             ))}
           </div>
