@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Spinner } from "@heroui/react";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 import { useSearchParams } from "next/navigation";
-import { useSelectableItems } from "@/hooks/system/useSelectableItems";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";
 
 type VariantItem = { id: number; quantity: number };
@@ -73,18 +72,11 @@ const VariantsSelectionModal: React.FC<Props> = ({
 
   const products = productsResponse?.data?.items ?? [];
 
-  /** Hook انتخاب‌ها (با پشتیبانی از آبجکت) */
-  const {
-    selectedOrder,
-    handleSelect,
-    handleConfirm: handleConfirmSelection,
-  } = useSelectableItems(products, selectedItems, isOpen);
+  const [productVariant, setProductVariant] = useState<OnSelectOutput[]>([]);
 
-  /** تأیید انتخاب */
-  const handleConfirm = () => {
-    const selectedProducts = handleConfirmSelection();
-    onConfirm(selectedProducts);
-  };
+  useEffect(() => {
+    console.log(productVariant);
+  }, [productVariant]);
 
   return (
     <DynamicModal
@@ -95,7 +87,7 @@ const VariantsSelectionModal: React.FC<Props> = ({
       cancelText="لغو"
       confirmColor="secondary"
       confirmVariant="solid"
-      onConfirm={handleConfirm}
+      onConfirm={() => {}}
       icon={<BsShop className="text-2xl" />}
       size="3xl"
     >
@@ -112,10 +104,23 @@ const VariantsSelectionModal: React.FC<Props> = ({
               <ProductWithVariantsBox
                 key={product.id}
                 product={product}
-                selectedItems={selectedOrder}
-                onSelect={(id, selected, p, item) => {
-                  //if (item) handleSelect(item, selected);
-                }}
+                selectedItem={null}
+                onSelect={(p, item) =>
+                  item &&
+                  setProductVariant((prev) => {
+                    const exists = prev.find(
+                      (x) => x.product_id === item.product_id
+                    );
+
+                    if (exists) {
+                      return prev.map((x) =>
+                        x.product_id === item.product_id ? item : x
+                      );
+                    } else {
+                      return [...prev, item];
+                    }
+                  })
+                }
               />
             ))}
           </div>

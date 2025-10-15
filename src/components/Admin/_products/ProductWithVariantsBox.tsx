@@ -10,12 +10,7 @@ type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
 
 type Props = {
   product: any;
-  onSelect?: (
-    id: number,
-    selected: boolean,
-    product?: any,
-    item?: OnSelectOutput | null
-  ) => void;
+  onSelect?: (product?: any, item?: OnSelectOutput | null) => void;
   /** آبجکت انتخاب‌شده‌ی مربوط به همین محصول (نه آرایه) */
   selectedItem?: OnSelectOutput | null;
   disableSelect?: boolean;
@@ -47,22 +42,27 @@ const ProductWithVariantsBox: React.FC<Props> = ({
       setProductSelected(false);
       setSelectedVariants(selectedItem.variants.map((v) => v.id));
     }
+    console.log(selectedItem);
   }, [selectedItem, product.id]);
 
   const handleProductSelect = (selected: boolean) => {
+    console.log("SSSSSSSSSSSSSSSSS");
+
     setProductSelected(selected);
     if (selected) {
       setSelectedVariants([]);
-      onSelect?.(product.id, true, product, {
+      onSelect?.(product, {
         product_id: product.id,
         variants: null,
       });
     } else {
-      onSelect?.(product.id, false, product, null);
+      onSelect?.(product, null);
     }
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
+    console.log("DDDDDDDDDDDDDDD");
+
     let updatedVariants = [...selectedVariants];
     if (selected) {
       if (!updatedVariants.includes(variantId)) updatedVariants.push(variantId);
@@ -82,7 +82,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
           : null,
     };
 
-    onSelect?.(product.id, updatedVariants.length > 0, product, payload);
+    onSelect?.(product, payload);
   };
 
   return (
@@ -149,7 +149,8 @@ const ProductWithVariantsBox: React.FC<Props> = ({
                           product.price -
                             (product.discount_amount > 0
                               ? product.discount_amount
-                              : (product.discount_percent / 100) * product.price)
+                              : (product.discount_percent / 100) *
+                                product.price)
                         )
                       ).toLocaleString("fa-IR")}{" "}
                       تومان
@@ -180,9 +181,10 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               id={variant.id}
               selectedIds={selectedVariants}
               disabled={disableSelect || productSelected}
-              onSelectionChange={(idVal, sel) =>
-                handleVariantSelect(variant.id, sel)
-              }
+              onSelectionChange={(idVal, sel) => {
+                /* handleVariantSelect(variant.id, sel) */
+                console.log(idVal, sel);
+              }}
               className="shadow-none border-none rounded-xl hover:shadow-none"
               bodyClassName="p-0 shadow-none hover:shadow-none"
             >
