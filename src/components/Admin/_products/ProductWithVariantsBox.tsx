@@ -5,11 +5,12 @@ import { MdOutlineCategory } from "react-icons/md";
 import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
 import { RiDiscountPercentLine } from "react-icons/ri";
 
+type VariantItem = { id: number; quantity: number };
+type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
+
 type Props = {
   product: any;
-  onSelect?: (
-    items: { product_id: number; variant_id: number | null }[]
-  ) => void;
+  onSelect?: (items: OnSelectOutput[]) => void;
   selectedIds?: number[];
   disableSelect?: boolean;
 };
@@ -27,7 +28,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
     setProductSelected(selected);
     if (selected) {
       setSelectedVariants([]);
-      onSelect?.([{ product_id: product.id, variant_id: null }]);
+      onSelect?.([{ product_id: product.id, variants: null }]);
     } else {
       onSelect?.([]);
     }
@@ -42,15 +43,15 @@ const ProductWithVariantsBox: React.FC<Props> = ({
 
     if (updatedVariants.length > 0) setProductSelected(false);
 
-    const output =
-      updatedVariants.length > 0
-        ? updatedVariants.map((id) => ({
-            product_id: product.id,
-            variant_id: id,
-          }))
-        : [];
-
-    onSelect?.(output);
+    onSelect?.([
+      {
+        product_id: product.id,
+        variants:
+          updatedVariants.length > 0
+            ? updatedVariants.map((id) => ({ id, quantity: 1 }))
+            : [],
+      },
+    ]);
   };
 
   return (
@@ -117,8 +118,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
                           product.price -
                             (product.discount_amount > 0
                               ? product.discount_amount
-                              : (product.discount_percent / 100) *
-                                product.price)
+                              : (product.discount_percent / 100) * product.price)
                         )
                       ).toLocaleString("fa-IR")}{" "}
                       تومان
@@ -155,7 +155,6 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               bodyClassName="p-0 shadow-none hover:shadow-none"
             >
               <div
-                key={variant.id}
                 className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300"
               >
                 <div className="flex flex-wrap gap-2 text-sm text-gray-700">
@@ -164,8 +163,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
 
                 <div className="flex items-end">
                   <div className="text-gray-600">
-                    {variant.discount_amount > 0 ||
-                    variant.discount_percent > 0 ? (
+                    {variant.discount_amount > 0 || variant.discount_percent > 0 ? (
                       <div className="flex flex-row-reverse items-center gap-1">
                         <RiDiscountPercentLine className="text-orange-500 text-xl" />
                         <span className="text-[15px] text-gray-800">
@@ -175,8 +173,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
                               variant.price -
                                 (variant.discount_amount > 0
                                   ? variant.discount_amount
-                                  : (variant.discount_percent / 100) *
-                                    variant.price)
+                                  : (variant.discount_percent / 100) * variant.price)
                             )
                           ).toLocaleString("fa-IR")}{" "}
                           تومان
