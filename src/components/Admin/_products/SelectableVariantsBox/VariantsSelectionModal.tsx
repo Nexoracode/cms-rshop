@@ -104,23 +104,27 @@ const VariantsSelectionModal: React.FC<Props> = ({
               <ProductWithVariantsBox
                 key={product.id}
                 product={product}
-                selectedItem={null}
-                onSelect={(p, item) =>
-                  item &&
+                selectedItem={
+                  productVariant.find((x) => x.product_id === product.id) ??
+                  null
+                }
+                onSelect={(id, selected, p, item) => {
                   setProductVariant((prev) => {
-                    const exists = prev.find(
-                      (x) => x.product_id === item.product_id
-                    );
+                    if (!selected) {
+                      // اگر محصول یا وریانت‌ها انتخاب نشده، آن را حذف کن
+                      return prev.filter((x) => x.product_id !== id);
+                    }
 
+                    if (!item) return prev;
+
+                    const exists = prev.find((x) => x.product_id === id);
                     if (exists) {
-                      return prev.map((x) =>
-                        x.product_id === item.product_id ? item : x
-                      );
+                      return prev.map((x) => (x.product_id === id ? item : x));
                     } else {
                       return [...prev, item];
                     }
-                  })
-                }
+                  });
+                }}
               />
             ))}
           </div>
