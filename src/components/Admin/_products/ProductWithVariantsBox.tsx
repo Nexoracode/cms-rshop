@@ -30,27 +30,22 @@ const ProductWithVariantsBox: React.FC<Props> = ({
   const [productSelected, setProductSelected] = useState(false);
   const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
 
+  /** همگام‌سازی وضعیت انتخاب با prop از parent */
   useEffect(() => {
     if (!selectedItem || selectedItem.product_id !== product.id) {
-      if (productSelected || selectedVariants.length > 0) {
-        setProductSelected(false);
-        setSelectedVariants([]);
-      }
+      setProductSelected(false);
+      setSelectedVariants([]);
       return;
     }
 
     if (selectedItem.variants === null) {
-      // فقط زمانی تغییر بده که مقدار متفاوت باشه
-      if (!productSelected) setProductSelected(true);
-      if (selectedVariants.length > 0) setSelectedVariants([]);
+      // خود محصول انتخاب شده
+      setProductSelected(true);
+      setSelectedVariants([]);
     } else {
-      const variantIds = selectedItem.variants.map((v) => v.id);
-      const isSame =
-        selectedVariants.length === variantIds.length &&
-        selectedVariants.every((id) => variantIds.includes(id));
-
-      if (productSelected) setProductSelected(false);
-      if (!isSame) setSelectedVariants(variantIds);
+      // فقط برخی از وریانت‌ها انتخاب شده‌اند
+      setProductSelected(false);
+      setSelectedVariants(selectedItem.variants.map((v) => v.id));
     }
   }, [selectedItem, product.id]);
 
@@ -154,8 +149,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
                           product.price -
                             (product.discount_amount > 0
                               ? product.discount_amount
-                              : (product.discount_percent / 100) *
-                                product.price)
+                              : (product.discount_percent / 100) * product.price)
                         )
                       ).toLocaleString("fa-IR")}{" "}
                       تومان
