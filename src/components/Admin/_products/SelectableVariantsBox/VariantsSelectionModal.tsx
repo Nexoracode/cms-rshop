@@ -10,21 +10,25 @@ import { useSearchParams } from "next/navigation";
 import { useSelectableItems } from "@/hooks/system/useSelectableItems";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";
 
+type VariantItem = { id: number; quantity: number };
+type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
+
 type Props = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (selectedProducts: any[]) => void;
-  selectedIds?: number[];
+  onConfirm: (selectedProducts: OnSelectOutput[]) => void;
+  selectedItems?: OnSelectOutput[];
 };
 
 const VariantsSelectionModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
   onConfirm,
-  selectedIds = [],
+  selectedItems = [],
 }) => {
   const searchParams = useSearchParams();
 
+  /** استخراج پارامترهای جستجو و فیلتر */
   const page = useMemo(() => {
     const p = searchParams.get("page");
     const n = Number(p ?? 1);
@@ -58,6 +62,7 @@ const VariantsSelectionModal: React.FC<Props> = ({
     return Object.keys(f).length ? (f as any) : undefined;
   }, [searchParams?.toString()]);
 
+  /** فراخوانی محصولات */
   const { data: productsResponse, isLoading } = useGetProducts({
     page,
     filter,
@@ -68,12 +73,14 @@ const VariantsSelectionModal: React.FC<Props> = ({
 
   const products = productsResponse?.data?.items ?? [];
 
+  /** Hook انتخاب‌ها (با پشتیبانی از آبجکت) */
   const {
     selectedOrder,
     handleSelect,
     handleConfirm: handleConfirmSelection,
-  } = useSelectableItems(products, selectedIds, isOpen);
+  } = useSelectableItems(products, selectedItems, isOpen);
 
+  /** تأیید انتخاب */
   const handleConfirm = () => {
     const selectedProducts = handleConfirmSelection();
     onConfirm(selectedProducts);
@@ -105,9 +112,9 @@ const VariantsSelectionModal: React.FC<Props> = ({
               <ProductWithVariantsBox
                 key={product.id}
                 product={product}
-                selectedIds={selectedOrder}
+                selectedItems={selectedOrder}
                 onSelect={(id, selected, p, item) => {
-                  if (item) handleSelect(p, selected);
+                  //if (item) handleSelect(item, selected);
                 }}
               />
             ))}

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineCategory } from "react-icons/md";
-import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
 import { RiDiscountPercentLine } from "react-icons/ri";
+import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
 
 type VariantItem = { id: number; quantity: number };
 type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
@@ -16,18 +16,43 @@ type Props = {
     product?: any,
     item?: OnSelectOutput | null
   ) => void;
-  selectedIds?: number[];
+  /** آبجکت انتخاب‌شده‌ی مربوط به همین محصول (نه آرایه) */
+  selectedItem?: OnSelectOutput | null;
   disableSelect?: boolean;
 };
 
 const ProductWithVariantsBox: React.FC<Props> = ({
   product,
   onSelect,
-  selectedIds = [],
+  selectedItem = null,
   disableSelect = false,
 }) => {
   const [productSelected, setProductSelected] = useState(false);
   const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!selectedItem || selectedItem.product_id !== product.id) {
+      if (productSelected || selectedVariants.length > 0) {
+        setProductSelected(false);
+        setSelectedVariants([]);
+      }
+      return;
+    }
+
+    if (selectedItem.variants === null) {
+      // فقط زمانی تغییر بده که مقدار متفاوت باشه
+      if (!productSelected) setProductSelected(true);
+      if (selectedVariants.length > 0) setSelectedVariants([]);
+    } else {
+      const variantIds = selectedItem.variants.map((v) => v.id);
+      const isSame =
+        selectedVariants.length === variantIds.length &&
+        selectedVariants.every((id) => variantIds.includes(id));
+
+      if (productSelected) setProductSelected(false);
+      if (!isSame) setSelectedVariants(variantIds);
+    }
+  }, [selectedItem, product.id]);
 
   const handleProductSelect = (selected: boolean) => {
     setProductSelected(selected);
@@ -44,26 +69,25 @@ const ProductWithVariantsBox: React.FC<Props> = ({
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
     let updatedVariants = [...selectedVariants];
-    if (selected) updatedVariants.push(variantId);
-    else updatedVariants = updatedVariants.filter((id) => id !== variantId);
+    if (selected) {
+      if (!updatedVariants.includes(variantId)) updatedVariants.push(variantId);
+    } else {
+      updatedVariants = updatedVariants.filter((id) => id !== variantId);
+    }
 
     setSelectedVariants(updatedVariants);
 
-    // اگه کاربر وریِنت انتخاب کرد، دیگه نباید خود محصول انتخاب‌شده باشه
     if (updatedVariants.length > 0) setProductSelected(false);
 
-    onSelect?.(
-      product.id,
-      updatedVariants.length > 0,
-      product,
-      {
-        product_id: product.id,
-        variants:
-          updatedVariants.length > 0
-            ? updatedVariants.map((id) => ({ id, quantity: 1 }))
-            : null,
-      }
-    );
+    const payload: OnSelectOutput = {
+      product_id: product.id,
+      variants:
+        updatedVariants.length > 0
+          ? updatedVariants.map((id) => ({ id, quantity: 1 }))
+          : null,
+    };
+
+    onSelect?.(product.id, updatedVariants.length > 0, product, payload);
   };
 
   return (
@@ -74,7 +98,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
       onSelectionChange={(idVal, sel) => handleProductSelect(sel)}
       className="max-w-[300px] w-full sm:max-w-full"
     >
-      {/* Product info */}
+      {/* اطلاعات اصلی محصول */}
       <div className="flex flex-col items-center sm:flex-row gap-4 text-start">
         <div className="relative w-fit h-full">
           <img
@@ -148,13 +172,14 @@ const ProductWithVariantsBox: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Variants */}
+      {/* وریانت‌ها */}
       {product.variants?.length > 0 && (
         <div className="flex flex-col gap-2 border-t pt-2 mt-3 mx-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-gray-600">تنوع محصول ها</p>
             <MdOutlineCategory className="text-purple-500 text-xl" />
           </div>
+
           {product.variants.map((variant: any) => (
             <SelectableCard
               key={variant.id}
