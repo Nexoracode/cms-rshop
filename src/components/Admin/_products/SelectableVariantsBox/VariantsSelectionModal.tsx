@@ -87,7 +87,7 @@ const VariantsSelectionModal: React.FC<Props> = ({
       cancelText="لغو"
       confirmColor="secondary"
       confirmVariant="solid"
-      onConfirm={() => {}}
+      onConfirm={() => onConfirm(productVariant)}
       icon={<BsShop className="text-2xl" />}
       size="3xl"
     >

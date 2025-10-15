@@ -8,9 +8,12 @@ import ProductWithVariantsBox from "../ProductWithVariantsBox";
 
 type Product = any;
 
+type VariantItem = { id: number; quantity: number };
+type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
+
 type Props = {
   onChange?: (products: Product[]) => void;
-  initialVariants?: Product[];
+  initialVariants?: OnSelectOutput[];
 };
 
 const SelectableVariantsBox: React.FC<Props> = ({
@@ -19,9 +22,9 @@ const SelectableVariantsBox: React.FC<Props> = ({
 }) => {
   const [isVariantsOpen, setIsVariantsOpen] = useState(false);
   const [selectedVariants, setSelectedVariants] =
-    useState<Product[]>(initialVariants);
+    useState<OnSelectOutput[]>(initialVariants);
 
-  const handleConfirm = (products: Product[]) => {
+  const handleConfirm = (products: OnSelectOutput[]) => {
     setSelectedVariants(products);
     onChange?.(products);
     setIsVariantsOpen(false);
@@ -38,11 +41,10 @@ const SelectableVariantsBox: React.FC<Props> = ({
           isOpen={isVariantsOpen}
           onOpenChange={setIsVariantsOpen}
           onConfirm={handleConfirm}
-          selectedIds={selectedVariants.map((p) => p.id)}
         />
       }
     >
-      <div className="flex flex-col gap-4">
+      {/* <div className="flex flex-col gap-4">
         {selectedVariants.map((product) => (
           <ProductWithVariantsBox
             key={product.id}
@@ -50,7 +52,7 @@ const SelectableVariantsBox: React.FC<Props> = ({
             disableSelect
           />
         ))}
-      </div>
+      </div> */}
     </SelectableBox>
   );
 };
