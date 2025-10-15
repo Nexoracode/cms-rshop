@@ -46,8 +46,6 @@ const ProductWithVariantsBox: React.FC<Props> = ({
   }, [selectedItem, product.id]);
 
   const handleProductSelect = (selected: boolean) => {
-    console.log("SSSSSSSSSSSSSSSSS");
-
     setProductSelected(selected);
     if (selected) {
       setSelectedVariants([]);
@@ -61,8 +59,6 @@ const ProductWithVariantsBox: React.FC<Props> = ({
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
-    console.log("DDDDDDDDDDDDDDD");
-
     let updatedVariants = [...selectedVariants];
     if (selected) {
       if (!updatedVariants.includes(variantId)) updatedVariants.push(variantId);
@@ -82,7 +78,9 @@ const ProductWithVariantsBox: React.FC<Props> = ({
           : null,
     };
 
-    onSelect?.(product, payload);
+    if (updatedVariants.length > 0 || selectedVariants.length > 0) {
+      onSelect?.(product, payload);
+    }
   };
 
   return (
@@ -181,10 +179,9 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               id={variant.id}
               selectedIds={selectedVariants}
               disabled={disableSelect || productSelected}
-              onSelectionChange={(idVal, sel) => {
-                /* handleVariantSelect(variant.id, sel) */
-                console.log(idVal, sel);
-              }}
+              onSelectionChange={(idVal, sel) =>
+                handleVariantSelect(+idVal, sel)
+              }
               className="shadow-none border-none rounded-xl hover:shadow-none"
               bodyClassName="p-0 shadow-none hover:shadow-none"
             >

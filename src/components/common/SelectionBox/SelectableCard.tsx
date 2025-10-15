@@ -34,7 +34,6 @@ const SelectableCard: React.FC<Props> = ({
   const [hovered, setHovered] = useState(false);
   const [selected, setSelected] = useState<boolean>(!!initialSelected);
 
-  // notify parent on selection change
   useEffect(() => {
     onSelectionChange?.(id, selected);
   }, [selected, id]);
@@ -45,10 +44,13 @@ const SelectableCard: React.FC<Props> = ({
     if (isSelected !== selected) setSelected(isSelected);
   }, [selectedIds, id]);
 
-  const toggleSelection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const toggleSelection = (e: React.MouseEvent<HTMLDivElement>) => {
     if (disabled) return;
-    e?.stopPropagation();
-    setSelected((prev) => !prev);
+    e.stopPropagation();
+
+    const next = !selected;
+    setSelected(next);
+    onSelectionChange?.(id, next);
   };
 
   return (
