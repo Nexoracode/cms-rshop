@@ -11,7 +11,6 @@ import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
-import VariantDropdown from "./modals/VariantDropdown/VariantDropdown";
 
 type Props = {
   product: any;
@@ -124,14 +123,19 @@ const ProductBox: React.FC<Props> = ({
             </div>
 
             <div className="flex items-end justify-between">
-              <div className="flex flex-col gap-2 sm:gap-1">
+              <div className="flex flex-col gap-2 cursor-auto">
                 <div className="flex items-center gap-2">
-                  {product.is_featured && (
-                    <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
+                  {product.variants && (
+                    <MdOutlineCategory className="text-purple-500 text-xl" />
                   )}
-                  {product.is_same_day_shipping && (
-                    <TbTruckDelivery className="text-orange-500 text-xl" />
-                  )}
+                  <div className="flex items-center gap-2 border-r-2 pr-2">
+                    {product.is_featured && (
+                      <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
+                    )}
+                    {product.is_same_day_shipping && (
+                      <TbTruckDelivery className="text-orange-500 text-xl" />
+                    )}
+                  </div>
                 </div>
                 <p className="text-gray-600 text-[13px]">
                   موجودی{" "}
@@ -144,15 +148,6 @@ const ProductBox: React.FC<Props> = ({
               </div>
 
               <div className="flex items-end">
-                {product.variants && (
-                  <div className="border-l-2 pl-4 ml-4">
-                    <VariantDropdown
-                      triggerBtn={
-                        <MdOutlineCategory className="text-purple-500 text-2xl bg-slate-100 p-1 rounded-md" />
-                      }
-                    />
-                  </div>
-                )}
                 <div className="text-gray-600">
                   {product.discount_amount > 0 ||
                   product.discount_percent > 0 ? (
