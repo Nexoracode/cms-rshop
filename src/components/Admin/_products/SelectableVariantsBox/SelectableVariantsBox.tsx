@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
-import UserInfoCard from "../../_store/__customers/UserInfoCard";
 import VariantsSelectionModal from "./VariantsSelectionModal";
 import { MdOutlineCategory } from "react-icons/md";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";

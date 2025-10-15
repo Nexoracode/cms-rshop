@@ -106,13 +106,7 @@ const VariantsSelectionModal: React.FC<Props> = ({
                 key={product.id}
                 product={product}
                 selectedIds={selectedOrder}
-                onSelect={(items) => {
-                  // items: OnSelectOutput[]
-                  items.forEach((item) => {
-                    const p = products.find((pr) => pr.id === item.product_id);
-                    if (p) handleSelect(p, true);
-                  });
-                }}
+                /* onSelect={(id, sel, p) => p && handleSelect(p, !!sel)} */
               />
             ))}
           </div>
