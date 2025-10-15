@@ -11,6 +11,7 @@ import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
+import VariantDropdown from "./modals/VariantDropdown/VariantDropdown";
 
 type Props = {
   product: any;
@@ -48,6 +49,8 @@ const ProductBox: React.FC<Props> = ({
     if (onShowVariant) return onShowVariant(id);
     router.push(`/admin/products/create?edit_id=${id}&type=variant`);
   };
+
+  console.log(product);
 
   return (
     <>
@@ -143,7 +146,11 @@ const ProductBox: React.FC<Props> = ({
               <div className="flex items-end">
                 {product.variants && (
                   <div className="border-l-2 pl-4 ml-4">
-                    <MdOutlineCategory className="text-purple-500 text-2xl bg-slate-100 p-1 rounded-md" />
+                    <VariantDropdown
+                      triggerBtn={
+                        <MdOutlineCategory className="text-purple-500 text-2xl bg-slate-100 p-1 rounded-md" />
+                      }
+                    />
                   </div>
                 )}
                 <div className="text-gray-600">
