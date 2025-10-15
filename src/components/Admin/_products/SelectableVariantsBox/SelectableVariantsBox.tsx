@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
 import UserInfoCard from "../../_store/__customers/UserInfoCard";
-import UsersSelectionModal from "../../_store/__customers/SelectableUsersBox/UsersSelectionModal";
-import { MdOutlineCategory } from "react-icons/md";
 import VariantsSelectionModal from "./VariantsSelectionModal";
+import { MdOutlineCategory } from "react-icons/md";
+import ProductWithVariantsBox from "../ProductWithVariantsBox";
 
 type Product = any;
 
@@ -18,37 +18,37 @@ const SelectableVariantsBox: React.FC<Props> = ({
   onChange,
   initialVariants = [],
 }) => {
-  const [isUsersOpen, setIsUsersOpen] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<Product[]>(initialVariants);
+  const [isVariantsOpen, setIsVariantsOpen] = useState(false);
+  const [selectedVariants, setSelectedVariants] =
+    useState<Product[]>(initialVariants);
 
   const handleConfirm = (products: Product[]) => {
-    setSelectedUsers(products);
+    setSelectedVariants(products);
     onChange?.(products);
-    setIsUsersOpen(false);
+    setIsVariantsOpen(false);
   };
 
   return (
     <SelectableBox
       title="تنوع محصول ها انتخاب شده"
       icon={<MdOutlineCategory className="text-5xl" />}
-      initial={selectedUsers}
-      onOpen={() => setIsUsersOpen(true)}
+      initial={selectedVariants}
+      onOpen={() => setIsVariantsOpen(true)}
       modal={
         <VariantsSelectionModal
-          isOpen={isUsersOpen}
-          onOpenChange={setIsUsersOpen}
+          isOpen={isVariantsOpen}
+          onOpenChange={setIsVariantsOpen}
           onConfirm={handleConfirm}
-          selectedIds={selectedUsers.map((p) => p.id)}
+          selectedIds={selectedVariants.map((p) => p.id)}
         />
       }
     >
       <div className="flex flex-col gap-4">
-        {selectedUsers.map((user) => (
-          <UserInfoCard
-            key={user.id}
-            infos={user}
+        {selectedVariants.map((product) => (
+          <ProductWithVariantsBox
+            key={product.id}
+            product={product}
             disableSelect
-            disableAction
           />
         ))}
       </div>

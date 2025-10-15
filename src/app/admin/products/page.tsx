@@ -177,6 +177,7 @@ const Products = () => {
               <ProductWithVariantsBox
                 key={product.id}
                 product={product}
+                onSelect={(selected) => console.log(selected)}
               />
             ))}
           </div>

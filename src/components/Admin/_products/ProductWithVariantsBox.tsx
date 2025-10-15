@@ -11,12 +11,14 @@ type Props = {
     items: { product_id: number; variant_id: number | null }[]
   ) => void;
   selectedIds?: number[];
+  disableSelect?: boolean;
 };
 
 const ProductWithVariantsBox: React.FC<Props> = ({
   product,
   onSelect,
   selectedIds = [],
+  disableSelect = false,
 }) => {
   const [productSelected, setProductSelected] = useState(false);
   const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
@@ -55,7 +57,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
     <SelectableCard
       id={product.id}
       selectedIds={productSelected ? [product.id] : []}
-      disabled={selectedVariants.length > 0}
+      disabled={disableSelect || selectedVariants.length > 0}
       onSelectionChange={(idVal, sel) => handleProductSelect(sel)}
       className="max-w-[300px] w-full sm:max-w-full"
     >
@@ -145,7 +147,7 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               key={variant.id}
               id={variant.id}
               selectedIds={selectedVariants}
-              disabled={productSelected}
+              disabled={disableSelect || productSelected}
               onSelectionChange={(idVal, sel) => {
                 handleVariantSelect(variant.id, sel);
               }}
