@@ -146,9 +146,9 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               id={variant.id}
               selectedIds={selectedVariants}
               disabled={productSelected}
-              onSelectionChange={(idVal, sel) =>
-                handleVariantSelect(variant.id, sel)
-              }
+              onSelectionChange={(idVal, sel) => {
+                handleVariantSelect(variant.id, sel);
+              }}
               className="shadow-none border-none rounded-xl hover:shadow-none"
               bodyClassName="p-0 shadow-none hover:shadow-none"
             >

@@ -11,8 +11,8 @@ type Props = {
   selectedIds?: (number | string)[];
 
   disabled?: boolean;
-  className?: string;        // extra Card classes
-  bodyClassName?: string;    // extra CardBody classes
+  className?: string; // extra Card classes
+  bodyClassName?: string; // extra CardBody classes
 
   /** Notify parent when selection changes */
   onSelectionChange?: (id: number | string, selected: boolean) => void;
@@ -45,8 +45,9 @@ const SelectableCard: React.FC<Props> = ({
     if (isSelected !== selected) setSelected(isSelected);
   }, [selectedIds, id]);
 
-  const toggleSelection = () => {
+  const toggleSelection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (disabled) return;
+    e?.stopPropagation();
     setSelected((prev) => !prev);
   };
 
@@ -60,7 +61,7 @@ const SelectableCard: React.FC<Props> = ({
       onMouseLeave={() => setHovered(false)}
     >
       <CardBody
-        onClick={disabled ? undefined : toggleSelection}
+        onClick={disabled ? undefined : (e) => toggleSelection(e)}
         className={`relative cursor-pointer p-2 ${bodyClassName}`}
       >
         {!disabled && (hovered || selected) && (
