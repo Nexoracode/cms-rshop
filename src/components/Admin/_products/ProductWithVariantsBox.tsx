@@ -10,7 +10,7 @@ type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
 
 type Props = {
   product: any;
-  onSelect?: (id: number, selected: boolean, product?: any, item?: OnSelectOutput | null) => void;
+  onSelect?: (selected: boolean, product?: any, item?: OnSelectOutput | null) => void;
   selectedItem?: OnSelectOutput | null;
   disableSelect?: boolean;
 };
@@ -43,7 +43,6 @@ const ProductWithVariantsBox: React.FC<Props> = ({
 
   const emitSelect = (selected: boolean, variants: VariantItem[] | null) => {
     onSelect?.(
-      product.id,
       selected,
       product,
       {

@@ -15,7 +15,9 @@ type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
 type Props = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (selectedProducts: OnSelectOutput[]) => void;
+  onConfirm: (
+    selectedProducts: { product: any; item: OnSelectOutput }[]
+  ) => void;
   selectedItems?: OnSelectOutput[];
 };
 
@@ -72,7 +74,9 @@ const VariantsSelectionModal: React.FC<Props> = ({
 
   const products = productsResponse?.data?.items ?? [];
 
-  const [productVariant, setProductVariant] = useState<OnSelectOutput[]>([]);
+  const [productVariant, setProductVariant] = useState<
+    { product: any; item: OnSelectOutput }[]
+  >([]);
 
   useEffect(() => {
     console.log(productVariant);
@@ -105,23 +109,25 @@ const VariantsSelectionModal: React.FC<Props> = ({
                 key={product.id}
                 product={product}
                 selectedItem={
-                  productVariant.find((x) => x.product_id === product.id) ??
-                  null
+                  productVariant.find((x) => x.product.id === product.id)
+                    ?.item ?? null
                 }
-                onSelect={(id, selected, p, item) => {
+                onSelect={(selected, product, item) => {
                   setProductVariant((prev) => {
-                    if (!selected) {
-                      // اگر محصول یا وریانت‌ها انتخاب نشده، آن را حذف کن
-                      return prev.filter((x) => x.product_id !== id);
-                    }
+                    if (!selected)
+                      return prev.filter((x) => x.product.id !== product.id);
 
                     if (!item) return prev;
 
-                    const exists = prev.find((x) => x.product_id === id);
+                    const exists = prev.find(
+                      (x) => x.product.id === product.id
+                    );
                     if (exists) {
-                      return prev.map((x) => (x.product_id === id ? item : x));
+                      return prev.map((x) =>
+                        x.product.id === product.id ? { product, item } : x
+                      );
                     } else {
-                      return [...prev, item];
+                      return [...prev, { product, item }];
                     }
                   });
                 }}
