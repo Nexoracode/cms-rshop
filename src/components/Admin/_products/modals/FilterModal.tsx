@@ -23,15 +23,13 @@ import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUni
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";
 import { flattenCategories } from "@/utils/flattenCategories";
+import { calToJs } from "@/utils/dateHelpers";
 // بالای فایل
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
 };
-
-const calToJs = (c?: CalendarDate) =>
-  c ? new Date(c.year, c.month - 1, c.day) : undefined;
 
 type DiscountType = "percent" | "amount";
 

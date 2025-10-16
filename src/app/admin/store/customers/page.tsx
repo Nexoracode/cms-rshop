@@ -56,6 +56,8 @@ const UsersListPage = () => {
     sortBy,
   });
 
+  const isFilteredView = !!(search || sortBy?.length || filter);
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -69,7 +71,7 @@ const UsersListPage = () => {
         datas={users}
         onAdd={onOpen}
         isExistItems={!!users?.data?.items?.length}
-        searchInp={false}
+        searchInp={isFilteredView}
       >
         {isLoading && <LoadingApiCall />}
 

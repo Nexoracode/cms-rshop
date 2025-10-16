@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { eqId, rangeDate } from "@/utils/queryFilters";
 import { TbFilter } from "react-icons/tb";
+import { calToJs } from "@/utils/dateHelpers";
 
 type Props = { isOpen: boolean; onOpenChange: (open: boolean) => void };
 
@@ -20,10 +21,6 @@ const STATUS_OPTIONS = [
   { key: "delivered", label: "تحویل‌شده" },
   { key: "canceled", label: "لغو‌شده" },
 ];
-
-// CalendarDate → Date (برای helperهای rangeDate)
-const calToJs = (c?: CalendarDate) =>
-  c ? new Date(c.year, c.month - 1, c.day) : undefined;
 
 const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();

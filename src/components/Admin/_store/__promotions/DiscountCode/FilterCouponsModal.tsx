@@ -10,13 +10,10 @@ import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/he
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
 import { eqBool10, add, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { TbFilter } from "react-icons/tb";
+import { calToJs } from "@/utils/dateHelpers";
 
 type Props = { isOpen: boolean; onOpenChange: (open: boolean) => void };
 type AmountType = "percent" | "fixed";
-
-// CalendarDate → JS Date
-const calToJs = (c?: CalendarDate) =>
-  c ? new Date(c.year, c.month - 1, c.day) : undefined;
 
 const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const router = useRouter();

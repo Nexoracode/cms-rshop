@@ -11,6 +11,9 @@ export const calToISO = (c?: CalendarDate | null): string | undefined => {
   return d.toISOString();
 };
 
+export const calToJs = (c?: CalendarDate) =>
+  c ? new Date(c.year, c.month - 1, c.day) : undefined;
+
 /**
  * ISO string → CalendarDate
  * در صورت نامعتبر بودن، null برمی‌گرداند.
