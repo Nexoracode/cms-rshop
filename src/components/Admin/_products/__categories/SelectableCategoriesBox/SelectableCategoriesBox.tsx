@@ -47,6 +47,7 @@ const SelectableCategoriesBox: React.FC<Props> = ({
           categories={selectedCategories}
           disableSelect
           disableAction
+          disableShowChildren
         />
       </div>
     </SelectableBox>

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardBody, Image, Chip } from "@heroui/react";
+import { Image, Chip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -13,24 +13,26 @@ export type Category = {
   id: number;
   title: string;
   slug: string;
-  discount: string; // مثل "10"
-  level: number; // 1,2,3,...
-  parent_id: number; // 0 یعنی مادر
-  is_delete: boolean; // از بک‌اند میاد
+  discount: string;
+  level: number;
+  parent_id: number;
+  is_delete: boolean;
   media?: Media;
   children: Category[];
 };
 
 type CategoryTreeProps = {
-  categories: Category[]; // آرایه‌ی ریشه‌ها (level=1)
+  categories: Category[];
   onEdit?: (cat: Category) => void;
   onDelete?: (id: number) => void;
 
-  // new optional selection props
   selectedIds?: number[];
   onSelect?: (id: number, selected: boolean, category?: Category) => void;
   disableSelect?: boolean;
   disableAction?: boolean;
+
+  /** 👇 پراپ جدید */
+  disableShowChildren?: boolean;
 };
 
 const ToggleButton = ({
@@ -77,23 +79,22 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onSelect,
   disableSelect = false,
   disableAction = false,
+  disableShowChildren = false, // 👈 پیش‌فرض false
 }) => {
   return (
-    <div
-      dir="rtl"
-      className="flex flex-col items-center sm:items-stretch gap-3"
-    >
+    <div dir="rtl" className="flex flex-col items-center sm:items-stretch gap-3">
       {categories.map((cat) => (
         <CategoryNode
           key={cat.id}
           node={cat}
-          chainTitles={[]} // مسیر والدین تا این نود
+          chainTitles={[]}
           onEdit={onEdit}
           onDelete={onDelete}
           selectedIds={selectedIds}
           onSelect={onSelect}
           disableSelect={disableSelect}
           disableAction={disableAction}
+          disableShowChildren={disableShowChildren} // 👈 پاس داده می‌شود
         />
       ))}
     </div>
@@ -109,6 +110,7 @@ const CategoryNode: React.FC<{
   onSelect?: (id: number, selected: boolean, category?: Category) => void;
   disableSelect?: boolean;
   disableAction?: boolean;
+  disableShowChildren?: boolean; // 👈 اضافه شد
 }> = ({
   node,
   chainTitles,
@@ -118,6 +120,7 @@ const CategoryNode: React.FC<{
   onSelect,
   disableSelect = false,
   disableAction = false,
+  disableShowChildren = false, // 👈 پیش‌فرض false
 }) => {
   const [open, setOpen] = useState(false);
   const hasChildren = node.children && node.children.length > 0;
@@ -126,7 +129,6 @@ const CategoryNode: React.FC<{
 
   return (
     <div className="relative">
-      {/* کارت هر نود — حالا SelectableCard به جای Card استفاده می‌شود تا استایل بدون تغییر بمونه */}
       <SelectableCard
         id={node.id}
         selectedIds={selectedIds}
@@ -139,13 +141,16 @@ const CategoryNode: React.FC<{
       >
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex">
-              <ToggleButton
-                open={open}
-                hasChildren={hasChildren}
-                onClick={() => setOpen((p) => !p)}
-              />
-            </div>
+            {/* 👇 فقط اگر disableShowChildren=false دکمه‌ی باز/بسته نمایش داده می‌شود */}
+            {!disableShowChildren && (
+              <div className="hidden sm:flex">
+                <ToggleButton
+                  open={open}
+                  hasChildren={hasChildren}
+                  onClick={() => setOpen((p) => !p)}
+                />
+              </div>
+            )}
 
             {/* تصویر */}
             <div className="w-28 h-28 sm:w-[72px] sm:h-[72px] overflow-hidden rounded-xl bg-default-100 shrink-0">
@@ -167,7 +172,6 @@ const CategoryNode: React.FC<{
 
           {/* اطلاعات */}
           <div className="relative flex-1 min-w-0">
-            {/* مسیر والدین */}
             {chainTitles.length > 0 && (
               <div className="text-xs hidden sm:flex absolute left-0 text-default-500 truncate items-center justify-end">
                 <div className="w-fit bg-gray-100 rounded-lg py-2 px-3">
@@ -176,11 +180,12 @@ const CategoryNode: React.FC<{
                 </div>
               </div>
             )}
-            {/* عنوان + مدال‌ها */}
+
             <div className="flex flex-col sm:flex-row items-center gap-2 p-2">
               <p className="text-[15px]">{node.title}</p>
               <p className="text-xs text-default-500">({node.slug})</p>
             </div>
+
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
               {isRoot && (
                 <Chip size="sm" color="primary" variant="flat" radius="sm">
@@ -198,15 +203,19 @@ const CategoryNode: React.FC<{
                 </Chip>
               )}
             </div>
+
             {/* اکشن‌ها */}
             <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
-              <div className="flex sm:hidden">
-                <ToggleButton
-                  open={open}
-                  hasChildren={hasChildren}
-                  onClick={() => setOpen((p) => !p)}
-                />
-              </div>
+              {/* 👇 دکمه‌ی باز/بسته فقط در صورتی نمایش داده شود که disableShowChildren=false */}
+              {!disableShowChildren && (
+                <div className="flex sm:hidden">
+                  <ToggleButton
+                    open={open}
+                    hasChildren={hasChildren}
+                    onClick={() => setOpen((p) => !p)}
+                  />
+                </div>
+              )}
 
               {!disableAction && (
                 <>
@@ -233,8 +242,8 @@ const CategoryNode: React.FC<{
         </div>
       </SelectableCard>
 
-      {/* بچه‌ها */}
-      {hasChildren && open && (
+      {/* 👇 رندر بچه‌ها فقط در صورتی که disableShowChildren=false */}
+      {hasChildren && open && !disableShowChildren && (
         <div className="ps-4 border-r mt-2 ms-3 flex flex-col gap-3">
           {node.children.map((child) => (
             <CategoryNode
@@ -247,6 +256,7 @@ const CategoryNode: React.FC<{
               onSelect={onSelect}
               disableSelect={disableSelect}
               disableAction={disableAction}
+              disableShowChildren={disableShowChildren} // 👈 ادامه پیدا کند به عمق
             />
           ))}
         </div>
