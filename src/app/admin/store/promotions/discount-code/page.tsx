@@ -75,7 +75,7 @@ const Discount = () => {
   return (
     <>
       <div className="flex flex-col gap-6">
-        <BackToPage title="برگشت به تنظیمات" link="/admin/store" />
+        <BackToPage title="برگشت به لیست پروموشن ها" link="/admin/store/promotions" />
 
         {/* فیلتر/لینک‌ها مثل OrdersFilter (مینیمال) */}
         <CouponsFilter />
