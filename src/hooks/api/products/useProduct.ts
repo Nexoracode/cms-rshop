@@ -42,7 +42,6 @@ export const useGetProducts = ({
   page = 1,
   filter,
   search,
-  searchBy,
   sortBy,
 }: Omit<UseGetProductsParams, "limit">) => {
   return useQuery({
@@ -60,7 +59,6 @@ export const useGetProducts = ({
       }
 
       if (search) params.search = search;
-      if (searchBy) params.searchBy = searchBy;
       if (sortBy) params.sortBy = sortBy;
 
       const queryString = buildQueryString(params);

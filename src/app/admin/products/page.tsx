@@ -17,7 +17,6 @@ import CardContent from "@/components/Admin/CardContent";
 import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/Admin/_products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import { BsShop } from "react-icons/bs";
-import ProductWithVariantsBox from "@/components/Admin/_products/ProductWithVariantsBox";
 
 const Products = () => {
   const router = useRouter();
@@ -48,11 +47,6 @@ const Products = () => {
     return s ? s : undefined;
   }, [searchParams?.toString()]);
 
-  const searchBy = useMemo(() => {
-    const s = searchParams.getAll("searchBy");
-    return s.length ? s : undefined;
-  }, [searchParams?.toString()]);
-
   // Filters
   const filter = useMemo(() => {
     const f: Record<string, string[]> = {};
@@ -72,13 +66,11 @@ const Products = () => {
     page,
     filter,
     search,
-    searchBy,
     sortBy,
   });
 
   const isFilteredView = !!(
     search ||
-    searchBy?.length ||
     sortBy?.length ||
     filter
   );
