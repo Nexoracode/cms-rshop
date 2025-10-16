@@ -179,19 +179,6 @@ export default function CouponFormPage() {
         <CardBody className="flex flex-col gap-6 mt-4">
           {/* اطلاعات اصلی */}
 
-          <SelectableProductsBox
-            initialProducts={couponData?.data?.allowed_products || []}
-            onChange={(p) => console.log(p)}
-          />
-          <SelectableUsersBox
-            initialUsers={couponData?.data?.allowed_users || []}
-            onChange={(p) => console.log(p)}
-          />
-          <SelectableCategoriesBox
-            initialCategories={couponData?.data?.allowed_categories || []}
-          />
-          <SelectableVariantsBox initialVariants={[]} />
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
               label="کد تخفیف"
@@ -330,3 +317,20 @@ export default function CouponFormPage() {
     </div>
   );
 }
+
+/* 
+
+<SelectableProductsBox
+            initialProducts={couponData?.data?.allowed_products || []}
+            onChange={(p) => console.log(p)}
+          />
+          <SelectableUsersBox
+            initialUsers={couponData?.data?.allowed_users || []}
+            onChange={(p) => console.log(p)}
+          />
+          <SelectableCategoriesBox
+            initialCategories={couponData?.data?.allowed_categories || []}
+          />
+          <SelectableVariantsBox initialVariants={[]} />
+
+*/
