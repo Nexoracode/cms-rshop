@@ -15,7 +15,7 @@ const ShopInfosCard = () => {
   return (
     <>
       <div className="max-w-[794px] mx-auto">
-        <Card className="shadow-md bg-white">
+        <Card className="shadow-md bg-white rounded-2xl">
           <CardBody className="p-2">
             <div className="flex flex-col xs:flex-row xs:items-center justify-between">
               <div className="flex items-center gap-3 text-start">
@@ -27,12 +27,12 @@ const ShopInfosCard = () => {
                 <div>
                   <p className="text-lg">فروشگاه آرشاپ</p>
 
-                  <div className="mt-2 bg-green-700/60 rounded-xl flex justify-start px-2 w-fit items-center gap-2 text-green-200">
-                    <span className="relative flex size-3">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-200 opacity-75"></span>
-                      <span className="relative inline-flex size-3 rounded-full bg-green-300"></span>
+                  <div className="mt-2 rounded-xl flex justify-start px-2 w-fit items-center gap-2 text-green-700">
+                    <span className="relative flex size-2.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75"></span>
+                      <span className="relative inline-flex size-2.5 rounded-full bg-green-500"></span>
                     </span>
-                    <p className="text-[12px]">سفارش گیری فعال</p>
+                    <small className="">سفارش گیری فعال</small>
                   </div>
                 </div>
               </div>
