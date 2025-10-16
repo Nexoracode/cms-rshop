@@ -1,12 +1,14 @@
 "use client";
 
-import { Card, CardBody, useDisclosure } from "@heroui/react";
+import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
 import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
 import OptionBox from "@/components/Admin/OptionBox";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import SortingCouponsModal from "./SortingCouponsModal";
 import FilterCouponsModal from "./FilterCouponsModal";
+import Link from "next/link";
+import { GoArrowUpRight } from "react-icons/go";
 
 const CouponsFilter = () => {
   const {
@@ -25,6 +27,43 @@ const CouponsFilter = () => {
     <>
       <Card className="shadow-md">
         <CardBody className="flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-2">
+            <p className="pr-2">اعمال کد تفیف برای</p>
+            <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
+              <Button
+                className="pl-5 w-full sm:w-fit"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/store/promotions/discount-code/create/products"}
+              >
+                <GoArrowUpRight className="text-xl" />
+                محصولات
+              </Button>
+
+              <Button
+                className="pl-5 w-full sm:w-fit"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/store/promotions/discount-code/create/categories"}
+              >
+                <GoArrowUpRight className="text-xl" />
+                دسته بندی ها
+              </Button>
+
+              <Button
+                className="pl-5 w-full sm:w-fit"
+                variant="flat"
+                size="sm"
+                as={Link}
+                href={"/admin/store/promotions/discount-code/users"}
+              >
+                <GoArrowUpRight className="text-xl" />
+                کاربران
+              </Button>
+            </div>
+          </div>
           <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
             <DebouncedSearchURL placeholder="جستجو در کد تخفیف ها..." />
             <div className="w-full sm:w-fit flex items-center gap-2">

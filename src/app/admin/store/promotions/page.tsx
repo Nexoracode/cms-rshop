@@ -5,7 +5,6 @@ import { useDisclosure } from "@heroui/react";
 import PromotionsListModal from "@/components/Admin/_store/__promotions/PromotionsListModal";
 import CardContent from "@/components/Admin/CardContent";
 import { GrAnnounce } from "react-icons/gr";
-import BrandCard from "@/components/Admin/_products/__brands/BrandCard";
 import { useGetBrands } from "@/hooks/api/useBrand";
 
 const Promotions = () => {
