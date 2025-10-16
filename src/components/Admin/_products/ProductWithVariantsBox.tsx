@@ -10,7 +10,11 @@ type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
 
 type Props = {
   product: any;
-  onSelect?: (selected: boolean, product?: any, item?: OnSelectOutput | null) => void;
+  onSelect?: (
+    selected: boolean,
+    product?: any,
+    item?: OnSelectOutput | null
+  ) => void;
   selectedItem?: OnSelectOutput | null;
   disableSelect?: boolean;
 };
@@ -42,21 +46,24 @@ const ProductWithVariantsBox: React.FC<Props> = ({
   }, [selectedItem, product.id]);
 
   const emitSelect = (selected: boolean, variants: VariantItem[] | null) => {
-    onSelect?.(
-      selected,
-      product,
-      {
-        product_id: product.id,
-        variants,
-      }
-    );
+    onSelect?.(selected, product, {
+      product_id: product.id,
+      variants,
+    });
   };
 
   const handleProductSelect = (selected: boolean) => {
     setProductSelected(selected);
     if (selected) setSelectedVariants([]);
 
-    emitSelect(selected, selected ? null : selectedVariants.length ? selectedVariants.map(id => ({ id, quantity: 1 })) : null);
+    emitSelect(
+      selected,
+      selected
+        ? null
+        : selectedVariants.length
+        ? selectedVariants.map((id) => ({ id, quantity: 1 }))
+        : null
+    );
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
@@ -74,7 +81,9 @@ const ProductWithVariantsBox: React.FC<Props> = ({
 
     emitSelect(
       productSelected || updatedVariants.length > 0,
-      updatedVariants.length > 0 ? updatedVariants.map(id => ({ id, quantity: 1 })) : null
+      updatedVariants.length > 0
+        ? updatedVariants.map((id) => ({ id, quantity: 1 }))
+        : null
     );
   };
 
@@ -139,12 +148,14 @@ const ProductWithVariantsBox: React.FC<Props> = ({
                       {Number(
                         Math.max(
                           0,
-                          product.price - 
-                          (product.discount_amount > 0
-                            ? product.discount_amount
-                            : (product.discount_percent / 100) * product.price)
+                          product.price -
+                            (product.discount_amount > 0
+                              ? product.discount_amount
+                              : (product.discount_percent / 100) *
+                                product.price)
                         )
-                      ).toLocaleString("fa-IR")} تومان
+                      ).toLocaleString("fa-IR")}{" "}
+                      تومان
                     </span>
                   </div>
                 ) : (
@@ -172,7 +183,9 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               id={variant.id}
               selectedIds={selectedVariants}
               disabled={disableSelect || productSelected}
-              onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
+              onSelectionChange={(idVal, sel) =>
+                handleVariantSelect(+idVal, sel)
+              }
               className="shadow-none border-none rounded-xl hover:shadow-none"
               bodyClassName="p-0 shadow-none hover:shadow-none"
             >
@@ -183,19 +196,22 @@ const ProductWithVariantsBox: React.FC<Props> = ({
 
                 <div className="flex items-end">
                   <div className="text-gray-600">
-                    {variant.discount_amount > 0 || variant.discount_percent > 0 ? (
+                    {variant.discount_amount > 0 ||
+                    variant.discount_percent > 0 ? (
                       <div className="flex flex-row-reverse items-center gap-1">
                         <RiDiscountPercentLine className="text-orange-500 text-xl" />
                         <span className="text-[15px] text-gray-800">
                           {Number(
                             Math.max(
                               0,
-                              variant.price - 
-                              (variant.discount_amount > 0
-                                ? variant.discount_amount
-                                : (variant.discount_percent / 100) * variant.price)
+                              variant.price -
+                                (variant.discount_amount > 0
+                                  ? variant.discount_amount
+                                  : (variant.discount_percent / 100) *
+                                    variant.price)
                             )
-                          ).toLocaleString("fa-IR")} تومان
+                          ).toLocaleString("fa-IR")}{" "}
+                          تومان
                         </span>
                       </div>
                     ) : (

@@ -113,6 +113,8 @@ const VariantsSelectionModal: React.FC<Props> = ({
                     ?.item ?? null
                 }
                 onSelect={(selected, product, item) => {
+                  console.log("DDDDDDDDD");
+                  
                   setProductVariant((prev) => {
                     if (!selected)
                       return prev.filter((x) => x.product.id !== product.id);
