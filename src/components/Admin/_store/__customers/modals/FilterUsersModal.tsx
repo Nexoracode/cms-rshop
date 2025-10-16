@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { DateRangePicker } from "@heroui/react";
+import { DateRangePicker, Select, SelectItem } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import { eqBool10, rangeDate } from "@/utils/queryFilters";
 import { calToJs } from "@/utils/dateHelpers";
+import { TbFilter } from "react-icons/tb";
 
 type Props = {
   isOpen: boolean;
@@ -62,23 +63,26 @@ const FilterUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
       onConfirm={handleApply}
       onCancel={handleClear}
       size="md"
+      icon={<TbFilter className="text-2xl" />}
     >
       {/* محتویات مدال */}
       <div className="flex flex-col gap-6">
         {/* وضعیت فعال */}
-        <div>
-          <label className="block mb-2 text-sm text-default-600">وضعیت فعال</label>
-          <select
-            dir="rtl"
-            value={filters.isActive}
-            onChange={(e) => updateFilter("isActive", e.target.value as "" | "1" | "0")}
-            className="w-full rounded-md border p-2"
-          >
-            <option value="">همه</option>
-            <option value="1">فعال</option>
-            <option value="0">غیرفعال</option>
-          </select>
-        </div>
+        <Select
+          dir="rtl"
+          labelPlacement="outside"
+          label="وضعیت فعال"
+          selectedKeys={filters.isActive ? [filters.isActive] : []}
+          onSelectionChange={(keys) => {
+            const val = Array.from(keys)[0] as "" | "1" | "0";
+            updateFilter("isActive", val ?? "");
+          }}
+          placeholder="انتخاب وضعیت"
+        >
+          <SelectItem key="">همه</SelectItem>
+          <SelectItem key="1">فعال</SelectItem>
+          <SelectItem key="0">غیرفعال</SelectItem>
+        </Select>
 
         {/* تاریخ عضویت */}
         <DateRangePicker
@@ -88,12 +92,16 @@ const FilterUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             filters.createdAtRange &&
             (filters.createdAtRange.start || filters.createdAtRange.end)
               ? {
-                  start: filters.createdAtRange.start ?? filters.createdAtRange.end!,
-                  end: filters.createdAtRange.end ?? filters.createdAtRange.start!,
+                  start:
+                    filters.createdAtRange.start ?? filters.createdAtRange.end!,
+                  end:
+                    filters.createdAtRange.end ?? filters.createdAtRange.start!,
                 }
               : undefined
           }
-          onChange={(range: any) => updateFilter("createdAtRange", range ?? null)}
+          onChange={(range: any) =>
+            updateFilter("createdAtRange", range ?? null)
+          }
         />
       </div>
     </DynamicModal>
