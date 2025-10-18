@@ -102,7 +102,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
     try {
       if (isEditMode) {
         await updateCoupon.mutateAsync(payload);
-        router.push("/admin/store/promotions/discount-code");
+        router.push("/admin/store/promotions/coupon");
       } else {
         const createdInfo = await createCoupon.mutateAsync(payload);
         if (createdInfo.ok) {
@@ -125,7 +125,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
     <div className="flex flex-col gap-6">
       <BackToPage
         title="بازگشت به لیست کدهای تخفیف"
-        link="/admin/store/promotions/discount-code"
+        link="/admin/store/promotions/coupon"
       />
 
       <Card className="shadow-md">

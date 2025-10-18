@@ -28,14 +28,14 @@ const CouponsFilter = () => {
       <Card className="shadow-md">
         <CardBody className="flex flex-col gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-2">
-            <p className="pr-2">اعمال کد تفیف برای</p>
+            <p className="pr-2">اعمال کد تخفیف برای</p>
             <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
               <Button
                 className="pl-5 w-full sm:w-fit"
                 variant="flat"
                 size="sm"
                 as={Link}
-                href={"/admin/store/promotions/discount-code/create/products"}
+                href={"/admin/store/promotions/coupon/products"}
               >
                 <GoArrowUpRight className="text-xl" />
                 محصولات
@@ -46,7 +46,7 @@ const CouponsFilter = () => {
                 variant="flat"
                 size="sm"
                 as={Link}
-                href={"/admin/store/promotions/discount-code/create/categories"}
+                href={"/admin/store/promotions/coupon/categories"}
               >
                 <GoArrowUpRight className="text-xl" />
                 دسته بندی ها
@@ -57,7 +57,7 @@ const CouponsFilter = () => {
                 variant="flat"
                 size="sm"
                 as={Link}
-                href={"/admin/store/promotions/discount-code/users"}
+                href={"/admin/store/promotions/coupon/users"}
               >
                 <GoArrowUpRight className="text-xl" />
                 کاربران

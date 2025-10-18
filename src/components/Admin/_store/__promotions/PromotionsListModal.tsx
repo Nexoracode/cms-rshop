@@ -106,7 +106,7 @@ const PromotionsListModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 className={`${style} text-purple-700 bg-purple-700/10`}
               />
             }
-            onPress={() => router.push("/admin/store/promotions/discount-code")}
+            onPress={() => router.push("/admin/store/promotions/coupon")}
           >
             <p className="animate-pulse pr-8 pb-4">در حال انتقال...</p>
           </AccordionItem>
