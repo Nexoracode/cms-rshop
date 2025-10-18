@@ -1,15 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Card,
-  CardBody,
-  Switch,
-  DatePicker,
-  Button,
-  useDisclosure,
-} from "@heroui/react";
-import type { CalendarDate } from "@internationalized/date";
+import React, { useState, useEffect } from "react";
+import { Card, CardBody, Switch, DatePicker, Button } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
@@ -24,58 +16,49 @@ import {
   useUpdateCoupon,
   useGetOneCoupon,
 } from "@/hooks/api/useCoupon";
-import ProductSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductsSelectionModal";
 import SelectableProductsBox from "@/components/Admin/_products/SelectableProductsBox/SelectableProductsBox";
 import SelectableUsersBox from "@/components/Admin/_store/__customers/SelectableUsersBox/SelectableUsersBox";
 import SelectableCategoriesBox from "@/components/Admin/_products/__categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import SelectableVariantsBox from "@/components/Admin/_products/SelectableVariantsBox/SelectableVariantsBox";
+import { CouponFormType, CouponPayload } from "@/components/Admin/_store/__promotions/DiscountCode/coupon-types";
 
-type AmountType = "percent" | "fixed";
-
-type CouponFormState = {
-  code: string;
-  type: AmountType;
-  amount?: number;
-  min_order_amount?: number;
-  max_discount_amount?: number;
-  usage_limit?: number;
-  start_date?: CalendarDate | null;
-  end_date?: CalendarDate | null;
-  is_active: boolean;
-  for_first_order: boolean;
+const initialForm: CouponFormType = {
+  code: "",
+  type: "percent",
+  amount: 0,
+  min_order_amount: undefined,
+  max_discount_amount: undefined,
+  usage_limit: undefined,
+  start_date: null,
+  end_date: null,
+  is_active: true,
+  for_first_order: false,
+  // Optional
+  allowed_users: [],
+  allowed_products: [],
+  allowed_categories: [],
 };
 
-export default function CouponFormPage() {
+type CouponFormProps = {
+  pageType: "create" | "category" | "product" | "user";
+};
+
+const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
   const router = useRouter();
   const params = useSearchParams();
 
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
   const isEditMode = !!id;
-
+  // States
+  const [touched, setTouched] = useState(false);
+  const [form, setForm] = useState(initialForm);
   //? Hooks
   const createCoupon = useCreateCoupon();
   const updateCoupon = useUpdateCoupon(id || 0);
   const { data: couponData } = useGetOneCoupon(id);
-  console.log(couponData);
 
-  const [form, setForm] = useState<CouponFormState>({
-    code: "",
-    type: "percent",
-    amount: undefined,
-    min_order_amount: undefined,
-    max_discount_amount: undefined,
-    usage_limit: undefined,
-    start_date: null,
-    end_date: null,
-    is_active: true,
-    for_first_order: false,
-  });
-
-  const [touched, setTouched] = useState(false);
-
-  const updateForm = <K extends keyof CouponFormState>(
+  const updateForm = <K extends keyof CouponPayload>(
     key: K,
-    value: CouponFormState[K]
+    value: CouponPayload[K]
   ) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
@@ -94,7 +77,9 @@ export default function CouponFormPage() {
         start_date,
         usage_limit,
       } = couponData?.data;
-      setForm({
+      console.log(couponData?.data);
+      
+      /* setForm({
         code,
         type,
         amount,
@@ -105,22 +90,23 @@ export default function CouponFormPage() {
         end_date: end_date ? parseDate(end_date.split("T")[0]) : null,
         is_active,
         for_first_order,
-      });
+      }); */
     }
   }, [couponData]);
 
-  const isValid = () =>
-    form.code.trim().length > 0 &&
-    typeof form.amount === "number" &&
-    form.amount > 0;
-
   const handleSubmit = async () => {
     setTouched(true);
-    console.log(isValid());
 
-    if (!isValid()) return;
+    if (
+      !(
+        form.code.trim().length > 0 &&
+        typeof form.amount === "number" &&
+        form.amount > 0
+      )
+    )
+      return;
 
-    const payload: any = {
+    const payload = {
       code: form.code.trim(),
       type: form.type,
       amount: form.amount,
@@ -131,33 +117,28 @@ export default function CouponFormPage() {
       usage_limit: form.usage_limit || undefined,
       min_order_amount: form.min_order_amount || undefined,
       max_discount_amount: form.max_discount_amount || undefined,
+      ...(pageType === "category" ? { allowed_category_ids: "" } : {}),
+      ...(pageType === "product" ? { allowed_product_ids: "" } : {}),
+      ...(pageType === "user" ? { allowed_user_ids: "" } : {}),
     };
 
     try {
       if (isEditMode) {
         await updateCoupon.mutateAsync(payload);
+        router.push("/admin/store/promotions/discount-code");
       } else {
-        await createCoupon.mutateAsync(payload);
+        const createdInfo = await createCoupon.mutateAsync(payload);
+        if (createdInfo.ok) {
+          handleReset();
+        }
       }
-      router.push("/admin/store/promotions/discount-code");
     } catch (err) {
       console.error("Coupon submit failed:", err);
     }
   };
 
   const handleReset = () => {
-    setForm({
-      code: "",
-      type: "percent",
-      amount: undefined,
-      min_order_amount: undefined,
-      max_discount_amount: undefined,
-      usage_limit: undefined,
-      start_date: null,
-      end_date: null,
-      is_active: true,
-      for_first_order: false,
-    });
+    setForm(initialForm);
     setTouched(false);
   };
 
@@ -177,7 +158,32 @@ export default function CouponFormPage() {
           icon={<LuTicket className="text-3xl" />}
         />
         <CardBody className="flex flex-col gap-6 mt-4">
-          {/* اطلاعات اصلی */}
+          {pageType === "category" ? (
+            <SelectableCategoriesBox
+              initialCategories={couponData?.data?.allowed_categories || []}
+              onChange={(category) => {}}
+            />
+          ) : (
+            ""
+          )}
+
+          {pageType === "user" ? (
+            <SelectableUsersBox
+              initialUsers={couponData?.data?.allowed_users || []}
+              onChange={(user) => console.log()}
+            />
+          ) : (
+            ""
+          )}
+
+          {pageType === "product" ? (
+            <SelectableProductsBox
+              initialProducts={couponData?.data?.allowed_products || []}
+              onChange={(product) => console.log()}
+            />
+          ) : (
+            ""
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TextInput
@@ -249,7 +255,6 @@ export default function CouponFormPage() {
             </div>
           </div>
 
-          {/* تاریخ‌ها */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <DatePicker
               label="تاریخ شروع اعتبار"
@@ -269,7 +274,6 @@ export default function CouponFormPage() {
             />
           </div>
 
-          {/* وضعیت‌ها */}
           <div className="flex flex-wrap gap-6">
             <Switch
               isSelected={form.is_active}
@@ -290,7 +294,6 @@ export default function CouponFormPage() {
             </Switch>
           </div>
 
-          {/* دکمه‌ها */}
           <div className="flex items-center justify-end gap-2">
             {!isEditMode && (
               <Button
@@ -316,21 +319,6 @@ export default function CouponFormPage() {
       </Card>
     </div>
   );
-}
+};
 
-/* 
-
-<SelectableProductsBox
-            initialProducts={couponData?.data?.allowed_products || []}
-            onChange={(p) => console.log(p)}
-          />
-          <SelectableUsersBox
-            initialUsers={couponData?.data?.allowed_users || []}
-            onChange={(p) => console.log(p)}
-          />
-          <SelectableCategoriesBox
-            initialCategories={couponData?.data?.allowed_categories || []}
-          />
-          <SelectableVariantsBox initialVariants={[]} />
-
-*/
+export default CouponForm;

@@ -1,38 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 import { buildQueryString } from "@/utils/buildQueryString";
-
-export type CouponType = "percent" | "fixed";
-
-export interface Coupon {
-  id?: number;
-  code: string;
-  type: CouponType;
-  amount: number;
-  mid_order_amount?: number;
-  max_discount_amount?: number;
-  start_date?: string; // ISO
-  end_date?: string; // ISO
-  usage_limit?: number;
-  is_active?: boolean;
-  for_first_order?: boolean;
-  allowed_user_ids?: number[];
-  allowed_product_ids?: number[];
-  allowed_category_ids?: number[];
-  created_at?: string;
-  updated_at?: string;
-}
-
-export type CouponSortBy = Array<
-  | "id:ASC"
-  | "id:DESC"
-  | "createdAt:ASC"
-  | "createdAt:DESC"
-  | "startDate:ASC"
-  | "startDate:DESC"
-  | "endDate:ASC"
-  | "endDate:DESC"
->;
+import {
+  CouponPayload,
+  CouponSortBy,
+} from "@/components/Admin/_store/__promotions/DiscountCode/coupon-types";
+import { calToISO } from "@/utils/dateHelpers";
 
 type GetCouponsParams = {
   page?: number;
@@ -78,18 +51,14 @@ export const useGetOneCoupon = (id?: number) => {
 export const useCreateCoupon = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: Coupon) =>
+    mutationFn: (data: CouponPayload) =>
       fetcher({
         route: "/coupon",
         method: "POST",
         body: {
           ...data,
-          start_date: data.start_date
-            ? new Date(data.start_date).toISOString()
-            : undefined,
-          end_date: data.end_date
-            ? new Date(data.end_date).toISOString()
-            : undefined,
+          start_date: data.start_date ? data.start_date : undefined,
+          end_date: data.end_date ? data.end_date : undefined,
         },
         isActiveToast: true,
         loadingText: "در حال ایجاد کد تخفیف...",
@@ -102,18 +71,14 @@ export const useCreateCoupon = () => {
 export const useUpdateCoupon = (id: number) => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: Partial<Coupon>) =>
+    mutationFn: (data: CouponPayload) =>
       fetcher({
         route: `/coupon/${id}`,
         method: "PATCH",
         body: {
           ...data,
-          start_date: data.start_date
-            ? new Date(data.start_date).toISOString()
-            : undefined,
-          end_date: data.end_date
-            ? new Date(data.end_date).toISOString()
-            : undefined,
+          start_date: data.start_date ? data.start_date : undefined,
+          end_date: data.end_date ? data.end_date : undefined,
         },
         isActiveToast: true,
         loadingText: "در حال بروزرسانی کد تخفیف...",

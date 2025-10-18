@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ProductsSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductsSelectionModal";
 import ProductBox from "@/components/Admin/_products/ProductBox";
-import SelectableBox from "@/components/common/SelectionBox/SelectionBox";
+import SelectableBox from "@/components/Common/SelectionBox/SelectionBox";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 type Product = any;

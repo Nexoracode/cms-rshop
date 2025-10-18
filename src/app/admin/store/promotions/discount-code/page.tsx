@@ -7,12 +7,12 @@ import CardContent from "@/components/Admin/CardContent";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CouponsFilter from "@/components/Admin/_store/__promotions/DiscountCode/CouponsFilter";
 import {
-  CouponSortBy,
   useDeleteCoupon,
   useGetCoupons,
 } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";
 import CouponCard from "@/components/Admin/_store/__promotions/DiscountCode/CouponCard";
+import { CouponSortBy } from "@/components/Admin/_store/__promotions/DiscountCode/coupon-types";
 
 const Discount = () => {
   const router = useRouter();

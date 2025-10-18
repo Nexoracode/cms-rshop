@@ -6,7 +6,7 @@ import { Image, Chip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import SelectableCard from "@/components/common/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/Common/SelectionBox/SelectableCard";
 
 type Media = { id: number; url: string; alt: string | null; type: "image" };
 export type Category = {
