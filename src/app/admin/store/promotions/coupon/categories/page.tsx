@@ -5,7 +5,7 @@ import CouponForm from "@/components/Admin/_store/__promotions/___coupon/CouponF
 const CategoriesCoupon = () => {
   return (
     <div>
-      <CouponForm pageType="product" />
+      <CouponForm pageType="category" />
     </div>
   );
 };

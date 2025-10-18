@@ -6,15 +6,12 @@ import BackToPage from "@/components/Helper/BackToPage";
 import CardContent from "@/components/Admin/CardContent";
 import DynamicModal from "@/components/Helper/DynamicModal";
 import CouponsFilter from "@/components/Admin/_store/__promotions/___coupon/CouponsFilter";
-import {
-  useDeleteCoupon,
-  useGetCoupons,
-} from "@/hooks/api/useCoupon";
+import { useDeleteCoupon, useGetCoupons } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";
 import CouponCard from "@/components/Admin/_store/__promotions/___coupon/CouponCard";
 import { CouponSortBy } from "@/components/Admin/_store/__promotions/___coupon/coupon-types";
 
-const Discount = () => {
+const Coupons = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -75,7 +72,10 @@ const Discount = () => {
   return (
     <>
       <div className="flex flex-col gap-6">
-        <BackToPage title="برگشت به لیست پروموشن ها" link="/admin/store/promotions" />
+        <BackToPage
+          title="برگشت به لیست پروموشن ها"
+          link="/admin/store/promotions"
+        />
 
         {/* فیلتر/لینک‌ها مثل OrdersFilter (مینیمال) */}
         <CouponsFilter />
@@ -96,6 +96,15 @@ const Discount = () => {
                     key={item.id}
                     item={item}
                     onDelete={(id) => setDeleteId(id)}
+                    editRoute={
+                      (item?.allowed_categories?.length &&
+                        `/admin/store/promotions/coupon/categories?edit_id=${item.id}`) ||
+                      (item?.allowed_products?.length &&
+                        `/admin/store/promotions/coupon/products?edit_id=${item.id}`) ||
+                      (item?.allowed_users?.length &&
+                        `/admin/store/promotions/coupon/users?edit_id=${item.id}`) ||
+                      `/admin/store/promotions/coupon/create?edit_id=${item.id}`
+                    }
                   />
                 ))
               : ""}
@@ -118,4 +127,4 @@ const Discount = () => {
   );
 };
 
-export default Discount;
+export default Coupons;

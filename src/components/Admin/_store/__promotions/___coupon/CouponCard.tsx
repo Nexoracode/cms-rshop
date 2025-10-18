@@ -1,17 +1,15 @@
 "use client";
 
-import { Card, CardBody, Button } from "@heroui/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { TableActionButtons } from "@/components/Common/ActionButton/TableActionButtons";
+import { Card, CardBody } from "@heroui/react";
 
 type Props = {
   item: any;
   onDelete: (id: number) => void;
+  editRoute: string
 };
 
-const CouponCard: React.FC<Props> = ({ item, onDelete }) => {
-  const router = useRouter();
-
+const CouponCard: React.FC<Props> = ({ item, onDelete, editRoute }) => {
   return (
     <Card
       key={item.id}
@@ -50,13 +48,17 @@ const CouponCard: React.FC<Props> = ({ item, onDelete }) => {
             {
               label: "حداقل مبلغ سفارش",
               value: item.min_order_amount
-                ? `${Number(item.min_order_amount).toLocaleString("fa-IR")} تومان`
+                ? `${Number(item.min_order_amount).toLocaleString(
+                    "fa-IR"
+                  )} تومان`
                 : "—",
             },
             {
               label: "سقف تخفیف",
               value: item.max_discount_amount
-                ? `${Number(item.max_discount_amount).toLocaleString("fa-IR")} تومان`
+                ? `${Number(item.max_discount_amount).toLocaleString(
+                    "fa-IR"
+                  )} تومان`
                 : "—",
             },
             {
@@ -79,24 +81,24 @@ const CouponCard: React.FC<Props> = ({ item, onDelete }) => {
               label: "اولین سفارش",
               value: item.for_first_order ? "بله" : "خیر",
             },
-            item.allowed_users?.length
-              ? {
-                  label: "کاربران مجاز",
-                  value: `${item.allowed_users.length} نفر`,
-                }
-              : null,
-            item.allowed_products?.length
-              ? {
-                  label: "محصولات مجاز",
-                  value: `${item.allowed_products.length} عدد`,
-                }
-              : null,
-            item.allowed_categories?.length
-              ? {
-                  label: "دسته‌بندی‌های مجاز",
-                  value: `${item.allowed_categories.length} مورد`,
-                }
-              : null,
+            {
+              label: "کاربران مجاز",
+              value: item.allowed_users?.length
+                ? `${item.allowed_users.length} نفر`
+                : "____",
+            },
+            {
+              label: "محصولات مجاز",
+              value: item.allowed_products?.length
+                ? `${item.allowed_products.length} عدد`
+                : "____",
+            },
+            {
+              label: "دسته‌بندی‌های مجاز",
+              value: item.allowed_categories?.length
+                ? `${item.allowed_categories.length} مورد`
+                : "____",
+            },
           ]
             .filter(Boolean)
             .map((row: any, index: number) => (
@@ -114,22 +116,13 @@ const CouponCard: React.FC<Props> = ({ item, onDelete }) => {
 
         {/* Footer Buttons */}
         <div className="flex justify-end gap-2 pt-4">
-          <Button
-            size="sm"
-            variant="flat"
-            as={Link}
-            href={`/admin/store/promotions/discount-code/create?edit_id=${item.id}`}
-          >
-            ویرایش
-          </Button>
-          <Button
-            size="sm"
-            color="danger"
-            variant="flat"
-            onPress={() => onDelete(item.id)}
-          >
-            حذف
-          </Button>
+          <TableActionButtons
+            editRoute={editRoute}
+            onDelete={() => onDelete(item.id)}
+            deleteItem={item.id}
+            deleteTitle="تایید حذف کد تخفیف"
+            deleteMessage="آیا مطمئن هستید می‌خواهید این کد تخفیف را حذف کنید؟"
+          />
         </div>
       </CardBody>
     </Card>
