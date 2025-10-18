@@ -1,12 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
 import CardContent from "@/components/Admin/CardContent";
-import DynamicModal from "@/components/Helper/DynamicModal";
 import CouponsFilter from "@/components/Admin/_store/__promotions/___coupon/CouponsFilter";
-import { useDeleteCoupon, useGetCoupons } from "@/hooks/api/useCoupon";
+import { useGetCoupons } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";
 import CouponCard from "@/components/Admin/_store/__promotions/___coupon/CouponCard";
 import { CouponSortBy } from "@/components/Admin/_store/__promotions/___coupon/coupon-types";
@@ -55,20 +54,6 @@ const Coupons = () => {
 
   const isFilteredView = !!(search || sortBy?.length || filter);
 
-  // delete modal state
-  const [deleteId, setDeleteId] = useState<number | null>(null);
-  const isOpen = deleteId !== null;
-  const onOpenChange = (open: boolean) => !open && setDeleteId(null);
-
-  const deleteCoupon = useDeleteCoupon(deleteId ?? 0);
-
-  const handleConfirmDelete = () => {
-    if (!deleteId) return;
-    deleteCoupon.mutate(undefined, {
-      onSettled: () => setDeleteId(null),
-    });
-  };
-
   return (
     <>
       <div className="flex flex-col gap-6">
@@ -95,7 +80,6 @@ const Coupons = () => {
                   <CouponCard
                     key={item.id}
                     item={item}
-                    onDelete={(id) => setDeleteId(id)}
                     editRoute={
                       (item?.allowed_categories?.length &&
                         `/admin/store/promotions/coupon/categories?edit_id=${item.id}`) ||
@@ -111,18 +95,6 @@ const Coupons = () => {
           </div>
         </CardContent>
       </div>
-
-      {/* Modal حذف (دقیقاً مشابه الگوی محصولات) */}
-      <DynamicModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onConfirm={handleConfirmDelete}
-      >
-        <p className="leading-7 text-danger-600">
-          با حذف کد تخفیف انتخاب‌شده، امکان بازگردانی وجود ندارد! آیا از حذف
-          اطمینان دارید؟
-        </p>
-      </DynamicModal>
     </>
   );
 };

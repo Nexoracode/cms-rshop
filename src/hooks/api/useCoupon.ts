@@ -90,10 +90,11 @@ export const useUpdateCoupon = (id: number) => {
   });
 };
 
-export const useDeleteCoupon = (id: number) => {
+export const useDeleteCoupon = () => {
   const qc = useQueryClient();
+
   return useMutation({
-    mutationFn: () =>
+    mutationFn: (id: number) =>
       fetcher({
         route: `/coupon/${id}`,
         method: "DELETE",
@@ -101,7 +102,7 @@ export const useDeleteCoupon = (id: number) => {
         loadingText: "در حال حذف کد تخفیف...",
         successText: "کد تخفیف با موفقیت حذف شد",
       }),
-    onSuccess: () => {
+    onSuccess: (_data, id) => {
       qc.invalidateQueries({ queryKey: ["all-coupons"] });
       qc.invalidateQueries({ queryKey: ["one-coupon", id] });
     },

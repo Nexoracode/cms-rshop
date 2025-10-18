@@ -1,15 +1,81 @@
 "use client";
 
 import { TableActionButtons } from "@/components/Common/ActionButton/TableActionButtons";
+import { useDeleteCoupon } from "@/hooks/api/useCoupon";
 import { Card, CardBody } from "@heroui/react";
 
 type Props = {
   item: any;
-  onDelete: (id: number) => void;
-  editRoute: string
+  editRoute: string;
 };
 
-const CouponCard: React.FC<Props> = ({ item, onDelete, editRoute }) => {
+const CouponCard: React.FC<Props> = ({ item, editRoute }) => {
+  const deleteCoupon = useDeleteCoupon();
+
+  const rowItems = [
+    {
+      label: "نوع تخفیف",
+      value: item.type === "percent" ? "درصدی" : "مبلغ ثابت",
+    },
+    {
+      label: "مقدار",
+      value:
+        item.type === "percent"
+          ? `${item.amount}%`
+          : `${Number(item.amount ?? 0).toLocaleString("fa-IR")} تومان`,
+    },
+    {
+      label: "حداقل مبلغ سفارش",
+      value: item.min_order_amount
+        ? `${Number(item.min_order_amount).toLocaleString("fa-IR")} تومان`
+        : "—",
+    },
+    {
+      label: "سقف تخفیف",
+      value: item.max_discount_amount
+        ? `${Number(item.max_discount_amount).toLocaleString("fa-IR")} تومان`
+        : "—",
+    },
+    {
+      label: "شروع اعتبار",
+      value: item.start_date
+        ? new Date(item.start_date).toLocaleDateString("fa-IR")
+        : "—",
+    },
+    {
+      label: "پایان اعتبار",
+      value: item.end_date
+        ? new Date(item.end_date).toLocaleDateString("fa-IR")
+        : "—",
+    },
+    {
+      label: "محدودیت تعداد",
+      value: item.usage_limit ?? "—",
+    },
+    {
+      label: "اولین سفارش",
+      value: item.for_first_order ? "بله" : "خیر",
+    },
+    {
+      label: "کاربران مجاز",
+      value: item.allowed_users?.length
+        ? `${item.allowed_users.length} نفر`
+        : "____",
+    },
+    {
+      label: "محصولات مجاز",
+      value: item.allowed_products?.length
+        ? `${item.allowed_products.length} عدد`
+        : "____",
+    },
+    {
+      label: "دسته‌بندی‌های مجاز",
+      value: item.allowed_categories?.length
+        ? `${item.allowed_categories.length} مورد`
+        : "____",
+    },
+  ];
+
   return (
     <Card
       key={item.id}
@@ -33,92 +99,24 @@ const CouponCard: React.FC<Props> = ({ item, onDelete, editRoute }) => {
 
         {/* Content */}
         <div className="flex flex-col divide-y divide-gray-200 rounded-lg overflow-hidden">
-          {[
-            {
-              label: "نوع تخفیف",
-              value: item.type === "percent" ? "درصدی" : "مبلغ ثابت",
-            },
-            {
-              label: "مقدار",
-              value:
-                item.type === "percent"
-                  ? `${item.amount}%`
-                  : `${Number(item.amount ?? 0).toLocaleString("fa-IR")} تومان`,
-            },
-            {
-              label: "حداقل مبلغ سفارش",
-              value: item.min_order_amount
-                ? `${Number(item.min_order_amount).toLocaleString(
-                    "fa-IR"
-                  )} تومان`
-                : "—",
-            },
-            {
-              label: "سقف تخفیف",
-              value: item.max_discount_amount
-                ? `${Number(item.max_discount_amount).toLocaleString(
-                    "fa-IR"
-                  )} تومان`
-                : "—",
-            },
-            {
-              label: "شروع اعتبار",
-              value: item.start_date
-                ? new Date(item.start_date).toLocaleDateString("fa-IR")
-                : "—",
-            },
-            {
-              label: "پایان اعتبار",
-              value: item.end_date
-                ? new Date(item.end_date).toLocaleDateString("fa-IR")
-                : "—",
-            },
-            {
-              label: "محدودیت تعداد",
-              value: item.usage_limit ?? "—",
-            },
-            {
-              label: "اولین سفارش",
-              value: item.for_first_order ? "بله" : "خیر",
-            },
-            {
-              label: "کاربران مجاز",
-              value: item.allowed_users?.length
-                ? `${item.allowed_users.length} نفر`
-                : "____",
-            },
-            {
-              label: "محصولات مجاز",
-              value: item.allowed_products?.length
-                ? `${item.allowed_products.length} عدد`
-                : "____",
-            },
-            {
-              label: "دسته‌بندی‌های مجاز",
-              value: item.allowed_categories?.length
-                ? `${item.allowed_categories.length} مورد`
-                : "____",
-            },
-          ]
-            .filter(Boolean)
-            .map((row: any, index: number) => (
-              <div
-                key={index}
-                className={`flex justify-between border-none items-center rounded-xl px-3 py-2 text-sm ${
-                  index % 2 === 1 ? "bg-slate-100" : "bg-white"
-                }`}
-              >
-                <span className="text-gray-600">{row.label}:</span>
-                <span className="font-medium text-gray-800">{row.value}</span>
-              </div>
-            ))}
+          {rowItems.filter(Boolean).map((row: any, index: number) => (
+            <div
+              key={index}
+              className={`flex justify-between border-none items-center rounded-xl px-3 py-2 text-sm ${
+                index % 2 === 1 ? "bg-slate-100" : "bg-white"
+              }`}
+            >
+              <span className="text-gray-600">{row.label}:</span>
+              <span className="font-medium text-gray-800">{row.value}</span>
+            </div>
+          ))}
         </div>
 
         {/* Footer Buttons */}
         <div className="flex justify-end gap-2 pt-4">
           <TableActionButtons
             editRoute={editRoute}
-            onDelete={() => onDelete(item.id)}
+            onDelete={() => deleteCoupon.mutate(item.id)}
             deleteItem={item.id}
             deleteTitle="تایید حذف کد تخفیف"
             deleteMessage="آیا مطمئن هستید می‌خواهید این کد تخفیف را حذف کنید؟"
