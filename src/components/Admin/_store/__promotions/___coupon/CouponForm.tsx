@@ -77,7 +77,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
     if (
       !(
         form.code.trim().length > 0 &&
-        typeof form.amount === "number" &&
         form.amount > 0
       )
     )
@@ -198,6 +197,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
               placeholder={
                 form.type === "percent" ? "مثلاً 10" : "مثلاً 50,000"
               }
+              maxValue={100}
               value={form.amount ?? 0}
               onValueChange={(val) =>
                 updateForm("amount", val === undefined ? 1 : val)

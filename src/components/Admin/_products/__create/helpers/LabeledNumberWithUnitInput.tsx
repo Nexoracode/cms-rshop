@@ -20,6 +20,7 @@ type Props = {
   isRequired?: boolean;
   style?: string;
   isActiveError?: boolean;
+  maxValue?: number
 };
 
 const LabeledNumberWithUnitInput: FC<Props> = ({
@@ -33,6 +34,7 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
   isRequired = false,
   style,
   isActiveError = false,
+  maxValue
 }) => {
   return (
     <div className={`flex flex-col gap-4 ${style}`}>
@@ -42,6 +44,7 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
         label={label}
         placeholder={placeholder}
         minValue={0}
+        maxValue={maxValue}
         value={value}
         onValueChange={(val: any) => {
           if (typeof val === "number") onValueChange(val);
