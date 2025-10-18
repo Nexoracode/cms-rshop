@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, Switch, DatePicker, Button } from "@heroui/react";
-import { parseDate } from "@internationalized/date";
+import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
@@ -10,7 +9,6 @@ import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/he
 import TextInput from "@/components/Helper/TextInput/TextInput";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { LuTicket } from "react-icons/lu";
-import { calToISO } from "@/utils/dateHelpers";
 import {
   useCreateCoupon,
   useUpdateCoupon,
@@ -19,7 +17,11 @@ import {
 import SelectableProductsBox from "@/components/Admin/_products/SelectableProductsBox/SelectableProductsBox";
 import SelectableUsersBox from "@/components/Admin/_store/__customers/SelectableUsersBox/SelectableUsersBox";
 import SelectableCategoriesBox from "@/components/Admin/_products/__categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import { CouponFormType, CouponPayload } from "@/components/Admin/_store/__promotions/DiscountCode/coupon-types";
+import {
+  CouponFormType,
+  CouponPayload,
+} from "@/components/Admin/_store/__promotions/DiscountCode/coupon-types";
+import IsoDatePicker from "@/components/Shared/IsoDatePicker";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -28,8 +30,8 @@ const initialForm: CouponFormType = {
   min_order_amount: undefined,
   max_discount_amount: undefined,
   usage_limit: undefined,
-  start_date: null,
-  end_date: null,
+  start_date: "",
+  end_date: "",
   is_active: true,
   for_first_order: false,
   // Optional
@@ -64,34 +66,9 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
   };
 
   useEffect(() => {
-    if (couponData?.data) {
-      const {
-        code,
-        for_first_order,
-        is_active,
-        type,
-        amount,
-        end_date,
-        max_discount_amount,
-        min_order_amount,
-        start_date,
-        usage_limit,
-      } = couponData?.data;
-      console.log(couponData?.data);
-      
-      /* setForm({
-        code,
-        type,
-        amount,
-        min_order_amount,
-        max_discount_amount,
-        usage_limit,
-        start_date: start_date ? parseDate(start_date.split("T")[0]) : null,
-        end_date: end_date ? parseDate(end_date.split("T")[0]) : null,
-        is_active,
-        for_first_order,
-      }); */
-    }
+    if (!couponData?.data) return;
+    console.log(couponData?.data);
+    setForm(couponData?.data);
   }, [couponData]);
 
   const handleSubmit = async () => {
@@ -112,14 +89,14 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
       amount: form.amount,
       is_active: form.is_active,
       for_first_order: form.for_first_order,
-      start_date: calToISO(form.start_date),
-      end_date: calToISO(form.end_date),
+      start_date: form.start_date,
+      end_date: form.end_date,
       usage_limit: form.usage_limit || undefined,
       min_order_amount: form.min_order_amount || undefined,
       max_discount_amount: form.max_discount_amount || undefined,
-      ...(pageType === "category" ? { allowed_category_ids: "" } : {}),
-      ...(pageType === "product" ? { allowed_product_ids: "" } : {}),
-      ...(pageType === "user" ? { allowed_user_ids: "" } : {}),
+      ...(pageType === "category" ? { allowed_category_ids: [] } : {}),
+      ...(pageType === "product" ? { allowed_product_ids: [] } : {}),
+      ...(pageType === "user" ? { allowed_user_ids: [] } : {}),
     };
 
     try {
@@ -209,7 +186,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
               }
               value={form.amount ?? 0}
               onValueChange={(val) =>
-                updateForm("amount", val === undefined ? undefined : val)
+                updateForm("amount", val === undefined ? 1 : val)
               }
               selectedKey={form.type}
               onSelectChange={(val: any) =>
@@ -256,21 +233,16 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DatePicker
+            <IsoDatePicker
               label="تاریخ شروع اعتبار"
-              labelPlacement="outside"
-              showMonthAndYearPickers
-              variant="bordered"
-              value={form.start_date ?? undefined}
-              onChange={(val: any) => updateForm("start_date", val ?? null)}
+              valueIso={form.start_date}
+              onChangeIso={(val) => updateForm("start_date", val ?? null)}
             />
-            <DatePicker
+
+            <IsoDatePicker
               label="تاریخ پایان اعتبار"
-              labelPlacement="outside"
-              showMonthAndYearPickers
-              variant="bordered"
-              value={form.end_date ?? undefined}
-              onChange={(val: any) => updateForm("end_date", val ?? null)}
+              valueIso={form.end_date}
+              onChangeIso={(val) => updateForm("end_date", val ?? null)}
             />
           </div>
 

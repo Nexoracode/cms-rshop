@@ -7,6 +7,7 @@ import { calToISO, isoToCal } from "@/utils/dateHelpers";
 
 type IsoDatePickerProps = {
   label?: React.ReactNode;
+  labelPlacement?: "inside" | "outside" | "outside-left";
   description?: React.ReactNode;
   isRequired?: boolean;
   isInvalid?: boolean;
@@ -25,11 +26,12 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
   isRequired,
   isInvalid,
   errorMessage,
-  variant,
-  showMonthAndYearPickers,
+  variant= "flat",
+  showMonthAndYearPickers= true,
   placeholderValue,
   valueIso,
   onChangeIso,
+  labelPlacement = "outside",
   className,
 }) => {
   const calValue = isoToCal(valueIso);
@@ -37,6 +39,7 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
   return (
     <DatePicker
       label={label}
+      labelPlacement={labelPlacement}
       description={description}
       isRequired={isRequired}
       isInvalid={isInvalid}
@@ -44,7 +47,9 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
       variant={variant as any}
       showMonthAndYearPickers={showMonthAndYearPickers}
       value={calValue}
-      placeholderValue={placeholderValue ? isoToCal(placeholderValue) : undefined}
+      placeholderValue={
+        placeholderValue ? isoToCal(placeholderValue) : undefined
+      }
       onChange={(c: CalendarDate | null | undefined) => {
         const iso = calToISO(c ?? undefined);
         onChangeIso?.(iso);

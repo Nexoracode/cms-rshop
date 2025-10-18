@@ -19,8 +19,8 @@ export type CouponBase = {
   amount: number;
   min_order_amount?: number;
   max_discount_amount?: number;
-  start_date?: string;
-  end_date?: string;
+  start_date?: string | null;
+  end_date?: string | null;
   usage_limit?: number;
   is_active?: boolean;
   for_first_order?: boolean;
