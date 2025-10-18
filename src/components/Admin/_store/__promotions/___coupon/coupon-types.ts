@@ -29,7 +29,7 @@ export type CouponBase = {
 
 // Main combined model
 export type CouponPayload = CouponBase & Partial<CouponAPI>;
-export type CouponFormType = CouponBase & {
+export type CouponFormType = CouponBase & Partial<CouponAPI> & {
   allowed_users: ObjArray;
   allowed_products: ObjArray;
   allowed_categories: ObjArray;

@@ -83,7 +83,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
     )
       return;
 
-    const payload = {
+    const payload: CouponPayload = {
       code: form.code.trim(),
       type: form.type,
       amount: form.amount,
@@ -94,9 +94,15 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
       usage_limit: form.usage_limit || undefined,
       min_order_amount: form.min_order_amount || undefined,
       max_discount_amount: form.max_discount_amount || undefined,
-      ...(pageType === "category" ? { allowed_category_ids: [] } : {}),
-      ...(pageType === "product" ? { allowed_product_ids: [] } : {}),
-      ...(pageType === "user" ? { allowed_user_ids: [] } : {}),
+      ...(pageType === "category"
+        ? { allowed_category_ids: form.allowed_category_ids }
+        : {}),
+      ...(pageType === "product"
+        ? { allowed_product_ids: form.allowed_product_ids }
+        : {}),
+      ...(pageType === "user"
+        ? { allowed_user_ids: form.allowed_user_ids }
+        : {}),
     };
 
     try {
@@ -138,7 +144,9 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
           {pageType === "category" ? (
             <SelectableCategoriesBox
               initialCategories={couponData?.data?.allowed_categories || []}
-              onChange={(category) => {}}
+              onChange={(ids) =>
+                ids.length && updateForm("allowed_category_ids", ids)
+              }
             />
           ) : (
             ""
@@ -147,7 +155,9 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
           {pageType === "user" ? (
             <SelectableUsersBox
               initialUsers={couponData?.data?.allowed_users || []}
-              onChange={(user) => console.log()}
+              onChange={(ids) =>
+                ids.length && updateForm("allowed_user_ids", ids)
+              }
             />
           ) : (
             ""
@@ -156,7 +166,9 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
           {pageType === "product" ? (
             <SelectableProductsBox
               initialProducts={couponData?.data?.allowed_products || []}
-              onChange={(product) => console.log()}
+              onChange={(ids) =>
+                ids.length && updateForm("allowed_product_ids", ids)
+              }
             />
           ) : (
             ""

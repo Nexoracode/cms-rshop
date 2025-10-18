@@ -49,8 +49,6 @@ const ProductBox: React.FC<Props> = ({
     router.push(`/admin/products/create?edit_id=${id}&type=variant`);
   };
 
-  console.log(product);
-
   return (
     <>
       <SelectableCard

@@ -60,19 +60,19 @@ const CouponCard: React.FC<Props> = ({ item, editRoute }) => {
       label: "کاربران مجاز",
       value: item.allowed_users?.length
         ? `${item.allowed_users.length} نفر`
-        : "____",
+        : "—",
     },
     {
       label: "محصولات مجاز",
       value: item.allowed_products?.length
         ? `${item.allowed_products.length} عدد`
-        : "____",
+        : "—",
     },
     {
       label: "دسته‌بندی‌های مجاز",
       value: item.allowed_categories?.length
         ? `${item.allowed_categories.length} مورد`
-        : "____",
+        : "—",
     },
   ];
 

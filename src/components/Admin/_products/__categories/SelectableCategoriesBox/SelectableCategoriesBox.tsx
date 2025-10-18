@@ -23,7 +23,7 @@ const SelectableCategoriesBox: React.FC<Props> = ({
 
   const handleConfirm = (categories: Category[]) => {
     setSelectedCategories(categories);
-    onChange?.(categories);
+    onChange?.(categories.length ? categories.map((p) => p.id) : []);
     setIsUsersOpen(false);
   };
 
