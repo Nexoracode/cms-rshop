@@ -127,6 +127,8 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
 
   const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
 
+  console.log(couponData);
+
   return (
     <div className="flex flex-col gap-6">
       <BackToPage

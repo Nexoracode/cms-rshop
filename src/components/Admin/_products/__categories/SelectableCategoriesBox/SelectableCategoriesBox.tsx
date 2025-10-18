@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectableBox from "@/components/Common/SelectionBox/SelectionBox";
 import { BiCategoryAlt } from "react-icons/bi";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
@@ -19,7 +19,12 @@ const SelectableCategoriesBox: React.FC<Props> = ({
 }) => {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] =
-    useState<Category[]>(initialCategories);
+    useState<Category[]>([]);
+
+  useEffect(() => {
+    if (!initialCategories.length) return;
+    setSelectedCategories(initialCategories);
+  }, [initialCategories]);
 
   const handleConfirm = (categories: Category[]) => {
     setSelectedCategories(categories);

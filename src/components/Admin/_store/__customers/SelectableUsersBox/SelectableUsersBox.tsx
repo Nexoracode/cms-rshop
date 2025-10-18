@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectableBox from "@/components/Common/SelectionBox/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import UserInfoCard from "../UserInfoCard";
@@ -18,7 +18,12 @@ const SelectableUsersBox: React.FC<Props> = ({
   initialUsers = [],
 }) => {
   const [isUsersOpen, setIsUsersOpen] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<Users[]>(initialUsers);
+  const [selectedUsers, setSelectedUsers] = useState<Users[]>([]);
+
+  useEffect(() => {
+    if (!initialUsers.length) return;
+    setSelectedUsers(initialUsers);
+  }, [initialUsers]);
 
   const handleConfirm = (users: Users[]) => {
     setSelectedUsers(users);

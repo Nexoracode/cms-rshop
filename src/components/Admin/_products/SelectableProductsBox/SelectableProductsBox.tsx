@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductsSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductsSelectionModal";
 import ProductBox from "@/components/Admin/_products/ProductBox";
 import SelectableBox from "@/components/Common/SelectionBox/SelectionBox";
@@ -19,7 +19,12 @@ const SelectableProductsBox: React.FC<Props> = ({
 }) => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] =
-    useState<Product[]>(initialProducts);
+    useState<Product[]>([]);
+
+  useEffect(() => {
+    if (!initialProducts.length) return;
+    setSelectedProducts(initialProducts);
+  }, [initialProducts]);
 
   const handleConfirm = (products: Product[]) => {
     setSelectedProducts(products);
