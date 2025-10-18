@@ -74,13 +74,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
   const handleSubmit = async () => {
     setTouched(true);
 
-    if (
-      !(
-        form.code.trim().length > 0 &&
-        form.amount > 0
-      )
-    )
-      return;
+    if (!(form.code.trim().length > 0 && form.amount > 0)) return;
 
     const payload: CouponPayload = {
       code: form.code.trim(),
@@ -106,8 +100,10 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
 
     try {
       if (isEditMode) {
-        await updateCoupon.mutateAsync(payload);
-        router.push("/admin/store/promotions/coupon");
+        const updatedCoupon = await updateCoupon.mutateAsync(payload);
+        if (updatedCoupon.ok) {
+          router.push("/admin/store/promotions/coupon");
+        }
       } else {
         const createdInfo = await createCoupon.mutateAsync(payload);
         if (createdInfo.ok) {
@@ -197,7 +193,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
               placeholder={
                 form.type === "percent" ? "مثلاً 10" : "مثلاً 50,000"
               }
-              maxValue={100}
+              maxValue={form.type === "percent" ? 100 : undefined}
               value={form.amount ?? 0}
               onValueChange={(val) =>
                 updateForm("amount", val === undefined ? 1 : val)
