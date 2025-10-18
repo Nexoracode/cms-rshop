@@ -1,4 +1,4 @@
-import type { CalendarDate } from "@internationalized/date";
+import { CalendarDate } from "@internationalized/date";
 
 /**
  * CalendarDate → ISO string (در ساعت 00:00:00)
@@ -14,16 +14,12 @@ export const calToISO = (c?: CalendarDate | null): string | undefined => {
 export const calToJs = (c?: CalendarDate) =>
   c ? new Date(c.year, c.month - 1, c.day) : undefined;
 
-/**
- * ISO string → CalendarDate
- * در صورت نامعتبر بودن، null برمی‌گرداند.
- */
-export const isoToCal = (iso?: string | null): CalendarDate | null => {
-  if (!iso) return null;
+export const isoToCal = (iso?: string | null): CalendarDate | undefined => {
+  if (!iso) return undefined;
   try {
     const [year, month, day] = iso.split("T")[0].split("-").map(Number);
-    return { year, month, day } as CalendarDate;
+    return new CalendarDate(year, month, day); // ⚡ اینجا
   } catch {
-    return null;
+    return undefined;
   }
 };
