@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import NumberWithSelect from "../../../../Shared/Inputs/NumberWithSelect";
-import PriceNumberInput from "./PriceInput";
+import PriceNumberInput from "../../../../Shared/Inputs/PriceInput";
 
 type DiscountType = "percent" | "amount";
 

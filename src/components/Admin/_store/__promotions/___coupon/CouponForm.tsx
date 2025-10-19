@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
-import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
+import PriceNumberInput from "@/components/Shared/Inputs/PriceInput";
 import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
 import TextInput from "@/components/Helper/TextInput/TextInput";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";

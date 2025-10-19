@@ -1,13 +1,11 @@
 "use client";
 
-import { FC } from "react";
-import { NumberInput, Select, SelectItem } from "@heroui/react";
+import { FC, useEffect, useRef, useState } from "react";
+import { Input, Select, SelectItem } from "@heroui/react";
 import FieldErrorText from "@/components/Helper/FieldErrorText";
+import { normalizeDigits, formatNumberWithCommas, caretFromDigitIndex } from "@/utils/number";
 
-type Option = {
-  key: string;
-  title: string;
-};
+type NumberOption = { key: string; title: string };
 
 type Props = {
   label: string;
@@ -16,11 +14,14 @@ type Props = {
   onValueChange: (val: number | undefined) => void;
   selectedKey: string;
   onSelectChange: (val: string) => void;
-  options: Option[];
+  options: NumberOption[];
   isRequired?: boolean;
   style?: string;
   isActiveError?: boolean;
-  maxValue?: number
+  maxValue?: number;
+  minValue?: number;
+  formatWithCommas?: boolean;
+  suffix?: string;
 };
 
 const NumberWithSelect: FC<Props> = ({
@@ -34,48 +35,88 @@ const NumberWithSelect: FC<Props> = ({
   isRequired = false,
   style,
   isActiveError = false,
-  maxValue
+  maxValue,
+  minValue = 0,
+  formatWithCommas = false,
+  suffix,
 }) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [display, setDisplay] = useState<string>("");
+
+  useEffect(() => {
+    if (value === null || value === undefined || Number.isNaN(value)) {
+      setDisplay("");
+      return;
+    }
+    const s = String(Math.floor(Number(value)));
+    setDisplay(formatWithCommas ? formatNumberWithCommas(s) : s);
+  }, [value, formatWithCommas]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const el = e.target;
+    const cursor = el.selectionStart ?? el.value.length;
+
+    const rawNorm = normalizeDigits(el.value);
+    const leftPart = rawNorm.slice(0, cursor);
+    const leftDigitsCount = (leftPart.match(/\d/g) || []).length;
+
+    let digits = rawNorm.replace(/[^\d]/g, "");
+
+    if (digits !== "") {
+      let num = Number(digits);
+      if (typeof minValue === "number" && num < minValue) num = minValue;
+      if (typeof maxValue === "number" && num > maxValue) num = maxValue;
+      digits = String(num);
+    }
+
+    const nextDisplay = formatWithCommas ? formatNumberWithCommas(digits) : digits;
+    setDisplay(nextDisplay);
+    onValueChange(digits === "" ? undefined : Number(digits));
+
+    requestAnimationFrame(() => {
+      const pos = caretFromDigitIndex(nextDisplay, leftDigitsCount);
+      inputRef.current?.setSelectionRange(pos, pos);
+    });
+  };
+
+  const handleSelectChange = (val: string) => {
+    setDisplay("");
+    onValueChange(undefined);
+    onSelectChange(val);
+  };
+
   return (
-    <div className={`flex flex-col gap-4 ${style}`}>
-      <NumberInput
-        hideStepper
-        isRequired={isRequired}
+    <div className={`flex flex-col gap-4 ${style || ""}`}>
+      <Input
+        ref={inputRef as any}
+        dir="ltr"
+        lang="en"
+        inputMode="numeric"
+        type="text"
         label={label}
-        placeholder={placeholder}
-        minValue={0}
-        maxValue={maxValue}
-        value={value}
-        onValueChange={(val: any) => {
-          if (typeof val === "number") onValueChange(val);
-          else if (typeof val === "string") {
-            const trimmed = val.trim();
-            onValueChange(trimmed === "" ? undefined : Number(trimmed));
-          } else onValueChange(undefined);
-        }}
         labelPlacement="outside"
-        errorMessage={
-          isRequired &&
-          !value && <FieldErrorText error={`${label} الزامی است`} />
-        }
-        description={
-          isRequired &&
-          !value && isActiveError && <FieldErrorText error={`${label} الزامی است`} />
-        }
+        placeholder={placeholder}
+        isRequired={isRequired}
+        value={display}
+        onChange={handleChange}
+        className="text-right"
         endContent={
-          <div className="min-w-[110px]">
+          <div className="min-w-[110px] flex items-center gap-2">
+            {suffix && (
+              <div className="pointer-events-none text-default-400 text-small">
+                {suffix}
+              </div>
+            )}
             <Select
               isRequired
               labelPlacement="outside"
               aria-label="select"
               placeholder="مقداری را وارد کنید"
               selectedKeys={[selectedKey]}
-              onChange={(e) => onSelectChange(e.target.value)}
+              onChange={(e) => handleSelectChange(e.target.value)}
             >
               {options.length ? (
-                options.map((opt) => (
-                  <SelectItem key={opt.key}>{opt.title}</SelectItem>
-                ))
+                options.map((opt) => <SelectItem key={opt.key}>{opt.title}</SelectItem>)
               ) : (
                 <SelectItem key="-1" isDisabled>
                   گزینه‌ای وجود ندارد
@@ -84,7 +125,13 @@ const NumberWithSelect: FC<Props> = ({
             </Select>
           </div>
         }
-        className="justify-center"
+        autoComplete="off"
+        isInvalid={isRequired && isActiveError && (!value || +value < (minValue ?? 0))}
+        errorMessage={
+          isRequired && isActiveError && (!value || +value < (minValue ?? 0)) ? (
+            <FieldErrorText error={`${label} الزامی است`} />
+          ) : undefined
+        }
       />
     </div>
   );
