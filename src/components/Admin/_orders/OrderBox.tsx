@@ -21,15 +21,18 @@ import { useUpdateOrderStatus } from "@/hooks/api/orders/useOrder";
 import { StatusOrder } from "./order-types";
 
 const statusOptions: { key: StatusOrder; label: string }[] = [
-  { key: "pending", label: "در انتظار" },
-  { key: "paid", label: "پرداخت‌شده" },
-  { key: "cancelled", label: "لغوشده" },
-  { key: "shipped", label: "ارسال‌شده" },
-  { key: "delivered", label: "تحویل‌شده" },
+  { key: "pending_approval", label: "در انتظار تایید" },
+  { key: "awaiting_payment", label: "در انتظار پرداخت" },
+  { key: "payment_confirmation_pending", label: "در انتظار تایید پرداخت" },
+  { key: "preparing", label: "در حال آماده‌سازی" },
+  { key: "shipping", label: "در حال ارسال" },
+  { key: "delivered", label: "تحویل گرفته" },
+  { key: "not_delivered", label: "تحویل نگرفته" },
+  { key: "expired", label: "منقضی شده" },
+  { key: "rejected", label: "رد شده" },
   { key: "refunded", label: "عودت وجه" },
-  { key: "failed", label: "ناموفق" },
+  { key: "payment_failed", label: "پرداخت ناموفق" },
 ];
-
 type Props = {
   order: any;
   onClicked: () => void;

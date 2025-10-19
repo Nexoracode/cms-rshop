@@ -24,13 +24,17 @@ export type Order = {
 };
 
 export type StatusOrder =
-  | "pending"
-  | "paid"
-  | "cancelled"
-  | "shipped"
+  | "pending_approval"
+  | "awaiting_payment"
+  | "payment_confirmation_pending"
+  | "preparing"
+  | "shipping"
   | "delivered"
+  | "not_delivered"
+  | "expired"
+  | "rejected"
   | "refunded"
-  | "failed";
+  | "payment_failed";
 
 export type OrderData = {
   id: number;
