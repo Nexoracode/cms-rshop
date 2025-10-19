@@ -17,10 +17,6 @@ export function formatNumberWithCommas(digits: string) {
   return trimmed.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-/**
- * برمی‌گرداند مکان کرسر متناظر با digitIndex ام (1-based)
- * اگر digitIndex <= 0، صفر برمی‌گرداند.
- */
 export function caretFromDigitIndex(formatted: string, digitIndex: number) {
   if (digitIndex <= 0) return 0;
   let seen = 0;

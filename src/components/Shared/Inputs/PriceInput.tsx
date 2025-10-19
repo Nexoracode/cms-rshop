@@ -1,12 +1,13 @@
 "use client";
 
 import FieldErrorText from "@/components/Helper/FieldErrorText";
+import { caretFromDigitIndex, formatNumberWithCommas, normalizeDigits } from "@/utils/number";
 import { Input } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
   value: number | null | undefined;
-  onChange: (val: number) => void;
+  onChange: (val: number | undefined) => void;
   label?: string;
   placeholder?: string;
   suffix?: string; // مثلا "تومان"
@@ -15,41 +16,6 @@ type Props = {
   max?: number;
   isActiveError?: boolean;
 };
-
-function normalizeDigits(str: string) {
-  // تبدیل ارقام فارسی/عربی به انگلیسی
-  const fa = "۰۱۲۳۴۵۶۷۸۹";
-  const ar = "٠١٢٣٤٥٦٧٨٩";
-  return str.replace(/[\u06F0-\u06F9\u0660-\u0669]/g, (d) => {
-    const iFa = fa.indexOf(d);
-    if (iFa > -1) return String(iFa);
-    const iAr = ar.indexOf(d);
-    if (iAr > -1) return String(iAr);
-    return d;
-  });
-}
-
-function formatWithCommas(digits: string) {
-  if (!digits) return "";
-  // حذف صفرهای پیشرو غیر ضروری
-  const trimmed = digits.replace(/^0+(?=\d)/, "");
-  return trimmed.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-function caretFromDigitIndex(formatted: string, digitIndex: number) {
-  if (digitIndex <= 0) return 0;
-  let seen = 0;
-  for (let i = 0; i < formatted.length; i++) {
-    if (/\d/.test(formatted[i])) {
-      seen++;
-      if (seen === digitIndex) {
-        // کرسر باید بعد از همین رقم قرار بگیرد
-        return i + 1;
-      }
-    }
-  }
-  return formatted.length;
-}
 
 export default function PriceNumberInput({
   value,
@@ -72,7 +38,7 @@ export default function PriceNumberInput({
       return;
     }
     const s = String(Math.floor(Number(value)));
-    setDisplay(formatWithCommas(s));
+    setDisplay(formatNumberWithCommas(s));
   }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,11 +65,11 @@ export default function PriceNumberInput({
     }
 
     // 4) فرمت نمایش
-    const nextDisplay = formatWithCommas(digits);
+    const nextDisplay = formatNumberWithCommas(digits);
     setDisplay(nextDisplay);
 
     // 5) مقدار عددی خالص برای والد
-    onChange(digits === "" ? 0 : Number(digits));
+    onChange(digits === "" ? undefined : Number(digits));
 
     // 6) بازگردانی کرسر بر اساس تعداد رقم‌های سمت چپ
     requestAnimationFrame(() => {
