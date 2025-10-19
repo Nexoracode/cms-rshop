@@ -1,6 +1,6 @@
 export type Stock = "money" | "percent";
 
-export type ActionType = "add" | "edit" | "delete" | "view";
+export type Discount = "percent" | "amount";
 
 export type MetaData = {
   items_per_page: number;

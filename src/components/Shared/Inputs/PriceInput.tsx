@@ -4,7 +4,7 @@ import NumberInput from "./Base/NumberInput";
 
 type PriceInputProps = {
   value: number | null | undefined;
-  onChange: (val: number | undefined) => void;
+  onChange: (val: number) => void;
   isActiveError?: boolean;
 };
 

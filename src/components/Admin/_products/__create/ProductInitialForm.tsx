@@ -14,7 +14,7 @@ import {
 import BoxHeader from "./helpers/BoxHeader";
 import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
-import PriceWithDiscountInput from "./helpers/PriceWithDiscountInput";
+import PriceWithDiscountInput from "../../../Shared/Inputs/DiscountedPriceInput";
 import SelectWithAddButton from "./helpers/SelectWithAddButton";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "../types/create-product";

@@ -6,7 +6,7 @@ import BoxHeader from "../helpers/BoxHeader";
 import { Variant } from "@/types/attributes";
 import { useSearchParams } from "next/navigation";
 import PriceNumberInput from "../../../../Shared/Inputs/Base/NumberInput";
-import PriceWithDiscountInput from "../helpers/PriceWithDiscountInput";
+import PriceWithDiscountInput from "../../../../Shared/Inputs/DiscountedPriceInput";
 
 type Props = {
   variantName: string;

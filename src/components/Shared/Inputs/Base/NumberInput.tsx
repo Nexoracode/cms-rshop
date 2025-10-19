@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   value: number | null | undefined;
-  onChange: (val: number | undefined) => void;
+  onChange: (val: number) => void;
   label?: string;
   placeholder?: string;
   suffix?: string; // مثل تومان، درصد، عدد و غیره
@@ -63,7 +63,7 @@ export default function NumberInput({
 
     const nextDisplay = formatNumberWithCommas(digits);
     setDisplay(nextDisplay);
-    onChange(digits === "" ? undefined : Number(digits));
+    onChange(digits === "" ? 0 : Number(digits));
 
     // بازگرداندن موقعیت کرسر
     requestAnimationFrame(() => {

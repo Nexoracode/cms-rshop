@@ -1,42 +1,41 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import NumberWithSelect from "../../../../Shared/Inputs/NumberWithSelect";
-import PriceNumberInput from "../../../../Shared/Inputs/Base/NumberInput";
-
-type DiscountType = "percent" | "amount";
+import { Discount } from "@/types";
+import PriceInput from "@/components/Shared/Inputs/PriceInput";
+import DiscountInput from "./DiscountInput";
 
 type Props = {
   price: number;
   discount_amount: number;
   discount_percent: number;
   onPriceChange: (price: number) => void;
-  onDiscountChange: (type: DiscountType, value: number) => void;
-  style?: string,
-  isActiveError?: boolean
+  onDiscountChange: (type: Discount, value: number) => void;
+  style?: string;
+  isActiveError?: boolean;
 };
 
-const PriceWithDiscountInput: FC<Props> = ({
+const DiscountedPriceInput: FC<Props> = ({
   price,
   discount_amount,
   discount_percent,
   onPriceChange,
   onDiscountChange,
   style,
-  isActiveError= false
+  isActiveError = false,
 }) => {
-  const [discountType, setDiscountType] = useState<DiscountType>("percent");
+  const [discountType, setDiscount] = useState<Discount>("percent");
   const [discountValue, setDiscountValue] = useState(0);
 
   useEffect(() => {
     if (discount_amount > 0) {
-      setDiscountType("amount");
+      setDiscount("amount");
       setDiscountValue(discount_amount);
     } else if (discount_percent > 0) {
-      setDiscountType("percent");
+      setDiscount("percent");
       setDiscountValue(discount_percent);
     } else {
-      setDiscountType("percent");
+      setDiscount("percent");
       setDiscountValue(0);
     }
   }, [discount_amount, discount_percent]);
@@ -49,27 +48,22 @@ const PriceWithDiscountInput: FC<Props> = ({
   return (
     <div className={!style ? "flex flex-col md:flex-row gap-4" : style}>
       <div className="w-full flex flex-col items-start">
-        <PriceNumberInput
+        <PriceInput
           value={price}
           onChange={onPriceChange}
-          label="قیمت"
-          placeholder="10,000"
-          suffix="تومان"
-          isRequired
           isActiveError={isActiveError}
         />
 
         {price > 0 && discountValue > 0 ? (
           <p className="text-green-600 text-sm mt-2 mr-3">
-            قیمت با تخفیف: {Math.max(0, Math.round(finalPrice)).toLocaleString("fa-IR")} تومان
+            قیمت با تخفیف:{" "}
+            {Math.max(0, Math.round(finalPrice)).toLocaleString("fa-IR")} تومان
           </p>
         ) : null}
       </div>
 
       <div className="flex flex-col gap-2 w-full">
-        <NumberWithSelect
-          label="تخفیف"
-          placeholder="10"
+        <DiscountInput
           value={discountValue}
           onValueChange={(val) => {
             const v = val ?? 0;
@@ -78,14 +72,10 @@ const PriceWithDiscountInput: FC<Props> = ({
           }}
           selectedKey={discountType}
           onSelectChange={(val) => {
-            const t = val as DiscountType;
-            setDiscountType(t);
+            const t = val as Discount;
+            setDiscount(t);
             onDiscountChange(t, discountValue);
           }}
-          options={[
-            { key: "percent", title: "درصد" },
-            { key: "amount", title: "مبلغ ثابت" },
-          ]}
         />
 
         {(price === 0 || !price) && (
@@ -98,4 +88,4 @@ const PriceWithDiscountInput: FC<Props> = ({
   );
 };
 
-export default PriceWithDiscountInput;
+export default DiscountedPriceInput;

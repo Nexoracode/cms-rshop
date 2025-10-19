@@ -7,19 +7,15 @@ import SwitchWrapper from "@/components/Shared/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import DiscountInput from "@/components/Shared/Inputs/DiscountInput";
-import GenericTagInput from "@/components/Shared/Inputs/GenericTagInput";
-
-type DiscountType = "percent" | "amount";
+import { Discount } from "@/types";
 
 const ManualOrder = () => {
   const [discountValue, setDiscountValue] = useState(0);
-  const [discountType, setDiscountType] = useState<DiscountType>("percent");
+  const [discountType, setDiscountType] = useState<Discount>("percent");
 
-  const onDiscountChange = (type: DiscountType, value: number) => {
+  const onDiscountChange = (type: Discount, value: number) => {
     console.log("Discount changed:", type, value);
-    // اینجا می‌تونی مقدار تخفیف رو به parent یا فرم اصلی منتقل کنی
   };
-    const [tags, setTags] = useState<string[]>([])
 
   return (
     <>
@@ -31,11 +27,6 @@ const ManualOrder = () => {
           icon={<TbShoppingCartPlus className="text-3xl" />}
         />
         <CardBody className="text-right flex flex-col gap-6">
-          {/* وضعیت انتخاب شده به مشتری نمایش داده می‌شود */}
-          <p className="text-gray-600 pr-2 text-[13px] mt-2">
-            وضعیت انتخاب شده به مشتری نمایش داده می‌شود.
-          </p>
-
           <SwitchWrapper
             label="تخفیف فاکتور"
             description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
@@ -49,15 +40,10 @@ const ManualOrder = () => {
               }}
               selectedKey={discountType}
               onSelectChange={(val) => {
-                const t = val as DiscountType;
+                const t = val as Discount;
                 setDiscountType(t);
                 onDiscountChange(t, discountValue);
               }}
-            />
-            <GenericTagInput
-              label="تگ‌ها"
-              defaultTags={tags}
-              onChange={setTags}
             />
           </SwitchWrapper>
         </CardBody>
