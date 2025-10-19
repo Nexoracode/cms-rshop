@@ -1,7 +1,6 @@
 "use client"
 
 import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
-import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react"
 import { useState } from "react"
@@ -13,11 +12,6 @@ const PreOrder = () => {
     const [selectItem, setSelectItem] = useState<"limit" | "unlimit">("unlimit")
     const [selectedCategoryType, setSelectedCategoryType] = useState<any>()
     const [specialProducts, setSpecialProducts] = useState<any[]>([]);
-    const {
-        isOpen,
-        onOpen,
-        onOpenChange,
-    } = useDisclosure();
 
     return (
         <>
@@ -82,7 +76,7 @@ const PreOrder = () => {
                                 </div>
                                 {
                                     selectedCategoryType?.anchorKey === "selected" ?
-                                        <Button color="secondary" size="sm" variant="flat" onPress={onOpen}>
+                                        <Button color="secondary" size="sm" variant="flat" onPress={() => {}}>
                                             {specialProducts.length ? "ویرایش" : "افزودن"}
                                         </Button>
                                         :
@@ -135,13 +129,6 @@ const PreOrder = () => {
                     </div>
                 </div>
             </div>
-
-            <AddSpecialProductsModal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                onAdd={(newSelection) => setSpecialProducts(newSelection)}
-                initialSelectedProducts={specialProducts}
-            />
         </>
     )
 

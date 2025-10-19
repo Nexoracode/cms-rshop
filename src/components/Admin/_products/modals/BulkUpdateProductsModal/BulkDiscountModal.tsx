@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import DynamicModal from "@/components/Helper/DynamicModal";
-import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
+import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
 import BulkModalHeader from "./BulkModalHeader";
 import { TbShoppingCartDiscount } from "react-icons/tb";
 
@@ -61,7 +61,7 @@ const BulkDiscountModal: React.FC<Props> = ({
       onCancel={reset}
       isConfirmDisabled={selectedCount <= 0}
     >
-      <LabeledNumberWithUnitInput
+      <NumberWithSelect
         label="مقدار تخفیف"
         placeholder={discountType === "percent" ? "10" : "10000"}
         value={discountValue ?? undefined}

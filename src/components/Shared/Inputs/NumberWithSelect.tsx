@@ -5,17 +5,17 @@ import { NumberInput, Select, SelectItem } from "@heroui/react";
 import FieldErrorText from "@/components/Helper/FieldErrorText";
 
 type Option = {
-  key: string; // ← آزاد (نه DiscountKey)
+  key: string;
   title: string;
 };
 
 type Props = {
   label: string;
   placeholder?: string;
-  value?: number; // ← می‌تواند undefined باشد
+  value?: number;
   onValueChange: (val: number | undefined) => void;
-  selectedKey: string; // ← آزاد
-  onSelectChange: (val: string) => void; // ← آزاد
+  selectedKey: string;
+  onSelectChange: (val: string) => void;
   options: Option[];
   isRequired?: boolean;
   style?: string;
@@ -23,7 +23,7 @@ type Props = {
   maxValue?: number
 };
 
-const LabeledNumberWithUnitInput: FC<Props> = ({
+const NumberWithSelect: FC<Props> = ({
   label,
   placeholder = "1",
   value,
@@ -90,4 +90,4 @@ const LabeledNumberWithUnitInput: FC<Props> = ({
   );
 };
 
-export default LabeledNumberWithUnitInput;
+export default NumberWithSelect;

@@ -6,7 +6,7 @@ import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
 
 import DynamicModal from "@/components/Helper/DynamicModal";
-import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
+import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
 import { eqBool10, add, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { TbFilter } from "react-icons/tb";
@@ -154,7 +154,7 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
         {/* مقدار تخفیف از/تا */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <LabeledNumberWithUnitInput
+          <NumberWithSelect
             label="مقدار تخفیف از"
             placeholder={
               filters.amountType === "percent" ? "مثلاً 10" : "مثلاً 5,000"
@@ -171,7 +171,7 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             ]}
           />
 
-          <LabeledNumberWithUnitInput
+          <NumberWithSelect
             label="مقدار تخفیف تا"
             placeholder={
               filters.amountType === "percent" ? "مثلاً 50" : "مثلاً 80,000"

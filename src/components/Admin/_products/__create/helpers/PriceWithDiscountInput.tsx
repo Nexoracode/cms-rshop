@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import LabeledNumberWithUnitInput from "./LabeledNumberWithUnitInput";
+import NumberWithSelect from "../../../../Shared/Inputs/NumberWithSelect";
 import PriceNumberInput from "./PriceInput";
 
 type DiscountType = "percent" | "amount";
@@ -67,7 +67,7 @@ const PriceWithDiscountInput: FC<Props> = ({
       </div>
 
       <div className="flex flex-col gap-2 w-full">
-        <LabeledNumberWithUnitInput
+        <NumberWithSelect
           label="تخفیف"
           placeholder="10"
           value={discountValue}

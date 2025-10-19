@@ -2,7 +2,6 @@
 
 import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
-import AddSpecialProductsModal from "@/components/Admin/_store/__pre-order/AddSpecialProductsModal";
 import BackToPage from "@/components/Helper/BackToPage"
 import { Button, Card, CardBody, DateRangePicker, NumberInput, useDisclosure } from "@heroui/react"
 import { useState } from "react";
@@ -94,13 +93,6 @@ const AmazingOffer = () => {
                     </div>
                 </CardBody>
             </Card>
-
-            <AddSpecialProductsModal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                onAdd={(newSelection) => setSpecialProducts(newSelection)}
-                initialSelectedProducts={specialProducts}
-            />
         </>
     )
 }

@@ -5,7 +5,7 @@ import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
 import PriceNumberInput from "@/components/Admin/_products/__create/helpers/PriceInput";
-import LabeledNumberWithUnitInput from "@/components/Admin/_products/__create/helpers/LabeledNumberWithUnitInput";
+import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
 import TextInput from "@/components/Helper/TextInput/TextInput";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { LuTicket } from "react-icons/lu";
@@ -21,7 +21,7 @@ import {
   CouponFormType,
   CouponPayload,
 } from "@/components/Admin/_store/__promotions/___coupon/coupon-types";
-import IsoDatePicker from "@/components/Shared/IsoDatePicker";
+import IsoDatePicker from "@/components/Shared/Inputs/IsoDatePicker";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -188,7 +188,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
             />
 
             {/* نوع و مقدار تخفیف */}
-            <LabeledNumberWithUnitInput
+            <NumberWithSelect
               label="مقدار تخفیف"
               placeholder={
                 form.type === "percent" ? "مثلاً 10" : "مثلاً 50,000"

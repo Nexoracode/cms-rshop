@@ -19,7 +19,7 @@ import SelectWithAddButton from "./helpers/SelectWithAddButton";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "../types/create-product";
 import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
-import LabeledNumberWithUnitInput from "./helpers/LabeledNumberWithUnitInput";
+import NumberWithSelect from "../../../Shared/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import AddNewBrandModal from "../__brands/AddNewBrandModal";
@@ -344,7 +344,7 @@ const ProductInitialForm = () => {
               />
             </div>
 
-            <LabeledNumberWithUnitInput
+            <NumberWithSelect
               isRequired
               label="وزن"
               value={product.weight}

@@ -19,7 +19,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { useGetBrands } from "@/hooks/api/useBrand";
-import LabeledNumberWithUnitInput from "../__create/helpers/LabeledNumberWithUnitInput";
+import NumberWithSelect from "../../../Shared/Inputs/NumberWithSelect";
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";
 import { flattenCategories } from "@/utils/flattenCategories";
@@ -303,7 +303,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
               {/* وزن */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* وزن از */}
-                <LabeledNumberWithUnitInput
+                <NumberWithSelect
                   label="وزن از"
                   placeholder={
                     filters.weightUnit === "گرم" ? "مثلاً 500" : "مثلاً 0.5"
@@ -326,7 +326,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 />
 
                 {/* وزن تا */}
-                <LabeledNumberWithUnitInput
+                <NumberWithSelect
                   label="وزن تا"
                   placeholder={
                     filters.weightUnit === "گرم" ? "مثلاً 2000" : "مثلاً 2"
@@ -371,9 +371,9 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 }
               />
 
-              {/* تخفیف - با LabeledNumberWithUnitInput */}
+              {/* تخفیف - با NumberWithSelect */}
               {/* «از» */}
-              <LabeledNumberWithUnitInput
+              <NumberWithSelect
                 label="تخفیف از"
                 placeholder="10"
                 value={
@@ -390,7 +390,7 @@ const FilterModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
                 ]}
               />
               {/* «تا» */}
-              <LabeledNumberWithUnitInput
+              <NumberWithSelect
                 label="تخفیف تا"
                 placeholder="50"
                 value={
