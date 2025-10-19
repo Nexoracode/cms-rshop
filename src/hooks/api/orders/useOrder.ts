@@ -1,26 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 import { buildQueryString } from "@/utils/buildQueryString";
+import { OrderSortBy } from "@/components/Admin/_orders/order-types";
 
-export type Order = {
-  id: number;
-  user_id: number;
-  total_price: number;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  note?: string;
-  couponCode?: string;
-};
-
-export type OrderSortBy = Array<
-  | "id:ASC"
-  | "id:DESC"
-  | "createdAt:ASC"
-  | "createdAt:DESC"
-  | "total:ASC"
-  | "total:DESC"
->;
 
 type UseGetOrdersParams = {
   page?: number;

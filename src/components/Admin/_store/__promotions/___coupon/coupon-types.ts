@@ -1,5 +1,3 @@
-import { CalendarDate } from "@heroui/react";
-
 // Helper Types
 type ObjArray = Record<string, any>[];
 type NumArray = number[];

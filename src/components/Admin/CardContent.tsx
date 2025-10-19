@@ -16,6 +16,7 @@ type CardContentProps = {
   children: React.ReactNode;
   searchInp?: boolean;
   isExistItems: boolean;
+  textBtn?: string
 };
 
 const CardContent: React.FC<CardContentProps> = ({
@@ -28,13 +29,14 @@ const CardContent: React.FC<CardContentProps> = ({
   children,
   searchInp,
   isExistItems,
+  textBtn
 }) => {
   return (
     <section className="flex flex-col gap-6">
       {header}
       <Card className="shadow-md">
         <CardBody className="overflow-hidden pb-4">
-          <HeaderActionCard icon={icon} title={title} onAdd={onAdd} />
+          <HeaderActionCard icon={icon} title={title} onAdd={onAdd} textBtn={textBtn}/>
 
           {isLoading ? (
             <LoadingApiCall />

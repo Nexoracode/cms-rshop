@@ -1,29 +1,26 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
-  Card, CardBody, Button, Image,
-  Popover, PopoverTrigger, PopoverContent,
-  Listbox, ListboxItem,
+  Card,
+  CardBody,
+  Button,
+  Image,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Listbox,
+  ListboxItem,
 } from "@heroui/react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { GrLocation } from "react-icons/gr";
 import { LuUserRound } from "react-icons/lu";
-import { TbTruckLoading } from "react-icons/tb";
 import { PiMoneyWavy } from "react-icons/pi";
 import { IoIosArrowForward } from "react-icons/io";
 import { useUpdateOrderStatus } from "@/hooks/api/orders/useOrder";
+import { StatusOrder } from "./order-types";
 
-type StatusKey =
-  | "pending"
-  | "paid"
-  | "cancelled"
-  | "shipped"
-  | "delivered"
-  | "refunded"
-  | "failed";
-
-const statusOptions: { key: StatusKey; label: string }[] = [
+const statusOptions: { key: StatusOrder; label: string }[] = [
   { key: "pending", label: "در انتظار" },
   { key: "paid", label: "پرداخت‌شده" },
   { key: "cancelled", label: "لغوشده" },
@@ -52,12 +49,12 @@ const OrderBox: React.FC<Props> = ({ order, onClicked }) => {
   const totalPriceFa = total.toLocaleString("fa-IR");
 
   const customerName =
-    (order?.user?.first_name || order?.user?.last_name)
+    order?.user?.first_name || order?.user?.last_name
       ? `${order?.user?.first_name ?? ""} ${order?.user?.last_name ?? ""}`
       : order?.user?.phone ?? "—";
 
   // اطمینان از هم‌حروفی (مثلاً اگر بک‌اند lowercase می‌دهد)
-  const initialKey = (order?.status ?? "pending").toLowerCase() as StatusKey;
+  const initialKey = (order?.status ?? "pending").toLowerCase() as StatusOrder;
   const initialStatus =
     statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
 

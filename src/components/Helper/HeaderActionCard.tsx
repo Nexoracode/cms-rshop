@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 type HeaderActionCardProps = {
   icon: ReactNode;
   title: string;
+  textBtn?: string,
   onAdd: () => void;
 };
 
@@ -12,6 +13,7 @@ const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
   icon,
   title,
   onAdd,
+  textBtn= "+ افزودن"
 }) => {
   return (
     <div className="w-full flex items-center bg-slate-50 p-2 rounded-xl mb-6 justify-between">
@@ -24,7 +26,7 @@ const HeaderActionCard: React.FC<HeaderActionCardProps> = ({
         className="bg-sky-100 text-sky-600 rounded-xl p-2 px-4 cursor-pointer"
         onClick={onAdd}
       >
-        + افزودن
+        {textBtn}
       </div>
     </div>
   );
