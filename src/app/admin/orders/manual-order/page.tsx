@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
-import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
 import BackToPage from "@/components/Helper/BackToPage";
 import SwitchWrapper from "@/components/Shared/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import DiscountInput from "@/components/Shared/Inputs/DiscountInput";
+import GenericTagInput from "@/components/Shared/Inputs/GenericTagInput";
 
 type DiscountType = "percent" | "amount";
 
@@ -19,6 +19,7 @@ const ManualOrder = () => {
     console.log("Discount changed:", type, value);
     // اینجا می‌تونی مقدار تخفیف رو به parent یا فرم اصلی منتقل کنی
   };
+    const [tags, setTags] = useState<string[]>([])
 
   return (
     <>
@@ -52,6 +53,11 @@ const ManualOrder = () => {
                 setDiscountType(t);
                 onDiscountChange(t, discountValue);
               }}
+            />
+            <GenericTagInput
+              label="تگ‌ها"
+              defaultTags={tags}
+              onChange={setTags}
             />
           </SwitchWrapper>
         </CardBody>

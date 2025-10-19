@@ -5,7 +5,7 @@ import { Card, CardBody, Input } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
 import { Variant } from "@/types/attributes";
 import { useSearchParams } from "next/navigation";
-import PriceNumberInput from "../../../../Shared/Inputs/PriceInput";
+import PriceNumberInput from "../../../../Shared/Inputs/Base/NumberInput";
 import PriceWithDiscountInput from "../helpers/PriceWithDiscountInput";
 
 type Props = {

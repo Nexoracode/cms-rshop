@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/Helper/BackToPage";
-import PriceNumberInput from "@/components/Shared/Inputs/PriceInput";
+import PriceNumberInput from "@/components/Shared/Inputs/Base/NumberInput";
 import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
-import TextInput from "@/components/Helper/TextInput/TextInput";
+import TextInput from "@/components/Shared/Inputs/Base/TextInput";
 import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
 import { LuTicket } from "react-icons/lu";
 import {

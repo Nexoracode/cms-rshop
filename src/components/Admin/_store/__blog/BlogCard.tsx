@@ -5,7 +5,7 @@ import BoxHeader from "../../_products/__create/helpers/BoxHeader"
 import { useState, useEffect } from "react"
 import { IoDocumentTextOutline } from "react-icons/io5"
 import ImageBoxUploader from "@/components/Helper/ImageBoxUploader"
-import GenericTagInput from "@/components/Helper/GenericTagInput"
+import GenericTagInput from "@/components/Shared/Inputs/GenericTagInput"
 
 type Props = {
     cardType: "new" | "update"
