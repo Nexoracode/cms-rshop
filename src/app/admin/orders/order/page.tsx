@@ -5,8 +5,7 @@ import CardContent from "@/components/Admin/CardContent";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import BackToPage from "@/components/Helper/BackToPage";
-import { OrderData } from "@/components/Admin/_orders/order-types";
-import OrderProcess from "@/components/Admin/_orders/OrderProccess/OrderProcess";
+import OrderWizard from "@/components/Admin/_orders/OrderProccess/OrderWizard";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();
@@ -34,9 +33,7 @@ const OrderDetail = () => {
           isExistItems={!!order?.data}
           searchInp={false}
         >
-          <div className="flex flex-col justify-center items-center gap-4 w-full">
-            <OrderProcess />
-          </div>
+          <OrderWizard order={order?.data} />
         </CardContent>
       </section>
     </>
