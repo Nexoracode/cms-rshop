@@ -70,9 +70,15 @@ const SortModal: React.FC<SortModalProps> = ({
   };
 
   const applySingleSort = (key: string) => {
+    if (selected === key) {
+      clearSort();
+      return;
+    }
+
     const sortVal = keyToValue.get(key)!;
     const params = buildParamsWithSort([sortVal]);
     router.push(`${pathname}?${params.toString()}`);
+    setSelected(key);
     closeModal();
   };
 
@@ -96,7 +102,9 @@ const SortModal: React.FC<SortModalProps> = ({
         onOpenChange={handleOpenChange}
         title={title}
         isActiveFooter={false}
-        icon={<BiSortAlt2 className="text-3xl text-sky-600 bg-sky-100 rounded-lg p-1" />}
+        icon={
+          <BiSortAlt2 className="text-3xl text-sky-600 bg-sky-100 rounded-lg p-1" />
+        }
         size={size}
       >
         <div className="flex flex-col gap-2">
