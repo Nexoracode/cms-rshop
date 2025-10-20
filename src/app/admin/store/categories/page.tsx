@@ -2,7 +2,7 @@
 
 import HeaderAction from "@/components/admin/_products/__create/helpers/HeaderAction";
 import AddNewCategoryModal from "@/components/admin/_products/__categories/AddNewCategoryModal";
-import BackToPage from "@/components/shared/BackToPage";
+import BackToPage from "@/components/widgets/BackToPage";
 import { useDisclosure } from "@heroui/react";
 
 const Categories = () => {

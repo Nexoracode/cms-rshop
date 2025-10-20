@@ -1,7 +1,7 @@
 "use client"
 
 import BoxHeader from "@/components/admin/_products/__create/helpers/BoxHeader"
-import BackToPage from "@/components/shared/BackToPage"
+import BackToPage from "@/components/widgets/BackToPage"
 import { Card, CardBody, Select, SelectItem } from "@heroui/react"
 import { MdOutlineTimer } from "react-icons/md";
 

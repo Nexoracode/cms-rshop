@@ -2,7 +2,7 @@
 
 import { AttributesContent } from "@/components/admin/_products/__create/AttributesProduct/AttributesContent";
 import BoxHeader from "@/components/admin/_products/__create/helpers/BoxHeader";
-import BackToPage from "@/components/shared/BackToPage";
+import BackToPage from "@/components/widgets/BackToPage";
 import { Card, CardBody } from "@heroui/react";
 import { MdOutlineCategory } from "react-icons/md";
 

@@ -5,7 +5,7 @@ import OptionBox from "@/components/admin/OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
 import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
-import DebouncedSearchURL from "@/components/forms/Inputs/DebouncedSearchInput";
+import DebouncedSearchURL from "@/components/widgets/DebouncedSearchInput";
 import { IoFilter } from "react-icons/io5";
 import FilterOrdersModal from "./modals/FilterOrdersModal";
 import SortingOrdersModal from "@/components/admin/_orders/modals/SortingOrdersModal";

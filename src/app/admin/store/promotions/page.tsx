@@ -1,6 +1,6 @@
 "use client";
 
-import BackToPage from "@/components/shared/BackToPage";
+import BackToPage from "@/components/widgets/BackToPage";
 import { useDisclosure } from "@heroui/react";
 import PromotionsListModal from "@/components/admin/_store/__promotions/PromotionsListModal";
 import CardContent from "@/components/admin/CardContent";

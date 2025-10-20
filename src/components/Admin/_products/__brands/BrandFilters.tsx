@@ -3,7 +3,7 @@
 import { Card, CardBody, useDisclosure } from "@heroui/react";
 import OptionBox from "../../OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
-import DebouncedSearchURL from "@/components/forms/Inputs/DebouncedSearchInput";
+import DebouncedSearchURL from "@/components/widgets/DebouncedSearchInput";
 import SortingBrandsModal from "./SortingBrandsModal";
 
 const BrandFilters = () => {

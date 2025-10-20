@@ -1,7 +1,7 @@
 "use client"
 
 import ImageBoxUploader from "@/components/media/ImageBoxUploader"
-import BackToPage from "@/components/shared/BackToPage"
+import BackToPage from "@/components/widgets/BackToPage"
 import { Button, Input, NumberInput } from "@heroui/react"
 import { useState } from "react"
 

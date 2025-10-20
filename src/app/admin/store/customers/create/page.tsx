@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetOneUser } from "@/hooks/api/users/useUsers";
 import DetailedUserInfo from "@/components/admin/_store/__customers/DetailedUserInfo";
-import LoadingApiCall from "@/components/shared/LoadingApiCall";
+import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 
 const UserDetailPage = () => {
   const router = useRouter();
