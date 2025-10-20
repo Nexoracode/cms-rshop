@@ -1,21 +1,13 @@
 "use client";
 
-import { Card, CardBody, useDisclosure } from "@heroui/react";
-import { BiSortAlt2 } from "react-icons/bi";
-import SortingModal from "./modals/SortingModal";
+import { Card, CardBody } from "@heroui/react";
 import ProductFilterModal from "./modals/ProductFilterModal";
-import { IoFilter } from "react-icons/io5";
 import DebouncedSearchURL from "@/components/widgets/DebouncedSearchInput";
 import { GoArrowUpRight } from "react-icons/go";
 import OptionButton from "@/components/ui/buttons/OptionButton";
+import ProductSortModal from "./modals/ProductSortModal";
 
 const ProductsFilter = () => {
-  const {
-    isOpen: isSortOpen,
-    onOpen: onOpenSort,
-    onOpenChange: onSortOpenChange,
-  } = useDisclosure();
-
   return (
     <>
       <Card className="shadow-md">
@@ -46,18 +38,12 @@ const ProductsFilter = () => {
           <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
             <DebouncedSearchURL placeholder="جستجو در محصولات..." />
             <div className="w-full sm:w-fit flex items-center gap-2">
-              <ProductFilterModal/>
-              <OptionButton
-                title="مرتب سازی"
-                icon={<BiSortAlt2 className="!text-[16px]" />}
-                onClick={onOpenSort}
-                className="w-full sm:w-fit text-sky-600 bg-sky-100"
-              />
+              <ProductFilterModal />
+              <ProductSortModal />
             </div>
           </div>
         </CardBody>
       </Card>
-      <SortingModal isOpen={isSortOpen} onOpenChange={onSortOpenChange} />
     </>
   );
 };
