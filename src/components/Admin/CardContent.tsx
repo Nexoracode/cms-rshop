@@ -3,7 +3,7 @@
 import { Card, CardBody } from "@heroui/react";
 import LoadingApiCall from "../feedback/LoadingApiCall";
 import AppPagination from "../widgets/Pagination";
-import HeaderActionCard from "../shared/HeaderActionCard";
+import HeaderActionCard from "../widgets/HeaderActionCard";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
 type CardContentProps = {

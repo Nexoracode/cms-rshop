@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Spinner } from "@heroui/react";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { TbCategory2 } from "react-icons/tb";
 import CategoryTree from "../CategoryCard";

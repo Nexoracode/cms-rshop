@@ -4,7 +4,7 @@ import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCa
 import CategoryTree from "@/components/admin/products/categories/CategoryCard";
 import CardContent from "@/components/admin/CardContent";
 import BackToPage from "@/components/widgets/BackToPage";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import {
   useDeleteCategory,
   useGetCategories,

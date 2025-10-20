@@ -3,7 +3,7 @@
 import { useState } from "react";
 import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
 import BackToPage from "@/components/widgets/BackToPage";
-import SwitchWrapper from "@/components/shared/SwitchWrapper";
+import SwitchWrapper from "@/components/ui/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import DiscountInput from "@/components/forms/Inputs/DiscountInput";

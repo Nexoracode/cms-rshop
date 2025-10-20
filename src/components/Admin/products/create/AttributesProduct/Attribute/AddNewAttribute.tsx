@@ -7,7 +7,7 @@ import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 
 type Props = {

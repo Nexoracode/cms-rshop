@@ -10,7 +10,7 @@ import {
   TbSortAscendingShapes,
 } from "react-icons/tb";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 
 type Props = {
   isOpen: boolean;

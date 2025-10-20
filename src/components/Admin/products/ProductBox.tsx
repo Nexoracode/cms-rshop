@@ -5,7 +5,7 @@ import { useDisclosure } from "@heroui/react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import { FiShoppingBag } from "react-icons/fi";
 import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";

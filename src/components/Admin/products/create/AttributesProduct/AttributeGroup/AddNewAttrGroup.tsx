@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import { LuPlus } from "react-icons/lu";
 import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 

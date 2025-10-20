@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Listbox, ListboxItem, Button } from "@heroui/react";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   BiSortDown,

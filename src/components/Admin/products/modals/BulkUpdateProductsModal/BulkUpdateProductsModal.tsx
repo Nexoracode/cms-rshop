@@ -11,7 +11,7 @@ import { TbCategory } from "react-icons/tb";
 import BulkVisibilityModal from "./BulkVisibilityModal";
 import BulkDiscountModal from "./BulkDiscountModal";
 import BulkPriceModal from "./BulkPriceModal";
-import DynamicModal from "@/components/shared/DynamicModal";
+import DynamicModal from "@/components/ui/modals/Modal";
 import BulkCategoryModal from "./BulkCategoryModal";
 
 type Props = {
