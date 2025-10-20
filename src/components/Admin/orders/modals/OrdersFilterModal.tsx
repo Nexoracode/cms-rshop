@@ -5,12 +5,9 @@ import { Select, SelectItem, DateRangePicker } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import DynamicModal from "@/components/ui/modals/Modal";
 import { eqId, rangeDate } from "@/utils/queryFilters";
-import { TbFilter } from "react-icons/tb";
 import { calToJs } from "@/utils/dateHelpers";
-
-type Props = { isOpen: boolean; onOpenChange: (open: boolean) => void };
+import FilterModal from "@/components/ui/modals/FilterModal";
 
 const STATUS_OPTIONS = [
   { key: "", label: "همه وضعیت‌ها" },
@@ -22,7 +19,7 @@ const STATUS_OPTIONS = [
   { key: "canceled", label: "لغو‌شده" },
 ];
 
-const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const OrdersFilterModal = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -61,7 +58,6 @@ const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     params.set("page", "1");
 
     router.push(`${pathname}?${params.toString()}`);
-    onOpenChange(false);
   };
 
   const onClear = () => {
@@ -75,23 +71,10 @@ const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     params.set("page", "1");
 
     router.push(`${pathname}?${params.toString()}`);
-    onOpenChange(false);
   };
 
   return (
-    <DynamicModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      title="فیلتر سفارش‌ها"
-      confirmText="اعمال"
-      cancelText="حذف فیلتر"
-      onConfirm={onApply}
-      onCancel={onClear}
-      confirmColor="secondary"
-      confirmVariant="solid"
-      size="md"
-      icon={<TbFilter className="text-2xl" />}
-    >
+    <FilterModal onConfirm={onApply} onRemove={onClear}>
       <div className="flex flex-col gap-6">
         <Select
           label="وضعیت سفارش"
@@ -115,8 +98,10 @@ const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
             filters.createdAtRange &&
             (filters.createdAtRange.start || filters.createdAtRange.end)
               ? {
-                  start: filters.createdAtRange.start ?? filters.createdAtRange.end!,
-                  end: filters.createdAtRange.end ?? filters.createdAtRange.start!,
+                  start:
+                    filters.createdAtRange.start ?? filters.createdAtRange.end!,
+                  end:
+                    filters.createdAtRange.end ?? filters.createdAtRange.start!,
                 }
               : undefined
           }
@@ -125,8 +110,8 @@ const FilterOrdersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
           }
         />
       </div>
-    </DynamicModal>
+    </FilterModal>
   );
 };
 
-export default FilterOrdersModal;
+export default OrdersFilterModal;

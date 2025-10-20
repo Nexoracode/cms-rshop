@@ -1,8 +1,8 @@
 "use client";
 
 import SearchFilterCard from "../shared/SearchFilterCard";
-import ProductFilterModal from "./modals/ProductFilterModal";
-import ProductSortModal from "./modals/ProductSortModal";
+import ProductsFilterModal from "./modals/ProductsFilterModal";
+import ProductsSortModal from "./modals/ProductsSortModal";
 
 const ProductsFilter = () => {
   return (
@@ -15,8 +15,8 @@ const ProductsFilter = () => {
         { title: "برندها", href: "/admin/products/brands" },
       ]}
     >
-      <ProductFilterModal />
-      <ProductSortModal />
+      <ProductsFilterModal />
+      <ProductsSortModal />
     </SearchFilterCard>
   );
 };
