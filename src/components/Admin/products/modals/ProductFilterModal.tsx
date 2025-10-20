@@ -130,7 +130,7 @@ const ProductFilterModal: React.FC = () => {
 
   return (
     <FilterModal onConfirm={onApply} onRemove={onClear}>
-      <div className="overflow-y-auto flex flex-col gap-6">
+      <div className="flex flex-col gap-6">
         {/* وضعیت نمایش */}
         <Select
           dir="rtl"

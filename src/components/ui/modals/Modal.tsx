@@ -10,6 +10,7 @@ import {
   Button,
 } from "@heroui/react";
 import { FiAlertCircle } from "react-icons/fi";
+import { ModalSize } from ".";
 
 type DynamicModalProps = {
   isOpen: boolean;
@@ -32,7 +33,7 @@ type DynamicModalProps = {
   placement?: "auto" | "center" | "top" | "bottom";
   isConfirmDisabled?: boolean;
   isActiveFooter?: boolean;
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "full"
+  size?: ModalSize
 };
 
 const DynamicModal: React.FC<DynamicModalProps> = ({

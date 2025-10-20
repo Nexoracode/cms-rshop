@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import DynamicModal from "./Modal";
 import OptionButton from "../buttons/OptionButton";
 import { IoFilter } from "react-icons/io5";
+import { ModalSize } from ".";
 
 type FilterModalProps = {
   title?: React.ReactNode;
@@ -13,6 +14,7 @@ type FilterModalProps = {
   cancelText?: string;
   onConfirm?: () => void;
   onRemove?: () => void;
+  size?: ModalSize
 };
 
 const FilterModal: React.FC<FilterModalProps> = ({
@@ -22,6 +24,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   cancelText = "حذف فیلتر",
   onConfirm,
   onRemove,
+  size= "2xl"
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -60,6 +63,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         onConfirm={handleConfirm}
         onCancel={handleClearFilters}
         icon={<IoFilter className="text-3xl text-sky-600 bg-sky-100 rounded-lg p-1"/>}
+        size={size}
       >
         {children}
       </DynamicModal>
