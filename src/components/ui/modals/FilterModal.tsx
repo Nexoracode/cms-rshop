@@ -3,14 +3,16 @@
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import DynamicModal from "./Modal";
+import OptionButton from "../buttons/OptionButton";
+import { IoFilter } from "react-icons/io5";
 
 type FilterModalProps = {
   title?: React.ReactNode;
   children?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
-  trigger?: React.ReactNode;
   onConfirm?: () => void;
+  onRemove?: () => void;
 };
 
 const FilterModal: React.FC<FilterModalProps> = ({
@@ -18,8 +20,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
   children,
   confirmText = "اعمال",
   cancelText = "حذف فیلتر",
-  trigger,
   onConfirm,
+  onRemove,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -35,13 +37,19 @@ const FilterModal: React.FC<FilterModalProps> = ({
   };
 
   const handleClearFilters = () => {
+    onRemove?.();
     router.push(pathname);
     closeModal();
   };
 
   return (
     <>
-      {trigger ? <div onClick={openModal}>{trigger}</div> : null}
+      <OptionButton
+        title="فیلتر"
+        icon={<IoFilter className="!text-[16px]" />}
+        className="w-full sm:w-fit text-sky-600 bg-sky-100"
+        onClick={openModal}
+      />
 
       <DynamicModal
         isOpen={isOpen}
@@ -51,6 +59,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         cancelText={cancelText}
         onConfirm={handleConfirm}
         onCancel={handleClearFilters}
+        icon={<IoFilter className="text-3xl text-sky-600 bg-sky-100 rounded-lg p-1"/>}
       >
         {children}
       </DynamicModal>

@@ -7,7 +7,7 @@ import SwitchWrapper from "@/components/shared/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { TbShoppingCartPlus } from "react-icons/tb";
 import DiscountInput from "@/components/forms/Inputs/DiscountInput";
-import { Discount } from "@/components/media/types";
+import { Discount } from "@/types";
 
 const ManualOrder = () => {
   const [discountValue, setDiscountValue] = useState(0);
