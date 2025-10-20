@@ -68,63 +68,7 @@ const PreOrder = () => {
                             </div>
                         </div>
 
-                        <div className={`flex flex-col bg-slate-50 rounded-2xl p-2 py-4 gap-6`}>
-                            <div className="flex items-center justify-between">
-                                <div className="flex flex-col gap-2">
-                                    <p>محصولات پیش سفارش</p>
-                                    <p className="text-gray-600 hidden sm:flex">پیش سفارش برای محصولات ناموجود است و برای محصولات دارای موجودی، در صورت ناموجود شدن فعال می شود.</p>
-                                </div>
-                                {
-                                    selectedCategoryType?.anchorKey === "selected" ?
-                                        <Button color="secondary" size="sm" variant="flat" onPress={() => {}}>
-                                            {specialProducts.length ? "ویرایش" : "افزودن"}
-                                        </Button>
-                                        :
-                                        ""
-                                }
-                            </div>
-                            <Select
-                                dir="rtl"
-                                labelPlacement={"outside"}
-                                placeholder="دسته بندی مورد نظر را جستجو یا اضافه کنید"
-                                selectedKeys={selectedCategoryType}
-                                onSelectionChange={setSelectedCategoryType}
-                            >
-                                <SelectItem key="all">همه محصولات</SelectItem>
-                                <SelectItem key="selected">محصولات منتخب</SelectItem>
-                            </Select>
-                            {
-                                selectedCategoryType?.anchorKey === "selected" ?
-                                    <div className="w-full">
-                                        {
-                                            !specialProducts.length
-                                                ?
-                                                <div className="w-full flex items-center justify-center flex-col animate-pulse">
-                                                    <FiShoppingBag className="text-[70px] animate-blink w-full text-gray-600 mb-2" />
-                                                    <p>هنوز محصولی را انتخاب نکرده اید</p>
-                                                </div>
-                                                :
-                                                <div className="flex flex-col gap-4">
-                                                    {
-                                                        specialProducts.map((pr, index) => (
-                                                            <ProductItem
-                                                                key={index}
-                                                                img={pr.img}
-                                                                price={pr.price}
-                                                                productName={pr.productName}
-                                                                isExist={pr.isExist}
-                                                                subProductName={pr.subProductName}
-                                                            />
-                                                        ))
-                                                    }
-                                                </div>
-                                        }
-                                    </div>
-                                    :
-                                    ""
-                            }
-
-                        </div>
+                        {/* Products List */}
 
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Attribute } from "../attribute-tree ";
+import { Attribute } from "../attribute-tree";
 import { useReorderAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { handleDropHelper } from "./handleDropHelper";
 import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/hooks/api/attributes/useVariantProduct";

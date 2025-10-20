@@ -4,8 +4,8 @@ import { Button, Card, CardBody } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { Media } from "@/types";
 import { useProductUpload } from "@/hooks/api/products/useProduct";
-import MediaPicker from "@/components/shared/Uploader/MediaPicker";
-import MediaPreview from "@/components/shared/Uploader/MediaPreview";
+import MediaPicker from "@/components/media/Uploader/MediaPicker";
+import MediaPreview from "@/components/media/Uploader/MediaPreview";
 import FieldErrorText from "@/components/shared/FieldErrorText";
 
 type Props = {

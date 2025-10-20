@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Attribute } from "../attribute-tree ";
+import { Attribute } from "../attribute-tree";
 import SortableAttributeValues from "./SortableAttributeValues";
 import { useReorderAttribute } from "@/hooks/api/attributes/useAttribute";
 import { handleDropHelper } from "./handleDropHelper";

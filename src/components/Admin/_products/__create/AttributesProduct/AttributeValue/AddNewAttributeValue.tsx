@@ -6,7 +6,7 @@ import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import { useDeleteAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
-import AnimatedMultiSelect from "@/components/shared/SearchableMultiSelect";
+import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import DynamicModal from "@/components/shared/DynamicModal";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
