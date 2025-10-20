@@ -20,7 +20,7 @@ import SelectableCategoriesBox from "@/components/admin/products/categories/Sele
 import {
   CouponFormType,
   CouponPayload,
-} from "@/components/admin/store/promotions/___coupon/coupon-types";
+} from "@/components/admin/store/promotions/coupon/coupon-types";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 
 const initialForm: CouponFormType = {

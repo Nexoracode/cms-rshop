@@ -4,11 +4,11 @@ import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/widgets/BackToPage";
 import CardContent from "@/components/admin/CardContent";
-import CouponsFilter from "@/components/admin/store/promotions/___coupon/CouponsFilter";
+import CouponsFilter from "@/components/admin/store/promotions/coupon/CouponsFilter";
 import { useGetCoupons } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";
-import CouponCard from "@/components/admin/store/promotions/___coupon/CouponCard";
-import { CouponSortBy } from "@/components/admin/store/promotions/___coupon/coupon-types";
+import CouponCard from "@/components/admin/store/promotions/coupon/CouponCard";
+import { CouponSortBy } from "@/components/admin/store/promotions/coupon/coupon-types";
 
 const Coupons = () => {
   const router = useRouter();

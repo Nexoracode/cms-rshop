@@ -1,8 +1,8 @@
 "use client";
 
-import ShopInfosCard from "@/components/admin/ArShopCard/ShopInfosCard";
+import ShopInfosCard from "@/components/admin/shared/ArShopCard/ShopInfosCard";
 
-const StoreLayout = ({ children }: { children: React.ReactNode }) => {
+const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div className="mb-6">
@@ -15,4 +15,4 @@ const StoreLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default StoreLayout;
+export default SettingsLayout;
