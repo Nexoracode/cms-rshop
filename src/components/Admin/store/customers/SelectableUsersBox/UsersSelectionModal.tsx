@@ -7,7 +7,7 @@ import { useGetAllUsers } from "@/hooks/api/users/useUsers";
 import { TbUsers } from "react-icons/tb";
 import UsersFilter from "../UsersFilter";
 import UserInfoCard from "../UserInfoCard";
-import { useSelectableItems } from "@/hooks/system/useSelectableItems";
+import { useSelectableItems } from "@/hooks/ui/useSelectableItems";
 
 type Props = {
   isOpen: boolean;

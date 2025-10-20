@@ -6,7 +6,7 @@ import DynamicModal from "@/components/ui/modals/Modal";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { TbCategory2 } from "react-icons/tb";
 import CategoryTree from "../CategoryCard";
-import { useSelectableItems } from "@/hooks/system/useSelectableItems";
+import { useSelectableItems } from "@/hooks/ui/useSelectableItems";
 
 type Props = {
   isOpen: boolean;

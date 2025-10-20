@@ -8,7 +8,7 @@ import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
 import ProductsFilter from "@/components/admin/products/ProductsFilter";
 import { useSearchParams } from "next/navigation";
-import { useSelectableItems } from "@/hooks/system/useSelectableItems";
+import { useSelectableItems } from "@/hooks/ui/useSelectableItems";
 
 type Props = {
   isOpen: boolean;
