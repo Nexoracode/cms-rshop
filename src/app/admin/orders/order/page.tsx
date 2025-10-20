@@ -5,7 +5,7 @@ import CardContent from "@/components/admin/CardContent";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import BackToPage from "@/components/widgets/BackToPage";
-import OrderWizard from "@/components/admin/_orders/OrderProccess/OrderWizard";
+import OrderWizard from "@/components/admin/orders/OrderProccess/OrderWizard";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();

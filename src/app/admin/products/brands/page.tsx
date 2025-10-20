@@ -1,8 +1,8 @@
 "use client";
 
-import AddNewBrandModal from "@/components/admin/_products/__brands/AddNewBrandModal";
-import BrandCard from "@/components/admin/_products/__brands/BrandCard";
-import BrandFilters from "@/components/admin/_products/__brands/BrandFilters";
+import AddNewBrandModal from "@/components/admin/products/brands/AddNewBrandModal";
+import BrandCard from "@/components/admin/products/brands/BrandCard";
+import BrandFilters from "@/components/admin/products/brands/BrandFilters";
 import CardContent from "@/components/admin/CardContent";
 import BackToPage from "@/components/widgets/BackToPage";
 import DynamicModal from "@/components/shared/DynamicModal";

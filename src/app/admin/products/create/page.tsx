@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import BackToPage from "@/components/widgets/BackToPage";
-import AttributesProducts from "@/components/admin/_products/__create/AttributesProducts";
-import ProductInitialForm from "@/components/admin/_products/__create/ProductInitialForm";
+import AttributesProducts from "@/components/admin/products/create/AttributesProducts";
+import ProductInitialForm from "@/components/admin/products/create/ProductInitialForm";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const CreateNewProduct = () => {

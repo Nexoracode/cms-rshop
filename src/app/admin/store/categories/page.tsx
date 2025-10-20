@@ -1,7 +1,7 @@
 "use client";
 
-import HeaderAction from "@/components/admin/_products/__create/helpers/HeaderAction";
-import AddNewCategoryModal from "@/components/admin/_products/__categories/AddNewCategoryModal";
+import HeaderAction from "@/components/admin/products/create/helpers/HeaderAction";
+import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
 import BackToPage from "@/components/widgets/BackToPage";
 import { useDisclosure } from "@heroui/react";
 

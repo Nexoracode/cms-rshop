@@ -1,6 +1,6 @@
 "use client";
 
-import CouponForm from "@/components/admin/_store/__promotions/___coupon/CouponForm";
+import CouponForm from "@/components/admin/store/promotions/___coupon/CouponForm";
 
 const UsersCoupon = () => {
   return <CouponForm pageType="user" />;

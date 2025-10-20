@@ -1,7 +1,7 @@
 "use client";
 
-import AddNewCategoryModal from "@/components/admin/_products/__categories/AddNewCategoryModal";
-import CategoryTree from "@/components/admin/_products/__categories/CategoryCard";
+import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
+import CategoryTree from "@/components/admin/products/categories/CategoryCard";
 import CardContent from "@/components/admin/CardContent";
 import BackToPage from "@/components/widgets/BackToPage";
 import DynamicModal from "@/components/shared/DynamicModal";

@@ -3,11 +3,11 @@
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CardContent from "@/components/admin/CardContent";
-import OrdersFilter from "@/components/admin/_orders/OrdersFilter";
+import OrdersFilter from "@/components/admin/orders/OrdersFilter";
 import { useGetOrders } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
-import OrderBox from "@/components/admin/_orders/OrderBox";
-import { Order, OrderSortBy } from "@/components/admin/_orders/order-types";
+import OrderBox from "@/components/admin/orders/OrderBox";
+import { Order, OrderSortBy } from "@/components/admin/orders/order-types";
 
 const Orders = () => {
   const router = useRouter();

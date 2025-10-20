@@ -2,7 +2,7 @@
 
 import BackToPage from "@/components/widgets/BackToPage";
 import { useDisclosure } from "@heroui/react";
-import PromotionsListModal from "@/components/admin/_store/__promotions/PromotionsListModal";
+import PromotionsListModal from "@/components/admin/store/promotions/PromotionsListModal";
 import CardContent from "@/components/admin/CardContent";
 import { GrAnnounce } from "react-icons/gr";
 import { useGetBrands } from "@/hooks/api/useBrand";

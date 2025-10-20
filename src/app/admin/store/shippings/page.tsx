@@ -3,10 +3,10 @@
 import React, { useState } from "react"
 import BackToPage from "@/components/widgets/BackToPage"
 import { Button, Input, CardBody, Card, Switch } from "@heroui/react"
-import BoxHeader from "@/components/admin/_products/__create/helpers/BoxHeader"
+import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader"
 import { GrMapLocation } from "react-icons/gr";
 import { FaTreeCity } from "react-icons/fa6";
-import SendTypeCard from "@/components/admin/_store/__shippings/SendTypeCard"
+import SendTypeCard from "@/components/admin/store/shippings/SendTypeCard"
 import { TbTruckDelivery } from "react-icons/tb";
 
 export default function Shippings() {

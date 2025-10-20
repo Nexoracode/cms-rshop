@@ -1,6 +1,6 @@
 "use client"
 
-import BoxHeader from "@/components/admin/_products/__create/helpers/BoxHeader"
+import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader"
 import BackToPage from "@/components/widgets/BackToPage"
 //import MediasUploader from "@/components/Helper/MediasUploader"
 import { Alert, Button, Card, CardBody, CardFooter, Divider, Textarea } from "@heroui/react"

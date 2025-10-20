@@ -1,6 +1,6 @@
 "use client"
 
-import ProductItem from "@/components/admin/_home/helpers/ProductItem";
+import ProductItem from "@/components/admin/dashboard/helpers/ProductItem";
 import BackToPage from "@/components/widgets/BackToPage"
 import { Button, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react"
 import { useState } from "react"
