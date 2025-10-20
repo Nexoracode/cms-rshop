@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import BackToPage from "@/components/Helper/BackToPage";
-import AttributesProducts from "@/components/Admin/_products/__create/AttributesProducts";
-import ProductInitialForm from "@/components/Admin/_products/__create/ProductInitialForm";
+import BackToPage from "@/components/shared/BackToPage";
+import AttributesProducts from "@/components/admin/_products/__create/AttributesProducts";
+import ProductInitialForm from "@/components/admin/_products/__create/ProductInitialForm";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const CreateNewProduct = () => {

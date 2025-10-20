@@ -13,7 +13,7 @@ import {
 import { LiaTruckLoadingSolid } from "react-icons/lia";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
-import DynamicModal from "@/components/Helper/DynamicModal";
+import DynamicModal from "@/components/shared/DynamicModal";
 
 type Props = {
   isOpen: boolean;

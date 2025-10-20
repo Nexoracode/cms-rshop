@@ -14,7 +14,7 @@ import {
   ModalHeader,
   ModalBody,
 } from "@heroui/react";
-import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
   useGetAllCategories,
   useCreateCategory,
@@ -25,7 +25,7 @@ import { flattenCategories } from "@/utils/flattenCategories";
 import toast from "react-hot-toast";
 import HeaderNavigator from "../HeaderNavigator";
 import { TbCategoryPlus } from "react-icons/tb";
-import SlugInput from "@/components/Helper/SlugInput";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 type Props = {
   isOpen: boolean;

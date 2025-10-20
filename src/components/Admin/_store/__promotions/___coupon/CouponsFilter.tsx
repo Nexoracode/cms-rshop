@@ -1,8 +1,8 @@
 "use client";
 
 import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
-import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
-import OptionBox from "@/components/Admin/OptionBox";
+import DebouncedSearchURL from "@/components/forms/Inputs/DebouncedSearchInput";
+import OptionBox from "@/components/admin/OptionBox";
 import { IoFilter } from "react-icons/io5";
 import { BiSortAlt2 } from "react-icons/bi";
 import SortingCouponsModal from "./SortingCouponsModal";

@@ -5,9 +5,9 @@ import { NumberInput, Select, SelectItem, DatePicker } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
 
-import DynamicModal from "@/components/Helper/DynamicModal";
-import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
-import PriceNumberInput from "@/components/Shared/Inputs/Base/NumberInput";
+import DynamicModal from "@/components/shared/DynamicModal";
+import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
+import PriceNumberInput from "@/components/forms/Inputs/Base/NumberInput";
 import { eqBool10, add, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { TbFilter } from "react-icons/tb";
 import { calToJs } from "@/utils/dateHelpers";

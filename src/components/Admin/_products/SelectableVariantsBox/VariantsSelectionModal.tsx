@@ -2,10 +2,10 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Spinner } from "@heroui/react";
-import DynamicModal from "@/components/Helper/DynamicModal";
+import DynamicModal from "@/components/shared/DynamicModal";
 import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
-import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
+import ProductsFilter from "@/components/admin/_products/ProductsFilter";
 import { useSearchParams } from "next/navigation";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";
 

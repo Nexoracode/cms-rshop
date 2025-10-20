@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ProductsSelectionModal from "@/components/Admin/_products/SelectableProductsBox/ProductsSelectionModal";
-import ProductBox from "@/components/Admin/_products/ProductBox";
-import SelectableBox from "@/components/Common/SelectionBox/SelectionBox";
+import ProductsSelectionModal from "@/components/admin/_products/SelectableProductsBox/ProductsSelectionModal";
+import ProductBox from "@/components/admin/_products/ProductBox";
+import SelectableBox from "@/components/ui/SelectionBox/SelectionBox";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 type Product = any;

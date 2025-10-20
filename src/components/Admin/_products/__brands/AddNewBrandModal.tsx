@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { Button, Input, ModalFooter } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import { useBrandUpload, useCreateBrand, useUpdateBrand } from "@/hooks/api/useBrand";
 import HeaderNavigator from "../HeaderNavigator";
 import { TbBrandArc } from "react-icons/tb";
 import toast from "react-hot-toast";
-import SlugInput from "@/components/Helper/SlugInput";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 type Props = {
   isOpen: boolean;

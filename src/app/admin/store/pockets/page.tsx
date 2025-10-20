@@ -1,8 +1,8 @@
 "use client"
 
-import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
-import Packaging from "@/components/Admin/_store/__pockets/Packaging"
-import BackToPage from "@/components/Helper/BackToPage"
+import HeaderAction from "@/components/admin/_products/__create/helpers/HeaderAction"
+import Packaging from "@/components/admin/_store/__pockets/Packaging"
+import BackToPage from "@/components/shared/BackToPage"
 import { useState } from "react"
 import { LuPackageOpen } from "react-icons/lu"
 

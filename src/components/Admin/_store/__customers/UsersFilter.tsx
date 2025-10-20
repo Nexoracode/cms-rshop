@@ -4,7 +4,7 @@ import { Card, CardBody, useDisclosure } from "@heroui/react";
 import OptionBox from "../../OptionBox";
 import { BiSortAlt2 } from "react-icons/bi";
 import { IoFilter } from "react-icons/io5";
-import DebouncedSearchURL from "@/components/Helper/DebouncedSearchInput";
+import DebouncedSearchURL from "@/components/forms/Inputs/DebouncedSearchInput";
 import SortingUsersModal from "./modals/SortingUsersModal";
 import FilterUsersModal from "./modals/FilterUsersModal";
 

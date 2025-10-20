@@ -1,8 +1,8 @@
 "use client"
 
-import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
-import Faq from "@/components/Admin/_settings/Faq"
-import BackToPage from "@/components/Helper/BackToPage"
+import HeaderAction from "@/components/admin/_products/__create/helpers/HeaderAction"
+import Faq from "@/components/admin/_settings/Faq"
+import BackToPage from "@/components/shared/BackToPage"
 import { useState } from "react"
 import { FaQuestion } from "react-icons/fa6"
 

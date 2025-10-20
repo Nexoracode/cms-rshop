@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
-import ImageBoxUploader from "@/components/Helper/ImageBoxUploader";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import { SizeGuideProp } from "./type";
 import { useCreateSizeGuid, useSizeGuideUpload, useUpdateSizeGuid } from "@/hooks/api/useSizeGuide";
 

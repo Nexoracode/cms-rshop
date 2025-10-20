@@ -24,7 +24,7 @@ import { BsMenuDown, BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle } from "react-icons/fi";
 import { MdNumbers } from "react-icons/md";
 import { ImCheckmark2 } from "react-icons/im";
-import SlugInput from "@/components/Helper/SlugInput";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 type Props = {
   isOpen: boolean;

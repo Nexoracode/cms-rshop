@@ -2,8 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetOneUser } from "@/hooks/api/users/useUsers";
-import DetailedUserInfo from "@/components/Admin/_store/__customers/DetailedUserInfo";
-import LoadingApiCall from "@/components/Helper/LoadingApiCall";
+import DetailedUserInfo from "@/components/admin/_store/__customers/DetailedUserInfo";
+import LoadingApiCall from "@/components/shared/LoadingApiCall";
 
 const UserDetailPage = () => {
   const router = useRouter();

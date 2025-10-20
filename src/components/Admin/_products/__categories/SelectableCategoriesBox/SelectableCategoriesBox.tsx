@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import SelectableBox from "@/components/Common/SelectionBox/SelectionBox";
+import SelectableBox from "@/components/ui/SelectionBox/SelectionBox";
 import { BiCategoryAlt } from "react-icons/bi";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
 import CategoryTree from "../CategoryCard";

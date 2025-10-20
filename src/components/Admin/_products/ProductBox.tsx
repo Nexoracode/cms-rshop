@@ -5,12 +5,12 @@ import { useDisclosure } from "@heroui/react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
-import DynamicModal from "@/components/Helper/DynamicModal";
+import DynamicModal from "@/components/shared/DynamicModal";
 import { FiShoppingBag } from "react-icons/fi";
 import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import SelectableCard from "@/components/Common/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/ui/SelectionBox/SelectableCard";
 
 type Props = {
   product: any;

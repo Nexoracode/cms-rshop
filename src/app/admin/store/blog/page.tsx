@@ -1,8 +1,8 @@
 "use client"
 
-import HeaderAction from "@/components/Admin/_products/__create/helpers/HeaderAction"
-import BlogCard from "@/components/Admin/_store/__blog/BlogCard"
-import BackToPage from "@/components/Helper/BackToPage"
+import HeaderAction from "@/components/admin/_products/__create/helpers/HeaderAction"
+import BlogCard from "@/components/admin/_store/__blog/BlogCard"
+import BackToPage from "@/components/shared/BackToPage"
 import { useState } from "react"
 import { TbFolderOpen } from "react-icons/tb"
 

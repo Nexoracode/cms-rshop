@@ -1,9 +1,9 @@
 "use client";
 
 import { Card, CardBody } from "@heroui/react";
-import LoadingApiCall from "../Helper/LoadingApiCall";
-import AppPagination from "../Helper/AppPagination";
-import HeaderActionCard from "../Helper/HeaderActionCard";
+import LoadingApiCall from "../shared/LoadingApiCall";
+import AppPagination from "../shared/AppPagination";
+import HeaderActionCard from "../shared/HeaderActionCard";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
 type CardContentProps = {

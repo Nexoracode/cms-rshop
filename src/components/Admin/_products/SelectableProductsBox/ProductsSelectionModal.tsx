@@ -2,11 +2,11 @@
 
 import React, { useMemo } from "react";
 import { Spinner } from "@heroui/react";
-import DynamicModal from "@/components/Helper/DynamicModal";
-import ProductBox from "@/components/Admin/_products/ProductBox";
+import DynamicModal from "@/components/shared/DynamicModal";
+import ProductBox from "@/components/admin/_products/ProductBox";
 import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
-import ProductsFilter from "@/components/Admin/_products/ProductsFilter";
+import ProductsFilter from "@/components/admin/_products/ProductsFilter";
 import { useSearchParams } from "next/navigation";
 import { useSelectableItems } from "@/hooks/system/useSelectableItems";
 

@@ -2,7 +2,7 @@
 
 import { Input } from "@heroui/react";
 import { useState, useEffect } from "react";
-import FieldErrorText from "@/components/Helper/FieldErrorText";
+import FieldErrorText from "@/components/shared/FieldErrorText";
 
 type Props = {
   value: string;

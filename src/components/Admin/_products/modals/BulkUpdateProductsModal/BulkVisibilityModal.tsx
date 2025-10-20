@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Select, SelectItem, Switch } from "@heroui/react";
-import DynamicModal from "@/components/Helper/DynamicModal";
+import DynamicModal from "@/components/shared/DynamicModal";
 import { AiOutlineEye } from "react-icons/ai";
 import BulkModalHeader from "./BulkModalHeader";
 

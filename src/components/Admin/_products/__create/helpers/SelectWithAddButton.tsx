@@ -3,7 +3,7 @@
 import { FC } from "react";
 import { Select, SelectItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
-import FieldErrorText from "@/components/Helper/FieldErrorText";
+import FieldErrorText from "@/components/shared/FieldErrorText";
 
 type Option = {
   id: number | string;

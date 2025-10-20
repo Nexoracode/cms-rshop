@@ -1,10 +1,10 @@
 "use client";
 
-import AddNewCategoryModal from "@/components/Admin/_products/__categories/AddNewCategoryModal";
-import CategoryTree from "@/components/Admin/_products/__categories/CategoryCard";
-import CardContent from "@/components/Admin/CardContent";
-import BackToPage from "@/components/Helper/BackToPage";
-import DynamicModal from "@/components/Helper/DynamicModal";
+import AddNewCategoryModal from "@/components/admin/_products/__categories/AddNewCategoryModal";
+import CategoryTree from "@/components/admin/_products/__categories/CategoryCard";
+import CardContent from "@/components/admin/CardContent";
+import BackToPage from "@/components/shared/BackToPage";
+import DynamicModal from "@/components/shared/DynamicModal";
 import {
   useDeleteCategory,
   useGetCategories,

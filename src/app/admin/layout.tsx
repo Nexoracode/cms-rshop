@@ -1,5 +1,5 @@
 "use client";
-import Sidebar from "@/components/Admin/Sidebar/Sidebar";
+import Sidebar from "@/components/admin/Sidebar/Sidebar";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (

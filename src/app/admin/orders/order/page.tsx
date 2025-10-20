@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CardContent from "@/components/Admin/CardContent";
+import CardContent from "@/components/admin/CardContent";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
-import BackToPage from "@/components/Helper/BackToPage";
-import OrderWizard from "@/components/Admin/_orders/OrderProccess/OrderWizard";
+import BackToPage from "@/components/shared/BackToPage";
+import OrderWizard from "@/components/admin/_orders/OrderProccess/OrderWizard";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();

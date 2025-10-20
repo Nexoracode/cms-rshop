@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { Discount } from "@/types";
-import PriceInput from "@/components/Shared/Inputs/PriceInput";
+import PriceInput from "@/components/forms/Inputs/PriceInput";
 import DiscountInput from "./DiscountInput";
 
 type Props = {

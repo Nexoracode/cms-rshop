@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Spinner } from "@heroui/react";
-import DynamicModal from "@/components/Helper/DynamicModal";
+import DynamicModal from "@/components/shared/DynamicModal";
 import { useGetAllUsers } from "@/hooks/api/users/useUsers";
 import { TbUsers } from "react-icons/tb";
 import UsersFilter from "../UsersFilter";

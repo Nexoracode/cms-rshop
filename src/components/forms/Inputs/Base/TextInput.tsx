@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input, InputProps } from "@heroui/react";
-import FieldErrorText from "@/components/Helper/FieldErrorText";
+import FieldErrorText from "@/components/shared/FieldErrorText";
 import { sanitizeInput } from "@/utils/sanitizeInput";
 import { ReactNode } from "react";
 

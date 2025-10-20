@@ -1,8 +1,8 @@
 "use client";
 
-import LatestOrders from "@/components/Admin/_home/LatestOrders";
-import ProductListMostViewed from "@/components/Admin/_home/ProductListMostViewed";
-import ReportsList from "@/components/Admin/_home/ReportsList";
+import LatestOrders from "@/components/admin/_home/LatestOrders";
+import ProductListMostViewed from "@/components/admin/_home/ProductListMostViewed";
+import ReportsList from "@/components/admin/_home/ReportsList";
 
 const Home = () => {
     return (

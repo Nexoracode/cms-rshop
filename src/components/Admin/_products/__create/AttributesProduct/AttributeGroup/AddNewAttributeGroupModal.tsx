@@ -1,6 +1,6 @@
 "use client";
 
-import SlugInput from "@/components/Helper/SlugInput";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
 import {
   useAddNewAttributeGroup,
   useUpdateAttributeGroup,

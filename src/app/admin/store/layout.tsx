@@ -1,6 +1,6 @@
 "use client";
 
-import ShopInfosCard from "@/components/Admin/ArShopCard/ShopInfosCard";
+import ShopInfosCard from "@/components/admin/ArShopCard/ShopInfosCard";
 
 const StoreLayout = ({ children }: { children: React.ReactNode }) => {
   return (

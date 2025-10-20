@@ -4,8 +4,8 @@ import { Accordion, AccordionItem, Button, Card, CardBody, Input, Textarea } fro
 import BoxHeader from "../../_products/__create/helpers/BoxHeader"
 import { useState, useEffect } from "react"
 import { IoDocumentTextOutline } from "react-icons/io5"
-import ImageBoxUploader from "@/components/Helper/ImageBoxUploader"
-import GenericTagInput from "@/components/Shared/Inputs/GenericTagInput"
+import ImageBoxUploader from "@/components/media/ImageBoxUploader"
+import GenericTagInput from "@/components/forms/Inputs/GenericTagInput"
 
 type Props = {
     cardType: "new" | "update"

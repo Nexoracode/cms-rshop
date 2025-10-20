@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Select, SelectItem } from "@heroui/react";
-import DynamicModal from "@/components/Helper/DynamicModal";
-import PriceNumberInput from "@/components/Shared/Inputs/Base/NumberInput";
+import DynamicModal from "@/components/shared/DynamicModal";
+import PriceNumberInput from "@/components/forms/Inputs/Base/NumberInput";
 import BulkModalHeader from "./BulkModalHeader";
 import { BiMoneyWithdraw } from "react-icons/bi";
 

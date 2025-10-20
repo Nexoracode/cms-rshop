@@ -4,7 +4,7 @@ import { Button, Input, Select, SelectItem, Switch } from "@heroui/react";
 import { useState } from "react";
 import { TbTruckLoading } from "react-icons/tb";
 import { StepKey } from "./type";
-import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import DoubleClickBtn from "@/components/shared/DoubleClickBtn";
 
 type Props = {
     step: StepKey,

@@ -1,7 +1,7 @@
 "use client"
 
-import ProductItem from "@/components/Admin/_home/helpers/ProductItem";
-import BackToPage from "@/components/Helper/BackToPage"
+import ProductItem from "@/components/admin/_home/helpers/ProductItem";
+import BackToPage from "@/components/shared/BackToPage"
 import { Button, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react"
 import { useState } from "react"
 import { FiShoppingBag } from "react-icons/fi";

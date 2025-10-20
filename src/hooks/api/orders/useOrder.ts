@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
 import { buildQueryString } from "@/utils/buildQueryString";
-import { OrderSortBy } from "@/components/Admin/_orders/order-types";
+import { OrderSortBy } from "@/components/admin/_orders/order-types";
 
 
 type UseGetOrdersParams = {

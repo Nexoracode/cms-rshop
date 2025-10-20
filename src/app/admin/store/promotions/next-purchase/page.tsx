@@ -1,6 +1,6 @@
 "use client";
 
-import BackToPage from "@/components/Helper/BackToPage";
+import BackToPage from "@/components/shared/BackToPage";
 import {
   Button,
   Divider,

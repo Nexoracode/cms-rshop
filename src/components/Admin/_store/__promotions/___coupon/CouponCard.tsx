@@ -1,6 +1,6 @@
 "use client";
 
-import { TableActionButtons } from "@/components/Common/ActionButton/TableActionButtons";
+import { TableActionButtons } from "@/components/ui/ActionButton/TableActionButtons";
 import { useDeleteCoupon } from "@/hooks/api/useCoupon";
 import { Card, CardBody } from "@heroui/react";
 

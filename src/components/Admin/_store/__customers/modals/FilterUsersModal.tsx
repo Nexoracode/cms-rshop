@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DateRangePicker, Select, SelectItem } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
-import DynamicModal from "@/components/Helper/DynamicModal";
+import DynamicModal from "@/components/shared/DynamicModal";
 import { eqBool10, rangeDate } from "@/utils/queryFilters";
 import { calToJs } from "@/utils/dateHelpers";
 import { TbFilter } from "react-icons/tb";

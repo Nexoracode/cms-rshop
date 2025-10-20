@@ -19,7 +19,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { useGetBrands } from "@/hooks/api/useBrand";
-import NumberWithSelect from "../../../Shared/Inputs/NumberWithSelect";
+import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { FiSearch } from "react-icons/fi";
 import { flattenCategories } from "@/utils/flattenCategories";

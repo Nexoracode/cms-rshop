@@ -1,10 +1,10 @@
 "use client";
 
 import { Button, Checkbox, Divider, Input, Textarea } from "@heroui/react";
-import InfoRow from "@/components/Admin/_orders/helper/InfoRow";
+import InfoRow from "@/components/admin/_orders/helper/InfoRow";
 import { ActionType } from "@/types";
 import { useState } from "react";
-import DoubleClickBtn from "@/components/Helper/DoubleClickBtn";
+import DoubleClickBtn from "@/components/shared/DoubleClickBtn";
 import { useDeleteUser, useUpdateUser } from "@/hooks/api/users/useUsers";
 
 type Address = {

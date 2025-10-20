@@ -14,12 +14,12 @@ import {
 import BoxHeader from "./helpers/BoxHeader";
 import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
-import PriceWithDiscountInput from "../../../Shared/Inputs/DiscountedPriceInput";
+import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
 import SelectWithAddButton from "./helpers/SelectWithAddButton";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "../types/create-product";
 import AddNewCategoryModal from "../__categories/AddNewCategoryModal";
-import NumberWithSelect from "../../../Shared/Inputs/NumberWithSelect";
+import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import AddNewBrandModal from "../__brands/AddNewBrandModal";
@@ -36,7 +36,7 @@ import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
-import TextInputWithError from "@/components/Shared/Inputs/Base/TextInput";
+import TextInputWithError from "@/components/forms/Inputs/Base/TextInput";
 
 const TextEditor = dynamic(() => import("../../TextEditor"), {
   ssr: false,

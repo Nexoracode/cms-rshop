@@ -3,25 +3,25 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import BackToPage from "@/components/Helper/BackToPage";
-import PriceNumberInput from "@/components/Shared/Inputs/Base/NumberInput";
-import NumberWithSelect from "@/components/Shared/Inputs/NumberWithSelect";
-import TextInput from "@/components/Shared/Inputs/Base/TextInput";
-import BoxHeader from "@/components/Admin/_products/__create/helpers/BoxHeader";
+import BackToPage from "@/components/shared/BackToPage";
+import PriceNumberInput from "@/components/forms/Inputs/Base/NumberInput";
+import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
+import TextInput from "@/components/forms/Inputs/Base/TextInput";
+import BoxHeader from "@/components/admin/_products/__create/helpers/BoxHeader";
 import { LuTicket } from "react-icons/lu";
 import {
   useCreateCoupon,
   useUpdateCoupon,
   useGetOneCoupon,
 } from "@/hooks/api/useCoupon";
-import SelectableProductsBox from "@/components/Admin/_products/SelectableProductsBox/SelectableProductsBox";
-import SelectableUsersBox from "@/components/Admin/_store/__customers/SelectableUsersBox/SelectableUsersBox";
-import SelectableCategoriesBox from "@/components/Admin/_products/__categories/SelectableCategoriesBox/SelectableCategoriesBox";
+import SelectableProductsBox from "@/components/admin/_products/SelectableProductsBox/SelectableProductsBox";
+import SelectableUsersBox from "@/components/admin/_store/__customers/SelectableUsersBox/SelectableUsersBox";
+import SelectableCategoriesBox from "@/components/admin/_products/__categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import {
   CouponFormType,
   CouponPayload,
-} from "@/components/Admin/_store/__promotions/___coupon/coupon-types";
-import IsoDatePicker from "@/components/Shared/Inputs/IsoDatePicker";
+} from "@/components/admin/_store/__promotions/___coupon/coupon-types";
+import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 
 const initialForm: CouponFormType = {
   code: "",
