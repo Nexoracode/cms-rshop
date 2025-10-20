@@ -1,4 +1,4 @@
-import { Media } from "@/types";
+import { Media } from "@/components/media/types";
 
 export type ProductMedia = {
   id: number;

@@ -2,7 +2,7 @@
 
 import { Button, Card, CardBody } from "@heroui/react";
 import React, { useEffect, useState } from "react";
-import { Media } from "@/types";
+import { Media } from "@/components/media/types";
 import { useProductUpload } from "@/hooks/api/products/useProduct";
 import MediaPicker from "@/components/media/uploader/MediaPicker";
 import MediaPreview from "@/components/media/uploader/MediaPreview";

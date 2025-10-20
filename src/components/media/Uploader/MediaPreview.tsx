@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LuPin } from "react-icons/lu";
-import { Media } from "@/types";
+import { Media } from "@/components/media/types";
 
 interface Props {
   items: Media[];

@@ -2,7 +2,7 @@
 
 import { Button, Checkbox, Divider, Input, Textarea } from "@heroui/react";
 import InfoRow from "@/components/admin/orders/helper/InfoRow";
-import { ActionType } from "@/types";
+import { ActionType } from "@/components/media/types";
 import { useState } from "react";
 import DoubleClickBtn from "@/components/shared/DoubleClickBtn";
 import { useDeleteUser, useUpdateUser } from "@/hooks/api/users/useUsers";

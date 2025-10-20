@@ -3,7 +3,7 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import { Card, CardBody, Input } from "@heroui/react";
 import BoxHeader from "../helpers/BoxHeader";
-import { Variant } from "@/types/attributes";
+import { Variant } from "@/animations/variant-motion";
 import { useSearchParams } from "next/navigation";
 import PriceNumberInput from "../../../../ui/inputs/NumberInput";
 import PriceWithDiscountInput from "../../../../forms/Inputs/DiscountedPriceInput";

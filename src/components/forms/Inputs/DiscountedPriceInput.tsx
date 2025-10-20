@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Discount } from "@/types";
+import { Discount } from "@/components/media/types";
 import PriceInput from "@/components/forms/Inputs/PriceInput";
 import DiscountInput from "./DiscountInput";
 
