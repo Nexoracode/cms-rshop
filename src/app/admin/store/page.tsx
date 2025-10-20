@@ -2,7 +2,7 @@
 
 import React from "react";
 import BoxLink from "@/components/admin/_settings/BoxLink";
-import { Card, CardBody, CardHeader } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
@@ -11,10 +11,12 @@ import {
   HiOutlineDocumentText,
   HiOutlineClipboardDocumentCheck,
 } from "react-icons/hi2";
-import { RiListSettingsLine, RiTimerLine } from "react-icons/ri";
-import { LuShoppingBag, LuPackage } from "react-icons/lu";
+import { RiTimerLine } from "react-icons/ri";
+import { LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
+import BoxHeader from "@/components/admin/_products/__create/helpers/BoxHeader";
+import { TfiShoppingCartFull } from "react-icons/tfi";
 
 // تنظیمات فروشگاه
 const storeSettingsLinks = [
@@ -79,11 +81,12 @@ const Settings: React.FC = () => {
     <>
       <div className="flex justify-center flex-col sm:flex-row lg:items-start lg:justify-between gap-4">
         {/* تنظیمات فروشگاه */}
-        <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2">
-          <CardHeader className="flex items-center justify-between bg-gray-200">
-            <p className="text-gray-600">تنظیمات فروشگاه</p>
-            <RiListSettingsLine className="text-2xl text-gray-600" />
-          </CardHeader>
+        <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
+          <BoxHeader
+            title="تنظیمات فروشگاه"
+            color="text-white bg-gray-400"
+            icon={<BsShop className="text-[26px]" />}
+          />
           <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
             {storeSettingsLinks.map(({ title, icon, route }) => (
               <BoxLink
@@ -91,8 +94,7 @@ const Settings: React.FC = () => {
                 title={title}
                 icon={icon}
                 routeName={route}
-                parentStyle="text-purple-700"
-                iconStyle="bg-gray-700/10"
+                parentStyle="text-gray-700"
                 titleStyle="text-gray-600"
               />
             ))}
@@ -100,11 +102,12 @@ const Settings: React.FC = () => {
         </Card>
 
         {/* تنظیمات سفارش گیری */}
-        <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2">
-          <CardHeader className="flex items-center justify-between bg-blue-200">
-            <p className="text-blue-600">تنظیمات سفارش گیری</p>
-            <LuShoppingBag className="text-2xl text-blue-600" />
-          </CardHeader>
+        <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
+          <BoxHeader
+            title="تنظیمات سفارش گیری"
+            color="text-white bg-blue-400"
+            icon={<TfiShoppingCartFull className="text-[28px]" />}
+          />
           <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
             {orderSettingsLinks.map(({ title, icon, route }) => (
               <BoxLink
@@ -113,7 +116,6 @@ const Settings: React.FC = () => {
                 icon={icon}
                 routeName={route}
                 parentStyle="text-blue-700"
-                iconStyle="bg-gray-700/10"
                 titleStyle="text-gray-600"
               />
             ))}
