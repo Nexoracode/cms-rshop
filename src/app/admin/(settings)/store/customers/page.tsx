@@ -2,7 +2,7 @@
 
 import { useDisclosure } from "@heroui/react";
 import UsersFilter from "@/components/admin/store/customers/UsersFilter";
-import CardContent from "@/components/admin/CardContent";
+import CardContent from "@/components/admin/shared/CardContent"; from "@/components/admin/CardContent";
 import UserInfoCard from "@/components/admin/store/customers/UserInfoCard";
 import AddNewCustomerModal from "@/components/admin/store/customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";

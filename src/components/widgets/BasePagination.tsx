@@ -13,7 +13,7 @@ interface Props {
   meta: Meta;
 }
 
-export default function AppPagination({ meta }: Props) {
+export default function BasePagination({ meta }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 

@@ -38,7 +38,7 @@ import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
 
-const TextEditor = dynamic(() => import("../../TextEditor"), {
+const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
 });
 

@@ -1,9 +1,9 @@
 "use client";
 
 import { Card, CardBody } from "@heroui/react";
-import LoadingApiCall from "../feedback/LoadingApiCall";
-import AppPagination from "../widgets/Pagination";
-import HeaderActionCard from "../widgets/HeaderActionCard";
+import LoadingApiCall from "@/components/feedback/LoadingApiCall";
+import BasePagination from "@/components/widgets/BasePagination";
+import HeaderActionCard from "@/components/widgets/HeaderActionCard";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
 type CardContentProps = {
@@ -63,7 +63,7 @@ const CardContent: React.FC<CardContentProps> = ({
           )}
         </CardBody>
       </Card>
-      <AppPagination meta={datas?.data?.meta} />
+      <BasePagination meta={datas?.data?.meta} />
     </section>
   );
 };

@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import CardContent from "@/components/admin/CardContent";
+import CardContent from "@/components/admin/shared/CardContent";
 import OrdersFilter from "@/components/admin/orders/OrdersFilter";
 import { useGetOrders } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";

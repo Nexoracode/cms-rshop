@@ -2,7 +2,7 @@
 
 import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
 import CategoryTree from "@/components/admin/products/categories/CategoryCard";
-import CardContent from "@/components/admin/CardContent";
+import CardContent from "@/components/admin/shared/CardContent"; from "@/components/admin/CardContent";
 import BackToPage from "@/components/widgets/BackToPage";
 import DynamicModal from "@/components/ui/modals/Modal";
 import {

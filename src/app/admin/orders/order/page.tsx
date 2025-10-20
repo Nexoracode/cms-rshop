@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CardContent from "@/components/admin/CardContent";
+import CardContent from "@/components/admin/shared/CardContent";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import BackToPage from "@/components/widgets/BackToPage";
