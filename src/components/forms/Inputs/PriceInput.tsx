@@ -1,6 +1,6 @@
 "use client";
 
-import NumberInput from "./Base/NumberInput";
+import NumberInput from "../../ui/inputs/NumberInput";
 
 type PriceInputProps = {
   value: number | null | undefined;

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import SelectableBox from "@/components/ui/SelectionBox/SelectionBox";
+import SelectableBox from "@/components/shared/SelectionBox/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import UserInfoCard from "../UserInfoCard";
 import UsersSelectionModal from "./UsersSelectionModal";

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import SelectableBox from "@/components/ui/SelectionBox/SelectionBox";
+import SelectableBox from "@/components/shared/SelectionBox/SelectionBox";
 import VariantsSelectionModal from "./VariantsSelectionModal";
 import { MdOutlineCategory } from "react-icons/md";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";

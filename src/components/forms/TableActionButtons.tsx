@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ActionButton } from "./ActionButton";
+import { ActionButton } from "../ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import DynamicModal from "@/components/shared/DynamicModal";

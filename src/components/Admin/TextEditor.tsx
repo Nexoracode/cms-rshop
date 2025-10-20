@@ -2,7 +2,7 @@
 
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
-import FieldErrorText from "../shared/FieldErrorText";
+import FieldErrorText from "../forms/FieldErrorText";
 
 interface Props {
   value: string;

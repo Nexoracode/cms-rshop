@@ -10,7 +10,7 @@ import { FiShoppingBag } from "react-icons/fi";
 import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import SelectableCard from "@/components/ui/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
 
 type Props = {
   product: any;

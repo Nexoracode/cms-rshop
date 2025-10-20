@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useRef, useState } from "react";
 import { Input, Select, SelectItem } from "@heroui/react";
-import FieldErrorText from "@/components/shared/FieldErrorText";
+import FieldErrorText from "@/components/forms/FieldErrorText";
 import { normalizeDigits, formatNumberWithCommas, caretFromDigitIndex } from "@/utils/number";
 
 type NumberOption = { key: string; title: string };

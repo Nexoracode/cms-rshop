@@ -36,7 +36,7 @@ import ToggleableSection from "./helpers/ToggleableSection";
 import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
-import TextInputWithError from "@/components/forms/Inputs/Base/TextInput";
+import TextInputWithError from "@/components/ui/inputs/TextInput";
 
 const TextEditor = dynamic(() => import("../../TextEditor"), {
   ssr: false,

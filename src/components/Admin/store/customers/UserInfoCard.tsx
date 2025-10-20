@@ -4,7 +4,7 @@ import React from "react";
 import { useDisclosure } from "@heroui/react";
 import { useDeleteUser } from "@/hooks/api/users/useUsers";
 import DynamicModal from "@/components/shared/DynamicModal";
-import SelectableCard from "@/components/ui/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useRouter } from "next/navigation";

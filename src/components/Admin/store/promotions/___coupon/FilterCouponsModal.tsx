@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import DynamicModal from "@/components/shared/DynamicModal";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
-import PriceNumberInput from "@/components/forms/Inputs/Base/NumberInput";
+import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import { eqBool10, add, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { TbFilter } from "react-icons/tb";
 import { calToJs } from "@/utils/dateHelpers";

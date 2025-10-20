@@ -6,7 +6,7 @@ import { Media } from "@/types";
 import { useProductUpload } from "@/hooks/api/products/useProduct";
 import MediaPicker from "@/components/media/Uploader/MediaPicker";
 import MediaPreview from "@/components/media/Uploader/MediaPreview";
-import FieldErrorText from "@/components/shared/FieldErrorText";
+import FieldErrorText from "@/components/forms/FieldErrorText";
 
 type Props = {
   onMedia_ids: (medias: number[]) => void;
