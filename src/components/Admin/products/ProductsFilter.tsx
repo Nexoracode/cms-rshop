@@ -1,12 +1,11 @@
 "use client";
 
-import { Button, Card, CardBody, useDisclosure } from "@heroui/react";
+import { Card, CardBody, useDisclosure } from "@heroui/react";
 import { BiSortAlt2 } from "react-icons/bi";
 import SortingModal from "./modals/SortingModal";
 import FilterModal from "./modals/FilterModal";
 import { IoFilter } from "react-icons/io5";
 import DebouncedSearchURL from "@/components/widgets/DebouncedSearchInput";
-import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 
