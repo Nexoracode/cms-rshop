@@ -124,11 +124,13 @@ const ProductBox: React.FC<Props> = ({
               <div className="flex flex-col gap-2 cursor-auto">
                 <div className="flex items-center gap-2">
                   {product?.variants?.length ? (
-                    <MdOutlineCategory className="text-purple-500 text-xl" />
+                    <div className="border-l-2 pl-2">
+                      <MdOutlineCategory className="text-purple-500 text-xl" />
+                    </div>
                   ) : (
                     ""
                   )}
-                  <div className="flex items-center gap-2 border-r-2 pr-2">
+                  <div className="flex items-center gap-2">
                     {product.is_featured && (
                       <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
                     )}
