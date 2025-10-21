@@ -2,7 +2,7 @@
 
 import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
 import CategoryTree from "@/components/admin/products/categories/CategoryCard";
-import EntityCard from "@/components/admin/shared/EntityCard"; from "@/components/admin/EntityCard";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import BackToPage from "@/components/widgets/BackToPage";
 import DynamicModal from "@/components/ui/modals/Modal";
 import {

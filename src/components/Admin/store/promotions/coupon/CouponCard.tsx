@@ -1,7 +1,9 @@
 "use client";
 
+import DeleteButton from "@/components/forms/DeleteButton";
 import { useDeleteCoupon } from "@/hooks/api/useCoupon";
 import { Card, CardBody } from "@heroui/react";
+import Link from "next/link";
 
 type Props = {
   item: any;
@@ -81,19 +83,26 @@ const CouponCard: React.FC<Props> = ({ item, editRoute }) => {
       shadow="sm"
       className="bg-white rounded-2xl overflow-hidden hover:shadow-lg !transition-all"
     >
-      <CardBody className="flex flex-col gap-2 p-4">
+      <CardBody className="flex flex-col gap-2 p-4 cursor-pointer" as={Link} href={editRoute}>
         {/* Header */}
         <div className="flex justify-between items-center mb-3">
           <p className="text-lg font-bold text-primary">{item.code}</p>
-          <span
-            className={`px-3 py-1 rounded-full text-sm ${
-              item.is_active
-                ? "bg-green-100 text-green-600"
-                : "bg-gray-100 text-gray-500"
-            }`}
-          >
-            {item.is_active ? "فعال" : "غیرفعال"}
-          </span>
+          <div className="flex items-center gap-2">
+            <div className="pl-1.5">
+              <DeleteButton onDelete={() => deleteCoupon.mutate(item.id)} />
+            </div>
+            <div className="border-r-1 pr-3">
+              <span
+                className={`px-4 py-1 rounded-xl text-sm ${
+                  item.is_active
+                    ? "bg-green-100 text-green-600"
+                    : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                {item.is_active ? "فعال" : "غیرفعال"}
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Content */}
@@ -109,17 +118,6 @@ const CouponCard: React.FC<Props> = ({ item, editRoute }) => {
               <span className="font-medium text-gray-800">{row.value}</span>
             </div>
           ))}
-        </div>
-
-        {/* Footer Buttons */}
-        <div className="flex justify-end gap-2 pt-4">
-          {/* <TableActionButtons
-            editRoute={editRoute}
-            onDelete={() => deleteCoupon.mutate(item.id)}
-            deleteItem={item.id}
-            deleteTitle="تایید حذف کد تخفیف"
-            deleteMessage="آیا مطمئن هستید می‌خواهید این کد تخفیف را حذف کنید؟"
-          /> */}
         </div>
       </CardBody>
     </Card>

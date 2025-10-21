@@ -30,6 +30,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
       <ActionButton
         icon={<LuTrash2 size={18} />}
         onClick={handleDeleteClick}
+        className="hover:text-red-700 hover:bg-red-100 hover:scale-105 hover:rotate-45"
       />
 
       <DynamicModal

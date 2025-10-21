@@ -7,6 +7,8 @@ import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
+import DeleteButton from "@/components/forms/DeleteButton";
+import { useDeleteCategory } from "@/hooks/api/categories/useCategory";
 
 type Media = { id: number; url: string; alt: string | null; type: "image" };
 export type Category = {
@@ -24,8 +26,6 @@ export type Category = {
 type CategoryTreeProps = {
   categories: Category[];
   onEdit?: (cat: Category) => void;
-  onDelete?: (id: number) => void;
-
   selectedIds?: number[];
   onSelect?: (id: number, selected: boolean, category?: Category) => void;
   disableSelect?: boolean;
@@ -74,7 +74,6 @@ const ToggleButton = ({
 const CategoryTree: React.FC<CategoryTreeProps> = ({
   categories,
   onEdit = () => {},
-  onDelete = () => {},
   selectedIds = [],
   onSelect,
   disableSelect = false,
@@ -82,14 +81,16 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   disableShowChildren = false, // 👈 پیش‌فرض false
 }) => {
   return (
-    <div dir="rtl" className="flex flex-col items-center sm:items-stretch gap-3">
+    <div
+      dir="rtl"
+      className="flex flex-col items-center sm:items-stretch gap-3"
+    >
       {categories.map((cat) => (
         <CategoryNode
           key={cat.id}
           node={cat}
           chainTitles={[]}
           onEdit={onEdit}
-          onDelete={onDelete}
           selectedIds={selectedIds}
           onSelect={onSelect}
           disableSelect={disableSelect}
@@ -105,7 +106,6 @@ const CategoryNode: React.FC<{
   node: Category;
   chainTitles: string[];
   onEdit: (cat: Category) => void;
-  onDelete: (id: number) => void;
   selectedIds?: number[];
   onSelect?: (id: number, selected: boolean, category?: Category) => void;
   disableSelect?: boolean;
@@ -115,7 +115,6 @@ const CategoryNode: React.FC<{
   node,
   chainTitles,
   onEdit,
-  onDelete,
   selectedIds = [],
   onSelect,
   disableSelect = false,
@@ -126,6 +125,7 @@ const CategoryNode: React.FC<{
   const hasChildren = node.children && node.children.length > 0;
   const pathTitles = chainTitles.length ? `${chainTitles.join(" › ")} › ` : "";
   const isRoot = node.parent_id === 0;
+  const { mutate: deleteCategory } = useDeleteCategory();
 
   return (
     <div className="relative">
@@ -227,14 +227,7 @@ const CategoryNode: React.FC<{
                   >
                     <TbEdit size={18} />
                   </button>
-                  <button
-                    onClick={() => onDelete(node.id)}
-                    className="bg-gray-100 rounded-md p-1 hover:opacity-70 transition-all"
-                    aria-label="حذف"
-                    type="button"
-                  >
-                    <RiDeleteBin5Line size={18} />
-                  </button>
+                  <DeleteButton onDelete={() => deleteCategory(node.id)} />
                 </>
               )}
             </div>
@@ -251,7 +244,6 @@ const CategoryNode: React.FC<{
               node={child}
               chainTitles={[...chainTitles, node.title]}
               onEdit={onEdit}
-              onDelete={onDelete}
               selectedIds={selectedIds}
               onSelect={onSelect}
               disableSelect={disableSelect}
