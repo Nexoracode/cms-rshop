@@ -11,6 +11,7 @@ import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
+import DeleteButton from "@/components/forms/DeleteButton";
 
 type Props = {
   product: any;
@@ -37,20 +38,17 @@ const ProductBox: React.FC<Props> = ({
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const handleShowInfos = (e?: React.SyntheticEvent) => {
-    e?.stopPropagation();
+  const handleShowInfos = () => {
     if (onShowInfos) return onShowInfos(id);
     router.push(`/admin/products/create?edit_id=${id}&type=infos`);
   };
 
   const handleShowVariant = (e?: React.SyntheticEvent) => {
-    e?.stopPropagation();
     if (onShowVariant) return onShowVariant(id);
     router.push(`/admin/products/create?edit_id=${id}&type=variant`);
   };
 
   return (
-    <>
       <SelectableCard
         id={id}
         selectedIds={selectedIds}
@@ -90,30 +88,15 @@ const ProductBox: React.FC<Props> = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleShowInfos(e);
-                    }}
-                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                  >
-                    <TbEdit size={18} />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
                       handleShowVariant(e);
                     }}
                     className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
                   >
                     <MdOutlineCategory size={18} />
                   </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onOpen();
-                    }}
-                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                  >
-                    <RiDeleteBin5Line size={18} />
-                  </button>
+                  <DeleteButton
+                    onDelete={deleteProduct}
+                  />
                 </div>
               ) : (
                 ""
@@ -185,21 +168,6 @@ const ProductBox: React.FC<Props> = ({
           </div>
         </div>
       </SelectableCard>
-
-      <DynamicModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        title="تایید حذف محصول"
-        confirmText="حذف محصول"
-        onConfirm={() => deleteProduct()}
-        icon={<FiShoppingBag className="text-3xl" />}
-      >
-        <p className="leading-7 text-danger-600">
-          با حذف محصول دیگر این محصول قابل برگشت نیست!! آیا از حذف اطمینان
-          دارید؟
-        </p>
-      </DynamicModal>
-    </>
   );
 };
 

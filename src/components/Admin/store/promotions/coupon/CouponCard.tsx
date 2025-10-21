@@ -1,6 +1,5 @@
 "use client";
 
-import { TableActionButtons } from "@/components/forms/TableActionButtons";
 import { useDeleteCoupon } from "@/hooks/api/useCoupon";
 import { Card, CardBody } from "@heroui/react";
 
@@ -114,13 +113,13 @@ const CouponCard: React.FC<Props> = ({ item, editRoute }) => {
 
         {/* Footer Buttons */}
         <div className="flex justify-end gap-2 pt-4">
-          <TableActionButtons
+          {/* <TableActionButtons
             editRoute={editRoute}
             onDelete={() => deleteCoupon.mutate(item.id)}
             deleteItem={item.id}
             deleteTitle="تایید حذف کد تخفیف"
             deleteMessage="آیا مطمئن هستید می‌خواهید این کد تخفیف را حذف کنید؟"
-          />
+          /> */}
         </div>
       </CardBody>
     </Card>
