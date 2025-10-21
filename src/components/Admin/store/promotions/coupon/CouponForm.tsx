@@ -14,7 +14,6 @@ import {
   useUpdateCoupon,
   useGetOneCoupon,
 } from "@/hooks/api/useCoupon";
-import SelectableProductsBox from "@/components/admin/products/SelectableProductsBox/SelectableProductsBox";
 import SelectableUsersBox from "@/components/admin/store/customers/SelectableUsersBox/SelectableUsersBox";
 import SelectableCategoriesBox from "@/components/admin/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import {
@@ -154,17 +153,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
               initialUsers={couponData?.data?.allowed_users || []}
               onChange={(ids) =>
                 ids.length && updateForm("allowed_user_ids", ids)
-              }
-            />
-          ) : (
-            ""
-          )}
-
-          {pageType === "product" ? (
-            <SelectableProductsBox
-              initialProducts={couponData?.data?.allowed_products || []}
-              onChange={(ids) =>
-                ids.length && updateForm("allowed_product_ids", ids)
               }
             />
           ) : (
