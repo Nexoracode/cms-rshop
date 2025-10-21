@@ -4,19 +4,13 @@ import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCa
 import CategoryTree from "@/components/admin/products/categories/CategoryCard";
 import EntityCard from "@/components/admin/shared/EntityCard";
 import BackToPage from "@/components/widgets/BackToPage";
-import DynamicModal from "@/components/ui/modals/Modal";
-import {
-  useDeleteCategory,
-  useGetCategories,
-} from "@/hooks/api/categories/useCategory";
+import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import { TbCategory2 } from "react-icons/tb";
 
 const Categories = () => {
   const [editCategory, setEditCategory] = useState<any>(null);
-  const [deleteCategoryId, setDeleteCategoryId] = useState<number | null>(null);
-  const { mutate: deleteCategory } = useDeleteCategory();
 
   const { data: categories, isLoading } = useGetCategories();
 
@@ -25,11 +19,6 @@ const Categories = () => {
     isOpen: isOpenCategoryModal,
     onOpen: onOpenCategoryModal,
     onOpenChange: onOpenChangeCategoryModal,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenDeleteModal,
-    onOpen: onOpenDeleteModal,
-    onOpenChange: onOpenChangeDeleteModal,
   } = useDisclosure();
 
   return (
@@ -50,10 +39,6 @@ const Categories = () => {
           {/* ✅ فقط یک بار CategoryTree */}
           <CategoryTree
             categories={categories?.data || []}
-            onDelete={(id) => {
-              setDeleteCategoryId(id);
-              onOpenDeleteModal();
-            }}
             onEdit={(cat) => {
               setEditCategory(cat);
               onOpenCategoryModal();
@@ -61,18 +46,6 @@ const Categories = () => {
           />
         </EntityCard>
       </section>
-
-      {/* Delete Modal */}
-      <DynamicModal
-        isOpen={isOpenDeleteModal}
-        onOpenChange={onOpenChangeDeleteModal}
-        icon={<TbCategory2 className="text-3xl" />}
-        title={"تایید حذف دسته‌بندی"}
-        onConfirm={() => deleteCategory(deleteCategoryId || -1)}
-      >
-        آیا مطمئن هستید می‌خواهید این دسته‌بندی را حذف کنید؟ پس از حذف، امکان
-        بازیابی آن وجود نخواهد داشت.
-      </DynamicModal>
 
       {/* Update Category Modal */}
       <AddNewCategoryModal
