@@ -1,364 +1,46 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import {
-  DateRangePicker,
-  NumberInput,
-  Select,
-  SelectItem,
-} from "@heroui/react";
-import type { CalendarDate } from "@internationalized/date";
-import { usePathname, useRouter } from "next/navigation";
+import { useMemo } from "react";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { useGetBrands } from "@/hooks/api/useBrand";
-import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
-import { eqBool10, eqId, rangeNum, rangeDate } from "@/utils/queryFilters";
-import { FiSearch } from "react-icons/fi";
 import { flattenCategories } from "@/utils/flattenCategories";
-import { calToJs } from "@/utils/dateHelpers";
 import FilterModal from "@/components/ui/modals/FilterModal";
-import { Discount } from "@/types";
+import { FilterField } from "@/components/ui/modals";
 
 const ProductFilterModal: React.FC = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-
   const { data: categoriesData } = useGetAllCategories();
   const { data: brandsData } = useGetBrands();
 
-  const flatOptions = useMemo(() => {
-    return flattenCategories(categoriesData?.data);
-  }, [categoriesData?.data]);
-
-  const [filters, setFilters] = useState({
-    is_visible: "" as "" | "1" | "0", // Backend: true=1, false=0
-    requires_preparation: "" as "" | "1" | "0",
-    category_id: "" as string | "",
-    brand_id: "" as string | "",
-
-    stockMin: "" as number | "",
-    stockMax: "" as number | "",
-    priceMin: "" as number | "",
-    priceMax: "" as number | "",
-
-    weightMin: "" as number | "",
-    weightMax: "" as number | "",
-    weightUnit: "گرم" as "گرم" | "کیلوگرم",
-
-    // تخفیف
-    discountType: "percent" as Discount,
-    discountMin: "" as number | "",
-    discountMax: "" as number | "",
-
-    // تاریخ میلادی
-    createdAtRange: null as { start?: CalendarDate; end?: CalendarDate } | null,
-  });
-
-  const updateFilter = <K extends keyof typeof filters>(
-    key: K,
-    value: (typeof filters)[K]
-  ) => setFilters((prev) => ({ ...prev, [key]: value }));
-
-  // برندها
-  const brandOptions =
-    brandsData?.data?.items?.map((b: any) => ({ id: b.id, title: b.name })) ??
-    [];
-
-  const onApply = () => {
-    const params = new URLSearchParams();
-    params.set("page", "1");
-
-    // بولین‌ها (1/0)
-    eqBool10(params, "is_visible", filters.is_visible);
-    eqBool10(params, "requires_preparation", filters.requires_preparation);
-
-    // شناسه‌ها
-    eqId(params, "category_id", filters.category_id);
-    eqId(params, "brand_id", filters.brand_id);
-
-    // بازه‌های عددی
-    rangeNum(params, "stock", filters.stockMin, filters.stockMax);
-    rangeNum(params, "price", filters.priceMin, filters.priceMax);
-    // ✅ وزن: کلید بر اساس واحد انتخاب‌شده
-    const weightKey = filters.weightUnit === "گرم" ? "weight_g" : "weight_kg";
-    rangeNum(params, weightKey, filters.weightMin, filters.weightMax);
-
-    // تخفیف (فیلد مطابق انتخاب)
-    const discountField =
-      filters.discountType === "percent"
-        ? "discount_percent"
-        : "discount_amount";
-    rangeNum(params, discountField, filters.discountMin, filters.discountMax);
-
-    const s = calToJs(filters.createdAtRange?.start);
-    const e = calToJs(filters.createdAtRange?.end);
-    rangeDate(params, "created_at", s, e);
-
-    const q = params.toString();
-    router.push(q ? `${pathname}?${q}` : pathname);
-    //onOpenChange();
-  };
-
-  const onClear = () => {
-    setFilters({
-      is_visible: "",
-      requires_preparation: "",
-      category_id: "",
-      brand_id: "",
-      stockMin: "",
-      stockMax: "",
-      priceMin: "",
-      priceMax: "",
-      weightMin: "",
-      weightMax: "",
-      weightUnit: "گرم",
-      discountType: "percent",
-      discountMin: "",
-      discountMax: "",
-      createdAtRange: null,
-    });
-    router.push(pathname);
-    //onOpenChange();
-  };
-
-  const handleWeightUnitChange = (newUnit: "گرم" | "کیلوگرم") => {
-    setFilters((prev) => ({
-      ...prev,
-      weightUnit: newUnit,
-    }));
-  };
-
-  return (
-    <FilterModal onConfirm={onApply} onRemove={onClear}>
-      <div className="flex flex-col gap-6">
-        {/* وضعیت نمایش */}
-        <Select
-          dir="rtl"
-          labelPlacement="outside"
-          label="وضعیت نمایش"
-          selectedKeys={filters.is_visible ? [filters.is_visible] : []}
-          onSelectionChange={(keys) => {
-            const val = Array.from(keys)[0] as "" | "1" | "0";
-            updateFilter("is_visible", val ?? "");
-          }}
-          placeholder="انتخاب وضعیت"
-        >
-          <SelectItem key="">همه</SelectItem>
-          <SelectItem key="1">نمایش</SelectItem>
-          <SelectItem key="0">عدم نمایش</SelectItem>
-        </Select>
-
-        {/* نیاز به آماده‌سازی */}
-        <Select
-          dir="rtl"
-          labelPlacement="outside"
-          label="نیاز به آماده‌سازی"
-          selectedKeys={
-            filters.requires_preparation ? [filters.requires_preparation] : []
-          }
-          onSelectionChange={(keys) => {
-            const val = Array.from(keys)[0] as "" | "1" | "0";
-            updateFilter("requires_preparation", val ?? "");
-          }}
-          placeholder="انتخاب"
-        >
-          <SelectItem key="">همه</SelectItem>
-          <SelectItem key="1">دارد</SelectItem>
-          <SelectItem key="0">ندارد</SelectItem>
-        </Select>
-
-        {/* دسته‌بندی */}
-        <Select
-          dir="rtl"
-          labelPlacement="outside"
-          startContent={<FiSearch className="text-lg pointer-events-none" />}
-          label="دسته بندی"
-          placeholder="دسته بندی موردنظر را انتخاب کنید"
-          selectedKeys={
-            filters.category_id ? [String(filters.category_id)] : []
-          }
-          onSelectionChange={(keys) => {
-            const val = Array.from(keys)[0] as string;
-            updateFilter("category_id", val ?? "");
-          }}
-        >
-          {flatOptions.length ? (
-            flatOptions.map((opt) => (
-              <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
-            ))
-          ) : (
-            <SelectItem key="-1" isDisabled>
-              آیتمی موجود نیست
-            </SelectItem>
-          )}
-        </Select>
-
-        {/* برند */}
-        <Select
-          dir="rtl"
-          label="برند"
-          labelPlacement="outside"
-          placeholder="انتخاب برند"
-          selectedKeys={filters.brand_id ? [String(filters.brand_id)] : []}
-          onSelectionChange={(keys) => {
-            const val = Array.from(keys)[0] as string;
-            updateFilter("brand_id", val ?? "");
-          }}
-        >
-          {brandOptions.length ? (
-            brandOptions.map((opt: any) => (
-              <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
-            ))
-          ) : (
-            <SelectItem key="-1" isDisabled>
-              برندی موجود نیست
-            </SelectItem>
-          )}
-        </Select>
-
-        {/* موجودی */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <NumberInput
-            minValue={0}
-            size="sm"
-            value={filters.stockMin === "" ? undefined : +filters.stockMin}
-            onValueChange={(v) =>
-              updateFilter("stockMin", v === undefined ? "" : v)
-            }
-            label="موجودی از"
-          />
-          <NumberInput
-            minValue={0}
-            size="sm"
-            value={filters.stockMax === "" ? undefined : +filters.stockMax}
-            onValueChange={(v) =>
-              updateFilter("stockMax", v === undefined ? "" : v)
-            }
-            label="موجودی تا"
-          />
-        </div>
-
-        {/* قیمت */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <NumberInput
-            minValue={0}
-            size="sm"
-            label="قیمت از (تومان)"
-            value={filters.priceMin === "" ? undefined : +filters.priceMin}
-            onValueChange={(v) =>
-              updateFilter("priceMin", v === undefined ? "" : v)
-            }
-          />
-          <NumberInput
-            minValue={0}
-            size="sm"
-            label="قیمت تا (تومان)"
-            value={filters.priceMax === "" ? undefined : +filters.priceMax}
-            onValueChange={(v) =>
-              updateFilter("priceMax", v === undefined ? "" : v)
-            }
-          />
-        </div>
-
-        {/* وزن */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* وزن از */}
-          <NumberWithSelect
-            label="وزن از"
-            placeholder={
-              filters.weightUnit === "گرم" ? "مثلاً 500" : "مثلاً 0.5"
-            }
-            value={filters.weightMin === "" ? undefined : +filters.weightMin}
-            onValueChange={(val: number | undefined) =>
-              setFilters((p) => ({
-                ...p,
-                weightMin: val === undefined ? "" : val,
-              }))
-            }
-            selectedKey={filters.weightUnit}
-            onSelectChange={(val: any) => handleWeightUnitChange(val)}
-            options={[
-              { key: "گرم", title: "گرم" },
-              { key: "کیلوگرم", title: "کیلوگرم" },
-            ]}
-          />
-
-          {/* وزن تا */}
-          <NumberWithSelect
-            label="وزن تا"
-            placeholder={
-              filters.weightUnit === "گرم" ? "مثلاً 2000" : "مثلاً 2"
-            }
-            value={filters.weightMax === "" ? undefined : +filters.weightMax}
-            onValueChange={(val: number | undefined) =>
-              setFilters((p) => ({
-                ...p,
-                weightMax: val === undefined ? "" : val,
-              }))
-            }
-            selectedKey={filters.weightUnit}
-            onSelectChange={(val: any) => handleWeightUnitChange(val)}
-            options={[
-              { key: "گرم", title: "گرم" },
-              { key: "کیلوگرم", title: "کیلوگرم" },
-            ]}
-          />
-        </div>
-
-        {/* تاریخ ثبت (میلادی ارسال می‌شود) */}
-        <DateRangePicker
-          label="تاریخ ثبت"
-          labelPlacement="outside"
-          value={
-            filters.createdAtRange &&
-            (filters.createdAtRange.start || filters.createdAtRange.end)
-              ? {
-                  start:
-                    filters.createdAtRange.start ?? filters.createdAtRange.end!,
-                  end:
-                    filters.createdAtRange.end ?? filters.createdAtRange.start!,
-                }
-              : undefined
-          }
-          onChange={(range: any) =>
-            updateFilter("createdAtRange", range ?? null)
-          }
-        />
-
-        {/* تخفیف - با NumberWithSelect */}
-        {/* «از» */}
-        <NumberWithSelect
-          label="تخفیف از"
-          placeholder="10"
-          value={filters.discountMin === "" ? undefined : +filters.discountMin}
-          onValueChange={(val: number | undefined) =>
-            updateFilter("discountMin", val === undefined ? "" : val)
-          }
-          selectedKey={filters.discountType}
-          onSelectChange={(val: any) => updateFilter("discountType", val)}
-          options={[
-            { key: "percent", title: "درصد" },
-            { key: "amount", title: "مبلغ ثابت" },
-          ]}
-        />
-        {/* «تا» */}
-        <NumberWithSelect
-          label="تخفیف تا"
-          placeholder="50"
-          value={filters.discountMax === "" ? undefined : +filters.discountMax}
-          onValueChange={(val: number | undefined) =>
-            updateFilter("discountMax", val === undefined ? "" : val)
-          }
-          selectedKey={filters.discountType}
-          onSelectChange={(val: any) => updateFilter("discountType", val)}
-          options={[
-            { key: "percent", title: "درصد" },
-            { key: "amount", title: "مبلغ ثابت" },
-          ]}
-        />
-      </div>
-    </FilterModal>
+  const flatCategories = useMemo(
+    () => flattenCategories(categoriesData?.data),
+    [categoriesData?.data]
   );
+
+  const brandOptions = useMemo(
+    () =>
+      brandsData?.data?.items?.map((b: any) => ({
+        key: String(b.id),
+        title: b.name,
+      })) || [],
+    [brandsData?.data?.items]
+  );
+
+  const fields: FilterField[] = [
+    { key: "is_visible", label: "وضعیت نمایش", type: "boolean01", default: "" },
+    { key: "requires_preparation", label: "نیاز به آماده‌سازی", type: "boolean01", default: "" },
+    { key: "category_id", label: "دسته‌بندی", type: "select", options: flatCategories.map(c => ({ key: String(c.id), title: c.title })) },
+    { key: "brand_id", label: "برند", type: "select", options: brandOptions },
+    { key: "stock", label: "موجودی", type: "numberRange" },
+    { key: "price", label: "قیمت (تومان)", type: "numberRange" },
+    { key: "weight", label: "وزن", type: "unitNumber", unitOptions: [
+      { key: "گرم", title: "گرم" },
+      { key: "کیلوگرم", title: "کیلوگرم" },
+    ]},
+    { key: "discount", label: "تخفیف", type: "discount" },
+    { key: "created_at", label: "تاریخ ثبت", type: "dateRange" },
+  ];
+
+  return <FilterModal title="فیلتر محصولات" fields={fields} />;
 };
 
 export default ProductFilterModal;
