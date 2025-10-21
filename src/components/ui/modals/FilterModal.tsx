@@ -17,6 +17,11 @@ import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect
 import { calToJs } from "@/utils/dateHelpers";
 import { add, eqBool10, eqId, rangeDate, rangeNum } from "@/utils/queryFilters";
 import { FieldOption, FilterField, ModalSize } from ".";
+import TextInput from "../inputs/TextInput";
+import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
+import NumberWithSelectGroup from "@/components/forms/Inputs/NumberWithSelectGroup";
+import NumberRangeGroup from "@/components/forms/Inputs/NumberRangeGroup";
+import SelectBox from "../inputs/SelectBox";
 
 type Props = {
   title?: React.ReactNode;
@@ -212,44 +217,27 @@ const FilterModal: React.FC<Props> = ({
     switch (f.type) {
       case "boolean01":
         return (
-          <Select
-            dir="rtl"
+          <SelectBox
             label={f.label}
-            selectedKeys={state[f.key] ? [state[f.key]] : []}
-            onSelectionChange={(keys) => {
-              const val = Array.from(keys)[0] as "" | "1" | "0";
-              setField(f.key, val ?? "");
-            }}
-          >
-            <SelectItem key="">همه</SelectItem>
-            <SelectItem key="1">دارد</SelectItem>
-            <SelectItem key="0">ندارد</SelectItem>
-          </Select>
+            value={state[f.key]}
+            onChange={(val) => setField(f.key, val)}
+            options={[
+              { key: "", title: "همه" },
+              { key: "1", title: "دارد" },
+              { key: "0", title: "ندارد" },
+            ]}
+          />
         );
 
       case "select": {
-        const opts = f.options ?? remoteCache[f.key] ?? [];
         return (
-          <Select
-            dir="rtl"
+          <SelectBox
             label={f.label}
-            placeholder={(f as any).placeholder ?? "انتخاب کنید"}
-            selectedKeys={state[f.key] ? [String(state[f.key])] : []}
-            onSelectionChange={(keys) => {
-              const val = Array.from(keys)[0] as string;
-              setField(f.key, val ?? "");
-            }}
-          >
-            {opts.length ? (
-              opts.map((o) => (
-                <SelectItem key={String(o.key)}>{o.title}</SelectItem>
-              ))
-            ) : (
-              <SelectItem key="-1" isDisabled>
-                آیتمی موجود نیست
-              </SelectItem>
-            )}
-          </Select>
+            value={state[f.key]}
+            onChange={(val) => setField(f.key, val)}
+            options={f.options ?? remoteCache[f.key] ?? []}
+            placeholder={f.placeholder}
+          />
         );
       }
 
@@ -268,147 +256,73 @@ const FilterModal: React.FC<Props> = ({
 
       case "numberRange":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <NumberInput
-              label={`${f.label} از`}
-              placeholder={(f as any).placeholderMin ?? ""}
-              min={0}
-              value={
-                state[`${f.key}Min`] === ""
-                  ? undefined
-                  : Number(state[`${f.key}Min`])
-              }
-              onChange={(v) =>
-                setField(`${f.key}Min`, v === undefined ? "" : v)
-              }
-            />
-            <NumberInput
-              label={`${f.label} تا`}
-              placeholder={(f as any).placeholderMax ?? ""}
-              min={0}
-              value={
-                state[`${f.key}Max`] === ""
-                  ? undefined
-                  : Number(state[`${f.key}Max`])
-              }
-              onChange={(v) =>
-                setField(`${f.key}Max`, v === undefined ? "" : v)
-              }
-            />
-          </div>
+          <NumberRangeGroup
+            label={f.label}
+            minValue={
+              state[`${f.key}Min`] === "" ? "" : Number(state[`${f.key}Min`])
+            }
+            maxValue={
+              state[`${f.key}Max`] === "" ? "" : Number(state[`${f.key}Max`])
+            }
+            placeholderMin={(f as any).placeholderMin ?? ""}
+            placeholderMax={(f as any).placeholderMax ?? ""}
+            onMinChange={(val) => setField(`${f.key}Min`, val)}
+            onMaxChange={(val) => setField(`${f.key}Max`, val)}
+            min={0}
+          />
         );
 
       case "unitNumber":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <NumberWithSelect
-              label={`${f.label} از`}
-              placeholder={(f as any).placeholderMin ?? ""}
-              value={
-                state[`${f.key}Min`] === ""
-                  ? undefined
-                  : Number(state[`${f.key}Min`])
-              }
-              onValueChange={(val) => setField(`${f.key}Min`, val ?? "")}
-              selectedKey={String(
-                state[`${f.key}Unit`] ?? String(f.unitOptions[0]?.key ?? "")
-              )}
-              onSelectChange={(val) => setField(`${f.key}Unit`, val)}
-              options={f.unitOptions.map((o) => ({
-                key: String(o.key),
-                title: o.title,
-              }))}
-            />
-            <NumberWithSelect
-              label={`${f.label} تا`}
-              placeholder={(f as any).placeholderMax ?? ""}
-              value={
-                state[`${f.key}Max`] === ""
-                  ? undefined
-                  : Number(state[`${f.key}Max`])
-              }
-              onValueChange={(val) => setField(`${f.key}Max`, val ?? "")}
-              selectedKey={String(
-                state[`${f.key}Unit`] ?? String(f.unitOptions[0]?.key ?? "")
-              )}
-              onSelectChange={(val) => setField(`${f.key}Unit`, val)}
-              options={f.unitOptions.map((o) => ({
-                key: String(o.key),
-                title: o.title,
-              }))}
-            />
-          </div>
+          <NumberWithSelectGroup
+            label={f.label}
+            minValue={state[`${f.key}Min`]}
+            maxValue={state[`${f.key}Max`]}
+            onMinChange={(v) => setField(`${f.key}Min`, v)}
+            onMaxChange={(v) => setField(`${f.key}Max`, v)}
+            selectValue={
+              state[`${f.key}Unit`] ?? String(f.unitOptions[0]?.key ?? "")
+            }
+            onSelectChange={(v) => setField(`${f.key}Unit`, v)}
+            selectOptions={f.unitOptions}
+          />
         );
 
       case "discount":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <NumberWithSelect
-              label={`${f.label} از`}
-              placeholder={(f as any).placeholderMin ?? ""}
-              value={
-                state[`${f.key}Min`] === ""
-                  ? undefined
-                  : Number(state[`${f.key}Min`])
-              }
-              onValueChange={(val) => setField(`${f.key}Min`, val ?? "")}
-              selectedKey={state["discountType"] ?? "percent"}
-              onSelectChange={(val) => setField("discountType", val)}
-              options={[
-                { key: "percent", title: "درصد" },
-                { key: "amount", title: "مبلغ ثابت" },
-              ]}
-            />
-            <NumberWithSelect
-              label={`${f.label} تا`}
-              placeholder={(f as any).placeholderMax ?? ""}
-              value={
-                state[`${f.key}Max`] === ""
-                  ? undefined
-                  : Number(state[`${f.key}Max`])
-              }
-              onValueChange={(val) => setField(`${f.key}Max`, val ?? "")}
-              selectedKey={state["discountType"] ?? "percent"}
-              onSelectChange={(val) => setField("discountType", val)}
-              options={[
-                { key: "percent", title: "درصد" },
-                { key: "amount", title: "مبلغ ثابت" },
-              ]}
-            />
-          </div>
+          <NumberWithSelectGroup
+            label={f.label}
+            minValue={state[`${f.key}Min`]}
+            maxValue={state[`${f.key}Max`]}
+            onMinChange={(v) => setField(`${f.key}Min`, v)}
+            onMaxChange={(v) => setField(`${f.key}Max`, v)}
+            selectValue={state["discountType"] ?? "percent"}
+            onSelectChange={(v) => setField("discountType", v)}
+            selectOptions={[
+              { key: "percent", title: "درصد" },
+              { key: "amount", title: "مبلغ ثابت" },
+            ]}
+          />
         );
 
       case "dateRange":
         return (
-          <DateRangePicker
+          <IsoDatePicker
             label={f.label}
-            labelPlacement="outside"
-            value={
-              state[`${f.key}Range`] &&
-              (state[`${f.key}Range`].start || state[`${f.key}Range`].end)
-                ? {
-                    start: state[`${f.key}Range`].start,
-                    end: state[`${f.key}Range`].end,
-                  }
-                : undefined
-            }
-            onChange={(range: any) => setField(`${f.key}Range`, range ?? null)}
+            enableRange={true}
+            valueIsoRange={state[`${f.key}Range`]}
+            onChangeIsoRange={(range) => setField(`${f.key}Range`, range)}
           />
         );
 
       case "text":
         return (
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              {f.label}
-            </label>
-            <input
-              className="w-full rounded-md border px-3 py-2 text-right"
-              placeholder={(f as any).placeholder ?? ""}
-              value={state[f.key] ?? ""}
-              onChange={(e) => setField(f.key, e.target.value)}
-            />
-          </div>
+          <TextInput
+            label={f.label}
+            placeholder={(f as any).placeholder ?? ""}
+            value={state[f.key] ?? ""}
+            onChange={(val) => setField(f.key, val)}
+          />
         );
 
       default:
