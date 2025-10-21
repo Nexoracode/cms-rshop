@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { eqId, rangeDate } from "@/utils/queryFilters";
 import { calToJs } from "@/utils/dateHelpers";
-import FilterModal from "@/components/ui/modals/FilterModal";
+import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 
 const STATUS_OPTIONS = [
   { key: "", label: "همه وضعیت‌ها" },

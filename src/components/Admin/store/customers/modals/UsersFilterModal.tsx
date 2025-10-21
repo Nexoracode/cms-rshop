@@ -6,7 +6,7 @@ import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
 import { eqBool10, rangeDate } from "@/utils/queryFilters";
 import { calToJs } from "@/utils/dateHelpers";
-import FilterModal from "@/components/ui/modals/FilterModal";
+import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 
 const UsersFilterModal: React.FC = () => {
   const router = useRouter();

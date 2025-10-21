@@ -8,7 +8,7 @@ import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import { eqBool10, add, rangeNum, rangeDate } from "@/utils/queryFilters";
 import { calToJs } from "@/utils/dateHelpers";
-import FilterModal from "@/components/ui/modals/FilterModal";
+import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 
 type AmountType = "percent" | "fixed";
 

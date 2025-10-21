@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { useGetBrands } from "@/hooks/api/useBrand";
 import { flattenCategories } from "@/utils/flattenCategories";
-import FilterModal from "@/components/ui/modals/FilterModal";
-import { FilterField } from "@/components/ui/modals";
+import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
+import { FilterField } from "@/components/ui/modals/FilterModal";
 
 const ProductFilterModal: React.FC = () => {
   const { data: categoriesData } = useGetAllCategories();
