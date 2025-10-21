@@ -120,7 +120,10 @@ export const renderField = ({
           label={f.label}
           enableRange
           valueIsoRange={state[`${f.key}Range`]}
-          onChangeIsoRange={(range) => setField(`${f.key}Range`, range)}
+          onChangeIsoRange={(range) => {
+            console.log(range);
+            setField(`${f.key}Range`, range)
+          }}
         />
       );
 

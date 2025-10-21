@@ -166,10 +166,15 @@ const FilterModal: React.FC<Props> = ({
           break;
         }
         case "dateRange": {
-          const range = state[`${f.key}Range`];
-          const s = calToJs(range?.start);
-          const e = calToJs(range?.end);
-          rangeDate(params, f.key, s, e);
+          const range = state[`${f.key}Range`] ?? null;
+          if (!range) break;
+
+          const s = range.start ? new Date(range.start) : undefined;
+          const e = range.end ? new Date(range.end) : undefined;
+
+          if (s || e) {
+            rangeDate(params, f.key, s, e);
+          }
           break;
         }
         case "text": {
