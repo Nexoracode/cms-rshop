@@ -6,7 +6,7 @@ import BasePagination from "@/components/widgets/BasePagination";
 import HeaderActionCard from "@/components/widgets/HeaderActionCard";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
-type CardContentProps = {
+type EntityCardProps = {
   icon?: any;
   title: string;
   onAdd: () => void;
@@ -19,7 +19,7 @@ type CardContentProps = {
   textBtn?: string
 };
 
-const CardContent: React.FC<CardContentProps> = ({
+const EntityCard: React.FC<EntityCardProps> = ({
   title,
   icon,
   onAdd,
@@ -68,4 +68,4 @@ const CardContent: React.FC<CardContentProps> = ({
   );
 };
 
-export default CardContent;
+export default EntityCard;

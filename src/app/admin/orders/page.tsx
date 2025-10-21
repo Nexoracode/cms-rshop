@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import OrdersFilter from "@/components/admin/orders/OrdersFilter";
 import { useGetOrders } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
@@ -56,7 +56,7 @@ const Orders = () => {
     <section className="flex flex-col gap-6">
       <OrdersFilter />
 
-      <CardContent
+      <EntityCard
         title="لیست سفارشات"
         icon={<IoReceiptOutline className="text-2xl" />}
         isLoading={isLoading}
@@ -74,7 +74,7 @@ const Orders = () => {
             />
           ))}
         </div>
-      </CardContent>
+      </EntityCard>
     </section>
   );
 };

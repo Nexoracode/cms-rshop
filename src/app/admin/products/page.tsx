@@ -13,7 +13,7 @@ import {
 } from "@/hooks/api/products/useProduct";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/ui/modals/Modal";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import ProductsFilter from "@/components/admin/products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/admin/products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import { BsShop } from "react-icons/bs";
@@ -109,7 +109,7 @@ const Products = () => {
     <>
       <section className="flex flex-col gap-6">
         <ProductsFilter />
-        <CardContent
+        <EntityCard
           title="لیست محصولات"
           icon={<BsShop className="text-2xl" />}
           isLoading={isLoading}
@@ -166,7 +166,7 @@ const Products = () => {
               />
             ))}
           </div>
-        </CardContent>
+        </EntityCard>
       </section>
       <BulkUpdateProductsModal
         isOpen={isOpenBulk}

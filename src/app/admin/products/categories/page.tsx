@@ -2,7 +2,7 @@
 
 import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
 import CategoryTree from "@/components/admin/products/categories/CategoryCard";
-import CardContent from "@/components/admin/shared/CardContent"; from "@/components/admin/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard"; from "@/components/admin/EntityCard";
 import BackToPage from "@/components/widgets/BackToPage";
 import DynamicModal from "@/components/ui/modals/Modal";
 import {
@@ -39,7 +39,7 @@ const Categories = () => {
       </div>
 
       <section className="flex flex-col gap-6">
-        <CardContent
+        <EntityCard
           datas={categories}
           isExistItems={categories?.data?.length}
           isLoading={isLoading}
@@ -59,7 +59,7 @@ const Categories = () => {
               onOpenCategoryModal();
             }}
           />
-        </CardContent>
+        </EntityCard>
       </section>
 
       {/* Delete Modal */}

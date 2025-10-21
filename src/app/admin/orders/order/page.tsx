@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import BackToPage from "@/components/widgets/BackToPage";
@@ -23,7 +23,7 @@ const OrderDetail = () => {
       <section className="flex flex-col gap-6">
         <BackToPage title="بازگشت" link="/admin/orders" />
 
-        <CardContent
+        <EntityCard
           title="مشخصات سفارش"
           textBtn="مشاهده فاکتور"
           icon={<IoReceiptOutline className="text-2xl" />}
@@ -34,7 +34,7 @@ const OrderDetail = () => {
           searchInp={false}
         >
           <OrderWizard order={order?.data} />
-        </CardContent>
+        </EntityCard>
       </section>
     </>
   );

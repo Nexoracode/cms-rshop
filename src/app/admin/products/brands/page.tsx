@@ -3,7 +3,7 @@
 import AddNewBrandModal from "@/components/admin/products/brands/AddNewBrandModal";
 import BrandCard from "@/components/admin/products/brands/BrandCard";
 import BrandFilters from "@/components/admin/products/brands/BrandFilters";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import BackToPage from "@/components/widgets/BackToPage";
 import DynamicModal from "@/components/ui/modals/Modal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/api/useBrand";
@@ -67,7 +67,7 @@ const BrandsProduct = () => {
 
       <section className="flex flex-col gap-6">
         <BrandFilters />
-        <CardContent
+        <EntityCard
           datas={brands}
           isExistItems={brands?.data?.items?.length}
           isLoading={isLoading}
@@ -94,7 +94,7 @@ const BrandsProduct = () => {
               );
             })}
           </div>
-        </CardContent>
+        </EntityCard>
       </section>
       {/* Delete Modal */}
       <DynamicModal

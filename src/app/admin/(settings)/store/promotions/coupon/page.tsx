@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BackToPage from "@/components/widgets/BackToPage";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import CouponsFilter from "@/components/admin/store/promotions/coupon/CouponsFilter";
 import { useGetCoupons } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";
@@ -65,7 +65,7 @@ const Coupons = () => {
         {/* فیلتر/لینک‌ها مثل OrdersFilter (مینیمال) */}
         <CouponsFilter />
 
-        <CardContent
+        <EntityCard
           title="لیست کدهای تخفیف"
           icon={<LuTicket className="text-2xl" />}
           isLoading={isLoading}
@@ -93,7 +93,7 @@ const Coupons = () => {
                 ))
               : ""}
           </div>
-        </CardContent>
+        </EntityCard>
       </div>
     </>
   );

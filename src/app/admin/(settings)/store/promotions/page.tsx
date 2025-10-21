@@ -3,7 +3,7 @@
 import BackToPage from "@/components/widgets/BackToPage";
 import { useDisclosure } from "@heroui/react";
 import PromotionsListModal from "@/components/admin/store/promotions/PromotionsListModal";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import { GrAnnounce } from "react-icons/gr";
 import { useGetBrands } from "@/hooks/api/useBrand";
 
@@ -19,7 +19,7 @@ const Promotions = () => {
         </div>
 
         <section className="flex flex-col gap-6">
-          <CardContent
+          <EntityCard
             datas={brands}
             isExistItems={brands?.data?.items?.length}
             isLoading={isLoading}
@@ -37,7 +37,7 @@ const Promotions = () => {
                 );
               })}
             </div>
-          </CardContent>
+          </EntityCard>
         </section>
       </div>
       <PromotionsListModal isOpen={isOpen} onOpenChange={onOpenChange} />

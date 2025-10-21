@@ -2,7 +2,7 @@
 
 import { useDisclosure } from "@heroui/react";
 import UsersFilter from "@/components/admin/store/customers/UsersFilter";
-import CardContent from "@/components/admin/shared/CardContent";
+import EntityCard from "@/components/admin/shared/EntityCard";
 import UserInfoCard from "@/components/admin/store/customers/UserInfoCard";
 import AddNewCustomerModal from "@/components/admin/store/customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
@@ -64,7 +64,7 @@ const UsersListPage = () => {
     <section className="flex flex-col gap-6">
       <UsersFilter />
 
-      <CardContent
+      <EntityCard
         title="لیست کاربران"
         icon={<FiUsers className="text-2xl" />}
         isLoading={isLoading}
@@ -80,7 +80,7 @@ const UsersListPage = () => {
             <UserInfoCard key={user.id} infos={user} disableSelect />
           ))}
         </div>
-      </CardContent>
+      </EntityCard>
 
       <AddNewCustomerModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </section>
