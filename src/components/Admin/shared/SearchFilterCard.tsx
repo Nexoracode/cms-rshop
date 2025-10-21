@@ -19,7 +19,7 @@ type SearchFilterCardProps = {
 };
 
 const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
-  relatedTitle = "صفحات مرتبط",
+  relatedTitle = "دسترسی سریع",
   relatedPages = [],
   searchPlaceholder = "جستجو...",
   children,

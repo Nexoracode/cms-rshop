@@ -1,29 +1,15 @@
 "use client";
 
-import { Card, CardBody, useDisclosure } from "@heroui/react";
-import OptionBox from "../../OptionBox";
-import { BiSortAlt2 } from "react-icons/bi";
-import DebouncedSearchURL from "@/components/widgets/DebouncedSearchInput";
-import SortingBrandsModal from "./SortingBrandsModal";
+import SearchFilterCard from "../../shared/SearchFilterCard";
+import SortBrandsModal from "./SortingBrandsModal";
 
 const BrandFilters = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   return (
-    <>
-      <Card className="shadow-none">
-        <CardBody className="flex flex-row items-center gap-4">
-          <DebouncedSearchURL placeholder="جستجو در برندها..." />
-
-          <OptionBox
-            title="مرتب سازی"
-            icon={<BiSortAlt2 className="text-xl" />}
-            onClick={onOpen}
-          />
-        </CardBody>
-      </Card>
-      <SortingBrandsModal isOpen={isOpen} onOpenChange={onOpenChange} />
-    </>
+    <SearchFilterCard
+      searchPlaceholder="جستجو در برندها..."
+    >
+      <SortBrandsModal />
+    </SearchFilterCard>
   );
 };
 

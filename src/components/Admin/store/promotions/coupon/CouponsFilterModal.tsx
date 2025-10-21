@@ -4,18 +4,15 @@ import { useState } from "react";
 import { NumberInput, Select, SelectItem, DatePicker } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
-
-import DynamicModal from "@/components/ui/modals/Modal";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import { eqBool10, add, rangeNum, rangeDate } from "@/utils/queryFilters";
-import { TbFilter } from "react-icons/tb";
 import { calToJs } from "@/utils/dateHelpers";
+import FilterModal from "@/components/ui/modals/FilterModal";
 
-type Props = { isOpen: boolean; onOpenChange: (open: boolean) => void };
 type AmountType = "percent" | "fixed";
 
-const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const CouponsFilterModal = () => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -78,7 +75,6 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
 
     const q = params.toString();
     router.push(q ? `${pathname}?${q}` : pathname);
-    onOpenChange(false);
   };
 
   const onClear = () => {
@@ -97,23 +93,10 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
       endDate: null,
     });
     router.push(pathname);
-    onOpenChange(false);
   };
 
   return (
-    <DynamicModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      title="فیلتر کدهای تخفیف"
-      confirmText="اعمال"
-      cancelText="حذف فیلتر"
-      confirmColor="secondary"
-      confirmVariant="solid"
-      onConfirm={onApply}
-      onCancel={onClear}
-      size="lg"
-      icon={<TbFilter className="text-2xl" />}
-    >
+    <FilterModal onConfirm={onApply} onRemove={onClear}>
       <div className="flex flex-col gap-6">
         {/* وضعیت‌ها */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -275,8 +258,8 @@ const FilterCouponsModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
           />
         </div>
       </div>
-    </DynamicModal>
+    </FilterModal>
   );
 };
 
-export default FilterCouponsModal;
+export default CouponsFilterModal;

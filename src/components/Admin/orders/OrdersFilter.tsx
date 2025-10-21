@@ -2,12 +2,11 @@
 
 import SearchFilterCard from "../shared/SearchFilterCard";
 import OrdersFilterModal from "./modals/OrdersFilterModal";
-import OrdersSortingModal from "./modals/OrdersSortingModal";
+import OrdersSortingModal from "./modals/OrdersSortModal";
 
 const OrdersFilter = () => {
   return (
     <SearchFilterCard
-      relatedTitle="دسترسی سریع"
       relatedPages={[
         {
           title: "پروموشن‌ها",

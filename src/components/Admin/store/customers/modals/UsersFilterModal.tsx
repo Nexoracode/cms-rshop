@@ -4,17 +4,11 @@ import { useState } from "react";
 import { DateRangePicker, Select, SelectItem } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { usePathname, useRouter } from "next/navigation";
-import DynamicModal from "@/components/ui/modals/Modal";
 import { eqBool10, rangeDate } from "@/utils/queryFilters";
 import { calToJs } from "@/utils/dateHelpers";
-import { TbFilter } from "react-icons/tb";
+import FilterModal from "@/components/ui/modals/FilterModal";
 
-type Props = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-};
-
-const FilterUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+const UsersFilterModal: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,44 +22,32 @@ const FilterUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
     value: (typeof filters)[K]
   ) => setFilters((prev) => ({ ...prev, [key]: value }));
 
-  const handleApply = () => {
+  const onApply = () => {
     const params = new URLSearchParams();
     params.set("page", "1");
 
+    // 🔹 وضعیت فعال
     eqBool10(params, "isActive", filters.isActive);
 
+    // 🔹 تاریخ عضویت
     const s = calToJs(filters.createdAtRange?.start);
     const e = calToJs(filters.createdAtRange?.end);
     rangeDate(params, "createdAt", s, e);
 
     const q = params.toString();
     router.push(q ? `${pathname}?${q}` : pathname);
-    onOpenChange();
   };
 
-  const handleClear = () => {
+  const onClear = () => {
     setFilters({
       isActive: "",
       createdAtRange: null,
     });
     router.push(pathname);
-    onOpenChange();
   };
 
   return (
-    <DynamicModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      title="فیلتر کاربران"
-      confirmText="اعمال"
-      cancelText="حذف فیلتر"
-      confirmColor="primary"
-      onConfirm={handleApply}
-      onCancel={handleClear}
-      size="md"
-      icon={<TbFilter className="text-2xl" />}
-    >
-      {/* محتویات مدال */}
+    <FilterModal onConfirm={onApply} onRemove={onClear}>
       <div className="flex flex-col gap-6">
         {/* وضعیت فعال */}
         <Select
@@ -104,8 +86,8 @@ const FilterUsersModal: React.FC<Props> = ({ isOpen, onOpenChange }) => {
           }
         />
       </div>
-    </DynamicModal>
+    </FilterModal>
   );
 };
 
-export default FilterUsersModal;
+export default UsersFilterModal;

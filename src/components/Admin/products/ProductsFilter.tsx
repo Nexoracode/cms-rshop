@@ -7,7 +7,6 @@ import ProductsSortModal from "./modals/ProductsSortModal";
 const ProductsFilter = () => {
   return (
     <SearchFilterCard
-      relatedTitle="صفحات مرتبط"
       searchPlaceholder="جستجو در محصولات..."
       relatedPages={[
         { title: "ویژگی‌ها", href: "/admin/products/variants" },
