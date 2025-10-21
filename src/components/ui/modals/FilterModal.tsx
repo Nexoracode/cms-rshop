@@ -1,18 +1,10 @@
-// components/ui/modals/FilterModal.tsx
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Select,
-  SelectItem,
-  DateRangePicker,
-  NumberInput,
-} from "@heroui/react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import DynamicModal from "./Modal";
 import OptionButton from "../buttons/OptionButton";
 import { IoFilter } from "react-icons/io5";
-import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import { calToJs } from "@/utils/dateHelpers";
 import { add, eqBool10, eqId, rangeDate, rangeNum } from "@/utils/queryFilters";
