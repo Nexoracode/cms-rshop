@@ -61,7 +61,7 @@ const UsersListPage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <section className="flex flex-col gap-6">
+    <>
       <CustomersFilter />
 
       <EntityCard
@@ -75,15 +75,13 @@ const UsersListPage = () => {
       >
         {isLoading && <LoadingApiCall />}
 
-        <div className="flex flex-col justify-center items-center gap-4">
-          {users?.data?.items?.map((user: any) => (
-            <CustomerCard key={user.id} infos={user}/>
-          ))}
-        </div>
+        {users?.data?.items?.map((user: any) => (
+          <CustomerCard key={user.id} infos={user} />
+        ))}
       </EntityCard>
 
       <AddNewCustomerModal isOpen={isOpen} onOpenChange={onOpenChange} />
-    </section>
+    </>
   );
 };
 

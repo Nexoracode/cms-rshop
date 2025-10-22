@@ -16,7 +16,8 @@ type EntityCardProps = {
   children: React.ReactNode;
   searchInp?: boolean;
   isExistItems: boolean;
-  textBtn?: string
+  textBtn?: string,
+  childrenClassName?: string
 };
 
 const EntityCard: React.FC<EntityCardProps> = ({
@@ -29,7 +30,8 @@ const EntityCard: React.FC<EntityCardProps> = ({
   children,
   searchInp,
   isExistItems,
-  textBtn
+  textBtn,
+  childrenClassName= "flex flex-col justify-center gap-4"
 }) => {
   return (
     <section className="flex flex-col gap-6">
@@ -41,7 +43,9 @@ const EntityCard: React.FC<EntityCardProps> = ({
           {isLoading ? (
             <LoadingApiCall />
           ) : isExistItems ? (
-            children
+            <div className={childrenClassName}>
+              {children}
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-2xl text-gray-600 gap-2">
               {searchInp ? (

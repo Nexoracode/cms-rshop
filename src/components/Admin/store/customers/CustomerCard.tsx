@@ -22,7 +22,7 @@ const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
   const { first_name, last_name, phone, email, created_at, id } = infos;
 
   return (
-    <BaseCard className="max-w-[300px] w-full sm:max-w-full" redirect={`customers/create?edit_id=${id}`}>
+    <BaseCard bodyClassName="w-full" redirect={`customers/create?edit_id=${id}`}>
       <div className="flex flex-col xs:flex-row items-center justify-between">
         <div className="w-full flex flex-col gap-6 px-10">
           <div className="flex items-center justify-between">
