@@ -3,9 +3,8 @@
 import React from "react";
 import { useDeleteUser } from "@/hooks/api/users/useUsers";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
-import { TbEdit } from "react-icons/tb";
-import { useRouter } from "next/navigation";
 import DeleteButton from "@/components/shared/DeleteButton";
+import Link from "next/link";
 
 type UserInfo = {
   id: number;
@@ -31,18 +30,18 @@ const CustomerCard: React.FC<Props> = ({
   disableSelect = false,
   disableAction = false,
 }) => {
-  const router = useRouter();
   const { id, first_name, last_name, phone, email, created_at } = infos;
   const { mutate: deleteUser } = useDeleteUser(id);
 
   return (
-      <SelectableCard
-        id={id}
-        selectedIds={selectedIds}
-        disabled={disableSelect}
-        onSelectionChange={(idVal, sel) => onSelect?.(+idVal, sel, infos)}
-        className="max-w-[300px] w-full sm:max-w-full"
-      >
+    <SelectableCard
+      id={id}
+      selectedIds={selectedIds}
+      disabled={disableSelect}
+      onSelectionChange={(idVal, sel) => onSelect?.(+idVal, sel, infos)}
+      className="max-w-[300px] w-full sm:max-w-full"
+    >
+      <Link href={`/admin/store/customers/create?edit_id=${id}`}>
         <div className="flex flex-col xs:flex-row items-center justify-between">
           <div className="w-full flex flex-col gap-6 px-10">
             <div className="flex items-center justify-between">
@@ -58,22 +57,10 @@ const CustomerCard: React.FC<Props> = ({
               </p>
             </div>
           </div>
-          {!disableAction && (
-            <div className="flex gap-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  router.push(`/admin/store/customers/create?edit_id=${id}`);
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <TbEdit size={18} />
-              </button>
-              <DeleteButton onDelete={deleteUser} />
-            </div>
-          )}
+          {!disableAction && <DeleteButton onDelete={deleteUser} />}
         </div>
-      </SelectableCard>
+      </Link>
+    </SelectableCard>
   );
 };
 

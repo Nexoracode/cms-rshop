@@ -18,7 +18,9 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
 }) => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const handleDeleteClick = () => setIsOpenDeleteModal(true);
+  const handleDeleteClick = () => {
+    setIsOpenDeleteModal(true)
+  };
 
   const handleConfirmDelete = () => {
     onDelete();

@@ -23,6 +23,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     if (route) {
       router.push(route);
     } else if (onClick) {
+      e.preventDefault()
       onClick();
     }
   };
