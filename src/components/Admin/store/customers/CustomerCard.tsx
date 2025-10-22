@@ -4,6 +4,7 @@ import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { FiUser } from "react-icons/fi";
+import CardRows from "@/components/shared/CardRows";
 
 type UserInfo = {
   id: number;
@@ -68,20 +69,7 @@ const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
         </div>
       </div>
 
-      {/* Rows */}
-      <div className="flex flex-col divide-y divide-gray-200 rounded-lg overflow-hidden">
-        {rowItems.map((row, index) => (
-          <div
-            key={index}
-            className={`flex border-none justify-between items-center rounded-xl px-3 py-2 text-sm ${
-              index % 2 === 1 ? "bg-slate-100" : "bg-white"
-            }`}
-          >
-            <span className="">{row.label}:</span>
-            <span className="font-medium text-gray-600">{row.value}</span>
-          </div>
-        ))}
-      </div>
+      <CardRows items={rowItems} />
     </BaseCard>
   );
 };
