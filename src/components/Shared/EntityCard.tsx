@@ -31,7 +31,7 @@ const EntityCard: React.FC<EntityCardProps> = ({
   searchInp,
   isExistItems,
   textBtn,
-  childrenClassName= "flex flex-col justify-center gap-4"
+  childrenClassName= ""
 }) => {
   return (
     <section className="flex flex-col gap-6">
@@ -43,7 +43,7 @@ const EntityCard: React.FC<EntityCardProps> = ({
           {isLoading ? (
             <LoadingApiCall />
           ) : isExistItems ? (
-            <div className={childrenClassName}>
+            <div className={`flex flex-col justify-center gap-4 ${childrenClassName}`}>
               {children}
             </div>
           ) : (

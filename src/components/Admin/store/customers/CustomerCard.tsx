@@ -3,6 +3,7 @@
 import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
+import { FiCalendar, FiMail, FiPhone, FiUser } from "react-icons/fi";
 
 type UserInfo = {
   id: number;
@@ -19,22 +20,75 @@ type Props = {
 };
 
 const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
-  const { first_name, last_name, phone, email, created_at, id } = infos;
+  const {
+    id,
+    first_name,
+    last_name,
+    phone,
+    email,
+    created_at,
+    avatar_url,
+    is_active,
+  } = infos;
+
+  const rowItems = [
+    { label: "شماره تماس", value: phone || "-" },
+    { label: "ایمیل", value: email || "-" },
+  ];
 
   return (
-    <BaseCard bodyClassName="w-full" redirect={`customers/create?edit_id=${id}`}>
-      <div className="flex flex-col xs:flex-row items-center justify-between">
-        <div className="w-full flex flex-col gap-6 px-10">
-          <div className="flex items-center justify-between">
-            <p className="font-medium">{first_name} {last_name}</p>
-            <p className="text-gray-600 text-sm">{phone}</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-gray-600 text-sm">{email}</p>
-            <p className="text-gray-500 text-xs">{created_at?.slice(0, 10)}</p>
-          </div>
+    <BaseCard
+      bodyClassName="w-full"
+      className="border-none"
+      redirect={`customers/create?edit_id=${id}`}
+    >
+      <div className="flex items-center gap-2 mb-2 p-2">
+        <div>
+          {avatar_url ? (
+            <img
+              src={avatar_url}
+              alt={`${first_name || "-"} ${last_name || "-"}`}
+              className="w-16 h-16 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+              <FiUser className="text-gray-400 text-2xl" />
+            </div>
+          )}
         </div>
-        {!disableAction && <DeleteButton onDelete={() => {}} />}
+        <div className="w-full flex justify-between items-center">
+          <div className="flex flex-col gap-2">
+            <p className="truncate text-right">
+              {first_name || "-"} {last_name || "-"}
+            </p>
+            <span
+              className={`px-3 py-1 rounded-lg text-xs w-fit ${
+                is_active
+                  ? "bg-green-100 text-green-600"
+                  : "bg-gray-100 text-gray-500"
+              }`}
+            >
+              {is_active ? "فعال" : "غیرفعال"}
+            </span>
+          </div>
+
+          {!disableAction && <DeleteButton onDelete={() => {}} />}
+        </div>
+      </div>
+
+      {/* Rows */}
+      <div className="flex flex-col divide-y divide-gray-200 rounded-lg overflow-hidden">
+        {rowItems.map((row, index) => (
+          <div
+            key={index}
+            className={`flex border-none justify-between items-center rounded-xl px-3 py-2 text-sm ${
+              index % 2 === 1 ? "bg-slate-100" : "bg-white"
+            }`}
+          >
+            <span className="">{row.label}:</span>
+            <span className="font-medium text-gray-600">{row.value}</span>
+          </div>
+        ))}
       </div>
     </BaseCard>
   );
