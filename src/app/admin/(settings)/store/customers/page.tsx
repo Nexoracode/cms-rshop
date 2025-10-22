@@ -3,7 +3,7 @@
 import { useDisclosure } from "@heroui/react";
 import CustomersFilter from "@/components/admin/store/customers/CustomersFilter";
 import EntityCard from "@/components/shared/EntityCard";
-import UserInfoCard from "@/components/admin/store/customers/CustomerCard";
+import CustomerCard from "@/components/admin/store/customers/CustomerCard";
 import AddNewCustomerModal from "@/components/admin/store/customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
@@ -77,7 +77,7 @@ const UsersListPage = () => {
 
         <div className="flex flex-col justify-center items-center gap-4">
           {users?.data?.items?.map((user: any) => (
-            <UserInfoCard key={user.id} infos={user} disableSelect />
+            <CustomerCard key={user.id} infos={user}/>
           ))}
         </div>
       </EntityCard>
