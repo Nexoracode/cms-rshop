@@ -5,6 +5,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { FiUser } from "react-icons/fi";
 import CardRows from "@/components/shared/CardRows";
+import StatusBadge from "@/components/shared/StatusBadge";
 
 type UserInfo = {
   id: number;
@@ -54,15 +55,7 @@ const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
             <p className="truncate text-right">
               {first_name || "-"} {last_name || "-"}
             </p>
-            <span
-              className={`px-3 py-1 rounded-lg text-xs w-fit ${
-                is_active
-                  ? "bg-green-100 text-green-600"
-                  : "bg-gray-100 text-gray-500"
-              }`}
-            >
-              {is_active ? "فعال" : "غیرفعال"}
-            </span>
+            <StatusBadge isActive={is_active} size="sm" />
           </div>
 
           {!disableAction && <DeleteButton onDelete={() => {}} />}
