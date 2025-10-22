@@ -1,9 +1,9 @@
 "use client";
 
-import BackToPage from "@/components/shared/BackToPage";
+import BackToPage from "@/components/common/BackToPage";
 import { useDisclosure } from "@heroui/react";
-import PromotionsListModal from "@/components/admin/store/promotions/PromotionsListModal";
-import EntityCard from "@/components/shared/EntityCard";
+import PromotionsListModal from "@/components/features/store/promotions/PromotionsListModal";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
 import { GrAnnounce } from "react-icons/gr";
 import { useGetBrands } from "@/hooks/api/useBrand";
 

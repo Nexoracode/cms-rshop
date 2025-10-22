@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import BackToPage from "@/components/shared/BackToPage";
-import EntityCard from "@/components/shared/EntityCard";
-import CouponsFilter from "@/components/admin/store/promotions/coupon/CouponsFilter";
+import BackToPage from "@/components/common/BackToPage";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
+import CouponsFilter from "@/components/features/store/promotions/coupon/CouponsFilter";
 import { useGetCoupons } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";
-import CouponCard from "@/components/admin/store/promotions/coupon/CouponCard";
-import { CouponSortBy } from "@/components/admin/store/promotions/coupon/coupon-types";
+import CouponCard from "@/components/features/store/promotions/coupon/CouponCard";
+import { CouponSortBy } from "@/components/features/store/promotions/coupon/coupon-types";
 
 const Coupons = () => {
   const searchParams = useSearchParams();

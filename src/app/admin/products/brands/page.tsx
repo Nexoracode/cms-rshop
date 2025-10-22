@@ -1,10 +1,10 @@
 "use client";
 
-import AddNewBrandModal from "@/components/admin/products/brands/AddNewBrandModal";
-import BrandCard from "@/components/admin/products/brands/BrandCard";
-import BrandFilters from "@/components/admin/products/brands/BrandFilters";
-import EntityCard from "@/components/shared/EntityCard";
-import BackToPage from "@/components/shared/BackToPage";
+import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
+import BrandCard from "@/components/features/products/brands/BrandCard";
+import BrandFilters from "@/components/features/products/brands/BrandFilters";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
+import BackToPage from "@/components/common/BackToPage";
 import DynamicModal from "@/components/ui/modals/Modal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/api/useBrand";
 import { useDisclosure } from "@heroui/react";

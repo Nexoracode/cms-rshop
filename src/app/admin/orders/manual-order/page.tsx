@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
-import BackToPage from "@/components/shared/BackToPage";
+import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
+import BackToPage from "@/components/common/BackToPage";
 import SwitchWrapper from "@/components/shared/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { TbShoppingCartPlus } from "react-icons/tb";

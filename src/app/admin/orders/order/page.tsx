@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import EntityCard from "@/components/shared/EntityCard";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
-import BackToPage from "@/components/shared/BackToPage";
-import OrderWizard from "@/components/admin/orders/OrderProccess/OrderWizard";
+import BackToPage from "@/components/common/BackToPage";
+import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();

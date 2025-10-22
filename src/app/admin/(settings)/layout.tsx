@@ -1,6 +1,6 @@
 "use client";
 
-import ShopInfosCard from "@/components/shared/ArshopCard/ShopInfosCard";
+import ShopInfosCard from "@/components/common/ArshopCard/ShopInfosCard";
 
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -2,7 +2,7 @@
 
 // Components
 import { Button, useDisclosure } from "@heroui/react";
-import ProductBox from "@/components/admin/products/ProductBox";
+import ProductBox from "@/components/features/products/ProductBox";
 import { useRouter, useSearchParams } from "next/navigation";
 // Icons
 import {
@@ -13,9 +13,9 @@ import {
 } from "@/hooks/api/products/useProduct";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/ui/modals/Modal";
-import EntityCard from "@/components/shared/EntityCard";
-import ProductsFilter from "@/components/admin/products/ProductsFilter";
-import BulkUpdateProductsModal from "@/components/admin/products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
+import ProductsFilter from "@/components/features/products/ProductsFilter";
+import BulkUpdateProductsModal from "@/components/features/products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import { BsShop } from "react-icons/bs";
 
 const Products = () => {

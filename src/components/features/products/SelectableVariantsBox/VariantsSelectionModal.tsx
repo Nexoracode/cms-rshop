@@ -5,7 +5,7 @@ import { Spinner } from "@heroui/react";
 import DynamicModal from "@/components/ui/modals/Modal";
 import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
-import ProductsFilter from "@/components/admin/products/ProductsFilter";
+import ProductsFilter from "@/components/features/products/ProductsFilter";
 import { useSearchParams } from "next/navigation";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";
 

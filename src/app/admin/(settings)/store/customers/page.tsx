@@ -1,10 +1,10 @@
 "use client";
 
 import { useDisclosure } from "@heroui/react";
-import CustomersFilter from "@/components/admin/store/customers/CustomersFilter";
-import EntityCard from "@/components/shared/EntityCard";
-import CustomerCard from "@/components/admin/store/customers/CustomerCard";
-import AddNewCustomerModal from "@/components/admin/store/customers/modals/AddNewCustomerModal";
+import CustomersFilter from "@/components/features/store/customers/CustomersFilter";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
+import CustomerCard from "@/components/features/store/customers/CustomerCard";
+import AddNewCustomerModal from "@/components/features/store/customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
 import { FiUsers } from "react-icons/fi";

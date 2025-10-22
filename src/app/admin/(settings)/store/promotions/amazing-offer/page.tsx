@@ -1,8 +1,8 @@
 "use client"
 
-import ProductItem from "@/components/admin/dashboard/helpers/ProductItem";
-import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
-import BackToPage from "@/components/shared/BackToPage"
+import ProductItem from "@/components/features/dashboard/helpers/ProductItem";
+import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
+import BackToPage from "@/components/common/BackToPage"
 import { Button, Card, CardBody, DateRangePicker, NumberInput, useDisclosure } from "@heroui/react"
 import { useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";

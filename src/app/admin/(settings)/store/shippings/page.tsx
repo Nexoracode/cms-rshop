@@ -1,12 +1,12 @@
 "use client"
 
 import React, { useState } from "react"
-import BackToPage from "@/components/shared/BackToPage"
+import BackToPage from "@/components/common/BackToPage"
 import { Button, Input, CardBody, Card, Switch } from "@heroui/react"
-import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader"
+import BoxHeader from "@/components/features/products/create/helpers/BoxHeader"
 import { GrMapLocation } from "react-icons/gr";
 import { FaTreeCity } from "react-icons/fa6";
-import SendTypeCard from "@/components/admin/store/shippings/SendTypeCard"
+import SendTypeCard from "@/components/features/store/shippings/SendTypeCard"
 import { TbTruckDelivery } from "react-icons/tb";
 
 export default function Shippings() {

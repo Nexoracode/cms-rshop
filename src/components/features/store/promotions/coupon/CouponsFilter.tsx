@@ -1,6 +1,6 @@
 "use client";
 
-import SearchFilterCard from "@/components/shared/SearchFilterCard";
+import SearchFilterCard from "@/components/common/SearchFilterCard";
 import CouponsSortModal from "./CouponsSortModal";
 import CouponsFilterModal from "./CouponsFilterModal";
 

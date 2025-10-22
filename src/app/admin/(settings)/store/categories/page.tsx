@@ -1,8 +1,8 @@
 "use client";
 
-import HeaderAction from "@/components/admin/products/create/helpers/HeaderAction";
-import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
-import BackToPage from "@/components/shared/BackToPage";
+import HeaderAction from "@/components/features/products/create/helpers/HeaderAction";
+import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
+import BackToPage from "@/components/common/BackToPage";
 import { useDisclosure } from "@heroui/react";
 
 const Categories = () => {

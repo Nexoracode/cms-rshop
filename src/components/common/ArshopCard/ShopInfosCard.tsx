@@ -6,7 +6,7 @@ import { FiUsers } from "react-icons/fi";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
 import { GrAnnounce } from "react-icons/gr";
-import BoxLink from "../BoxLink";
+import BoxLink from "./BoxLink";
 import ProgrammerModal from "./ProgrammerModal";
 
 const ShopInfosCard = () => {

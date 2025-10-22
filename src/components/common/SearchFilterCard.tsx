@@ -2,7 +2,7 @@
 
 import { Card, CardBody } from "@heroui/react";
 import React from "react";
-import DebouncedSearchURL from "@/components/widgets/DebouncedSearchInput";
+import DebouncedSearchURL from "@/components/forms/Inputs/DebouncedSearchInput";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import { GoArrowUpRight } from "react-icons/go";
 

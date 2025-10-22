@@ -4,7 +4,7 @@ import { buildQueryString } from "@/utils/buildQueryString";
 import {
   CouponPayload,
   CouponSortBy,
-} from "@/components/admin/store/promotions/coupon/coupon-types";
+} from "@/components/features/store/promotions/coupon/coupon-types";
 
 type GetCouponsParams = {
   page?: number;

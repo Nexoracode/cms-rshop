@@ -1,8 +1,8 @@
 "use client";
 
-import { AttributesContent } from "@/components/admin/products/create/AttributesProduct/AttributesContent";
-import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
-import BackToPage from "@/components/shared/BackToPage";
+import { AttributesContent } from "@/components/features/products/create/AttributesProduct/AttributesContent";
+import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
+import BackToPage from "@/components/common/BackToPage";
 import { Card, CardBody } from "@heroui/react";
 import { MdOutlineCategory } from "react-icons/md";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import SearchFilterCard from "../../shared/SearchFilterCard";
+import SearchFilterCard from "../../common/SearchFilterCard";
 import ProductsFilterModal from "./modals/ProductsFilterModal";
 import ProductsSortModal from "./modals/ProductsSortModal";
 

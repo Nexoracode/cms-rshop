@@ -3,23 +3,23 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import BackToPage from "@/components/shared/BackToPage";
+import BackToPage from "@/components/common/BackToPage";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
-import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
+import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
 import { LuTicket } from "react-icons/lu";
 import {
   useCreateCoupon,
   useUpdateCoupon,
   useGetOneCoupon,
 } from "@/hooks/api/useCoupon";
-import SelectableUsersBox from "@/components/admin/store/customers/SelectableUsersBox/SelectableUsersBox";
-import SelectableCategoriesBox from "@/components/admin/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
+import SelectableUsersBox from "@/components/features/store/customers/SelectableUsersBox/SelectableUsersBox";
+import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import {
   CouponFormType,
   CouponPayload,
-} from "@/components/admin/store/promotions/coupon/coupon-types";
+} from "@/components/features/store/promotions/coupon/coupon-types";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 
 const initialForm: CouponFormType = {

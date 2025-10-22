@@ -2,12 +2,12 @@
 
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import EntityCard from "@/components/shared/EntityCard";
-import OrdersFilter from "@/components/admin/orders/OrdersFilter";
+import EntityCard from "@/components/common/EntityCard/EntityCard";
+import OrdersFilter from "@/components/features/orders/OrdersFilter";
 import { useGetOrders } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
-import OrderBox from "@/components/admin/orders/OrderBox";
-import { Order, OrderSortBy } from "@/components/admin/orders/order-types";
+import OrderBox from "@/components/features/orders/OrderBox";
+import { Order, OrderSortBy } from "@/components/features/orders/order-types";
 
 const Orders = () => {
   const router = useRouter();

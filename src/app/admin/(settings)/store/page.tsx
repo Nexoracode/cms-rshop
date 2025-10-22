@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import BoxLink from "@/components/shared/BoxLink";
+import BoxLink from "@/components/common/ArshopCard/BoxLink";
 import { Card, CardBody } from "@heroui/react";
 import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
@@ -15,7 +15,7 @@ import { RiTimerLine } from "react-icons/ri";
 import { LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
-import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
+import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 // تنظیمات فروشگاه
