@@ -26,7 +26,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
   const CardContent = (
     <Card
       isBlurred
-      className={`relative border shadow-[0_0_7px_lightgray] !transition-all duration-300 hover:opacity-80
+      className={`relative border shadow-md !transition-all duration-300 hover:shadow-none
         ${selected ? "border-sky-500 scale-[0.98]" : "border-gray-200"}
         ${className}`}
       onMouseEnter={() => setHovered(true)}

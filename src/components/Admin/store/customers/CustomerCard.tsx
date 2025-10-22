@@ -3,7 +3,7 @@
 import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { FiCalendar, FiMail, FiPhone, FiUser } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 
 type UserInfo = {
   id: number;
@@ -11,7 +11,8 @@ type UserInfo = {
   last_name?: string;
   phone?: string;
   email?: string;
-  created_at?: string;
+  avatar_url: string;
+  is_active: boolean;
 };
 
 type Props = {
@@ -20,16 +21,8 @@ type Props = {
 };
 
 const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
-  const {
-    id,
-    first_name,
-    last_name,
-    phone,
-    email,
-    created_at,
-    avatar_url,
-    is_active,
-  } = infos;
+  const { id, first_name, last_name, phone, email, avatar_url, is_active } =
+    infos;
 
   const rowItems = [
     { label: "شماره تماس", value: phone || "-" },
@@ -39,7 +32,6 @@ const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
   return (
     <BaseCard
       bodyClassName="w-full"
-      className="border-none"
       redirect={`customers/create?edit_id=${id}`}
     >
       <div className="flex items-center gap-2 mb-2 p-2">
