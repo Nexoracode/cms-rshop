@@ -1,19 +1,14 @@
 "use client";
 
 import {
-  Autocomplete,
-  AutocompleteItem,
-  Button,
   useDisclosure,
 } from "@heroui/react";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
 import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
 import { TbEdit } from "react-icons/tb";
-import { RiDeleteBin5Line } from "react-icons/ri";
-import DynamicModal from "@/components/ui/modals/Modal";
-import { LuPlus } from "react-icons/lu";
 import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
+import DeleteButton from "@/components/forms/DeleteButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -32,11 +27,6 @@ const AddNewAttrGroup: React.FC<Props> = ({
   const [type, setType] = useState<"edit" | "add">("add");
   const deleteAttributeGroup = useDeleteAttributeGroup();
   //? Hooks
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onOpenChange: onOpenChangeDelete,
-  } = useDisclosure();
   const {
     isOpen: isOpenAdd,
     onOpen: onOpenAdd,
@@ -91,14 +81,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
               >
                 <TbEdit size={20} />
               </button>
-              <button
-                onClick={() => {
-                  onOpenDelete();
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <RiDeleteBin5Line size={20} />
-              </button>
+              <DeleteButton onDelete={handleDeleteAttrGroup} />
             </div>
           </div>
         ) : (
@@ -111,16 +94,6 @@ const AddNewAttrGroup: React.FC<Props> = ({
         defaultDatas={attrGroup?.find((g: any) => g.id === selectedAttrGroupId)}
         type={type}
       />
-      <DynamicModal
-        isOpen={isOpenDelete}
-        onOpenChange={onOpenChangeDelete}
-        onConfirm={handleDeleteAttrGroup}
-      >
-        <p className="leading-7 text-danger-600">
-          با حذف گروه ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف
-          اطمینان دارید؟
-        </p>
-      </DynamicModal>
     </>
   );
 };

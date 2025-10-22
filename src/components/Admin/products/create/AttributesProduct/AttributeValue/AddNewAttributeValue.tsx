@@ -1,15 +1,14 @@
 "use client";
 
-import { Button, useDisclosure } from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import React, { useState } from "react";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import { useDeleteAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
-import DynamicModal from "@/components/ui/modals/Modal";
 import { TbEdit } from "react-icons/tb";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import DeleteButton from "@/components/forms/DeleteButton";
 
 type Props = {
   attrValues: Record<string, any>[];
@@ -40,12 +39,6 @@ const AddNewAttributeValue: React.FC<Props> = ({
     isOpen: isOpenAdd,
     onOpen: onOpenAdd,
     onOpenChange: onOpenChangeAdd,
-  } = useDisclosure();
-
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onOpenChange: onOpenChangeDelete,
   } = useDisclosure();
 
   const handleDeleteAttrValue = () => {
@@ -128,15 +121,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
                 <TbEdit size={20} />
               </button>
 
-              {/* حذف */}
-              <button
-                onClick={() => {
-                  onOpenDelete();
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <RiDeleteBin5Line size={20} />
-              </button>
+              <DeleteButton onDelete={handleDeleteAttrValue} />
             </div>
           </div>
         ) : null}
@@ -150,20 +135,6 @@ const AddNewAttributeValue: React.FC<Props> = ({
         defaultDatas={attrValues?.find((val) => val.id === selectedAttrValueId)}
         type={type}
       />
-
-      {/* تأیید حذف */}
-      <DynamicModal
-        isOpen={isOpenDelete}
-        onOpenChange={onOpenChangeDelete}
-        title="تایید حذف مقدار ویژگی"
-        confirmText="حذف مقدار"
-        onConfirm={handleDeleteAttrValue}
-      >
-        <p className="leading-7 text-danger-600">
-          با حذف مقدار ویژگی انتخاب‌شده دیگر قابل بازگردانی نیست! آیا از حذف
-          اطمینان دارید؟
-        </p>
-      </DynamicModal>
     </>
   );
 };

@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Image, Chip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
 import DeleteButton from "@/components/forms/DeleteButton";
 import { useDeleteCategory } from "@/hooks/api/categories/useCategory";

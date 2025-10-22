@@ -4,11 +4,9 @@ import { useDisclosure } from "@heroui/react";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
-import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import { TbEdit } from "react-icons/tb";
-import { RiDeleteBin5Line } from "react-icons/ri";
-import DynamicModal from "@/components/ui/modals/Modal";
 import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
+import DeleteButton from "@/components/forms/DeleteButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -28,11 +26,6 @@ const AddNewAttribute: React.FC<Props> = ({
   const deleteAttribute = useDeleteAttribute();
 
   // modals
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onOpenChange: onOpenChangeDelete,
-  } = useDisclosure();
   const {
     isOpen: isOpenAdd,
     onOpen: onOpenAdd,
@@ -86,14 +79,7 @@ const AddNewAttribute: React.FC<Props> = ({
               >
                 <TbEdit size={20} />
               </button>
-              <button
-                onClick={() => {
-                  onOpenDelete();
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <RiDeleteBin5Line size={20} />
-              </button>
+              <DeleteButton onDelete={handleDeleteAttr} />
             </div>
           </div>
         ) : null}
@@ -106,18 +92,6 @@ const AddNewAttribute: React.FC<Props> = ({
         defaultDatas={attr?.find((a) => a.id === selectedAttrId)}
         type={type}
       />
-
-      {/* حذف */}
-      <DynamicModal
-        isOpen={isOpenDelete}
-        onOpenChange={onOpenChangeDelete}
-        onConfirm={handleDeleteAttr}
-      >
-        <p className="leading-7 text-danger-600">
-          با حذف ویژگی انتخاب شده دیگر قابل بازگردانی نیست! آیا از حذف اطمینان
-          دارید؟
-        </p>
-      </DynamicModal>
     </>
   );
 };
