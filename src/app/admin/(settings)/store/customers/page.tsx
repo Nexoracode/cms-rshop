@@ -10,7 +10,7 @@ import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
 import { FiUsers } from "react-icons/fi";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 
 const UsersListPage = () => {
   const searchParams = useSearchParams();
@@ -63,8 +63,6 @@ const UsersListPage = () => {
 
   return (
     <>
-      <BackToPage title="برگشت" link="/admin/store/customers" />
-
       <CustomersFilter />
 
       <EntityCard

@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useGetOneUser } from "@/hooks/api/users/useUsers";
 import DetailedUserInfo from "@/components/features/store/customers/DetailedUserInfo";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 
 const UserDetailPage = () => {
   const params = useSearchParams();
@@ -28,8 +28,6 @@ const UserDetailPage = () => {
 
   return (
     <>
-      <BackToPage title="برگشت به لیست مشتریان" link="/admin/store/customers" />
-
       <DetailedUserInfo
         firstName={first_name}
         lastName={last_name}

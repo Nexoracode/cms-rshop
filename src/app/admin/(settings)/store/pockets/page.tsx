@@ -1,6 +1,6 @@
 "use client";
 
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 
 const Pockets = () => {
   return (

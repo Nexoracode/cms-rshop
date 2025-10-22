@@ -1,6 +1,6 @@
 "use client"
 
-import BackToPage from "@/components/common/BackToPage"
+import BackToPage from "@/components/common/Breadcrumbs"
 import { Switch } from "@heroui/react"
 import { useState } from "react"
 

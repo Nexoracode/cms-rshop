@@ -3,7 +3,7 @@
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
 import CategoryTree from "@/components/features/products/categories/CategoryCard";
 import EntityCard from "@/components/common/EntityCard/EntityCard";
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { useDisclosure } from "@heroui/react";
 import { useState } from "react";

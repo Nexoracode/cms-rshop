@@ -1,6 +1,6 @@
 "use client";
 
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 import { useDisclosure } from "@heroui/react";
 import PromotionsListModal from "@/components/features/store/promotions/PromotionsListModal";
 import EntityCard from "@/components/common/EntityCard/EntityCard";
@@ -13,8 +13,6 @@ const Promotions = () => {
 
   return (
     <>
-      <BackToPage title="برگشت به تنظیمات" link="/admin/store" />
-
       <EntityCard
         datas={brands}
         isExistItems={brands?.data?.items?.length}

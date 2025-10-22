@@ -2,7 +2,7 @@
 
 import HeaderAction from "@/components/features/products/create/helpers/HeaderAction"
 import Faq from "@/components/features/settings/Faq"
-import BackToPage from "@/components/common/BackToPage"
+import BackToPage from "@/components/common/Breadcrumbs"
 import { useState } from "react"
 import { FaQuestion } from "react-icons/fa6"
 

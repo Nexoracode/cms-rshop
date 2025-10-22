@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 import AttributesProducts from "@/components/features/products/create/AttributesProducts";
 import ProductInitialForm from "@/components/features/products/create/ProductInitialForm";
 import { useRouter, useSearchParams } from "next/navigation";

@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import BackToPage from "@/components/common/BackToPage";
+import BackToPage from "@/components/common/Breadcrumbs";
 import EntityCard from "@/components/common/EntityCard/EntityCard";
 import CouponsFilter from "@/components/features/store/promotions/coupon/CouponsFilter";
 import { useGetCoupons } from "@/hooks/api/useCoupon";
@@ -55,11 +55,6 @@ const Coupons = () => {
 
   return (
     <>
-      <BackToPage
-        title="برگشت به لیست پروموشن ها"
-        link="/admin/store/promotions"
-      />
-
       <CouponsFilter />
 
       <EntityCard

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Switch, Button } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import BackToPage from "@/components/common/BackToPage";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -125,11 +124,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <BackToPage
-        title="بازگشت به لیست کدهای تخفیف"
-        link="/admin/store/promotions/coupon"
-      />
-
       <Card className="shadow-md">
         <BoxHeader
           title={isEditMode ? "ویرایش کد تخفیف" : "افزودن کد تخفیف"}

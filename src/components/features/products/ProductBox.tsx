@@ -46,7 +46,6 @@ const ProductBox: React.FC<Props> = ({
     <SelectableCard
       id={id}
       selectedIds={selectedIds}
-      disabled={disableSelect}
       onSelectionChange={(idVal, sel) =>
         onSelect?.(idVal as number, sel, product)
       }
