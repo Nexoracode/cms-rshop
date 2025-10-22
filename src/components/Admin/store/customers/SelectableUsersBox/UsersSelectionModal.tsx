@@ -5,8 +5,8 @@ import { Spinner } from "@heroui/react";
 import DynamicModal from "@/components/ui/modals/Modal";
 import { useGetAllUsers } from "@/hooks/api/users/useUsers";
 import { TbUsers } from "react-icons/tb";
-import UsersFilter from "../UsersFilter";
-import UserInfoCard from "../UserInfoCard";
+import UsersFilter from "../CustomersFilter";
+import UserInfoCard from "../CustomerCard";
 import { useSelectableItems } from "@/hooks/ui/useSelectableItems";
 
 type Props = {

@@ -60,8 +60,8 @@ const SORT_OPTIONS = [
   },
 ];
 
-const UsersSortModal = () => {
+const CustomersSortModal = () => {
   return <SortModal options={SORT_OPTIONS} title="مرتب‌سازی کاربران" />;
 };
 
-export default UsersSortModal;
+export default CustomersSortModal;

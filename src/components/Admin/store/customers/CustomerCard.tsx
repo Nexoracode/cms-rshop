@@ -1,13 +1,11 @@
 "use client";
 
 import React from "react";
-import { useDisclosure } from "@heroui/react";
 import { useDeleteUser } from "@/hooks/api/users/useUsers";
-import DynamicModal from "@/components/ui/modals/Modal";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
 import { TbEdit } from "react-icons/tb";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import DeleteButton from "@/components/forms/DeleteButton";
 
 type UserInfo = {
   id: number;
@@ -26,7 +24,7 @@ type Props = {
   disableAction?: boolean;
 };
 
-const UserInfoCard: React.FC<Props> = ({
+const CustomerCard: React.FC<Props> = ({
   infos,
   onSelect,
   selectedIds = [],
@@ -36,10 +34,8 @@ const UserInfoCard: React.FC<Props> = ({
   const router = useRouter();
   const { id, first_name, last_name, phone, email, created_at } = infos;
   const { mutate: deleteUser } = useDeleteUser(id);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <>
       <SelectableCard
         id={id}
         selectedIds={selectedIds}
@@ -73,33 +69,12 @@ const UserInfoCard: React.FC<Props> = ({
               >
                 <TbEdit size={18} />
               </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpen();
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <RiDeleteBin5Line size={18} />
-              </button>
+              <DeleteButton onDelete={deleteUser} />
             </div>
           )}
         </div>
       </SelectableCard>
-
-      <DynamicModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        title="تایید حذف کاربر"
-        confirmText="حذف کاربر"
-        onConfirm={() => deleteUser()}
-      >
-        <p className="leading-7 text-danger-600">
-          با حذف کاربر، اطلاعات او قابل برگشت نخواهد بود. آیا مطمئن هستید؟
-        </p>
-      </DynamicModal>
-    </>
   );
 };
 
-export default UserInfoCard;
+export default CustomerCard;

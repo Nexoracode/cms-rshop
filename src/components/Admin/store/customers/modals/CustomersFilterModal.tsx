@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 import { FilterField } from "@/components/ui/modals/FilterModal";
 
-const UsersFilterModal: React.FC = () => {
+const CustomersFilterModal: React.FC = () => {
   const fields: FilterField[] = useMemo<FilterField[]>(
     () => [
       {
@@ -25,4 +25,4 @@ const UsersFilterModal: React.FC = () => {
   return <FilterModal title="فیلتر کاربران" fields={fields} />;
 };
 
-export default UsersFilterModal;
+export default CustomersFilterModal;

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import SelectableBox from "@/components/shared/SelectionBox/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
-import UserInfoCard from "../UserInfoCard";
+import UserInfoCard from "../CustomerCard";
 import UsersSelectionModal from "./UsersSelectionModal";
 
 type Users = any;

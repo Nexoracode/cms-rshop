@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import EntityCard from "@/components/admin/shared/EntityCard";
+import EntityCard from "@/components/shared/EntityCard";
 import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import BackToPage from "@/components/widgets/BackToPage";

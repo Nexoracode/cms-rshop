@@ -1,9 +1,9 @@
 "use client";
 
 import { useDisclosure } from "@heroui/react";
-import UsersFilter from "@/components/admin/store/customers/UsersFilter";
-import EntityCard from "@/components/admin/shared/EntityCard";
-import UserInfoCard from "@/components/admin/store/customers/UserInfoCard";
+import CustomersFilter from "@/components/admin/store/customers/CustomersFilter";
+import EntityCard from "@/components/shared/EntityCard";
+import UserInfoCard from "@/components/admin/store/customers/CustomerCard";
 import AddNewCustomerModal from "@/components/admin/store/customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
@@ -62,7 +62,7 @@ const UsersListPage = () => {
 
   return (
     <section className="flex flex-col gap-6">
-      <UsersFilter />
+      <CustomersFilter />
 
       <EntityCard
         title="لیست کاربران"

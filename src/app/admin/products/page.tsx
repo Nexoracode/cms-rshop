@@ -13,7 +13,7 @@ import {
 } from "@/hooks/api/products/useProduct";
 import { useMemo, useState } from "react";
 import DynamicModal from "@/components/ui/modals/Modal";
-import EntityCard from "@/components/admin/shared/EntityCard";
+import EntityCard from "@/components/shared/EntityCard";
 import ProductsFilter from "@/components/admin/products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/admin/products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import { BsShop } from "react-icons/bs";

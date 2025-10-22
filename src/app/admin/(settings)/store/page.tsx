@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import BoxLink from "@/components/admin/shared/BoxLink";
+import BoxLink from "@/components/shared/BoxLink";
 import { Card, CardBody } from "@heroui/react";
 import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";

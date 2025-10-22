@@ -139,7 +139,7 @@ export default function Sidebar() {
                 {...glowPulse}
               />
               <Item
-                title="خانه"
+                title="داشبورد"
                 icon={
                   <motion.span {...iconFloat}>
                     <HiOutlineHome className="text-2xl animate-pulse" />

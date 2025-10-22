@@ -2,7 +2,7 @@
 
 import AddNewCategoryModal from "@/components/admin/products/categories/AddNewCategoryModal";
 import CategoryTree from "@/components/admin/products/categories/CategoryCard";
-import EntityCard from "@/components/admin/shared/EntityCard";
+import EntityCard from "@/components/shared/EntityCard";
 import BackToPage from "@/components/widgets/BackToPage";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { useDisclosure } from "@heroui/react";

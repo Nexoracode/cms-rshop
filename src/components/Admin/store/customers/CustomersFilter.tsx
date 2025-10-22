@@ -1,10 +1,10 @@
 "use client";
 
-import SearchFilterCard from "@/components/admin/shared/SearchFilterCard";
-import UsersFilterModal from "./modals/UsersFilterModal";
-import UsersSortModal from "./modals/UsersSortModal";
+import SearchFilterCard from "@/components/shared/SearchFilterCard";
+import CustomersSortModal from "./modals/CustomersSortModal";
+import CustomersFilterModal from "./modals/CustomersFilterModal";
 
-const UsersFilter = () => {
+const CustomersFilter = () => {
   return (
     <SearchFilterCard
       relatedTitle="دسترسی سریع"
@@ -14,10 +14,10 @@ const UsersFilter = () => {
       ]}
       searchPlaceholder="جستجو نام، شماره تماس یا ایمیل کاربر..."
     >
-      <UsersFilterModal />
-      <UsersSortModal />
+      <CustomersFilterModal />
+      <CustomersSortModal />
     </SearchFilterCard>
   );
 };
 
-export default UsersFilter;
+export default CustomersFilter;

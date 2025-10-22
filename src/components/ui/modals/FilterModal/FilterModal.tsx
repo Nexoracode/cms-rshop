@@ -226,7 +226,7 @@ const FilterModal: React.FC<Props> = ({
         size={size}
       >
         <div className="flex flex-col gap-6">
-          {fields.map((f) => (
+          {fields?.map((f) => (
             <div key={f.key}>
               {renderField({ f, state, setField, remoteCache })}
             </div>
