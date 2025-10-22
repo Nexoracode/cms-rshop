@@ -19,11 +19,11 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
     e.stopPropagation();
     if (route) {
       router.push(route);
     } else if (onClick) {
-      e.preventDefault()
       onClick();
     }
   };

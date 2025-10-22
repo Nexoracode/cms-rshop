@@ -1,22 +1,18 @@
 "use client";
 
-import React from "react";
-import { useDisclosure } from "@heroui/react";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
-import DynamicModal from "@/components/ui/modals/Modal";
-import { FiShoppingBag } from "react-icons/fi";
-import { TbEdit, TbTruckDelivery } from "react-icons/tb";
+import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
-import { useRouter } from "next/navigation";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
 import DeleteButton from "@/components/shared/DeleteButton";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import Link from "next/link";
 
 type Props = {
   product: any;
-  onShowInfos?: (productId: number) => void;
-  onShowVariant?: (productId: number) => void;
+  //onShowInfos?: (productId: number) => void;
+  //onShowVariant?: (productId: number) => void;
   onSelect?: (id: number, selected: boolean, product?: any) => void;
   selectedIds?: number[];
   disableSelect?: boolean;
@@ -25,39 +21,38 @@ type Props = {
 
 const ProductBox: React.FC<Props> = ({
   product,
-  onShowInfos,
-  onShowVariant,
+  //onShowInfos,
+  //onShowVariant,
   onSelect,
   selectedIds = [],
   disableSelect = false,
   disableAction = false,
 }) => {
-  const router = useRouter();
   const id = product.id;
 
   const { mutate: deleteProduct } = useDeleteProduct(id);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const handleShowInfos = () => {
+  /* const handleShowInfos = () => {
     if (onShowInfos) return onShowInfos(id);
     router.push(`/admin/products/create?edit_id=${id}&type=infos`);
-  };
+  }; */
 
-  const handleShowVariant = (e?: React.SyntheticEvent) => {
+  /* const handleShowVariant = () => {
     if (onShowVariant) return onShowVariant(id);
     router.push(`/admin/products/create?edit_id=${id}&type=variant`);
-  };
+  }; */
 
   return (
-      <SelectableCard
-        id={id}
-        selectedIds={selectedIds}
-        disabled={disableSelect}
-        onSelectionChange={(idVal, sel) =>
-          onSelect?.(idVal as number, sel, product)
-        }
-        className="max-w-[300px] w-full sm:max-w-full"
-      >
+    <SelectableCard
+      id={id}
+      selectedIds={selectedIds}
+      disabled={disableSelect}
+      onSelectionChange={(idVal, sel) =>
+        onSelect?.(idVal as number, sel, product)
+      }
+      className="max-w-[300px] w-full sm:max-w-full"
+    >
+      <Link href={`/admin/products/create?edit_id=${id}&type=infos`}>
         <div className="flex flex-col items-center sm:flex-row gap-4 text-start">
           <div className="relative w-fit h-full">
             <img
@@ -85,18 +80,16 @@ const ProductBox: React.FC<Props> = ({
 
               {!disableAction ? (
                 <div className="flex gap-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleShowVariant(e);
-                    }}
-                    className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-                  >
-                    <MdOutlineCategory size={18} />
-                  </button>
-                  <DeleteButton
-                    onDelete={deleteProduct}
+                  <ActionButton
+                    className={
+                      product?.variants?.length
+                        ? "bg-purple-100 text-purple-600"
+                        : ""
+                    }
+                    icon={<MdOutlineCategory size={18} />}
+                    route={`/admin/products/create?edit_id=${id}&type=variant`}
                   />
+                  <DeleteButton onDelete={deleteProduct} />
                 </div>
               ) : (
                 ""
@@ -106,13 +99,6 @@ const ProductBox: React.FC<Props> = ({
             <div className="flex items-end justify-between">
               <div className="flex flex-col gap-2 cursor-auto">
                 <div className="flex items-center gap-2">
-                  {product?.variants?.length ? (
-                    <div className="border-l-2 pl-2">
-                      <MdOutlineCategory className="text-purple-500 text-xl" />
-                    </div>
-                  ) : (
-                    ""
-                  )}
                   <div className="flex items-center gap-2">
                     {product.is_featured && (
                       <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
@@ -167,7 +153,8 @@ const ProductBox: React.FC<Props> = ({
             </div>
           </div>
         </div>
-      </SelectableCard>
+      </Link>
+    </SelectableCard>
   );
 };
 
