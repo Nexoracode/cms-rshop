@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useGetOneUser } from "@/hooks/api/users/useUsers";
 import DetailedUserInfo from "@/components/features/store/customers/DetailedUserInfo";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
+import BackToPage from "@/components/common/BackToPage";
 
 const UserDetailPage = () => {
-  const router = useRouter();
   const params = useSearchParams();
   const userId = params ? Number(params.get("edit_id")) : 0;
 
@@ -27,13 +27,8 @@ const UserDetailPage = () => {
   } = oneUser.data;
 
   return (
-    <div className="flex flex-col gap-4">
-      <button
-        className="text-blue-600 hover:underline mb-4"
-        onClick={() => router.back()}
-      >
-        ← برگشت
-      </button>
+    <>
+      <BackToPage title="برگشت به لیست مشتریان" link="/admin/store/customers" />
 
       <DetailedUserInfo
         firstName={first_name}
@@ -55,7 +50,7 @@ const UserDetailPage = () => {
           },
         ]}
       />
-    </div>
+    </>
   );
 };
 
