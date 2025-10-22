@@ -78,11 +78,11 @@ const CouponCard: React.FC<Props> = ({
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
-          <div className="text-2xl text-blue-500 bg-slate-50 rounded-full p-4">
-            <TbCategory2 />
-            <LuUsers  />
-            <TfiShoppingCartFull  />
-            <LuPercent  />
+          <div className="text-2xl text-gray-600 bg-slate-50 rounded-full p-4">
+            {item?.allowed_users?.length ? <LuUsers /> : ""}
+            {item?.allowed_products?.length ? <TfiShoppingCartFull /> : ""}
+            {item?.allowed_categories?.length ? <TbCategory2 /> : ""}
+            {!item?.allowed_categories?.length && !item?.allowed_users?.length && !item?.allowed_products?.length ? <LuPercent /> : ""}
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">{item.code}</p>
