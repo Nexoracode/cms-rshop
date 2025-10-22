@@ -6,7 +6,7 @@ import { Image, Chip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteCategory } from "@/hooks/api/categories/useCategory";
 
 type Media = { id: number; url: string; alt: string | null; type: "image" };

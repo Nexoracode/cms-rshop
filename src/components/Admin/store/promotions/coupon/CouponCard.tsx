@@ -1,6 +1,6 @@
 "use client";
 
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteCoupon } from "@/hooks/api/useCoupon";
 import { Card, CardBody } from "@heroui/react";
 import Link from "next/link";

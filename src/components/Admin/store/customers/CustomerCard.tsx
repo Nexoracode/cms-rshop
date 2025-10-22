@@ -5,7 +5,7 @@ import { useDeleteUser } from "@/hooks/api/users/useUsers";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
 import { TbEdit } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 
 type UserInfo = {
   id: number;

@@ -8,7 +8,7 @@ import { useAttributeContext } from "../../context/AttributeContext";
 import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import { TbEdit } from "react-icons/tb";
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 
 type Props = {
   attrValues: Record<string, any>[];

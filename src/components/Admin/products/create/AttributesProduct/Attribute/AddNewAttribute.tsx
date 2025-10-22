@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
 import { TbEdit } from "react-icons/tb";
 import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 
 type Props = {
   onChange: (value: number | undefined) => void;

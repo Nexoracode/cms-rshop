@@ -11,7 +11,7 @@ import { TbEdit, TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 
 type Props = {
   product: any;

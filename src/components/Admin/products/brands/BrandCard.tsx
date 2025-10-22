@@ -1,6 +1,6 @@
 "use client";
 
-import DeleteButton from "@/components/forms/DeleteButton";
+import DeleteButton from "@/components/shared/DeleteButton";
 import { Card, CardBody, Image } from "@heroui/react";
 
 type BrandCardProps = {
