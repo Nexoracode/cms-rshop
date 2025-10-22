@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import SelectableBox from "@/components/shared/SelectionBox/SelectionBox";
+import SelectionBox from "@/components/shared/SelectionBox";
 import { BiCategoryAlt } from "react-icons/bi";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
 import CategoryTree from "../CategoryCard";
@@ -33,7 +33,7 @@ const SelectableCategoriesBox: React.FC<Props> = ({
   };
 
   return (
-    <SelectableBox
+    <SelectionBox
       title="دسته‌بندی‌ها انتخاب‌شده"
       icon={<BiCategoryAlt className="text-5xl" />}
       initial={selectedCategories}
@@ -55,7 +55,7 @@ const SelectableCategoriesBox: React.FC<Props> = ({
           disableShowChildren
         />
       </div>
-    </SelectableBox>
+    </SelectionBox>
   );
 };
 

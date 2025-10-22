@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import SelectableBox from "@/components/shared/SelectionBox/SelectionBox";
+import SelectionBox from "@/components/shared/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import UserInfoCard from "../CustomerCard";
 import UsersSelectionModal from "./UsersSelectionModal";
@@ -32,7 +32,7 @@ const SelectableUsersBox: React.FC<Props> = ({
   };
 
   return (
-    <SelectableBox
+    <SelectionBox
       title="کاربران انتخاب شده"
       icon={<TbUsersGroup className="text-5xl" />}
       initial={selectedUsers}
@@ -56,7 +56,7 @@ const SelectableUsersBox: React.FC<Props> = ({
           />
         ))}
       </div>
-    </SelectableBox>
+    </SelectionBox>
   );
 };
 

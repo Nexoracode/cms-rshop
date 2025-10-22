@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineCategory } from "react-icons/md";
 import { RiDiscountPercentLine } from "react-icons/ri";
-import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/ui/SelectableCard";
 
 type VariantItem = { id: number; quantity: number };
 type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };

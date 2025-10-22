@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useDeleteUser } from "@/hooks/api/users/useUsers";
-import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/ui/SelectableCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import Link from "next/link";
 

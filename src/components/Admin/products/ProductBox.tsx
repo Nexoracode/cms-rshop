@@ -4,7 +4,7 @@ import { MdOutlineCategory } from "react-icons/md";
 import { useDeleteProduct } from "@/hooks/api/products/useProduct";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
-import SelectableCard from "@/components/shared/SelectionBox/SelectableCard";
+import SelectableCard from "@/components/ui/SelectableCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import Link from "next/link";

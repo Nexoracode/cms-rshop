@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import SelectableBox from "@/components/shared/SelectionBox/SelectionBox";
+import SelectionBox from "@/components/shared/SelectionBox";
 import VariantsSelectionModal from "./VariantsSelectionModal";
 import { MdOutlineCategory } from "react-icons/md";
 import ProductWithVariantsBox from "../ProductWithVariantsBox";
@@ -33,7 +33,7 @@ const SelectableVariantsBox: React.FC<Props> = ({
   };
 
   return (
-    <SelectableBox
+    <SelectionBox
       title="تنوع محصول ها انتخاب شده"
       icon={<MdOutlineCategory className="text-5xl" />}
       initial={selectedVariants}
@@ -56,7 +56,7 @@ const SelectableVariantsBox: React.FC<Props> = ({
           />
         ))}
       </div>
-    </SelectableBox>
+    </SelectionBox>
   );
 };
 

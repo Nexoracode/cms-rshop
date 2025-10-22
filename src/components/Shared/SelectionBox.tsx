@@ -12,7 +12,7 @@ type Props<T = any> = {
   icon: React.ReactNode;
 };
 
-const SelectableBox = <T,>({
+const SelectionBox = <T,>({
   initial = [],
   children,
   modal,
@@ -49,4 +49,4 @@ const SelectableBox = <T,>({
   );
 };
 
-export default SelectableBox;
+export default SelectionBox;
