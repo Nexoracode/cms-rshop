@@ -1,7 +1,7 @@
 "use client"
 
 import { Accordion, AccordionItem } from "@heroui/react";
-import BackToPage from "@/components/widgets/BackToPage"
+import BackToPage from "@/components/shared/BackToPage"
 import { BsInfoCircle } from "react-icons/bs";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { HiOutlineReceiptRefund } from "react-icons/hi";

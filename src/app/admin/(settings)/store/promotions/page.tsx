@@ -1,6 +1,6 @@
 "use client";
 
-import BackToPage from "@/components/widgets/BackToPage";
+import BackToPage from "@/components/shared/BackToPage";
 import { useDisclosure } from "@heroui/react";
 import PromotionsListModal from "@/components/admin/store/promotions/PromotionsListModal";
 import EntityCard from "@/components/shared/EntityCard";
@@ -13,33 +13,24 @@ const Promotions = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-6">
-        <div className="mb-4">
-          <BackToPage title="برگشت به تنظیمات" link="/admin/store" />
+      <BackToPage title="برگشت به تنظیمات" link="/admin/store" />
+
+      <EntityCard
+        datas={brands}
+        isExistItems={brands?.data?.items?.length}
+        isLoading={isLoading}
+        title="لیست پروموشن ها"
+        onAdd={onOpen}
+        icon={<GrAnnounce className="text-2xl" />}
+        searchInp={false}
+      >
+        <div className="flex flex-wrap justify-center pr-2 gap-4">
+          {brands?.data?.items?.map((b: any) => {
+            return <div key={b.id}></div>;
+          })}
         </div>
+      </EntityCard>
 
-        <section className="flex flex-col gap-6">
-          <EntityCard
-            datas={brands}
-            isExistItems={brands?.data?.items?.length}
-            isLoading={isLoading}
-            title="لیست پروموشن ها"
-            onAdd={onOpen}
-            icon={<GrAnnounce className="text-2xl" />}
-            searchInp={false}
-          >
-            <div className="flex flex-wrap justify-center pr-2 gap-4">
-              {brands?.data?.items?.map((b: any) => {
-                return (
-                  <div key={b.id}>
-
-                  </div>
-                );
-              })}
-            </div>
-          </EntityCard>
-        </section>
-      </div>
       <PromotionsListModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );

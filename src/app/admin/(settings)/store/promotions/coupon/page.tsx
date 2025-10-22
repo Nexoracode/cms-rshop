@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import BackToPage from "@/components/widgets/BackToPage";
+import { useSearchParams } from "next/navigation";
+import BackToPage from "@/components/shared/BackToPage";
 import EntityCard from "@/components/shared/EntityCard";
 import CouponsFilter from "@/components/admin/store/promotions/coupon/CouponsFilter";
 import { useGetCoupons } from "@/hooks/api/useCoupon";
@@ -11,7 +11,6 @@ import CouponCard from "@/components/admin/store/promotions/coupon/CouponCard";
 import { CouponSortBy } from "@/components/admin/store/promotions/coupon/coupon-types";
 
 const Coupons = () => {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   // page from query
@@ -56,45 +55,29 @@ const Coupons = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-6">
-        <BackToPage
-          title="برگشت به لیست پروموشن ها"
-          link="/admin/store/promotions"
-        />
+      <BackToPage
+        title="برگشت به لیست پروموشن ها"
+        link="/admin/store/promotions"
+      />
 
-        {/* فیلتر/لینک‌ها مثل OrdersFilter (مینیمال) */}
-        <CouponsFilter />
+      <CouponsFilter />
 
-        <EntityCard
-          title="لیست کدهای تخفیف"
-          icon={<LuTicket className="text-2xl" />}
-          isLoading={isLoading}
-          datas={coupons}
-          onAdd={() => router.push("/admin/store/promotions/coupon/create")}
-          isExistItems={!!coupons?.data?.items?.length}
-          searchInp={isFilteredView}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {coupons?.data?.items?.length
-              ? coupons.data.items.map((item: any) => (
-                  <CouponCard
-                    key={item.id}
-                    item={item}
-                    editRoute={
-                      (item?.allowed_categories?.length &&
-                        `/admin/store/promotions/coupon/categories?edit_id=${item.id}`) ||
-                      (item?.allowed_products?.length &&
-                        `/admin/store/promotions/coupon/products?edit_id=${item.id}`) ||
-                      (item?.allowed_users?.length &&
-                        `/admin/store/promotions/coupon/users?edit_id=${item.id}`) ||
-                      `/admin/store/promotions/coupon/create?edit_id=${item.id}`
-                    }
-                  />
-                ))
-              : ""}
-          </div>
-        </EntityCard>
-      </div>
+      <EntityCard
+        title="لیست کدهای تخفیف"
+        icon={<LuTicket className="text-2xl" />}
+        isLoading={isLoading}
+        datas={coupons}
+        redirect="/admin/store/promotions/coupon/create"
+        isExistItems={!!coupons?.data?.items?.length}
+        searchInp={isFilteredView}
+        childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        {coupons?.data?.items?.length
+          ? coupons.data.items.map((item: any) => (
+              <CouponCard key={item.id} item={item} />
+            ))
+          : ""}
+      </EntityCard>
     </>
   );
 };

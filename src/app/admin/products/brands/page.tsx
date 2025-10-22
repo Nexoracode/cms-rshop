@@ -4,7 +4,7 @@ import AddNewBrandModal from "@/components/admin/products/brands/AddNewBrandModa
 import BrandCard from "@/components/admin/products/brands/BrandCard";
 import BrandFilters from "@/components/admin/products/brands/BrandFilters";
 import EntityCard from "@/components/shared/EntityCard";
-import BackToPage from "@/components/widgets/BackToPage";
+import BackToPage from "@/components/shared/BackToPage";
 import DynamicModal from "@/components/ui/modals/Modal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/api/useBrand";
 import { useDisclosure } from "@heroui/react";

@@ -3,13 +3,14 @@
 import { Card, CardBody } from "@heroui/react";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import BasePagination from "@/components/widgets/BasePagination";
-import HeaderActionCard from "@/components/widgets/HeaderActionCard";
+import HeaderActionEntity from "@/components/widgets/HeaderActionEntity";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
 type EntityCardProps = {
   icon?: any;
   title: string;
-  onAdd: () => void;
+  onAdd?: () => void;
+  redirect?: string,
   isLoading: boolean;
   datas: any;
   header?: any;
@@ -26,6 +27,7 @@ const EntityCard: React.FC<EntityCardProps> = ({
   onAdd,
   isLoading,
   datas,
+  redirect,
   header,
   children,
   searchInp,
@@ -38,7 +40,7 @@ const EntityCard: React.FC<EntityCardProps> = ({
       {header}
       <Card className="shadow-md">
         <CardBody className="overflow-hidden pb-4">
-          <HeaderActionCard icon={icon} title={title} onAdd={onAdd} textBtn={textBtn}/>
+          <HeaderActionEntity icon={icon} title={title} onAdd={onAdd} redirect={redirect} textBtn={textBtn}/>
 
           {isLoading ? (
             <LoadingApiCall />

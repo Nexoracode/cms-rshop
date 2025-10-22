@@ -2,7 +2,7 @@
 
 import HeaderAction from "@/components/admin/products/create/helpers/HeaderAction"
 import BlogCard from "@/components/admin/store/blog/BlogCard"
-import BackToPage from "@/components/widgets/BackToPage"
+import BackToPage from "@/components/shared/BackToPage"
 import { useState } from "react"
 import { TbFolderOpen } from "react-icons/tb"
 

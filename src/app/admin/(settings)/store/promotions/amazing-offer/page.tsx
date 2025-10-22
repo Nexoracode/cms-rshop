@@ -2,7 +2,7 @@
 
 import ProductItem from "@/components/admin/dashboard/helpers/ProductItem";
 import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader";
-import BackToPage from "@/components/widgets/BackToPage"
+import BackToPage from "@/components/shared/BackToPage"
 import { Button, Card, CardBody, DateRangePicker, NumberInput, useDisclosure } from "@heroui/react"
 import { useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";

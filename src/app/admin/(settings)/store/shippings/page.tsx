@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import BackToPage from "@/components/widgets/BackToPage"
+import BackToPage from "@/components/shared/BackToPage"
 import { Button, Input, CardBody, Card, Switch } from "@heroui/react"
 import BoxHeader from "@/components/admin/products/create/helpers/BoxHeader"
 import { GrMapLocation } from "react-icons/gr";

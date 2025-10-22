@@ -1,6 +1,6 @@
 "use client"
 
-import BackToPage from "@/components/widgets/BackToPage"
+import BackToPage from "@/components/shared/BackToPage"
 import { Button, Input } from "@heroui/react"
 import { FaTelegram } from "react-icons/fa";
 import { LuInstagram } from "react-icons/lu";

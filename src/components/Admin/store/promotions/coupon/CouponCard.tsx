@@ -30,13 +30,11 @@ type CouponItem = {
 
 type Props = {
   item: CouponItem;
-  editRoute: string;
   disableAction?: boolean;
 };
 
 const CouponCard: React.FC<Props> = ({
   item,
-  editRoute,
   disableAction = false,
 }) => {
   const deleteCoupon = useDeleteCoupon();
@@ -74,7 +72,18 @@ const CouponCard: React.FC<Props> = ({
   ];
 
   return (
-    <BaseCard bodyClassName="flex flex-col gap-2 p-4" redirect={editRoute}>
+    <BaseCard
+      bodyClassName="flex flex-col gap-2 p-4"
+      redirect={
+        (item?.allowed_categories?.length &&
+          `/admin/store/promotions/coupon/categories?edit_id=${item.id}`) ||
+        (item?.allowed_products?.length &&
+          `/admin/store/promotions/coupon/products?edit_id=${item.id}`) ||
+        (item?.allowed_users?.length &&
+          `/admin/store/promotions/coupon/users?edit_id=${item.id}`) ||
+        `/admin/store/promotions/coupon/create?edit_id=${item.id}`
+      }
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
@@ -82,7 +91,13 @@ const CouponCard: React.FC<Props> = ({
             {item?.allowed_users?.length ? <LuUsers /> : ""}
             {item?.allowed_products?.length ? <TfiShoppingCartFull /> : ""}
             {item?.allowed_categories?.length ? <TbCategory2 /> : ""}
-            {!item?.allowed_categories?.length && !item?.allowed_users?.length && !item?.allowed_products?.length ? <LuPercent /> : ""}
+            {!item?.allowed_categories?.length &&
+            !item?.allowed_users?.length &&
+            !item?.allowed_products?.length ? (
+              <LuPercent />
+            ) : (
+              ""
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">{item.code}</p>
