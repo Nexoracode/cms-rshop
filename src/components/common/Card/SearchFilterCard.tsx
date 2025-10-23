@@ -11,11 +11,12 @@ type RelatedPage = {
   href: string;
 };
 
-type SearchFilterCardProps = {
+export type SearchFilterCardProps = {
   relatedTitle?: string;
   relatedPages?: RelatedPage[];
   searchPlaceholder?: string;
   children?: React.ReactNode;
+  showSearchBar?: boolean; // پراپ جدید اختیاری
 };
 
 const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
@@ -23,11 +24,12 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
   relatedPages = [],
   searchPlaceholder = "جستجو...",
   children,
+  showSearchBar = false,
 }) => {
   return (
     <Card className="shadow-md">
       <CardBody className="flex flex-col gap-4">
-        {relatedPages.length > 0 ? (
+        {relatedPages.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-2">
             <p className="pr-2">{relatedTitle}</p>
             <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
@@ -42,16 +44,19 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
               ))}
             </div>
           </div>
+        )}
+        {showSearchBar || children ? (
+          <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
+            {showSearchBar && (
+              <DebouncedSearchURL placeholder={searchPlaceholder} />
+            )}
+            <div className="w-full sm:w-fit flex items-center gap-2">
+              {children}
+            </div>
+          </div>
         ) : (
           ""
         )}
-
-        <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
-          <DebouncedSearchURL placeholder={searchPlaceholder} />
-          <div className="w-full sm:w-fit flex items-center gap-2">
-            {children}
-          </div>
-        </div>
       </CardBody>
     </Card>
   );

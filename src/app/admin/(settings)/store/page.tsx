@@ -15,7 +15,7 @@ import { RiTimerLine } from "react-icons/ri";
 import { LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
-import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
+import BoxHeader from "@/components/common/Card/HeaderCard";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 // تنظیمات فروشگاه

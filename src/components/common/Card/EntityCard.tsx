@@ -3,7 +3,7 @@
 import { Card, CardBody } from "@heroui/react";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import BasePagination from "@/components/ui/BasePagination";
-import HeaderActionEntity from "@/components/common/EntityCard/HeaderActionEntity";
+import HeaderActionEntity from "@/components/common/Card/HeaderAction";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
 
 type EntityCardProps = {

@@ -2,7 +2,7 @@
 
 import { useDisclosure } from "@heroui/react";
 import CustomersFilter from "@/components/features/store/customers/CustomersFilter";
-import EntityCard from "@/components/common/EntityCard/EntityCard";
+import EntityCard from "@/components/common/Card/EntityCard";
 import CustomerCard from "@/components/features/store/customers/CustomerCard";
 import AddNewCustomerModal from "@/components/features/store/customers/modals/AddNewCustomerModal";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";

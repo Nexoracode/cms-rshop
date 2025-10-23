@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardBody } from "@heroui/react"
-import BoxHeader from "../products/create/helpers/BoxHeader"
+import BoxHeader from "../../common/Card/HeaderCard"
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import ProductItem from "./helpers/ProductItem";
 

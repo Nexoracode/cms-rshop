@@ -3,7 +3,7 @@
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 import BrandCard from "@/components/features/products/brands/BrandCard";
 import BrandFilters from "@/components/features/products/brands/BrandFilters";
-import EntityCard from "@/components/common/EntityCard/EntityCard";
+import EntityCard from "@/components/common/Card/EntityCard";
 import BackToPage from "@/components/common/Breadcrumbs";
 import DynamicModal from "@/components/ui/modals/BaseModal";
 import { useDeleteBrand, useGetBrands } from "@/hooks/api/useBrand";

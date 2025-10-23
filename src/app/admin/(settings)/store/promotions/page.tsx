@@ -3,7 +3,7 @@
 import BackToPage from "@/components/common/Breadcrumbs";
 import { useDisclosure } from "@heroui/react";
 import PromotionsListModal from "@/components/features/store/promotions/PromotionsListModal";
-import EntityCard from "@/components/common/EntityCard/EntityCard";
+import EntityCard from "@/components/common/Card/EntityCard";
 import { GrAnnounce } from "react-icons/gr";
 import { useGetBrands } from "@/hooks/api/useBrand";
 

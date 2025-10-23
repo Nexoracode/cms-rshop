@@ -1,6 +1,6 @@
 "use client";
 
-import SearchFilterCard from "../../common/SearchFilterCard";
+import SearchFilterCard from "../../common/Card/SearchFilterCard";
 import OrdersFilterModal from "./modals/OrdersFilterModal";
 import OrdersSortingModal from "./modals/OrdersSortModal";
 

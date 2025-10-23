@@ -11,7 +11,7 @@ type HeaderActionCardProps = {
   redirect?: string;
 };
 
-const HeaderActionEntity: React.FC<HeaderActionCardProps> = ({
+const HeaderAction: React.FC<HeaderActionCardProps> = ({
   icon,
   title,
   onAdd,
@@ -40,4 +40,4 @@ const HeaderActionEntity: React.FC<HeaderActionCardProps> = ({
   );
 };
 
-export default HeaderActionEntity;
+export default HeaderAction;

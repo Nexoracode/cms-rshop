@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Card, CardBody, Input, Textarea } from "@heroui/react"
-import BoxHeader from "../products/create/helpers/BoxHeader"
+import BoxHeader from "../../common/Card/HeaderCard"
 import { FaQuestion } from "react-icons/fa6"
 import { useState, useEffect } from "react"
 

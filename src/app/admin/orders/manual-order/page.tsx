@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
+import BoxHeader from "@/components/common/Card/HeaderCard";
 import BackToPage from "@/components/common/Breadcrumbs";
 import SwitchWrapper from "@/components/shared/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";

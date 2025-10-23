@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import BackToPage from "@/components/common/Breadcrumbs";
-import EntityCard from "@/components/common/EntityCard/EntityCard";
+import EntityCard from "@/components/common/Card/EntityCard";
 import CouponsFilter from "@/components/features/store/promotions/coupon/CouponsFilter";
 import { useGetCoupons } from "@/hooks/api/useCoupon";
 import { LuTicket } from "react-icons/lu";

@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useMemo, useState } from "react";
 import { Card, CardBody, Input } from "@heroui/react";
-import BoxHeader from "../helpers/BoxHeader";
+import BoxHeader from "../../../../common/Card/HeaderCard";
 import { Variant } from "@/animations/variant-motion";
 import { useSearchParams } from "next/navigation";
 import PriceNumberInput from "../../../../ui/inputs/NumberInput";

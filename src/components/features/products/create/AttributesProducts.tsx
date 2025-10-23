@@ -5,7 +5,7 @@ import {
   TbSortAscendingSmallBig,
   TbSortDescendingShapes,
 } from "react-icons/tb";
-import BoxHeader from "./helpers/BoxHeader";
+import BoxHeader from "../../../common/Card/HeaderCard";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { useUpdateVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
@@ -25,6 +25,7 @@ import Link from "next/link";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import OptionButton from "@/components/ui/buttons/OptionButton";
+import MainCard from "@/components/common/Card/MainCard";
 
 type VariantValidity = {
   hasPrice: boolean;
@@ -223,44 +224,44 @@ const AttributesProducts = () => {
   ];
 
   return (
-    <Card className="w-full shadow-md">
-      <BoxHeader
-        title="ویژگی های محصول"
-        color="bg-purple-700/10 text-purple-700"
-        icon={<MdOutlineCategory className="text-2xl" />}
-      />
-      <CardBody dir="rtl" className="flex flex-col gap-6 text-start">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-3">
-          <p className="sm:pr-2">مدیریت ویژگی‌ها</p>
-          <div className="flex flex-wrap gap-2 w-full sm:w-fit">
-            <OptionButton
-              title={"ویژگی ها"}
-              icon={<GoArrowUpRight className="text-xl" />}
-              href={"/admin/products/variants"}
-              className="flex-1"
-            />
-            <AddNewAttributesModal />
-          </div>
-        </div>
-
-        <div className="bg-slate-50 p-4 pt-6 rounded-xl">
-          <BaseTabs
-            items={tabItems}
-            activeKey={activeTab}
-            onTabChange={(key) => {
-              const k = String(key);
-              setActiveTab(k);
-              const params = new URLSearchParams(searchParams.toString());
-              params.set("tab", k);
-              router.replace(`${pathname}?${params.toString()}`, {
-                scroll: false,
-              });
-            }}
-            tabListClassName="flex-wrap md:flex-nowrap mb-4"
-          />
-        </div>
-      </CardBody>
-    </Card>
+    <MainCard
+      searchFilterProps={{
+        relatedTitle: "دسترسی سریع",
+        relatedPages: [
+          {
+            title: "مدیریت ویژگی ها",
+            href: "/admin/products/variants",
+          },
+          {
+            title: "مدیریت تنوع محصولات",
+            href: "/admin/products/variants/",
+          },
+        ]
+      }}
+      headerProps={{
+        icon: <BiCategoryAlt className="text-xl" />,
+        title: "لیست ویژگی ها",
+        color: "bg-gray-100",
+        actionText: "+ افزودن ویژگی",
+        onAdd: () => <AddNewAttributesModal />,
+      }}
+      tabsComponent={
+        <BaseTabs
+          items={tabItems}
+          activeKey={activeTab}
+          onTabChange={(key) => {
+            const k = String(key);
+            setActiveTab(k);
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("tab", k);
+            router.replace(`${pathname}?${params.toString()}`, {
+              scroll: false,
+            });
+          }}
+          tabListClassName="flex-wrap md:flex-nowrap mb-4"
+        />
+      }
+    />
   );
 };
 

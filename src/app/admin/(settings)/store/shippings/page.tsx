@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Input, CardBody, Card, Switch } from "@heroui/react"
-import BoxHeader from "@/components/features/products/create/helpers/BoxHeader"
+import BoxHeader from "@/components/common/Card/HeaderCard"
 import { GrMapLocation } from "react-icons/gr";
 import { FaTreeCity } from "react-icons/fa6";
 import SendTypeCard from "@/components/features/store/shippings/SendTypeCard"

@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
-import BoxHeader from "@/components/features/products/create/helpers/BoxHeader";
+import BoxHeader from "@/components/common/Card/HeaderCard";
 import { LuTicket } from "react-icons/lu";
 import {
   useCreateCoupon,
