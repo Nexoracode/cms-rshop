@@ -2,19 +2,11 @@
 
 import React from "react";
 import { Card, CardBody, CardFooter } from "@heroui/react";
-import UnifiedHeader from "./UnifiedHeader";
+import UnifiedHeader, { UnifiedHeaderProps } from "./UnifiedHeader";
 import SearchFilterCard, { SearchFilterCardProps } from "./SearchFilterCard";
 
 export type MainCardProps = {
-  headerProps?: {
-    icon: React.ReactNode;
-    title: string;
-    color?: string;
-    textSize?: string;
-    actionText?: string;
-    onAdd?: () => void;
-    redirect?: string;
-  };
+  headerProps?: UnifiedHeaderProps
   searchFilterProps?: SearchFilterCardProps; 
   tabsComponent?: React.ReactNode;
   children?: React.ReactNode;

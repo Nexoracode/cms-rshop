@@ -1,11 +1,10 @@
 "use client";
 
-import { Button, Card, CardBody } from "@heroui/react";
+import { Button } from "@heroui/react";
 import {
   TbSortAscendingSmallBig,
   TbSortDescendingShapes,
 } from "react-icons/tb";
-import BoxHeader from "../../../common/Card/HeaderCard";
 import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { useUpdateVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
@@ -20,12 +19,10 @@ import SectionCard from "./helpers/SectionCard";
 import SpecTree from "./helpers/SpecTree";
 import { MdOutlineCategory } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
-import { GoArrowUpRight } from "react-icons/go";
-import Link from "next/link";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
-import OptionButton from "@/components/ui/buttons/OptionButton";
 import MainCard from "@/components/common/Card/MainCard";
+import AttributesModal from "./AttributesProduct/AttributesModal";
 
 type VariantValidity = {
   hasPrice: boolean;
@@ -122,13 +119,13 @@ const AttributesProducts = () => {
       title: (
         <div className="flex justify-center items-center gap-2">
           <MdOutlineCategory className="text-xl" />
-          <span>لیست متغیرها</span>
+          <span>تنوع ها محصول</span>
         </div>
       ),
       content: (
         <SectionCard
           show={!productData?.data?.variants?.length}
-          empty="هنوز متغیری انتخاب نکرده اید!!"
+          empty="هنوز تنوع محصولی انتخاب نکرده اید!!"
         >
           <div
             className="grid grid-cols-1 gap-6 md:grid-cols-2"
@@ -167,7 +164,7 @@ const AttributesProducts = () => {
       title: (
         <div className="flex justify-center items-center gap-2">
           <TbSortDescendingShapes className="text-xl" />
-          <span>مرتب سازی متغیرها</span>
+          <span>مرتب سازی تنوع ها محصول</span>
         </div>
       ),
       content: (
@@ -188,7 +185,7 @@ const AttributesProducts = () => {
       title: (
         <div className="flex justify-center items-center gap-2">
           <BiCategoryAlt className="text-xl" />
-          <span>لیست ویژگی ها</span>
+          <span>ویژگی ها</span>
         </div>
       ),
       content: (
@@ -226,7 +223,6 @@ const AttributesProducts = () => {
   return (
     <MainCard
       searchFilterProps={{
-        relatedTitle: "دسترسی سریع",
         relatedPages: [
           {
             title: "مدیریت ویژگی ها",
@@ -240,10 +236,10 @@ const AttributesProducts = () => {
       }}
       headerProps={{
         icon: <BiCategoryAlt className="text-xl" />,
-        title: "لیست ویژگی ها",
-        color: "bg-gray-100",
-        actionText: "+ افزودن ویژگی",
-        onAdd: () => <AddNewAttributesModal />,
+        title: "ویژگی ها و تنوع محصولات",
+        children: (
+          <AttributesModal/>
+        )
       }}
       tabsComponent={
         <BaseTabs

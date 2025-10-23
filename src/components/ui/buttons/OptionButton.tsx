@@ -43,7 +43,7 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       href={href}
       variant={variant}
       size={size}
-      className={`pl-5 ${className}`}
+      className={`w-fit rounded-lg ${className}`}
     >
       {content}
     </Button>
@@ -52,7 +52,7 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       onPress={onClick}
       variant={variant}
       size={size}
-      className={`pl-5 ${className}`}
+      className={`w-fit rounded-lg ${className}`}
     >
       {content}
     </Button>
