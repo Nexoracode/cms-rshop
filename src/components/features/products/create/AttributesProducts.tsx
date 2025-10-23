@@ -5,7 +5,6 @@ import {
   TbSortAscendingSmallBig,
   TbSortDescendingShapes,
 } from "react-icons/tb";
-import AddNewAttributesModal from "./AttributesProduct/AttributesModal";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { useUpdateVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -21,7 +20,7 @@ import { MdOutlineCategory } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
-import MainCard from "@/components/common/Card/MainCard";
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
 
 type VariantValidity = {
@@ -221,7 +220,7 @@ const AttributesProducts = () => {
   ];
 
   return (
-    <MainCard
+    <UnifiedCard
       searchFilterProps={{
         relatedPages: [
           {
