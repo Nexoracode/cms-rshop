@@ -3,10 +3,12 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import { Card, CardBody, Input } from "@heroui/react";
 import BoxHeader from "../../../../common/Card/CardHeader";
-import { Variant } from "@/animations/variant-motion";
+
 import { useSearchParams } from "next/navigation";
 import PriceNumberInput from "../../../../ui/inputs/NumberInput";
 import PriceWithDiscountInput from "../../../../forms/Inputs/DiscountedPriceInput";
+
+type Variant = any
 
 type Props = {
   variantName: string;
