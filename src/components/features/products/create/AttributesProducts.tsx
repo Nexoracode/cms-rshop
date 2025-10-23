@@ -1,12 +1,8 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import {
-  TbSortAscendingSmallBig,
-  TbSortDescendingShapes,
-} from "react-icons/tb";
 import toast from "react-hot-toast";
-import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
+import VariantEditorCard from "./AttributesProduct/VariantEditorCard";
 import { useUpdateVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetOneProduct } from "@/hooks/api/products/useProduct";
@@ -15,13 +11,11 @@ import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNo
 import { useEffect, useState } from "react";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
 import SpecTree from "./helpers/SpecTree";
-import { MdOutlineCategory } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
-import { LuPlus } from "react-icons/lu";
 
 type VariantValidity = {
   hasPrice: boolean;
@@ -124,7 +118,7 @@ const AttributesProducts = () => {
             data-scroll-parent="true"
           >
             {productData?.data?.variants?.map((variant: any) => (
-              <VariantRowEditor
+              <VariantEditorCard
                 key={variant.id}
                 variantName={variant?.name}
                 defaultValues={variant}
