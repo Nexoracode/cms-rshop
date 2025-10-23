@@ -20,7 +20,9 @@ type BaseModalProps = {
   children?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => void;
+  onConfirm?: (
+    close: (open: boolean) => void
+  ) => void | boolean | Promise<boolean>;
   onCancel?: () => void;
   icon?: React.ReactNode;
   confirmColor?:
@@ -80,7 +82,10 @@ const BaseModal: React.FC<BaseModalProps> = ({
       {trigger ? (
         <div onClick={() => handleOpenChange(true)}>{trigger}</div>
       ) : triggerProps ? (
-        <OptionButton {...triggerProps} onClick={() => handleOpenChange(true)} />
+        <OptionButton
+          {...triggerProps}
+          onClick={() => handleOpenChange(true)}
+        />
       ) : null}
 
       {/* ✅ Modal */}
@@ -122,9 +127,9 @@ const BaseModal: React.FC<BaseModalProps> = ({
                     color={confirmColor}
                     variant={confirmVariant}
                     isDisabled={isConfirmDisabled}
-                    onPress={() => {
-                      onConfirm?.();
-                      onClose();
+                    onPress={async () => {
+                      const shouldClose = await onConfirm?.(handleOpenChange);
+                      if (shouldClose !== false) onClose();
                     }}
                   >
                     {confirmText}

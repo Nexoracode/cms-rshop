@@ -14,8 +14,8 @@ import { useAddNewAttributeProduct } from "@/hooks/api/attributes/useAttributePr
 
 type Props = {
   isDisabledEdit?: boolean;
-  onSubmitted?: () => void;
   isActiveHeader?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 const initialSelecteds = {
@@ -26,8 +26,8 @@ const initialSelecteds = {
 
 export const AttributesContent = ({
   isDisabledEdit = true,
-  onSubmitted,
   isActiveHeader = true,
+  onOpenChange
 }: Props) => {
   const sp = useSearchParams();
   const page = +(sp.get("edit_id") ?? 1);
@@ -60,7 +60,7 @@ export const AttributesContent = ({
       addNewVariantProductMutation.mutate(newAttr, {
         onSuccess: () => {
           resetInfos();
-          onSubmitted?.();
+          onOpenChange?.(false);
         },
       });
     } else {
@@ -73,7 +73,6 @@ export const AttributesContent = ({
       addNewSimapleAttribute.mutate(newAttrSimple, {
         onSuccess: () => {
           resetInfos();
-          onSubmitted?.();
         },
       });
     }
