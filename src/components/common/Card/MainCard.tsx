@@ -2,12 +2,12 @@
 
 import React from "react";
 import { Card, CardBody, CardFooter } from "@heroui/react";
-import UnifiedHeader, { UnifiedHeaderProps } from "./UnifiedHeader";
 import SearchFilterCard, { SearchFilterCardProps } from "./SearchFilterCard";
+import CardHeader, { CardHeaderProps } from "./CardHeader";
 
 export type MainCardProps = {
-  headerProps?: UnifiedHeaderProps
-  searchFilterProps?: SearchFilterCardProps; 
+  headerProps: CardHeaderProps;
+  searchFilterProps?: SearchFilterCardProps;
   tabsComponent?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
@@ -31,7 +31,7 @@ const MainCard: React.FC<MainCardProps> = ({
       {searchFilterProps && <SearchFilterCard {...searchFilterProps} />}
 
       <Card className={`w-full shadow-md ${className}`}>
-        {headerProps && <UnifiedHeader {...headerProps} />}
+        <CardHeader {...headerProps}/>
 
         <CardBody
           dir="rtl"

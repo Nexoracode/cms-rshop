@@ -1,6 +1,6 @@
 "use client"
 
-import BoxHeader from "@/components/common/Card/HeaderCard"
+import BoxHeader from "@/components/common/Card/CardHeader"
 import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Card, CardBody, CardFooter, Textarea } from "@heroui/react"
 import { IoDocumentTextOutline } from "react-icons/io5"

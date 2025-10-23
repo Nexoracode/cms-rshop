@@ -3,8 +3,8 @@
 import { Card, CardBody } from "@heroui/react";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import BasePagination from "@/components/ui/BasePagination";
-import HeaderActionEntity from "@/components/common/Card/HeaderAction";
 import { BiPackage, BiSearchAlt } from "react-icons/bi";
+import CardHeader from "./CardHeader";
 
 type EntityCardProps = {
   icon?: any;
@@ -40,7 +40,7 @@ const EntityCard: React.FC<EntityCardProps> = ({
       {header}
       <Card className="shadow-md">
         <CardBody className="overflow-hidden pb-4">
-          <HeaderActionEntity icon={icon} title={title} onAdd={onAdd} redirect={redirect} textBtn={textBtn}/>
+          <CardHeader icon={icon} title={title} onAdd={onAdd} redirect={redirect} textBtn={textBtn}/>
 
           {isLoading ? (
             <LoadingApiCall />

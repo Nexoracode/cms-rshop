@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardBody } from "@heroui/react"
-import BoxHeader from "../../common/Card/HeaderCard"
+import BoxHeader from "../../common/Card/CardHeader"
 import { IoReceiptOutline } from "react-icons/io5";
 import OrderItem from "./helpers/OrderItem";
 

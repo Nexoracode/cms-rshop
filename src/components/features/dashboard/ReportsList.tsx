@@ -8,7 +8,7 @@ import { PiMoneyWavyBold } from "react-icons/pi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { FiUsers } from "react-icons/fi";
 import { useState } from "react";
-import BoxHeader from "../../common/Card/HeaderCard";
+import BoxHeader from "../../common/Card/CardHeader";
 
 const dateOptions = [
     { key: "today", label: "امروز" },

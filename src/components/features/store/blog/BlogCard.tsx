@@ -1,7 +1,7 @@
 "use client"
 
 import { Accordion, AccordionItem, Button, Card, CardBody, Input, Textarea } from "@heroui/react"
-import BoxHeader from "../../../common/Card/HeaderCard"
+import BoxHeader from "../../../common/Card/CardHeader"
 import { useState, useEffect } from "react"
 import { IoDocumentTextOutline } from "react-icons/io5"
 import ImageBoxUploader from "@/components/media/ImageBoxUploader"

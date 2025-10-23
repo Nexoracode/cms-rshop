@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody, Divider } from "@heroui/react";
 import InfoRow from "../helper/InfoRow";
-import BoxHeader from "../../../common/Card/HeaderCard";
+import BoxHeader from "../../../common/Card/CardHeader";
 import { LuUserRound } from "react-icons/lu";
 import { TiInfoLargeOutline } from "react-icons/ti";
 import { IoMdPaper } from "react-icons/io";

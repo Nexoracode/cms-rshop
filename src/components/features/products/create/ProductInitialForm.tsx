@@ -11,7 +11,7 @@ import {
   SelectItem,
   useDisclosure,
 } from "@heroui/react";
-import BoxHeader from "../../../common/Card/HeaderCard";
+import BoxHeader from "../../../common/Card/CardHeader";
 import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";

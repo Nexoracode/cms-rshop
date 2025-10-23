@@ -1,6 +1,6 @@
 "use client";
 
-import BoxHeader from "@/components/common/Card/HeaderCard";
+import BoxHeader from "@/components/common/Card/CardHeader";
 import BackToPage from "@/components/common/Breadcrumbs";
 import {
   Button,

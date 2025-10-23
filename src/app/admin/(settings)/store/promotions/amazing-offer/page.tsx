@@ -1,7 +1,7 @@
 "use client"
 
 import ProductItem from "@/components/features/dashboard/helpers/ProductItem";
-import BoxHeader from "@/components/common/Card/HeaderCard";
+import BoxHeader from "@/components/common/Card/CardHeader";
 import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Card, CardBody, DateRangePicker, NumberInput, useDisclosure } from "@heroui/react"
 import { useState } from "react";
