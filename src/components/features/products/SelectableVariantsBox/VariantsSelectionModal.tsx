@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Spinner } from "@heroui/react";
-import DynamicModal from "@/components/ui/modals/Modal";
+import DynamicModal from "@/components/ui/modals/BaseModal";
 import { useGetProducts } from "@/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
 import ProductsFilter from "@/components/features/products/ProductsFilter";

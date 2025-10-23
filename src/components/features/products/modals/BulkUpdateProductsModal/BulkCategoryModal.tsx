@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import DynamicModal from "@/components/ui/modals/Modal";
+import DynamicModal from "@/components/ui/modals/BaseModal";
 import CategorySelect from "../../CategorySelect";
 import BulkModalHeader from "./BulkModalHeader";
 import { TbCategory } from "react-icons/tb";

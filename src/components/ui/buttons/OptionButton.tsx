@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 
-type Props = {
+export type OptionButtonProps = {
   icon?: React.ReactNode;
   title: string;
   href?: string;
@@ -21,7 +21,7 @@ type Props = {
     | "solid";
 };
 
-const OptionButton: React.FC<Props> = ({
+const OptionButton: React.FC<OptionButtonProps> = ({
   icon,
   title,
   href,

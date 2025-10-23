@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import DynamicModal from "@/components/ui/modals/Modal";
+import DynamicModal from "@/components/ui/modals/BaseModal";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import BulkModalHeader from "./BulkModalHeader";
 import { TbShoppingCartDiscount } from "react-icons/tb";

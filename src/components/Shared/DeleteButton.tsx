@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { ActionButton } from "../ui/buttons/ActionButton";
-import DynamicModal from "@/components/ui/modals/Modal";
+import DynamicModal from "@/components/ui/modals/BaseModal";
 import { LuTrash2 } from "react-icons/lu";
 
 type DeleteButtonProps = {

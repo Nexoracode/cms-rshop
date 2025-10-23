@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-type ActionButtonProps = {
+export type ActionButtonProps = {
   icon: React.ReactNode;
   route?: string;
   onClick?: () => void;

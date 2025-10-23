@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import DynamicModal from "./Modal";
+import DynamicModal from "./BaseModal";
 import OptionButton from "../buttons/OptionButton";
 import { BiSortAlt2 } from "react-icons/bi";
 import { ModalSize } from ".";

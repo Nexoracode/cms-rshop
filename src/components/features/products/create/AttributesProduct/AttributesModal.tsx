@@ -1,20 +1,23 @@
 "use client";
 
-import { Modal, ModalContent } from "@heroui/react";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import { AttributesContent } from "./AttributesContent";
+import { LuPlus } from "react-icons/lu";
 
-type Props = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-};
-
-const AttributesModal = ({ isOpen, onOpenChange }: Props) => {
+const AttributesModal = () => {
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[700px] w-full">
-        <AttributesContent onSubmitted={onOpenChange} />
-      </ModalContent>
-    </Modal>
+    <BaseModal
+      title="مدیریت ویژگی‌ها"
+      isActiveFooter={false}
+      size="xl"
+      triggerProps={{
+        title: "افزودن ویژگی",
+        icon: <LuPlus className="text-lg" />,
+        className: "bg-secondary-light text-secondary flex-1"
+      }}
+    >
+      <AttributesContent />
+    </BaseModal>
   );
 };
 

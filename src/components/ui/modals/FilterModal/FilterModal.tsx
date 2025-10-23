@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import DynamicModal from "../Modal";
+import DynamicModal from "../BaseModal";
 import OptionButton from "../../buttons/OptionButton";
 import { IoFilter } from "react-icons/io5";
 import { add, eqBool10, eqId, rangeDate, rangeNum } from "@/utils/queryFilters";

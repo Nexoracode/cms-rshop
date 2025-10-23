@@ -12,7 +12,7 @@ import {
   useGetProducts,
 } from "@/hooks/api/products/useProduct";
 import { useMemo, useState } from "react";
-import DynamicModal from "@/components/ui/modals/Modal";
+import DynamicModal from "@/components/ui/modals/BaseModal";
 import EntityCard from "@/components/common/EntityCard/EntityCard";
 import ProductsFilter from "@/components/features/products/ProductsFilter";
 import BulkUpdateProductsModal from "@/components/features/products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";

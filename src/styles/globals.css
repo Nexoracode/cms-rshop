@@ -10,9 +10,32 @@
 }
 
 :root {
-  --primary: #C58AF9;
-  --light-primary: rgba(197, 138, 249, .5);
+  /* 🌗 Backgrounds */
+  --color-bg: #FFFFFF;            /* اصلی */
+  --color-surface: #F5F5F4;       /* پس زمینه کمی روشن */
+  
+  /* ⚪ Neutral / Gray */
+  --color-gray-lightest: #F8FAFC; /* خاکستری خیلی روشن */
+  --color-gray-lighter: #EAEBED;  /* خاکستری کم رنگ */
+  
+  /* 🎨 Primary (Purple) */
+  --color-primary: #C58AF9;          /* اصلی بنفش */
+  --color-primary-light: rgba(197, 138, 249, 0.5);    /* light بنفش */
+  --color-primary-very-light: rgba(197, 138, 249, 0.2); /* very light بنفش */
+
+  /* 🌤️ Secondary (Sky Blue) */
+  --color-secondary: #0284c7;
+  --color-secondary-light: #E0F2FE;
+
+  /* 🖋 Text */
+  --color-text-primary: #1F1F1F;
+  --color-text-secondary: #4B5563;
+  --color-text-muted: #6B7280;
+
+  /* 🔘 Border */
+  --color-border: #E5E7EB;
 }
+
 
 @layer base {
   html {
