@@ -51,7 +51,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
   confirmColor = "primary",
   confirmVariant = "flat",
   placement = "auto",
-  icon = <FiAlertCircle className="text-2xl text-orange-400" />,
+  icon = <FiAlertCircle className="text-orange-400" />,
   isConfirmDisabled = false,
   isActiveFooter = true,
   size = "md",
@@ -97,8 +97,8 @@ const BaseModal: React.FC<BaseModalProps> = ({
               {title && (
                 <ModalHeader className="flex flex-col gap-1">
                   <div className="flex items-center gap-2 font-normal">
-                    {icon}
-                    <div>{title}</div>
+                    <span className="text-2xl">{icon}</span>
+                    <p className="text-[16px]">{title}</p>
                   </div>
                 </ModalHeader>
               )}

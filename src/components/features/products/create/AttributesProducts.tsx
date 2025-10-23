@@ -21,6 +21,7 @@ import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
+import { LuPlus } from "react-icons/lu";
 
 type VariantValidity = {
   hasPrice: boolean;
@@ -195,12 +196,15 @@ const AttributesProducts = () => {
       headerProps={{
         icon: <BiCategoryAlt className="text-xl" />,
         title: "ویژگی ها و تنوع محصولات",
-        children: <AttributesModal />,
+        /*  children: <AttributesModal />, */
+        textBtn: "افزودن",
+        onAdd: () => {},
       }}
       tabsComponent={
         <BaseTabs
           items={tabItems}
           activeKey={activeTab}
+          variant="light"
           onTabChange={(key) => {
             const k = String(key);
             setActiveTab(k);

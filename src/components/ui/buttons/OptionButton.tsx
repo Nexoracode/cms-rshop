@@ -3,6 +3,7 @@
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
+import { GoArrowUpRight } from "react-icons/go";
 
 export type OptionButtonProps = {
   icon?: React.ReactNode;
@@ -30,13 +31,6 @@ const OptionButton: React.FC<OptionButtonProps> = ({
   size = "sm",
   variant = "flat",
 }) => {
-  const content = (
-    <div className="flex items-center gap-2">
-      {icon && <span className="text-xl">{icon}</span>}
-      <span>{title}</span>
-    </div>
-  );
-
   return href ? (
     <Button
       as={Link}
@@ -45,7 +39,12 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       size={size}
       className={`w-fit rounded-lg ${className}`}
     >
-      {content}
+      <div className="flex items-center gap-1.5">
+        <span className="text-lg">
+          <GoArrowUpRight />
+        </span>
+        <span className="text-[13px]">{title}</span>
+      </div>
     </Button>
   ) : (
     <Button
@@ -54,7 +53,10 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       size={size}
       className={`w-fit rounded-lg ${className}`}
     >
-      {content}
+      <div className="flex items-center gap-1.5">
+        {icon && <span className="text-lg">{icon}</span>}
+        <span className="text-[13px]">{title}</span>
+      </div>
     </Button>
   );
 };

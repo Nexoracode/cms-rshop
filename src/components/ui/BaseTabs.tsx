@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Tabs, Tab } from "@heroui/react";
-import { BiPackage } from "react-icons/bi";
 import EmptyStateCard from "../feedback/EmptyStateCard";
 
 export type BaseTabItem = {

@@ -4,7 +4,6 @@ import { Card, CardBody } from "@heroui/react";
 import React from "react";
 import DebouncedSearchURL from "@/components/forms/Inputs/DebouncedSearchInput";
 import OptionButton from "@/components/ui/buttons/OptionButton";
-import { GoArrowUpRight } from "react-icons/go";
 
 type RelatedPage = {
   title: string;
@@ -16,7 +15,7 @@ export type SearchFilterCardProps = {
   relatedPages?: RelatedPage[];
   searchPlaceholder?: string;
   children?: React.ReactNode;
-  showSearchBar?: boolean; // پراپ جدید اختیاری
+  showSearchBar?: boolean;
 };
 
 const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
@@ -37,9 +36,8 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
                 <OptionButton
                   key={page.href}
                   title={page.title}
-                  icon={<GoArrowUpRight className="text-xl" />}
                   href={page.href}
-                  className="pl-5 w-full sm:w-fit"
+                  className="w-full sm:w-fit"
                 />
               ))}
             </div>
