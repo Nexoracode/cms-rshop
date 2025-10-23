@@ -5,6 +5,7 @@ import {
   TbSortAscendingSmallBig,
   TbSortDescendingShapes,
 } from "react-icons/tb";
+import toast from "react-hot-toast";
 import VariantRowEditor from "./AttributesProduct/VariantRowEditor";
 import { useUpdateVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,8 +14,6 @@ import { useAttributeContext } from "./context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";
 import { replaceOrAddById } from "@/utils/replaceOrAddById";
-import toast from "react-hot-toast";
-import SectionCard from "./helpers/SectionCard";
 import SpecTree from "./helpers/SpecTree";
 import { MdOutlineCategory } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
@@ -115,17 +114,9 @@ const AttributesProducts = () => {
   const tabItems: BaseTabItem[] = [
     {
       key: "variants",
-      title: (
-        <div className="flex justify-center items-center gap-2">
-          <MdOutlineCategory className="text-xl" />
-          <span>تنوع ها محصول</span>
-        </div>
-      ),
+      title: "تنوع ها محصول",
       content: (
-        <SectionCard
-          show={!productData?.data?.variants?.length}
-          empty="هنوز تنوع محصولی انتخاب نکرده اید!!"
-        >
+        <>
           <div
             className="grid grid-cols-1 gap-6 md:grid-cols-2"
             data-scroll-parent="true"
@@ -155,66 +146,42 @@ const AttributesProducts = () => {
               ثبت تغیرات ویژگی ها
             </Button>
           )}
-        </SectionCard>
+        </>
       ),
     },
     {
       key: "sort-variants",
-      title: (
-        <div className="flex justify-center items-center gap-2">
-          <TbSortDescendingShapes className="text-xl" />
-          <span>مرتب سازی تنوع ها محصول</span>
-        </div>
-      ),
+      title: "مرتب سازی تنوع ها محصول",
       content: (
-        <SectionCard
-          show={!productData?.data?.attribute_nodes?.length}
-          empty="پس از انتخاب متغیر میتوانید مرتب سازی انجام دهید!!"
-        >
+        <>
           {productData?.data?.attribute_nodes?.length && (
             <SortableAttributeNodes
               attributeNodes={productData.data.attribute_nodes}
             />
           )}
-        </SectionCard>
+        </>
       ),
     },
     {
       key: "attributes",
-      title: (
-        <div className="flex justify-center items-center gap-2">
-          <BiCategoryAlt className="text-xl" />
-          <span>ویژگی ها</span>
-        </div>
-      ),
+      title: "لیست ویژگی ها",
       content: (
-        <SectionCard
-          show={!productData?.data?.specifications?.length}
-          empty="هنوز ویژگی انتخاب نکرده اید!!"
-        >
+        <>
           <SpecTree specs={productData?.data?.specifications} />
-        </SectionCard>
+        </>
       ),
     },
     {
       key: "sort-attributes",
-      title: (
-        <div className="flex justify-center items-center gap-2">
-          <TbSortAscendingSmallBig className="text-xl" />
-          <span>مرتب سازی ویژگی ها</span>
-        </div>
-      ),
+      title: "مرتب سازی ویژگی ها",
       content: (
-        <SectionCard
-          show={!productData?.data?.specifications?.length}
-          empty="پس از انتخاب ویژگی میتوانید مرتب سازی انجام دهید!!"
-        >
+        <>
           {productData?.data?.specifications?.length && (
             <SortableAttributeNodes
               attributeNodes={productData.data.specifications}
             />
           )}
-        </SectionCard>
+        </>
       ),
     },
   ];
@@ -231,14 +198,12 @@ const AttributesProducts = () => {
             title: "مدیریت تنوع محصولات",
             href: "/admin/products/variants/",
           },
-        ]
+        ],
       }}
       headerProps={{
         icon: <BiCategoryAlt className="text-xl" />,
         title: "ویژگی ها و تنوع محصولات",
-        children: (
-          <AttributesModal/>
-        )
+        children: <AttributesModal />,
       }}
       tabsComponent={
         <BaseTabs

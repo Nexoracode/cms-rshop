@@ -5,7 +5,7 @@ import { Tabs, Tab } from "@heroui/react";
 
 export type BaseTabItem = {
   key: string | number;
-  title: React.ReactNode;
+  title: React.ReactNode | string;
   content: React.ReactNode;
 };
 
