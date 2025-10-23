@@ -2,11 +2,14 @@
 
 import React from "react";
 import { Tabs, Tab } from "@heroui/react";
+import { BiPackage } from "react-icons/bi";
+import EmptyStateCard from "../feedback/EmptyStateCard";
 
 export type BaseTabItem = {
   key: string | number;
   title: React.ReactNode | string;
   content: React.ReactNode;
+  showEmpty?: boolean;
 };
 
 export type BaseTabsProps = {
@@ -40,7 +43,7 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
     >
       {items.map((tab) => (
         <Tab key={tab.key} title={tab.title}>
-          {tab.content}
+          {tab.showEmpty ? <EmptyStateCard /> : tab.content}
         </Tab>
       ))}
     </Tabs>

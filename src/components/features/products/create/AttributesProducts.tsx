@@ -115,6 +115,7 @@ const AttributesProducts = () => {
     {
       key: "variants",
       title: "تنوع ها محصول",
+      showEmpty: !productData?.data?.variants?.length,
       content: (
         <>
           <div
@@ -152,36 +153,27 @@ const AttributesProducts = () => {
     {
       key: "sort-variants",
       title: "مرتب سازی تنوع ها محصول",
-      content: (
-        <>
-          {productData?.data?.attribute_nodes?.length && (
-            <SortableAttributeNodes
-              attributeNodes={productData.data.attribute_nodes}
-            />
-          )}
-        </>
+      showEmpty: !productData?.data?.variants?.length,
+      content: productData?.data?.attribute_nodes?.length && (
+        <SortableAttributeNodes
+          attributeNodes={productData.data.attribute_nodes}
+        />
       ),
     },
     {
       key: "attributes",
       title: "لیست ویژگی ها",
-      content: (
-        <>
-          <SpecTree specs={productData?.data?.specifications} />
-        </>
-      ),
+      showEmpty: !productData?.data?.specifications.length,
+      content: <SpecTree specs={productData?.data?.specifications} />,
     },
     {
       key: "sort-attributes",
       title: "مرتب سازی ویژگی ها",
-      content: (
-        <>
-          {productData?.data?.specifications?.length && (
-            <SortableAttributeNodes
-              attributeNodes={productData.data.specifications}
-            />
-          )}
-        </>
+      showEmpty: !productData?.data?.specifications.length,
+      content: productData?.data?.specifications?.length && (
+        <SortableAttributeNodes
+          attributeNodes={productData.data.specifications}
+        />
       ),
     },
   ];

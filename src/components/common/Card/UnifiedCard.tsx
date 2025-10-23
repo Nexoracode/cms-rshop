@@ -6,7 +6,8 @@ import SearchFilterCard, { SearchFilterCardProps } from "./SearchFilterCard";
 import CardHeader, { CardHeaderProps } from "./CardHeader";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import BasePagination from "@/components/ui/BasePagination";
-import { BiPackage, BiSearchAlt } from "react-icons/bi";
+import { BiSearchAlt } from "react-icons/bi";
+import EmptyStateCard from "@/components/feedback/EmptyStateCard";
 
 export type UnifiedCardProps = {
   headerProps: CardHeaderProps;
@@ -67,19 +68,12 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
             ) : (
               <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-2xl text-gray-600 gap-2">
                 {searchInp ? (
-                  <>
-                    <BiSearchAlt className="text-[50px] text-warning-500" />
-                    <p className="text-center text-sm sm:text-base font-medium">
-                      جستجوی شما نتیجه‌ای نداشت!!
-                    </p>
-                  </>
+                  <EmptyStateCard
+                    message="جستجو شما نتیجه ای نداشت!!"
+                    icon={<BiSearchAlt className="text-warning-500" />}
+                  />
                 ) : (
-                  <>
-                    <BiPackage className="text-[50px] text-gray-400" />
-                    <p className="text-center text-sm sm:text-base font-medium">
-                      هنوز موردی اضافه نشده است!!
-                    </p>
-                  </>
+                  <EmptyStateCard />
                 )}
               </div>
             ))}
