@@ -196,9 +196,7 @@ const AttributesProducts = () => {
       headerProps={{
         icon: <BiCategoryAlt className="text-xl" />,
         title: "ویژگی ها و تنوع محصولات",
-        /*  children: <AttributesModal />, */
-        textBtn: "افزودن",
-        onAdd: () => {},
+        children: <AttributesModal />,
       }}
       tabsComponent={
         <BaseTabs
