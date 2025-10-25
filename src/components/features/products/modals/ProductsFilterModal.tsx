@@ -7,7 +7,7 @@ import { flattenCategories } from "@/utils/flattenCategories";
 import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 import { FilterField } from "@/components/ui/modals/FilterModal";
 
-const ProductFilterModal: React.FC = () => {
+const ProductsFilterModal: React.FC = () => {
   const { data: categoriesData } = useGetAllCategories();
   const { data: brandsData } = useGetBrands();
 
@@ -43,4 +43,4 @@ const ProductFilterModal: React.FC = () => {
   return <FilterModal title="فیلتر محصولات" fields={fields} />;
 };
 
-export default ProductFilterModal;
+export default ProductsFilterModal;

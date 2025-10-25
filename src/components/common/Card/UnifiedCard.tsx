@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Card, CardBody, CardFooter } from "@heroui/react";
-import SearchFilterCard, { SearchFilterCardProps } from "./SearchFilterCard";
 import CardHeader, { CardHeaderProps } from "./CardHeader";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import BasePagination from "@/components/ui/BasePagination";
@@ -11,14 +10,14 @@ import EmptyStateCard from "@/components/feedback/EmptyStateCard";
 
 export type UnifiedCardProps = {
   headerProps: CardHeaderProps;
-  searchFilterProps?: SearchFilterCardProps;
+  searchFilter?: React.ReactNode;
   tabsComponent?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
   bodyClassName?: string;
   isLoading?: boolean;
-  datas?: any;
+  meta?: any;
   isExistItems?: boolean;
   searchInp?: boolean;
   childrenClassName?: string;
@@ -26,14 +25,14 @@ export type UnifiedCardProps = {
 
 const UnifiedCard: React.FC<UnifiedCardProps> = ({
   headerProps,
-  searchFilterProps,
+  searchFilter,
   tabsComponent,
   children,
   footer,
   className = "",
   bodyClassName = "",
   isLoading = false,
-  datas,
+  meta,
   isExistItems = true,
   searchInp = false,
   childrenClassName = "",
@@ -41,7 +40,7 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
   return (
     <div className="flex flex-col gap-4">
       {/* Search / Filter */}
-      {searchFilterProps && <SearchFilterCard {...searchFilterProps} />}
+      {searchFilter && searchFilter}
 
       <Card className={`w-full shadow-md ${className}`}>
         {/* Header */}
@@ -61,7 +60,7 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
               <LoadingApiCall />
             ) : isExistItems ? (
               <div
-                className={`flex flex-col justify-center gap-4 ${childrenClassName}`}
+                className={`flex flex-col justify-center items-center gap-4 ${childrenClassName}`}
               >
                 {children}
               </div>
@@ -84,7 +83,7 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
       </Card>
 
       {/* Pagination */}
-      {datas?.data?.meta && <BasePagination meta={datas.data.meta} />}
+      {meta && <BasePagination meta={meta} />}
     </div>
   );
 };

@@ -40,9 +40,7 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       className={`w-fit rounded-lg ${className}`}
     >
       <div className="flex items-center gap-1.5">
-        <span className="text-lg">
-          <GoArrowUpRight />
-        </span>
+        <span className="text-lg">{icon ? icon : <GoArrowUpRight />}</span>
         <span className="text-[13px]">{title}</span>
       </div>
     </Button>

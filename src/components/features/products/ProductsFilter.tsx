@@ -13,6 +13,7 @@ const ProductsFilter = () => {
         { title: "دسته‌بندی‌ها", href: "/admin/products/categories" },
         { title: "برندها", href: "/admin/products/brands" },
       ]}
+      showSearchBar
     >
       <ProductsFilterModal />
       <ProductsSortModal />

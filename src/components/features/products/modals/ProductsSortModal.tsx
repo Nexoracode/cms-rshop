@@ -64,8 +64,8 @@ const SORT_OPTIONS = [
   },
 ];
 
-const ProductSortModal = () => {
+const ProductsSortModal = () => {
   return <SortModal options={SORT_OPTIONS} />;
 };
 
-export default ProductSortModal;
+export default ProductsSortModal;
