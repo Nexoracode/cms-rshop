@@ -69,12 +69,12 @@ const BaseModal: React.FC<BaseModalProps> = ({
     setInternalOpen(open);
   };
 
-  // اگر children یه React element باشه، onOpenChange رو بهش پاس بده
   const content =
-    isValidElement(children) &&
-    cloneElement(children as React.ReactElement<any>, {
-      onOpenChange: handleOpenChange,
-    });
+    isValidElement(children) && typeof children.type !== "string"
+      ? cloneElement(children as React.ReactElement<any>, {
+          onOpenChange: handleOpenChange,
+        })
+      : children;
 
   return (
     <>
