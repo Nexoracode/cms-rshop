@@ -60,7 +60,7 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
               <LoadingApiCall />
             ) : isExistItems ? (
               <div
-                className={`flex flex-col justify-center items-center gap-4 ${childrenClassName}`}
+                className={`flex flex-col justify-center items-center sm:items-stretch gap-4 ${childrenClassName}`}
               >
                 {children}
               </div>

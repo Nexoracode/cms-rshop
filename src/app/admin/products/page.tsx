@@ -2,10 +2,10 @@
 
 import {useState } from "react";
 // Components
-import ProductBox from "@/components/features/products/ProductBox";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import ProductsFilter from "@/components/features/products/ProductsFilter";
 import ProductsBulkActions from "@/components/features/products/ProductsBulkActions";
+import ProductCard from "@/components/features/products/ProductCard";
 // Icons
 import { ProductSortBy, useGetProducts } from "@/hooks/api/products/useProduct";
 import { LuPlus } from "react-icons/lu";
@@ -48,15 +48,9 @@ const Products = () => {
       )}
 
       {products?.data?.items?.map((product: any) => (
-        <ProductBox
+        <ProductCard
           key={product.id}
           product={product}
-          onSelect={(id, selected) =>
-            setSelectedItems((prev) =>
-              selected ? [...prev, id] : prev.filter((x) => x !== id)
-            )
-          }
-          selectedIds={selectedItems}
         />
       ))}
     </UnifiedCard>
@@ -64,3 +58,14 @@ const Products = () => {
 };
 
 export default Products;
+
+/* 
+
+ onSelect={(id, selected) =>
+            setSelectedItems((prev) =>
+              selected ? [...prev, id] : prev.filter((x) => x !== id)
+            )
+          }
+
+          selectedIds={selectedItems}
+*/
