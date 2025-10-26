@@ -57,6 +57,7 @@ const BulkDiscountModal: React.FC<Props> = ({
       triggerProps={{
         title: "تخفیف گروهی",
         icon: <TbShoppingCartDiscount size={20} />,
+        className: "w-full"
       }}
     >
       <NumberWithSelect

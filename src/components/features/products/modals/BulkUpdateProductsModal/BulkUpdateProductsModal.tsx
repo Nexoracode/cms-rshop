@@ -42,22 +42,26 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
       icon={<TbAlignBoxRightStretch size={22} />}
     >
       <div className="flex flex-col gap-4 mb-4">
-        <BulkVisibilityModal
-          selectedCount={selectedCount}
-          onConfirm={onConfirm}
-        />
+        <div className="flex items-center gap-2">
+          <BulkVisibilityModal
+            selectedCount={selectedCount}
+            onConfirm={onConfirm}
+          />
 
-        <BulkDiscountModal
-          selectedCount={selectedCount}
-          onConfirm={onConfirm}
-        />
+          <BulkDiscountModal
+            selectedCount={selectedCount}
+            onConfirm={onConfirm}
+          />
+        </div>
 
-        <BulkPriceModal selectedCount={selectedCount} onConfirm={onConfirm} />
+        <div className="flex items-center gap-2">
+          <BulkPriceModal selectedCount={selectedCount} onConfirm={onConfirm} />
 
-        <BulkCategoryModal
-          selectedCount={selectedCount}
-          onConfirm={onConfirm}
-        />
+          <BulkCategoryModal
+            selectedCount={selectedCount}
+            onConfirm={onConfirm}
+          />
+        </div>
       </div>
     </BaseModal>
   );

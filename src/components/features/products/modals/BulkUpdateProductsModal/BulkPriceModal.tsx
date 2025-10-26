@@ -43,6 +43,7 @@ const BulkPriceModal: React.FC<Props> = ({
       triggerProps={{
         icon: <BiMoneyWithdraw size={20} />,
         title: "قیمت گروهی",
+        className: "w-full"
       }}
       isOpen={isOpen}
       onOpenChange={setIsOpen}

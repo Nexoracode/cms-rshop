@@ -48,6 +48,7 @@ const BulkVisibilityModal: React.FC<Props> = ({
       triggerProps={{
         title: "وضعیت نمایش",
         icon: <AiOutlineEye size={20} />,
+        className: "w-full"
       }}
     >
       <div className="space-y-5">

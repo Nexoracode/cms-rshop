@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@heroui/react";
-import DynamicModal from "@/components/ui/modals/BaseModal";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import CategorySelect from "../../CategorySelect";
 import BulkModalHeader from "./BulkModalHeader";
 import { TbCategory } from "react-icons/tb";
@@ -30,10 +30,11 @@ const BulkCategoryModal: React.FC<Props> = ({
   };
 
   return (
-    <DynamicModal
+    <BaseModal
       triggerProps={{
         icon: <TbCategory size={20} />,
         title: "دسته‌بندی گروهی",
+        className: "w-full"
       }}
       isOpen={isOpen}
       onOpenChange={setIsOpen}
@@ -59,7 +60,7 @@ const BulkCategoryModal: React.FC<Props> = ({
           placeholder="دسته‌بندی موردنظر را انتخاب کنید"
         />
       </div>
-    </DynamicModal>
+    </BaseModal>
   );
 };
 
