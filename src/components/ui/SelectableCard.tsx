@@ -1,69 +1,46 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import BaseCard from "@/components/ui/BaseCard";
+import React, { useState, useEffect } from "react";
 import { Tooltip, Checkbox } from "@heroui/react";
 
 type Props = {
   id: number | string;
-  initialSelected?: boolean;
   selectedIds?: (number | string)[];
-  className?: string;
-  bodyClassName?: string;
   onSelectionChange?: (id: number | string, selected: boolean) => void;
-  children?: React.ReactNode;
-  redirect?: string;
+  children: React.ReactNode;
 };
 
 const SelectableCard: React.FC<Props> = ({
   id,
-  initialSelected = false,
   selectedIds = [],
-  className = "",
-  bodyClassName = "",
-  redirect = "",
   onSelectionChange,
   children,
 }) => {
-  const [selected, setSelected] = useState<boolean>(!!initialSelected);
+  const [selected, setSelected] = useState(selectedIds.includes(id));
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const isSelected = selectedIds.includes(id);
-    if (isSelected !== selected) {
-      setSelected(isSelected);
-    }
+    setSelected(selectedIds.includes(id));
   }, [selectedIds, id]);
 
-  const handleSelectionChange = (newSelected: boolean) => {
+  const handleChange = (newSelected: boolean) => {
     setSelected(newSelected);
     onSelectionChange?.(id, newSelected);
   };
 
   return (
-    <BaseCard
-      selected={selected}
-      redirect={redirect}
-      className={className}
-      bodyClassName={bodyClassName}
-      onClick={() => setHovered((h) => !h)}
+    <div
+      className="relative"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {(hovered || selected) && (
-        <Tooltip
-          closeDelay={2000}
-          color="primary"
-          showArrow
-          placement="left"
-          content="انتخاب کارت"
-          className="text-white"
-        >
-          <div className="absolute bg-sky-500/30 pr-3 pl-0.5 py-2 rounded-xl z-10">
-            <Checkbox isSelected={selected} onValueChange={(v) => handleSelectionChange(!!v)} />
+        <Tooltip content="انتخاب کارت" color="primary" showArrow placement="left">
+          <div className="absolute top-2 left-2 z-10 bg-sky-500/30 p-1 rounded">
+            <Checkbox isSelected={selected} onValueChange={(v) => handleChange(!!v)} />
           </div>
         </Tooltip>
       )}
       {children}
-    </BaseCard>
+    </div>
   );
 };
 

@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardBody } from "@heroui/react";
 import Link from "next/link";
 
 type BaseCardProps = {
-  selected?: boolean;
   className?: string;
   bodyClassName?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -14,24 +13,14 @@ type BaseCardProps = {
 };
 
 const BaseCard: React.FC<BaseCardProps> = ({
-  selected = false,
   className = "",
   bodyClassName = "",
   redirect = "",
   onClick,
   children,
 }) => {
-  const [hovered, setHovered] = useState(false);
-
   const CardContent = (
-    <Card
-      isBlurred
-      className={`relative border shadow-md !transition-all duration-300 hover:shadow-none
-        ${selected ? "border-sky-500 scale-[0.98]" : "border-gray-200"}
-        ${className}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <Card className={`relative border shadow-md !transition-all duration-300 hover:shadow-none ${className}`}>
       <CardBody
         className={`relative p-2 cursor-pointer ${bodyClassName}`}
         onClick={(e) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import {useState } from "react";
+import { useState } from "react";
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import ProductsFilter from "@/components/features/products/ProductsFilter";
@@ -11,6 +11,7 @@ import { ProductSortBy, useGetProducts } from "@/hooks/api/products/useProduct";
 import { LuPlus } from "react-icons/lu";
 import { BsShop } from "react-icons/bs";
 import { useListQueryParams } from "@/hooks/common/useListQueryParams";
+import SelectableCard from "@/components/ui/SelectableCard";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -48,24 +49,21 @@ const Products = () => {
       )}
 
       {products?.data?.items?.map((product: any) => (
-        <ProductCard
+        <SelectableCard
           key={product.id}
-          product={product}
-        />
+          id={product.id}
+          selectedIds={selectedItems}
+          onSelectionChange={(id, selected) =>
+            setSelectedItems((prev: any) =>
+              selected ? [...prev, id] : prev.filter((x:any) => x !== id)
+            )
+          }
+        >
+          <ProductCard product={product} />
+        </SelectableCard>
       ))}
     </UnifiedCard>
   );
 };
 
 export default Products;
-
-/* 
-
- onSelect={(id, selected) =>
-            setSelectedItems((prev) =>
-              selected ? [...prev, id] : prev.filter((x) => x !== id)
-            )
-          }
-
-          selectedIds={selectedItems}
-*/
