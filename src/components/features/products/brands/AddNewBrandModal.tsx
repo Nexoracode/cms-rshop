@@ -1,34 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button, Input, ModalFooter } from "@heroui/react";
-import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
+import React, { useEffect, useState } from "react";
+import { Input, NumberInput } from "@heroui/react";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import { useBrandUpload, useCreateBrand, useUpdateBrand } from "@/hooks/api/useBrand";
-import HeaderNavigator from "../HeaderNavigator";
-import { TbBrandArc } from "react-icons/tb";
+import {
+  useBrandUpload,
+  useCreateBrand,
+  useUpdateBrand,
+} from "@/hooks/api/useBrand";
 import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
+import { TbBrandArc } from "react-icons/tb";
 
 type Props = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-  defaultValues?: any;
   brandId?: number | null;
+  defaultValues?: any;
 };
 
-const AddNewBrandModal: React.FC<Props> = ({
-  isOpen,
-  onOpenChange,
-  defaultValues,
-  brandId,
-}) => {
-  const [datas, setDatas] = useState<any>({
+const AddNewBrandModal: React.FC<Props> = ({ brandId, defaultValues }) => {
+  const [data, setData] = useState({
     name: "",
     slug: "",
-    logo: null,
+    logo: null as File | string | null,
   });
-  //? Hooks
+
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useBrandUpload();
   const { mutateAsync: createBrand, isPending: isPendingCreate } =
@@ -36,130 +32,96 @@ const AddNewBrandModal: React.FC<Props> = ({
   const { mutateAsync: updateBrand, isPending: isPendingUpdate } =
     useUpdateBrand();
 
-  const isDisabled = !datas.name.trim() || !datas.slug.trim() || !datas.logo;
+  const isDisabled =
+    !data.name.trim() ||
+    !data.slug.trim() ||
+    (!brandId && !data.logo) ||
+    isPendingUpload ||
+    isPendingCreate ||
+    isPendingUpdate;
 
   useEffect(() => {
-    if (isOpen) {
-      setDatas(defaultValues ?? { name: "", slug: "", logo: null });
+    if (defaultValues) {
+      setData({
+        name: defaultValues.name || "",
+        slug: defaultValues.slug || "",
+        logo: defaultValues.logo || null,
+      });
+    } else {
+      setData({ name: "", slug: "", logo: null });
     }
-  }, [isOpen, defaultValues]);
+  }, [defaultValues]);
 
-  const handleCreateNewBrand = async () => {
-    if (!datas.logo) return;
+  const handleSubmit = async () => {
+    if (isDisabled) return;
 
     try {
-      let logoUrl = typeof datas.logo === "string" ? datas.logo : null;
+      let logoUrl = typeof data.logo === "string" ? data.logo : null;
 
-      if (datas.logo instanceof File) {
+      // ✅ آپلود لوگو در صورت نیاز
+      if (data.logo instanceof File) {
         const formData = new FormData();
-        formData.append("files", datas.logo);
-
+        formData.append("files", data.logo);
         const uploadRes = await uploadMedias(formData);
         if (!uploadRes.ok) return;
-
-        const img = uploadRes.data?.[0];
-        if (!img) return;
-
-        logoUrl = img.url;
+        logoUrl = uploadRes.data?.[0]?.url ?? null;
       }
 
-      if (brandId) {
-        const updateRes = await updateBrand({ ...datas, logo: logoUrl });
-        if (!updateRes.ok) return;
-        toast.success("برند با موفقیت بروزرسانی شد");
-      } else {
-        const createRes = await createBrand({ ...datas, logo: logoUrl });
-        if (!createRes.ok) return;
-        toast.success("برند با موفقیت افزوده شد");
-      }
+      const payload = { name: data.name, slug: data.slug, logo: logoUrl };
 
-      setDatas({ name: "", logo: null, slug: "" });
-      onOpenChange();
-    } catch (error) {
-      console.error("خطا:", error);
-      toast.error("خطای ناشناخته. با برنامه نویس تماس بگیرید");
+      const res = brandId
+        ? await updateBrand({ ...payload, id: brandId })
+        : await createBrand(payload);
+
+      if (!res.ok) return;
+
+      toast.success(
+        brandId ? "برند با موفقیت بروزرسانی شد" : "برند با موفقیت ایجاد شد"
+      );
+      setData({ name: "", slug: "", logo: null });
+    } catch (err) {
+      console.error(err);
+      toast.error("خطای ناشناخته رخ داد.");
     }
   };
 
   return (
-    <Modal
-      dir="rtl"
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      placement="auto"
-      isDismissable={false}
+    <BaseModal
+      triggerProps={{
+        title: "+ افزودن",
+      }}
+      title={brandId ? "ویرایش برند" : "افزودن برند جدید"}
+      confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
+      confirmColor="primary"
+      onConfirm={handleSubmit}
+      isConfirmDisabled={isDisabled}
       size="xl"
+      icon={<TbBrandArc />}
     >
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader>
-              <HeaderNavigator
-                navigateTitle="برند"
-                title={
-                  defaultValues
-                    ? `بروزرسانی برند ${defaultValues?.name}`
-                    : "افزودن برند جدید"
-                }
-                navigateTo="/admin/products/brands"
-                icon={<TbBrandArc className="text-2xl" />}
-              />
-            </ModalHeader>
-            <ModalBody>
-              <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4 mb-2">
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  label="عنوان"
-                  placeholder="عنوان برند را وارد کنید"
-                  value={datas.name}
-                  onChange={(e) =>
-                    setDatas((prev: any) => ({ ...prev, name: e.target.value }))
-                  }
-                  className="mb-2"
-                />
-                <SlugInput
-                  value={datas.slug}
-                  onChange={(val) =>
-                    setDatas((prev: any) => ({
-                      ...prev,
-                      slug: val,
-                    }))
-                  }
-                  isActiveError={true}
-                />
-              </div>
-              <ImageBoxUploader
-                textBtn={datas.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
-                title="تصویر لوگو"
-                changeStatusFile={datas.logo}
-                onFile={(file) =>
-                  setDatas((prev: any) => ({ ...prev, logo: file }))
-                }
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                className="w-full"
-                variant="solid"
-                color="secondary"
-                isDisabled={isDisabled}
-                isLoading={
-                  isPendingCreate || isPendingUpload || isPendingUpdate
-                }
-                onPress={handleCreateNewBrand}
-              >
-                {isPendingCreate || isPendingUpload || isPendingUpdate
-                  ? "در حال ثبت…"
-                  : defaultValues
-                  ? "ثبت تغیرات"
-                  : "ایجاد برند"}
-              </Button>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
+      <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4 mb-4">
+        <Input
+          isRequired
+          labelPlacement="outside"
+          label="نام برند"
+          placeholder="نام برند را وارد کنید"
+          value={data.name}
+          onChange={(e) => setData((p) => ({ ...p, name: e.target.value }))}
+        />
+        <SlugInput
+          value={data.slug}
+          onChange={(val) => setData((p) => ({ ...p, slug: val }))}
+          isActiveError={true}
+        />
+      </div>
+
+      <ImageBoxUploader
+        textBtn={data.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
+        title="لوگوی برند"
+        changeStatusFile={data.logo}
+        defaultImg={data.logo}
+        onFile={(file) => setData((p) => ({ ...p, logo: file }))}
+      />
+    </BaseModal>
   );
 };
 
