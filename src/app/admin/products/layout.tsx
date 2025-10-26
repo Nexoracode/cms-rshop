@@ -5,9 +5,11 @@ import React from "react";
 
 const ProductLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <AttributeProvider>{children}</AttributeProvider>
-    </>
+      <AttributeProvider>
+       <div className="flex flex-col gap-6 pb-6">
+          {children}
+        </div>
+      </AttributeProvider>
   );
 };
 

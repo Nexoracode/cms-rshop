@@ -2,9 +2,6 @@
 
 import dynamic from "next/dynamic";
 import {
-  Button,
-  Card,
-  CardBody,
   Checkbox,
   NumberInput,
   Select,
@@ -12,7 +9,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "./types/product";
 import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
@@ -32,6 +29,11 @@ import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import CategorySelect from "../CategorySelect";
+import BaseCard from "@/components/ui/BaseCard";
+import { LuScrollText } from "react-icons/lu";
+import { FiCheckCircle, FiShoppingBag } from "react-icons/fi";
+import OptionButton from "@/components/ui/buttons/OptionButton";
+import { IoArrowForwardOutline } from "react-icons/io5";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
@@ -62,9 +64,6 @@ const initProduct: Product = {
 };
 
 const ProductInitialForm = () => {
-  const cardStyle = "w-full shadow-md";
-  const cardBodyStyle = "flex flex-col gap-6 text-right";
-  //
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
@@ -220,261 +219,269 @@ const ProductInitialForm = () => {
 
   return (
     <>
-      <section className="flex flex-col gap-6">
-        <Card className={cardStyle} data-error={isSubmitAttempted}>
-          {/* <BoxHeader
-            title="اطلاعات کلیدی محصول"
-            color="text-white bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
-            icon={<LuScrollText className="text-3xl" />}
-          /> */}
-          <CardBody className={cardBodyStyle}>
-            <ImagesProducts
-              onMedia_ids={(datas) => {
-                setProduct((prev) => ({ ...prev, media_ids: datas }));
-              }}
-              onMedia_pinned_id={(id) => {
-                setProduct((prev) => ({ ...prev, media_pinned_id: id }));
-              }}
-              initialMedias={product.medias}
-              initialPinnedId={product.media_pinned_id}
-              isActiveError={isSubmitAttempted && !fieldErrors.hasMedia}
-            />
-            <hr />
-            <TextInputWithError
-              label="نام"
-              placeholder="نام محصول را وارد کنید"
-              value={product.name}
-              onChange={(name) => setProduct((p) => ({ ...p, name }))}
-              isRequired
-              isActiveError={isSubmitAttempted && !fieldErrors.hasName}
-              inputAlign="right"
-              allowEnglishOnly={false}
-            />
+      <BaseCard
+        CardHeaderProps={{
+          title: "اطلاعات کلیدی محصول",
+          icon: <LuScrollText />,
+          showIconInActionSlot: true,
+        }}
+      >
+        <ImagesProducts
+          onMedia_ids={(datas) => {
+            setProduct((prev) => ({ ...prev, media_ids: datas }));
+          }}
+          onMedia_pinned_id={(id) => {
+            setProduct((prev) => ({ ...prev, media_pinned_id: id }));
+          }}
+          initialMedias={product.medias}
+          initialPinnedId={product.media_pinned_id}
+          isActiveError={isSubmitAttempted && !fieldErrors.hasMedia}
+        />
+        <hr />
+        <TextInputWithError
+          label="نام"
+          placeholder="نام محصول را وارد کنید"
+          value={product.name}
+          onChange={(name) => setProduct((p) => ({ ...p, name }))}
+          isRequired
+          isActiveError={isSubmitAttempted && !fieldErrors.hasName}
+          inputAlign="right"
+          allowEnglishOnly={false}
+        />
 
-            <PriceWithDiscountInput
-              price={product.price}
-              discount_amount={product.discount_amount ?? 0}
-              discount_percent={product.discount_percent ?? 0}
-              onPriceChange={(price) =>
-                setProduct((prev) => ({ ...prev, price: +price }))
-              }
-              onDiscountChange={(type, value) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  discount_amount: type === "amount" ? +value : 0,
-                  discount_percent: type === "percent" ? +value : 0,
-                }))
-              }
-              isActiveError={
-                isSubmitAttempted &&
-                (!fieldErrors.hasPrice || !fieldErrors.hasPinned)
-              }
-            />
+        <PriceWithDiscountInput
+          price={product.price}
+          discount_amount={product.discount_amount ?? 0}
+          discount_percent={product.discount_percent ?? 0}
+          onPriceChange={(price) =>
+            setProduct((prev) => ({ ...prev, price: +price }))
+          }
+          onDiscountChange={(type, value) =>
+            setProduct((prev) => ({
+              ...prev,
+              discount_amount: type === "amount" ? +value : 0,
+              discount_percent: type === "percent" ? +value : 0,
+            }))
+          }
+          isActiveError={
+            isSubmitAttempted &&
+            (!fieldErrors.hasPrice || !fieldErrors.hasPinned)
+          }
+        />
 
-            <div className="flex flex-col md:flex-row gap-4">
-              <CategorySelect
-                value={product.category_id}
-                onChange={(val) =>
-                  setProduct((p) => ({ ...p, category_id: Number(val) }))
-                }
-                withAddModal
-              />
+        <div className="flex flex-col md:flex-row gap-4">
+          <CategorySelect
+            value={product.category_id}
+            onChange={(val) =>
+              setProduct((p) => ({ ...p, category_id: Number(val) }))
+            }
+            withAddModal
+          />
 
-              <SelectBox
-                label="برند"
-                value={product.brand_id ?? 0}
-                onChange={(val) =>
-                  setProduct((p) => ({ ...p, brand_id: Number(val) }))
-                }
-                options={
-                  allBrands?.data?.items?.map((brand: any) => ({
-                    key: brand.id,
-                    title: brand.name,
-                  })) ?? []
-                }
-                placeholder="برند مورد نظر را انتخاب کنید"
-                addButton={{ onClick: onOpenBrand, label: "+ افزودن برند" }}
-                isActiveError={isSubmitAttempted && !fieldErrors.hasBrand}
-                isRequired
-                errorText="برند الزامی است."
-              />
-            </div>
+          <SelectBox
+            label="برند"
+            value={product.brand_id ?? 0}
+            onChange={(val) =>
+              setProduct((p) => ({ ...p, brand_id: Number(val) }))
+            }
+            options={
+              allBrands?.data?.items?.map((brand: any) => ({
+                key: brand.id,
+                title: brand.name,
+              })) ?? []
+            }
+            placeholder="برند مورد نظر را انتخاب کنید"
+            addButton={{ onClick: onOpenBrand, label: "+ افزودن برند" }}
+            isActiveError={isSubmitAttempted && !fieldErrors.hasBrand}
+            isRequired
+            errorText="برند الزامی است."
+          />
+        </div>
 
-            <NumberWithSelect
-              isRequired
-              label="وزن"
-              value={product.weight}
+        <NumberWithSelect
+          isRequired
+          label="وزن"
+          value={product.weight}
+          onValueChange={(val) =>
+            setProduct((prev) => ({ ...prev, weight: val ?? 0 }))
+          }
+          selectedKey={product.weight_unit}
+          onSelectChange={(val) =>
+            setProduct((prev) => ({ ...prev, weight_unit: val }))
+          }
+          options={[
+            { key: "گرم", title: "گرم" },
+            { key: "کیلوگرم", title: "کیلوگرم" },
+          ]}
+          isActiveError={isSubmitAttempted && !fieldErrors.hasWeight}
+        />
+
+        <TextEditor
+          value={product.description ?? ""}
+          onChange={(content) =>
+            setProduct((prev) => ({
+              ...prev,
+              description: content,
+            }))
+          }
+          label="توضیحات"
+          isActiveError={isSubmitAttempted && !fieldErrors.hasDesc}
+        />
+      </BaseCard>
+
+      <BaseCard
+        CardHeaderProps={{
+          title: "اطلاعات تکمیلی محصول",
+          icon: <FiShoppingBag />,
+          showIconInActionSlot: true,
+        }}
+      >
+        <ShippingModeSwitcher
+          defaultMood={product.requires_preparation ? "mood2" : "mood1"}
+          onChangeType={(type) =>
+            setProduct((prev) => ({
+              ...prev,
+              requires_preparation: type === "mood2" ? true : false,
+              preparation_days:
+                type === "mood2" ? product.preparation_days || 1 : 0,
+              is_same_day_shipping: type === "mood2" ? false : true,
+            }))
+          }
+          title="شرایط ارسال"
+          textMood1="محصول نیاز به زمان آماده‌ سازی دارد"
+          textMood2="می‌خواهم محصول “ارسال امروز” داشته باشد."
+          childrenMood1={
+            <NumberInput
+              hideStepper
+              label="زمان آماده‌سازی"
+              placeholder="3"
+              minValue={1}
+              value={product.preparation_days ?? 0}
               onValueChange={(val) =>
-                setProduct((prev) => ({ ...prev, weight: val ?? 0 }))
+                setProduct((prev) => ({ ...prev, preparation_days: +val }))
               }
-              selectedKey={product.weight_unit}
-              onSelectChange={(val) =>
-                setProduct((prev) => ({ ...prev, weight_unit: val }))
+              endContent={
+                <div className="pointer-events-none flex items-center">
+                  <span className="text-default-400 text-small">روز</span>
+                </div>
               }
-              options={[
-                { key: "گرم", title: "گرم" },
-                { key: "کیلوگرم", title: "کیلوگرم" },
-              ]}
-              isActiveError={isSubmitAttempted && !fieldErrors.hasWeight}
-            />
-
-            <TextEditor
-              value={product.description ?? ""}
-              onChange={(content) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  description: content,
-                }))
-              }
-              label="توضیحات"
-              isActiveError={isSubmitAttempted && !fieldErrors.hasDesc}
-            />
-          </CardBody>
-        </Card>
-        <Card className={`${cardStyle}`}>
-          {/*  <BoxHeader
-            title="اطلاعات تکمیلی محصول"
-            color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
-            icon={<FiShoppingBag className="text-3xl" />}
-          /> */}
-          <CardBody className={cardBodyStyle}>
-            <ShippingModeSwitcher
-              defaultMood={product.requires_preparation ? "mood2" : "mood1"}
-              onChangeType={(type) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  requires_preparation: type === "mood2" ? true : false,
-                  preparation_days:
-                    type === "mood2" ? product.preparation_days || 1 : 0,
-                  is_same_day_shipping: type === "mood2" ? false : true,
-                }))
-              }
-              title="شرایط ارسال"
-              textMood1="محصول نیاز به زمان آماده‌ سازی دارد"
-              textMood2="می‌خواهم محصول “ارسال امروز” داشته باشد."
-              childrenMood1={
-                <NumberInput
-                  hideStepper
-                  label="زمان آماده‌سازی"
-                  placeholder="3"
-                  minValue={1}
-                  value={product.preparation_days ?? 0}
-                  onValueChange={(val) =>
-                    setProduct((prev) => ({ ...prev, preparation_days: +val }))
-                  }
-                  endContent={
-                    <div className="pointer-events-none flex items-center">
-                      <span className="text-default-400 text-small">روز</span>
-                    </div>
-                  }
-                  labelPlacement="outside"
-                />
-              }
-              childrenMood2={
-                <small className="text-gray-500 mt-1">
-                  برچسب “ارسال امروز” روی کارت این محصول در فروشگاه نمایش داده
-                  خواهد شد.
-                </small>
-              }
-            />
-            <OrderLimitSwitcher
-              title="محدودیت تعداد برای هر سفارش"
-              initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
-              onChange={(val) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  order_limit:
-                    val === "enabled" ? +product.order_limit || 1 : 0,
-                }))
-              }
-            >
-              <NumberInput
-                hideStepper
-                label="حداکثر تعداد قابل سفارش"
-                placeholder="3"
-                minValue={1}
-                value={product.order_limit ?? 0}
-                labelPlacement="outside"
-                onValueChange={(val) =>
-                  setProduct((prev) => ({
-                    ...prev,
-                    order_limit: +val || 1,
-                  }))
-                }
-              />
-            </OrderLimitSwitcher>
-            <ToggleableSection
-              label="موجودی نامحدود"
-              onOptionalToggle={(checked) =>
-                setProduct((prev) => ({
-                  ...prev,
-                  is_limited_stock: checked,
-                  stock: checked ? 0 : +product.stock,
-                }))
-              }
-              isChecked={product.is_limited_stock}
-            >
-              <NumberInput
-                hideStepper
-                label="موجودی"
-                placeholder="1"
-                minValue={0}
-                value={product.stock}
-                onValueChange={(val) =>
-                  setProduct((prev) => ({ ...prev, stock: +val }))
-                }
-                labelPlacement="outside"
-              />
-            </ToggleableSection>
-
-            <hr />
-            <Select
-              dir="rtl"
               labelPlacement="outside"
-              label="وضعیت نمایش در وبسایت"
-              placeholder="انتخاب وضعیت محصول"
-              className="!mt-8"
-              selectedKeys={[product.is_visible ? "visible" : "hidden"]}
-              onSelectionChange={(keys) => {
-                const value = Array.from(keys)[0];
-                setProduct((prev) => ({
-                  ...prev,
-                  is_visible: value === "visible",
-                }));
-              }}
-            >
-              <SelectItem key="visible">
-                نمایش - در فروشگاه نمایش داده میشود
-              </SelectItem>
-              <SelectItem key="hidden">
-                عدم نمایش - در فروشگاه نمایش داده نمی شود
-              </SelectItem>
-            </Select>
-
-            <Checkbox
-              isSelected={product.is_featured}
-              onValueChange={(is_featured) =>
-                setProduct((prev) => ({ ...prev, is_featured }))
-              }
-            >
-              <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
-            </Checkbox>
-            <SizeGuide
-              onHelperId={(id) => {
-                setProduct((prev) => ({ ...prev, helper_id: id }));
-              }}
-              sizeGuide={product.helper}
             />
-          </CardBody>
-        </Card>
-        <Button
-          color="success"
-          className="text-white"
-          onPress={handleChangeProduct}
+          }
+          childrenMood2={
+            <small className="text-gray-500 mt-1">
+              برچسب “ارسال امروز” روی کارت این محصول در فروشگاه نمایش داده خواهد
+              شد.
+            </small>
+          }
+        />
+        <OrderLimitSwitcher
+          title="محدودیت تعداد برای هر سفارش"
+          initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
+          onChange={(val) =>
+            setProduct((prev) => ({
+              ...prev,
+              order_limit: val === "enabled" ? +product.order_limit || 1 : 0,
+            }))
+          }
         >
-          ثبت تغییرات
-        </Button>
-      </section>
+          <NumberInput
+            hideStepper
+            label="حداکثر تعداد قابل سفارش"
+            placeholder="3"
+            minValue={1}
+            value={product.order_limit ?? 0}
+            labelPlacement="outside"
+            onValueChange={(val) =>
+              setProduct((prev) => ({
+                ...prev,
+                order_limit: +val || 1,
+              }))
+            }
+          />
+        </OrderLimitSwitcher>
+        <ToggleableSection
+          label="موجودی نامحدود"
+          onOptionalToggle={(checked) =>
+            setProduct((prev) => ({
+              ...prev,
+              is_limited_stock: checked,
+              stock: checked ? 0 : +product.stock,
+            }))
+          }
+          isChecked={product.is_limited_stock}
+        >
+          <NumberInput
+            hideStepper
+            label="موجودی"
+            placeholder="1"
+            minValue={0}
+            value={product.stock}
+            onValueChange={(val) =>
+              setProduct((prev) => ({ ...prev, stock: +val }))
+            }
+            labelPlacement="outside"
+          />
+        </ToggleableSection>
+
+        <hr />
+        <Select
+          dir="rtl"
+          labelPlacement="outside"
+          label="وضعیت نمایش در وبسایت"
+          placeholder="انتخاب وضعیت محصول"
+          className="!mt-8"
+          selectedKeys={[product.is_visible ? "visible" : "hidden"]}
+          onSelectionChange={(keys) => {
+            const value = Array.from(keys)[0];
+            setProduct((prev) => ({
+              ...prev,
+              is_visible: value === "visible",
+            }));
+          }}
+        >
+          <SelectItem key="visible">
+            نمایش - در فروشگاه نمایش داده میشود
+          </SelectItem>
+          <SelectItem key="hidden">
+            عدم نمایش - در فروشگاه نمایش داده نمی شود
+          </SelectItem>
+        </Select>
+
+        <Checkbox
+          isSelected={product.is_featured}
+          onValueChange={(is_featured) =>
+            setProduct((prev) => ({ ...prev, is_featured }))
+          }
+        >
+          <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
+        </Checkbox>
+        <SizeGuide
+          onHelperId={(id) => {
+            setProduct((prev) => ({ ...prev, helper_id: id }));
+          }}
+          sizeGuide={product.helper}
+        />
+      </BaseCard>
+
+      <div className="flex items-center gap-3 px-4">
+        <OptionButton
+          title="لغو"
+          href="/admin/products"
+          icon={<IoArrowForwardOutline/>}
+          size="md"
+          className="w-full"
+        />
+        <OptionButton
+          title="ثبت تغییرات"
+          onClick={handleChangeProduct}
+          variant="flat"
+          size="md"
+          icon={<FiCheckCircle />}
+          className="w-full bg-primary text-white"
+        />
+      </div>
+
       <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>
   );
