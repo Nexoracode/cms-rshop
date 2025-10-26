@@ -15,10 +15,7 @@ type Props = {
   onConfirm: (data: { priceMode?: PriceMode; priceValue?: number }) => void;
 };
 
-const BulkPriceModal: React.FC<Props> = ({
-  selectedCount = 0,
-  onConfirm,
-}) => {
+const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [priceMode, setPriceMode] = useState<PriceMode | null>(null);
   const [priceValue, setPriceValue] = useState<number | null>(null);
@@ -43,7 +40,7 @@ const BulkPriceModal: React.FC<Props> = ({
       triggerProps={{
         icon: <BiMoneyWithdraw size={20} />,
         title: "قیمت گروهی",
-        className: "w-full"
+        className: "w-full",
       }}
       isOpen={isOpen}
       onOpenChange={setIsOpen}
@@ -58,7 +55,12 @@ const BulkPriceModal: React.FC<Props> = ({
       confirmColor="primary"
       onConfirm={handleConfirm}
       onCancel={reset}
-      isConfirmDisabled={selectedCount <= 0}
+      isConfirmDisabled={
+        selectedCount <= 0 ||
+        priceMode === null ||
+        priceValue === null ||
+        Number.isNaN(priceValue) || !priceValue
+      }
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Select
