@@ -51,7 +51,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
   onConfirm,
   onCancel,
   confirmColor = "primary",
-  confirmVariant = "flat",
+  confirmVariant = "solid",
   placement = "auto",
   icon = <FiAlertCircle className="text-orange-400" />,
   isConfirmDisabled = false,

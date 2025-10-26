@@ -30,10 +30,10 @@ const ProductsBulkActions = ({
   const handleBulkUpdate = (changed: any) => {
     console.log(changed);
     
-    /* bulkUpdateProducts.mutate(
+    bulkUpdateProducts.mutate(
       { ids: selectedItems, ...changed },
       { onSuccess: () => onClearSelection() }
-    ); */
+    );
   };
 
   return (

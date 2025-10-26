@@ -37,7 +37,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
       isActiveFooter={false}
       triggerProps={{
         title: "بروزرسانی گروهی",
-        className: "bg-primary-very-light text-primary",
+        className: "bg-primary-light text-primary"
       }}
       icon={<TbAlignBoxRightStretch size={22} />}
     >
