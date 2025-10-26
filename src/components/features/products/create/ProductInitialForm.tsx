@@ -37,6 +37,7 @@ import { flattenCategories } from "@/utils/flattenCategories";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
+import SelectBox from "@/components/ui/inputs/SelectBox";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
@@ -261,11 +262,11 @@ const ProductInitialForm = () => {
     <>
       <section className="flex flex-col gap-6">
         <Card className={cardStyle} data-error={isSubmitAttempted}>
-          <BoxHeader
+          {/* <BoxHeader
             title="اطلاعات کلیدی محصول"
             color="text-white bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
             icon={<LuScrollText className="text-3xl" />}
-          />
+          /> */}
           <CardBody className={cardBodyStyle}>
             <ImagesProducts
               onMedia_ids={(datas) => {
@@ -311,36 +312,36 @@ const ProductInitialForm = () => {
             />
 
             <div className="flex flex-col md:flex-row gap-4">
-              <SelectWithAddButton
+              <SelectBox
                 label="دسته بندی"
-                placeholder="دسته بندی مورد نظر را انتخاب کنید"
-                options={flatOptions}
-                selectedId={product.category_id}
-                onChange={(id) =>
-                  setProduct((prev) => ({ ...prev, category_id: +id }))
+                value={product.category_id}
+                onChange={(val) =>
+                  setProduct((p) => ({ ...p, category_id: Number(val) }))
                 }
-                onAddNewClick={onOpenCategory}
-                isActiveError={isSubmitAttempted && !fieldErrors.hasCategory}
+                options={flatOptions.map((c) => ({
+                  key: c.id,
+                  title: c.title,
+                }))}
+                placeholder="دسته‌بندی مورد نظر را انتخاب کنید"
               />
 
-              <SelectWithAddButton
+              <SelectBox
                 label="برند"
-                placeholder="برند مورد نظر را انتخاب کنید"
+                value={product.brand_id ?? 0}
+                onChange={(val) =>
+                  setProduct((p) => ({ ...p, brand_id: Number(val) }))
+                }
                 options={
                   allBrands?.data?.items?.map((brand: any) => ({
-                    id: brand.id,
+                    key: brand.id,
                     title: brand.name,
                   })) ?? []
                 }
-                selectedId={product.brand_id ?? 0}
-                onChange={(id) =>
-                  setProduct((prev) => ({
-                    ...prev,
-                    brand_id: +id,
-                  }))
-                }
-                onAddNewClick={onOpenBrand}
+                placeholder="برند مورد نظر را انتخاب کنید"
+                addButton={{ onClick: onOpenBrand, label: "+ افزودن برند" }}
                 isActiveError={isSubmitAttempted && !fieldErrors.hasBrand}
+                isRequired
+                errorText="برند الزامی است."
               />
             </div>
 
@@ -376,11 +377,11 @@ const ProductInitialForm = () => {
           </CardBody>
         </Card>
         <Card className={`${cardStyle}`}>
-          <BoxHeader
+         {/*  <BoxHeader
             title="اطلاعات تکمیلی محصول"
             color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
             icon={<FiShoppingBag className="text-3xl" />}
-          />
+          /> */}
           <CardBody className={cardBodyStyle}>
             <ShippingModeSwitcher
               defaultMood={product.requires_preparation ? "mood2" : "mood1"}
