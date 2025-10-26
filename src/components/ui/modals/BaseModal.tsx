@@ -103,7 +103,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
                 <ModalHeader className="flex flex-col gap-1">
                   <div className="flex items-center gap-2 font-normal">
                     <span className="text-2xl">{icon}</span>
-                    <p className="text-[16px]">{title}</p>
+                    <div className="text-[16px]">{title}</div>
                   </div>
                 </ModalHeader>
               )}

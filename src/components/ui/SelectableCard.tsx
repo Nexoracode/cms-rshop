@@ -39,7 +39,7 @@ const SelectableCard: React.FC<Props> = ({
     >
       {(hovered || selected) && (
         <Tooltip content="انتخاب کارت" color="secondary" showArrow>
-          <div className="absolute top-2 right-2 z-10 bg-black/30 py-1.5 rounded-lg">
+          <div className="absolute top-2 right-2 z-10 bg-sky-500/30 py-1.5 rounded-lg">
             <Checkbox
               isSelected={selected}
               color="secondary"

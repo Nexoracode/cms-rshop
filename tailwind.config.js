@@ -31,7 +31,6 @@ const config = {
         // Primary
         primary: "var(--color-primary)",
         "primary-light": "var(--color-primary-light)",
-        "primary-very-light": "var(--color-primary-very-light)",
 
         // Secondary
         secondary: "var(--color-secondary)",

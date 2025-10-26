@@ -1,21 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Select, SelectItem, Switch } from "@heroui/react";
-import DynamicModal from "@/components/ui/modals/BaseModal";
+import { Select, SelectItem, Switch, Button } from "@heroui/react";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import { AiOutlineEye } from "react-icons/ai";
 import BulkModalHeader from "./BulkModalHeader";
 
 type Props = {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
   selectedCount?: number;
   onConfirm: (data: { isVisible?: boolean; isFeatured?: boolean }) => void;
 };
 
 const BulkVisibilityModal: React.FC<Props> = ({
-  isOpen,
-  onOpenChange,
   selectedCount = 0,
   onConfirm,
 }) => {
@@ -36,9 +32,7 @@ const BulkVisibilityModal: React.FC<Props> = ({
   };
 
   return (
-    <DynamicModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
+    <BaseModal
       title={
         <BulkModalHeader
           title="ویرایش گروهی وضعیت نمایش"
@@ -48,9 +42,13 @@ const BulkVisibilityModal: React.FC<Props> = ({
       confirmText="اعمال تغییرات"
       confirmColor="primary"
       onConfirm={handleConfirm}
-      onCancel={reset} // ✅ لغو = ریست
+      onCancel={reset}
       isConfirmDisabled={selectedCount <= 0}
       icon={<AiOutlineEye size={22} className="text-sky-500" />}
+      triggerProps={{
+        title: "وضعیت نمایش",
+        icon: <AiOutlineEye size={20} />,
+      }}
     >
       <div className="space-y-5">
         <Select
@@ -78,7 +76,7 @@ const BulkVisibilityModal: React.FC<Props> = ({
           افزودن به پیشنهاد ویژه
         </Switch>
       </div>
-    </DynamicModal>
+    </BaseModal>
   );
 };
 

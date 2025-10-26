@@ -19,9 +19,8 @@
   --color-gray-lighter: #EAEBED;  /* خاکستری کم رنگ */
   
   /* 🎨 Primary (Purple) */
-  --color-primary: #C58AF9;          /* اصلی بنفش */
-  --color-primary-light: rgba(197, 138, 249, 0.5);    /* light بنفش */
-  --color-primary-very-light: rgba(197, 138, 249, 0.2); /* very light بنفش */
+  --color-primary: #9333ea;
+  --color-primary-light: #F3E8FF;
 
   /* 🌤️ Secondary (Sky Blue) */
   --color-secondary: #0284c7;
