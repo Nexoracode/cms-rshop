@@ -11,11 +11,7 @@ import {
   SelectItem,
   useDisclosure,
 } from "@heroui/react";
-import BoxHeader from "../../../common/Card/CardHeader";
-import { LuScrollText } from "react-icons/lu";
-import { FiShoppingBag } from "react-icons/fi";
 import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
-import SelectWithAddButton from "./helpers/SelectWithAddButton";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "./types/product";
 import AddNewCategoryModal from "../categories/AddNewCategoryModal";
@@ -38,6 +34,7 @@ import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
+import CategorySelect from "../CategorySelect";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
@@ -102,7 +99,6 @@ const ProductInitialForm = () => {
   } = useDisclosure();
   //? Hooks
   const { data: allBrands } = useGetBrands();
-  const { data: categoriesData } = useGetAllCategories();
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
   const { mutate: updateProduct } = useProductUpdate(
@@ -115,10 +111,6 @@ const ProductInitialForm = () => {
       setProduct(oneProduct.data);
     }
   }, [oneProduct]);
-
-  const flatOptions = useMemo(() => {
-    return flattenCategories(categoriesData?.data);
-  }, [categoriesData?.data]);
 
   const stripHtml = (html?: string) =>
     (html ?? "")
@@ -312,17 +304,11 @@ const ProductInitialForm = () => {
             />
 
             <div className="flex flex-col md:flex-row gap-4">
-              <SelectBox
-                label="دسته بندی"
+              <CategorySelect
                 value={product.category_id}
                 onChange={(val) =>
                   setProduct((p) => ({ ...p, category_id: Number(val) }))
                 }
-                options={flatOptions.map((c) => ({
-                  key: c.id,
-                  title: c.title,
-                }))}
-                placeholder="دسته‌بندی مورد نظر را انتخاب کنید"
               />
 
               <SelectBox
@@ -377,7 +363,7 @@ const ProductInitialForm = () => {
           </CardBody>
         </Card>
         <Card className={`${cardStyle}`}>
-         {/*  <BoxHeader
+          {/*  <BoxHeader
             title="اطلاعات تکمیلی محصول"
             color="text-white bg-gradient-to-r from-indigo-600 to-indigo-500"
             icon={<FiShoppingBag className="text-3xl" />}

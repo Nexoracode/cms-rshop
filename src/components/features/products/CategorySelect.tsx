@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Select, SelectItem } from "@heroui/react";
-import { FiSearch } from "react-icons/fi";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { flattenCategories } from "@/utils/flattenCategories";
-import SelectWithAddButton from "./create/helpers/SelectWithAddButton";
-import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 
 type Props = {
   value?: string | number | null;
@@ -38,33 +35,24 @@ const CategorySelect: React.FC<Props> = ({
     }));
   }, [categoriesData?.data]);
 
-  if (!withAddButton) {
-    return (
-      <SelectBox
-        label={label}
-        value={value ? String(value) : ""}
-        onChange={(val) => onChange(val ?? null)}
-        options={
-          flatOptions.length
-            ? flatOptions
-            : [{ key: "-1", title: "آیتمی موجود نیست" }]
-        }
-        placeholder={placeholder}
-        disabled={isDisabled}
-        size="md"
-      />
-    );
-  }
-
-  // در غیر این صورت از SelectWithAddButton استفاده کن
   return (
-    <SelectWithAddButton
+    <SelectBox
       label={label}
+      value={value ? String(value) : ""}
+      onChange={(val) => onChange(val ?? null)}
+      options={
+        flatOptions.length
+          ? flatOptions
+          : [{ key: "-1", title: "آیتمی موجود نیست" }]
+      }
       placeholder={placeholder}
-      options={flatOptions}
-      selectedId={value ? Number(value) : ""}
-      onChange={(id) => onChange(id ?? null)}
-      onAddNewClick={onAddNewClick ?? (() => {})}
+      disabled={isDisabled}
+      size="md"
+      addButton={
+        withAddButton && onAddNewClick
+          ? { onClick: onAddNewClick, label: "+ افزودن" }
+          : undefined
+      }
       isActiveError={isActiveError}
     />
   );

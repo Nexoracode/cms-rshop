@@ -5,10 +5,10 @@ import React, { useState } from "react";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import { useDeleteAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
-import SelectWithAddButton from "../../helpers/SelectWithAddButton";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import { TbEdit } from "react-icons/tb";
 import DeleteButton from "@/components/shared/DeleteButton";
+import SelectBox from "@/components/ui/inputs/SelectBox";
 
 type Props = {
   attrValues: Record<string, any>[];
@@ -86,25 +86,24 @@ const AddNewAttributeValue: React.FC<Props> = ({
         )}
 
         {!isDisabledEdit ? (
-          <>
-            <SelectWithAddButton
-              label="مقدار ویژگی"
-              placeholder="مقدار ویژگی را انتخاب کنید"
-              options={
-                attrValues?.map((d: any) => ({
-                  id: d.id,
-                  title: d.value,
-                })) ?? []
-              }
-              selectedId={selectedAttrValueId ?? ""}
-              onChange={(id) => setSelectedAttrValueId(+id)}
-              onAddNewClick={onOpenAdd}
-              isRequired={false}
-            />
-          </>
-        ) : (
-          ""
-        )}
+          <SelectBox
+            label="مقدار ویژگی"
+            value={selectedAttrValueId ?? ""}
+            onChange={(val) => setSelectedAttrValueId(Number(val))}
+            options={
+              attrValues?.map((d) => ({
+                key: d.id,
+                title: d.value,
+              })) ?? []
+            }
+            placeholder="مقدار ویژگی را انتخاب کنید"
+            addButton={{
+              onClick: onOpenAdd,
+              label: "+ افزودن",
+            }}
+            isRequired={false}
+          />
+        ) : null}
 
         {selectedValues && !isDisabledEdit && selectedAttrValueId ? (
           <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
