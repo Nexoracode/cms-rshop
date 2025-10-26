@@ -1,24 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@heroui/react";
 import DynamicModal from "@/components/ui/modals/BaseModal";
 import CategorySelect from "../../CategorySelect";
 import BulkModalHeader from "./BulkModalHeader";
 import { TbCategory } from "react-icons/tb";
 
 type Props = {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
+  triggerProps?: React.ComponentProps<typeof Button>;
   selectedCount?: number;
   onConfirm: (data: { category_id?: number }) => void;
 };
 
 const BulkCategoryModal: React.FC<Props> = ({
-  isOpen,
-  onOpenChange,
   selectedCount = 0,
   onConfirm,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
   const reset = () => setCategoryId(null);
@@ -28,14 +27,17 @@ const BulkCategoryModal: React.FC<Props> = ({
       onConfirm({ category_id: categoryId });
     }
     reset();
-    onOpenChange(false);
   };
 
   return (
     <DynamicModal
-      icon={<TbCategory size={22} className="text-purple-500" />}
+      triggerProps={{
+        icon: <TbCategory size={20} />,
+        title: "دسته‌بندی گروهی",
+      }}
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
+      onOpenChange={setIsOpen}
+      icon={<TbCategory size={22} className="text-purple-500" />}
       title={
         <BulkModalHeader
           title="ویرایش گروهی دسته‌بندی"

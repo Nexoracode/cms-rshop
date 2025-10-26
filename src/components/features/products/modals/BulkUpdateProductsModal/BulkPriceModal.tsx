@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Select, SelectItem } from "@heroui/react";
-import DynamicModal from "@/components/ui/modals/BaseModal";
+import { Select, SelectItem, Button } from "@heroui/react";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import BulkModalHeader from "./BulkModalHeader";
 import { BiMoneyWithdraw } from "react-icons/bi";
@@ -10,18 +10,16 @@ import { BiMoneyWithdraw } from "react-icons/bi";
 type PriceMode = "set" | "increase" | "decrease";
 
 type Props = {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
+  triggerProps?: React.ComponentProps<typeof Button>;
   selectedCount?: number;
   onConfirm: (data: { priceMode?: PriceMode; priceValue?: number }) => void;
 };
 
 const BulkPriceModal: React.FC<Props> = ({
-  isOpen,
-  onOpenChange,
   selectedCount = 0,
   onConfirm,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [priceMode, setPriceMode] = useState<PriceMode | null>(null);
   const [priceValue, setPriceValue] = useState<number | null>(null);
 
@@ -41,12 +39,19 @@ const BulkPriceModal: React.FC<Props> = ({
   };
 
   return (
-    <DynamicModal
+    <BaseModal
+      triggerProps={{
+        icon: <BiMoneyWithdraw size={20} />,
+        title: "قیمت گروهی",
+      }}
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      icon={<BiMoneyWithdraw size={22} className="text-green-500"/>}
+      onOpenChange={setIsOpen}
+      icon={<BiMoneyWithdraw size={22} className="text-green-500" />}
       title={
-        <BulkModalHeader title="ویرایش گروهی قیمت" selectedCount={selectedCount} />
+        <BulkModalHeader
+          title="ویرایش گروهی قیمت"
+          selectedCount={selectedCount}
+        />
       }
       confirmText="اعمال تغییرات"
       confirmColor="primary"
@@ -82,7 +87,7 @@ const BulkPriceModal: React.FC<Props> = ({
           isActiveError={false}
         />
       </div>
-    </DynamicModal>
+    </BaseModal>
   );
 };
 

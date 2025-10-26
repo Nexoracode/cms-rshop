@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Button } from "@heroui/react";
-import { AiOutlineEye } from "react-icons/ai";
-import {
-  TbAlignBoxRightStretch,
-  TbShoppingCartDiscount,
-  TbCategory,
-} from "react-icons/tb";
-import { BiMoneyWithdraw } from "react-icons/bi";
+import { TbAlignBoxRightStretch } from "react-icons/tb";
 
 import BaseModal from "@/components/ui/modals/BaseModal";
 import BulkVisibilityModal from "./BulkVisibilityModal";
@@ -25,6 +18,7 @@ type Props = {
     discountAmount?: number;
     priceMode?: "set" | "increase" | "decrease";
     priceValue?: number;
+    category_id?: number;
   }) => void;
 };
 
@@ -56,49 +50,13 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
         <BulkDiscountModal
           selectedCount={selectedCount}
           onConfirm={onConfirm}
-          trigger={
-            <Button
-              color="warning"
-              variant="flat"
-              endContent={<TbShoppingCartDiscount size={20} />}
-              isDisabled={selectedCount <= 0}
-              className="flex justify-between"
-            >
-              تخفیف گروهی
-            </Button>
-          }
         />
 
-        <BulkPriceModal
-          selectedCount={selectedCount}
-          onConfirm={onConfirm}
-          trigger={
-            <Button
-              variant="flat"
-              color="success"
-              endContent={<BiMoneyWithdraw size={20} />}
-              isDisabled={selectedCount <= 0}
-              className="flex justify-between"
-            >
-              قیمت گروهی
-            </Button>
-          }
-        />
+        <BulkPriceModal selectedCount={selectedCount} onConfirm={onConfirm} />
 
         <BulkCategoryModal
           selectedCount={selectedCount}
           onConfirm={onConfirm}
-          trigger={
-            <Button
-              variant="flat"
-              color="secondary"
-              endContent={<TbCategory size={20} />}
-              isDisabled={selectedCount <= 0}
-              className="flex justify-between"
-            >
-              دسته‌بندی گروهی
-            </Button>
-          }
         />
       </div>
     </BaseModal>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import DynamicModal from "@/components/ui/modals/BaseModal";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import BulkModalHeader from "./BulkModalHeader";
 import { TbShoppingCartDiscount } from "react-icons/tb";
@@ -9,8 +9,6 @@ import { TbShoppingCartDiscount } from "react-icons/tb";
 type DiscountType = "percent" | "amount";
 
 type Props = {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
   selectedCount?: number;
   onConfirm: (data: {
     discountPercent?: number;
@@ -19,8 +17,6 @@ type Props = {
 };
 
 const BulkDiscountModal: React.FC<Props> = ({
-  isOpen,
-  onOpenChange,
   selectedCount = 0,
   onConfirm,
 }) => {
@@ -45,9 +41,7 @@ const BulkDiscountModal: React.FC<Props> = ({
   };
 
   return (
-    <DynamicModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
+    <BaseModal
       icon={<TbShoppingCartDiscount size={22} className="text-yellow-500" />}
       title={
         <BulkModalHeader
@@ -60,6 +54,10 @@ const BulkDiscountModal: React.FC<Props> = ({
       onConfirm={handleConfirm}
       onCancel={reset}
       isConfirmDisabled={selectedCount <= 0}
+      triggerProps={{
+        title: "تخفیف گروهی",
+        icon: <TbShoppingCartDiscount size={20} />,
+      }}
     >
       <NumberWithSelect
         label="مقدار تخفیف"
@@ -75,7 +73,7 @@ const BulkDiscountModal: React.FC<Props> = ({
           { key: "amount", title: "مبلغ ثابت" },
         ]}
       />
-    </DynamicModal>
+    </BaseModal>
   );
 };
 
