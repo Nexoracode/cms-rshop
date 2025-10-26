@@ -57,7 +57,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
     }
 
     if (showIconInActionSlot && icon) {
-      return <span className="text-3xl">{icon}</span>;
+      return <span className="text-2xl">{icon}</span>;
     }
 
     return null;
@@ -74,7 +74,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
       <div className="w-full rounded-xl p-2 flex items-center justify-between bg-slate-50">
         <p className="text-[14px] leading-7 flex items-center gap-2">
           {showIconBesideTitle && icon && (
-            <span className="text-3xl">{icon}</span>
+            <span className="text-2xl">{icon}</span>
           )}
           {title}
         </p>
