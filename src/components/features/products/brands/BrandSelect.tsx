@@ -2,9 +2,8 @@
 
 import React, { useMemo } from "react";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
-import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
-import { flattenCategories } from "@/utils/flattenCategories";
-import AddNewCategoryModal from "./categories/AddNewCategoryModal";
+import AddNewBrandModal from "./AddNewBrandModal";
+import { useGetBrands } from "@/hooks/api/useBrand";
 
 type Props = {
   value?: string | number | null;
@@ -15,28 +14,30 @@ type Props = {
   onAddNewClick?: () => void;
   isActiveError?: boolean;
   isDisabled?: boolean;
-  withAddModal?: boolean; // ✅ جدید
+  withAddModal?: boolean;
 };
 
-const CategorySelect: React.FC<Props> = ({
+const BrandSelect: React.FC<Props> = ({
   value,
   onChange,
-  label = "دسته‌بندی",
-  placeholder = "دسته‌بندی مورد نظر را انتخاب کنید",
+  label = "برند",
+  placeholder = "برند مورد نظر را انتخاب کنید",
   withAddButton = false,
   onAddNewClick,
   isActiveError = false,
   isDisabled = false,
-  withAddModal = false, // مقدار پیش‌فرض
+  withAddModal = false,
 }) => {
-  const { data: categoriesData } = useGetAllCategories();
+  const { data: allBrands } = useGetBrands();
 
-  const flatOptions: SelectOption[] = useMemo(() => {
-    return (flattenCategories(categoriesData?.data) || []).map((opt) => ({
-      key: String(opt.id),
-      title: opt.title,
-    }));
-  }, [categoriesData?.data]);
+  const options: SelectOption[] = useMemo(() => {
+    return (
+      allBrands?.data?.items?.map((brand: any) => ({
+        key: String(brand.id),
+        title: brand.name,
+      })) ?? []
+    );
+  }, [allBrands?.data?.items]);
 
   return (
     <>
@@ -45,8 +46,8 @@ const CategorySelect: React.FC<Props> = ({
         value={value ? String(value) : ""}
         onChange={(val) => onChange(val ?? null)}
         options={
-          flatOptions.length
-            ? flatOptions
+          options.length
+            ? options
             : [{ key: "-1", title: "آیتمی موجود نیست" }]
         }
         placeholder={placeholder}
@@ -54,16 +55,16 @@ const CategorySelect: React.FC<Props> = ({
         size="md"
         addButton={
           withAddButton && onAddNewClick
-            ? { onClick: onAddNewClick, label: "+ افزودن" }
+            ? { onClick: onAddNewClick, label: "+ افزودن برند" }
             : undefined
         }
         isActiveError={isActiveError}
       />
 
-      {/* ✅ فقط وقتی با prop فعال شد */}
-      {withAddModal && <AddNewCategoryModal />}
+      {/* ✅ فقط اگر بخوای مدال رو فعال کنی */}
+      {withAddModal && <AddNewBrandModal />}
     </>
   );
 };
 
-export default CategorySelect;
+export default BrandSelect;

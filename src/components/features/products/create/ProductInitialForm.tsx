@@ -20,12 +20,12 @@ import {
 import ToggleableSection from "./helpers/ToggleableSection";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
-import CategorySelect from "../CategorySelect";
+import CategorySelect from "../categories/CategorySelect";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import FormActionButtons from "@/components/common/FormActionButtons";
-import BrandSelect from "../BrandSelect";
+import BrandSelect from "../brands/BrandSelect";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
