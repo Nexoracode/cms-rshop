@@ -14,7 +14,6 @@ import {
 import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
 import { useEffect, useMemo, useState } from "react";
 import { Product } from "./types/product";
-import AddNewCategoryModal from "../categories/AddNewCategoryModal";
 import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
@@ -29,8 +28,6 @@ import {
   useProductUpdate,
 } from "@/hooks/api/products/useProduct";
 import ToggleableSection from "./helpers/ToggleableSection";
-import { flattenCategories } from "@/utils/flattenCategories";
-import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
@@ -88,11 +85,6 @@ const ProductInitialForm = () => {
 
   //?Disclosure
   const {
-    isOpen: isOpenCategory,
-    onOpen: onOpenCategory,
-    onOpenChange: onOpenChangeCategory,
-  } = useDisclosure();
-  const {
     isOpen: isOpenBrand,
     onOpen: onOpenBrand,
     onOpenChange: onOpenChangeBrand,
@@ -117,30 +109,6 @@ const ProductInitialForm = () => {
       .replace(/<[^>]*>/g, "") // حذف تگ‌ها
       .replace(/&nbsp;/g, " ") // حذف nbsp
       .trim();
-
-  const canSubmit = useMemo(() => {
-    const hasMedia =
-      ((product.media_ids?.length || oneProduct?.data?.medias?.length) ?? 0) >
-      0;
-    const hasPinned = !!product.media_pinned_id;
-    const hasName = !!product.name?.trim();
-    const hasPrice = Number(product.price) > 0;
-    const hasCategory = Number(product.category_id) > 0;
-    const hasWeight = Number(product.weight) > 0;
-    const hasBrand = Number(product.brand_id) > 0;
-    const hasDesc = stripHtml(product.description || "").length > 0;
-
-    return (
-      hasMedia &&
-      hasPinned &&
-      hasName &&
-      hasPrice &&
-      hasCategory &&
-      hasWeight &&
-      hasDesc &&
-      hasBrand
-    );
-  }, [product]);
 
   const handleChangeProduct = () => {
     // بررسی فیلدها
@@ -309,6 +277,7 @@ const ProductInitialForm = () => {
                 onChange={(val) =>
                   setProduct((p) => ({ ...p, category_id: Number(val) }))
                 }
+                withAddModal
               />
 
               <SelectBox
@@ -506,10 +475,6 @@ const ProductInitialForm = () => {
           ثبت تغییرات
         </Button>
       </section>
-      <AddNewCategoryModal
-        isOpen={isOpenCategory}
-        onOpenChange={onOpenChangeCategory}
-      />
       <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>
   );
