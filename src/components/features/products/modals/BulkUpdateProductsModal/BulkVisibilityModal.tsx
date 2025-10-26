@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Select, SelectItem, Switch, Button } from "@heroui/react";
+import { Select, SelectItem, Switch } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { AiOutlineEye } from "react-icons/ai";
 import BulkModalHeader from "./BulkModalHeader";
@@ -16,11 +16,11 @@ const BulkVisibilityModal: React.FC<Props> = ({
   onConfirm,
 }) => {
   const [isVisible, setIsVisible] = useState<boolean | null>(null);
-  const [isFeatured, setIsFeatured] = useState<boolean | null>(null);
+  const [isFeatured, setIsFeatured] = useState<boolean>(false);
 
   const reset = () => {
     setIsVisible(null);
-    setIsFeatured(null);
+    setIsFeatured(false);
   };
 
   const handleConfirm = () => {
