@@ -12,13 +12,13 @@ type BaseCardProps = {
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   redirect?: string;
   children: React.ReactNode;
-  wrapperContents?: string
+  wrapperContents?: boolean;
 };
 
 const BaseCard: React.FC<BaseCardProps> = ({
   className = "",
   bodyClassName = "",
-  wrapperContents = "flex flex-col p-4 gap-6",
+  wrapperContents = false,
   redirect = "",
   onClick,
   children,
@@ -30,7 +30,9 @@ const BaseCard: React.FC<BaseCardProps> = ({
     >
       {CardHeaderProps && <CardHeader {...CardHeaderProps} />}
       <CardBody
-        className={`relative p-2 cursor-pointer text-right ${bodyClassName} ${wrapperContents}`}
+        className={`relative p-2 cursor-pointer text-right ${bodyClassName} ${
+          wrapperContents ? "flex flex-col p-4 gap-6" : ""
+        }`}
         onClick={(e) => {
           if (onClick) onClick(e);
         }}

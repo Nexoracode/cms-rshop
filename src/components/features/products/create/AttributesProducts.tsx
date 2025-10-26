@@ -16,6 +16,8 @@ import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
+import FormActionButtons from "@/components/common/FormActionButtons";
 
 type VariantValidity = {
   hasPrice: boolean;
@@ -114,7 +116,7 @@ const AttributesProducts = () => {
       content: (
         <>
           <div
-            className="grid grid-cols-1 gap-6 md:grid-cols-2"
+            className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-6"
             data-scroll-parent="true"
           >
             {productData?.data?.variants?.map((variant: any) => (
@@ -134,13 +136,10 @@ const AttributesProducts = () => {
           </div>
 
           {(productData?.data?.variants?.length || variants.length) && (
-            <Button
-              color="success"
-              className="mt-4 text-white"
-              onPress={updateVariantProduct}
-            >
-              ثبت تغیرات ویژگی ها
-            </Button>
+            <FormActionButtons
+              cancelHref="/admin/products"
+              onSubmit={updateVariantProduct}
+            />
           )}
         </>
       ),
@@ -175,18 +174,20 @@ const AttributesProducts = () => {
 
   return (
     <UnifiedCard
-      searchFilterProps={{
-        relatedPages: [
-          {
-            title: "مدیریت ویژگی ها",
-            href: "/admin/products/variants",
-          },
-          {
-            title: "مدیریت تنوع محصولات",
-            href: "/admin/products/variants/",
-          },
-        ],
-      }}
+      searchFilter={
+        <SearchFilterCard
+          relatedPages={[
+            {
+              title: "مدیریت ویژگی ها",
+              href: "/admin/products/variants",
+            },
+            {
+              title: "مدیریت تنوع محصولات",
+              href: "/admin/products/variants/",
+            },
+          ]}
+        />
+      }
       headerProps={{
         icon: <BiCategoryAlt className="text-xl" />,
         title: "ویژگی ها و تنوع محصولات",
@@ -206,6 +207,7 @@ const AttributesProducts = () => {
               scroll: false,
             });
           }}
+          
           tabListClassName="flex-wrap md:flex-nowrap mb-4"
         />
       }

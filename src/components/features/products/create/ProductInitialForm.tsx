@@ -34,6 +34,7 @@ import { LuScrollText } from "react-icons/lu";
 import { FiCheckCircle, FiShoppingBag } from "react-icons/fi";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import { IoArrowForwardOutline } from "react-icons/io5";
+import FormActionButtons from "@/components/common/FormActionButtons";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
@@ -464,23 +465,10 @@ const ProductInitialForm = () => {
         />
       </BaseCard>
 
-      <div className="flex items-center gap-3 px-4">
-        <OptionButton
-          title="لغو"
-          href="/admin/products"
-          icon={<IoArrowForwardOutline/>}
-          size="md"
-          className="w-full"
-        />
-        <OptionButton
-          title="ثبت تغییرات"
-          onClick={handleChangeProduct}
-          variant="flat"
-          size="md"
-          icon={<FiCheckCircle />}
-          className="w-full bg-primary text-white"
-        />
-      </div>
+      <FormActionButtons
+        cancelHref="/admin/products"
+        onSubmit={handleChangeProduct}
+      />
 
       <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>

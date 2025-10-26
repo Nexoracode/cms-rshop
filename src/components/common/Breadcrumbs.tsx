@@ -110,5 +110,5 @@ export default function Breadcrumbs() {
     return <nav className="text-sm text-gray-600">خانه</nav>;
   }
 
-  return <nav aria-label="Breadcrumb" className="w-fit text-sm flex bg-white shadow rounded-xl py-3 px-4">{crumbs}</nav>;
+  return <nav aria-label="Breadcrumb" className="w-fit text-sm flex bg-white shadow rounded-xl py-2.5 px-4">{crumbs}</nav>;
 }
