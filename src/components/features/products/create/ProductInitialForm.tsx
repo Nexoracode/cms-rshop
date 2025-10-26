@@ -1,20 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import {
-  Checkbox,
-  NumberInput,
-  Select,
-  SelectItem,
-  useDisclosure,
-} from "@heroui/react";
+import { Checkbox, NumberInput, Select, SelectItem } from "@heroui/react";
 import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
 import { useEffect, useState } from "react";
 import { Product } from "./types/product";
 import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
-import AddNewBrandModal from "../brands/AddNewBrandModal";
 import { useGetBrands } from "@/hooks/api/useBrand";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
@@ -27,14 +20,12 @@ import {
 import ToggleableSection from "./helpers/ToggleableSection";
 import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
-import SelectBox from "@/components/ui/inputs/SelectBox";
 import CategorySelect from "../CategorySelect";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuScrollText } from "react-icons/lu";
-import { FiCheckCircle, FiShoppingBag } from "react-icons/fi";
-import OptionButton from "@/components/ui/buttons/OptionButton";
-import { IoArrowForwardOutline } from "react-icons/io5";
+import { FiShoppingBag } from "react-icons/fi";
 import FormActionButtons from "@/components/common/FormActionButtons";
+import BrandSelect from "../BrandSelect";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
@@ -83,20 +74,12 @@ const ProductInitialForm = () => {
     hasDesc: false,
   });
 
-  //?Disclosure
-  const {
-    isOpen: isOpenBrand,
-    onOpen: onOpenBrand,
-    onOpenChange: onOpenChangeBrand,
-  } = useDisclosure();
   //? Hooks
-  const { data: allBrands } = useGetBrands();
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
   const { mutate: updateProduct } = useProductUpdate(
     editId ? +editId : undefined
   );
-  //
 
   useEffect(() => {
     if (oneProduct?.data) {
@@ -226,6 +209,7 @@ const ProductInitialForm = () => {
           icon: <LuScrollText />,
           showIconInActionSlot: true,
         }}
+        wrapperContents
       >
         <ImagesProducts
           onMedia_ids={(datas) => {
@@ -279,23 +263,12 @@ const ProductInitialForm = () => {
             withAddModal
           />
 
-          <SelectBox
-            label="برند"
-            value={product.brand_id ?? 0}
+          <BrandSelect
+            value={product.brand_id}
             onChange={(val) =>
               setProduct((p) => ({ ...p, brand_id: Number(val) }))
             }
-            options={
-              allBrands?.data?.items?.map((brand: any) => ({
-                key: brand.id,
-                title: brand.name,
-              })) ?? []
-            }
-            placeholder="برند مورد نظر را انتخاب کنید"
-            addButton={{ onClick: onOpenBrand, label: "+ افزودن برند" }}
-            isActiveError={isSubmitAttempted && !fieldErrors.hasBrand}
-            isRequired
-            errorText="برند الزامی است."
+            withAddModal
           />
         </div>
 
@@ -336,6 +309,7 @@ const ProductInitialForm = () => {
           icon: <FiShoppingBag />,
           showIconInActionSlot: true,
         }}
+        wrapperContents
       >
         <ShippingModeSwitcher
           defaultMood={product.requires_preparation ? "mood2" : "mood1"}
@@ -469,8 +443,6 @@ const ProductInitialForm = () => {
         cancelHref="/admin/products"
         onSubmit={handleChangeProduct}
       />
-
-      <AddNewBrandModal isOpen={isOpenBrand} onOpenChange={onOpenChangeBrand} />
     </>
   );
 };
