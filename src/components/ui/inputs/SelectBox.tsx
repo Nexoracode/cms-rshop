@@ -37,6 +37,7 @@ const SelectBox: React.FC<Props> = ({
     <Select
       dir="rtl"
       label={label}
+      labelPlacement="outside"
       selectedKeys={value ? [String(value)] : []}
       placeholder={placeholder ?? "انتخاب کنید"}
       onSelectionChange={(keys) => {

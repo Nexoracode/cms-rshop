@@ -6,6 +6,7 @@ import BaseModal from "@/components/ui/modals/BaseModal";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import BulkModalHeader from "./BulkModalHeader";
 import { BiMoneyWithdraw } from "react-icons/bi";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 
 type PriceMode = "set" | "increase" | "decrease";
 
@@ -35,6 +36,12 @@ const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
     reset();
   };
 
+  const priceModeOptions: SelectOption[] = [
+    { key: "set", title: "ثبت قیمت جدید" },
+    { key: "increase", title: "افزایش قیمت" },
+    { key: "decrease", title: "کاهش قیمت" },
+  ];
+
   return (
     <BaseModal
       triggerProps={{
@@ -59,24 +66,18 @@ const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
         selectedCount <= 0 ||
         priceMode === null ||
         priceValue === null ||
-        Number.isNaN(priceValue) || !priceValue
+        Number.isNaN(priceValue) ||
+        !priceValue
       }
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Select
+        <SelectBox
           label="حالت تغییر قیمت"
-          labelPlacement="outside"
+          value={priceMode ?? ""}
+          onChange={(val) => setPriceMode(val as PriceMode)}
+          options={priceModeOptions}
           placeholder="انتخاب حالت"
-          selectedKeys={priceMode ? [priceMode] : []}
-          onSelectionChange={(keys) => {
-            const key = Array.from(keys)[0] as PriceMode | undefined;
-            setPriceMode(key ?? null);
-          }}
-        >
-          <SelectItem key="set">ثبت قیمت جدید</SelectItem>
-          <SelectItem key="increase">افزایش قیمت</SelectItem>
-          <SelectItem key="decrease">کاهش قیمت</SelectItem>
-        </Select>
+        />
 
         <PriceNumberInput
           value={priceValue ?? undefined}

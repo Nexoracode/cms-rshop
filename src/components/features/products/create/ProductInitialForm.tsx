@@ -311,7 +311,7 @@ const ProductInitialForm = () => {
             />
 
             <div className="flex flex-col md:flex-row gap-4">
-              <SelectWithAddButton
+           {/*    <SelectWithAddButton
                 label="دسته بندی"
                 placeholder="دسته بندی مورد نظر را انتخاب کنید"
                 options={flatOptions}
@@ -321,7 +321,7 @@ const ProductInitialForm = () => {
                 }
                 onAddNewClick={onOpenCategory}
                 isActiveError={isSubmitAttempted && !fieldErrors.hasCategory}
-              />
+              /> */}
 
               <SelectWithAddButton
                 label="برند"

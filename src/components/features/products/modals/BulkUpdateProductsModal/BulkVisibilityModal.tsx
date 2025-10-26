@@ -5,6 +5,7 @@ import { Select, SelectItem, Switch } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { AiOutlineEye } from "react-icons/ai";
 import BulkModalHeader from "./BulkModalHeader";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 
 type Props = {
   selectedCount?: number;
@@ -31,6 +32,11 @@ const BulkVisibilityModal: React.FC<Props> = ({
     reset();
   };
 
+  const visibilityOptions: SelectOption[] = [
+    { key: "visible", title: "نمایش" },
+    { key: "hidden", title: "عدم نمایش" },
+  ];
+
   return (
     <BaseModal
       title={
@@ -48,26 +54,17 @@ const BulkVisibilityModal: React.FC<Props> = ({
       triggerProps={{
         title: "وضعیت نمایش",
         icon: <AiOutlineEye size={20} />,
-        className: "w-full"
+        className: "w-full",
       }}
     >
       <div className="space-y-5">
-        <Select
+        <SelectBox
           label="وضعیت نمایش"
-          labelPlacement="outside"
+          value={isVisible === null ? "" : isVisible ? "visible" : "hidden"}
+          onChange={(val) => setIsVisible(val === "visible")}
+          options={visibilityOptions}
           placeholder="انتخاب وضعیت"
-          selectedKeys={
-            isVisible === null ? [] : [isVisible ? "visible" : "hidden"]
-          }
-          onSelectionChange={(keys) => {
-            const key = Array.from(keys)[0] as string | undefined;
-            if (!key) return setIsVisible(null);
-            setIsVisible(key === "visible");
-          }}
-        >
-          <SelectItem key="visible">نمایش</SelectItem>
-          <SelectItem key="hidden">عدم نمایش</SelectItem>
-        </Select>
+        />
 
         <Switch
           isSelected={isFeatured === true}

@@ -6,19 +6,16 @@ import { FiSearch } from "react-icons/fi";
 import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
 import { flattenCategories } from "@/utils/flattenCategories";
 import SelectWithAddButton from "./create/helpers/SelectWithAddButton";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 
 type Props = {
   value?: string | number | null;
   onChange: (val: string | number | null) => void;
   label?: string;
   placeholder?: string;
-  /** اگر true باشد، از کامپوننت SelectWithAddButton استفاده می‌کند */
   withAddButton?: boolean;
-  /** زمانی استفاده می‌شود که کاربر روی دکمه افزودن کلیک کند */
   onAddNewClick?: () => void;
-  /** در صورت نیاز برای خطای اعتبارسنجی */
   isActiveError?: boolean;
-  /** حالت غیرفعال */
   isDisabled?: boolean;
 };
 
@@ -32,40 +29,30 @@ const CategorySelect: React.FC<Props> = ({
   isActiveError = false,
   isDisabled = false,
 }) => {
-  // گرفتن داده‌ها از API
   const { data: categoriesData } = useGetAllCategories();
 
-  // تخت کردن ساختار درختی دسته‌ها
-  const flatOptions = useMemo(() => {
-    return flattenCategories(categoriesData?.data);
+  const flatOptions: SelectOption[] = useMemo(() => {
+    return (flattenCategories(categoriesData?.data) || []).map((opt) => ({
+      key: String(opt.id),
+      title: opt.title,
+    }));
   }, [categoriesData?.data]);
 
-  // اگر گزینه افزودن فعال نباشد → Select معمولی
   if (!withAddButton) {
     return (
-      <Select
-        dir="rtl"
-        labelPlacement="outside"
+      <SelectBox
         label={label}
+        value={value ? String(value) : ""}
+        onChange={(val) => onChange(val ?? null)}
+        options={
+          flatOptions.length
+            ? flatOptions
+            : [{ key: "-1", title: "آیتمی موجود نیست" }]
+        }
         placeholder={placeholder}
-        startContent={<FiSearch className="text-lg pointer-events-none" />}
-        selectedKeys={value ? [String(value)] : []}
-        isDisabled={isDisabled}
-        onSelectionChange={(keys) => {
-          const val = Array.from(keys)[0] as string | undefined;
-          onChange(val ?? null);
-        }}
-      >
-        {flatOptions.length ? (
-          flatOptions.map((opt) => (
-            <SelectItem key={String(opt.id)}>{opt.title}</SelectItem>
-          ))
-        ) : (
-          <SelectItem key="-1" isDisabled>
-            آیتمی موجود نیست
-          </SelectItem>
-        )}
-      </Select>
+        disabled={isDisabled}
+        size="md"
+      />
     );
   }
 
