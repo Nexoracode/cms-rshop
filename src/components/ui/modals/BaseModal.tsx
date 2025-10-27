@@ -22,7 +22,7 @@ type BaseModalProps = {
   cancelText?: string;
   onConfirm?: (
     close: (open: boolean) => void
-  ) => void | boolean | Promise<boolean>;
+  ) => void | boolean | Promise<boolean> | Promise<void>;
   onCancel?: () => void;
   icon?: React.ReactNode;
   confirmColor?:

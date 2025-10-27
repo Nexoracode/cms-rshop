@@ -63,7 +63,7 @@ const AddNewBrandModal: React.FC<Props> = ({
     if (isDisabled) return;
 
     try {
-      let logoUrl = typeof data.logo === "string" ? data.logo : null;
+      let logoUrl = typeof data.logo === "string" ? data.logo : "";
 
       if (data.logo instanceof File) {
         const formData = new FormData();
