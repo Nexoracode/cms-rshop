@@ -43,13 +43,10 @@ const Categories = () => {
         meta={undefined}
         childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
       >
-        {categories?.data?.map((category: any) => (
-          <CategoryCard
-            key={category.id}
-            categories={category}
-            onEdit={handleEditCategory}
-          />
-        ))}
+        <CategoryCard
+          categories={categories?.data}
+          onEdit={handleEditCategory}
+        />
       </UnifiedCard>
     </>
   );

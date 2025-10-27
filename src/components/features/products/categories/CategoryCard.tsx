@@ -79,6 +79,10 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   disableAction = false,
   disableShowChildren = false, // 👈 پیش‌فرض false
 }) => {
+
+  console.log(categories);
+  
+
   return (
     <div
       dir="rtl"

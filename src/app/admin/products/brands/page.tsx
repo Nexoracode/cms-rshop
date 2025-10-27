@@ -32,7 +32,7 @@ const BrandsProduct = () => {
   return (
     <>
       <AddNewBrandModal
-        brandId={editBrand?.id}
+        brandId={editBrand?.id || 1}
         defaultValues={editBrand}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}

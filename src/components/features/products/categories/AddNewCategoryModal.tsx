@@ -124,9 +124,14 @@ const AddNewCategoryModal: React.FC<Props> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      triggerProps={{
-        title: "+ افزودن",
-      }}
+      triggerProps={
+        categoryId
+          ? undefined
+          : {
+              title: "+ افزودن",
+              className: "bg-secondary-light text-secondary",
+            }
+      }
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
       confirmColor="primary"
