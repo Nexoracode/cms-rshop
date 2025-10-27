@@ -7,6 +7,7 @@ const BrandFilters = () => {
   return (
     <SearchFilterCard
       searchPlaceholder="جستجو در برندها..."
+      showSearchBar
     >
       <SortBrandsModal />
     </SearchFilterCard>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Input, NumberInput } from "@heroui/react";
+import { Input } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -89,6 +89,7 @@ const AddNewBrandModal: React.FC<Props> = ({ brandId, defaultValues }) => {
     <BaseModal
       triggerProps={{
         title: "+ افزودن",
+        className: "bg-secondary-light text-secondary"
       }}
       title={brandId ? "ویرایش برند" : "افزودن برند جدید"}
       confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
