@@ -5,6 +5,7 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
+import { AttrGroup } from "..";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -20,7 +21,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
   const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
     number | undefined
   >(undefined);
-  const deleteAttributeGroup =  useDeleteAttributeGroup()
+  const deleteAttributeGroup = useDeleteAttributeGroup();
 
   const handleDeleteAttrGroup = () => {
     if (!selectedAttrGroupId) return;
@@ -33,7 +34,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
   };
 
   return (
-    <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
+    <div className={!isDisabledEdit ? "mt-2 bg-slate-50 rounded-xl p-4" : ""}>
       <div className="flex items-end gap-2">
         <AutocompleteInput
           isRequired={isDisabledEdit}
@@ -66,9 +67,13 @@ const AddNewAttrGroup: React.FC<Props> = ({
           <div className="flex gap-2">
             <AddNewAttributeGroupModal
               type="edit"
-              defaultDatas={attrGroup?.find(
-                (g: any) => g.id === selectedAttrGroupId
-              )}
+              defaultDatas={
+                attrGroup.length
+                  ? (attrGroup.find(
+                      (g: any) => g.id === selectedAttrGroupId
+                    ) as AttrGroup)
+                  : undefined
+              }
             />
             <DeleteButton onDelete={handleDeleteAttrGroup} />
           </div>

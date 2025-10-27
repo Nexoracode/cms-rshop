@@ -9,23 +9,15 @@ import {
 import { Input } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ImMakeGroup } from "react-icons/im";
-import { OptionButtonProps } from "@/components/ui/buttons/OptionButton";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
-
-type AttrGroup = {
-  id?: number;
-  name: string;
-  slug: string;
-  display_order: null;
-};
+import { AttrGroup } from "..";
 
 type Props = {
   defaultDatas?: AttrGroup;
   type?: "edit" | "add";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  triggerProps?: Omit<OptionButtonProps, "onClick">;
 };
 
 const initialState: AttrGroup = { name: "", slug: "", display_order: null };
@@ -35,7 +27,6 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
   type = "add",
   isOpen,
   onOpenChange,
-  triggerProps,
 }) => {
   const [datas, setDatas] = useState<AttrGroup>(initialState);
 
