@@ -19,11 +19,13 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation();
     if (route) {
+      e.preventDefault();
+      e.stopPropagation();
       router.push(route);
     } else if (onClick) {
+      e.preventDefault();
+      e.stopPropagation();
       onClick();
     }
   };
@@ -31,7 +33,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all ${className || ""}`}
+      className={`bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all ${
+        className || ""
+      }`}
     >
       {icon}
     </button>

@@ -56,7 +56,7 @@ const AutocompleteWithAddButton: FC<Props> = ({
         )}
       </Autocomplete>
 
-      <p
+     {/*  <p
         className="w-24 z-10 text-center text-purple-700 bg-purple-200 rounded-xl mt-[24px] py-1.5 cursor-pointer truncate hover:bg-purple-300 transition-all"
         onClick={(e) => {
           e.preventDefault();
@@ -65,7 +65,7 @@ const AutocompleteWithAddButton: FC<Props> = ({
         }}
       >
         + افزودن
-      </p>
+      </p> */}
     </div>
   );
 };

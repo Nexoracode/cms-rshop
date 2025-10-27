@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  useDisclosure,
-} from "@heroui/react";
-import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import React, { useState } from "react";
-import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
-import { TbEdit } from "react-icons/tb";
 import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 import DeleteButton from "@/components/shared/DeleteButton";
+import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -24,17 +19,13 @@ const AddNewAttrGroup: React.FC<Props> = ({
   const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
     number | undefined
   >(undefined);
-  const [type, setType] = useState<"edit" | "add">("add");
-  const deleteAttributeGroup = useDeleteAttributeGroup();
-  //? Hooks
-  const {
-    isOpen: isOpenAdd,
-    onOpen: onOpenAdd,
-    onOpenChange: onOpenChangeAdd,
-  } = useDisclosure();
 
   const handleDeleteAttrGroup = () => {
     if (!selectedAttrGroupId) return;
+    const {
+      useDeleteAttributeGroup,
+    } = require("@/hooks/api/attributes/useAttributeGroup");
+    const deleteAttributeGroup = useDeleteAttributeGroup();
     deleteAttributeGroup.mutate(selectedAttrGroupId, {
       onSuccess: () => {
         setSelectedAttrGroupId(undefined);
@@ -44,8 +35,8 @@ const AddNewAttrGroup: React.FC<Props> = ({
   };
 
   return (
-    <>
-      <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
+    <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
+      <div className="flex items-end gap-2">
         <AutocompleteWithAddButton
           label="گروه ویژگی"
           placeholder="گروه را انتخاب کنید"
@@ -62,39 +53,30 @@ const AddNewAttrGroup: React.FC<Props> = ({
             onChange(+id);
             setSelectedAttrGroupId(+id);
           }}
-          onAddNewClick={() => {
-            onOpenAdd();
-            setType("add");
-          }}
+          onAddNewClick={() => {}}
         />
 
-        {selectedAttrGroupId && !isDisabledEdit ? (
-          <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
-            <p className="font-medium text-gray-700">عملیات</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  onOpenAdd();
-                  setType("edit");
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <TbEdit size={20} />
-              </button>
-              <DeleteButton onDelete={handleDeleteAttrGroup} />
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
+        {!isDisabledEdit && <AddNewAttributeGroupModal />}
       </div>
-      <AddNewAttributeGroupModal
-        isOpen={isOpenAdd}
-        onOpenChange={onOpenChangeAdd}
-        defaultDatas={attrGroup?.find((g: any) => g.id === selectedAttrGroupId)}
-        type={type}
-      />
-    </>
+
+      {selectedAttrGroupId && !isDisabledEdit && (
+        <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+          <p className="font-medium text-gray-700">
+            گروه ویژگی (
+            {attrGroup?.find((g: any) => g.id === selectedAttrGroupId)?.name})
+          </p>
+          <div className="flex gap-2">
+            <AddNewAttributeGroupModal
+              type="edit"
+              defaultDatas={attrGroup?.find(
+                (g: any) => g.id === selectedAttrGroupId
+              )}
+            />
+            <DeleteButton onDelete={handleDeleteAttrGroup} />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
