@@ -41,7 +41,6 @@ const Categories = () => {
         isExistItems={isExistItems}
         searchInp={false}
         meta={undefined}
-        childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
       >
         <CategoryCard
           categories={categories?.data}
