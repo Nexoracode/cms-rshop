@@ -5,11 +5,12 @@ import { useState } from "react";
 import { Image, Chip } from "@heroui/react";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
-import SelectableCard from "@/components/ui/SelectableCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteCategory } from "@/hooks/api/categories/useCategory";
+import BaseCard from "@/components/ui/BaseCard";
 
 type Media = { id: number; url: string; alt: string | null; type: "image" };
+
 export type Category = {
   id: number;
   title: string;
@@ -79,9 +80,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   disableAction = false,
   disableShowChildren = false, // 👈 پیش‌فرض false
 }) => {
-
   console.log(categories);
-  
 
   return (
     <div
@@ -132,17 +131,8 @@ const CategoryNode: React.FC<{
 
   return (
     <div className="relative">
-      <SelectableCard
-        id={node.id}
-        selectedIds={selectedIds}
-        disabled={disableSelect}
-        onSelectionChange={(idVal, sel) => onSelect?.(+idVal, sel, node)}
-        className={`shadow-md border w-[270px] sm:w-full ${
-          isRoot ? "shadow-[0_0_2px_orange]" : ""
-        }`}
-        bodyClassName="p-3"
-      >
-        <div className="flex flex-col sm:flex-row items-center gap-3">
+      <BaseCard onClick={() => !disableAction && onEdit?.(node)}>
+        <div className="flex flex-col min-h-[85px] h-full sm:flex-row items-center gap-3">
           <div className="flex items-center gap-2">
             {/* 👇 فقط اگر disableShowChildren=false دکمه‌ی باز/بسته نمایش داده می‌شود */}
             {!disableShowChildren && (
@@ -174,69 +164,70 @@ const CategoryNode: React.FC<{
           </div>
 
           {/* اطلاعات */}
-          <div className="relative flex-1 min-w-0">
-            {chainTitles.length > 0 && (
-              <div className="text-xs hidden sm:flex absolute left-0 text-default-500 truncate items-center justify-end">
-                <div className="w-fit bg-gray-100 rounded-lg py-2 px-3">
-                  {pathTitles}
-                  {node.title}
-                </div>
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row items-center gap-2 p-2">
-              <p className="text-[15px]">{node.title}</p>
-              <p className="text-xs text-default-500">({node.slug})</p>
-            </div>
-
-            <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
-              {isRoot && (
-                <Chip size="sm" color="primary" variant="flat" radius="sm">
-                  والد
-                </Chip>
-              )}
-              {hasChildren && (
-                <Chip size="sm" variant="flat" radius="sm">
-                  {node.children.length} زیرمجموعه
-                </Chip>
-              )}
-              {node.discount && node.discount !== "0" && (
-                <Chip size="sm" color="warning" variant="flat" radius="sm">
-                  %{node.discount} تخفیف
-                </Chip>
-              )}
-            </div>
-
-            {/* اکشن‌ها */}
-            <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
-              {/* 👇 دکمه‌ی باز/بسته فقط در صورتی نمایش داده شود که disableShowChildren=false */}
-              {!disableShowChildren && (
-                <div className="flex sm:hidden">
-                  <ToggleButton
-                    open={open}
-                    hasChildren={hasChildren}
-                    onClick={() => setOpen((p) => !p)}
-                  />
-                </div>
-              )}
-
-              {!disableAction && (
-                <>
-                  <button
-                    onClick={() => onEdit(node)}
-                    className="bg-gray-100 rounded-md p-1 hover:opacity-70 transition-all"
-                    aria-label="ویرایش"
-                    type="button"
-                  >
-                    <TbEdit size={18} />
-                  </button>
+          <div className="relative flex flex-col flex-1 justify-between h-[85px] py-2 min-w-0">
+            <div className="flex items-center justify-between">
+              <div className="text-xs hidden sm:flex absolute left-0 truncate items-center justify-end">
+                {!disableAction && (
                   <DeleteButton onDelete={() => deleteCategory(node.id)} />
-                </>
-              )}
+                )}
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <p className="text-[15px]">{node.title}</p>
+                <p className="text-xs text-default-500">({node.slug})</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
+                {isRoot && (
+                  <Chip size="sm" color="primary" variant="flat" radius="sm">
+                    والد
+                  </Chip>
+                )}
+                {hasChildren && (
+                  <Chip
+                    size="sm"
+                    variant="flat"
+                    className="bg-slate-100"
+                    radius="sm"
+                  >
+                    {node.children.length} زیرمجموعه
+                  </Chip>
+                )}
+                {node.discount && node.discount !== "0" && (
+                  <Chip size="sm" color="warning" variant="flat" radius="sm">
+                    %{node.discount} تخفیف
+                  </Chip>
+                )}
+                <div className="opacity-0 invisible"> </div>
+              </div>
+
+              {/* اکشن‌ها */}
+              <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
+                {/* 👇 دکمه‌ی باز/بسته فقط در صورتی نمایش داده شود که disableShowChildren=false */}
+                {!disableShowChildren && (
+                  <div className="flex sm:hidden">
+                    <ToggleButton
+                      open={open}
+                      hasChildren={hasChildren}
+                      onClick={() => setOpen((p) => !p)}
+                    />
+                  </div>
+                )}
+
+                {chainTitles.length > 0 && (
+                  <div className="text-xs hidden sm:flex text-default-500 truncate items-center justify-end">
+                    <div className="w-fit bg-slate-100 rounded-md py-1 px-2">
+                      {pathTitles}
+                      {node.title}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </SelectableCard>
+      </BaseCard>
 
       {/* 👇 رندر بچه‌ها فقط در صورتی که disableShowChildren=false */}
       {hasChildren && open && !disableShowChildren && (
@@ -261,3 +252,16 @@ const CategoryNode: React.FC<{
 };
 
 export default CategoryTree;
+
+{
+  /* <SelectableCard
+        id={node.id}
+        selectedIds={selectedIds}
+        disabled={disableSelect}
+        onSelectionChange={(idVal, sel) => onSelect?.(+idVal, sel, node)}
+        className={`shadow-md border w-[270px] sm:w-full ${
+          isRoot ? "shadow-[0_0_2px_orange]" : ""
+        }`}
+        bodyClassName="p-3"
+      ></SelectableCard> */
+}
