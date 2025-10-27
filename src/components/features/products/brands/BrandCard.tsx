@@ -13,15 +13,17 @@ type BrandCardProps = {
     slug: string;
     logo: string;
   };
+  onEdit?: (brand: Record<string, any>) => void;
 };
 
-const BrandCard: React.FC<BrandCardProps> = ({ brand }) => {
+const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit }) => {
   const { mutate: deleteBrand } = useDeleteBrand();
 
   return (
     <BaseCard
       className="cursor-auto shadow-md rounded-2xl border w-[235px]"
       bodyClassName="overflow-hidden p-2.5 relative cursor-pointer"
+      onClick={() => onEdit?.(brand)}
     >
       {/* دکمه حذف */}
       <div className="absolute top-2.5 left-2.5 z-50">

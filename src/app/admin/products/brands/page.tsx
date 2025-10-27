@@ -8,13 +8,10 @@ import { TbBrandArc } from "react-icons/tb";
 import { LuPlus } from "react-icons/lu";
 import { useListQueryParams } from "@/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
-import { useState } from "react";
 
 const BrandsProduct = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<BrandSortBy[number]>();
-
-    const [editBrand, setEditBrand] = useState<Record<string, any>>({})
 
   const { data: brands, isLoading } = useGetBrands({
     page,
@@ -31,13 +28,7 @@ const BrandsProduct = () => {
         title: "مدیریت برندها",
         icon: <TbBrandArc className="text-2xl" />,
         btnIcon: <LuPlus />,
-        children: (
-          <AddNewBrandModal
-            key={editBrand?.id ?? "new"}
-            defaultValues={editBrand}
-            brandId={editBrand?.id}
-          />
-        ),
+        children: <AddNewBrandModal />,
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
