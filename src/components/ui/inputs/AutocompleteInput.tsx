@@ -1,32 +1,32 @@
 "use client";
 
-import { FC } from "react";
+import React from "react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
 
-type Option = {
-  id: number | string;
+export type Option = {
+  id: string | number;
   title: string;
 };
 
-type Props = {
-  label: string;
-  placeholder: string;
+type AutocompleteInputProps = {
+  label?: string;
+  placeholder?: string;
   options: Option[];
-  selectedId: string | number;
-  onChange: (id: number | string) => void;
-  onAddNewClick: () => void;
+  selectedId?: string | number;
+  onChange: (id: string) => void;
   isRequired?: boolean;
+  className?: string;
 };
 
-const AutocompleteWithAddButton: FC<Props> = ({
-  label,
-  placeholder,
+const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
+  label = "",
+  placeholder = "انتخاب کنید",
   options,
   selectedId,
   onChange,
-  onAddNewClick,
-  isRequired = true,
+  isRequired = false,
+  className = "",
 }) => {
   return (
     <Autocomplete
@@ -36,7 +36,7 @@ const AutocompleteWithAddButton: FC<Props> = ({
       labelPlacement="outside"
       isRequired={isRequired}
       startContent={<FiSearch className="text-lg pointer-events-none" />}
-      className="w-full"
+      className={`w-full ${className}`}
       selectedKey={selectedId ? String(selectedId) : undefined}
       onSelectionChange={(key) => {
         if (key) onChange(key.toString());
@@ -57,4 +57,4 @@ const AutocompleteWithAddButton: FC<Props> = ({
   );
 };
 
-export default AutocompleteWithAddButton;
+export default AutocompleteInput;

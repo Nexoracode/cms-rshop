@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
+import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -37,9 +37,15 @@ const AddNewAttrGroup: React.FC<Props> = ({
   return (
     <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
       <div className="flex items-end gap-2">
-        <AutocompleteWithAddButton
+        <AutocompleteInput
+          isRequired={isDisabledEdit}
           label="گروه ویژگی"
           placeholder="گروه را انتخاب کنید"
+          selectedId={selectedAttrGroupId || ""}
+          onChange={(id) => {
+            onChange(+id);
+            setSelectedAttrGroupId(+id);
+          }}
           options={
             attrGroup?.length
               ? attrGroup.map((item: any) => ({
@@ -48,12 +54,6 @@ const AddNewAttrGroup: React.FC<Props> = ({
                 }))
               : []
           }
-          selectedId={selectedAttrGroupId || ""}
-          onChange={(id) => {
-            onChange(+id);
-            setSelectedAttrGroupId(+id);
-          }}
-          onAddNewClick={() => {}}
         />
 
         {!isDisabledEdit && <AddNewAttributeGroupModal />}
