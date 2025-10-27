@@ -20,6 +20,8 @@ export type OptionButtonProps = {
     | "light"
     | "shadow"
     | "solid";
+  isDisabled?: boolean;
+  isLoading?: boolean;
 };
 
 const OptionButton: React.FC<OptionButtonProps> = ({
@@ -30,6 +32,8 @@ const OptionButton: React.FC<OptionButtonProps> = ({
   className = "",
   size = "sm",
   variant = "flat",
+  isDisabled = false,
+  isLoading = false,
 }) => {
   return href ? (
     <Button
@@ -50,6 +54,8 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       variant={variant}
       size={size}
       className={`w-fit rounded-lg ${className}`}
+      isDisabled={isDisabled}
+      isLoading={isLoading}
     >
       <div className="flex items-center gap-1.5">
         {icon && <span className="text-lg">{icon}</span>}

@@ -6,7 +6,8 @@ import { IoArrowForwardOutline } from "react-icons/io5";
 import { FiCheckCircle } from "react-icons/fi";
 
 type Props = {
-  cancelHref: string;
+  cancelHref?: string;       // ✅ اختیاری
+  onCancel?: () => void;     // ✅ اختیاری
   onSubmit: () => void;
   submitText?: string;
   cancelText?: string;
@@ -15,20 +16,25 @@ type Props = {
 
 const FormActionButtons: React.FC<Props> = ({
   cancelHref,
+  onCancel,
   onSubmit,
   submitText = "ثبت تغییرات",
   cancelText = "لغو",
   isSubmitting = false,
 }) => {
   return (
-    <div className="flex items-center gap-3 px-4">
-      <OptionButton
-        title={cancelText}
-        href={cancelHref}
-        icon={<IoArrowForwardOutline />}
-        size="md"
-        className="w-full"
-      />
+    <div className="flex items-center gap-3 px-4 mb-2">
+      {cancelHref || onCancel ? (
+        <OptionButton
+          title={cancelText}
+          href={cancelHref}
+          onClick={onCancel}
+          icon={<IoArrowForwardOutline />}
+          size="md"
+          className="w-full"
+        />
+      ) : null}
+
       <OptionButton
         title={isSubmitting ? "در حال ثبت..." : submitText}
         onClick={onSubmit}

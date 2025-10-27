@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import { useGetAllAttribute } from "@/hooks/api/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/api/attributes/useAttributeValue";
 import { useGetAllAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
@@ -11,6 +10,8 @@ import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAddNewVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
 import { useAddNewAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
+import FormActionButtons from "@/components/common/FormActionButtons";
+import toast from "react-hot-toast";
 
 type Props = {
   isDisabledEdit?: boolean;
@@ -27,7 +28,7 @@ const initialSelecteds = {
 export const AttributesContent = ({
   isDisabledEdit = true,
   isActiveHeader = true,
-  onOpenChange
+  onOpenChange,
 }: Props) => {
   const sp = useSearchParams();
   const page = +(sp.get("edit_id") ?? 1);
@@ -40,7 +41,10 @@ export const AttributesContent = ({
 
   const handleSubmit = async () => {
     const { attrId, attrGroupId, valueIds } = selecteds;
-    if (!attributes?.data || !attributeValues?.data || !attrGroupId) return;
+    if (!attributes?.data || !attributeValues?.data || !attrGroupId) {
+      toast.error("فیلدهای ضروری را انتخاب و یا اضافه کنید")
+      return
+    };
 
     const attrIsVariant = attributes.data.find(
       (a: any) => a.id === attrId
@@ -113,16 +117,14 @@ export const AttributesContent = ({
         />
       ) : null}
       {isActiveHeader ? (
-        <Button
-          className="w-full"
-          variant="solid"
-          color="secondary"
-          onPress={handleSubmit}
-          isDisabled={!selecteds.valueIds.length}
-          isLoading={addNewVariantProductMutation.isPending}
-        >
-          ثبت تغییرات
-        </Button>
+        <FormActionButtons
+          onCancel={() => {
+            resetInfos();
+            onOpenChange?.(false);
+          }}
+          onSubmit={handleSubmit}
+          isSubmitting={addNewVariantProductMutation.isPending}
+        />
       ) : (
         ""
       )}
