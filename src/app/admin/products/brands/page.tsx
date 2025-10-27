@@ -1,11 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import BrandCard from "@/components/features/products/brands/BrandCard";
 import BrandFilters from "@/components/features/products/brands/BrandFilters";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { BrandSortBy, useGetBrands } from "@/hooks/api/useBrand";
 import { TbBrandArc } from "react-icons/tb";
-import { LuPlus } from "react-icons/lu";
 import { useListQueryParams } from "@/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 
@@ -21,25 +21,41 @@ const BrandsProduct = () => {
 
   const isExistItems = !!brands?.data?.items?.length;
 
+  const [editBrand, setEditBrand] = useState<any | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const handleEditBrand = (brand: any) => {
+    setEditBrand(brand);
+    setIsEditOpen(true);
+  };
+
   return (
-    <UnifiedCard
-      searchFilter={<BrandFilters />}
-      headerProps={{
-        title: "مدیریت برندها",
-        icon: <TbBrandArc className="text-2xl" />,
-        btnIcon: <LuPlus />,
-        children: <AddNewBrandModal />,
-      }}
-      isLoading={isLoading}
-      isExistItems={isExistItems}
-      searchInp={isFilteredView}
-      meta={brands?.data?.meta}
-      childrenClassName="grid grid-cols-3"
-    >
-      {brands?.data?.items?.map((b: any) => {
-        return <BrandCard key={b.id} brand={b} />;
-      })}
-    </UnifiedCard>
+    <>
+      <AddNewBrandModal
+        brandId={editBrand?.id}
+        defaultValues={editBrand}
+        isOpen={isEditOpen}
+        onOpenChange={setIsEditOpen}
+      />
+
+      <UnifiedCard
+        searchFilter={<BrandFilters />}
+        headerProps={{
+          title: "مدیریت برندها",
+          icon: <TbBrandArc className="text-2xl" />,
+          children: <AddNewBrandModal />,
+        }}
+        isLoading={isLoading}
+        isExistItems={isExistItems}
+        searchInp={isFilteredView}
+        meta={brands?.data?.meta}
+        childrenClassName="grid grid-cols-3"
+      >
+        {brands?.data?.items?.map((b: any) => (
+          <BrandCard key={b.id} brand={b} onEdit={handleEditBrand} />
+        ))}
+      </UnifiedCard>
+    </>
   );
 };
 

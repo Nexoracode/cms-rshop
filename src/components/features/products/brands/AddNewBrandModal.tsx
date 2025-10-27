@@ -16,9 +16,16 @@ import { TbBrandArc } from "react-icons/tb";
 type Props = {
   brandId?: number | null;
   defaultValues?: any;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
-const AddNewBrandModal: React.FC<Props> = ({ brandId, defaultValues }) => {
+const AddNewBrandModal: React.FC<Props> = ({
+  brandId,
+  defaultValues,
+  isOpen,
+  onOpenChange,
+}) => {
   const [data, setData] = useState({
     name: "",
     slug: "",
@@ -58,7 +65,6 @@ const AddNewBrandModal: React.FC<Props> = ({ brandId, defaultValues }) => {
     try {
       let logoUrl = typeof data.logo === "string" ? data.logo : null;
 
-      // ✅ آپلود لوگو در صورت نیاز
       if (data.logo instanceof File) {
         const formData = new FormData();
         formData.append("files", data.logo);
@@ -79,6 +85,7 @@ const AddNewBrandModal: React.FC<Props> = ({ brandId, defaultValues }) => {
         brandId ? "برند با موفقیت بروزرسانی شد" : "برند با موفقیت ایجاد شد"
       );
       setData({ name: "", slug: "", logo: null });
+      onOpenChange?.(false);
     } catch (err) {
       console.error(err);
       toast.error("خطای ناشناخته رخ داد.");
@@ -87,10 +94,16 @@ const AddNewBrandModal: React.FC<Props> = ({ brandId, defaultValues }) => {
 
   return (
     <BaseModal
-      triggerProps={{
-        title: "+ افزودن",
-        className: "bg-secondary-light text-secondary"
-      }}
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      triggerProps={
+        brandId
+          ? undefined
+          : {
+              title: "+ افزودن",
+              className: "bg-secondary-light text-secondary",
+            }
+      }
       title={brandId ? "ویرایش برند" : "افزودن برند جدید"}
       confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
       confirmColor="primary"
