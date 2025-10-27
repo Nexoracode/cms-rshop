@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
+import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -19,13 +20,10 @@ const AddNewAttrGroup: React.FC<Props> = ({
   const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
     number | undefined
   >(undefined);
+  const deleteAttributeGroup =  useDeleteAttributeGroup()
 
   const handleDeleteAttrGroup = () => {
     if (!selectedAttrGroupId) return;
-    const {
-      useDeleteAttributeGroup,
-    } = require("@/hooks/api/attributes/useAttributeGroup");
-    const deleteAttributeGroup = useDeleteAttributeGroup();
     deleteAttributeGroup.mutate(selectedAttrGroupId, {
       onSuccess: () => {
         setSelectedAttrGroupId(undefined);
