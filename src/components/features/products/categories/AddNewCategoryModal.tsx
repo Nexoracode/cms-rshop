@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  Checkbox,
-  Input,
-  NumberInput,
-} from "@heroui/react";
+import { Checkbox, Input, NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -24,11 +19,15 @@ import { BiCategoryAlt } from "react-icons/bi";
 type Props = {
   categoryId?: number;
   defaultValues?: any;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 const AddNewCategoryModal: React.FC<Props> = ({
   categoryId,
   defaultValues,
+  isOpen,
+  onOpenChange,
 }) => {
   const [data, setData] = useState({
     title: "",
@@ -114,6 +113,7 @@ const AddNewCategoryModal: React.FC<Props> = ({
       );
       setData({ title: "", slug: "", discount: "0", parentId: 0, mediaId: "" });
       setImageFile(null);
+      onOpenChange?.(false);
     } catch (error) {
       console.error("خطا:", error);
       toast.error("خطای ناشناخته. با برنامه‌نویس تماس بگیرید");
@@ -122,6 +122,8 @@ const AddNewCategoryModal: React.FC<Props> = ({
 
   return (
     <BaseModal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
       triggerProps={{
         title: "+ افزودن",
       }}
