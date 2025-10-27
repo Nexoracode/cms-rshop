@@ -49,7 +49,7 @@ const BrandsProduct = () => {
         isExistItems={isExistItems}
         searchInp={isFilteredView}
         meta={brands?.data?.meta}
-        childrenClassName="grid grid-cols-3"
+        childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
       >
         {brands?.data?.items?.map((b: any) => (
           <BrandCard key={b.id} brand={b} onEdit={handleEditBrand} />

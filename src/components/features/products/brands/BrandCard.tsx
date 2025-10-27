@@ -21,7 +21,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit }) => {
 
   return (
     <BaseCard
-      className="cursor-auto shadow-md rounded-2xl border w-[235px]"
+      className="cursor-auto shadow-md rounded-2xl border w-[250px] xs:w-full"
       bodyClassName="overflow-hidden p-2.5 relative cursor-pointer"
       onClick={() => onEdit?.(brand)}
     >
@@ -31,21 +31,21 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit }) => {
       </div>
 
       {/* تصویر برند */}
-      <Image
-        alt={brand.name}
-        className="w-full rounded-2xl object-cover h-[140px]"
-        radius="lg"
-        src={brand.logo}
-        width="100%"
-      />
+      <div className="w-full h-full bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
+        <Image
+          alt={brand.name}
+          className="w-full min-h-[160px] md:min-h-[120px] object-cover rounded-2xl"
+          radius="lg"
+          width={"100%"}
+          src={brand.logo}
+        />
+      </div>
 
       {/* نام و اسلاگ */}
-      <div className="flex flex-col justify-center items-center gap-2">
-        <div className="flex flex-col items-center leading-7 w-[200px] pt-2 rounded-2xl">
-          <div className="flex flex-col items-center gap-1">
-            <p className="text-[15px]">{brand.name}</p>
-            <p className="text-default-500">{brand.slug}</p>
-          </div>
+      <div className="flex flex-col justify-center items-center gap-2 mt-2">
+        <div className="flex flex-col items-center leading-7 w-full rounded-2xl">
+          <p className="text-[15px]">{brand.name}</p>
+          <p className="text-default-500 text-sm">{brand.slug}</p>
         </div>
       </div>
     </BaseCard>
