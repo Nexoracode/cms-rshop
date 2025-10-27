@@ -120,6 +120,9 @@ const AddNewCategoryModal: React.FC<Props> = ({
     }
   };
 
+  console.log(categoryId);
+  
+
   return (
     <BaseModal
       isOpen={isOpen}

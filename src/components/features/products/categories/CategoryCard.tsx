@@ -146,7 +146,7 @@ const CategoryNode: React.FC<{
             )}
 
             {/* تصویر */}
-            <div className="w-28 h-28 sm:w-[72px] sm:h-[72px] overflow-hidden rounded-xl bg-default-100 shrink-0">
+            <div className="w-28 h-28 sm:w-[72px] sm:h-[78px] overflow-hidden rounded-xl bg-default-100 shrink-0">
               {node.media?.url ? (
                 <Image
                   alt={node.media.alt ?? node.title}
@@ -164,23 +164,23 @@ const CategoryNode: React.FC<{
           </div>
 
           {/* اطلاعات */}
-          <div className="relative flex flex-col flex-1 justify-between h-[85px] py-2 min-w-0">
-            <div className="flex items-center justify-between">
-              <div className="text-xs hidden sm:flex absolute left-0 truncate items-center justify-end">
+          <div className="relative w-full flex flex-col flex-1 justify-between h-[85px] py-1 min-w-0">
+            <div className="flex items-center justify-between pb-3 sm:pb-0 border-b sm:border-0">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <p className="text-[15px]">{node.title}</p>
+                <p className="text-xs text-default-500">({node.slug})</p>
+              </div>
+
+              <div className="text-xs truncate items-center justify-end">
                 {!disableAction && (
                   <DeleteButton onDelete={() => deleteCategory(node.id)} />
                 )}
               </div>
-
-              <div className="flex flex-col sm:flex-row items-center gap-2">
-                <p className="text-[15px]">{node.title}</p>
-                <p className="text-xs text-default-500">({node.slug})</p>
-              </div>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
+              <div className="flex items-center justify-center sm:justify-start gap-2 mt-2.5 sm:mt-0">
                 {isRoot && (
-                  <Chip size="sm" color="primary" variant="flat" radius="sm">
+                  <Chip size="sm" className="bg-primary-light text-primary" variant="flat" radius="sm">
                     والد
                   </Chip>
                 )}

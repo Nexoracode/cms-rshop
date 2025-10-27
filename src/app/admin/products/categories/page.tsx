@@ -23,8 +23,7 @@ const Categories = () => {
     <>
       {/* Modal for Add / Edit */}
       <AddNewCategoryModal
-        key={editCategory?.id ?? "new"}
-        categoryId={editCategory?.id}
+        categoryId={editCategory?.id || 1}
         defaultValues={editCategory}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
