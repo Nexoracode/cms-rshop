@@ -1,17 +1,16 @@
 "use client";
 
-import { useDisclosure } from "@heroui/react";
 import React, { useState } from "react";
+import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
+import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import { useDeleteAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
-import { TbEdit } from "react-icons/tb";
-import DeleteButton from "@/components/shared/DeleteButton";
-import SelectBox from "@/components/ui/inputs/SelectBox";
+import { AttributeValue } from "../attribute.types";
 
 type Props = {
-  attrValues: Record<string, any>[];
+  attrValues: AttributeValue[];
   selectedValues: number[];
   onChange: (values: number[]) => void;
   selectedAttrId: number | undefined;
@@ -25,116 +24,92 @@ const AddNewAttributeValue: React.FC<Props> = ({
   selectedAttrId,
   isDisabledEdit,
 }) => {
-  const [type, setType] = useState<"edit" | "add">("add");
-  const [selectedAttrValueId, setSelectedAttrValueId] = useState<
-    number | undefined
-  >(undefined);
+  const [selectedValueId, setSelectedValueId] = useState<number | undefined>(
+    undefined
+  );
 
-  // hooks
   const deleteAttributeValue = useDeleteAttributeValue();
-  const { attrInfos } = useAttributeContext();
+  const { attrInfos } = useAttributeContext(); // این خط رو اضافه کردیم
 
-  // modals
-  const {
-    isOpen: isOpenAdd,
-    onOpen: onOpenAdd,
-    onOpenChange: onOpenChangeAdd,
-  } = useDisclosure();
-
-  const handleDeleteAttrValue = () => {
-    if (!selectedAttrValueId) return;
-    deleteAttributeValue.mutate(selectedAttrValueId, {
+  const handleDelete = () => {
+    if (!selectedValueId) return;
+    deleteAttributeValue.mutate(selectedValueId, {
       onSuccess: () => {
-        setSelectedAttrValueId(undefined);
-        onChange([]);
+        setSelectedValueId(undefined);
+        onChange(selectedValues.filter((id) => id !== selectedValueId));
       },
     });
   };
 
   return (
-    <>
-      <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-        {isDisabledEdit ? (
-          <div className="flex gap-2 items-center justify-center w-full">
-            <AnimatedMultiSelect
-              label="مقادیر ویژگی"
-              options={(attrValues ?? [])
-                .filter((val: any) => {
-                  if (!attrInfos.length) return true;
-                  const existVal = attrInfos.find((v: any) => v.id === val.id);
-                  return !existVal;
-                })
-                .map((v: any) => ({
-                  value: v.id,
-                  label: v.value,
-                  color: v.display_color,
-                }))}
-              selectedValues={selectedValues}
-              onChange={(vals) => onChange(vals.map(Number))}
-              placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
-            />
+    <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
+      {/* حالت ویرایش (چند انتخابی با AnimatedMultiSelect) */}
+      {isDisabledEdit ? (
+        <div className="flex gap-2 items-center">
+          <AnimatedMultiSelect
+            label="مقادیر ویژگی"
+            options={(attrValues ?? [])
+              .filter((val: any) => {
+                if (!attrInfos.length) return true;
+                const existVal = attrInfos.find((v: any) => v.id === val.id);
+                return !existVal;
+              })
+              .map((v: any) => ({
+                value: v.id,
+                label: v.value,
+                color: v.display_color,
+              }))}
+            selectedValues={selectedValues}
+            onChange={(vals) => onChange(vals.map(Number))}
+            placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
+          />
 
-            <p
-              className="w-24 z-10 text-center text-purple-700 bg-purple-200 rounded-xl mt-[24px] py-1.5 cursor-pointer truncate"
-              onClick={onOpenAdd}
-            >
-              + افزودن
-            </p>
-          </div>
-        ) : (
-          ""
-        )}
-
-        {!isDisabledEdit ? (
-          <SelectBox
+          <AddNewAttributeValueModal />
+        </div>
+      ) : (
+        /* حالت ادیت (انتخاب یکی با AutocompleteInput) */
+        <div className="flex items-end gap-2">
+          <AutocompleteInput
             label="مقدار ویژگی"
-            value={selectedAttrValueId ?? ""}
-            onChange={(val) => setSelectedAttrValueId(Number(val))}
+            placeholder="مقدار را جستجو یا انتخاب کنید"
+            selectedId={selectedValueId ?? ""}
+            onChange={(id) => setSelectedValueId(Number(id))}
             options={
-              attrValues?.map((d) => ({
-                key: d.id,
-                title: d.value,
+              attrValues?.map((v) => ({
+                id: v.id,
+                title: v.value,
               })) ?? []
             }
-            placeholder="مقدار ویژگی را انتخاب کنید"
-            addButton={{
-              onClick: onOpenAdd,
-              label: "+ افزودن",
-            }}
-            isRequired={false}
           />
-        ) : null}
 
-        {selectedValues && !isDisabledEdit && selectedAttrValueId ? (
-          <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
-            <p className="font-medium text-gray-700">عملیات</p>
-            <div className="flex gap-2">
-              {/* ویرایش */}
-              <button
-                onClick={() => {
-                  onOpenAdd();
-                  setType("edit");
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <TbEdit size={20} />
-              </button>
+          <AddNewAttributeValueModal />
+        </div>
+      )}
 
-              <DeleteButton onDelete={handleDeleteAttrValue} />
-            </div>
+      {/* نمایش نام + ویرایش/حذف */}
+      {selectedValueId && !isDisabledEdit && (
+        <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+          <p className="font-medium text-gray-700">
+            مقدار: (
+            {attrValues.find((v) => v.id === selectedValueId)?.value ||
+              "نامشخص"}
+            )
+          </p>
+          <div className="flex gap-2">
+            <AddNewAttributeValueModal
+              type="edit"
+              attributeId={selectedAttrId}
+              defaultDatas={
+                attrValues.find((v) => v.id === selectedValueId) as
+                  | AttributeValue
+                  | undefined
+              }
+            />
+            <DeleteButton onDelete={handleDelete} />
           </div>
-        ) : null}
-      </div>
-
-      {/* افزودن یا ویرایش مقدار */}
-      <AddNewAttributeValueModal
-        isOpen={isOpenAdd}
-        onOpenChange={onOpenChangeAdd}
-        attributeId={selectedAttrId}
-        defaultDatas={attrValues?.find((val) => val.id === selectedAttrValueId)}
-        type={type}
-      />
-    </>
+        </div>
+      )}
+    </div>
   );
 };
 

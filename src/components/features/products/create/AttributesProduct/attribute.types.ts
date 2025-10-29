@@ -24,13 +24,15 @@ export type Attribute = {
 export type CreateAttribute = Omit<Attribute, "id">;
 
 export type AttributeValue = {
-  id?: number;
+  id: number;
   value: string;
   attribute_id: number;
   display_color?: string | null;
   display_order?: number | null;
   is_active: boolean;
 };
+
+export type CreateAttributeValue = Omit<AttributeValue, "id">;
 
 export type AttributeTypes =
   | "text"
