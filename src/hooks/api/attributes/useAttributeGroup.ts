@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /* 📁 Attribute Groups Start */
 
-export const useGetAllAttributeGroup = () => {
+export const useAttributesByGroupGroup = () => {
   return useQuery({
     queryKey: ["all-attribute-group"],
     queryFn: () =>
@@ -14,7 +14,7 @@ export const useGetAllAttributeGroup = () => {
   });
 };
 
-export const useAddNewAttributeGroup = () => {
+export const useCreateAttributeGroup = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -34,7 +34,7 @@ export const useAddNewAttributeGroup = () => {
   });
 };
 
-export const useReorderAttributeGroup = () => {
+export const useUpdateAttributeOrderGroup = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

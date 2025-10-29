@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Attribute } from "../AttributesProduct/attribute-tree";
-import { useReorderAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
+import { useUpdateAttributeOrderValue } from "@/hooks/api/attributes/useAttributeValue";
 import { handleDropHelper } from "./handleDropHelper";
 import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
@@ -16,7 +16,7 @@ type Props = {
 const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
   const [items, setItems] = useState(attribute.values);
   const [draggingId, setDraggingId] = useState<number | null>(null);
-  const reorderValue = useReorderAttributeValue();
+  const reorderValue = useUpdateAttributeOrderValue();
   const deleteAttributeNode = useDeleteAttributeNode();
   const deleteAttributeNodeSimple = useDeleteAttributeNodeSimple();
   const searchParams = useSearchParams();

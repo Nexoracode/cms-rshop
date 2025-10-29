@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import {
-  useAddNewAttribute,
+  useCreateAttribute,
   useUpdateAttribute,
 } from "@/hooks/api/attributes/useAttribute";
-import { useGetAllAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
+import { useAttributesByGroupGroup } from "@/hooks/api/attributes/useAttributeGroup";
 import { Input, Select, SelectItem, Switch } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
@@ -16,18 +16,18 @@ import { BsMenuDown, BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle } from "react-icons/fi";
 import { MdNumbers } from "react-icons/md";
 import { ImCheckmark2 } from "react-icons/im";
-import { AttributePayload, AttributeTypes } from "..";
+import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
 
 type Props = {
-  defaultDatas?: AttributePayload;
+  defaultDatas?: Attribute;
   type?: "edit" | "add";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: AttributePayload = {
+const initialState: CreateAttribute = {
   name: "",
-  group_id: null,
+  group_id: 0,
   is_public: false,
   slug: "",
   type: "text",
@@ -41,13 +41,15 @@ const AddNewAttributeModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<AttributePayload>(initialState);
+  const [datas, setDatas] = useState<CreateAttribute | Attribute>(initialState);
 
-  const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
-  const { mutate: createAttribute } = useAddNewAttribute(
+  const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
+  const { mutate: createAttribute } = useCreateAttribute(
     datas.group_id || undefined
   );
-  const { mutate: updateAttribute } = useUpdateAttribute(datas.id ?? -1);
+  const { mutate: updateAttribute } = useUpdateAttribute(
+    type === "edit" ? (datas as Attribute).id : -1
+  );
 
   useEffect(() => {
     type === "add"
@@ -94,9 +96,8 @@ const AddNewAttributeModal: React.FC<Props> = ({
     !datas.name.trim() || !datas.slug.trim() || !datas.group_id || !datas.type;
 
   const handleConfirm = (close: (open: boolean) => void) => {
-    const payload = { ...datas };
-
-    if (type === "edit" && defaultDatas?.id) {
+    if (type === "edit") {
+      const payload = datas as Attribute;
       updateAttribute(payload, {
         onSuccess: () => {
           close(false);
@@ -104,7 +105,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
         },
       });
     } else {
-      createAttribute(payload, {
+      createAttribute(datas, {
         onSuccess: () => {
           close(false);
           setDatas(initialState);
@@ -167,7 +168,10 @@ const AddNewAttributeModal: React.FC<Props> = ({
           labelPlacement="outside"
           selectedKeys={datas.type ? [datas.type] : []}
           onChange={(e) =>
-            setDatas((prev) => ({ ...prev, type: e.target.value as AttributeTypes }))
+            setDatas((prev) => ({
+              ...prev,
+              type: e.target.value as AttributeTypes,
+            }))
           }
         >
           {productInputTypes.map((item) => (

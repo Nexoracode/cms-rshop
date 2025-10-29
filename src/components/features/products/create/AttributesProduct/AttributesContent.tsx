@@ -1,15 +1,15 @@
 "use client";
 
-import { useGetAllAttribute } from "@/hooks/api/attributes/useAttribute";
+import { useAttributesByGroup } from "@/hooks/api/attributes/useAttribute";
 import { useGetAttributeValues } from "@/hooks/api/attributes/useAttributeValue";
-import { useGetAllAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
+import { useAttributesByGroupGroup } from "@/hooks/api/attributes/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
 import { useAddNewVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
-import { useAddNewAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
+import { useCreateAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import toast from "react-hot-toast";
 
@@ -43,11 +43,15 @@ export const AttributesContent = ({
   const page = editId && !isNaN(+editId) ? +editId : 1;
 
   const [selecteds, setSelecteds] = useState(initialSelecteds);
-  const { data: attributeGroup } = useGetAllAttributeGroup();
-  const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
+  const { data: attributeGroup } = useAttributesByGroupGroup();
+  const { data: attributes } = useAttributesByGroup(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
   const addNewVariantProductMutation = useAddNewVariantProduct();
-  const addNewSimapleAttribute = useAddNewAttributeProduct();
+  const addNewSimapleAttribute = useCreateAttributeProduct();
+
+  console.log("attributeGroup => ", attributeGroup);
+  console.log("attributes => ", attributes);
+  console.log("attributeValues => ", attributeValues);
 
   const isSubmitting =
     addNewVariantProductMutation.isPending || addNewSimapleAttribute.isPending;

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Attribute } from "../AttributesProduct/attribute-tree";
 import SortableAttributeValues from "./SortableAttributeValues";
-import { useReorderAttribute } from "@/hooks/api/attributes/useAttribute";
+import { useUpdateAttributeOrder } from "@/hooks/api/attributes/useAttribute";
 import { handleDropHelper } from "./handleDropHelper";
 import { Button, Tooltip } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
@@ -17,7 +17,7 @@ type Props = {
 const SortableAttributes: React.FC<Props> = ({ attributes }) => {
   const [items, setItems] = useState(attributes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
-  const reorderAttribute = useReorderAttribute();
+  const reorderAttribute = useUpdateAttributeOrder();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<
     "sort-variants" | "sort-attributes"

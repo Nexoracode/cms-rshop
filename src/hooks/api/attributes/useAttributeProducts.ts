@@ -14,7 +14,7 @@ export const useGetAttributeProduct = (productId?: number) => {
   });
 };
 
-export const useAddNewAttributeProduct = () => {
+export const useCreateAttributeProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>

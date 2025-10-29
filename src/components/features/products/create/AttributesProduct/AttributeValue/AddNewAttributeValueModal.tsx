@@ -12,7 +12,7 @@ import {
   Switch,
 } from "@heroui/react";
 import {
-  useAddNewAttributeValue,
+  useCreateAttributeValue,
   useUpdateAttributeValue,
 } from "@/hooks/api/attributes/useAttributeValue";
 
@@ -51,7 +51,7 @@ const AddNewAttributeValueModal = ({
   const [datas, setDatas] = useState(initialState);
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   //? Hooks
-  const { mutate: createAttributeValue } = useAddNewAttributeValue();
+  const { mutate: createAttributeValue } = useCreateAttributeValue();
   const { mutate: updateAttributeValue } = useUpdateAttributeValue(
     datas?.id ? datas.id : -1
   );

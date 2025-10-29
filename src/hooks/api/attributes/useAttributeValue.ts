@@ -15,7 +15,7 @@ export const useGetAttributeValues = (attributeId: number | undefined) => {
   });
 };
 
-export const useAddNewAttributeValue = () => {
+export const useCreateAttributeValue = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>
@@ -55,7 +55,7 @@ export const useUpdateAttributeValue = (id: number | undefined) => {
   });
 };
 
-export const useReorderAttributeValue = () => {
+export const useUpdateAttributeOrderValue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

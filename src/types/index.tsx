@@ -1,3 +1,2 @@
-export type Stock = "money" | "percent";
-
-export type Discount = "percent" | "amount";
+// src/types/index.ts
+export * from "./enums";

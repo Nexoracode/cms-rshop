@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /* 🧬 Attributes Start */
 
-export const useGetAllAttribute = (groupedId: number | undefined) => {
+export const useAttributesByGroup = (groupedId: number | undefined) => {
   return useQuery({
     queryKey: ["all-attribute", groupedId],
     queryFn: () =>
@@ -15,19 +15,7 @@ export const useGetAllAttribute = (groupedId: number | undefined) => {
   });
 };
 
-export const useGetOneAttribute = (id: number | undefined) => {
-  return useQuery({
-    queryKey: ["attribute", id],
-    queryFn: () =>
-      fetcher({
-        route: `/attribute/${id}`,
-        isActiveToast: false,
-      }),
-    enabled: !!id,
-  });
-};
-
-export const useAddNewAttribute = (groupedId: number | undefined) => {
+export const useCreateAttribute = (groupedId: number | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -47,7 +35,7 @@ export const useAddNewAttribute = (groupedId: number | undefined) => {
   });
 };
 
-export const useReorderAttribute = () => {
+export const useUpdateAttributeOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

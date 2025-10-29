@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import {
-  useAddNewAttributeGroup,
+  useCreateAttributeGroup,
   useUpdateAttributeGroup,
 } from "@/hooks/api/attributes/useAttributeGroup";
 import { Input } from "@heroui/react";
@@ -11,16 +11,20 @@ import BaseModal from "@/components/ui/modals/BaseModal";
 import { ImMakeGroup } from "react-icons/im";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
-import { AttributeGroupPayload } from "..";
+import { AttributeGroup, CreateAttributeGroup } from "../attribute.types";
 
 type Props = {
-  defaultDatas?: AttributeGroupPayload;
+  defaultDatas?: AttributeGroup;
   type?: "edit" | "add";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: AttributeGroupPayload = { name: "", slug: "", display_order: null };
+const initialState: CreateAttributeGroup = {
+  name: "",
+  slug: "",
+  display_order: null,
+};
 
 const AddNewAttributeGroupModal: React.FC<Props> = ({
   defaultDatas,
@@ -28,11 +32,11 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<AttributeGroupPayload>(initialState);
+  const [datas, setDatas] = useState<CreateAttributeGroup | AttributeGroup>(initialState);
 
-  const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
+  const { mutate: createAttributeGroup } = useCreateAttributeGroup();
   const { mutate: updateAttributeGroup } = useUpdateAttributeGroup(
-    datas?.id ?? -1
+    type === "edit" ? (datas as AttributeGroup).id : -1
   );
 
   useEffect(() => {
@@ -44,7 +48,7 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
   const isDisabled = !datas.name.trim() || !datas.slug.trim();
 
   const handleConfirm = (close: (open: boolean) => void) => {
-    const { id, ...rest } = datas;
+    const { id, ...rest } = datas as AttributeGroup;
 
     if (type === "edit") {
       updateAttributeGroup(rest, {
@@ -77,9 +81,7 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
       }
       trigger={
         type === "edit" ? (
-          <ActionButton
-            icon={<TbEdit size={20} />}
-          />
+          <ActionButton icon={<TbEdit size={20} />} />
         ) : undefined
       }
       title={type === "edit" ? "ویرایش گروه ویژگی" : "افزودن گروه ویژگی جدید"}

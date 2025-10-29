@@ -5,11 +5,11 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
-import { AttributePayload } from "..";
+import { Attribute } from "../attribute.types";
 
 type Props = {
   onChange: (value: number | undefined) => void;
-  attr: AttributePayload[];
+  attr: Attribute[];
   selectedAttrId: number | undefined;
   isDisabledEdit: boolean;
 };
@@ -83,7 +83,7 @@ const AddNewAttribute: React.FC<Props> = ({
               type="edit"
               defaultDatas={
                 attr.find((g) => g.id === selectedAttrId) as
-                  | AttributePayload
+                  | Attribute
                   | undefined
               }
             />
