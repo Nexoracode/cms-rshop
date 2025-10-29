@@ -63,7 +63,7 @@ export default function AnimatedMultiSelect({
             ...base,
             backgroundColor: "#F3F4F6",
             borderRadius: "0.75rem",
-            borderColor: "#d1d5db",
+            borderColor: "transparent",
             boxShadow: "none",
             "&:hover": { borderColor: "#a78bfa" },
           }),

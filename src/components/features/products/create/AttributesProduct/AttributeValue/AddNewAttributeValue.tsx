@@ -45,7 +45,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
     <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
       {/* حالت ویرایش (چند انتخابی با AnimatedMultiSelect) */}
       {isDisabledEdit ? (
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-end">
           <AnimatedMultiSelect
             label="مقادیر ویژگی"
             options={(attrValues ?? [])
@@ -64,7 +64,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
             placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
           />
 
-          <AddNewAttributeValueModal />
+          <AddNewAttributeValueModal attributeId={selectedAttrId}/>
         </div>
       ) : (
         /* حالت ادیت (انتخاب یکی با AutocompleteInput) */
@@ -82,7 +82,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
             }
           />
 
-          <AddNewAttributeValueModal />
+          <AddNewAttributeValueModal attributeId={selectedAttrId}/>
         </div>
       )}
 

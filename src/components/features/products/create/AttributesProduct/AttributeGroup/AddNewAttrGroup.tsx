@@ -55,7 +55,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
           }
         />
 
-        {!isDisabledEdit && <AddNewAttributeGroupModal />}
+        <AddNewAttributeGroupModal />
       </div>
 
       {selectedAttrGroupId && !isDisabledEdit && (

@@ -68,7 +68,7 @@ const AddNewAttribute: React.FC<Props> = ({
           }
         />
 
-        {!isDisabledEdit && <AddNewAttributeModal />}
+        <AddNewAttributeModal />
       </div>
 
       {/* نمایش نام ویژگی انتخاب‌شده + ویرایش/حذف */}

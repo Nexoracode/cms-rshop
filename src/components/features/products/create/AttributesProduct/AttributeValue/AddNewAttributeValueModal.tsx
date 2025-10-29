@@ -75,6 +75,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
         ...datas,
         attribute_id: attributeId,
       };
+
       createAttributeValue(payload, {
         onSuccess: () => {
           close(false);
