@@ -11,16 +11,16 @@ import BaseModal from "@/components/ui/modals/BaseModal";
 import { ImMakeGroup } from "react-icons/im";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
-import { AttrGroup } from "..";
+import { AttributeGroup } from "..";
 
 type Props = {
-  defaultDatas?: AttrGroup;
+  defaultDatas?: AttributeGroup;
   type?: "edit" | "add";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: AttrGroup = { name: "", slug: "", display_order: null };
+const initialState: AttributeGroup = { name: "", slug: "", display_order: null };
 
 const AddNewAttributeGroupModal: React.FC<Props> = ({
   defaultDatas,
@@ -28,7 +28,7 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<AttrGroup>(initialState);
+  const [datas, setDatas] = useState<AttributeGroup>(initialState);
 
   const { mutate: createAttributeGroup } = useAddNewAttributeGroup();
   const { mutate: updateAttributeGroup } = useUpdateAttributeGroup(

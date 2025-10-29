@@ -1,50 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Select,
-  SelectItem,
-  Switch,
-} from "@heroui/react";
+import React, { useEffect, useState } from "react";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
 import {
   useAddNewAttribute,
   useUpdateAttribute,
 } from "@/hooks/api/attributes/useAttribute";
 import { useGetAllAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
-//? Icons
+import { Input, Select, SelectItem, Switch } from "@heroui/react";
+import BaseModal from "@/components/ui/modals/BaseModal";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { TbEdit } from "react-icons/tb";
 import { AiOutlineFontColors } from "react-icons/ai";
 import { BsMenuDown, BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle } from "react-icons/fi";
 import { MdNumbers } from "react-icons/md";
 import { ImCheckmark2 } from "react-icons/im";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
+import { AttributePayload, AttributeTypes } from "..";
 
 type Props = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-  defaultDatas: any;
-  type: "edit" | "add";
+  defaultDatas?: AttributePayload;
+  type?: "edit" | "add";
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
-type Attr = {
-  name: string;
-  group_id: number | null;
-  is_public: boolean;
-  slug: string;
-  type: string;
-  display_order: null;
-  is_variant: boolean;
-  id?: number;
-};
-
-const initialState: Attr = {
+const initialState: AttributePayload = {
   name: "",
   group_id: null,
   is_public: false,
@@ -54,21 +35,19 @@ const initialState: Attr = {
   is_variant: false,
 };
 
-const AddNewAttributeModal = ({
+const AddNewAttributeModal: React.FC<Props> = ({
+  defaultDatas,
+  type = "add",
   isOpen,
   onOpenChange,
-  defaultDatas,
-  type,
-}: Props) => {
-  const [datas, setDatas] = useState(initialState);
-  //? Hooks
+}) => {
+  const [datas, setDatas] = useState<AttributePayload>(initialState);
+
   const { data: getAllAttributeGroup } = useGetAllAttributeGroup();
   const { mutate: createAttribute } = useAddNewAttribute(
-    datas?.group_id || undefined
+    datas.group_id || undefined
   );
-  const { mutate: updateAttribute } = useUpdateAttribute(
-    datas?.id ? datas.id : -1
-  );
+  const { mutate: updateAttribute } = useUpdateAttribute(datas.id ?? -1);
 
   useEffect(() => {
     type === "add"
@@ -76,18 +55,14 @@ const AddNewAttributeModal = ({
       : setDatas(defaultDatas || initialState);
   }, [defaultDatas, type]);
 
-  // attribute types
+  // نوع‌های ویژگی
   const productInputTypes = [
     {
       key: "text",
       label: "متنی",
       icon: <AiOutlineFontColors className="w-4 h-4" />,
     },
-    {
-      key: "number",
-      label: "عددی",
-      icon: <MdNumbers className="w-4 h-4" />,
-    },
+    { key: "number", label: "عددی", icon: <MdNumbers className="w-4 h-4" /> },
     {
       key: "color",
       label: "انتخاب رنگ",
@@ -115,150 +90,139 @@ const AddNewAttributeModal = ({
     },
   ];
 
-  const handleUpdateAttribute = () => {
-    const { id, ...rest } = datas;
-    console.log(rest);
-    updateAttribute(rest, {
-      onSuccess: () => {
-        onOpenChange();
-        setDatas(initialState);
-      },
-    });
-  };
+  const isDisabled =
+    !datas.name.trim() || !datas.slug.trim() || !datas.group_id || !datas.type;
 
-  const handleNewAttribute = () => {
-    const { id, ...rest } = datas;
-    createAttribute(rest, {
-      onSuccess: () => {
-        onOpenChange();
-        setDatas(initialState);
-      },
-    });
+  const handleConfirm = (close: (open: boolean) => void) => {
+    const payload = { ...datas };
+
+    if (type === "edit" && defaultDatas?.id) {
+      updateAttribute(payload, {
+        onSuccess: () => {
+          close(false);
+          setDatas(initialState);
+        },
+      });
+    } else {
+      createAttribute(payload, {
+        onSuccess: () => {
+          close(false);
+          setDatas(initialState);
+        },
+      });
+    }
   };
 
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[700px] w-full">
-        {(onClose) => (
-          <>
-            <ModalHeader className="w-full px-8 flex items-center justify-between">
-              <p className="font-normal text-[16px]">افزودن ویژگی جدید</p>
-            </ModalHeader>
-            <ModalBody>
-              <div className="flex flex-col gap-5">
-                <Input
-                  labelPlacement="outside"
-                  isRequired
-                  label="عنوان"
-                  placeholder="عنوان ویژگی را وارد کنید"
-                  value={datas.name}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, name: e.target.value }))
-                  }
-                />
+    <BaseModal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      triggerProps={
+        type === "add"
+          ? {
+              title: "+ افزودن",
+              className: "bg-secondary-light text-secondary mb-1",
+            }
+          : undefined
+      }
+      trigger={
+        type === "edit" ? (
+          <ActionButton icon={<TbEdit size={20} />} />
+        ) : undefined
+      }
+      title={type === "edit" ? "ویرایش ویژگی" : "افزودن ویژگی جدید"}
+      confirmText="ثبت تغییرات"
+      confirmColor="primary"
+      onConfirm={handleConfirm}
+      isConfirmDisabled={isDisabled}
+      isActiveFooter={true}
+      size="lg"
+      icon={<AiOutlineFontColors />}
+    >
+      <div className="flex flex-col gap-5 px-2">
+        {/* عنوان */}
+        <Input
+          labelPlacement="outside"
+          isRequired
+          label="عنوان"
+          placeholder="عنوان ویژگی را وارد کنید"
+          value={datas.name}
+          onChange={(e) =>
+            setDatas((prev) => ({ ...prev, name: e.target.value }))
+          }
+        />
 
-                <SlugInput
-                  value={datas.slug}
-                  onChange={(val) =>
-                    setDatas((prev: any) => ({
-                      ...prev,
-                      slug: val,
-                    }))
-                  }
-                  isActiveError={true}
-                />
+        {/* اسلاگ */}
+        <SlugInput
+          value={datas.slug}
+          onChange={(val) => setDatas((prev) => ({ ...prev, slug: val }))}
+          isActiveError={true}
+        />
 
-                <Select
-                  isRequired
-                  label="تایپ ویژگی"
-                  placeholder="تایپ ویژگی را انتخاب کنید"
-                  labelPlacement="outside"
-                  selectedKeys={[datas.type]}
-                  onChange={(e) =>
-                    setDatas((prev) => ({ ...prev, type: e.target.value }))
-                  }
-                >
-                  {productInputTypes.map((item) => (
-                    <SelectItem key={item.key} startContent={item.icon}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </Select>
+        {/* نوع ویژگی */}
+        <Select
+          isRequired
+          label="تایپ ویژگی"
+          placeholder="تایپ ویژگی را انتخاب کنید"
+          labelPlacement="outside"
+          selectedKeys={datas.type ? [datas.type] : []}
+          onChange={(e) =>
+            setDatas((prev) => ({ ...prev, type: e.target.value as AttributeTypes }))
+          }
+        >
+          {productInputTypes.map((item) => (
+            <SelectItem key={item.key} startContent={item.icon}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </Select>
 
-                <div className="flex flex-col gap-2">
-                  <Select
-                    label="دسته بندی ویژگی"
-                    placeholder="دسته بندی ویژگی را انتخاب کنید"
-                    labelPlacement="outside"
-                    className="-mb-2"
-                    selectedKeys={
-                      datas.group_id ? [datas.group_id.toString()] : []
-                    }
-                    onChange={(e) => {
-                      setDatas((prev: any) => ({
-                        ...prev,
-                        group_id: +e.target.value,
-                      }));
-                    }}
-                  >
-                    {getAllAttributeGroup?.data ? (
-                      getAllAttributeGroup.data.map((item: any) => (
-                        <SelectItem key={item.id}>{item.name}</SelectItem>
-                      ))
-                    ) : (
-                      <SelectItem isDisabled>فعلا آیتمی وجود ندارد</SelectItem>
-                    )}
-                  </Select>
-                </div>
+        {/* گروه ویژگی */}
+        <Select
+          isRequired
+          label="دسته‌بندی ویژگی"
+          placeholder="دسته‌بندی ویژگی را انتخاب کنید"
+          labelPlacement="outside"
+          selectedKeys={datas.group_id ? [datas.group_id.toString()] : []}
+          onChange={(e) =>
+            setDatas((prev) => ({ ...prev, group_id: +e.target.value }))
+          }
+        >
+          {getAllAttributeGroup?.data?.length ? (
+            getAllAttributeGroup.data.map((item: any) => (
+              <SelectItem key={item.id}>{item.name}</SelectItem>
+            ))
+          ) : (
+            <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
+          )}
+        </Select>
 
-                <div className="flex items-center gap-8">
-                  <Switch
-                    color="secondary"
-                    size="sm"
-                    isSelected={datas.is_variant}
-                    onValueChange={(status) =>
-                      setDatas((prev) => ({ ...prev, is_variant: status }))
-                    }
-                  >
-                    متغیر
-                  </Switch>
+        {/* سوئیچ‌ها */}
+        <div className="flex items-center gap-8">
+          <Switch
+            color="secondary"
+            size="sm"
+            isSelected={datas.is_variant}
+            onValueChange={(status) =>
+              setDatas((prev) => ({ ...prev, is_variant: status }))
+            }
+          >
+            متغیر
+          </Switch>
 
-                  <Switch
-                    color="secondary"
-                    size="sm"
-                    isSelected={datas.is_public}
-                    onValueChange={(status) =>
-                      setDatas((prev) => ({ ...prev, is_public: status }))
-                    }
-                  >
-                    سراسری
-                  </Switch>
-                </div>
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                color="secondary"
-                className="w-full mt-4"
-                isDisabled={
-                  !datas.group_id ||
-                  !datas.name.length ||
-                  !datas.slug.length ||
-                  !datas.type
-                }
-                onPress={() => {
-                  type === "edit"
-                    ? handleUpdateAttribute()
-                    : handleNewAttribute();
-                }}
-              >
-                ثبت تغیرات
-              </Button>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
+          <Switch
+            color="secondary"
+            size="sm"
+            isSelected={datas.is_public}
+            onValueChange={(status) =>
+              setDatas((prev) => ({ ...prev, is_public: status }))
+            }
+          >
+            سراسری
+          </Switch>
+        </div>
+      </div>
+    </BaseModal>
   );
 };
 

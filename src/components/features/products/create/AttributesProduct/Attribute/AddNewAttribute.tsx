@@ -1,14 +1,15 @@
 "use client";
 
-import AddNewAttributeModal from "./AddNewAttributeModal";
-import { useState } from "react";
-import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
+import React, { useState } from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
+import AddNewAttributeModal from "./AddNewAttributeModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
+import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
+import { AttributePayload } from "..";
 
 type Props = {
   onChange: (value: number | undefined) => void;
-  attr: Record<string, any>[];
+  attr: AttributePayload[];
   selectedAttrId: number | undefined;
   isDisabledEdit: boolean;
 };
@@ -16,21 +17,36 @@ type Props = {
 const AddNewAttribute: React.FC<Props> = ({
   onChange,
   attr,
-  selectedAttrId,
+  selectedAttrId: propSelectedAttrId, // از props
   isDisabledEdit,
 }) => {
-  const [selectedAttributeId, setSelectedAttributeId] = useState<
+  // همیشه از prop استفاده کن، نه state داخلی
+  const [internalSelectedId, setInternalSelectedId] = useState<
     number | undefined
   >(undefined);
+
+  console.log(attr);
+
+  const selectedAttrId = isDisabledEdit
+    ? propSelectedAttrId
+    : internalSelectedId;
+
   const deleteAttribute = useDeleteAttribute();
 
   const handleDeleteAttr = () => {
     if (!selectedAttrId) return;
     deleteAttribute.mutate(selectedAttrId, {
       onSuccess: () => {
+        setInternalSelectedId(undefined);
         onChange(undefined);
       },
     });
+  };
+
+  const handleSelect = (id: string) => {
+    const numId = +id;
+    setInternalSelectedId(numId);
+    onChange(numId);
   };
 
   return (
@@ -40,15 +56,12 @@ const AddNewAttribute: React.FC<Props> = ({
           isRequired={isDisabledEdit}
           label="ویژگی"
           placeholder="ویژگی را جستجو یا انتخاب کنید"
-          selectedId={selectedAttrId || ""}
-          onChange={(id) => {
-            onChange(+id);
-            setSelectedAttributeId(+id);
-          }}
+          selectedId={selectedAttrId ?? ""}
+          onChange={handleSelect}
           options={
             attr?.length
-              ? attr.map((item: any) => ({
-                  id: item.id,
+              ? attr.map((item) => ({
+                  id: item.id!,
                   title: item.name,
                 }))
               : []
@@ -58,18 +71,20 @@ const AddNewAttribute: React.FC<Props> = ({
         {!isDisabledEdit && <AddNewAttributeModal />}
       </div>
 
+      {/* نمایش نام ویژگی انتخاب‌شده + ویرایش/حذف */}
       {selectedAttrId && !isDisabledEdit && (
         <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
           <p className="font-medium text-gray-700">
-            ویژگی ({attr?.find((g: any) => g.id === selectedAttrId)?.name})
+            ویژگی (
+            {attr?.find((g) => g.id === selectedAttrId)?.name || "نامشخص"})
           </p>
           <div className="flex gap-2">
             <AddNewAttributeModal
               type="edit"
               defaultDatas={
-                attr.length
-                  ? (attr.find((g: any) => g.id === selectedAttrId) as Attr)
-                  : undefined
+                attr.find((g) => g.id === selectedAttrId) as
+                  | AttributePayload
+                  | undefined
               }
             />
             <DeleteButton onDelete={handleDeleteAttr} />

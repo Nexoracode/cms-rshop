@@ -1,6 +1,6 @@
 "use client"
 
-import HeaderAction from "@/components/features/products/create/helpers/HeaderAction"
+import HeaderAction from "@/components/common/HeaderAction"
 import Faq from "@/components/features/settings/Faq"
 import BackToPage from "@/components/common/Breadcrumbs"
 import { useState } from "react"

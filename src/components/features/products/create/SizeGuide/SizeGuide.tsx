@@ -3,7 +3,7 @@
 import { useDisclosure } from "@heroui/react";
 import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
 import GuideBoxInfo from "./GuideBoxInfo";
-import HeaderAction from "../helpers/HeaderAction";
+import HeaderAction from "../../../../common/HeaderAction";
 import { SizeGuideProp } from "./type";
 import { useEffect, useState } from "react";
 import { PiNoteDuotone } from "react-icons/pi";
