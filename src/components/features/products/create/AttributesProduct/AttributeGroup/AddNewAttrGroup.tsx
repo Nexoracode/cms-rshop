@@ -39,7 +39,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
         <AutocompleteInput
           isRequired={isDisabledEdit}
           label="گروه ویژگی"
-          placeholder="گروه را انتخاب کنید"
+          placeholder="گروه را جستجو یا انتخاب کنید"
           selectedId={selectedAttrGroupId || ""}
           onChange={(id) => {
             onChange(+id);

@@ -20,9 +20,17 @@ type Props = {
 };
 
 const initialSelecteds = {
-  attrGroupId: 0 as undefined | number,
-  attrId: 0 as undefined | number,
-  valueIds: [] as any,
+  attrGroupId: undefined as number | undefined,
+  attrId: undefined as number | undefined,
+  valueIds: [] as number[],
+};
+
+const generateSKU = () => {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return `sku-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
 };
 
 export const AttributesContent = ({
@@ -31,7 +39,9 @@ export const AttributesContent = ({
   onOpenChange,
 }: Props) => {
   const sp = useSearchParams();
-  const page = +(sp.get("edit_id") ?? 1);
+  const editId = sp.get("edit_id");
+  const page = editId && !isNaN(+editId) ? +editId : 1;
+
   const [selecteds, setSelecteds] = useState(initialSelecteds);
   const { data: attributeGroup } = useGetAllAttributeGroup();
   const { data: attributes } = useGetAllAttribute(selecteds.attrGroupId);
@@ -39,12 +49,30 @@ export const AttributesContent = ({
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const addNewSimapleAttribute = useAddNewAttributeProduct();
 
+  const isSubmitting =
+    addNewVariantProductMutation.isPending || addNewSimapleAttribute.isPending;
+
+  const resetInfos = () => {
+    setSelecteds(initialSelecteds);
+  };
+
+  const resetAndClose = () => {
+    resetInfos();
+    onOpenChange?.(false);
+  };
+
   const handleSubmit = async () => {
     const { attrId, attrGroupId, valueIds } = selecteds;
-    if (!attributes?.data || !attributeValues?.data || !attrGroupId) {
-      toast.error("فیلدهای ضروری را انتخاب و یا اضافه کنید")
-      return
-    };
+
+    if (
+      !attrGroupId ||
+      !attrId ||
+      valueIds.length === 0 ||
+      !attributes?.data?.length
+    ) {
+      toast.error("لطفاً گروه، ویژگی و مقدار را انتخاب کنید");
+      return;
+    }
 
     const attrIsVariant = attributes.data.find(
       (a: any) => a.id === attrId
@@ -53,7 +81,7 @@ export const AttributesContent = ({
     if (attrIsVariant) {
       const newAttr = {
         product_id: page,
-        sku: crypto.randomUUID(),
+        sku: generateSKU(),
         price: 10000,
         discount_amount: 0,
         discount_percent: 0,
@@ -62,28 +90,19 @@ export const AttributesContent = ({
       };
 
       addNewVariantProductMutation.mutate(newAttr, {
-        onSuccess: () => {
-          resetInfos();
-          onOpenChange?.(false);
-        },
+        onSuccess: resetAndClose,
       });
     } else {
       const newAttrSimple = {
         product_id: page,
-        attributeId: selecteds.attrId,
+        attributeId: attrId,
         valueIds: valueIds,
       };
 
       addNewSimapleAttribute.mutate(newAttrSimple, {
-        onSuccess: () => {
-          resetInfos();
-        },
+        onSuccess: resetAndClose,
       });
     }
-  };
-
-  const resetInfos = () => {
-    setSelecteds(initialSelecteds);
   };
 
   return (
@@ -92,7 +111,11 @@ export const AttributesContent = ({
         attrGroup={attributeGroup?.data}
         isDisabledEdit={isDisabledEdit}
         onChange={(groupId) =>
-          setSelecteds({ attrGroupId: groupId, attrId: 0, valueIds: [] })
+          setSelecteds({
+            attrGroupId: groupId,
+            attrId: undefined,
+            valueIds: [],
+          })
         }
       />
 
@@ -116,18 +139,14 @@ export const AttributesContent = ({
           isDisabledEdit={isDisabledEdit}
         />
       ) : null}
+
       {isActiveHeader ? (
         <FormActionButtons
-          onCancel={() => {
-            resetInfos();
-            onOpenChange?.(false);
-          }}
+          onCancel={resetAndClose}
           onSubmit={handleSubmit}
-          isSubmitting={addNewVariantProductMutation.isPending}
+          isSubmitting={isSubmitting}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
   );
 };

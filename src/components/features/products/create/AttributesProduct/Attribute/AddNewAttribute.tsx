@@ -1,12 +1,10 @@
 "use client";
 
-import { useDisclosure } from "@heroui/react";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useState } from "react";
 import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
-import { TbEdit } from "react-icons/tb";
-import AutocompleteWithAddButton from "../../helpers/AutocompleteWithAddButton";
 import DeleteButton from "@/components/shared/DeleteButton";
+import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -21,16 +19,10 @@ const AddNewAttribute: React.FC<Props> = ({
   selectedAttrId,
   isDisabledEdit,
 }) => {
-  const [type, setType] = useState<"edit" | "add">("add");
-
+  const [selectedAttributeId, setSelectedAttributeId] = useState<
+    number | undefined
+  >(undefined);
   const deleteAttribute = useDeleteAttribute();
-
-  // modals
-  const {
-    isOpen: isOpenAdd,
-    onOpen: onOpenAdd,
-    onOpenChange: onOpenChangeAdd,
-  } = useDisclosure();
 
   const handleDeleteAttr = () => {
     if (!selectedAttrId) return;
@@ -42,12 +34,17 @@ const AddNewAttribute: React.FC<Props> = ({
   };
 
   return (
-    <>
-      <div className={!isDisabledEdit ? "mt-2 bg-gray-50 rounded-xl p-4" : ""}>
-
-        <AutocompleteWithAddButton
+    <div className={!isDisabledEdit ? "mt-2 bg-slate-50 rounded-xl p-4" : ""}>
+      <div className="flex items-end gap-2">
+        <AutocompleteInput
+          isRequired={isDisabledEdit}
           label="ویژگی"
           placeholder="ویژگی را جستجو یا انتخاب کنید"
+          selectedId={selectedAttrId || ""}
+          onChange={(id) => {
+            onChange(+id);
+            setSelectedAttributeId(+id);
+          }}
           options={
             attr?.length
               ? attr.map((item: any) => ({
@@ -56,43 +53,30 @@ const AddNewAttribute: React.FC<Props> = ({
                 }))
               : []
           }
-          selectedId={selectedAttrId || ""}
-          onChange={(id) => {
-            onChange(+id);
-          }}
-          onAddNewClick={() => {
-            onOpenAdd();
-            setType("add");
-          }}
         />
 
-        {selectedAttrId && !isDisabledEdit ? (
-          <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
-            <p className="font-medium text-gray-700">عملیات</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  onOpenAdd();
-                  setType("edit");
-                }}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <TbEdit size={20} />
-              </button>
-              <DeleteButton onDelete={handleDeleteAttr} />
-            </div>
-          </div>
-        ) : null}
+        {!isDisabledEdit && <AddNewAttributeModal />}
       </div>
 
-      {/* ویرایش یا افزودن */}
-      <AddNewAttributeModal
-        isOpen={isOpenAdd}
-        onOpenChange={onOpenChangeAdd}
-        defaultDatas={attr?.find((a) => a.id === selectedAttrId)}
-        type={type}
-      />
-    </>
+      {selectedAttrId && !isDisabledEdit && (
+        <div className="flex justify-between items-center pt-4 gap-2 mt-4 border-t">
+          <p className="font-medium text-gray-700">
+            ویژگی ({attr?.find((g: any) => g.id === selectedAttrId)?.name})
+          </p>
+          <div className="flex gap-2">
+            <AddNewAttributeModal
+              type="edit"
+              defaultDatas={
+                attr.length
+                  ? (attr.find((g: any) => g.id === selectedAttrId) as Attr)
+                  : undefined
+              }
+            />
+            <DeleteButton onDelete={handleDeleteAttr} />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
