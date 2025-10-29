@@ -5,7 +5,7 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import { useDeleteAttributeGroup } from "@/hooks/api/attributes/useAttributeGroup";
-import { AttributeGroup } from "..";
+import { AttributeGroupPayload } from "..";
 
 type Props = {
   onChange: (value: number | undefined) => void;
@@ -71,7 +71,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
                 attrGroup.length
                   ? (attrGroup.find(
                       (g: any) => g.id === selectedAttrGroupId
-                    ) as AttributeGroup)
+                    ) as AttributeGroupPayload)
                   : undefined
               }
             />

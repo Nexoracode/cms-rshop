@@ -1,5 +1,5 @@
 "use client";
-import { PanZoom } from "../../../../ui/PanZoom";
+import { PanZoom } from "@/components/ui/PanZoom";
 
 const SpecTree = ({ specs }: { specs?: any[] }) => {
   if (!specs?.length) return null;

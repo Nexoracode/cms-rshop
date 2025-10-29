@@ -1,14 +1,12 @@
-export type AttributeGroup = {
+export type AttributeGroupPayload = {
   id?: number;
   name: string;
   slug: string;
   display_order: null | number;
 };
 
-export type AttributeTypes = "text" | "number" | "color" | "checkBox" | "radioButton" | "select" | "boolean"
-
 export type AttributePayload = {
-  id?: number,
+  id?: number;
   name: string;
   group_id: number | null;
   is_public: boolean;
@@ -16,6 +14,14 @@ export type AttributePayload = {
   type: AttributeTypes;
   display_order: number | null;
   is_variant: boolean;
+};
+
+export type AttributeValuePayload = {
+  id?: number;
+  value: string;
+  attribute_id: number;
+  display_color: string;
+  is_active: boolean;
 };
 
 export type AttributeValue = {
@@ -29,7 +35,7 @@ export type AttributeValue = {
 
 export type Attribute = {
   id: number;
-  is_important: boolean,
+  is_important: boolean;
   name: string;
   slug: string;
   is_public: boolean;
@@ -47,5 +53,14 @@ export type AttributeNode = {
   display_order: number | null;
   attributes: Attribute[];
 };
+
+export type AttributeTypes =
+  | "text"
+  | "number"
+  | "color"
+  | "checkBox"
+  | "radioButton"
+  | "select"
+  | "boolean";
 
 export type AttributeTree = AttributeNode[];
