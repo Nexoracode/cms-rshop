@@ -1,36 +1,36 @@
 "use client";
 
-import BackToPage from "@/components/common/Breadcrumbs";
-import { useDisclosure } from "@heroui/react";
-import PromotionsListModal from "@/components/features/store/promotions/PromotionsListModal";
-import EntityCard from "@/components/common/Card/EntityCard";
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { GrAnnounce } from "react-icons/gr";
-import { useGetBrands } from "@/hooks/api/useBrand";
+import PromotionsListModal from "@/components/features/store/promotions/PromotionsListModal";
 
 const Promotions = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { data: brands, isLoading } = useGetBrands();
+
+  const items: any = [];
+  const hasItems = items.length > 0;
+  const isLoading = false
 
   return (
-    <>
-      <EntityCard
-        datas={brands}
-        isExistItems={brands?.data?.items?.length}
-        isLoading={isLoading}
-        title="لیست پروموشن ها"
-        onAdd={onOpen}
-        icon={<GrAnnounce className="text-2xl" />}
-        searchInp={false}
-      >
-        <div className="flex flex-wrap justify-center pr-2 gap-4">
-          {brands?.data?.items?.map((b: any) => {
-            return <div key={b.id}></div>;
-          })}
+    <UnifiedCard
+      headerProps={{
+        title: "لیست پروموشن ها",
+        icon: <GrAnnounce className="text-2xl" />,
+        children: <PromotionsListModal />,
+      }}
+      isLoading={isLoading}
+      isExistItems={hasItems}
+      searchInp={false}
+      childrenClassName="flex flex-wrap justify-center pr-2 gap-4"
+    >
+      {items.map((b: any) => (
+        <div
+          key={b.id}
+          className="bg-gray-100 p-4 rounded-lg min-w-48 text-center text-sm text-gray-700"
+        >
+          {b.name || "بدون نام"}
         </div>
-      </EntityCard>
-
-      <PromotionsListModal isOpen={isOpen} onOpenChange={onOpenChange} />
-    </>
+      ))}
+    </UnifiedCard>
   );
 };
 
