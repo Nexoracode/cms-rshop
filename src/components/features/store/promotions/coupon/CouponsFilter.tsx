@@ -14,6 +14,7 @@ const CouponsFilter = () => {
         { title: "کاربران", href: "/admin/store/promotions/coupon/users" },
       ]}
       searchPlaceholder="جستجو در کد تخفیف ها..."
+      showSearchBar
     >
       <CouponsFilterModal />
       <CouponsSortModal />
