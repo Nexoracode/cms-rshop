@@ -8,7 +8,10 @@ import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import TextInput from "@/components/ui/inputs/TextInput";
-import AutocompleteInput, { Option } from "@/components/ui/inputs/AutocompleteInput";
+import AutocompleteInput, {
+  Option,
+} from "@/components/ui/inputs/AutocompleteInput";
+import ProvinceCitySelector from "@/components/shared/ProvinceCitySelector";
 
 type Address = {
   city: string;
@@ -216,26 +219,13 @@ const UserInitialForm = ({ user }: Props) => {
       >
         {data.address.map((addr: Address, index: number) => (
           <BaseCard wrapperContents key={index}>
-            <AutocompleteInput
-              label="استان"
-              placeholder="انتخاب استان"
-              options={provinces}
-              selectedId={addr.province}
-              onChange={(id) => {
+            <ProvinceCitySelector
+              provinceId={addr.province}
+              cityId={addr.city}
+              onChange={({ province, city }) => {
                 const updated = [...data.address];
-                updated[index].province = id;
-                setData((prev: any) => ({ ...prev, address: updated }));
-              }}
-            />
-
-            <AutocompleteInput
-              label="شهر"
-              placeholder="انتخاب شهر"
-              options={cities}
-              selectedId={addr.city}
-              onChange={(id) => {
-                const updated = [...data.address];
-                updated[index].city = id;
+                updated[index].province = province;
+                updated[index].city = city;
                 setData((prev: any) => ({ ...prev, address: updated }));
               }}
             />
