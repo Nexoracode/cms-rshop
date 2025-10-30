@@ -2,9 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useGetOneUser } from "@/hooks/api/users/useUsers";
-import DetailedUserInfo from "@/components/features/store/customers/DetailedUserInfo";
+import UserInitialForm from "@/components/features/store/customers/UserInitialForm";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
-import BackToPage from "@/components/common/Breadcrumbs";
 
 const UserDetailPage = () => {
   const params = useSearchParams();
@@ -14,41 +13,10 @@ const UserDetailPage = () => {
 
   if (!oneUser?.data) return <LoadingApiCall />;
 
-  const {
-    first_name,
-    last_name,
-    phone,
-    email,
-    created_at,
-    id,
-    is_active,
-    is_phone_verified,
-    avatar_url,
-  } = oneUser.data;
-
   return (
-    <>
-      <DetailedUserInfo
-        firstName={first_name}
-        lastName={last_name}
-        phone={phone}
-        membership={created_at.slice(0, 10)}
-        email={email}
-        id={id}
-        isActive={is_active}
-        isPhoneVerified={is_phone_verified}
-        avatarUrl={avatar_url}
-        address={[
-          {
-            city: "",
-            province: "",
-            address_line: "",
-            postal_code: "",
-            is_primary: false,
-          },
-        ]}
-      />
-    </>
+    <UserInitialForm
+      user={oneUser.data}
+    />
   );
 };
 
