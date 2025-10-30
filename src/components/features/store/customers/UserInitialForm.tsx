@@ -1,12 +1,14 @@
 "use client";
 
-import { Checkbox, Input, Textarea } from "@heroui/react";
-import { useState } from "react";
+import { Checkbox, Textarea } from "@heroui/react";
+import { useEffect, useState } from "react";
 import { useUpdateUser } from "@/hooks/api/users/useUsers";
 import BaseCard from "@/components/ui/BaseCard";
-import { LuMapPinHouse, LuUserRoundPen, LuUserRoundPlus } from "react-icons/lu";
+import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
+import TextInput from "@/components/ui/inputs/TextInput";
+import AutocompleteInput, { Option } from "@/components/ui/inputs/AutocompleteInput";
 
 type Address = {
   city: string;
@@ -17,33 +19,22 @@ type Address = {
 };
 
 type Props = {
-  user: Record<string, any>[];
+  user?: Record<string, any>;
 };
 
 const UserInitialForm = ({ user }: Props) => {
-  const {
-    first_name,
-    last_name,
-    phone,
-    membership,
-    email,
-    id,
-    is_active,
-    is_phone_verified,
-    avatar_url,
-    address,
-  } = user as any;
-  const updateUser = useUpdateUser(id);
+  const updateUser = useUpdateUser(user?.id);
 
-  const [data, setData] = useState({
-    first_name,
-    last_name,
-    phone,
-    email,
-    is_active,
-    is_phone_verified,
-    avatar_url,
-    address: address || [
+  // مقدار اولیه‌ی امن برای رندر اولیه
+  const [data, setData] = useState<any>({
+    first_name: "",
+    last_name: "",
+    phone: "",
+    email: "",
+    is_active: false,
+    is_phone_verified: false,
+    avatar_url: "",
+    address: [
       {
         city: "",
         province: "",
@@ -53,6 +44,45 @@ const UserInitialForm = ({ user }: Props) => {
       },
     ],
   });
+
+  // وقتی داده‌ی جدید کاربر رسید، فقط state رو پر کن
+  useEffect(() => {
+    if (!user) return;
+
+    setData({
+      first_name: user.first_name ?? "",
+      last_name: user.last_name ?? "",
+      phone: user.phone ?? "",
+      email: user.email ?? "",
+      is_active: !!user.is_active,
+      is_phone_verified: !!user.is_phone_verified,
+      avatar_url: user.avatar_url ?? "",
+      address:
+        user.address && user.address.length
+          ? user.address
+          : [
+              {
+                city: "",
+                province: "",
+                address_line: "",
+                postal_code: "",
+                is_primary: false,
+              },
+            ],
+    });
+  }, [user]);
+
+  const provinces: Option[] = [
+    { id: "tehran", title: "تهران" },
+    { id: "esfahan", title: "اصفهان" },
+    { id: "fars", title: "فارس" },
+  ];
+
+  const cities: Option[] = [
+    { id: "tehran-city", title: "تهران" },
+    { id: "karaj", title: "کرج" },
+    { id: "shiraz", title: "شیراز" },
+  ];
 
   const handleUpdate = () => {
     const {
@@ -79,15 +109,14 @@ const UserInitialForm = ({ user }: Props) => {
 
     updateUser.mutate(dataToSend, {
       onSuccess: () => {
-        // action
+        // success logic
       },
     });
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
-    val = val.replace(/\D/g, "");
-    setData((prev) => ({ ...prev, phone: String(val) }));
+  const handlePhoneChange = (val: string) => {
+    const clean = val.replace(/\D/g, "");
+    setData((prev: any) => ({ ...prev, phone: clean }));
   };
 
   return (
@@ -101,59 +130,54 @@ const UserInitialForm = ({ user }: Props) => {
         wrapperContents
       >
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Input
-            labelPlacement="outside"
+          <TextInput
             label="نام"
-            autoFocus
-            variant="flat"
             placeholder="نام را وارد کنید"
             value={data.first_name}
-            onValueChange={(value) =>
-              setData((prev) => ({ ...prev, first_name: value }))
+            onChange={(val) =>
+              setData((prev: any) => ({ ...prev, first_name: val }))
             }
+            allowEnglishOnly={false}
+            inputAlign="right"
           />
 
-          <Input
-            labelPlacement="outside"
-            variant="flat"
-            label="نام خوانوادگی"
+          <TextInput
+            label="نام خانوادگی"
             placeholder="نام خانوادگی را وارد کنید"
             value={data.last_name}
-            onValueChange={(value) =>
-              setData((prev) => ({ ...prev, last_name: value }))
+            onChange={(val) =>
+              setData((prev: any) => ({ ...prev, last_name: val }))
             }
+            allowEnglishOnly={false}
+            inputAlign="right"
           />
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Input
-            labelPlacement="outside"
+          <TextInput
             label="شماره تماس"
-            style={{ direction: "ltr" }}
+            placeholder="شماره تماس را وارد کنید"
             type="tel"
-            inputMode="tel"
-            variant="flat"
             maxLength={11}
+            inputAlign="left"
             value={data.phone}
             onChange={handlePhoneChange}
           />
 
-          <Input
-            labelPlacement="outside"
-            variant="flat"
-            placeholder="ایمیل را وارد کنید"
+          <TextInput
             label="ایمیل"
+            placeholder="ایمیل را وارد کنید"
             type="email"
             value={data.email}
-            onValueChange={(value) =>
-              setData((prev) => ({ ...prev, email: value }))
+            onChange={(val) =>
+              setData((prev: any) => ({ ...prev, email: val }))
             }
           />
         </div>
 
         <ImageBoxUploader
           title="تصویر مشتری"
-          defaultImg={avatar_url}
+          defaultImg={data.avatar_url}
           onFile={() => {}}
         />
 
@@ -161,11 +185,10 @@ const UserInitialForm = ({ user }: Props) => {
           <Checkbox
             isSelected={data.is_active}
             onValueChange={(value) =>
-              setData((prev) => ({ ...prev, is_active: value }))
+              setData((prev: any) => ({ ...prev, is_active: value }))
             }
           >
             <span className="text-sm">
-              {" "}
               وضعیت حساب {data.is_active ? "فعال" : "غیرفعال"}
             </span>
           </Checkbox>
@@ -173,11 +196,10 @@ const UserInitialForm = ({ user }: Props) => {
           <Checkbox
             isSelected={data.is_phone_verified}
             onValueChange={(value) =>
-              setData((prev) => ({ ...prev, is_phone_verified: value }))
+              setData((prev: any) => ({ ...prev, is_phone_verified: value }))
             }
           >
             <span className="text-sm">
-              {" "}
               وریفای شماره تلفن {data.is_phone_verified ? "فعال" : "غیرفعال"}
             </span>
           </Checkbox>
@@ -194,40 +216,41 @@ const UserInitialForm = ({ user }: Props) => {
       >
         {data.address.map((addr: Address, index: number) => (
           <BaseCard wrapperContents key={index}>
-            <Input
+            <AutocompleteInput
               label="استان"
-              value={addr.province}
-              size="md"
-              labelPlacement="outside"
-              placeholder="استان را وارد کنید"
-              onValueChange={(value) => {
+              placeholder="انتخاب استان"
+              options={provinces}
+              selectedId={addr.province}
+              onChange={(id) => {
                 const updated = [...data.address];
-                updated[index].province = value;
-                setData((prev) => ({ ...prev, address: updated }));
+                updated[index].province = id;
+                setData((prev: any) => ({ ...prev, address: updated }));
               }}
             />
-            <Input
+
+            <AutocompleteInput
               label="شهر"
-              value={addr.city}
-              labelPlacement="outside"
-              placeholder="شهر را وارد کنید"
-              onValueChange={(value) => {
+              placeholder="انتخاب شهر"
+              options={cities}
+              selectedId={addr.city}
+              onChange={(id) => {
                 const updated = [...data.address];
-                updated[index].city = value;
-                setData((prev) => ({ ...prev, address: updated }));
+                updated[index].city = id;
+                setData((prev: any) => ({ ...prev, address: updated }));
               }}
             />
-            <Input
+
+            <TextInput
               label="کد پستی"
-              labelPlacement="outside"
-              placeholder="کدپستی را وارد کنید"
+              placeholder="1Erg5hosd4"
               value={addr.postal_code}
-              onValueChange={(value) => {
+              onChange={(val) => {
                 const updated = [...data.address];
-                updated[index].postal_code = value;
-                setData((prev) => ({ ...prev, address: updated }));
+                updated[index].postal_code = val;
+                setData((prev: any) => ({ ...prev, address: updated }));
               }}
             />
+
             <Textarea
               label="آدرس کامل"
               labelPlacement="outside"
@@ -236,18 +259,19 @@ const UserInitialForm = ({ user }: Props) => {
               onValueChange={(value) => {
                 const updated = [...data.address];
                 updated[index].address_line = value;
-                setData((prev) => ({ ...prev, address: updated }));
+                setData((prev: any) => ({ ...prev, address: updated }));
               }}
             />
+
             <Checkbox
               isSelected={addr.is_primary}
               onValueChange={(value) => {
                 const updated = [...data.address];
                 updated[index].is_primary = value;
-                setData((prev) => ({ ...prev, address: updated }));
+                setData((prev: any) => ({ ...prev, address: updated }));
               }}
             >
-              <span className="text-sm"> آدرس اصلی</span>
+              <span className="text-sm">آدرس اصلی</span>
             </Checkbox>
           </BaseCard>
         ))}
