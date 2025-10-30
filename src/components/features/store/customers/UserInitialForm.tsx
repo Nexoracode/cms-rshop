@@ -6,11 +6,7 @@ import { useUpdateUser } from "@/hooks/api/users/useUsers";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
 import FormActionButtons from "@/components/common/FormActionButtons";
-import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import TextInput from "@/components/ui/inputs/TextInput";
-import AutocompleteInput, {
-  Option,
-} from "@/components/ui/inputs/AutocompleteInput";
 import ProvinceCitySelector from "@/components/shared/ProvinceCitySelector";
 
 type Address = {
@@ -37,7 +33,7 @@ const UserInitialForm = ({ user }: Props) => {
     is_active: false,
     is_phone_verified: false,
     avatar_url: "",
-    address: [
+    addresses: [
       {
         city: "",
         province: "",
@@ -76,7 +72,7 @@ const UserInitialForm = ({ user }: Props) => {
 
   const handleUpdate = () => {
     const {
-      address,
+      addresses,
       avatar_url,
       email,
       first_name,
@@ -94,10 +90,10 @@ const UserInitialForm = ({ user }: Props) => {
       is_active,
       is_phone_verified,
       avatar_url,
-      address,
+      addresses,
     };
     console.log(dataToSend);
-    
+
     updateUser.mutate(dataToSend, {
       onSuccess: () => {
         // success logic
@@ -167,7 +163,7 @@ const UserInitialForm = ({ user }: Props) => {
           />
         </div>
 
-       {/*  <ImageBoxUploader
+        {/*  <ImageBoxUploader
           title="تصویر مشتری"
           defaultImg={data.avatar_url}
           onFile={() => {}}
@@ -206,13 +202,13 @@ const UserInitialForm = ({ user }: Props) => {
         }}
         bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 pb-4"
       >
-        {data.address.map((addr: Address, index: number) => (
+        {data?.addresses?.map((addr: Address, index: number) => (
           <BaseCard wrapperContents key={index}>
             <ProvinceCitySelector
               provinceId={addr.province}
               cityId={addr.city}
               onChange={({ province, city }) => {
-                const updated = [...data.address];
+                const updated = [...data.addresses];
                 updated[index].province = province;
                 updated[index].city = city;
                 setData((prev: any) => ({ ...prev, address: updated }));
@@ -224,7 +220,7 @@ const UserInitialForm = ({ user }: Props) => {
               placeholder="1Erg5hosd4"
               value={addr.postal_code}
               onChange={(val) => {
-                const updated = [...data.address];
+                const updated = [...data.addresses];
                 updated[index].postal_code = val;
                 setData((prev: any) => ({ ...prev, address: updated }));
               }}
@@ -236,7 +232,7 @@ const UserInitialForm = ({ user }: Props) => {
               placeholder="آدرس کامل را وارد کنید"
               value={addr.address_line}
               onValueChange={(value) => {
-                const updated = [...data.address];
+                const updated = [...data.addresses];
                 updated[index].address_line = value;
                 setData((prev: any) => ({ ...prev, address: updated }));
               }}
@@ -245,7 +241,7 @@ const UserInitialForm = ({ user }: Props) => {
             <Checkbox
               isSelected={addr.is_primary}
               onValueChange={(value) => {
-                const updated = [...data.address];
+                const updated = [...data.addresses];
                 updated[index].is_primary = value;
                 setData((prev: any) => ({ ...prev, address: updated }));
               }}
@@ -253,7 +249,12 @@ const UserInitialForm = ({ user }: Props) => {
               <span className="text-sm">آدرس اصلی</span>
             </Checkbox>
           </BaseCard>
-        ))}
+        )) || (
+          <div className="w-full flex flex-col items-center gap-2 bg-slate-50 rounded-xl p-4">
+            <LuMapPinHouse className="text-5xl text-gray-600 animate-bounce" />
+            آدرسی از سمت کاربر هنوز ثبت نشده!!
+          </div>
+        )}
       </BaseCard>
 
       <FormActionButtons
