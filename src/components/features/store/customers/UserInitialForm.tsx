@@ -48,7 +48,6 @@ const UserInitialForm = ({ user }: Props) => {
     ],
   });
 
-  // وقتی داده‌ی جدید کاربر رسید، فقط state رو پر کن
   useEffect(() => {
     if (!user) return;
 
@@ -75,18 +74,6 @@ const UserInitialForm = ({ user }: Props) => {
     });
   }, [user]);
 
-  const provinces: Option[] = [
-    { id: "tehran", title: "تهران" },
-    { id: "esfahan", title: "اصفهان" },
-    { id: "fars", title: "فارس" },
-  ];
-
-  const cities: Option[] = [
-    { id: "tehran-city", title: "تهران" },
-    { id: "karaj", title: "کرج" },
-    { id: "shiraz", title: "شیراز" },
-  ];
-
   const handleUpdate = () => {
     const {
       address,
@@ -109,7 +96,8 @@ const UserInitialForm = ({ user }: Props) => {
       avatar_url,
       address,
     };
-
+    console.log(dataToSend);
+    
     updateUser.mutate(dataToSend, {
       onSuccess: () => {
         // success logic
@@ -175,14 +163,15 @@ const UserInitialForm = ({ user }: Props) => {
             onChange={(val) =>
               setData((prev: any) => ({ ...prev, email: val }))
             }
+            allowSpecialChars
           />
         </div>
 
-        <ImageBoxUploader
+       {/*  <ImageBoxUploader
           title="تصویر مشتری"
           defaultImg={data.avatar_url}
           onFile={() => {}}
-        />
+        /> */}
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <Checkbox
