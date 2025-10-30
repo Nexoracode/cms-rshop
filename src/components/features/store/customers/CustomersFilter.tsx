@@ -13,6 +13,7 @@ const CustomersFilter = () => {
         { title: "پروموشن‌ها", href: "/admin/store/promotions" },
       ]}
       searchPlaceholder="جستجو نام، شماره تماس یا ایمیل کاربر..."
+      showSearchBar
     >
       <CustomersFilterModal />
       <CustomersSortModal />

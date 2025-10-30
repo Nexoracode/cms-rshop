@@ -9,12 +9,10 @@ import AddNewCustomerModal from "@/components/features/store/customers/modals/Ad
 import { UserSortBy, useGetAllUsers } from "@/hooks/api/users/useUsers";
 import { FiUsers } from "react-icons/fi";
 import { useListQueryParams } from "@/hooks/common/useListQueryParams";
-import { useDisclosure } from "@heroui/react";
 
 const Customers = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<UserSortBy[number]>();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { data: users, isLoading } = useGetAllUsers({
     page,
@@ -31,7 +29,7 @@ const Customers = () => {
       headerProps={{
         title: "لیست کاربران",
         icon: <FiUsers className="text-2xl" />,
-        children: <AddNewCustomerModal isOpen={isOpen} onOpenChange={onOpenChange} />
+        children: <AddNewCustomerModal />
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
