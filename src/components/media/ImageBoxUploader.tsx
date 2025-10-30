@@ -2,11 +2,13 @@
 
 import { Chip } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { TbCategoryPlus } from "react-icons/tb";
+import BaseCard from "../ui/BaseCard";
+import { LuImages, LuImageUp } from "react-icons/lu";
+import OptionButton from "../ui/buttons/OptionButton";
 
 type Props = {
   title: string;
-  textBtn: string;
+  textBtn?: string;
   onFile: (file: File) => void;
   changeStatusFile?: any;
   sizeText?: string;
@@ -14,7 +16,7 @@ type Props = {
 };
 
 const ImageBoxUploader: React.FC<Props> = ({
-  textBtn,
+  textBtn= "+ افزودن تصویر",
   title,
   onFile,
   changeStatusFile,
@@ -42,59 +44,72 @@ const ImageBoxUploader: React.FC<Props> = ({
   };
 
   return (
-    <section>
-      <div className="w-full px-2 flex items-center justify-between mb-3">
-        <span>{title} (ضروری)</span>
-        <input
-          type="file"
-          accept="image/*"
-          id="logo-upload"
-          onChange={handleImageChange}
-          className="bg-black z-50 h-10 absolute left-0 opacity-0 cursor-pointer"
-        />
-        <label htmlFor="logo-upload">
-          <p className="ml-2 text-[var(--primary)] transition">{textBtn}</p>
-        </label>
-      </div>
-
-      <div className="flex flex-col xs:flex-row items-start gap-3">
-        <div className="w-[80px] h-[80px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-          <div className={`${!imageFile ? "p-3 bg-gray-100 rounded-lg" : ""}`}>
-            {imageFile ? (
-              <img
-                src={
-                  typeof imageFile === "object"
-                    ? URL.createObjectURL(imageFile)
-                    : imageFile
-                }
-                alt="preview"
-                className="rounded-2xl w-[8p5x] h-[80px] p-2 object-cover"
-              />
-            ) : (
-              <TbCategoryPlus className="text-4xl text-gray-500" />
-            )}
+    <BaseCard
+      CardHeaderProps={{
+        title,
+        btnClassName: "bg-secondary-light text-secondary",
+        icon: <LuImages />,
+        className: "px-0",
+        children: (
+          <div className="w-full flex items-center justify-between">
+            <input
+              type="file"
+              accept="image/*"
+              id="logo-upload"
+              onChange={handleImageChange}
+              className="bg-black z-50 h-10 absolute left-0 opacity-0 cursor-pointer"
+            />
+            <OptionButton
+              title={textBtn}
+              className="bg-secondary-light text-secondary"
+            />
           </div>
-        </div>
-        <div className="flex flex-col text-[12px] gap-1 text-gray-500">
-          <p>نمایش تصویر پیش فرض به این شکل است.</p>
-          <div>
-            فرمت تصویر:
-            <Chip color="secondary" variant="flat" size="sm" radius="sm">
-              <small>JPEG</small>
-            </Chip>
-              ,
-            <Chip color="success" variant="flat" size="sm" radius="sm">
-              <small>JPG</small>
-            </Chip>
-              ,
-            <Chip color="warning" variant="flat" size="sm" radius="sm">
-              <small>PNG</small>
-            </Chip>
-          </div>
-          <p>{sizeText ? sizeText : "سایز تصویر: 160x160"}</p>
+        ),
+      }}
+      className="shadow-none border-none"
+      bodyClassName="cursor-auto flex flex-col xs:flex-row items-start gap-3 px-4"
+    >
+      <div className="w-[80px] h-[80px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+        <div className={`${!imageFile ? "p-3 bg-gray-100 rounded-lg" : ""}`}>
+          {imageFile ? (
+            <img
+              src={
+                typeof imageFile === "object"
+                  ? URL.createObjectURL(imageFile)
+                  : imageFile
+              }
+              alt="preview"
+              className="rounded-2xl w-[8p5x] h-[80px] p-2 object-cover transition-all hover:scale-125"
+            />
+          ) : (
+            <LuImageUp className="text-4xl text-gray-500" />
+          )}
         </div>
       </div>
-    </section>
+      <div className="flex flex-col gap-1 text-[12px] text-gray-500">
+        <p>نمایش تصویر پیش فرض به این شکل است.</p>
+        <div>
+          فرمت تصویر:  
+          <Chip
+            className="bg-primary-light text-primary"
+            variant="flat"
+            size="sm"
+            radius="sm"
+          >
+            <small>JPEG</small>
+          </Chip>
+            , 
+          <Chip color="success" variant="flat" size="sm" radius="sm">
+            <small>JPG</small>
+          </Chip>
+            , 
+          <Chip color="warning" variant="flat" size="sm" radius="sm">
+            <small>PNG</small>
+          </Chip>
+        </div>
+        <p>{sizeText ? sizeText : "سایز تصویر: 160x160"}</p>
+      </div>
+    </BaseCard>
   );
 };
 
