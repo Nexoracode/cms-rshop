@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Card, CardBody } from "@heroui/react";
+import BaseCard from "../ui/BaseCard";
 
 type Props<T = any> = {
   initial?: T[];
@@ -22,28 +22,26 @@ const SelectionBox = <T,>({
 }: Props<T>) => {
   return (
     <>
-      <div className="flex flex-col gap-4 w-full">
-        <div className="flex items-center justify-between">
-          <p className="font-medium">{title}</p>
-          <Button color="secondary" variant="flat" size="sm" onPress={onOpen}>
-            {initial.length ? "ویرایش" : "افزودن"}
-          </Button>
-        </div>
-
-        <Card className="shadow-sm border border-gray-100">
-          <CardBody className="flex flex-col gap-4">
-            {initial.length ? (
-              children
-            ) : (
-              <div className="flex flex-col items-center justify-center py-6 text-gray-500">
-                {icon}
-                <p className="mt-2">هنوز موردی انتخاب نشده!</p>
-              </div>
-            )}
-          </CardBody>
-        </Card>
-      </div>
-
+      <BaseCard
+        CardHeaderProps={{
+          title,
+          textBtn: initial.length ? "ویرایش" : "+ افزودن",
+          onAdd: onOpen,
+          btnIcon: "",
+          className: "p-2"
+        }}
+        className="shadow-none"
+        bodyClassName="cursor-auto"
+      >
+        {initial.length ? (
+          children
+        ) : (
+          <div className="flex flex-col items-center justify-center py-6 text-gray-500">
+            {icon}
+            <p className="mt-2">هنوز موردی انتخاب نشده!</p>
+          </div>
+        )}
+      </BaseCard>
       {modal}
     </>
   );

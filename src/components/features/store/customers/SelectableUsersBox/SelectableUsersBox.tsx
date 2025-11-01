@@ -47,16 +47,9 @@ const SelectableUsersBox: React.FC<Props> = ({
         />
       }
     >
-      <BaseCard bodyClassName="grid grid-cols sm:grid-cols-2 gap-4">
-        {selectedUsers.map((user) => (
-          <UserInfoCard
-            key={user.id}
-            infos={user}
-            disableSelect
-            disableAction
-          />
-        ))}
-      </BaseCard>
+      {selectedUsers.map((user) => (
+        <UserInfoCard key={user.id} infos={user} disableAction />
+      ))}
     </SelectionBox>
   );
 };
