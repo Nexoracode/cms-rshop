@@ -26,14 +26,6 @@ type BaseModalProps = {
   ) => void | boolean | Promise<boolean> | Promise<void>;
   onCancel?: () => void;
   icon?: React.ReactNode;
-  confirmColor?:
-    | "danger"
-    | "default"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "warning";
-  confirmVariant?: "flat" | "bordered" | "ghost" | "light" | "shadow" | "solid";
   placement?: "auto" | "center" | "top" | "bottom";
   isConfirmDisabled?: boolean;
   isActiveFooter?: boolean;
@@ -51,8 +43,6 @@ const BaseModal: React.FC<BaseModalProps> = ({
   cancelText = "لغو",
   onConfirm,
   onCancel,
-  confirmColor = "primary",
-  confirmVariant = "solid",
   placement = "auto",
   icon = <FiAlertCircle className="text-orange-400" />,
   isConfirmDisabled = false,
@@ -74,6 +64,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
     isValidElement(children) && typeof children.type !== "string"
       ? cloneElement(children as React.ReactElement<any>, {
           onOpenChange: handleOpenChange,
+          isOpen,
         })
       : children;
 
