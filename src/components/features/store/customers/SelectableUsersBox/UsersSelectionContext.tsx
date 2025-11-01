@@ -1,8 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-
-type User = Record<string, any>;
+import { User } from "../customer.types";
 
 type UsersSelectionContextType = {
   selectedUsers: User[];
