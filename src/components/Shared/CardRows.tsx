@@ -5,6 +5,7 @@ import React from "react";
 type RowItem = {
   label: string;
   value: string | number;
+  bgLabel?: string 
 };
 
 type Props = {
@@ -22,7 +23,7 @@ const CardRows: React.FC<Props> = ({ items }) => {
           }`}
         >
           <span>{row.label}:</span>
-          <span className="font-medium text-gray-600">{row.value}</span>
+          <span className={`font-medium text-gray-600 ${row.bgLabel}`}>{row.value}</span>
         </div>
       ))}
     </div>

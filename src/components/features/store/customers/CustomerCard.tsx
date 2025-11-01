@@ -6,28 +6,27 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import { FiUser } from "react-icons/fi";
 import CardRows from "@/components/shared/CardRows";
 import StatusBadge from "@/components/shared/StatusBadge";
-
-type UserInfo = {
-  id: number;
-  first_name?: string;
-  last_name?: string;
-  phone?: string;
-  email?: string;
-  avatar_url: string;
-  is_active: boolean;
-};
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { User } from "./customer.types";
 
 type Props = {
-  infos: UserInfo;
+  infos: User;
   disableAction?: boolean;
+  showDeselectIcon?: boolean;
+  onDelete?: (id: number) => void;
 };
 
-const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
-  const { id, first_name, last_name, phone, email, avatar_url, is_active } =
+const CustomerCard: React.FC<Props> = ({
+  infos,
+  disableAction = false,
+  showDeselectIcon = false,
+  onDelete,
+}) => {
+  const { id, first_name, last_name, phone, email, avatar_url, is_active, is_phone_verified } =
     infos;
 
   const rowItems = [
-    { label: "شماره تماس", value: phone || "-" },
+    { label: "شماره تماس", value: phone || "-", bgLabel: is_phone_verified ? "bg-green-50 text-green-700 rounded-md px-2 py-1" : "bg-red-50 text-red-700 rounded-md px-2 py-1" },
     { label: "ایمیل", value: email || "-" },
   ];
 
@@ -58,7 +57,19 @@ const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
             <StatusBadge isActive={is_active} size="sm" />
           </div>
 
-          {!disableAction && <DeleteButton onDelete={() => {}} />}
+          {!disableAction && <DeleteButton onDelete={() => onDelete?.(id)} />}
+          {showDeselectIcon && (
+            <div className="bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all">
+              <AiOutlineCloseCircle
+                className=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onDelete?.(id);
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
 

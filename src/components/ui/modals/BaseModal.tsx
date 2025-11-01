@@ -12,6 +12,7 @@ import {
 import { FiAlertCircle } from "react-icons/fi";
 import { ModalSize } from ".";
 import OptionButton, { OptionButtonProps } from "../buttons/OptionButton";
+import FormActionButtons from "@/components/common/FormActionButtons";
 
 type BaseModalProps = {
   isOpen?: boolean;
@@ -108,34 +109,25 @@ const BaseModal: React.FC<BaseModalProps> = ({
                 </ModalHeader>
               )}
 
-              <ModalBody className="leading-7">{content || children}</ModalBody>
-
-              {isActiveFooter && (
-                <ModalFooter className="flex gap-2 justify-end">
-                  <Button
-                    color="default"
-                    variant="flat"
-                    onPress={() => {
+              <ModalBody className="leading-7">
+                {content || children}
+                <div></div>
+                {isActiveFooter && (
+                  <FormActionButtons
+                    cancelText={cancelText}
+                    submitText={confirmText}
+                    onCancel={() => {
                       onCancel?.();
                       onClose();
                     }}
-                  >
-                    {cancelText}
-                  </Button>
-
-                  <Button
-                    color={confirmColor}
-                    variant={confirmVariant}
-                    isDisabled={isConfirmDisabled}
-                    onPress={async () => {
+                    onSubmit={async () => {
                       const shouldClose = await onConfirm?.(handleOpenChange);
                       if (shouldClose !== false) onClose();
                     }}
-                  >
-                    {confirmText}
-                  </Button>
-                </ModalFooter>
-              )}
+                    isSubmitting={isConfirmDisabled} // یا هر state دیگه که نشون‌دهنده غیرفعال بودن دکمه‌ست
+                  />
+                )}
+              </ModalBody>
             </>
           )}
         </ModalContent>

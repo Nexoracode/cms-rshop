@@ -5,15 +5,12 @@ type Identifiable = { id: number };
 export function useSelectableItems<T extends Identifiable>(
   items: T[],
   selectedIdsProp: number[],
-  isOpen: boolean
 ) {
   const [selectedMap, setSelectedMap] = useState<Record<number, T>>({});
   const [selectedOrder, setSelectedOrder] = useState<number[]>(selectedIdsProp);
 
   // ریست انتخاب‌ها وقتی مدال باز می‌شود
   useEffect(() => {
-    if (!isOpen) return;
-
     const initialMap: Record<number, T> = {};
     selectedIdsProp.forEach((id) => {
       const existing = items.find((item) => item.id === id);
@@ -22,7 +19,7 @@ export function useSelectableItems<T extends Identifiable>(
 
     setSelectedOrder(selectedIdsProp);
     setSelectedMap(initialMap);
-  }, [isOpen, selectedIdsProp, items]);
+  }, [selectedIdsProp, items]);
 
   const handleSelect = (item: T, checked: boolean) => {
     setSelectedOrder((prev) =>
