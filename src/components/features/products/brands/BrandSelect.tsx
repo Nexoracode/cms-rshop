@@ -40,7 +40,7 @@ const BrandSelect: React.FC<Props> = ({
   }, [allBrands?.data?.items]);
 
   return (
-    <>
+    <div className="w-full flex items-end gap-2">
       <SelectBox
         label={label}
         value={value ? String(value) : ""}
@@ -63,7 +63,7 @@ const BrandSelect: React.FC<Props> = ({
 
       {/* ✅ فقط اگر بخوای مدال رو فعال کنی */}
       {withAddModal && <AddNewBrandModal />}
-    </>
+    </div>
   );
 };
 

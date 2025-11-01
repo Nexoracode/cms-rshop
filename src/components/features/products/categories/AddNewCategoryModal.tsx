@@ -132,7 +132,7 @@ const AddNewCategoryModal: React.FC<Props> = ({
           ? undefined
           : {
               title: "+ افزودن",
-              className: "bg-secondary-light text-secondary",
+              className: "bg-secondary-light text-secondary mb-1",
             }
       }
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}

@@ -101,7 +101,7 @@ const AddNewBrandModal: React.FC<Props> = ({
           ? undefined
           : {
               title: "+ افزودن",
-              className: "bg-secondary-light text-secondary",
+              className: "bg-secondary-light text-secondary mb-1",
             }
       }
       title={brandId ? "ویرایش برند" : "افزودن برند جدید"}

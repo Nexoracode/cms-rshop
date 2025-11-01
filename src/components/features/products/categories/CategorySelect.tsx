@@ -39,7 +39,7 @@ const CategorySelect: React.FC<Props> = ({
   }, [categoriesData?.data]);
 
   return (
-    <>
+    <div className="w-full flex items-end gap-2">
       <SelectBox
         label={label}
         value={value ? String(value) : ""}
@@ -62,7 +62,7 @@ const CategorySelect: React.FC<Props> = ({
 
       {/* ✅ فقط وقتی با prop فعال شد */}
       {withAddModal && <AddNewCategoryModal />}
-    </>
+    </div>
   );
 };
 
