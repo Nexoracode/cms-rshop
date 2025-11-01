@@ -5,6 +5,7 @@ import SelectionBox from "@/components/shared/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import UserInfoCard from "../CustomerCard";
 import UsersSelectionModal from "./UsersSelectionModal";
+import BaseCard from "@/components/ui/BaseCard";
 
 type Users = any;
 
@@ -46,7 +47,7 @@ const SelectableUsersBox: React.FC<Props> = ({
         />
       }
     >
-      <div className="flex flex-col gap-4">
+      <BaseCard bodyClassName="grid grid-cols sm:grid-cols-2 gap-4">
         {selectedUsers.map((user) => (
           <UserInfoCard
             key={user.id}
@@ -55,7 +56,7 @@ const SelectableUsersBox: React.FC<Props> = ({
             disableAction
           />
         ))}
-      </div>
+      </BaseCard>
     </SelectionBox>
   );
 };
