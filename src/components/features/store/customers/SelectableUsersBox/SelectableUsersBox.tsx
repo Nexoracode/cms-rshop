@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
-import UserInfoCard from "../CustomerCard";
+import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./UsersSelectionModal";
-import BaseCard from "@/components/ui/BaseCard";
 
 type Users = any;
 
@@ -47,9 +46,11 @@ const SelectableUsersBox: React.FC<Props> = ({
         />
       }
     >
-      {selectedUsers.map((user) => (
-        <UserInfoCard key={user.id} infos={user} disableAction />
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {selectedUsers.map((user) => (
+          <CustomerCard key={user.id} infos={user} disableAction />
+        ))}
+      </div>
     </SelectionBox>
   );
 };

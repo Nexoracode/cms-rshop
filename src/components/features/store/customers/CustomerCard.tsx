@@ -34,7 +34,7 @@ const CustomerCard: React.FC<Props> = ({ infos, disableAction = false }) => {
   return (
     <BaseCard
       bodyClassName="w-full"
-      redirect={`customers/create?edit_id=${id}`}
+      redirect={`/admin/store/customers/create?edit_id=${id}`}
     >
       <div className="flex items-center gap-2 mb-2 p-2">
         <div>

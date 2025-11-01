@@ -38,7 +38,7 @@ const SelectionBox = <T,>({
         ) : (
           <div className="flex flex-col items-center justify-center py-6 text-gray-500">
             {icon}
-            <p className="mt-2">هنوز موردی انتخاب نشده!</p>
+            <p className="mt-2 animate-pulse">هنوز موردی انتخاب نشده!</p>
           </div>
         )}
       </BaseCard>
