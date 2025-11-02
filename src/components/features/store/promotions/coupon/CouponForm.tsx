@@ -122,8 +122,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
 
   const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
 
-  console.log(couponData);
-
   return (
     <>
       <BaseCard
@@ -242,9 +240,10 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
         {pageType === "category" ? (
           <SelectableCategoriesBox
             initialCategories={couponData?.data?.allowed_categories || []}
-            onChange={(ids) =>
+            onChange={(ids) => {
+              console.log("ids =>", ids)
               ids.length && updateForm("allowed_category_ids", ids)
-            }
+            }}
           />
         ) : (
           ""

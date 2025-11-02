@@ -27,11 +27,7 @@ export const UsersSelectionProvider: React.FC<{
   initialUsers?: User[];
   children: React.ReactNode;
 }> = ({ initialUsers = [], children }) => {
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    setSelectedUsers(initialUsers);
-  }, [initialUsers]);
+  const [selectedUsers, setSelectedUsers] = useState<User[]>(initialUsers);
 
   const addUser = (user: User) => {
     setSelectedUsers((prev) => [...prev.filter((u) => u.id !== user.id), user]);

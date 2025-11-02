@@ -1,73 +1,77 @@
 "use client";
 
-import React from "react";
-import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { TbCategory2 } from "react-icons/tb";
+import React, { useState, useEffect } from "react";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
-import AddNewCategoryModal from "../AddNewCategoryModal";
-import SelectableCard from "@/components/ui/SelectableCard";
-import CategoryNode from "../CategoryCard/CategoryNode";
 import { Category } from "../category.types";
+import AddNewCategoryModal from "../AddNewCategoryModal";
+import { TbCategory2 } from "react-icons/tb";
+import { CategoryTree } from "../CategoryTree";
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
 
 type Props = {
-    selectedIds: (number | string)[];
-    onSelectionChange: (category: Category, selected: boolean) => void;
-    initialCategories?: (number | string)[];
+  selectedIds: (number | string)[];
+  onSelectionChange: (category: Category, selected: boolean) => void;
+  initialCategories?: (number | string)[];
 };
 
 const SelectableCategoriesTree: React.FC<Props> = ({
-    selectedIds,
-    onSelectionChange,
-    initialCategories = [],
+  selectedIds,
+  onSelectionChange,
+  initialCategories = [],
 }) => {
-    const { data: categories, isLoading } = useGetCategories();
-    const isExistItems = !!categories?.data?.length;
+  const { data: categories, isLoading } = useGetCategories();
+  const isExistItems = !!categories?.data?.length;
 
-    // ترکیب دسته‌های اولیه + دسته‌های انتخاب‌شده
-    const mergedSelectedIds = [...initialCategories, ...selectedIds].map((id) =>
-        Number(id)
-    );
+  const mergedSelectedIds = [...initialCategories, ...selectedIds].map((id) =>
+    Number(id)
+  );
 
-    // handler وقتی یک کارت انتخاب یا غیرفعال می‌شود
-    const handleSelect = (id: number, selected: boolean, category?: Category) => {
-        if (!category) return;
-        onSelectionChange(category, selected);
-    };
+  // وضعیت داخلی برای مدیریت selected ids
+  const [selectedIdsState, setSelectedIdsState] = useState<number[]>(mergedSelectedIds);
 
-    return (
-        <UnifiedCard
-            headerProps={{
-                title: "انتخاب دسته‌بندی‌ها",
-                icon: <TbCategory2 className="text-2xl" />,
-                children: <AddNewCategoryModal />,
-            }}
-            isLoading={isLoading}
-            isExistItems={isExistItems}
-            searchInp={false}
-        >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {categories?.data?.map((category: Category) => (
-                    <SelectableCard
-                        key={category.id}
-                        id={Number(category.id)}
-                        selectedIds={mergedSelectedIds}
-                        onSelectionChange={(id, selected) =>
-                            handleSelect(Number(id), selected, category)
-                        }
-                    >
-                        <CategoryNode
-                            node={category}
-                            chainTitles={[]}
-                            onEdit={() => { }}
-                            selectedIds={mergedSelectedIds}
-                            onSelect={handleSelect}
-                            disableAction
-                        />
-                    </SelectableCard>
-                ))}
-            </div>
-        </UnifiedCard>
-    );
+  useEffect(() => {
+    setSelectedIdsState(mergedSelectedIds);
+  }, [mergedSelectedIds]);
+
+  const handleSelectionChange = (ids: number[]) => {
+    setSelectedIdsState(ids);
+    // پیدا کردن category مربوطه برای هر تغییر
+    ids.forEach((id) => {
+      const category = categories?.data?.find((cat: any) => cat.id === id);
+      if (category) onSelectionChange(category, true);
+    });
+
+    // بررسی دسته‌هایی که از حالت انتخاب خارج شدند
+    selectedIdsState.forEach((prevId) => {
+      if (!ids.includes(prevId)) {
+        const category = categories?.data?.find((cat: any) => cat.id === prevId);
+        if (category) onSelectionChange(category, false);
+      }
+    });
+  };
+
+  return (
+    <UnifiedCard
+      headerProps={{
+        title: "انتخاب دسته‌بندی‌ها",
+        icon: <TbCategory2 className="text-2xl" />,
+        children: <AddNewCategoryModal />,
+      }}
+      isLoading={isLoading}
+      isExistItems={isExistItems}
+      searchInp={false}
+    >
+      {categories?.data && (
+        <CategoryTree
+          categories={categories.data}
+          selectable
+          selectedIds={selectedIdsState}
+          onSelectionChange={handleSelectionChange}
+          className="w-full grid grid-cols-3 gap-3"
+        />
+      )}
+    </UnifiedCard>
+  );
 };
 
 export default SelectableCategoriesTree;

@@ -5,7 +5,7 @@ import SelectionBox from "@/components/shared/SelectionBox";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Category } from "../category.types";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
-import CategoryTree from "../CategoryCard/CategoryTree";
+import { CategoryNode } from "../CategoryTree";
 import {
   CategoriesSelectionProvider,
   useCategoriesSelection,
@@ -20,6 +20,7 @@ const InnerSelectableCategoriesBox: React.FC<{ onChange?: (ids: number[]) => voi
   const { selectedCategories, removeCategory } = useCategoriesSelection();
 
   useEffect(() => {
+    console.log(selectedCategories);
     onChange?.(selectedCategories.map((c) => c.id));
   }, [selectedCategories]);
 
@@ -30,14 +31,18 @@ const InnerSelectableCategoriesBox: React.FC<{ onChange?: (ids: number[]) => voi
       initial={selectedCategories}
       modal={<CategoriesSelectionModal />}
     >
-      <div className="flex flex-col gap-4">
-        <CategoryTree
-          categories={selectedCategories}
-          disableSelect
-          disableAction
-          disableShowChildren
-          onDelete={removeCategory}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {selectedCategories.map((cat: Category) => (
+          <CategoryNode
+            key={cat.id}
+            node={cat}
+            chainTitles={[]}
+            onDelete={removeCategory}
+            disableAction
+            showDeselectIcon
+            disableShowChildren
+          />
+        ))}
       </div>
     </SelectionBox>
   );
