@@ -43,7 +43,7 @@ const CategoriesSelectionModal: React.FC = () => {
       onOpenChange={setIsOpen}
       onConfirm={handleConfirm}
       onCancel={() => setIsOpen(false)}
-      size="3xl"
+      size="5xl"
     >
       <SelectableCategoriesTree
         selectedIds={tempSelected.map((c) => c.id)}
