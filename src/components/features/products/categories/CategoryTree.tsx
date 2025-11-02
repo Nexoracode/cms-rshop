@@ -174,6 +174,7 @@ type CategoryTreeProps = {
   onSelectionChange?: (ids: number[]) => void;
   onEdit?: (cat: Category) => void;
   className?: string;
+  disableAction?: boolean
 };
 
 export const CategoryTree: React.FC<CategoryTreeProps> = ({
@@ -183,6 +184,7 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
   onSelectionChange,
   onEdit = () => { },
   className = "flex flex-col items-center sm:items-stretch gap-3",
+  disableAction = false,
 }) => {
   const [selected, setSelected] = useState<number[]>(selectedIds);
 
@@ -208,12 +210,12 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
               selectedIds={selected}
               onSelectionChange={(selectedState) => handleSelect(category.id, selectedState)}
             >
-              <CategoryNode node={category} chainTitles={[]} onEdit={onEdit} />
+              <CategoryNode node={category} chainTitles={[]} onEdit={onEdit} disableAction={disableAction}/>
             </SelectableCard>
           );
         }
 
-        return <CategoryNode key={category.id} node={category} chainTitles={[]} onEdit={onEdit} />;
+        return <CategoryNode key={category.id} node={category} chainTitles={[]} onEdit={onEdit} disableAction={disableAction} />;
       })}
     </div>
   );

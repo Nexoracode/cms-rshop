@@ -135,7 +135,7 @@ const AddNewCategoryModal: React.FC<Props> = ({
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
       onConfirm={handleSubmit}
-      isConfirmDisabled={!isDisabled}
+      isConfirmDisabled={isDisabled}
       size="xl"
       icon={<BiCategoryAlt />}
     >

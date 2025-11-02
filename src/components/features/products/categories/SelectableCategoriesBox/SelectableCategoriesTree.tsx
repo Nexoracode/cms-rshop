@@ -67,7 +67,7 @@ const SelectableCategoriesTree: React.FC<Props> = ({
           selectable
           selectedIds={selectedIdsState}
           onSelectionChange={handleSelectionChange}
-          className="w-full grid grid-cols-2 gap-3"
+          disableAction
         />
       )}
     </UnifiedCard>
