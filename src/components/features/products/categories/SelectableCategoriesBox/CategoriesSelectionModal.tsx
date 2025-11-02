@@ -1,77 +1,55 @@
 "use client";
 
-import React from "react";
-import { Spinner } from "@heroui/react";
-import DynamicModal from "@/components/ui/modals/BaseModal";
-import { useGetCategories } from "@/hooks/api/categories/useCategory";
+import React, { useState, useEffect } from "react";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import { TbCategory2 } from "react-icons/tb";
-import CategoryTree from "../CategoryCard";
-import { useSelectableItems } from "@/hooks/ui/useSelectableItems";
+import { useCategoriesSelection } from "./CategoriesSelectionContext";
+import { Category } from "../category.types";
+import SelectableCategoriesTree from "./SelectableCategoriesTree";
 
-type Props = {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onConfirm: (selectedCategories: any[]) => void;
-  selectedIds?: number[];
-};
+const CategoriesSelectionModal: React.FC = () => {
+  const { selectedCategories, setCategories } = useCategoriesSelection();
+  const [isOpen, setIsOpen] = useState(false);
+  const [tempSelected, setTempSelected] = useState<Category[]>(selectedCategories);
 
-const CategoriesSelectionModal: React.FC<Props> = ({
-  isOpen,
-  onOpenChange,
-  onConfirm,
-  selectedIds = [],
-}) => {
-  const { data: categoriesResponse, isLoading } = useGetCategories();
-  const categories = categoriesResponse?.data ?? [];
+  useEffect(() => {
+    if (isOpen) setTempSelected(selectedCategories);
+  }, [isOpen, selectedCategories]);
 
-  const {
-    selectedOrder,
-    handleSelect,
-    handleConfirm: handleConfirmSelection,
-  } = useSelectableItems(categories, selectedIds, isOpen);
+  const handleSelectionChange = (category: Category, selected: boolean) => {
+    setTempSelected((prev) =>
+      selected
+        ? [...prev.filter((c) => c.id !== category.id), category]
+        : prev.filter((c) => c.id !== category.id)
+    );
+  };
 
   const handleConfirm = () => {
-    const selectedCategories = handleConfirmSelection();
-    onConfirm(selectedCategories);
+    setCategories(tempSelected);
+    setIsOpen(false);
   };
 
   return (
-    <DynamicModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      title="انتخاب دسته‌بندی"
+    <BaseModal
+      triggerProps={{
+        title: "+ افزودن",
+        className: "bg-secondary-light text-secondary",
+      }}
+      title="انتخاب دسته‌بندی‌ها"
       confirmText="تأیید انتخاب"
       cancelText="لغو"
-      confirmColor="secondary"
-      confirmVariant="solid"
+      icon={<TbCategory2 />}
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
       onConfirm={handleConfirm}
-      icon={<TbCategory2 className="text-2xl" />}
+      onCancel={() => setIsOpen(false)}
       size="3xl"
     >
-      <div className="flex flex-col gap-4">
-        {isLoading ? (
-          <div className="flex justify-center py-10">
-            <Spinner
-              label="در حال بارگذاری دسته‌بندی‌ها..."
-              color="secondary"
-            />
-          </div>
-        ) : categories.length ? (
-          <CategoryTree
-            categories={categories}
-            selectedIds={selectedOrder}
-            onSelect={(id, selected, category) =>
-              category && handleSelect(category, !!selected)
-            }
-            disableAction
-          />
-        ) : (
-          <p className="text-center text-gray-500 py-8">
-            دسته‌بندی‌ای برای نمایش وجود ندارد.
-          </p>
-        )}
-      </div>
-    </DynamicModal>
+      <SelectableCategoriesTree
+        selectedIds={tempSelected.map((c) => c.id)}
+        onSelectionChange={handleSelectionChange}
+      />
+    </BaseModal>
   );
 };
 

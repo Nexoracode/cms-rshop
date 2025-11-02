@@ -1,51 +1,34 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import { BiCategoryAlt } from "react-icons/bi";
+import { Category } from "../category.types";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
-import CategoryTree from "../CategoryCard";
-
-type Category = any;
+import CategoryTree from "../CategoryCard/CategoryTree";
+import {
+  CategoriesSelectionProvider,
+  useCategoriesSelection,
+} from "./CategoriesSelectionContext";
 
 type Props = {
-  onChange?: (categories: Category[]) => void;
+  onChange?: (ids: number[]) => void;
   initialCategories?: Category[];
 };
 
-const SelectableCategoriesBox: React.FC<Props> = ({
-  onChange,
-  initialCategories = [],
-}) => {
-  const [isUsersOpen, setIsUsersOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] =
-    useState<Category[]>([]);
+const InnerSelectableCategoriesBox: React.FC<{ onChange?: (ids: number[]) => void }> = ({ onChange }) => {
+  const { selectedCategories, removeCategory } = useCategoriesSelection();
 
   useEffect(() => {
-    if (!initialCategories.length) return;
-    setSelectedCategories(initialCategories);
-  }, [initialCategories]);
-
-  const handleConfirm = (categories: Category[]) => {
-    setSelectedCategories(categories);
-    onChange?.(categories.length ? categories.map((p) => p.id) : []);
-    setIsUsersOpen(false);
-  };
+    onChange?.(selectedCategories.map((c) => c.id));
+  }, [selectedCategories]);
 
   return (
     <SelectionBox
-      title="دسته‌بندی‌ها انتخاب‌شده"
+      title="دسته‌بندی‌های انتخاب‌شده"
       icon={<BiCategoryAlt className="text-5xl" />}
       initial={selectedCategories}
-      onOpen={() => setIsUsersOpen(true)}
-      modal={
-        <CategoriesSelectionModal
-          isOpen={isUsersOpen}
-          onOpenChange={setIsUsersOpen}
-          onConfirm={handleConfirm}
-          selectedIds={selectedCategories.map((c) => c.id)}
-        />
-      }
+      modal={<CategoriesSelectionModal />}
     >
       <div className="flex flex-col gap-4">
         <CategoryTree
@@ -53,9 +36,21 @@ const SelectableCategoriesBox: React.FC<Props> = ({
           disableSelect
           disableAction
           disableShowChildren
+          onDelete={removeCategory}
         />
       </div>
     </SelectionBox>
+  );
+};
+
+const SelectableCategoriesBox: React.FC<Props> = ({
+  initialCategories = [],
+  onChange,
+}) => {
+  return (
+    <CategoriesSelectionProvider initialCategories={initialCategories}>
+      <InnerSelectableCategoriesBox onChange={onChange} />
+    </CategoriesSelectionProvider>
   );
 };
 

@@ -120,9 +120,6 @@ const AddNewCategoryModal: React.FC<Props> = ({
     }
   };
 
-  console.log(categoryId);
-  
-
   return (
     <BaseModal
       isOpen={isOpen}
@@ -137,9 +134,8 @@ const AddNewCategoryModal: React.FC<Props> = ({
       }
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
-      confirmColor="primary"
       onConfirm={handleSubmit}
-      isConfirmDisabled={isDisabled}
+      isConfirmDisabled={!isDisabled}
       size="xl"
       icon={<BiCategoryAlt />}
     >

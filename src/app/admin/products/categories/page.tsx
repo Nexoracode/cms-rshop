@@ -4,8 +4,8 @@ import { useState } from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { TbCategory2 } from "react-icons/tb";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
-import CategoryCard from "@/components/features/products/categories/CategoryCard";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
+import CategoryTree from "@/components/features/products/categories/CategoryCard/CategoryTree";
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
@@ -41,7 +41,7 @@ const Categories = () => {
         searchInp={false}
         meta={undefined}
       >
-        <CategoryCard
+        <CategoryTree
           categories={categories?.data}
           onEdit={handleEditCategory}
         />
