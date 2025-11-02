@@ -232,7 +232,7 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
   disableAction = false,
 }) => {
   // internal selected state (sync with prop)
-  const [selected, setSelected] = useState<number[]>(selectedIds ?? []);
+  const [selected, setSelected] = useState<number[]>([]);
 
   // سینک زمانی که prop از بیرون تغییر کنه
   useEffect(() => {

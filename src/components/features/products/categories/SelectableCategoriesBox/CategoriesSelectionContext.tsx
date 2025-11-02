@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { Category } from "../category.types";
 
 type CategoriesSelectionContextType = {
@@ -22,7 +22,11 @@ export const CategoriesSelectionProvider: React.FC<{
   initialCategories?: Category[];
   children: React.ReactNode;
 }> = ({ initialCategories = [], children }) => {
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>(initialCategories);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    setSelectedCategories(initialCategories);
+  }, [initialCategories]);
 
   const addCategory = (category: Category) => {
     setSelectedCategories((prev) => [...prev.filter((c) => c.id !== category.id), category]);
