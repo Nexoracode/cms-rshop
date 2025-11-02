@@ -90,7 +90,11 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
             <div className="flex items-center justify-between pb-3 sm:pb-0 border-b sm:border-0">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <p className="text-[15px]">{node.title}</p>
-                <p className="text-xs text-default-500">({node.slug})</p>
+                {
+                  !showDeselectIcon ?
+                    <p className="text-xs text-default-500">({node.slug})</p>
+                    : ""
+                }
               </div>
 
               {!disableAction ? (
