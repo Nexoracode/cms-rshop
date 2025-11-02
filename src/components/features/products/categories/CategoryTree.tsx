@@ -35,6 +35,16 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ open, hasChildren, onClick 
   </button>
 );
 
+// ----------------- helper -----------------
+const hasSelectedDescendant = (node: Category, selectedIds: number[] = []): boolean => {
+  if (!node?.children || node.children.length === 0) return false;
+  for (const child of node.children) {
+    if (selectedIds.includes(child.id)) return true;
+    if (hasSelectedDescendant(child, selectedIds)) return true;
+  }
+  return false;
+};
+
 // ----------------- CategoryNode -----------------
 type CategoryNodeProps = {
   node: Category;
@@ -65,6 +75,15 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
   const hasChildren = node.children?.length > 0;
   const pathTitles = chainTitles.length ? `${chainTitles.join(" › ")} › ` : "";
   const { mutate: deleteCategory } = useDeleteCategory();
+
+  // اگر هر descendant ای از این node انتخاب شده باشه => بازش کن
+  const descendantSelected = hasSelectedDescendant(node, selectedIds ?? []);
+  useEffect(() => {
+    if (descendantSelected) {
+      setOpen(true);
+    }
+    // فقط وقتی descendantSelected تغییر کنه واکنش بدیم
+  }, [descendantSelected]);
 
   // محتوای کارت (بدون wrapper انتخاب)
   const nodeContent = (
