@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { Category } from "../category.types";
 import AddNewCategoryModal from "../AddNewCategoryModal";
@@ -22,18 +22,17 @@ const SelectableCategoriesTree: React.FC<Props> = ({
     const { data: categories, isLoading } = useGetCategories();
     const isExistItems = !!categories?.data?.length;
 
-    const mergedSelectedIds = [...initialCategories, ...selectedIds].map((id) =>
-        Number(id)
+    const mergedSelectedIds = useMemo(
+        () => [...initialCategories, ...selectedIds].map((id) => Number(id)),
+        [initialCategories, selectedIds]
     );
 
-    // وضعیت داخلی برای مدیریت selected ids
-    const [selectedIdsState, setSelectedIdsState] = useState<number[]>(mergedSelectedIds);
+    const [selectedIdsState, setSelectedIdsState] = useState<number[]>([]);
 
     useEffect(() => {
         setSelectedIdsState(mergedSelectedIds);
     }, [mergedSelectedIds]);
 
-    // پیدا کردن category با id در تمام سطوح (recursive)
     const findCategoryById = (categories: Category[], id: number): Category | null => {
         for (const cat of categories) {
             if (cat.id === id) return cat;
@@ -44,7 +43,6 @@ const SelectableCategoriesTree: React.FC<Props> = ({
         }
         return null;
     };
-
 
     const handleSelectionChange = (ids: number[]) => {
         setSelectedIdsState(ids);
