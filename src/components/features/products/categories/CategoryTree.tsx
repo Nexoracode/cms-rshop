@@ -1,6 +1,7 @@
+// components/features/products/categories/CategoryTreeSelectable.tsx
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Chip } from "@heroui/react";
 import { useDeleteCategory } from "@/hooks/api/categories/useCategory";
 import DeleteButton from "@/components/shared/DeleteButton";
@@ -15,7 +16,6 @@ type ToggleButtonProps = {
   hasChildren: boolean;
   onClick: () => void;
 };
-
 const ToggleButton: React.FC<ToggleButtonProps> = ({ open, hasChildren, onClick }) => (
   <button
     className="bg-gray-100 rounded-md p-1 cursor-auto"
@@ -35,12 +35,13 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ open, hasChildren, onClick 
   </button>
 );
 
+// ----------------- CategoryNode -----------------
 type CategoryNodeProps = {
   node: Category;
   chainTitles: string[];
   selectable?: boolean;
-  selectedIds?: number[];
-  onSelectionChange?: (id: number, selected: number | string) => void;
+  selectedIds?: number[]; // از parent میاد
+  onSelectionChange?: (id: number, selected: boolean) => void; // ⚠️ امضای درست
   onEdit?: (cat: Category) => void;
   disableShowChildren?: boolean;
   disableAction?: boolean;
@@ -65,6 +66,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
   const pathTitles = chainTitles.length ? `${chainTitles.join(" › ")} › ` : "";
   const { mutate: deleteCategory } = useDeleteCategory();
 
+  // محتوای کارت (بدون wrapper انتخاب)
   const nodeContent = (
     <BaseCard onClick={() => onEdit?.(node)}>
       <div className="flex flex-col min-h-[85px] h-full sm:flex-row items-center gap-3">
@@ -127,6 +129,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
                 </Chip>
               )}
             </div>
+
             <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
               {!disableShowChildren && (
                 <div className="flex sm:hidden">
@@ -149,13 +152,16 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
     </BaseCard>
   );
 
+  // اگر selectable فعال است، همین nodeContent را در SelectableCard پیچانده و
+  // onSelectionChange را بدون تغییر (pass-through) می‌دهیم.
   return (
     <div className="relative">
       {selectable ? (
         <SelectableCard
           id={node.id}
           selectedIds={selectedIds}
-          onSelectionChange={(selectedState) => onSelectionChange?.(node.id, selectedState)}
+          // here we pass-through signature (id, selected) => parent can handle it properly
+          onSelectionChange={(id, selected) => onSelectionChange?.(id as number, !!selected)}
         >
           {nodeContent}
         </SelectableCard>
@@ -172,7 +178,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
               chainTitles={[...chainTitles, node.title]}
               selectable={selectable}
               selectedIds={selectedIds}
-              onSelectionChange={onSelectionChange}
+              onSelectionChange={onSelectionChange} // pass down
               onEdit={onEdit}
               disableShowChildren={disableShowChildren}
               showDeselectIcon={showDeselectIcon}
@@ -186,13 +192,12 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
   );
 };
 
-// ===================== CategoryTree =====================
-
+// ----------------- CategoryTree -----------------
 type CategoryTreeProps = {
   categories: Category[];
   selectable?: boolean;
-  selectedIds?: number[];
-  onSelectionChange?: (ids: number[]) => void;
+  selectedIds?: number[]; // list of selected ids
+  onSelectionChange?: (ids: number[]) => void; // parent wants array of selected ids
   onEdit?: (cat: Category) => void;
   className?: string;
   disableAction?: boolean;
@@ -207,17 +212,21 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
   className = "flex flex-col items-center sm:items-stretch gap-3",
   disableAction = false,
 }) => {
-  const [selected, setSelected] = useState<number[]>(selectedIds);
+  // internal selected state (sync with prop)
+  const [selected, setSelected] = useState<number[]>(selectedIds ?? []);
 
-  const handleSelect = (id: number, selectedState: number | string) => {
-    let newSelected = [...selected];
-    if (selectedState) {
-      if (!newSelected.includes(id)) newSelected.push(id);
-    } else {
-      newSelected = newSelected.filter((i) => i !== id);
-    }
-    setSelected(newSelected);
-    onSelectionChange?.(newSelected);
+  // سینک زمانی که prop از بیرون تغییر کنه
+  useEffect(() => {
+    setSelected(selectedIds ?? []);
+  }, [selectedIds]);
+
+  // این تابع به عنوان onSelectionChange برای هر node پاس داده میشه
+  const handleNodeSelect = (id: number, isSelected: boolean) => {
+    setSelected((prev) => {
+      const next = isSelected ? (prev.includes(id) ? prev : [...prev, id]) : prev.filter((i) => i !== id);
+      onSelectionChange?.(next);
+      return next;
+    });
   };
 
   return (
@@ -229,7 +238,7 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
           chainTitles={[]}
           selectable={selectable}
           selectedIds={selected}
-          onSelectionChange={handleSelect}
+          onSelectionChange={handleNodeSelect} // مهم: امضای (id:boolean)
           onEdit={onEdit}
           disableAction={disableAction}
         />
