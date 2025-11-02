@@ -252,16 +252,3 @@ const CategoryNode: React.FC<{
 };
 
 export default CategoryTree;
-
-{
-  /* <SelectableCard
-        id={node.id}
-        selectedIds={selectedIds}
-        disabled={disableSelect}
-        onSelectionChange={(idVal, sel) => onSelect?.(+idVal, sel, node)}
-        className={`shadow-md border w-[270px] sm:w-full ${
-          isRoot ? "shadow-[0_0_2px_orange]" : ""
-        }`}
-        bodyClassName="p-3"
-      ></SelectableCard> */
-}
