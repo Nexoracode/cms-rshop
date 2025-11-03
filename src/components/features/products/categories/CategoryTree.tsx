@@ -142,9 +142,9 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
                   {node.children.length} زیرمجموعه
                 </Chip>
               )}
-              {node.discount && node.discount !== "0" && (
+              {node.discount && node.discount !== "0" && node.discount !== "0%" && (
                 <Chip size="sm" color="warning" variant="flat" radius="sm">
-                  %{node.discount} تخفیف
+                  {node.discount} تخفیف
                 </Chip>
               )}
             </div>

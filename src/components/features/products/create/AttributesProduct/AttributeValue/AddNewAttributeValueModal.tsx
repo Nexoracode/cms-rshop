@@ -46,6 +46,20 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   );
 
   useEffect(() => {
+    if (isActiveColorPicker) {
+      setDatas((prev) => ({
+        ...prev,
+        display_color: "#000",
+      }));
+    } else {
+      setDatas((prev) => ({
+        ...prev,
+        display_color: null,
+      }));
+    }
+  }, [isActiveColorPicker]);
+
+  useEffect(() => {
     if (type === "add") {
       setDatas({ ...initialState, attribute_id: attributeId || 0 });
     } else {

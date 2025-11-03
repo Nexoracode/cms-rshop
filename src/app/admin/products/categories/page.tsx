@@ -18,7 +18,8 @@ const Categories = () => {
     setEditCategory(category);
     setIsEditOpen(true);
   };
-
+  console.log(editCategory?.id || 1, editCategory?.id);
+  
   return (
     <>
       {/* Modal for Add / Edit */}
