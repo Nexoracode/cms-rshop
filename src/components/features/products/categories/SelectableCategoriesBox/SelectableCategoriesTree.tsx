@@ -7,6 +7,7 @@ import AddNewCategoryModal from "../AddNewCategoryModal";
 import { TbCategory2 } from "react-icons/tb";
 import { CategoryTree } from "../CategoryTree";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
+import { findItemById } from "@/utils/findItemById";
 
 type Props = {
     selectedIds: (number | string)[];
@@ -33,30 +34,19 @@ const SelectableCategoriesTree: React.FC<Props> = ({
         setSelectedIdsState(mergedSelectedIds);
     }, [mergedSelectedIds]);
 
-    const findCategoryById = (categories: Category[], id: number): Category | null => {
-        for (const cat of categories) {
-            if (cat.id === id) return cat;
-            if (cat.children?.length) {
-                const found = findCategoryById(cat.children, id);
-                if (found) return found;
-            }
-        }
-        return null;
-    };
-
     const handleSelectionChange = (ids: number[]) => {
         setSelectedIdsState(ids);
 
         // دسته‌هایی که انتخاب شدند
         ids.forEach((id) => {
-            const category = findCategoryById(categories?.data || [], id);
+            const category = findItemById(categories?.data || [], id);
             if (category) onSelectionChange(category, true);
         });
 
         // دسته‌هایی که از حالت انتخاب خارج شدند
         selectedIdsState.forEach((prevId) => {
             if (!ids.includes(prevId)) {
-                const category = findCategoryById(categories?.data || [], prevId);
+                const category = findItemById(categories?.data || [], prevId);
                 if (category) onSelectionChange(category, false);
             }
         });
