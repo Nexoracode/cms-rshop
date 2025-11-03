@@ -43,6 +43,7 @@ const UsersSelectionModal: React.FC = () => {
       onCancel={() => setIsOpen(false)}
       icon={<TbUsers />}
       size="3xl"
+      isConfirmDisabled
     >
       <SelectableCustomersList
         selectedIds={tempSelectedUsers.map((u) => u.id)}

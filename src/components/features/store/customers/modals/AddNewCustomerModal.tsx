@@ -61,8 +61,6 @@ const AddNewCustomerModal: React.FC = () => {
       title="مشتری جدید"
       confirmText="تأیید و ثبت"
       cancelText="لغو"
-      confirmColor="secondary"
-      confirmVariant="solid"
       isConfirmDisabled={isDisabled}
       onConfirm={handleConfirm}
       size="lg"
