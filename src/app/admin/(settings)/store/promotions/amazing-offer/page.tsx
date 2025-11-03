@@ -1,8 +1,6 @@
 "use client"
 
 import ProductItem from "@/components/features/dashboard/helpers/ProductItem";
-import BoxHeader from "@/components/common/Card/CardHeader";
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Card, CardBody, DateRangePicker, NumberInput, useDisclosure } from "@heroui/react"
 import { useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
@@ -20,13 +18,12 @@ const AmazingOffer = () => {
 
     return (
         <>
-            <BackToPage title="پیشنهاد شگفت‌انگیز" link="/admin/store/promotions" />
             <Card className="shadow-md mt-6">
-                <BoxHeader
+                {/* <BoxHeader
                     title="پیشنهاد داغ"
                     color="bg-red-700/10 text-red-700"
                     icon={<MdWhatshot className="text-3xl" />}
-                />
+                /> */}
                 <CardBody className="flex flex-col gap-6 text-right">
 
                     <DateRangePicker label="زمان آغاز و پایان تخفیف" labelPlacement="outside" />

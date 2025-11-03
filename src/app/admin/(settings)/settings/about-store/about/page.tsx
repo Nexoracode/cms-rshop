@@ -1,7 +1,5 @@
 "use client"
 
-import BoxHeader from "@/components/common/Card/CardHeader"
-import BackToPage from "@/components/common/Breadcrumbs"
 //import MediasUploader from "@/components/Helper/MediasUploader"
 import { Alert, Button, Card, CardBody, CardFooter, Divider, Textarea } from "@heroui/react"
 import { useState } from "react"
@@ -13,13 +11,12 @@ const About = () => {
 
     return (
         <>
-            <BackToPage title="بازگشت" link="/admin/settings/about-store" />
             <Card className="shadow-md mt-6">
-                <BoxHeader
+               {/*  <BoxHeader
                     title="درباره ما"
                     color="text-yellow-700 bg-yellow-700/10"
                     icon={<BsInfoCircle className="text-3xl" />}
-                />
+                /> */}
                 <CardBody>
                     <div className="flex flex-col gap-3 mb-6">
                        {/*  <MediasUploader onPreviewsChange={datas =>

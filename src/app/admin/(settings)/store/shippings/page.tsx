@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Input, CardBody, Card, Switch } from "@heroui/react"
 import BoxHeader from "@/components/common/Card/CardHeader"
 import { GrMapLocation } from "react-icons/gr";
@@ -20,15 +19,14 @@ export default function Shippings() {
 
     return (
         <div className="flex flex-col gap-6">
-            <BackToPage title="پیک فروشگاه" link="/admin/store" />
 
             {/* باکس اطلاعات کلی */}
             <Card className="shadow-md">
-                <BoxHeader
+             {/*    <BoxHeader
                     title="اطلاعات کلی"
                     color="bg-blue-700/10 text-blue-700"
                     icon={<GrMapLocation className="text-3xl" />}
-                />
+                /> */}
                 <CardBody className="flex flex-col gap-6">
                     <Input
                         label="عنوان روش ارسال"
@@ -51,15 +49,15 @@ export default function Shippings() {
                 </CardBody>
             </Card>
 
-            <SendTypeCard>
+         {/*    <SendTypeCard>
                 <BoxHeader
                     title="ارسال درون شهری"
                     color="bg-green-700/10 text-green-700"
                     icon={<FaTreeCity className="text-3xl" />}
                 />
-            </SendTypeCard>
+            </SendTypeCard> */}
 
-            <SendTypeCard
+          {/*   <SendTypeCard
                 childrenBody={
                     <Switch
                         size="sm"
@@ -77,7 +75,7 @@ export default function Shippings() {
                     color="bg-purple-700/10 text-purple-700"
                     icon={<TbTruckDelivery className="text-3xl" />}
                 />
-            </SendTypeCard>
+            </SendTypeCard> */}
 
 
             <Button

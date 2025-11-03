@@ -2,7 +2,6 @@
 
 import HeaderAction from "@/components/common/HeaderAction";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
-import BackToPage from "@/components/common/Breadcrumbs";
 import { useDisclosure } from "@heroui/react";
 
 const Categories = () => {
@@ -11,8 +10,6 @@ const Categories = () => {
   return (
     <>
       <div className="flex flex-col gap-6">
-        <BackToPage title="بازگشت" link="/admin/store" />
-
         <div className="bg-white p-4 rounded-2xl">
           <HeaderAction
             title="دسته بندی"

@@ -1,14 +1,11 @@
 "use client"
 
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Input } from "@heroui/react"
 
 const UserInfos = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <BackToPage title="اطلاعات کاربری" link="/admin/store" />
-
             <div className="bg-white rounded-2xl p-4 flex flex-col items-center gap-4">
                 <Input labelPlacement="outside" variant="flat" label="نام" placeholder="نام خود را وارد نمایید" type="text" />
                 <Input labelPlacement="outside" variant="flat" label="نام خوانوادگی" placeholder="نام خود را وارد نمایید" type="text" />

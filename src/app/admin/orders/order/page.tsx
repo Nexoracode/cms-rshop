@@ -21,9 +21,7 @@ const OrderDetail = () => {
   return (
     <>
       <section className="flex flex-col gap-6">
-        <BackToPage title="بازگشت" link="/admin/orders" />
-
-        <EntityCard
+        {/* <EntityCard
           title="مشخصات سفارش"
           textBtn="مشاهده فاکتور"
           icon={<IoReceiptOutline className="text-2xl" />}
@@ -34,7 +32,7 @@ const OrderDetail = () => {
           searchInp={false}
         >
           <OrderWizard order={order?.data} />
-        </EntityCard>
+        </EntityCard> */}
       </section>
     </>
   );

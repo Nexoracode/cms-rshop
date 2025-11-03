@@ -1,22 +1,16 @@
 "use client"
 
-import ProductItem from "@/components/features/dashboard/helpers/ProductItem";
-import BackToPage from "@/components/common/Breadcrumbs"
-import { Button, NumberInput, Select, SelectItem, Switch, useDisclosure } from "@heroui/react"
+import { NumberInput, Switch } from "@heroui/react"
 import { useState } from "react"
-import { FiShoppingBag } from "react-icons/fi";
 
 const PreOrder = () => {
 
     const [isActiveCard, setIsActiveCard] = useState(false)
     const [selectItem, setSelectItem] = useState<"limit" | "unlimit">("unlimit")
-    const [selectedCategoryType, setSelectedCategoryType] = useState<any>()
-    const [specialProducts, setSpecialProducts] = useState<any[]>([]);
 
     return (
         <>
             <div>
-                <BackToPage title="پیش سفارش" link="/admin/store" />
                 <div className="bg-white rounded-2xl p-4 mt-6">
                     <div className="flex flex-col gap-4 mb-6">
                         <Switch

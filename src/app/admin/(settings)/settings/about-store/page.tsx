@@ -1,7 +1,6 @@
 "use client"
 
 import { Accordion, AccordionItem } from "@heroui/react";
-import BackToPage from "@/components/common/Breadcrumbs"
 import { BsInfoCircle } from "react-icons/bs";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
@@ -14,8 +13,6 @@ const AboutStore = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <BackToPage title="درباره فروشگاه" link="/admin/store" />
-
             <div className="bg-white rounded-2xl p-4 flex flex-col items-center gap-4">
                 <Accordion selectionMode="multiple">
                     <AccordionItem

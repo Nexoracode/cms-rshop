@@ -2,7 +2,6 @@
 
 import HeaderAction from "@/components/common/HeaderAction"
 import Faq from "@/components/features/settings/Faq"
-import BackToPage from "@/components/common/Breadcrumbs"
 import { useState } from "react"
 import { FaQuestion } from "react-icons/fa6"
 
@@ -44,7 +43,6 @@ const FaqAll = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <BackToPage title="بازگشت" link="/admin/settings/about-store" />
 
       <div className="bg-white p-4 rounded-2xl">
         <HeaderAction

@@ -2,7 +2,6 @@
 
 import HeaderAction from "@/components/common/HeaderAction"
 import BlogCard from "@/components/features/store/blog/BlogCard"
-import BackToPage from "@/components/common/Breadcrumbs"
 import { useState } from "react"
 import { TbFolderOpen } from "react-icons/tb"
 
@@ -64,8 +63,6 @@ const Blog = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <BackToPage title="بازگشت" link="/admin/store" />
-
       <div className="bg-white p-4 rounded-2xl">
         <HeaderAction
           title="بلاگ ها"

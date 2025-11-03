@@ -1,16 +1,12 @@
 "use client"
 
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Input } from "@heroui/react"
 import { FaTelegram } from "react-icons/fa";
 import { LuInstagram } from "react-icons/lu";
-import Image from "next/image";
 
 const Social = () => {
     return (
         <div className="flex flex-col gap-4">
-            <BackToPage title="شبکه‌های اجتماعی" link="/admin/store" />
-
             <div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
 
                 <div className="text-gray-700 text-sm leading-relaxed">

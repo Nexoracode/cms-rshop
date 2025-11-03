@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import BoxHeader from "@/components/common/Card/CardHeader";
-import BackToPage from "@/components/common/Breadcrumbs";
 import SwitchWrapper from "@/components/shared/SwitchWrapper";
 import { Button, Card, CardBody, CardFooter } from "@heroui/react";
 import { TbShoppingCartPlus } from "react-icons/tb";
@@ -19,13 +17,12 @@ const ManualOrder = () => {
 
   return (
     <>
-      <BackToPage title="بازگشت" link="/admin/orders" />
       <Card className="shadow-md mt-6">
-        <BoxHeader
+      {/*   <BoxHeader
           title="ثبت سفارش"
           color="text-blue-700 bg-blue-700/10"
           icon={<TbShoppingCartPlus className="text-3xl" />}
-        />
+        /> */}
         <CardBody className="text-right flex flex-col gap-6">
           <SwitchWrapper
             label="تخفیف فاکتور"

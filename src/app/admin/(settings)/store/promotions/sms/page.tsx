@@ -1,6 +1,5 @@
 "use client";
 
-import BackToPage from "@/components/common/Breadcrumbs";
 import {
   Button,
   DatePicker,
@@ -36,8 +35,6 @@ const Sms = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <BackToPage title="ارسال پیامک" link="/admin/store/promotions" />
-
       <div className="bg-white rounded-2xl p-4 py-6 flex flex-col items-center gap-4">
         <div className="w-full flex flex-col gap-6 text-start">
           <p className="text-sm text-gray-600">

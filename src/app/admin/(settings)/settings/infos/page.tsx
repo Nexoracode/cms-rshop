@@ -1,7 +1,6 @@
 "use client"
 
 import ImageBoxUploader from "@/components/media/ImageBoxUploader"
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Button, Input, NumberInput } from "@heroui/react"
 import { useState } from "react"
 
@@ -11,8 +10,6 @@ const AboutStore = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <BackToPage title="اطلاعات فروشگاه" link="/admin/store" />
-
             <div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
                 <ImageBoxUploader
                     textBtn={imageFile ? "تغییر لوگو" : "+ افزودن لوگو"}

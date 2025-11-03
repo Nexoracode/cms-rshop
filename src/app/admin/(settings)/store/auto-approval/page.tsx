@@ -1,6 +1,5 @@
 "use client"
 
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Switch } from "@heroui/react"
 import { useState } from "react"
 
@@ -10,7 +9,6 @@ const AutoApproval = () => {
 
     return (
         <div className="flex flex-col gap-6">
-            <BackToPage title="تنظیمات سفارش ها" link="/admin/store" />
             <div className="bg-white rounded-2xl p-4 flex flex-col gap-2">
                 <Switch
                     size="sm"

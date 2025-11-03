@@ -1,7 +1,5 @@
 "use client";
 
-import BoxHeader from "@/components/common/Card/CardHeader";
-import BackToPage from "@/components/common/Breadcrumbs";
 import {
   Button,
   Card,
@@ -44,13 +42,12 @@ const FreeShipping = () => {
 
   return (
     <>
-      <BackToPage title="تخفیف ها" link="/admin/store/promotions" />
       <Card className="shadow-md mt-6">
-        <BoxHeader
+        {/* <BoxHeader
           title="اطلاعات ارسال رایگان"
           color="bg-blue-700/10 text-blue-700"
           icon={<PiMapPinAreaBold className="text-3xl" />}
-        />
+        /> */}
         <CardBody className="flex flex-col gap-6 text-right">
           <div className="flex flex-col gap-4">
             <Input

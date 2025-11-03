@@ -1,20 +1,17 @@
 "use client"
 
-import BoxHeader from "@/components/common/Card/CardHeader"
-import BackToPage from "@/components/common/Breadcrumbs"
 import { Card, CardBody, Select, SelectItem } from "@heroui/react"
 import { MdOutlineTimer } from "react-icons/md";
 
 const ReservationTimes = () => {
     return (
         <div>
-            <BackToPage title="زمان رزرو" link="/admin/store" />
             <Card className="shadow-md mt-6">
-                <BoxHeader
+             {/*    <BoxHeader
                     title="زمان رزرو"
                     color="bg-orange-700/10 text-orange-700"
                     icon={<MdOutlineTimer className="text-3xl" />}
-                />
+                /> */}
 
                 <CardBody className="text-right">
                     <Select

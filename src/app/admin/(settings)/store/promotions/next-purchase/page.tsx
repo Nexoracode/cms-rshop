@@ -1,6 +1,5 @@
 "use client";
 
-import BackToPage from "@/components/common/Breadcrumbs";
 import {
   Button,
   Divider,
@@ -19,8 +18,6 @@ const NextPurchase = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <BackToPage title="تخفیف خرید بعدی" link="/admin/store/promotions" />
-
       <div className="bg-white rounded-2xl p-4 py-6 flex flex-col items-center gap-4">
         <div className="w-full flex flex-col gap-6 text-start">
           <div className="flex flex-col gap-2">
