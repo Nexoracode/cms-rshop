@@ -8,7 +8,6 @@ import { PiMoneyWavyBold } from "react-icons/pi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { FiUsers } from "react-icons/fi";
 import { useState } from "react";
-import BoxHeader from "../../common/Card/CardHeader";
 
 const dateOptions = [
     { key: "today", label: "امروز" },
@@ -24,7 +23,7 @@ const ReportsList = () => {
 
     return (
         <Card className="shadow-md">
-            <BoxHeader
+          {/*   <BoxHeader
                 title="گزارش ها"
                 color="bg-orange-700/10 text-orange-700"
                 icon={
@@ -69,7 +68,7 @@ const ReportsList = () => {
                         </PopoverContent>
                     </Popover>
                 }
-            />
+            /> */}
             <CardBody className="shadow-md grid xs:grid-cols-2 gap-2 xs:gap-6">
                 <ReportBox title="بازدید سایت" icon={<TbWorldSearch className="text-2xl text-purple-600" />} count={"3000"} />
                 <ReportBox title="فروش کل" icon={<PiMoneyWavyBold className="text-2xl text-purple-600" />} count={"3000"} />

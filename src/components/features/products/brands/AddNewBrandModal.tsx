@@ -106,7 +106,6 @@ const AddNewBrandModal: React.FC<Props> = ({
       }
       title={brandId ? "ویرایش برند" : "افزودن برند جدید"}
       confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
-      confirmColor="primary"
       onConfirm={handleSubmit}
       isConfirmDisabled={isDisabled}
       size="xl"

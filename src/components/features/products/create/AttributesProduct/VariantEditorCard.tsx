@@ -79,7 +79,6 @@ const VariantRowEditor: React.FC<Props> = ({
         isCardInvalid ? "border-red-400" : ""
       }`}
       bodyClassName="flex flex-col gap-4 p-4"
-      selected={isCardInvalid}
     >
       <div className="text-center text-gray-600 mb-2 border-b pb-4">
         {variantName}

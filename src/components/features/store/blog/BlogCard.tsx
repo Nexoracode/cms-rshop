@@ -1,7 +1,6 @@
 "use client"
 
 import { Accordion, AccordionItem, Button, Card, CardBody, Input, Textarea } from "@heroui/react"
-import BoxHeader from "../../../common/Card/CardHeader"
 import { useState, useEffect } from "react"
 import { IoDocumentTextOutline } from "react-icons/io5"
 import ImageBoxUploader from "@/components/media/ImageBoxUploader"
@@ -62,7 +61,7 @@ const BlogCard: React.FC<Props> = ({
 
     return (
         <Card className={cardType === "new" ? "shadow-md shadow-purple-300" : ""}>
-            <BoxHeader
+         {/*    <BoxHeader
                 title={cardType === "new" ? "تعریف بلاگ جدید" : titleCard}
                 color={
                     cardType === "new"
@@ -70,7 +69,7 @@ const BlogCard: React.FC<Props> = ({
                         : "bg-green-700/10 text-green-700"
                 }
                 icon={<IoDocumentTextOutline className="text-3xl" />}
-            />
+            /> */}
             <CardBody className="shadow-md flex flex-col gap-6">
                 {
                     closed

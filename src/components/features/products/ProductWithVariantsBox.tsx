@@ -91,9 +91,9 @@ const ProductWithVariantsBox: React.FC<Props> = ({
     <SelectableCard
       id={product.id}
       selectedIds={productSelected ? [product.id] : []}
-      disabled={disableSelect || selectedVariants.length > 0}
+      //disabled={disableSelect || selectedVariants.length > 0}
       onSelectionChange={(idVal, sel) => handleProductSelect(sel)}
-      className="max-w-[300px] w-full sm:max-w-full"
+     // className="max-w-[300px] w-full sm:max-w-full"
     >
       {/* اطلاعات اصلی محصول */}
       <div className="flex flex-col items-center sm:flex-row gap-4 text-start">
@@ -182,12 +182,12 @@ const ProductWithVariantsBox: React.FC<Props> = ({
               key={variant.id}
               id={variant.id}
               selectedIds={selectedVariants}
-              disabled={disableSelect || productSelected}
+              //disabled={disableSelect || productSelected}
               onSelectionChange={(idVal, sel) =>
                 handleVariantSelect(+idVal, sel)
               }
-              className="shadow-none border-none rounded-xl hover:shadow-none"
-              bodyClassName="p-0 shadow-none hover:shadow-none"
+              //className="shadow-none border-none rounded-xl hover:shadow-none"
+              //bodyClassName="p-0 shadow-none hover:shadow-none"
             >
               <div className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300">
                 <div className="flex flex-wrap gap-2 text-sm text-gray-700">

@@ -50,7 +50,6 @@ const BulkDiscountModal: React.FC<Props> = ({
         />
       }
       confirmText="اعمال تخفیف"
-      confirmColor="primary"
       onConfirm={handleConfirm}
       onCancel={reset}
       isConfirmDisabled={selectedCount <= 0 || discountValue === null || Number.isNaN(discountValue)}

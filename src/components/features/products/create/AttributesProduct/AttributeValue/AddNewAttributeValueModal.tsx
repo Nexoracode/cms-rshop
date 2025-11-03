@@ -104,7 +104,6 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       }
       title={type === "edit" ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
       confirmText="ثبت تغییرات"
-      confirmColor="primary"
       onConfirm={handleConfirm}
       isConfirmDisabled={isDisabled}
       isActiveFooter={true}

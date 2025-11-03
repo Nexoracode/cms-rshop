@@ -74,7 +74,7 @@ const OrdersFilterModal = () => {
   };
 
   return (
-    <FilterModal onConfirm={onApply} onRemove={onClear}>
+   /*  <FilterModal onConfirm={onApply} onRemove={onClear}>
       <div className="flex flex-col gap-6">
         <Select
           label="وضعیت سفارش"
@@ -110,7 +110,8 @@ const OrdersFilterModal = () => {
           }
         />
       </div>
-    </FilterModal>
+    </FilterModal> */
+    <p>s</p>
   );
 };
 

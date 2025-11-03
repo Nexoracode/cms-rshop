@@ -37,7 +37,7 @@ const SelectableVariantsBox: React.FC<Props> = ({
       title="تنوع محصول ها انتخاب شده"
       icon={<MdOutlineCategory className="text-5xl" />}
       initial={selectedVariants}
-      onOpen={() => setIsVariantsOpen(true)}
+      //onOpen={() => setIsVariantsOpen(true)}
       modal={
         <VariantsSelectionModal
           isOpen={isVariantsOpen}

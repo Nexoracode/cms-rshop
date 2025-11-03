@@ -46,7 +46,6 @@ const BulkCategoryModal: React.FC<Props> = ({
         />
       }
       confirmText="اعمال تغییرات"
-      confirmColor="primary"
       onConfirm={handleConfirm}
       onCancel={reset}
       isConfirmDisabled={!categoryId || selectedCount <= 0}

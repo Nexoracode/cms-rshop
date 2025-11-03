@@ -15,7 +15,6 @@ import { RiTimerLine } from "react-icons/ri";
 import { LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
-import BoxHeader from "@/components/common/Card/CardHeader";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
 // تنظیمات فروشگاه
@@ -82,11 +81,11 @@ const Settings: React.FC = () => {
       <div className="flex justify-center flex-col sm:flex-row lg:items-start lg:justify-between gap-4">
         {/* تنظیمات فروشگاه */}
         <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
-          <BoxHeader
+         {/*  <BoxHeader
             title="تنظیمات فروشگاه"
             color="text-white bg-gray-400"
             icon={<BsShop className="text-[26px]" />}
-          />
+          /> */}
           <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
             {storeSettingsLinks.map(({ title, icon, route }) => (
               <BoxLink
@@ -103,11 +102,11 @@ const Settings: React.FC = () => {
 
         {/* تنظیمات سفارش گیری */}
         <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
-          <BoxHeader
+       {/*    <BoxHeader
             title="تنظیمات سفارش گیری"
             color="text-white bg-blue-400"
             icon={<TfiShoppingCartFull className="text-[28px]" />}
-          />
+          /> */}
           <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
             {orderSettingsLinks.map(({ title, icon, route }) => (
               <BoxLink

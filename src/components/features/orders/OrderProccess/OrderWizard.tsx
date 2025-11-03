@@ -20,7 +20,7 @@ type Props = {
   order?: OrderData;
 };
 
-const statusToStep = (status: OrderData["status"] | undefined): StepKey => {
+const statusToStep = (status: any /* OrderData["status"] | undefined */): StepKey => {
   switch (status) {
     case "pending":
       return "1";

@@ -1,7 +1,6 @@
 "use client"
 
 import { Button, Card, CardBody, Input, Textarea } from "@heroui/react"
-import BoxHeader from "../../common/Card/CardHeader"
 import { FaQuestion } from "react-icons/fa6"
 import { useState, useEffect } from "react"
 
@@ -41,7 +40,7 @@ const Faq: React.FC<Props> = ({
 
   return (
     <Card className={cardType === "new" ? "shadow-md shadow-purple-300" : ""}>
-      <BoxHeader
+   {/*    <BoxHeader
         title={cardType === "new" ? "تعریف سوال جدید" : titleCard}
         color={
           cardType === "new"
@@ -49,7 +48,7 @@ const Faq: React.FC<Props> = ({
             : "bg-green-700/10 text-green-700"
         }
         icon={<FaQuestion className="text-3xl" />}
-      />
+      /> */}
       <CardBody className="shadow-md flex flex-col gap-6">
         <div className="flex flex-col gap-4 text-right">
           <Input

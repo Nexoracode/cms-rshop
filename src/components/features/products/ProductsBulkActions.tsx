@@ -56,7 +56,6 @@ const ProductsBulkActions = ({
           title="حذف محصولات انتخاب‌شده"
           confirmText="بله، حذف شود"
           cancelText="لغو"
-          confirmColor="danger"
           triggerProps={{
             title: "حذف گروهی",
             variant: "flat",

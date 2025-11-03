@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Attribute } from "../AttributesProduct/attribute-tree";
+import { Attribute } from "../AttributesProduct/attribute.types";
 import SortableAttributeValues from "./SortableAttributeValues";
 import { useUpdateAttributeOrder } from "@/hooks/api/attributes/useAttribute";
 import { handleDropHelper } from "./handleDropHelper";
@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { useImportantAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
 
 type Props = {
-  attributes: Attribute[];
+  attributes: any /* Attribute[] */;
 };
 
 const SortableAttributes: React.FC<Props> = ({ attributes }) => {
@@ -72,8 +72,8 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
     <div className="mx-4 mt-6">
       {items
         .slice()
-        .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
-        .map((attr) => (
+        .sort((a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .map((attr: any) => (
           <div
             key={attr.id}
             draggable

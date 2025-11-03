@@ -86,7 +86,6 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
       }
       title={type === "edit" ? "ویرایش گروه ویژگی" : "افزودن گروه ویژگی جدید"}
       confirmText="ثبت تغییرات"
-      confirmColor="primary"
       onConfirm={handleConfirm}
       isConfirmDisabled={isDisabled}
       isActiveFooter={true}

@@ -56,7 +56,7 @@ const Orders = () => {
     <section className="flex flex-col gap-6">
       <OrdersFilter />
 
-      <EntityCard
+     {/*  <EntityCard
         title="لیست سفارشات"
         icon={<IoReceiptOutline className="text-2xl" />}
         isLoading={isLoading}
@@ -74,7 +74,7 @@ const Orders = () => {
             />
           ))}
         </div>
-      </EntityCard>
+      </EntityCard> */}
     </section>
   );
 };

@@ -59,7 +59,6 @@ const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
         />
       }
       confirmText="اعمال تغییرات"
-      confirmColor="primary"
       onConfirm={handleConfirm}
       onCancel={reset}
       isConfirmDisabled={

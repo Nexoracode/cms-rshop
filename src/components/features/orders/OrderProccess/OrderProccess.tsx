@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody, Divider } from "@heroui/react";
 import InfoRow from "../helper/InfoRow";
-import BoxHeader from "../../../common/Card/CardHeader";
 import { LuUserRound } from "react-icons/lu";
 import { TiInfoLargeOutline } from "react-icons/ti";
 import { IoMdPaper } from "react-icons/io";
@@ -22,7 +21,7 @@ type OrderProcessProps = {
   actionBox?: React.ReactNode;
 };
 
-const statusToStep = (status: OrderData["status"]): StepKey => {
+const statusToStep = (status: any /* OrderData["status"] */): any => { //StepKey
   switch (status) {
     case "pending":
       return "1";
@@ -128,23 +127,23 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
       <div className="space-y-6">
         {/* باکس کد سفارش */}
         <Card className="shadow-md border border-gray-100">
-          <BoxHeader
+       {/*    <BoxHeader
             title={orderInfo.code}
             color="text-blue-700 bg-blue-700/10"
             textSize="text-[16px]"
             icon={orderInfo.date}
-          />
+          /> */}
           <CardBody className="text-right">{usedActionBox}</CardBody>
         </Card>
 
         {/* باکس فاکتور */}
         <Card className="shadow-md border border-gray-100">
-          <BoxHeader
+        {/*   <BoxHeader
             title="محصولات و فاکتور"
             color="text-gray-100 bg-black"
             textSize="text-[16px]"
             icon={<IoMdPaper className="text-2xl" />}
-          />
+          /> */}
           <CardBody>
             <div className="mb-4">
               {/* TODO: اگر order.items در OrderData اضافه شد، اینجا لیست محصولات رو دینامیک رندر کن */}
@@ -188,12 +187,12 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
       <div className="space-y-6">
         {/* اطلاعات مشتری */}
         <Card className="shadow-md border border-gray-100">
-          <BoxHeader
+       {/*    <BoxHeader
             title="اطلاعات مشتری"
             color="text-orange-700 bg-orange-700/10"
             textSize="text-[16px]"
             icon={<LuUserRound className="text-2xl" />}
-          />
+          /> */}
           <CardBody>
             <div className="space-y-1 -mt-1">
               <InfoRow label="نام و نام خوانوادگی" value={customer.name} />
@@ -210,12 +209,12 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         {/* اطلاعات سفارش */}
         <Card className="shadow-md border border-gray-100">
-          <BoxHeader
+        {/*   <BoxHeader
             title="اطلاعات سفارش"
             color="text-orange-700 bg-orange-700/10"
             textSize="text-[16px]"
             icon={<TiInfoLargeOutline className="text-2xl" />}
-          />
+          /> */}
           <CardBody>
             <div className="space-y-1">
               <InfoRow label="کد سفارش" value={orderInfo.code} />
@@ -231,12 +230,12 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         {/* اطلاعات ارسال */}
         <Card className="shadow-md border border-gray-100">
-          <BoxHeader
+         {/*  <BoxHeader
             title="اطلاعات ارسال"
             color="text-orange-700 bg-orange-700/10"
             textSize="text-[16px]"
             icon={<TbTruckLoading className="text-2xl" />}
-          />
+          /> */}
           <CardBody>
             <div className="space-y-2">
               <InfoRow label="روش ارسال" value={shipping.method} />

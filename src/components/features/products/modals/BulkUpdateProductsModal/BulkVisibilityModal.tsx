@@ -45,7 +45,6 @@ const BulkVisibilityModal: React.FC<Props> = ({
           selectedCount={selectedCount}
         />
       }
-      confirmColor="primary"
       confirmText="اعمال تغییرات"
       onConfirm={handleConfirm}
       onCancel={reset}
