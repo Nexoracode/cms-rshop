@@ -5,7 +5,7 @@ import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { Category } from "../category.types";
 import AddNewCategoryModal from "../AddNewCategoryModal";
 import { TbCategory2 } from "react-icons/tb";
-import { CategoryTree } from "../CategoryTree";
+import { CategoryTree } from "../CategoryTree/CategoryTree";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { findItemById } from "@/core/utils/findItemById";
 

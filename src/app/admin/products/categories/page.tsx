@@ -5,7 +5,7 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { TbCategory2 } from "react-icons/tb";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
 import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
-import { CategoryTree } from "@/components/features/products/categories/CategoryTree";
+import { CategoryTree } from "@/components/features/products/categories/CategoryTree/CategoryTree";
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
@@ -18,7 +18,6 @@ const Categories = () => {
     setEditCategory(category);
     setIsEditOpen(true);
   };
-  console.log(editCategory?.id || 1, editCategory?.id);
   
   return (
     <>

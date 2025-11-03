@@ -8,32 +8,10 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
 import SelectableCard from "@/components/ui/SelectableCard";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { BiChevronDown, BiChevronRight } from "react-icons/bi";
-import { Category } from "./category.types";
+import { Category } from "../category.types";
+import CategoryToggleBtn from "./CategoryToggleBtn";
 
-type ToggleButtonProps = {
-  open: boolean;
-  hasChildren: boolean;
-  onClick: () => void;
-};
-const ToggleButton: React.FC<ToggleButtonProps> = ({ open, hasChildren, onClick }) => (
-  <button
-    className="bg-gray-100 rounded-md p-1 cursor-auto"
-    onClick={(e) => { e.stopPropagation(); onClick(); }}
-    aria-label={open ? "بستن زیرشاخه‌ها" : "باز کردن زیرشاخه‌ها"}
-    type="button"
-  >
-    {hasChildren ? (
-      open ? (
-        <BiChevronDown size={17} className="cursor-pointer hover:opacity-70 transition-all" />
-      ) : (
-        <BiChevronRight size={17} className="cursor-pointer hover:opacity-70 transition-all" />
-      )
-    ) : (
-      <BiChevronRight size={17} className="opacity-30 pointer-events-none" />
-    )}
-  </button>
-);
+
 
 // ----------------- helper -----------------
 const hasSelectedDescendant = (node: Category, selectedIds: number[] = []): boolean => {
@@ -92,7 +70,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
         <div className="flex items-center gap-2">
           {!disableShowChildren && (
             <div className="hidden sm:flex">
-              <ToggleButton open={open} hasChildren={hasChildren} onClick={() => setOpen((p) => !p)} />
+              <CategoryToggleBtn open={open} hasChildren={hasChildren} onClick={() => setOpen((p) => !p)} />
             </div>
           )}
 
@@ -152,7 +130,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
             <div className="flex items-center mt-3 sm:mt-0 justify-center sm:justify-end gap-2">
               {!disableShowChildren && (
                 <div className="flex sm:hidden">
-                  <ToggleButton open={open} hasChildren={hasChildren} onClick={() => setOpen((p) => !p)} />
+                  <CategoryToggleBtn open={open} hasChildren={hasChildren} onClick={() => setOpen((p) => !p)} />
                 </div>
               )}
 

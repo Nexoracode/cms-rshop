@@ -5,7 +5,7 @@ import SelectionBox from "@/components/shared/SelectionBox";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Category } from "../category.types";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
-import { CategoryNode } from "../CategoryTree";
+import { CategoryNode } from "../CategoryTree/CategoryTree";
 import {
   CategoriesSelectionProvider,
   useCategoriesSelection,
