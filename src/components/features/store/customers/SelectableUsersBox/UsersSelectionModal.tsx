@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { TbUsers } from "react-icons/tb";
-import SelectableCustomersList from "../SelectableCustomersList";
+import SelectableCustomersList from "./SelectableCustomersList";
 import { useUsersSelection } from "./UsersSelectionContext";
 import { User } from "../customer.types";
 

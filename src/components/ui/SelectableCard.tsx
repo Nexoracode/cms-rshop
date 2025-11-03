@@ -18,7 +18,8 @@ const SelectableCard: React.FC<Props> = ({
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    setSelected(selectedIds.includes(id));
+    if (!selectedIds.length) return;
+    selectedIds.includes(id) && setSelected(true);
   }, [selectedIds, id]);
 
   const handleChange = (newSelected: boolean) => {
