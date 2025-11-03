@@ -37,7 +37,6 @@ const CategoriesSelectionModal: React.FC = () => {
       }}
       title="انتخاب دسته‌بندی‌ها"
       confirmText="تأیید انتخاب"
-      cancelText="لغو"
       icon={<TbCategory2 />}
       isOpen={isOpen}
       onOpenChange={setIsOpen}

@@ -20,7 +20,6 @@ const InnerSelectableCategoriesBox: React.FC<{ onChange?: (ids: number[]) => voi
   const { selectedCategories, removeCategory } = useCategoriesSelection();
 
   useEffect(() => {
-    console.log(selectedCategories);
     onChange?.(selectedCategories.map((c) => c.id));
   }, [selectedCategories]);
 

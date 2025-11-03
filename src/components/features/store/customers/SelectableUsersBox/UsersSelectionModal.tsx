@@ -10,12 +10,9 @@ import { User } from "../customer.types";
 const UsersSelectionModal: React.FC = () => {
   const { selectedUsers, setUsers } = useUsersSelection();
   const [isOpen, setIsOpen] = useState(false);
-
-  // state موقت داخل مدال
   const [tempSelectedUsers, setTempSelectedUsers] =
     useState<User[]>(selectedUsers);
 
-  // وقتی مودال باز شد، temp را همگام کن
   useEffect(() => {
     if (isOpen) {
       setTempSelectedUsers(selectedUsers);
@@ -31,12 +28,8 @@ const UsersSelectionModal: React.FC = () => {
   };
 
   const handleConfirm = () => {
-    setUsers(tempSelectedUsers); // state اصلی آپدیت میشه
-    setIsOpen(false); // بستن مودال
-  };
-
-  const handleCancel = () => {
-    setIsOpen(false); // فقط بستن مودال
+    setUsers(tempSelectedUsers);
+    setIsOpen(false);
   };
 
   return (
@@ -46,9 +39,8 @@ const UsersSelectionModal: React.FC = () => {
       onOpenChange={setIsOpen}
       title="انتخاب کاربران"
       confirmText="تأیید انتخاب"
-      cancelText="لغو"
       onConfirm={handleConfirm}
-      onCancel={handleCancel}
+      onCancel={() => setIsOpen(false)}
       icon={<TbUsers />}
       size="3xl"
     >
