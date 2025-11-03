@@ -2,9 +2,9 @@
 
 import React from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import CustomersFilter from "./CustomersFilter";
-import CustomerCard from "./CustomerCard";
-import AddNewCustomerModal from "./modals/AddNewCustomerModal";
+import CustomersFilter from "../CustomersFilter";
+import CustomerCard from "../CustomerCard";
+import AddNewCustomerModal from "../modals/AddNewCustomerModal";
 import SelectableCard from "@/components/ui/SelectableCard";
 import { FiUsers } from "react-icons/fi";
 import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
