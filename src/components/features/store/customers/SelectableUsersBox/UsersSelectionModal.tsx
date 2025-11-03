@@ -1,54 +1,78 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { TbUsers } from "react-icons/tb";
-import SelectableCustomersList from "./SelectableCustomersList";
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
+import CustomersFilter from "../CustomersFilter";
+import CustomerCard from "../CustomerCard";
+import AddNewCustomerModal from "../modals/AddNewCustomerModal";
+import SelectableCard from "@/components/ui/SelectableCard";
+import { FiUsers } from "react-icons/fi";
+import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
+import { useListQueryParams } from "@/hooks/common/useListQueryParams";
 import { useUsersSelection } from "./UsersSelectionContext";
-import { User } from "../customer.types";
 
 const UsersSelectionModal: React.FC = () => {
-  const { selectedUsers, setUsers } = useUsersSelection();
   const [isOpen, setIsOpen] = useState(false);
-  const [tempSelectedUsers, setTempSelectedUsers] =
-    useState<User[]>(selectedUsers);
+  const { page, sortBy, search, filter, isFilteredView } =
+    useListQueryParams<UserSortBy[number]>();
+  const { selectedUsers, addUser, removeUser } = useUsersSelection();
 
-  useEffect(() => {
-    if (isOpen) {
-      setTempSelectedUsers(selectedUsers);
-    }
-  }, [isOpen, selectedUsers]);
+  const { data: users, isLoading } = useGetAllUsers({
+    page,
+    filter,
+    search,
+    sortBy,
+  });
 
-  const handleSelectionChange = (user: User, selected: boolean) => {
-    setTempSelectedUsers((prev) =>
-      selected
-        ? [...prev.filter((u) => u.id !== user.id), user]
-        : prev.filter((u) => u.id !== user.id)
-    );
-  };
+  const isExistItems = !!users?.data?.items?.length;
 
-  const handleConfirm = () => {
-    setUsers(tempSelectedUsers);
-    setIsOpen(false);
+  // فقط id های انتخاب شده
+  const selectedIds = selectedUsers.map((u) => u.id);
+
+  const handleSelectionChange = (user: any, selected: boolean) => {
+    if (selected) addUser(user);
+    else removeUser(user.id);
   };
 
   return (
     <BaseModal
-      triggerProps={{ title: "+ افزودن", className: "bg-secondary-light text-secondary" }}
       isOpen={isOpen}
       onOpenChange={setIsOpen}
       title="انتخاب کاربران"
       confirmText="تأیید انتخاب"
-      onConfirm={handleConfirm}
+      onConfirm={() => setIsOpen(false)}
       onCancel={() => setIsOpen(false)}
       icon={<TbUsers />}
       size="3xl"
-      isConfirmDisabled
     >
-      <SelectableCustomersList
-        selectedIds={tempSelectedUsers.map((u) => u.id)}
-        onSelectionChange={handleSelectionChange}
-      />
+      <UnifiedCard
+        searchFilter={<CustomersFilter />}
+        headerProps={{
+          title: "انتخاب کاربران",
+          icon: <FiUsers className="text-2xl" />,
+          children: <AddNewCustomerModal />,
+        }}
+        isLoading={isLoading}
+        isExistItems={isExistItems}
+        searchInp={isFilteredView}
+        meta={users?.data?.meta}
+        childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        {users?.data?.items?.map((user: any) => (
+          <SelectableCard
+            key={user.id}
+            id={user.id}
+            selectedIds={selectedIds}
+            onSelectionChange={(id, selected) =>
+              handleSelectionChange(user, selected)
+            }
+          >
+            <CustomerCard infos={user} disableAction />
+          </SelectableCard>
+        ))}
+      </UnifiedCard>
     </BaseModal>
   );
 };

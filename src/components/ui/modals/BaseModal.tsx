@@ -49,7 +49,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
   isActiveFooter = true,
   size = "md",
   trigger,
-  triggerProps,
+  triggerProps= {title: "+ افزودن", className: "bg-secondary-light text-secondary"},
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledIsOpen !== undefined;
@@ -115,7 +115,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
                       const shouldClose = await onConfirm?.(handleOpenChange);
                       if (shouldClose !== false) onClose();
                     }}
-                    isSubmitting={!isConfirmDisabled} // یا هر state دیگه که نشون‌دهنده غیرفعال بودن دکمه‌ست
+                    isSubmitting={isConfirmDisabled} // یا هر state دیگه که نشون‌دهنده غیرفعال بودن دکمه‌ست
                   />
                 )}
               </ModalBody>
