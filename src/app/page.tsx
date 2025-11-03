@@ -15,7 +15,7 @@ import {
   iconAuraPulse,
   iconEnter,
   hoverTapCTA,
-} from "@/animations/homePageVariants";
+} from "@/core/motions/homePageVariants";
 
 export default function Home() {
   const router = useRouter();

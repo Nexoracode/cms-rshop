@@ -2,8 +2,8 @@
 
 import React, { useMemo } from "react";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
-import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
-import { flattenCategories } from "@/utils/flattenCategories";
+import { useGetAllCategories } from "@/core/hooks/api/categories/useCategory";
+import { flattenCategories } from "@/core/utils/flattenCategories";
 import AddNewCategoryModal from "./AddNewCategoryModal";
 
 type Props = {

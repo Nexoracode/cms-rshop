@@ -2,7 +2,7 @@
 
 import { Checkbox, Textarea } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { useUpdateUser } from "@/hooks/api/users/useUsers";
+import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
 import FormActionButtons from "@/components/common/FormActionButtons";

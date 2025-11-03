@@ -1,4 +1,4 @@
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/core/utils/fetcher";
 import { useMutation } from "@tanstack/react-query";
 
 export const useCreateSizeGuid = () => {

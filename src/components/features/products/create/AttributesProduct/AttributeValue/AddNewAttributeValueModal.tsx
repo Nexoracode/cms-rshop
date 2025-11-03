@@ -9,7 +9,7 @@ import { FiCheckSquare } from "react-icons/fi";
 import {
   useCreateAttributeValue,
   useUpdateAttributeValue,
-} from "@/hooks/api/attributes/useAttributeValue";
+} from "@/core/hooks/api/attributes/useAttributeValue";
 import { AttributeValue, CreateAttributeValue } from "../attribute.types";
 
 type Props = {

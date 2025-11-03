@@ -17,7 +17,7 @@ import { GrLocation } from "react-icons/gr";
 import { LuUserRound } from "react-icons/lu";
 import { PiMoneyWavy } from "react-icons/pi";
 import { IoIosArrowForward } from "react-icons/io";
-import { useUpdateOrderStatus } from "@/hooks/api/orders/useOrder";
+import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { StatusOrder } from "./order-types";
 
 const statusOptions: { key: StatusOrder; label: string }[] = [

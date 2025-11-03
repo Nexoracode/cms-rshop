@@ -1,6 +1,6 @@
 "use client";
 
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetCategories = (page = 1) => {

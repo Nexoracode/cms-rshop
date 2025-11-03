@@ -1,6 +1,6 @@
 /* 🧩 Category Attributes Start */
 
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useAddNewCategoryAttribute = (

@@ -1,15 +1,15 @@
 "use client";
 
-import { useAttributesByGroup } from "@/hooks/api/attributes/useAttribute";
-import { useGetAttributeValues } from "@/hooks/api/attributes/useAttributeValue";
-import { useAttributesByGroupGroup } from "@/hooks/api/attributes/useAttributeGroup";
+import { useAttributesByGroup } from "@/core/hooks/api/attributes/useAttribute";
+import { useGetAttributeValues } from "@/core/hooks/api/attributes/useAttributeValue";
+import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import { useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
-import { useAddNewVariantProduct } from "@/hooks/api/attributes/useVariantProduct";
+import { useAddNewVariantProduct } from "@/core/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
-import { useCreateAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
+import { useCreateAttributeProduct } from "@/core/hooks/api/attributes/useAttributeProducts";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import toast from "react-hot-toast";
 

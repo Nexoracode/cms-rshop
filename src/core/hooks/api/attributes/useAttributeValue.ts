@@ -1,6 +1,6 @@
 /* 🔠 Attribute Values Start */
 
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetAttributeValues = (attributeId: number | undefined) => {

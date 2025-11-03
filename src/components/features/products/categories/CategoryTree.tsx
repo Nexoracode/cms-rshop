@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Image, Chip } from "@heroui/react";
-import { useDeleteCategory } from "@/hooks/api/categories/useCategory";
+import { useDeleteCategory } from "@/core/hooks/api/categories/useCategory";
 import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
 import SelectableCard from "@/components/ui/SelectableCard";

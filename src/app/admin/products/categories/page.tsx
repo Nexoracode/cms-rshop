@@ -4,7 +4,7 @@ import { useState } from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { TbCategory2 } from "react-icons/tb";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
-import { useGetCategories } from "@/hooks/api/categories/useCategory";
+import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { CategoryTree } from "@/components/features/products/categories/CategoryTree";
 
 const Categories = () => {

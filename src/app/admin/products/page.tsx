@@ -7,10 +7,10 @@ import ProductsFilter from "@/components/features/products/ProductsFilter";
 import ProductsBulkActions from "@/components/features/products/ProductsBulkActions";
 import ProductCard from "@/components/features/products/ProductCard";
 // Icons
-import { ProductSortBy, useGetProducts } from "@/hooks/api/products/useProduct";
+import { ProductSortBy, useGetProducts } from "@/core/hooks/api/products/useProduct";
 import { LuPlus } from "react-icons/lu";
 import { BsShop } from "react-icons/bs";
-import { useListQueryParams } from "@/hooks/common/useListQueryParams";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import SelectableCard from "@/components/ui/SelectableCard";
 
 const Products = () => {

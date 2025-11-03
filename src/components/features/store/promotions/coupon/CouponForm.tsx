@@ -11,7 +11,7 @@ import {
   useCreateCoupon,
   useUpdateCoupon,
   useGetOneCoupon,
-} from "@/hooks/api/useCoupon";
+} from "@/core/hooks/api/useCoupon";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableUsersBox/SelectableUsersBox";
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import {

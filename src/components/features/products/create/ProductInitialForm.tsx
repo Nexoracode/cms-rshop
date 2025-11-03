@@ -8,7 +8,7 @@ import { Product } from "./types/product";
 import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
-import { useGetBrands } from "@/hooks/api/useBrand";
+import { useGetBrands } from "@/core/hooks/api/useBrand";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,9 +16,9 @@ import {
   useGetOneProduct,
   useProductCreate,
   useProductUpdate,
-} from "@/hooks/api/products/useProduct";
+} from "@/core/hooks/api/products/useProduct";
 import ToggleableSection from "./helpers/ToggleableSection";
-import { scrollToFirstErrorField } from "@/utils/scrollToErrorField";
+import { scrollToFirstErrorField } from "@/core/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
 import CategorySelect from "../categories/CategorySelect";
 import BaseCard from "@/components/ui/BaseCard";

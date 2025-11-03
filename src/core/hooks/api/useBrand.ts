@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetcher } from "@/utils/fetcher";
-import { buildQueryString } from "@/utils/buildQueryString";
+import { fetcher } from "@/core/utils/fetcher";
+import { buildQueryString } from "@/core/utils/buildQueryString";
 
 export type BrandSortBy = Array<
   "id:ASC" | "id:DESC" | "name:ASC" | "name:DESC" | "logo:ASC" | "logo:DESC"

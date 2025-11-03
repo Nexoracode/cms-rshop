@@ -25,7 +25,7 @@ import {
   glowPulse,
   activePillMotion,
   iconFloat,
-} from "@/animations/sidebarVariants";
+} from "@/core/motions/sidebarVariants";
 
 export default function Sidebar() {
   const pathname = usePathname();

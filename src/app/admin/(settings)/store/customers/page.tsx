@@ -6,9 +6,9 @@ import CustomersFilter from "@/components/features/store/customers/CustomersFilt
 import CustomerCard from "@/components/features/store/customers/CustomerCard";
 import AddNewCustomerModal from "@/components/features/store/customers/modals/AddNewCustomerModal";
 // Icons
-import { UserSortBy, useGetAllUsers } from "@/hooks/api/users/useUsers";
+import { UserSortBy, useGetAllUsers } from "@/core/hooks/api/users/useUsers";
 import { FiUsers } from "react-icons/fi";
-import { useListQueryParams } from "@/hooks/common/useListQueryParams";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const CustomersList = () => {
   const { page, sortBy, search, filter, isFilteredView } =

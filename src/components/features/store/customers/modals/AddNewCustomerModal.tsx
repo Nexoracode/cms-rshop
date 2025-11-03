@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { DatePicker, Input } from "@heroui/react";
-import { useAddNewUser } from "@/hooks/api/users/useUsers";
+import { useAddNewUser } from "@/core/hooks/api/users/useUsers";
 import BaseModal from "@/components/ui/modals/BaseModal";
 
 const AddNewCustomerModal: React.FC = () => {

@@ -9,8 +9,8 @@ import CustomerCard from "../CustomerCard";
 import AddNewCustomerModal from "../modals/AddNewCustomerModal";
 import SelectableCard from "@/components/ui/SelectableCard";
 import { FiUsers } from "react-icons/fi";
-import { useGetAllUsers, UserSortBy } from "@/hooks/api/users/useUsers";
-import { useListQueryParams } from "@/hooks/common/useListQueryParams";
+import { useGetAllUsers, UserSortBy } from "@/core/hooks/api/users/useUsers";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { useUsersSelection } from "./UsersSelectionContext";
 
 const UsersSelectionModal: React.FC = () => {

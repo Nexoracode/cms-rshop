@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import AutocompleteInput, {
   Option,
 } from "@/components/ui/inputs/AutocompleteInput";
-import { regions } from "@/constants/regions";
+import { regions } from "@/core/constants/regions";
 
 type Props = {
   provinceId?: string;

@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { useGetAllCategories } from "@/hooks/api/categories/useCategory";
-import { useGetBrands } from "@/hooks/api/useBrand";
-import { flattenCategories } from "@/utils/flattenCategories";
+import { useGetAllCategories } from "@/core/hooks/api/categories/useCategory";
+import { useGetBrands } from "@/core/hooks/api/useBrand";
+import { flattenCategories } from "@/core/utils/flattenCategories";
 import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 import { FilterField } from "@/components/ui/modals/FilterModal";
 

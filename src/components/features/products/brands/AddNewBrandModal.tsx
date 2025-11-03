@@ -8,7 +8,7 @@ import {
   useBrandUpload,
   useCreateBrand,
   useUpdateBrand,
-} from "@/hooks/api/useBrand";
+} from "@/core/hooks/api/useBrand";
 import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { TbBrandArc } from "react-icons/tb";

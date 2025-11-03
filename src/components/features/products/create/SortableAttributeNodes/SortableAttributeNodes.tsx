@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { AttributeGroup } from "../AttributesProduct/attribute.types";
 import SortableAttributes from "./SortableAttributes";
-import { useUpdateAttributeOrderGroup } from "@/hooks/api/attributes/useAttributeGroup";
+import { useUpdateAttributeOrderGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import { handleDropHelper } from "./handleDropHelper";
 
 type Props = {

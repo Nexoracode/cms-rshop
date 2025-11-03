@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { Attribute } from "../AttributesProduct/attribute.types";
 import SortableAttributeValues from "./SortableAttributeValues";
-import { useUpdateAttributeOrder } from "@/hooks/api/attributes/useAttribute";
+import { useUpdateAttributeOrder } from "@/core/hooks/api/attributes/useAttribute";
 import { handleDropHelper } from "./handleDropHelper";
 import { Button, Tooltip } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { useImportantAttributeProduct } from "@/hooks/api/attributes/useAttributeProducts";
+import { useImportantAttributeProduct } from "@/core/hooks/api/attributes/useAttributeProducts";
 
 type Props = {
   attributes: any /* Attribute[] */;

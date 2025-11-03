@@ -2,7 +2,7 @@
 
 import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { useDeleteBrand } from "@/hooks/api/useBrand";
+import { useDeleteBrand } from "@/core/hooks/api/useBrand";
 import { Image } from "@heroui/react";
 import BaseCard from "@/components/ui/BaseCard";
 

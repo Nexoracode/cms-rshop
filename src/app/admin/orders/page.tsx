@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import EntityCard from "@/components/common/Card/EntityCard";
 import OrdersFilter from "@/components/features/orders/OrdersFilter";
-import { useGetOrders } from "@/hooks/api/orders/useOrder";
+import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import OrderBox from "@/components/features/orders/OrderBox";
 import { Order, OrderSortBy } from "@/components/features/orders/order-types";

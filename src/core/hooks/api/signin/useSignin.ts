@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/core/utils/fetcher";
 
 export const useRequestOtpMutation = () => {
   return useMutation({

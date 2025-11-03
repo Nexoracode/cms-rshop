@@ -6,7 +6,7 @@ import BulkUpdateProductsModal from "@/components/features/products/modals/BulkU
 import {
   useBulkUpdateProducts,
   useDeleteGroupProduct,
-} from "@/hooks/api/products/useProduct";
+} from "@/core/hooks/api/products/useProduct";
 
 type ProductsBulkActionsProps = {
   selectedItems: number[];

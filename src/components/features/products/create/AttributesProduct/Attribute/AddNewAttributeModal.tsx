@@ -5,8 +5,8 @@ import SlugInput from "@/components/forms/Inputs/SlugInput";
 import {
   useCreateAttribute,
   useUpdateAttribute,
-} from "@/hooks/api/attributes/useAttribute";
-import { useAttributesByGroupGroup } from "@/hooks/api/attributes/useAttributeGroup";
+} from "@/core/hooks/api/attributes/useAttribute";
+import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import { Input, Select, SelectItem, Switch } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";

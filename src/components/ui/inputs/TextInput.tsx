@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Input, InputProps } from "@heroui/react";
 import FieldErrorText from "@/components/forms/FieldErrorText";
-import { sanitizeInput } from "@/utils/sanitizeInput";
+import { sanitizeInput } from "@/core/utils/sanitizeInput";
 import { ReactNode } from "react";
 
 type Props = {

@@ -9,8 +9,8 @@ import {
   useCreateCategory,
   useUpdateCategory,
   useCategoryImageUpload,
-} from "@/hooks/api/categories/useCategory";
-import { flattenCategories } from "@/utils/flattenCategories";
+} from "@/core/hooks/api/categories/useCategory";
+import { flattenCategories } from "@/core/utils/flattenCategories";
 import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useGetOneUser } from "@/hooks/api/users/useUsers";
+import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import UserInitialForm from "@/components/features/store/customers/UserInitialForm";
 
 const UserDetailPage = () => {

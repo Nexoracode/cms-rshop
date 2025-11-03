@@ -1,6 +1,6 @@
 import { Product } from "@/components/features/products/create/types/product";
-import { buildQueryString } from "@/utils/buildQueryString";
-import { fetcher } from "@/utils/fetcher";
+import { buildQueryString } from "@/core/utils/buildQueryString";
+import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /*  */

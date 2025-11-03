@@ -3,7 +3,7 @@
 import { Button, Card, CardBody } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { Media } from "@/components/media/types";
-import { useProductUpload } from "@/hooks/api/products/useProduct";
+import { useProductUpload } from "@/core/hooks/api/products/useProduct";
 import MediaPicker from "@/components/media/uploader/MediaPicker";
 import MediaPreview from "@/components/media/uploader/MediaPreview";
 import FieldErrorText from "@/components/forms/FieldErrorText";

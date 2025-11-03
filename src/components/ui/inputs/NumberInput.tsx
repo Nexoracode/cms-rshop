@@ -1,7 +1,7 @@
 "use client";
 
 import FieldErrorText from "@/components/forms/FieldErrorText";
-import { caretFromDigitIndex, formatNumberWithCommas, normalizeDigits } from "@/utils/number";
+import { caretFromDigitIndex, formatNumberWithCommas, normalizeDigits } from "@/core/utils/number";
 import { Input } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 

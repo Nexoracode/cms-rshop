@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import EntityCard from "@/components/common/Card/EntityCard";
-import { useGetOneOrder } from "@/hooks/api/orders/useOrder";
+import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import BackToPage from "@/components/common/Breadcrumbs";
 import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";

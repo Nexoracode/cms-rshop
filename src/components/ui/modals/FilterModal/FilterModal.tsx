@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import BaseModal from "../BaseModal";
 import { IoFilter } from "react-icons/io5";
-import { add, eqBool10, eqId, rangeDate, rangeNum } from "@/utils/queryFilters";
+import { add, eqBool10, eqId, rangeDate, rangeNum } from "@/core/utils/queryFilters";
 import { FieldOption, FilterField } from ".";
 import { renderField } from "./renderField";
 

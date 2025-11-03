@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useGetCategories } from "@/hooks/api/categories/useCategory";
+import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { Category } from "../category.types";
 import AddNewCategoryModal from "../AddNewCategoryModal";
 import { TbCategory2 } from "react-icons/tb";
 import { CategoryTree } from "../CategoryTree";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { findItemById } from "@/utils/findItemById";
+import { findItemById } from "@/core/utils/findItemById";
 
 type Props = {
   selectedIds: (number | string)[];

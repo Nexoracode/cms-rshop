@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
-import { useDeleteAttributeValue } from "@/hooks/api/attributes/useAttributeValue";
+import { useDeleteAttributeValue } from "@/core/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import { AttributeValue } from "../attribute.types";

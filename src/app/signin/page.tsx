@@ -15,9 +15,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   useRequestOtpMutation,
   useVerifyOtpMutation,
-} from "@/hooks/api/signin/useSignin";
-import useOnlineStatus from "@/hooks/system/useOnlineStatus";
-import useCountdown from "@/hooks/system/useCountdown";
+} from "@/core/hooks/api/signin/useSignin";
+import useOnlineStatus from "@/core/hooks/system/useOnlineStatus";
+import useCountdown from "@/core/hooks/system/useCountdown";
 
 import {
   containerVariants,
@@ -26,7 +26,7 @@ import {
   mainCardMotion,
   successCheckMotion,
   errorShake,
-} from "@/animations/authPageVariants";
+} from "@/core/motions/authPageVariants";
 
 type Auth = "phone" | "otp";
 

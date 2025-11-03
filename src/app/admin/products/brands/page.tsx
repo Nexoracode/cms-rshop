@@ -4,9 +4,9 @@ import { useState } from "react";
 import BrandCard from "@/components/features/products/brands/BrandCard";
 import BrandFilters from "@/components/features/products/brands/BrandFilters";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { BrandSortBy, useGetBrands } from "@/hooks/api/useBrand";
+import { BrandSortBy, useGetBrands } from "@/core/hooks/api/useBrand";
 import { TbBrandArc } from "react-icons/tb";
-import { useListQueryParams } from "@/hooks/common/useListQueryParams";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 
 const BrandsProduct = () => {

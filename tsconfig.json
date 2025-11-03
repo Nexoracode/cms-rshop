@@ -20,9 +20,19 @@
     ],
     "paths": {
       "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@/constants/*": ["src/constants/*"],
-      "@animations/*": ["src/animations/*"]
+      "@/components/*": ["src/components/*"],
+      "@/core/*": ["src/core/*"],
+      "@/hooks/*": ["src/core/hooks/*"],
+      "@/hooks/ui/*": ["src/core/hooks/ui/*"],
+      "@/hooks/system/*": ["src/core/hooks/system/*"],
+      "@/hooks/common/*": ["src/core/hooks/common/*"],
+      "@/hooks/api/*": ["src/core/hooks/api/*"],
+      "@/constants/*": ["src/core/constants/*"],
+      "@/utils/*": ["src/core/utils/*"],
+      "@/lib/*": ["src/core/lib/*"],
+      "@/motions/*": ["src/core/motions/*"],
+      "@/types/*": ["src/core/types/*"],
+      "@/styles/*": ["src/core/styles/*"]
     }
   },
   "include": [

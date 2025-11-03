@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
-import { useDeleteAttribute } from "@/hooks/api/attributes/useAttribute";
+import { useDeleteAttribute } from "@/core/hooks/api/attributes/useAttribute";
 import { Attribute } from "../attribute.types";
 
 type Props = {

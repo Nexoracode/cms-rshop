@@ -5,7 +5,7 @@ import SlugInput from "@/components/forms/Inputs/SlugInput";
 import {
   useCreateAttributeGroup,
   useUpdateAttributeGroup,
-} from "@/hooks/api/attributes/useAttributeGroup";
+} from "@/core/hooks/api/attributes/useAttributeGroup";
 import { Input } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ImMakeGroup } from "react-icons/im";

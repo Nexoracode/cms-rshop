@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetcher } from "@/utils/fetcher";
-import { buildQueryString } from "@/utils/buildQueryString";
+import { fetcher } from "@/core/utils/fetcher";
+import { buildQueryString } from "@/core/utils/buildQueryString";
 import {
   CouponPayload,
   CouponSortBy,

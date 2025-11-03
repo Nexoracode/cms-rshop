@@ -1,4 +1,4 @@
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 /* 🎭 Variant Products Start */

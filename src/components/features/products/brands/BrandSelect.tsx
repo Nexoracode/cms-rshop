@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 import AddNewBrandModal from "./AddNewBrandModal";
-import { useGetBrands } from "@/hooks/api/useBrand";
+import { useGetBrands } from "@/core/hooks/api/useBrand";
 
 type Props = {
   value?: string | number | null;

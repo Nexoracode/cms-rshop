@@ -7,7 +7,7 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import CardRows from "@/components/shared/CardRows";
 import { GiPartyPopper } from "react-icons/gi";
 
-import { useDeleteCoupon } from "@/hooks/api/useCoupon";
+import { useDeleteCoupon } from "@/core/hooks/api/useCoupon";
 import { TbCategory2 } from "react-icons/tb";
 import { LuPercent, LuUsers } from "react-icons/lu";
 import { TfiShoppingCartFull } from "react-icons/tfi";

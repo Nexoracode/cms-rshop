@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetcher } from "@/utils/fetcher";
-import { buildQueryString } from "@/utils/buildQueryString";
+import { fetcher } from "@/core/utils/fetcher";
+import { buildQueryString } from "@/core/utils/buildQueryString";
 
 export type UserFilter = {
   isActive?: string[];        // ["like:John", "$not:$like:Jane"]
