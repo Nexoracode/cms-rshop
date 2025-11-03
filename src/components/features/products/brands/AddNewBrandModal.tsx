@@ -98,7 +98,7 @@ const AddNewBrandModal: React.FC<Props> = ({
       onOpenChange={onOpenChange}
       triggerProps={
         brandId
-          ? undefined
+          ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",

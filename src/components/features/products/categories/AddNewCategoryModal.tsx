@@ -126,7 +126,7 @@ const AddNewCategoryModal: React.FC<Props> = ({
       onOpenChange={onOpenChange}
       triggerProps={
         categoryId
-          ? undefined
+          ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",

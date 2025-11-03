@@ -31,7 +31,7 @@ type BaseModalProps = {
   isActiveFooter?: boolean;
   size?: ModalSize;
   trigger?: React.ReactNode;
-  triggerProps?: Omit<OptionButtonProps, "onClick">; // ✅ پراپ‌های OptionButton
+  triggerProps?: Omit<OptionButtonProps, "onClick"> | null; // ✅ پراپ‌های OptionButton
 };
 
 const BaseModal: React.FC<BaseModalProps> = ({
