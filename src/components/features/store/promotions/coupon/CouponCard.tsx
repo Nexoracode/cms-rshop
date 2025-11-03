@@ -5,6 +5,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CardRows from "@/components/shared/CardRows";
+import { GiPartyPopper } from "react-icons/gi";
 
 import { useDeleteCoupon } from "@/hooks/api/useCoupon";
 import { TbCategory2 } from "react-icons/tb";
@@ -33,10 +34,7 @@ type Props = {
   disableAction?: boolean;
 };
 
-const CouponCard: React.FC<Props> = ({
-  item,
-  disableAction = false,
-}) => {
+const CouponCard: React.FC<Props> = ({ item, disableAction = false }) => {
   const deleteCoupon = useDeleteCoupon();
 
   const rowItems = [
@@ -106,8 +104,15 @@ const CouponCard: React.FC<Props> = ({
         </div>
 
         {!disableAction && (
-          <div className="pl-1.5">
-            <DeleteButton onDelete={() => deleteCoupon.mutate(item.id)} />
+          <div className="flex items-center gap-2">
+            <div className="border-l pl-2 ml-1">
+              <div className="bg-gray-100 rounded-lg p-1">
+                <GiPartyPopper className="text-2xl text-orange-600 animate-bounce" />
+              </div>
+            </div>
+            <div className="pl-1.5">
+              <DeleteButton onDelete={() => deleteCoupon.mutate(item.id)} />
+            </div>
           </div>
         )}
       </div>
