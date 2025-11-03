@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useGetCategories } from "@/hooks/api/categories/useCategory";
 import { Category } from "../category.types";
 import AddNewCategoryModal from "../AddNewCategoryModal";
@@ -22,29 +22,29 @@ const SelectableCategoriesTree: React.FC<Props> = ({
 }) => {
   const { data: categories, isLoading } = useGetCategories();
   const isExistItems = !!categories?.data?.length;
-  const [selectedIdsState, setSelectedIdsState] = useState<number[]>([]);
 
-  const mergedSelectedIds = Array.from(
-    new Set([...initialCategories, ...selectedIds].map((id) => Number(id)))
+  // ترکیب دسته‌های اولیه و انتخاب‌شده
+  const mergedSelectedIds = useMemo(
+    () =>
+      Array.from(
+        new Set([...initialCategories, ...selectedIds].map(Number))
+      ),
+    [initialCategories, selectedIds]
   );
 
-  useEffect(() => {
-    setSelectedIdsState(mergedSelectedIds);
-  }, [mergedSelectedIds]);
-
   const handleSelectionChange = (ids: number[]) => {
-    setSelectedIdsState(ids);
+    const allCategories = categories?.data || [];
 
     // دسته‌هایی که انتخاب شدند
     ids.forEach((id) => {
-      const category = findItemById(categories?.data || [], id);
+      const category = findItemById(allCategories, id);
       if (category) onSelectionChange(category, true);
     });
 
     // دسته‌هایی که از حالت انتخاب خارج شدند
-    selectedIdsState.forEach((prevId) => {
+    mergedSelectedIds.forEach((prevId) => {
       if (!ids.includes(prevId)) {
-        const category = findItemById(categories?.data || [], prevId);
+        const category = findItemById(allCategories, prevId);
         if (category) onSelectionChange(category, false);
       }
     });
@@ -65,7 +65,7 @@ const SelectableCategoriesTree: React.FC<Props> = ({
         <CategoryTree
           categories={categories.data}
           selectable
-          selectedIds={selectedIdsState}
+          selectedIds={mergedSelectedIds}
           onSelectionChange={handleSelectionChange}
           disableAction
         />

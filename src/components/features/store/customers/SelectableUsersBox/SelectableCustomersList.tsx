@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import CustomersFilter from "../CustomersFilter";
 import CustomerCard from "../CustomerCard";
@@ -34,8 +34,9 @@ const SelectableCustomersList: React.FC<Props> = ({
   const isExistItems = !!users?.data?.items?.length;
 
   // ترکیب کاربران انتخاب‌شده + کاربران پیش‌فرض
-  const mergedSelectedIds = Array.from(
-    new Set([...initialCustomers, ...selectedIds])
+  const mergedSelectedIds = useMemo(
+    () => Array.from(new Set([...initialCustomers, ...selectedIds])),
+    [initialCustomers, selectedIds]
   );
 
   return (
