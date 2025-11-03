@@ -105,11 +105,15 @@ const CouponCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
         {!disableAction && (
           <div className="flex items-center gap-2">
-            <div className="border-l pl-2 ml-1">
-              <div className="bg-gray-100 rounded-lg p-1">
-                <GiPartyPopper className="text-2xl text-orange-600 animate-bounce" />
+            {item.for_first_order ? (
+              <div className="border-l pl-2 ml-1">
+                <div className="bg-gray-100 rounded-lg p-1">
+                  <GiPartyPopper className="text-2xl text-orange-600 animate-bounce" />
+                </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
             <div className="pl-1.5">
               <DeleteButton onDelete={() => deleteCoupon.mutate(item.id)} />
             </div>
