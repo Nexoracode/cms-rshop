@@ -14,7 +14,6 @@ import { useListQueryParams } from "@/hooks/common/useListQueryParams";
 import { useUsersSelection } from "./UsersSelectionContext";
 
 const UsersSelectionModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<UserSortBy[number]>();
   const { selectedUsers, addUser, removeUser } = useUsersSelection();
@@ -41,13 +40,9 @@ const UsersSelectionModal: React.FC = () => {
 
   return (
     <BaseModal
-      isOpen={isOpen}
-      onOpenChange={setIsOpen}
       title="انتخاب کاربران"
-      confirmText="تأیید انتخاب"
-      onConfirm={() => setIsOpen(false)}
-      onCancel={() => setIsOpen(false)}
       icon={<TbUsers />}
+      isActiveFooter={false}
       size="3xl"
     >
       <UnifiedCard
