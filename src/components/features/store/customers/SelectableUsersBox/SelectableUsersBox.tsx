@@ -1,4 +1,3 @@
-// SelectableUsersBox.tsx
 "use client";
 
 import React, { useEffect } from "react";
@@ -6,10 +5,7 @@ import SelectionBox from "@/components/shared/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./UsersSelectionModal";
-import {
-  UsersSelectionProvider,
-  useUsersSelection,
-} from "./UsersSelectionContext";
+import { useUsersSelection } from "./UsersSelectionContext";
 import { User } from "../customer.types";
 
 type Props = {
@@ -48,15 +44,8 @@ const InnerSelectableUsersBox: React.FC<{
   );
 };
 
-const SelectableUsersBox: React.FC<Props> = ({
-  initialUsers = [],
-  onChange,
-}) => {
-  return (
-    <UsersSelectionProvider initialUsers={initialUsers}>
-      <InnerSelectableUsersBox onChange={onChange} />
-    </UsersSelectionProvider>
-  );
+const SelectableUsersBox: React.FC<Props> = () => {
+  return <InnerSelectableUsersBox />;
 };
 
 export default SelectableUsersBox;

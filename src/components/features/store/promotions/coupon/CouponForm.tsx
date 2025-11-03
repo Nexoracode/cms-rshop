@@ -22,6 +22,7 @@ import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import BaseCard from "@/components/ui/BaseCard";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
+import { UsersSelectionProvider } from "../../customers/SelectableUsersBox/UsersSelectionContext";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -241,8 +242,8 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
           <SelectableCategoriesBox
             initialCategories={couponData?.data?.allowed_categories || []}
             onChange={(ids) => {
-              console.log("ids =>", ids)
-              ids.length && updateForm("allowed_category_ids", ids)
+              console.log("ids =>", ids);
+              ids.length && updateForm("allowed_category_ids", ids);
             }}
           />
         ) : (
@@ -250,12 +251,11 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
         )}
 
         {pageType === "user" ? (
-          <SelectableUsersBox
+          <UsersSelectionProvider
             initialUsers={couponData?.data?.allowed_users || []}
-            onChange={(ids) =>
-              ids.length && updateForm("allowed_user_ids", ids)
-            }
-          />
+          >
+            <SelectableUsersBox />
+          </UsersSelectionProvider>
         ) : (
           ""
         )}
