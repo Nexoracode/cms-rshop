@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { TbUsers } from "react-icons/tb";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
@@ -29,7 +29,10 @@ const UsersSelectionModal: React.FC = () => {
   const isExistItems = !!users?.data?.items?.length;
 
   // فقط id های انتخاب شده
-  const selectedIds = selectedUsers.map((u) => u.id);
+  const selectedIds = useMemo(
+    () => selectedUsers.map((u) => u.id),
+    [selectedUsers]
+  );
 
   const handleSelectionChange = (user: any, selected: boolean) => {
     if (selected) addUser(user);
