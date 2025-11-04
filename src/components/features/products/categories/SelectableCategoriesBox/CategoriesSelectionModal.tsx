@@ -34,7 +34,7 @@ const CategoriesSelectionModal: React.FC = () => {
       title="انتخاب دسته‌بندی‌ها"
       icon={<TbCategory2 className="text-2xl" />}
       isActiveFooter={false}
-      size="3xl"
+      size="5xl"
     >
       <UnifiedCard
         headerProps={{
@@ -54,6 +54,7 @@ const CategoriesSelectionModal: React.FC = () => {
             selectedIds={selectedIds}
             onSelectionChange={handleTreeSelectionChange}
             disableAction
+            className="grid grid-cols-2 gap-4"
           />
         )}
       </UnifiedCard>
