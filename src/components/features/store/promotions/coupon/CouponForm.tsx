@@ -18,6 +18,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import Switch from "@/components/ui/Switch";
+import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -244,6 +245,14 @@ const CouponForm: React.FC<CouponFormProps> = ({
             فقط برای اولین سفارش
           </Switch>
         </div>
+
+        {pageType === "product" && (
+          <SelectableProductsBox
+            onChange={(ids) =>
+              ids.length && updateForm("allowed_product_ids", ids)
+            }
+          />
+        )}
 
         {pageType === "category" && (
           <SelectableCategoriesBox
