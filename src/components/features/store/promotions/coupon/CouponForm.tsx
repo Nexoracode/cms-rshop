@@ -17,9 +17,7 @@ import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import BaseCard from "@/components/ui/BaseCard";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
-import { Category } from "@/components/features/products/categories/category.types";
 import Switch from "@/components/ui/Switch";
-import { useCustomersSelection } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -42,12 +40,14 @@ type CouponFormProps = {
   pageType: "create" | "category" | "product" | "customer";
   initialData?: CouponFormType;
   isLoading?: boolean;
+  onReset?: () => void
 };
 
 const CouponForm: React.FC<CouponFormProps> = ({
   pageType = "create",
   initialData,
   isLoading,
+  onReset
 }) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -63,8 +63,6 @@ const CouponForm: React.FC<CouponFormProps> = ({
   //
   const isShowLoader =
     isLoading || (isEditMode ? updateCoupon.isPending : createCoupon.isPending);
-
-  const { setCustomers } = useCustomersSelection();
 
   const updateForm = <K extends keyof CouponPayload>(
     key: K,
@@ -125,9 +123,9 @@ const CouponForm: React.FC<CouponFormProps> = ({
   };
 
   const handleReset = () => {
+    onReset?.();
     setForm(initialForm);
     setTouched(false);
-    setCustomers([]);
   };
 
   const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;

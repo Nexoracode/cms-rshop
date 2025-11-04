@@ -78,7 +78,7 @@ const CouponCard: React.FC<Props> = ({ item, disableAction = false }) => {
         (item?.allowed_products?.length &&
           `/admin/store/promotions/coupon/products?edit_id=${item.id}`) ||
         (item?.allowed_users?.length &&
-          `/admin/store/promotions/coupon/users?edit_id=${item.id}`) ||
+          `/admin/store/promotions/coupon/customers?edit_id=${item.id}`) ||
         `/admin/store/promotions/coupon/create?edit_id=${item.id}`
       }
     >

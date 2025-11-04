@@ -11,7 +11,7 @@ const CouponsFilter = () => {
       relatedPages={[
         { title: "محصولات", href: "/admin/store/promotions/coupon/products" },
         { title: "دسته بندی ها", href: "/admin/store/promotions/coupon/categories" },
-        { title: "کاربران", href: "/admin/store/promotions/coupon/users" },
+        { title: "مشتریان", href: "/admin/store/promotions/coupon/customers" },
       ]}
       searchPlaceholder="جستجو در کد تخفیف ها..."
       showSearchBar
