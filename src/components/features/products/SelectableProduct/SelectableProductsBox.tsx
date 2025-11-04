@@ -28,14 +28,14 @@ const InnerSelectableProductsBox: React.FC<{
       modal={<ProductsSelectionModal />}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {selectedProducts.map((productSpecification) => (
+        {/* {selectedProducts.map((productSpecification) => (
           <ProductVariants
             key={productSpecification.product.id}
             product={productSpecification.product}
             selectedItem={productSpecification.item}
             disableSelect
           />
-        ))}
+        ))} */}
       </div>
     </SelectionBox>
   );

@@ -5,7 +5,7 @@ import CouponForm from "@/components/features/store/promotions/coupon/CouponForm
 import { useGetOneCoupon } from "@/core/hooks/api/useCoupon";
 import { useSearchParams } from "next/navigation";
 
-const CustomersCoupon = () => {
+const ProductsCoupon = () => {
   //const { setCustomers } = useCustomersSelection();
 
   const params = useSearchParams();
@@ -30,4 +30,4 @@ const CustomersCoupon = () => {
   );
 };
 
-export default CustomersCoupon;
+export default ProductsCoupon;
