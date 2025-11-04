@@ -19,7 +19,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import { Category } from "@/components/features/products/categories/category.types";
 import Switch from "@/components/ui/Switch";
-import { useUsersSelection } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
+import { useCustomersSelection } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -39,7 +39,7 @@ const initialForm: CouponFormType = {
 };
 
 type CouponFormProps = {
-  pageType: "create" | "category" | "product" | "user";
+  pageType: "create" | "category" | "product" | "customer";
   initialData?: CouponFormType;
   isLoading?: boolean;
 };
@@ -64,7 +64,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
   const isShowLoader =
     isLoading || (isEditMode ? updateCoupon.isPending : createCoupon.isPending);
 
-  const { setUsers } = useUsersSelection();
+  const { setCustomers } = useCustomersSelection();
 
   const updateForm = <K extends keyof CouponPayload>(
     key: K,
@@ -101,7 +101,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
       ...(pageType === "product"
         ? { allowed_product_ids: form.allowed_product_ids }
         : {}),
-      ...(pageType === "user"
+      ...(pageType === "customer"
         ? { allowed_user_ids: form.allowed_user_ids }
         : {}),
     };
@@ -127,7 +127,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
   const handleReset = () => {
     setForm(initialForm);
     setTouched(false);
-    setUsers([]);
+    setCustomers([]);
   };
 
   const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
@@ -258,7 +258,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
           />
         )}
 
-        {pageType === "user" && (
+        {pageType === "customer" && (
           <SelectableUsersBox
             onChange={(ids) => {
               console.log(ids);

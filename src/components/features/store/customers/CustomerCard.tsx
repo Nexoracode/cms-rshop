@@ -7,10 +7,10 @@ import { FiUser } from "react-icons/fi";
 import CardRows from "@/components/shared/CardRows";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { User } from "./customer.types";
+import { Customer } from "./customer.types";
 
 type Props = {
-  infos: User;
+  infos: Customer;
   disableAction?: boolean;
   showDeselectIcon?: boolean;
   onDelete?: (id: number) => void;

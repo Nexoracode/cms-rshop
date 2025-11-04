@@ -5,40 +5,38 @@ import SelectionBox from "@/components/shared/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./CustomersSelectionModal";
-import { useUsersSelection } from "./CustomersSelectionContext";
-import { User } from "../customer.types";
+import { useCustomersSelection } from "./CustomersSelectionContext";
+import { Customer } from "../customer.types";
 
 type Props = {
   onChange?: (userIds: number[]) => void;
-  initialUsers?: User[];
+  initialUsers?: Customer[];
 };
 
 const InnerSelectableUsersBox: React.FC<{
   onChange?: (userIds: number[]) => void;
 }> = ({ onChange }) => {
-  const { selectedUsers, removeUser } = useUsersSelection();
+  const { selectedCustomers, removeCustomer } = useCustomersSelection();
 
   useEffect(() => {
-    console.log(selectedUsers);
-    
-    onChange?.(selectedUsers.map((u) => u.id));
-  }, [selectedUsers]);
+    onChange?.(selectedCustomers.map((u) => u.id));
+  }, [selectedCustomers]);
 
   return (
     <SelectionBox
       title="کاربران انتخاب شده"
       icon={<TbUsersGroup className="text-5xl" />}
-      initial={selectedUsers}
+      initial={selectedCustomers}
       modal={<UsersSelectionModal />}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {selectedUsers.map((user: User) => (
+        {selectedCustomers.map((user: Customer) => (
           <CustomerCard
             key={user.id}
             showDeselectIcon
             disableAction
             infos={user}
-            onDelete={removeUser}
+            onDelete={removeCustomer}
           />
         ))}
       </div>

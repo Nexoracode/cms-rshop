@@ -1,4 +1,4 @@
-export type User = {
+export type Customer = {
   id: number;
   first_name: string;
   last_name: string;
@@ -9,4 +9,4 @@ export type User = {
   is_phone_verified?: boolean;
 };
 
-export type CreateUser = Omit<User, "id">;
+export type CreateCustomer = Omit<Customer, "id">;

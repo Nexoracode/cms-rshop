@@ -1,55 +1,55 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User } from "../customer.types";
+import { Customer } from "../customer.types";
 
-type UsersSelectionContextType = {
-  selectedUsers: User[];
-  addUser: (user: User) => void;
-  removeUser: (userId: number) => void;
-  setUsers: (users: User[]) => void;
+type CustomersSelectionContextType = {
+  selectedCustomers: Customer[];
+  addCustomer: (customer: Customer) => void;
+  removeCustomer: (customerId: number) => void;
+  setCustomers: (customers: Customer[]) => void;
 };
 
-const UsersSelectionContext = createContext<UsersSelectionContextType | null>(
+const CustomersSelectionContext = createContext<CustomersSelectionContextType | null>(
   null
 );
 
-export const useUsersSelection = () => {
-  const context = useContext(UsersSelectionContext);
+export const useCustomersSelection = () => {
+  const context = useContext(CustomersSelectionContext);
   if (!context)
     throw new Error(
-      "useUsersSelection must be used within UsersSelectionProvider"
+      "useCustomersSelection must be used within CustomersSelectionProvider"
     );
   return context;
 };
 
-export const UsersSelectionProvider: React.FC<{
-  initialUsers?: User[];
+export const CustomersSelectionProvider: React.FC<{
+  initialCustomers?: Customer[];
   children: React.ReactNode;
-}> = ({ initialUsers = [], children }) => {
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+}> = ({ initialCustomers = [], children }) => {
+  const [selectedCustomers, setSelectedCustomers] = useState<Customer[]>([]);
 
   useEffect(() => {
-    setSelectedUsers(initialUsers);
-  }, [initialUsers]);
+    setSelectedCustomers(initialCustomers);
+  }, [initialCustomers]);
 
-  const addUser = (user: User) => {
-    setSelectedUsers((prev) => [...prev.filter((u) => u.id !== user.id), user]);
+  const addCustomer = (customer: Customer) => {
+    setSelectedCustomers((prev) => [...prev.filter((u) => u.id !== customer.id), customer]);
   };
 
-  const removeUser = (userId: number) => {
-    setSelectedUsers((prev) => prev.filter((u) => u.id !== userId));
+  const removeCustomer = (customerId: number) => {
+    setSelectedCustomers((prev) => prev.filter((u) => u.id !== customerId));
   };
 
-  const setUsers = (users: User[]) => {
-    setSelectedUsers(users);
+  const setCustomers = (customers: Customer[]) => {
+    setSelectedCustomers(customers);
   };
 
   return (
-    <UsersSelectionContext.Provider
-      value={{ selectedUsers, addUser, removeUser, setUsers }}
+    <CustomersSelectionContext.Provider
+      value={{ selectedCustomers, addCustomer, removeCustomer, setCustomers }}
     >
       {children}
-    </UsersSelectionContext.Provider>
+    </CustomersSelectionContext.Provider>
   );
 };
