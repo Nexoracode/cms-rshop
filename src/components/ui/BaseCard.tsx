@@ -35,12 +35,12 @@ const BaseCard: React.FC<BaseCardProps> = ({
       <CardBody
         className={`relative p-2 cursor-pointer text-right ${bodyClassName} ${
           wrapperContents ? "flex flex-col p-4 gap-6" : ""
-        }`}
+        } ${isLoading ? "opacity-50 !cursor-auto pointer-events-none" : ""}`}
         onClick={(e) => {
           if (onClick) onClick(e);
         }}
       >
-        {isLoading ? <EmptyStateCard/> : children}
+        {children}
       </CardBody>
     </Card>
   );
