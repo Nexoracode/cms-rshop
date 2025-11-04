@@ -8,37 +8,25 @@ import AddNewCategoryModal from "../AddNewCategoryModal";
 import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { useCategoriesSelection } from "./CategoriesSelectionContext";
 import { CategoryTree } from "../CategoryTree/CategoryTree";
+import { findItemById } from "@/core/utils/findItemById";
 
 const CategoriesSelectionModal: React.FC = () => {
-  const { selectedCategories, addCategory, removeCategory } = useCategoriesSelection();
+  const { selectedCategories, setCategories } = useCategoriesSelection();
 
   const { data: categories, isLoading } = useGetCategories();
   const isExistItems = !!categories?.data?.length;
 
-  // فقط id های انتخاب شده
   const selectedIds = useMemo(
     () => selectedCategories.map((c) => c.id),
     [selectedCategories]
   );
 
-  // وقتی کاربر چک کرد یا آنچک کرد
   const handleTreeSelectionChange = (ids: number[]) => {
-    const allCategories = categories?.data || [];
-
-    // اضافه کردن جدیدها
-    ids.forEach((id) => {
-      if (!selectedIds.includes(id)) {
-        const cat = allCategories.find((c: any) => c.id === id);
-        if (cat) addCategory(cat);
-      }
-    });
-
-    // حذف کردن قبلی‌ها
-    selectedIds.forEach((prevId) => {
-      if (!ids.includes(prevId)) {
-        removeCategory(prevId);
-      }
-    });
+    const all = categories?.data || [];
+    const selected = ids
+      .map((id) => findItemById(all, id)!)
+      .filter(Boolean);
+    setCategories(selected);
   };
 
   return (
