@@ -7,7 +7,7 @@ import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { LuTicket } from "react-icons/lu";
 import { useCreateCoupon, useUpdateCoupon } from "@/core/hooks/api/useCoupon";
-import SelectableUsersBox from "@/components/features/store/customers/SelectableUsersBox/SelectableUsersBox";
+import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import {
   CouponFormType,
@@ -19,7 +19,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import { Category } from "@/components/features/products/categories/category.types";
 import Switch from "@/components/ui/Switch";
-import { useUsersSelection } from "@/components/features/store/customers/SelectableUsersBox/UsersSelectionContext";
+import { useUsersSelection } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -267,7 +267,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
             }}
           />
         )}
-        
+
         <FormActionButtons
           cancelHref="/admin/store/promotions/coupon"
           onSubmit={handleSubmit}

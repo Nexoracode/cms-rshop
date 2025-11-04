@@ -4,8 +4,8 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import { TbUsersGroup } from "react-icons/tb";
 import CustomerCard from "../CustomerCard";
-import UsersSelectionModal from "./UsersSelectionModal";
-import { useUsersSelection } from "./UsersSelectionContext";
+import UsersSelectionModal from "./CustomersSelectionModal";
+import { useUsersSelection } from "./CustomersSelectionContext";
 import { User } from "../customer.types";
 
 type Props = {

@@ -11,7 +11,7 @@ import SelectableCard from "@/components/ui/SelectableCard";
 import { FiUsers } from "react-icons/fi";
 import { useGetAllUsers, UserSortBy } from "@/core/hooks/api/users/useUsers";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import { useUsersSelection } from "./UsersSelectionContext";
+import { useUsersSelection } from "./CustomersSelectionContext";
 
 const UsersSelectionModal: React.FC = () => {
   const { page, sortBy, search, filter, isFilteredView } =

@@ -4,7 +4,6 @@ import React from "react";
 import { Card, CardBody } from "@heroui/react";
 import Link from "next/link";
 import CardHeader, { CardHeaderProps } from "../common/Card/CardHeader";
-import EmptyStateCard from "../feedback/EmptyStateCard";
 
 type BaseCardProps = {
   CardHeaderProps?: CardHeaderProps;
