@@ -6,17 +6,15 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { Category } from "../category.types";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
 import { CategoryNode } from "../CategoryTree/CategoryTree";
-import {
-  CategoriesSelectionProvider,
-  useCategoriesSelection,
-} from "./CategoriesSelectionContext";
+import { useCategoriesSelection } from "./CategoriesSelectionContext";
 
 type Props = {
   onChange?: (ids: number[]) => void;
-  initialCategories?: Category[];
 };
 
-const InnerSelectableCategoriesBox: React.FC<{ onChange?: (ids: number[]) => void }> = ({ onChange }) => {
+const InnerSelectableCategoriesBox: React.FC<{
+  onChange?: (ids: number[]) => void;
+}> = ({ onChange }) => {
   const { selectedCategories, removeCategory } = useCategoriesSelection();
 
   useEffect(() => {
@@ -47,15 +45,8 @@ const InnerSelectableCategoriesBox: React.FC<{ onChange?: (ids: number[]) => voi
   );
 };
 
-const SelectableCategoriesBox: React.FC<Props> = ({
-  initialCategories = [],
-  onChange,
-}) => {
-  return (
-    <CategoriesSelectionProvider initialCategories={initialCategories}>
-      <InnerSelectableCategoriesBox onChange={onChange} />
-    </CategoriesSelectionProvider>
-  );
+const SelectableCategoriesBox: React.FC<Props> = ({ onChange }) => {
+  return <InnerSelectableCategoriesBox onChange={onChange} />;
 };
 
 export default SelectableCategoriesBox;

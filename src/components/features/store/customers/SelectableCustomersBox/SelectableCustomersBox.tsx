@@ -14,7 +14,7 @@ type Props = {
 };
 
 const InnerSelectableUsersBox: React.FC<{
-  onChange?: (userIds: number[]) => void;
+  onChange?: (ids: number[]) => void;
 }> = ({ onChange }) => {
   const { selectedCustomers, removeCustomer } = useCustomersSelection();
 

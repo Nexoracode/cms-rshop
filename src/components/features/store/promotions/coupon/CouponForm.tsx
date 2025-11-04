@@ -247,11 +247,8 @@ const CouponForm: React.FC<CouponFormProps> = ({
           </Switch>
         </div>
 
-        {pageType === "category" && initialData && (
+        {pageType === "category" && (
           <SelectableCategoriesBox
-            initialCategories={
-              (initialData?.allowed_categories as Category[]) || []
-            }
             onChange={(ids) =>
               ids.length && updateForm("allowed_category_ids", ids)
             }
@@ -261,9 +258,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
         {pageType === "customer" && (
           <SelectableUsersBox
             onChange={(ids) => {
-              console.log(ids);
-
-              updateForm("allowed_user_ids", ids);
+              ids.length && updateForm("allowed_user_ids", ids);
             }}
           />
         )}
