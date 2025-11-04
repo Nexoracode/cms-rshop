@@ -61,15 +61,7 @@ const SelectableCategoriesTree: React.FC<Props> = ({
       isExistItems={isExistItems}
       searchInp={false}
     >
-      {categories?.data && (
-        <CategoryTree
-          categories={categories.data}
-          selectable
-          selectedIds={mergedSelectedIds}
-          onSelectionChange={handleSelectionChange}
-          disableAction
-        />
-      )}
+      
     </UnifiedCard>
   );
 };
