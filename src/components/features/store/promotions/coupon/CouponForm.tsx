@@ -19,6 +19,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import { Category } from "@/components/features/products/categories/category.types";
 import Switch from "@/components/ui/Switch";
+import { useUsersSelection } from "@/components/features/store/customers/SelectableUsersBox/UsersSelectionContext";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -62,6 +63,8 @@ const CouponForm: React.FC<CouponFormProps> = ({
   //
   const isShowLoader =
     isLoading || (isEditMode ? updateCoupon.isPending : createCoupon.isPending);
+
+  const { setUsers } = useUsersSelection();
 
   const updateForm = <K extends keyof CouponPayload>(
     key: K,
@@ -123,6 +126,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
   const handleReset = () => {
     setForm(initialForm);
     setTouched(false);
+    setUsers([]);
   };
 
   const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
