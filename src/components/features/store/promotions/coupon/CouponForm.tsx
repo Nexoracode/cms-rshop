@@ -105,6 +105,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
         ? { allowed_user_ids: form.allowed_user_ids }
         : {}),
     };
+    console.log(payload);
 
     try {
       if (isEditMode) {
@@ -259,16 +260,21 @@ const CouponForm: React.FC<CouponFormProps> = ({
 
         {pageType === "user" && (
           <SelectableUsersBox
-            onChange={(ids) => updateForm("allowed_user_ids", ids)}
+            onChange={(ids) => {
+              console.log(ids);
+
+              updateForm("allowed_user_ids", ids);
+            }}
           />
         )}
+        
+        <FormActionButtons
+          cancelHref="/admin/store/promotions/coupon"
+          onSubmit={handleSubmit}
+          isSubmitting={loading}
+          submitText={isEditMode ? "ویرایش کد تخفیف" : "ثبت کد تخفیف"}
+        />
       </BaseCard>
-      <FormActionButtons
-        cancelHref="/admin/store/promotions/coupon"
-        onSubmit={handleSubmit}
-        isSubmitting={loading}
-        submitText={isEditMode ? "ویرایش کد تخفیف" : "ثبت کد تخفیف"}
-      />
     </>
   );
 };

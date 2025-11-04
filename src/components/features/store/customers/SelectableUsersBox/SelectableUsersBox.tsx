@@ -19,6 +19,8 @@ const InnerSelectableUsersBox: React.FC<{
   const { selectedUsers, removeUser } = useUsersSelection();
 
   useEffect(() => {
+    console.log(selectedUsers);
+    
     onChange?.(selectedUsers.map((u) => u.id));
   }, [selectedUsers]);
 
@@ -44,8 +46,8 @@ const InnerSelectableUsersBox: React.FC<{
   );
 };
 
-const SelectableUsersBox: React.FC<Props> = () => {
-  return <InnerSelectableUsersBox />;
+const SelectableUsersBox: React.FC<Props> = ({ onChange }) => {
+  return <InnerSelectableUsersBox onChange={onChange} />;
 };
 
 export default SelectableUsersBox;

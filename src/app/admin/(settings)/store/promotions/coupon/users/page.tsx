@@ -10,6 +10,8 @@ const CustomersCoupon = () => {
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
 
   const { data: couponData, isLoading } = useGetOneCoupon(id);
+
+  console.log(couponData);
   
   return (
     <UsersSelectionProvider
