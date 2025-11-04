@@ -1,17 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Switch } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { LuTicket } from "react-icons/lu";
-import {
-  useCreateCoupon,
-  useUpdateCoupon,
-  useGetOneCoupon,
-} from "@/core/hooks/api/useCoupon";
+import { useCreateCoupon, useUpdateCoupon } from "@/core/hooks/api/useCoupon";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableUsersBox/SelectableUsersBox";
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import {
@@ -22,7 +17,8 @@ import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import BaseCard from "@/components/ui/BaseCard";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
-import { UsersSelectionProvider } from "../../customers/SelectableUsersBox/UsersSelectionContext";
+import { Category } from "@/components/features/products/categories/category.types";
+import Switch from "@/components/ui/Switch";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -43,9 +39,15 @@ const initialForm: CouponFormType = {
 
 type CouponFormProps = {
   pageType: "create" | "category" | "product" | "user";
+  initialData?: CouponFormType;
+  isLoading?: boolean;
 };
 
-const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
+const CouponForm: React.FC<CouponFormProps> = ({
+  pageType = "create",
+  initialData,
+  isLoading,
+}) => {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -57,7 +59,9 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
   //? Hooks
   const createCoupon = useCreateCoupon();
   const updateCoupon = useUpdateCoupon(id || 0);
-  const { data: couponData } = useGetOneCoupon(id);
+  //
+  const isShowLoader =
+    isLoading || (isEditMode ? updateCoupon.isPending : createCoupon.isPending);
 
   const updateForm = <K extends keyof CouponPayload>(
     key: K,
@@ -67,10 +71,10 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
   };
 
   useEffect(() => {
-    if (!couponData?.data) return;
-    console.log(couponData?.data);
-    setForm(couponData?.data);
-  }, [couponData]);
+    if (initialData) {
+      setForm(initialData);
+    }
+  }, [initialData]);
 
   const handleSubmit = async () => {
     setTouched(true);
@@ -134,6 +138,7 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
           btnIcon: <MdOutlineCleaningServices />,
           onAdd: handleReset,
         }}
+        isLoading={isShowLoader}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <TextInput
@@ -201,21 +206,22 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
               suffix="عدد"
               isRequired={false}
             />
+
+            <IsoDatePicker
+              label="بازه اعتبار کوپن"
+              enableRange
+              valueIsoRange={{
+                start: form.start_date,
+                end: form.end_date,
+              }}
+              onChangeIsoRange={(range) => {
+                updateForm("start_date", range?.start ?? null);
+                updateForm("end_date", range?.end ?? null);
+              }}
+              showMonthAndYearPickers
+              className="w-full"
+            />
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <IsoDatePicker
-            label="تاریخ شروع اعتبار"
-            valueIso={form.start_date}
-            onChangeIso={(val) => updateForm("start_date", val ?? null)}
-          />
-
-          <IsoDatePicker
-            label="تاریخ پایان اعتبار"
-            valueIso={form.end_date}
-            onChangeIso={(val) => updateForm("end_date", val ?? null)}
-          />
         </div>
 
         <div className="flex flex-wrap gap-6">
@@ -223,7 +229,6 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
             isSelected={form.is_active}
             onValueChange={(v) => updateForm("is_active", v)}
             color="success"
-            size="sm"
           >
             فعال باشد
           </Switch>
@@ -232,32 +237,26 @@ const CouponForm: React.FC<CouponFormProps> = ({ pageType = "create" }) => {
             isSelected={form.for_first_order}
             onValueChange={(v) => updateForm("for_first_order", v)}
             color="secondary"
-            size="sm"
           >
             فقط برای اولین سفارش
           </Switch>
         </div>
 
-        {pageType === "category" ? (
+        {pageType === "category" && initialData && (
           <SelectableCategoriesBox
-            initialCategories={couponData?.data?.allowed_categories || []}
-            onChange={(ids) => {
-              console.log("ids =>", ids);
-              ids.length && updateForm("allowed_category_ids", ids);
-            }}
+            initialCategories={
+              (initialData?.allowed_categories as Category[]) || []
+            }
+            onChange={(ids) =>
+              ids.length && updateForm("allowed_category_ids", ids)
+            }
           />
-        ) : (
-          ""
         )}
 
-        {pageType === "user" ? (
-          <UsersSelectionProvider
-            initialUsers={couponData?.data?.allowed_users || []}
-          >
-            <SelectableUsersBox />
-          </UsersSelectionProvider>
-        ) : (
-          ""
+        {pageType === "user" && (
+          <SelectableUsersBox
+            onChange={(ids) => updateForm("allowed_user_ids", ids)}
+          />
         )}
       </BaseCard>
       <FormActionButtons

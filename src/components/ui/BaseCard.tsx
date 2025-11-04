@@ -4,6 +4,7 @@ import React from "react";
 import { Card, CardBody } from "@heroui/react";
 import Link from "next/link";
 import CardHeader, { CardHeaderProps } from "../common/Card/CardHeader";
+import EmptyStateCard from "../feedback/EmptyStateCard";
 
 type BaseCardProps = {
   CardHeaderProps?: CardHeaderProps;
@@ -13,6 +14,7 @@ type BaseCardProps = {
   redirect?: string;
   children: React.ReactNode;
   wrapperContents?: boolean;
+  isLoading?: boolean;
 };
 
 const BaseCard: React.FC<BaseCardProps> = ({
@@ -23,6 +25,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
   onClick,
   children,
   CardHeaderProps,
+  isLoading = false,
 }) => {
   const CardContent = (
     <Card
@@ -37,7 +40,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
           if (onClick) onClick(e);
         }}
       >
-        {children}
+        {isLoading ? <EmptyStateCard/> : children}
       </CardBody>
     </Card>
   );
