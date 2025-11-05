@@ -4,7 +4,7 @@ import { Tooltip, Checkbox } from "@heroui/react";
 type Props = {
   id: number | string;
   selectedIds?: (number | string)[];
-  onSelectionChange?: (id: number | string, selected: boolean) => void;
+  onSelectionChange?: (id: number | string, isSelected: boolean) => void;
   children: React.ReactNode;
 };
 
