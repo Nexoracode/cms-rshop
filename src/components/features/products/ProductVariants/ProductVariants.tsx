@@ -19,6 +19,7 @@ const ProductVariants: React.FC<Props> = ({
   product,
   initialItemsSelected = null,
   onChange,
+  disableSelect
 }) => {
   const [selectedMood, setSelectedMood] = useState<
     "variants" | "product" | "null"
@@ -95,7 +96,7 @@ const ProductVariants: React.FC<Props> = ({
         id={product.id}
         selectedIds={getSelectedProductIds()}
         onSelectionChange={(id, isSelected) => handleProductSelect(isSelected)}
-        disabled={selectedMood === "variants"}
+        disabled={disableSelect || selectedMood === "variants"}
       >
         <BaseCard
           redirect={`/admin/products/create?edit_id=${product.id}&type=infos`}
@@ -192,7 +193,7 @@ const ProductVariants: React.FC<Props> = ({
             id={variant.id}
             selectedIds={getSelectedVariantIds()}
             onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
-            disabled={selectedMood === "product"}
+            disabled={disableSelect || selectedMood === "product"}
           >
             <div className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300">
               <div className="flex flex-wrap gap-2 text-sm text-gray-700">
