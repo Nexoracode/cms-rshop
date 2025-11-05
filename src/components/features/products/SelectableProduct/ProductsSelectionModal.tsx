@@ -25,6 +25,8 @@ const ProductsSelectionModal = () => {
 
   const isExistItems = !!products?.data?.items?.length;
 
+  const pr = [{ product_id: 21, variants: [1] }, { product_id: 20, variants: null }];
+
   return (
     <BaseModal
       title="انتخاب محصولات"
@@ -46,7 +48,11 @@ const ProductsSelectionModal = () => {
         meta={products?.data?.meta}
       >
         {products?.data?.items?.map((product: any) => (
-          <ProductVariants key={product.id} product={product} />
+          <ProductVariants
+            key={product.id}
+            product={product}
+            initialItemsSelected={pr}
+          />
         ))}
       </UnifiedCard>
     </BaseModal>
