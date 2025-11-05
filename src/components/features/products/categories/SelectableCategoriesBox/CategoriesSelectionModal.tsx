@@ -54,7 +54,7 @@ const CategoriesSelectionModal: React.FC = () => {
             selectedIds={selectedIds}
             onSelectionChange={handleTreeSelectionChange}
             disableAction
-            className="flex flex-col gap-4 max-h-[70vh] overflow-y-auto pl-2"
+            className="flex flex-col gap-4"
           />
         )}
       </UnifiedCard>

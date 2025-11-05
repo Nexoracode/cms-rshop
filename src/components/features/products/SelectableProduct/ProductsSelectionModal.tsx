@@ -10,6 +10,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuPlus } from "react-icons/lu";
 import ProductVariants from "../ProductVariants/ProductVariants";
+import BaseModal from "@/components/ui/modals/BaseModal";
 
 //type VariantItem = { id: number; quantity: number };
 //type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
@@ -18,34 +19,40 @@ const ProductsSelectionModal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<ProductSortBy[number]>();
 
-  const { data: productsResponse, isLoading } = useGetProducts({
+  const { data: products, isLoading } = useGetProducts({
     page,
     filter,
     search,
     sortBy,
   });
 
-  const products = productsResponse?.data?.items ?? [];
   const isExistItems = !!products?.data?.items?.length;
 
   return (
-    <UnifiedCard
-      searchFilter={<ProductsFilter />}
-      headerProps={{
-        title: "مدیریت محصولات",
-        icon: <BsShop className="text-2xl" />,
-        redirect: "/admin/products/create?type=infos",
-        btnIcon: <LuPlus />,
-      }}
-      isLoading={isLoading}
-      isExistItems={isExistItems}
-      searchInp={isFilteredView}
-      meta={products?.data?.meta}
+    <BaseModal
+      title="انتخاب محصولات"
+      icon={<BsShop />}
+      isActiveFooter={false}
+      size="3xl"
     >
-      {products?.data?.items?.map((product: any) => (
-        <ProductVariants product={product} />
-      ))}
-    </UnifiedCard>
+      <UnifiedCard
+        searchFilter={<ProductsFilter />}
+        headerProps={{
+          title: "مدیریت محصولات",
+          icon: <BsShop className="text-2xl" />,
+          redirect: "/admin/products/create?type=infos",
+          btnIcon: <LuPlus />,
+        }}
+        isLoading={isLoading}
+        isExistItems={isExistItems}
+        searchInp={isFilteredView}
+        meta={products?.data?.meta}
+      >
+        {products?.data?.items?.map((product: any) => (
+          <ProductVariants key={product.id} product={product} />
+        ))}
+      </UnifiedCard>
+    </BaseModal>
   );
 };
 
