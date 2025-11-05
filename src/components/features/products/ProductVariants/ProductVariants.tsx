@@ -18,38 +18,59 @@ const ProductVariants: React.FC<Props> = ({
   product,
   initialItemsSelected = null,
 }) => {
-  const [selectedMood, setSelectedMood] = useState<
-    "variants" | "product" | "null"
-  >("null");
+  const [selectedMood, setSelectedMood] = useState<"variants" | "product" | "null">(
+    "null"
+  );
+  const [selectedProduct, setSelectedProduct] = useState(false);
+  const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
 
   useEffect(() => {
     if (!initialItemsSelected) return;
-    setSelectedMood(!product.variants ? "product" : "variants");
-  }, [initialItemsSelected]);
 
-  const handleProductSelect = (selected: boolean) => {};
-
-  const handleVariantSelect = (variantId: number, selected: boolean) => {};
-
-  const getSelectedProductIds = (): number[] => {
-    if (!initialItemsSelected) return [];
     const found = initialItemsSelected.find((p) => p.product_id === product.id);
-    return found ? [found.product_id] : [];
+    if (!found) return;
+
+    if (!product.variants) {
+      setSelectedMood("product");
+      setSelectedProduct(true);
+      setSelectedVariants([]);
+    } else if (found.variants?.length) {
+      setSelectedMood("variants");
+      setSelectedProduct(false);
+      setSelectedVariants(found.variants);
+    }
+  }, [initialItemsSelected, product]);
+
+  const handleProductSelect = (selected: boolean) => {
+    if (selected) {
+      setSelectedMood("product");
+      setSelectedProduct(true);
+      setSelectedVariants([]);
+    } else {
+      setSelectedMood("null");
+      setSelectedProduct(false);
+    }
   };
 
-  const getSelectedVariantIds = (): number[] => {
-    if (!initialItemsSelected) return [];
+  const handleVariantSelect = (variantId: number, selected: boolean) => {
+    let newSelected = [...selectedVariants];
+    if (selected) {
+      newSelected.push(variantId);
+    } else {
+      newSelected = newSelected.filter((v) => v !== variantId);
+    }
+    setSelectedVariants(newSelected);
 
-    const selectedProduct = initialItemsSelected.find(
-      (item) => item.product_id === product.id
-    );
-
-    if (!selectedProduct || !selectedProduct.variants?.length) return [];
-
-    return product.variants
-      .filter((variant: any) => selectedProduct.variants!.includes(variant.id))
-      .map((variant: any) => variant.id);
+    if (newSelected.length) {
+      setSelectedMood("variants");
+      setSelectedProduct(false);
+    } else {
+      setSelectedMood("null");
+    }
   };
+
+  const getSelectedProductIds = () => (selectedProduct ? [product.id] : []);
+  const getSelectedVariantIds = () => selectedVariants;
 
   return (
     <BaseCard>
@@ -57,15 +78,12 @@ const ProductVariants: React.FC<Props> = ({
         id={product.id}
         selectedIds={getSelectedProductIds()}
         onSelectionChange={(id, isSelected) => handleProductSelect(isSelected)}
+        disabled={selectedMood === "variants"}
       >
         <BaseCard
           redirect={`/admin/products/create?edit_id=${product.id}&type=infos`}
           className="shadow-none"
-          bodyClassName={`${
-            selectedMood === "variants"
-              ? "pointer-events-none opacity-80 cursor-auto"
-              : ""
-          } flex flex-col items-center sm:flex-row gap-4 text-start`}
+          bodyClassName="flex flex-col items-center sm:flex-row gap-4 text-start"
         >
           <div className="relative w-fit h-full">
             <img
@@ -106,8 +124,7 @@ const ProductVariants: React.FC<Props> = ({
 
               <div className="flex items-end">
                 <div className="text-gray-600">
-                  {product.discount_amount > 0 ||
-                  product.discount_percent > 0 ? (
+                  {product.discount_amount > 0 || product.discount_percent > 0 ? (
                     <div className="flex flex-col items-end gap-2 sm:gap-1">
                       <div className="flex items-center gap-1">
                         <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
@@ -122,8 +139,7 @@ const ProductVariants: React.FC<Props> = ({
                             product.price -
                               (product.discount_amount > 0
                                 ? product.discount_amount
-                                : (product.discount_percent / 100) *
-                                  product.price)
+                                : (product.discount_percent / 100) * product.price)
                           )
                         ).toLocaleString("fa-IR")}{" "}
                         تومان
@@ -142,7 +158,6 @@ const ProductVariants: React.FC<Props> = ({
       </SelectableCard>
 
       {/* وریانت‌ها */}
-
       <div className="flex flex-col gap-2 mt-4 mx-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
@@ -157,23 +172,19 @@ const ProductVariants: React.FC<Props> = ({
             key={variant.id}
             id={variant.id}
             selectedIds={getSelectedVariantIds()}
-            onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
+            onSelectionChange={(idVal, sel) =>
+              handleVariantSelect(+idVal, sel)
+            }
+            disabled={selectedMood === "product"}
           >
-            <div
-              className={`${
-                selectedMood === "product"
-                  ? "pointer-events-none opacity-80 !cursor-auto"
-                  : ""
-              } flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300`}
-            >
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300">
               <div className="flex flex-wrap gap-2 text-sm text-gray-700">
                 {variant.name}
               </div>
 
               <div className="flex items-end">
                 <div className="text-gray-600">
-                  {variant.discount_amount > 0 ||
-                  variant.discount_percent > 0 ? (
+                  {variant.discount_amount > 0 || variant.discount_percent > 0 ? (
                     <div className="flex flex-row-reverse items-center gap-1">
                       <RiDiscountPercentLine className="text-orange-500 text-xl" />
                       <span className="text-[15px] text-gray-800">
