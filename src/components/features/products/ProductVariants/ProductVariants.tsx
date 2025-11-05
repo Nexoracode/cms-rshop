@@ -12,7 +12,7 @@ type Props = {
   product: Record<string, any>;
   initialItemsSelected?: VariantProduct[] | null;
   disableSelect?: boolean;
-  onChange?: (data: VariantProduct | null) => void;
+  onChange?: (data: Record<string, any> | null) => void;
 };
 
 const ProductVariants: React.FC<Props> = ({
@@ -43,37 +43,46 @@ const ProductVariants: React.FC<Props> = ({
     }
   }, [initialItemsSelected, product]);
 
+  const emitChange = (
+    mode: "product" | "variants" | "null",
+    variants?: number[]
+  ) => {
+    if (mode === "null") {
+      onChange?.(null);
+    } else if (mode === "product") {
+      onChange?.({ product, variants: null });
+    } else {
+      onChange?.({ product, variants: variants ?? [] });
+    }
+  };
+
   const handleProductSelect = (selected: boolean) => {
     if (selected) {
       setSelectedMood("product");
       setSelectedProduct(true);
       setSelectedVariants([]);
-      onChange?.({ product_id: product.id, variants: null });
+      emitChange("product");
     } else {
       setSelectedMood("null");
       setSelectedProduct(false);
-      onChange?.(null);
+      emitChange("null");
     }
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
     let newSelected = [...selectedVariants];
-    if (selected) {
-      newSelected.push(variantId);
-    } else {
-      newSelected = newSelected.filter((v) => v !== variantId);
-    }
+    if (selected) newSelected.push(variantId);
+    else newSelected = newSelected.filter((v) => v !== variantId);
+
     setSelectedVariants(newSelected);
 
     if (newSelected.length) {
       setSelectedMood("variants");
       setSelectedProduct(false);
-
-      onChange?.({ product_id: product.id, variants: newSelected });
+      emitChange("variants", newSelected);
     } else {
       setSelectedMood("null");
-
-      onChange?.(null);
+      emitChange("null");
     }
   };
 
@@ -174,7 +183,7 @@ const ProductVariants: React.FC<Props> = ({
             <MdOutlineCategory className="text-purple-500 text-xl" />
             <p className="text-gray-600">تنوع محصول ها</p>
           </div>
-          <p className="text-gray-600">{product?.variants.length} عدد</p>
+          <p className="text-gray-600">{product?.variants?.length} عدد</p>
         </div>
 
         {product?.variants?.map((variant: any) => (

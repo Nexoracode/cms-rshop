@@ -4,8 +4,8 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariants from "../ProductVariants/ProductVariants";
 import { BsShop } from "react-icons/bs";
+import ProductVariants from "../ProductVariants/ProductVariants";
 
 type Props = {
   onChange?: (ids: number[]) => void;
@@ -14,9 +14,10 @@ type Props = {
 const InnerSelectableProductsBox: React.FC<{
   onChange?: (ids: number[]) => void;
 }> = ({ onChange }) => {
-  const { selectedProducts, removeProducts } = useProductsSelection();
+  const { selectedProducts } = useProductsSelection();
 
   useEffect(() => {
+    console.log(selectedProducts);
     onChange?.(selectedProducts.map((c: any) => c.id));
   }, [selectedProducts]);
 
@@ -27,15 +28,14 @@ const InnerSelectableProductsBox: React.FC<{
       initial={selectedProducts}
       modal={<ProductsSelectionModal />}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* {selectedProducts.map((productSpecification) => (
+      <div className="flex flex-col gap-4">
+        {selectedProducts.map((selectedProduct) => (
           <ProductVariants
-            key={productSpecification.product.id}
-            product={productSpecification.product}
-            selectedItem={productSpecification.item}
+            key={selectedProduct.id}
+            product={selectedProduct}
             disableSelect
           />
-        ))} */}
+        ))}
       </div>
     </SelectionBox>
   );

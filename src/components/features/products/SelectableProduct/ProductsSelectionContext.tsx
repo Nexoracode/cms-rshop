@@ -1,46 +1,40 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { Product } from "../create/types/product";
+import React, { createContext, useContext, useState } from "react";
+
+type SelectedProduct = Record<string, any>;
 
 type ProductsSelectionContextType = {
-  selectedProducts: Product[];
-  addProducts: (products: Product) => void;
-  removeProducts: (id: number) => void;
-  setProducts: (categories: Product[]) => void;
+  selectedProducts: SelectedProduct[];
+  setProducts: (products: SelectedProduct[]) => void;
 };
 
-const ProductsSelectionContext = createContext<ProductsSelectionContextType | null>(null);
+const ProductsSelectionContext =
+  createContext<ProductsSelectionContextType | null>(null);
 
 export const useProductsSelection = () => {
   const ctx = useContext(ProductsSelectionContext);
-  if (!ctx) throw new Error("useProductsSelection must be used within ProductsSelectionProvider");
+  if (!ctx)
+    throw new Error(
+      "useProductsSelection must be used within ProductsSelectionProvider"
+    );
   return ctx;
 };
 
 export const ProductsSelectionProvider: React.FC<{
-  initialProducts?: Product[];
+  initialProducts?: SelectedProduct[];
   children: React.ReactNode;
 }> = ({ initialProducts = [], children }) => {
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] =
+    useState<SelectedProduct[]>(initialProducts);
 
-  useEffect(() => {
-    setSelectedProducts(initialProducts);
-  }, [initialProducts]);
-
-  const addProducts = (products: Product) => {
-    setSelectedProducts((prev) => [...prev.filter((c) => c.id !== products.id), products]);
+  const setProducts = (products: SelectedProduct[]) => {
+    setSelectedProducts(products);
   };
-
-  const removeProducts = (id: number) => {
-    setSelectedProducts((prev) => prev.filter((c) => c.id !== id));
-  };
-
-  const setProducts = (categories: Product[]) => setSelectedProducts(categories);
 
   return (
     <ProductsSelectionContext.Provider
-      value={{ selectedProducts, addProducts, removeProducts, setProducts }}
+      value={{ selectedProducts, setProducts }}
     >
       {children}
     </ProductsSelectionContext.Provider>
