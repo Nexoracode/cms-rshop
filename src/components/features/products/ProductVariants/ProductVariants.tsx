@@ -12,15 +12,17 @@ type Props = {
   product: Record<string, any>;
   initialItemsSelected?: VariantProduct[] | null;
   disableSelect?: boolean;
+  onChange?: (data: VariantProduct | null) => void;
 };
 
 const ProductVariants: React.FC<Props> = ({
   product,
   initialItemsSelected = null,
+  onChange,
 }) => {
-  const [selectedMood, setSelectedMood] = useState<"variants" | "product" | "null">(
-    "null"
-  );
+  const [selectedMood, setSelectedMood] = useState<
+    "variants" | "product" | "null"
+  >("null");
   const [selectedProduct, setSelectedProduct] = useState(false);
   const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
 
@@ -46,9 +48,11 @@ const ProductVariants: React.FC<Props> = ({
       setSelectedMood("product");
       setSelectedProduct(true);
       setSelectedVariants([]);
+      onChange?.({ product_id: product.id, variants: null });
     } else {
       setSelectedMood("null");
       setSelectedProduct(false);
+      onChange?.(null);
     }
   };
 
@@ -64,8 +68,12 @@ const ProductVariants: React.FC<Props> = ({
     if (newSelected.length) {
       setSelectedMood("variants");
       setSelectedProduct(false);
+
+      onChange?.({ product_id: product.id, variants: newSelected });
     } else {
       setSelectedMood("null");
+
+      onChange?.(null);
     }
   };
 
@@ -124,7 +132,8 @@ const ProductVariants: React.FC<Props> = ({
 
               <div className="flex items-end">
                 <div className="text-gray-600">
-                  {product.discount_amount > 0 || product.discount_percent > 0 ? (
+                  {product.discount_amount > 0 ||
+                  product.discount_percent > 0 ? (
                     <div className="flex flex-col items-end gap-2 sm:gap-1">
                       <div className="flex items-center gap-1">
                         <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
@@ -139,7 +148,8 @@ const ProductVariants: React.FC<Props> = ({
                             product.price -
                               (product.discount_amount > 0
                                 ? product.discount_amount
-                                : (product.discount_percent / 100) * product.price)
+                                : (product.discount_percent / 100) *
+                                  product.price)
                           )
                         ).toLocaleString("fa-IR")}{" "}
                         تومان
@@ -172,9 +182,7 @@ const ProductVariants: React.FC<Props> = ({
             key={variant.id}
             id={variant.id}
             selectedIds={getSelectedVariantIds()}
-            onSelectionChange={(idVal, sel) =>
-              handleVariantSelect(+idVal, sel)
-            }
+            onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
             disabled={selectedMood === "product"}
           >
             <div className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300">
@@ -184,7 +192,8 @@ const ProductVariants: React.FC<Props> = ({
 
               <div className="flex items-end">
                 <div className="text-gray-600">
-                  {variant.discount_amount > 0 || variant.discount_percent > 0 ? (
+                  {variant.discount_amount > 0 ||
+                  variant.discount_percent > 0 ? (
                     <div className="flex flex-row-reverse items-center gap-1">
                       <RiDiscountPercentLine className="text-orange-500 text-xl" />
                       <span className="text-[15px] text-gray-800">

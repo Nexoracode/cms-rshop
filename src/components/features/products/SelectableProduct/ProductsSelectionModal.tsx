@@ -52,6 +52,7 @@ const ProductsSelectionModal = () => {
             key={product.id}
             product={product}
             initialItemsSelected={pr}
+            onChange={(data) => console.log(data)}
           />
         ))}
       </UnifiedCard>
