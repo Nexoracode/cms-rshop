@@ -37,6 +37,20 @@ const ProductVariants: React.FC<Props> = ({
     return found ? [found.product_id] : [];
   };
 
+  const getSelectedVariantIds = (): number[] => {
+    if (!initialItemsSelected) return [];
+
+    const selectedProduct = initialItemsSelected.find(
+      (item) => item.product_id === product.id
+    );
+
+    if (!selectedProduct || !selectedProduct.variants?.length) return [];
+
+    return product.variants
+      .filter((variant: any) => selectedProduct.variants!.includes(variant.id))
+      .map((variant: any) => variant.id);
+  };
+
   return (
     <BaseCard>
       <SelectableCard
@@ -142,13 +156,13 @@ const ProductVariants: React.FC<Props> = ({
           <SelectableCard
             key={variant.id}
             id={variant.id}
-            selectedIds={[]}
+            selectedIds={getSelectedVariantIds()}
             onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
           >
             <div
               className={`${
                 selectedMood === "product"
-                  ? "pointer-events-none opacity-80 cursor-auto"
+                  ? "pointer-events-none opacity-80 !cursor-auto"
                   : ""
               } flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300`}
             >
