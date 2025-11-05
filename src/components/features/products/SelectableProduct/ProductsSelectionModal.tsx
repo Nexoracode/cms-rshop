@@ -12,9 +12,6 @@ import { LuPlus } from "react-icons/lu";
 import ProductVariants from "../ProductVariants/ProductVariants";
 import BaseModal from "@/components/ui/modals/BaseModal";
 
-//type VariantItem = { id: number; quantity: number };
-//type OnSelectOutput = { product_id: number; variants: VariantItem[] | null };
-
 const ProductsSelectionModal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<ProductSortBy[number]>();
