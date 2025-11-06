@@ -2,9 +2,6 @@
 
 import { useState } from "react";
 import BaseCard from "@/components/ui/BaseCard";
-import { GrLocation } from "react-icons/gr";
-import { LuUserRound } from "react-icons/lu";
-import { PiMoneyWavy } from "react-icons/pi";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import {
   Popover,
@@ -19,18 +16,15 @@ import { statusOptions } from "./order-constants";
 import { StatusOrder } from "./order-types";
 import { statusMap } from "@/core/constants/statusMap";
 import CardRows from "@/components/shared/CardRows";
+import PopoverSelect, {
+  PopoverSelectItem,
+} from "@/components/ui/PopoverSelect";
 
 type Props = {
   order: any;
-  disableAction?: boolean;
-  onClicked?: () => void;
 };
 
-const OrderCard: React.FC<Props> = ({
-  order,
-  disableAction = false,
-  onClicked,
-}) => {
+const OrderCard: React.FC<Props> = ({ order }) => {
   const updateOrderStatus = useUpdateOrderStatus();
   const initialKey = (order?.status ?? "pending").toLowerCase() as StatusOrder;
   const initialStatus =
@@ -69,8 +63,6 @@ const OrderCard: React.FC<Props> = ({
     },
   ];
 
-  console.log(order);
-
   const status = order.status as StatusOrder;
   const statusInfo = statusMap[status];
 
@@ -97,44 +89,25 @@ const OrderCard: React.FC<Props> = ({
           </div>
         </div>
 
-        {!disableAction && (
-          <div className="w-full xs:w-fit">
-            <Popover
-              showArrow
-              backdrop="opaque"
-              offset={10}
-              placement="bottom"
-              isOpen={isOpen}
-              onOpenChange={setIsOpen}
-            >
-              <PopoverTrigger>
-                <Button
-                  className="capitalize w-full xs:w-fit text-sm"
-                  color="secondary"
-                  variant="flat"
-                  size="sm"
-                  isLoading={updateOrderStatus.isPending}
-                >
-                  {selectedStatus.title}
-                  <MdOutlineKeyboardArrowDown className="text-lg" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[240px]">
-                <div className="px-1 py-2 w-full">
-                  <Listbox
-                    items={statusOptions}
-                    onAction={(key) => handleStatusChange(String(key))}
-                    selectedKeys={[selectedStatus.key]}
-                  >
-                    {(item) => (
-                      <ListboxItem key={item.key}>{item.title}</ListboxItem>
-                    )}
-                  </Listbox>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-        )}
+        <PopoverSelect
+          items={statusOptions as PopoverSelectItem[]}
+          initialKey={selectedStatus.key}
+          isLoading={updateOrderStatus.isPending}
+          onSelect={(key) => {
+            const next = statusOptions.find((s) => s.key === key);
+            if (!next) return;
+
+            setSelectedStatus(next);
+            updateOrderStatus.mutate(
+              { id: order.id, status: next.key },
+              {
+                onError: () => setSelectedStatus(selectedStatus),
+              }
+            );
+          }}
+          buttonClassName="capitalize w-full xs:w-fit text-sm"
+          popoverClassName="w-[240px]"
+        />
       </div>
 
       <CardRows items={rowItems} />
