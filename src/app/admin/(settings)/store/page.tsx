@@ -16,6 +16,7 @@ import { LuPackage } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { TfiShoppingCartFull } from "react-icons/tfi";
+import CardHeader from "@/components/common/Card/CardHeader";
 
 // تنظیمات فروشگاه
 const storeSettingsLinks = [
@@ -77,51 +78,49 @@ const orderSettingsLinks = [
 
 const Settings: React.FC = () => {
   return (
-    <>
-      <div className="flex justify-center flex-col sm:flex-row lg:items-start lg:justify-between gap-4">
-        {/* تنظیمات فروشگاه */}
-        <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
-         {/*  <BoxHeader
-            title="تنظیمات فروشگاه"
-            color="text-white bg-gray-400"
-            icon={<BsShop className="text-[26px]" />}
-          /> */}
-          <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
-            {storeSettingsLinks.map(({ title, icon, route }) => (
-              <BoxLink
-                key={route}
-                title={title}
-                icon={icon}
-                routeName={route}
-                parentStyle="text-gray-700"
-                titleStyle="text-gray-600"
-              />
-            ))}
-          </CardBody>
-        </Card>
+    <div className="flex justify-center flex-col sm:flex-row lg:items-start lg:justify-between gap-4">
+      {/* تنظیمات فروشگاه */}
+      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
+        <CardHeader
+          title="تنظیمات فروشگاه"
+          icon={<BsShop className="text-[24px]" />}
+          showIconInActionSlot
+        />
+        <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
+          {storeSettingsLinks.map(({ title, icon, route }) => (
+            <BoxLink
+              key={route}
+              title={title}
+              icon={icon}
+              routeName={route}
+              parentStyle="text-gray-700"
+              titleStyle="text-gray-600"
+            />
+          ))}
+        </CardBody>
+      </Card>
 
-        {/* تنظیمات سفارش گیری */}
-        <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
-       {/*    <BoxHeader
-            title="تنظیمات سفارش گیری"
-            color="text-white bg-blue-400"
-            icon={<TfiShoppingCartFull className="text-[28px]" />}
-          /> */}
-          <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
-            {orderSettingsLinks.map(({ title, icon, route }) => (
-              <BoxLink
-                key={route}
-                title={title}
-                icon={icon}
-                routeName={route}
-                parentStyle="text-blue-700"
-                titleStyle="text-gray-600"
-              />
-            ))}
-          </CardBody>
-        </Card>
-      </div>
-    </>
+      {/* تنظیمات سفارش گیری */}
+      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
+        <CardHeader
+          title="تنظیمات سفارش گیری"
+          icon={<TfiShoppingCartFull className="text-[26px]" />}
+          showIconInActionSlot
+        />
+        <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
+          {orderSettingsLinks.map(({ title, icon, route }) => (
+            <BoxLink
+              key={route}
+              title={title}
+              icon={icon}
+              routeName={route}
+              parentStyle="text-blue-700"
+              titleStyle="text-gray-600"
+            />
+          ))}
+        </CardBody>
+      </Card>
+    </div>
   );
 };
 
