@@ -13,7 +13,9 @@ import ProductVariants from "../ProductVariants/ProductVariants";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
 
-type SelectedProduct = Record<string, any>;
+type Product = {
+    [x: string]: any;
+}
 
 const ProductsSelectionModal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -29,20 +31,20 @@ const ProductsSelectionModal = () => {
 
   const isExistItems = !!products?.data?.items?.length;
 
-  // ✅ مدیریت انتخاب یا لغو انتخاب محصول
-  const handleProductChange = (data: SelectedProduct | null) => {
-   /*  if (!data) {
-      // حذف از لیست انتخاب‌شده‌ها
-      setProducts((prev) =>
-        prev.filter((p: SelectedProduct) => p.id !== data?.id)
-      );
-    } else {
-      // افزودن یا به‌روزرسانی محصول انتخاب‌شده
-      setProducts((prev) => {
-        const withoutCurrent = prev.filter((p) => p.id !== data.id);
-        return [...withoutCurrent, data];
-      });
-    } */
+  const handleProductChange = (
+    data: Product | null,
+    productId: number
+  ) => {
+    setProducts((prev: Product[]) => {
+      if (!data) {
+        // حذف محصولی که از انتخاب خارج شده
+        return prev.filter((p: any) => p.id !== productId);
+      } else {
+        // اضافه کردن یا به‌روزرسانی محصول با فرمت کامل
+        const filtered = prev.filter((p) => p.id !== data.id);
+        return [...filtered, data];
+      }
+    });
   };
 
   return (
@@ -70,7 +72,7 @@ const ProductsSelectionModal = () => {
             key={product.id}
             product={product}
             initialItemsSelected={selectedProducts}
-            onChange={(data) => console.log(data)}
+            onChange={(data) => handleProductChange(data, product.id)}
           />
         ))}
       </UnifiedCard>

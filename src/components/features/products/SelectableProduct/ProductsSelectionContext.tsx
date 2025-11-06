@@ -2,11 +2,11 @@
 
 import React, { createContext, useContext, useState } from "react";
 
-type SelectedProduct = Record<string, any>;
+export type Product = Record<string, any>;
 
 type ProductsSelectionContextType = {
-  selectedProducts: SelectedProduct[];
-  setProducts: (products: SelectedProduct[]) => void;
+  selectedProducts: Product[];
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>; // ✅ اصلاح شد
 };
 
 const ProductsSelectionContext =
@@ -22,19 +22,15 @@ export const useProductsSelection = () => {
 };
 
 export const ProductsSelectionProvider: React.FC<{
-  initialProducts?: SelectedProduct[];
+  initialProducts?: Product[];
   children: React.ReactNode;
 }> = ({ initialProducts = [], children }) => {
   const [selectedProducts, setSelectedProducts] =
-    useState<SelectedProduct[]>(initialProducts);
-
-  const setProducts = (products: SelectedProduct[]) => {
-    setSelectedProducts(products);
-  };
+    useState<Product[]>(initialProducts);
 
   return (
     <ProductsSelectionContext.Provider
-      value={{ selectedProducts, setProducts }}
+      value={{ selectedProducts, setProducts: setSelectedProducts }}
     >
       {children}
     </ProductsSelectionContext.Provider>
