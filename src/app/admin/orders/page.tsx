@@ -37,7 +37,7 @@ const Orders = () => {
       searchInp={isFilteredView}
       meta={orders?.data?.meta}
       className="mb-6"
-      childrenClassName="grid sm:grid-cols-2"
+      childrenClassName="grid md:grid-cols-2"
     >
       {orders?.data?.items?.map((order: Order) => (
         <OrderBox

@@ -18,6 +18,7 @@ import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { statusOptions } from "./order-constants";
 import { StatusOrder } from "./order-types";
 import { statusMap } from "@/core/constants/statusMap";
+import CardRows from "@/components/shared/CardRows";
 
 type Props = {
   order: any;
@@ -51,23 +52,20 @@ const OrderCard: React.FC<Props> = ({
     {
       label: "مبلغ کل",
       value: `${Number(order?.total ?? 0).toLocaleString("fa-IR")} تومان`,
-      icon: <PiMoneyWavy className="text-xl" />,
-    },
-    {
-      label: "مکان",
-      value: "— - —",
-      icon: <GrLocation className="text-xl" />,
     },
     {
       label: "مشتری",
-      value: order?.user
-        ? `${order.user.first_name ?? ""} ${
-            order.user.last_name ?? ""
-          }`.trim() ||
-          order.user.phone ||
-          "—"
-        : "—",
-      icon: <LuUserRound className="text-xl" />,
+      value: `${order.user.first_name ?? "نام"} ${
+        order.user.last_name ?? "و نام خوانوادگی"
+      }`.trim(),
+    },
+    {
+      label: "شماره تماس",
+      value: order.user.phone,
+    },
+    {
+      label: "آدرس",
+      value: `${order.user.addresses[0].province} - ${order.user.addresses[0].city}`,
     },
   ];
 
@@ -77,16 +75,17 @@ const OrderCard: React.FC<Props> = ({
   const statusInfo = statusMap[status];
 
   return (
-    <BaseCard bodyClassName="flex flex-col gap-3 p-4 w-auto" redirect={`/admin/orders/order?id=${order.id}`}>
+    <BaseCard
+      bodyClassName="flex flex-col gap-3 p-4 w-auto"
+      redirect={`/admin/orders/order?id=${order.id}`}
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <div
             className={`text-2xl rounded-full border p-4 ${statusInfo.color} ${statusInfo.bgColor} ${statusInfo.borderColor}`}
           >
-            <span className="text-2xl">
-              {statusInfo.icon}
-            </span>
+            <span className="text-2xl">{statusInfo.icon}</span>
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">#{order?.id}</p>
@@ -138,18 +137,7 @@ const OrderCard: React.FC<Props> = ({
         )}
       </div>
 
-      {/* Content */}
-      <div className="flex flex-wrap gap-4 justify-between items-center text-sm text-gray-700">
-        {rowItems.map((r) => (
-          <span
-            key={r.label}
-            className="flex items-center gap-2 bg-slate-100 rounded-xl p-2 px-4 flex-grow"
-          >
-            {r.icon}
-            {r.value}
-          </span>
-        ))}
-      </div>
+      <CardRows items={rowItems} />
     </BaseCard>
   );
 };

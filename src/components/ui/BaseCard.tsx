@@ -28,7 +28,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
 }) => {
   const CardContent = (
     <Card
-      className={`relative border shadow-md !transition-all duration-300 hover:shadow-none ${className}`}
+      className={`relative border shadow !transition-all duration-300 hover:shadow-none ${className}`}
     >
       {CardHeaderProps && <CardHeader {...CardHeaderProps} />}
       <CardBody
