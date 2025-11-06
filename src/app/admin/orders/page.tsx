@@ -1,47 +1,22 @@
 "use client";
 
-import { useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import EntityCard from "@/components/common/Card/EntityCard";
+import { useRouter } from "next/navigation";
+
+// Components
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrdersFilter from "@/components/features/orders/OrdersFilter";
+import OrderBox from "@/components/features/orders/OrderBox";
+
+// Icons
 import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
-import OrderBox from "@/components/features/orders/OrderBox";
 import { Order, OrderSortBy } from "@/components/features/orders/order-types";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const Orders = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // page
-  const page = useMemo(() => {
-    const p = searchParams.get("page");
-    const n = Number(p ?? 1);
-    return Number.isFinite(n) && n > 0 ? n : 1;
-  }, [searchParams?.toString()]);
-
-  // search & searchBy
-  const search = useMemo(() => {
-    const s = searchParams.get("search")?.trim();
-    return s ? s : undefined;
-  }, [searchParams?.toString()]);
-
-  const sortBy = useMemo(() => {
-    const sorts = searchParams.getAll("sortBy") as OrderSortBy | string[];
-    return sorts.length ? (sorts as OrderSortBy) : undefined;
-  }, [searchParams?.toString()]);
-
-  const filter = useMemo(() => {
-    const f: Record<string, string[]> = {};
-    for (const [key, value] of Array.from(searchParams.entries())) {
-      if (!key.startsWith("filter.")) continue;
-      const [, field] = key.split(".");
-      if (!field) continue;
-      if (!f[field]) f[field] = [];
-      f[field].push(value);
-    }
-    return Object.keys(f).length ? (f as any) : undefined;
-  }, [searchParams?.toString()]);
+  const { page, sortBy, search, filter, isFilteredView } =
+    useListQueryParams<OrderSortBy[number]>();
 
   const { data: orders, isLoading } = useGetOrders({
     page,
@@ -50,32 +25,29 @@ const Orders = () => {
     search,
   });
 
-  const isFilteredView = !!(search || sortBy?.length || filter);
+  const isExistItems = !!orders?.data?.items?.length;
 
   return (
-    <section className="flex flex-col gap-6">
-      <OrdersFilter />
-
-     {/*  <EntityCard
-        title="لیست سفارشات"
-        icon={<IoReceiptOutline className="text-2xl" />}
-        isLoading={isLoading}
-        datas={orders}
-        onAdd={() => router.push("/admin/orders/manual-order")}
-        isExistItems={!!orders?.data?.items?.length}
-        searchInp={isFilteredView}
-      >
-        <div className="flex flex-col justify-center items-center gap-4 w-full">
-          {orders?.data?.items?.map((order: Order) => (
-            <OrderBox
-              key={order.id}
-              order={order}
-              onClicked={() => router.push(`/admin/orders/order?id=${order.id}`)}
-            />
-          ))}
-        </div>
-      </EntityCard> */}
-    </section>
+    <UnifiedCard
+      searchFilter={<OrdersFilter />}
+      headerProps={{
+        title: "مدیریت سفارشات",
+        icon: <IoReceiptOutline className="text-2xl" />,
+        redirect: "/admin/orders/manual-order",
+      }}
+      isLoading={isLoading}
+      isExistItems={isExistItems}
+      searchInp={isFilteredView}
+      meta={orders?.data?.meta}
+    >
+      {orders?.data?.items?.map((order: Order) => (
+        <OrderBox
+          key={order.id}
+          order={order}
+          onClicked={() => router.push(`/admin/orders/order?id=${order.id}`)}
+        />
+      ))}
+    </UnifiedCard>
   );
 };
 

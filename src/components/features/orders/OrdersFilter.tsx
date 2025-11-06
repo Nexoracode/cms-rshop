@@ -18,6 +18,7 @@ const OrdersFilter = () => {
         },
       ]}
       searchPlaceholder="جستجو کد سفارش، نام مشتری یا محصول..."
+      showSearchBar
     >
       <OrdersFilterModal />
       <OrdersSortingModal />
