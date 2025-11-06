@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrdersFilter from "@/components/features/orders/OrdersFilter";
@@ -14,7 +12,6 @@ import { Order, OrderSortBy } from "@/components/features/orders/order-types";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const Orders = () => {
-  const router = useRouter();
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<OrderSortBy[number]>();
 
@@ -40,12 +37,12 @@ const Orders = () => {
       searchInp={isFilteredView}
       meta={orders?.data?.meta}
       className="mb-6"
+      childrenClassName="grid sm:grid-cols-2"
     >
       {orders?.data?.items?.map((order: Order) => (
         <OrderBox
           key={order.id}
           order={order}
-          onClicked={() => router.push(`/admin/orders/order?id=${order.id}`)}
         />
       ))}
     </UnifiedCard>
