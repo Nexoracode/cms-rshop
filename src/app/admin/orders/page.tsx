@@ -39,6 +39,7 @@ const Orders = () => {
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={orders?.data?.meta}
+      className="mb-6"
     >
       {orders?.data?.items?.map((order: Order) => (
         <OrderBox

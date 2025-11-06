@@ -19,20 +19,9 @@ import { PiMoneyWavy } from "react-icons/pi";
 import { IoIosArrowForward } from "react-icons/io";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { StatusOrder } from "./order-types";
+import { statusOptions } from "./order-constants";
 
-const statusOptions: { key: StatusOrder; label: string }[] = [
-  { key: "pending_approval", label: "در انتظار تایید" },
-  { key: "awaiting_payment", label: "در انتظار پرداخت" },
-  { key: "payment_confirmation_pending", label: "در انتظار تایید پرداخت" },
-  { key: "preparing", label: "در حال آماده‌سازی" },
-  { key: "shipping", label: "در حال ارسال" },
-  { key: "delivered", label: "تحویل گرفته" },
-  { key: "not_delivered", label: "تحویل نگرفته" },
-  { key: "expired", label: "منقضی شده" },
-  { key: "rejected", label: "رد شده" },
-  { key: "refunded", label: "عودت وجه" },
-  { key: "payment_failed", label: "پرداخت ناموفق" },
-];
+
 type Props = {
   order: any;
   onClicked: () => void;
@@ -125,7 +114,7 @@ const OrderBox: React.FC<Props> = ({ order, onClicked }) => {
                   size="sm"
                   isLoading={updateOrderStatus.isPending}
                 >
-                  {selectedStatus.label}
+                  {selectedStatus.title}
                   <MdOutlineKeyboardArrowDown className="text-lg" />
                 </Button>
               </PopoverTrigger>
@@ -138,7 +127,7 @@ const OrderBox: React.FC<Props> = ({ order, onClicked }) => {
                       selectedKeys={[selectedStatus.key]}
                     >
                       {(item) => (
-                        <ListboxItem key={item.key}>{item.label}</ListboxItem>
+                        <ListboxItem key={item.key}>{item.title}</ListboxItem>
                       )}
                     </Listbox>
                   </div>
