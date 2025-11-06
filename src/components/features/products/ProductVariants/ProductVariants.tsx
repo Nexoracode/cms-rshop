@@ -110,8 +110,8 @@ const ProductVariants: React.FC<Props> = ({
       >
         <BaseCard
           redirect={`/admin/products/create?edit_id=${product.id}&type=infos`}
-          className="shadow-none"
-          bodyClassName="flex flex-col items-center sm:flex-row gap-4 text-start"
+          className={`shadow-none ${!product?.variants ? "border-none" : ""}`}
+          bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start ${!product?.variants ? "p-0" : ""}`}
         >
           <div className="relative w-fit h-full">
             <img
@@ -187,7 +187,7 @@ const ProductVariants: React.FC<Props> = ({
         </BaseCard>
       </SelectableCard>
 
-      <div className="flex flex-col gap-2 mt-4 mx-4">
+      <div className={`flex flex-col gap-2 mt-4 mx-4 ${!product?.variants ? "hidden" : ""}`}>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <MdOutlineCategory className="text-purple-500 text-xl" />
