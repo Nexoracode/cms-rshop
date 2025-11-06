@@ -29,27 +29,20 @@ const ProductsSelectionModal = () => {
 
   const isExistItems = !!products?.data?.items?.length;
 
-  // فانکشن خارجی برای مدیریت تغییر انتخاب محصولات
-  const handleProductChange = (product: any, data: any) => {
-    if (!data) {
-      // حذف محصول از selectedProducts
-      setProducts(
-        selectedProducts.filter((p: SelectedProduct) => p.id !== product.id)
+  // ✅ مدیریت انتخاب یا لغو انتخاب محصول
+  const handleProductChange = (data: SelectedProduct | null) => {
+   /*  if (!data) {
+      // حذف از لیست انتخاب‌شده‌ها
+      setProducts((prev) =>
+        prev.filter((p: SelectedProduct) => p.id !== data?.id)
       );
     } else {
-      // ساخت آبجکت واقعی محصول با وریانت‌های انتخاب شده
-      const newSelectedItem: SelectedProduct = {
-        ...product, // تمام اطلاعات واقعی محصول
-        variants: data.variants?.length ? data.variants : null, // فقط وریانت‌های انتخاب شده
-      };
-
-      const newSelected: SelectedProduct[] = [
-        ...selectedProducts.filter((p: SelectedProduct) => p.id !== product.id),
-        newSelectedItem,
-      ];
-
-      setProducts(newSelected);
-    }
+      // افزودن یا به‌روزرسانی محصول انتخاب‌شده
+      setProducts((prev) => {
+        const withoutCurrent = prev.filter((p) => p.id !== data.id);
+        return [...withoutCurrent, data];
+      });
+    } */
   };
 
   return (
@@ -76,13 +69,8 @@ const ProductsSelectionModal = () => {
           <ProductVariants
             key={product.id}
             product={product}
-            initialItemsSelected={selectedProducts.map(
-              (p: SelectedProduct) => ({
-                product_id: p.id,
-                variants: p.variants,
-              })
-            )}
-            onChange={(data) => handleProductChange(product, data)}
+            initialItemsSelected={selectedProducts}
+            onChange={(data) => console.log(data)}
           />
         ))}
       </UnifiedCard>

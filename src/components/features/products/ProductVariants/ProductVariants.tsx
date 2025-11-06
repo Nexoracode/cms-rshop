@@ -6,20 +6,20 @@ import { RiDiscountPercentLine } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import BaseCard from "@/components/ui/BaseCard";
 
-type VariantProduct = { product_id: number; variants: number[] | null };
+type Product = Record<string, any>;
 
 type Props = {
-  product: Record<string, any>;
-  initialItemsSelected?: VariantProduct[] | null;
+  product: Product;
+  initialItemsSelected?: Product[] | null;
   disableSelect?: boolean;
-  onChange?: (data: Record<string, any> | null) => void;
+  onChange?: (data: Product | null) => void;
 };
 
 const ProductVariants: React.FC<Props> = ({
   product,
   initialItemsSelected = null,
   onChange,
-  disableSelect
+  disableSelect,
 }) => {
   const [selectedMood, setSelectedMood] = useState<
     "variants" | "product" | "null"
@@ -30,17 +30,17 @@ const ProductVariants: React.FC<Props> = ({
   useEffect(() => {
     if (!initialItemsSelected) return;
 
-    const found = initialItemsSelected.find((p) => p.product_id === product.id);
+    const found = initialItemsSelected.find((p: any) => p.id === product.id);
     if (!found) return;
 
-    if (!product.variants) {
+    if (!found.variants || !found.variants.length) {
       setSelectedMood("product");
       setSelectedProduct(true);
       setSelectedVariants([]);
-    } else if (found.variants?.length) {
+    } else {
       setSelectedMood("variants");
       setSelectedProduct(false);
-      setSelectedVariants(found.variants);
+      setSelectedVariants(found.variants.map((v: any) => v.id));
     }
   }, [initialItemsSelected, product]);
 
@@ -51,9 +51,12 @@ const ProductVariants: React.FC<Props> = ({
     if (mode === "null") {
       onChange?.(null);
     } else if (mode === "product") {
-      onChange?.({ product, variants: null });
+      onChange?.({ ...product, variants: null });
     } else {
-      onChange?.({ product, variants: variants ?? [] });
+      const selectedVariantsData = product.variants?.filter((v: any) =>
+        variants?.includes(v.id)
+      );
+      onChange?.({ ...product, variants: selectedVariantsData });
     }
   };
 
@@ -64,26 +67,33 @@ const ProductVariants: React.FC<Props> = ({
       setSelectedVariants([]);
       emitChange("product");
     } else {
+      // ✅ کامل ریست شود
       setSelectedMood("null");
       setSelectedProduct(false);
+      setSelectedVariants([]);
       emitChange("null");
     }
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
     let newSelected = [...selectedVariants];
-    if (selected) newSelected.push(variantId);
-    else newSelected = newSelected.filter((v) => v !== variantId);
+    if (selected) {
+      newSelected.push(variantId);
+    } else {
+      newSelected = newSelected.filter((v) => v !== variantId);
+    }
 
-    setSelectedVariants(newSelected);
-
-    if (newSelected.length) {
+    // ✅ بلافاصله stateها sync شوند
+    if (newSelected.length === 0) {
+      setSelectedMood("null");
+      setSelectedProduct(false);
+      setSelectedVariants([]);
+      emitChange("null");
+    } else {
       setSelectedMood("variants");
       setSelectedProduct(false);
+      setSelectedVariants(newSelected);
       emitChange("variants", newSelected);
-    } else {
-      setSelectedMood("null");
-      emitChange("null");
     }
   };
 
@@ -177,12 +187,11 @@ const ProductVariants: React.FC<Props> = ({
         </BaseCard>
       </SelectableCard>
 
-      {/* وریانت‌ها */}
       <div className="flex flex-col gap-2 mt-4 mx-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <MdOutlineCategory className="text-purple-500 text-xl" />
-            <p className="text-gray-600">تنوع محصول ها</p>
+            <p className="text-gray-600">تنوع محصول‌ها</p>
           </div>
           <p className="text-gray-600">{product?.variants?.length} عدد</p>
         </div>
@@ -192,7 +201,9 @@ const ProductVariants: React.FC<Props> = ({
             key={variant.id}
             id={variant.id}
             selectedIds={getSelectedVariantIds()}
-            onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
+            onSelectionChange={(idVal, sel) =>
+              handleVariantSelect(+idVal, sel)
+            }
             disabled={disableSelect || selectedMood === "product"}
           >
             <div className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-transparent hover:border hover:border-gray-300 transition-all duration-300">
