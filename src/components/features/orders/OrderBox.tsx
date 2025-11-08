@@ -123,6 +123,12 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
         ) : (
           ""
         )}
+        
+        {!isNotDelivered && !isAccept ? (
+          <p className="text-slate-600">محصولات انتخابی</p>
+        ) : (
+          ""
+        )}
 
         <AvatarGroup isBordered max={4} total={10} size="sm">
           <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
