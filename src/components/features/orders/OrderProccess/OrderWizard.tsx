@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { Tabs, Tab, Button } from "@heroui/react";
 import OrderProcess from "./OrderProccess";
 import StepContent from "./StepContent";
-import { StepKey } from "./type";
 import { OrderData } from "../order-types";
 
-const STEP_TITLES: Record<StepKey, string> = {
+const STEP_TITLES: any = {
   "1": "درخواست شده",
   "2": "در انتظار پرداخت",
   "3": "در انتظار تایید",
@@ -20,7 +19,9 @@ type Props = {
   order?: OrderData;
 };
 
-const statusToStep = (status: any /* OrderData["status"] | undefined */): StepKey => {
+type StepKey = "1" | "2" | "3" | "4" | "5" | "6"
+
+const statusToStep = (status: any) => {
   switch (status) {
     case "pending":
       return "1";

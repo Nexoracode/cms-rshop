@@ -14,7 +14,9 @@ const OrderDetail = () => {
   const { data: order, isLoading } = useGetOneOrder(
     orderId ? +orderId : undefined
   );
-
+  
+  console.log(order);
+  
   return (
     <UnifiedCard
       isLoading={isLoading}

@@ -22,6 +22,8 @@ const Orders = () => {
     search,
   });
 
+  console.log(orders);
+
   const isExistItems = !!orders?.data?.items?.length;
 
   return (

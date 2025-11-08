@@ -11,6 +11,8 @@ import {
   Listbox,
   ListboxItem,
   Chip,
+  AvatarGroup,
+  Avatar,
 } from "@heroui/react";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { statusOptions } from "./order-constants";
@@ -20,6 +22,7 @@ import CardRows from "@/components/shared/CardRows";
 import PopoverSelect, {
   PopoverSelectItem,
 } from "@/components/ui/PopoverSelect";
+import { TfiShoppingCartFull } from "react-icons/tfi";
 
 type Props = {
   order: any;
@@ -61,7 +64,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
     },
     {
       label: "آدرس",
-      value: `${order.user.addresses[0].province} - ${order.user.addresses[0].city}`,
+      value: `${order.user?.addresses?.province} - ${order.user?.addresses?.city}`,
     },
   ];
 
@@ -111,11 +114,44 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
             popoverClassName="w-[240px]"
           />
         ) : (
-          <Chip size="sm" variant="flat">{statusInfo.title}</Chip>
+          <Chip size="sm" variant="flat">
+            {statusInfo.title}
+          </Chip>
         )}
       </div>
 
       <CardRows items={rowItems} />
+
+      <div className="flex items-center justify-between w-full py-4 px-2">
+        <TfiShoppingCartFull
+          className="text-3xl text-sky-700"
+          style={{
+            display: "inline-block",
+            animation: "rotateBack 2s ease-in-out infinite",
+          }}
+        />
+
+        <style>
+          {`
+            @keyframes rotateBack {
+              0% { transform: rotate(0deg); }
+              25% { transform: rotate(15deg); }
+              50% { transform: rotate(-15deg); }
+              75% { transform: rotate(10deg); }
+              100% { transform: rotate(0deg); }
+            }
+          `}
+        </style>
+
+        <AvatarGroup isBordered max={4} total={10} size="sm">
+          <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
+          <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
+          <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+          <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
+          <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
+          <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
+        </AvatarGroup>
+      </div>
     </BaseCard>
   );
 };
