@@ -31,11 +31,11 @@ export type ProductSortBy = Array<
 
 type UseGetProductsParams = {
   page?: number;
-  limit?: number;
   filter?: ProductFilter;
   search?: string;
   searchBy?: string[];
   sortBy?: ProductSortBy;
+  limit?: number;
 };
 
 export const useGetProducts = ({
@@ -43,11 +43,12 @@ export const useGetProducts = ({
   filter,
   search,
   sortBy,
-}: Omit<UseGetProductsParams, "limit">) => {
+  limit = 40,
+}: UseGetProductsParams) => {
   return useQuery({
-    queryKey: ["all-products", page, filter, search, sortBy],
+    queryKey: ["all-products", page, filter, search, sortBy, limit],
     queryFn: () => {
-      const params: Record<string, any> = { page, limit: 40 };
+      const params: Record<string, any> = { page, limit: limit };
 
       if (filter) {
         for (const key in filter) {

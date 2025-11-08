@@ -9,7 +9,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="w-full lg:w-9/12 lg:pr-6">
         <div className="min-h-[69vh] mt-8">
-          <div className="max-w-[794px] mx-auto mb-32 lg:mb-0">{children}</div>
+          <div className="max-w-[794px] mx-auto mb-32 lg:mb-6">{children}</div>
         </div>
       </div>
     </div>

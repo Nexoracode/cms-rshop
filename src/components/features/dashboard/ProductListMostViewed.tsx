@@ -1,50 +1,30 @@
-"use client"
+"use client";
 
-import { Card, CardBody } from "@heroui/react"
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
+import { useGetProducts } from "@/core/hooks/api/products/useProduct";
 import { TfiShoppingCartFull } from "react-icons/tfi";
-import ProductItem from "./helpers/ProductItem";
+import ProductCard from "../products/ProductCard";
 
 const ProductListMostViewed = () => {
+  const { data: products, isLoading } = useGetProducts({ page: 1, limit: 5 });
 
-    return (
-        <Card className="shadow-md">
-           {/*  <BoxHeader
-                title="پربازدید ترین محصول ها"
-                color="bg-green-700/10 text-green-700"
-                icon={<TfiShoppingCartFull className="text-3xl" />}
-            /> */}
-            <CardBody className="flex flex-col gap-4">
-                <ProductItem
-                    price={385000}
-                    img="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                    productName="ویندوز 10"
-                    isExist="موجود"
-                    subProductName="کمترین قیمت"
-                />
-                <ProductItem
-                    img="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                    price={385000}
-                    productName="ویندوز 10"
-                    isExist="موجود"
-                    subProductName="کمترین قیمت"
-                />
-                <ProductItem
-                    img="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                    price={385000}
-                    productName="ویندوز 10"
-                    isExist="موجود"
-                    subProductName="کمترین قیمت"
-                />
-                <ProductItem
-                    img="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                    price={385000}
-                    productName="ویندوز 10"
-                    isExist="موجود"
-                    subProductName="کمترین قیمت"
-                />
-            </CardBody>
-        </Card>
-    )
-}
+  const isExistItems = !!products?.data?.items?.length;
 
-export default ProductListMostViewed
+  return (
+    <UnifiedCard
+      headerProps={{
+        title: "پربازدیدترین محصولات",
+        icon: <TfiShoppingCartFull className="text-2xl" />,
+        showIconInActionSlot: true,
+      }}
+      isLoading={isLoading}
+      isExistItems={isExistItems}
+    >
+      {products?.data?.items?.map((product: any, index: number) => (
+        <ProductCard key={index} product={product} disableAction />
+      ))}
+    </UnifiedCard>
+  );
+};
+
+export default ProductListMostViewed;

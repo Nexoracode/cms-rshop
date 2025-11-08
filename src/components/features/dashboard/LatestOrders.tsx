@@ -2,7 +2,6 @@
 
 import { Card, CardBody } from "@heroui/react"
 import { IoReceiptOutline } from "react-icons/io5";
-import OrderItem from "./helpers/OrderItem";
 
 const LatestOrders = () => {
 
@@ -14,7 +13,7 @@ const LatestOrders = () => {
                 icon={<IoReceiptOutline className="text-3xl" />}
             /> */}
             <CardBody className="flex flex-col gap-4">
-                <OrderItem
+             {/*    <OrderItem
                     price={385000}
                     customerName="علی اصغر حبیبی"
                     status="درخواست شده"
@@ -23,7 +22,7 @@ const LatestOrders = () => {
                     price={385000}
                     customerName="محمدحسین علی دوست"
                     status="درخواست شده"
-                />
+                /> */}
             </CardBody>
         </Card>
     )
