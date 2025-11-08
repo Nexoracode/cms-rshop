@@ -5,14 +5,10 @@ import { ProductsSelectionProvider } from "@/components/features/products/Select
 import { CustomersSelectionProvider } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
 
 const ManualOrder = () => {
-  const handleReset = () => {
-    //setCustomers([]);
-  };
-
   return (
     <ProductsSelectionProvider initialProducts={[]}>
       <CustomersSelectionProvider initialCustomers={[]} singleSelect>
-        <ManualOrderForm onReset={handleReset} />
+        <ManualOrderForm />
       </CustomersSelectionProvider>
     </ProductsSelectionProvider>
   );

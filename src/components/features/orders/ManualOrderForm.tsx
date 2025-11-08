@@ -10,11 +10,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 
-type ManualOrderFormProps = {
-  onReset?: () => void;
-};
-
-const ManualOrderForm: React.FC<ManualOrderFormProps> = ({ onReset }) => {
+const ManualOrderForm = () => {
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
 
