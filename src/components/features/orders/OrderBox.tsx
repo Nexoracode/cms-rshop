@@ -2,18 +2,7 @@
 
 import { useState } from "react";
 import BaseCard from "@/components/ui/BaseCard";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
-  Listbox,
-  ListboxItem,
-  Chip,
-  AvatarGroup,
-  Avatar,
-} from "@heroui/react";
+import { Chip, AvatarGroup, Avatar } from "@heroui/react";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { statusOptions } from "./order-constants";
 import { StatusOrder } from "./order-types";
@@ -22,7 +11,6 @@ import CardRows from "@/components/shared/CardRows";
 import PopoverSelect, {
   PopoverSelectItem,
 } from "@/components/ui/PopoverSelect";
-import { TfiShoppingCartFull } from "react-icons/tfi";
 
 type Props = {
   order: any;
@@ -35,17 +23,6 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const initialStatus =
     statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleStatusChange = (key: string) => {
-    const next = statusOptions.find((s) => s.key === key) ?? selectedStatus;
-    setSelectedStatus(next);
-    setIsOpen(false);
-    updateOrderStatus.mutate(
-      { id: order.id, status: next.key },
-      { onError: () => setSelectedStatus(initialStatus) }
-    );
-  };
 
   const rowItems = [
     {
@@ -70,11 +47,23 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
 
   const status = order.status as StatusOrder;
   const statusInfo = statusMap[status];
+  const isAccept =
+    order.status === "payment_confirmation_pending" ||
+    order.status === "pending_approval";
+
+  const isNotDelivered = order.status === "not_delivered";
 
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-3 p-4 w-auto"
       redirect={`/admin/orders/order?id=${order.id}`}
+      className={
+        isAccept
+          ? "shadow shadow-yellow-300"
+          : isNotDelivered
+          ? "shadow shadow-red-300"
+          : ""
+      }
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
@@ -123,25 +112,17 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
       <CardRows items={rowItems} />
 
       <div className="flex items-center justify-between w-full py-4 px-2">
-        <TfiShoppingCartFull
-          className="text-3xl text-sky-700"
-          style={{
-            display: "inline-block",
-            animation: "rotateBack 2s ease-in-out infinite",
-          }}
-        />
+        {isAccept ? (
+          <p className="text-yellow-600 animate-pulse">در انتظار تایید...</p>
+        ) : (
+          ""
+        )}
 
-        <style>
-          {`
-            @keyframes rotateBack {
-              0% { transform: rotate(0deg); }
-              25% { transform: rotate(15deg); }
-              50% { transform: rotate(-15deg); }
-              75% { transform: rotate(10deg); }
-              100% { transform: rotate(0deg); }
-            }
-          `}
-        </style>
+        {isNotDelivered ? (
+          <p className="text-red-600 animate-pulse">مشتری تحویل نگرفته...</p>
+        ) : (
+          ""
+        )}
 
         <AvatarGroup isBordered max={4} total={10} size="sm">
           <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />

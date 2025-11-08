@@ -1,7 +1,7 @@
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { StatusOrder } from "@/components/features/orders/order-types";
 import { LuClock } from "react-icons/lu";
-import { PiMoneyWavy } from "react-icons/pi";
+import { PiHandArrowDownFill, PiMoneyWavy } from "react-icons/pi";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineCheckCircle, MdOutlineCancel } from "react-icons/md";
 import { FaUndo } from "react-icons/fa";
@@ -60,7 +60,7 @@ export const statusMap: Record<
   },
   not_delivered: {
     title: "تحویل نگرفته",
-    icon: <MdOutlineCancel />,
+    icon: <PiHandArrowDownFill />,
     color: "text-red-600",
     bgColor: "bg-red-50",
     borderColor: "border-red-200",
