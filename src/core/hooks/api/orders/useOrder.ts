@@ -3,12 +3,12 @@ import { fetcher } from "@/core/utils/fetcher";
 import { buildQueryString } from "@/core/utils/buildQueryString";
 import { OrderSortBy } from "@/components/features/orders/order-types";
 
-
 type UseGetOrdersParams = {
   page?: number;
   sortBy?: OrderSortBy;
   filter?: Record<string, string[]>;
   search?: string;
+  limit?: number;
 };
 
 export const useGetOrders = ({
@@ -16,11 +16,12 @@ export const useGetOrders = ({
   sortBy,
   filter,
   search,
+  limit = 20,
 }: UseGetOrdersParams = {}) => {
   return useQuery({
-    queryKey: ["all-orders", page, sortBy, filter, search],
+    queryKey: ["all-orders", page, sortBy, filter, search, limit],
     queryFn: () => {
-      const params: Record<string, any> = { page };
+      const params: Record<string, any> = { page, limit };
       if (sortBy) params.sortBy = sortBy;
       if (search) params.search = search;
       // ← پشتیبانی از filter.* شبیه بقیه صفحات

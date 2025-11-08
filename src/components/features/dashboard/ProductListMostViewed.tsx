@@ -6,7 +6,7 @@ import { TfiShoppingCartFull } from "react-icons/tfi";
 import ProductCard from "../products/ProductCard";
 
 const ProductListMostViewed = () => {
-  const { data: products, isLoading } = useGetProducts({ page: 1, limit: 5 });
+  const { data: products, isLoading } = useGetProducts({ page: 1, limit: 4 });
 
   const isExistItems = !!products?.data?.items?.length;
 

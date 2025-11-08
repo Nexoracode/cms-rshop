@@ -10,6 +10,7 @@ import {
   Button,
   Listbox,
   ListboxItem,
+  Chip,
 } from "@heroui/react";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { statusOptions } from "./order-constants";
@@ -22,9 +23,10 @@ import PopoverSelect, {
 
 type Props = {
   order: any;
+  disableAction?: boolean;
 };
 
-const OrderCard: React.FC<Props> = ({ order }) => {
+const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const updateOrderStatus = useUpdateOrderStatus();
   const initialKey = (order?.status ?? "pending").toLowerCase() as StatusOrder;
   const initialStatus =
@@ -88,26 +90,29 @@ const OrderCard: React.FC<Props> = ({ order }) => {
             </span>
           </div>
         </div>
+        {!disableAction ? (
+          <PopoverSelect
+            items={statusOptions as PopoverSelectItem[]}
+            initialKey={selectedStatus.key}
+            isLoading={updateOrderStatus.isPending}
+            onSelect={(key) => {
+              const next = statusOptions.find((s) => s.key === key);
+              if (!next) return;
 
-        <PopoverSelect
-          items={statusOptions as PopoverSelectItem[]}
-          initialKey={selectedStatus.key}
-          isLoading={updateOrderStatus.isPending}
-          onSelect={(key) => {
-            const next = statusOptions.find((s) => s.key === key);
-            if (!next) return;
-
-            setSelectedStatus(next);
-            updateOrderStatus.mutate(
-              { id: order.id, status: next.key },
-              {
-                onError: () => setSelectedStatus(selectedStatus),
-              }
-            );
-          }}
-          buttonClassName="capitalize w-full xs:w-fit text-sm"
-          popoverClassName="w-[240px]"
-        />
+              setSelectedStatus(next);
+              updateOrderStatus.mutate(
+                { id: order.id, status: next.key },
+                {
+                  onError: () => setSelectedStatus(selectedStatus),
+                }
+              );
+            }}
+            buttonClassName="capitalize w-full xs:w-fit text-sm"
+            popoverClassName="w-[240px]"
+          />
+        ) : (
+          <Chip size="sm" variant="flat">{statusInfo.title}</Chip>
+        )}
       </div>
 
       <CardRows items={rowItems} />

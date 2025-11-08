@@ -1,31 +1,35 @@
-"use client"
+"use client";
 
-import { Card, CardBody } from "@heroui/react"
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { IoReceiptOutline } from "react-icons/io5";
+import { Order } from "../orders/order-types";
+import OrderBox from "@/components/features/orders/OrderBox";
+import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
 
 const LatestOrders = () => {
+  const { data: orders, isLoading } = useGetOrders({
+    page: 1,
+    limit: 4,
+  });
 
-    return (
-        <Card className="shadow-md">
-           {/*  <BoxHeader
-                title="جدیدترین سفارش ها"
-                color="bg-blue-700/10 text-blue-700"
-                icon={<IoReceiptOutline className="text-3xl" />}
-            /> */}
-            <CardBody className="flex flex-col gap-4">
-             {/*    <OrderItem
-                    price={385000}
-                    customerName="علی اصغر حبیبی"
-                    status="درخواست شده"
-                />
-                <OrderItem
-                    price={385000}
-                    customerName="محمدحسین علی دوست"
-                    status="درخواست شده"
-                /> */}
-            </CardBody>
-        </Card>
-    )
-}
+  const isExistItems = !!orders?.data?.items?.length;
 
-export default LatestOrders
+  return (
+    <UnifiedCard
+      headerProps={{
+        title: "جدیدترین سفارشات",
+        icon: <IoReceiptOutline className="text-2xl" />,
+        showIconInActionSlot: true,
+      }}
+      isLoading={isLoading}
+      isExistItems={isExistItems}
+      childrenClassName="grid md:grid-cols-2"
+    >
+      {orders?.data?.items?.map((order: Order) => (
+        <OrderBox key={order.id} order={order} disableAction/>
+      ))}
+    </UnifiedCard>
+  );
+};
+
+export default LatestOrders;
