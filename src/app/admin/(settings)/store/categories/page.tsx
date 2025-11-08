@@ -1,6 +1,6 @@
 "use client";
 
-import HeaderAction from "@/components/common/HeaderAction";
+import HeaderAction from "@/components/common/Card/HeaderAction";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
 import { useDisclosure } from "@heroui/react";
 

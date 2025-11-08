@@ -1,6 +1,6 @@
 "use client"
 
-import HeaderAction from "@/components/common/HeaderAction"
+import HeaderAction from "@/components/common/Card/HeaderAction"
 import BlogCard from "@/components/features/store/blog/BlogCard"
 import { useState } from "react"
 import { TbFolderOpen } from "react-icons/tb"

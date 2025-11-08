@@ -1,6 +1,6 @@
 "use client"
 
-import HeaderAction from "@/components/common/HeaderAction"
+import HeaderAction from "@/components/common/Card/HeaderAction"
 import Faq from "@/components/features/settings/Faq"
 import { useState } from "react"
 import { FaQuestion } from "react-icons/fa6"
