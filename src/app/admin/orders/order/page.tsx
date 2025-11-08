@@ -5,6 +5,7 @@ import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
+import { GoArrowUpRight } from "react-icons/go";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();
@@ -23,9 +24,8 @@ const OrderDetail = () => {
         title: "مشخصات سفارش",
         icon: <IoReceiptOutline className="text-2xl" />,
         textBtn: "مشاهده فاکتور",
-        onAdd: () => {
-          window.open(`/orders/invoice/${orderId}`, "_blank");
-        },
+        btnIcon: <GoArrowUpRight />,
+        redirect: `/orders/invoice/${orderId}`
       }}
     >
       <OrderWizard order={order?.data} />
