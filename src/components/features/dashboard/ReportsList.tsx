@@ -7,7 +7,7 @@ import { FiUsers } from "react-icons/fi";
 import BaseCard from "@/components/ui/BaseCard";
 import CardHeader from "@/components/common/Card/CardHeader";
 import { LuChartNetwork } from "react-icons/lu";
-import BoxLink from "@/components/common/BoxLink";
+import BoxLink from "@/components/shared/BoxLink";
 
 const ReportsList = () => {
   return (

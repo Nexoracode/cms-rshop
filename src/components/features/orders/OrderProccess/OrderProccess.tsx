@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardBody, Divider } from "@heroui/react";
-import InfoRow from "../helper/InfoRow";
+import InfoRow from "../../../shared/InfoRow";
 import { LuUserRound } from "react-icons/lu";
 import { TiInfoLargeOutline } from "react-icons/ti";
 import { IoMdPaper } from "react-icons/io";
