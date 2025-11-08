@@ -10,9 +10,8 @@ type CustomersSelectionContextType = {
   setCustomers: (customers: Customer[]) => void;
 };
 
-const CustomersSelectionContext = createContext<CustomersSelectionContextType | null>(
-  null
-);
+const CustomersSelectionContext =
+  createContext<CustomersSelectionContextType | null>(null);
 
 export const useCustomersSelection = () => {
   const context = useContext(CustomersSelectionContext);
@@ -26,7 +25,8 @@ export const useCustomersSelection = () => {
 export const CustomersSelectionProvider: React.FC<{
   initialCustomers?: Customer[];
   children: React.ReactNode;
-}> = ({ initialCustomers = [], children }) => {
+  singleSelect?: boolean;
+}> = ({ initialCustomers = [], children, singleSelect = false }) => {
   const [selectedCustomers, setSelectedCustomers] = useState<Customer[]>([]);
 
   useEffect(() => {
@@ -34,7 +34,13 @@ export const CustomersSelectionProvider: React.FC<{
   }, [initialCustomers]);
 
   const addCustomer = (customer: Customer) => {
-    setSelectedCustomers((prev) => [...prev.filter((u) => u.id !== customer.id), customer]);
+    setSelectedCustomers((prev) => {
+      if (singleSelect) {
+        return [customer];
+      }
+      const filtered = prev.filter((u) => u.id !== customer.id);
+      return [...filtered, customer];
+    });
   };
 
   const removeCustomer = (customerId: number) => {

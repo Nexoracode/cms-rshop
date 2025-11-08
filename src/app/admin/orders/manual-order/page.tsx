@@ -11,7 +11,7 @@ const ManualOrder = () => {
 
   return (
     <ProductsSelectionProvider initialProducts={[]}>
-      <CustomersSelectionProvider initialCustomers={[]}>
+      <CustomersSelectionProvider initialCustomers={[]} singleSelect>
         <ManualOrderForm onReset={handleReset} />
       </CustomersSelectionProvider>
     </ProductsSelectionProvider>
