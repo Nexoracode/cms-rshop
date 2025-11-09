@@ -35,7 +35,7 @@ const CustomersList = () => {
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={users?.data?.meta}
-      childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
+      childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center md:justify-items-stretch"
     >
       {users?.data?.items?.map((user: any) => (
         <CustomerCard key={user.id} infos={user} />

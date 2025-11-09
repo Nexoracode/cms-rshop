@@ -19,12 +19,12 @@ const SwitchWrapper = ({
   const [isSelected, setIsSelected] = useState(initialSelected);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between mt-6">
+    <div className="flex flex-col gap-4 border rounded-xl p-3">
+      <div className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <p>{label}</p>
           {description && (
-            <p className="text-gray-600 pr-2 text-[13px] mt-2">{description}</p>
+            <p className="text-gray-600 text-[13px]">{description}</p>
           )}
         </div>
         <Switch

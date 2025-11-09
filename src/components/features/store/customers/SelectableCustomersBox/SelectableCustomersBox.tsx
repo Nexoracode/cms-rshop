@@ -29,7 +29,13 @@ const InnerSelectableUsersBox: React.FC<{
       initial={selectedCustomers}
       modal={<UsersSelectionModal />}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div
+        className={`${
+          selectedCustomers.length === 1
+            ? "flex justify-center"
+            : "grid grid-cols-1 md:grid-cols-2 gap-4"
+        }`}
+      >
         {selectedCustomers.map((user: Customer) => (
           <CustomerCard
             key={user.id}

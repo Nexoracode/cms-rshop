@@ -28,7 +28,11 @@ const ManualOrderForm = () => {
       }}
       wrapperContents
     >
-      {/*  <SwitchWrapper
+      <SelectableUsersBox onChange={() => {}} />
+
+      <SelectableProductsBox onChange={() => {}} />
+
+      <SwitchWrapper
         label="تخفیف فاکتور"
         description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
       >
@@ -46,11 +50,7 @@ const ManualOrderForm = () => {
             onDiscountChange(t, discountValue);
           }}
         />
-      </SwitchWrapper> */}
-
-      <SelectableUsersBox onChange={() => {}} />
-
-      <SelectableProductsBox onChange={() => {}} />
+      </SwitchWrapper>
 
       <FormActionButtons cancelHref="/admin/orders" onSubmit={() => {}} />
     </BaseCard>
