@@ -1,6 +1,7 @@
 "use client";
 
 import RatingStars from "@/components/common/RatingStars";
+import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
 import { toPersianDate } from "@/core/utils/dateHelpers";
 import { BiCommentDetail } from "react-icons/bi";
@@ -30,8 +31,18 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
   const formatPrice = (price: number) =>
     Math.round(price).toLocaleString("fa-IR");
 
+  //const { mutate: deleteReview } = useDeleteReview();
+
   return (
-    <BaseCard className="flex flex-col gap-3 p-1" bodyClassName="cursor-auto">
+    <BaseCard
+      className="flex flex-col gap-3 p-1 max-w-[377px] w-full hover-reveal-parent"
+      bodyClassName="overflow-hidden p-2.5 cursor-auto"
+    >
+      {/* دکمه حذف */}
+      <div className="hover-reveal-child">
+        <DeleteButton onDelete={() => {}} />
+      </div>
+
       {/* محصول */}
       <div className="flex items-center gap-3">
         <img
@@ -40,12 +51,10 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
           className="rounded-xl object-cover w-16 h-16"
         />
         <div className="w-full h-full flex flex-col justify-between gap-1 py-1">
-          <h3 className="line-clamp-1">{product.name}</h3>
-
+          <h3 className="line-clamp-1 truncate w-56">{product.name}</h3>
           <div className="flex items-center justify-between gap-2">
             <span className="text-gray-700">
-              {formatPrice(product.final_price)}
-              تومان
+              {formatPrice(product.final_price)} تومان
             </span>
             <div className="flex items-center gap-2">
               {product.discount_percent > 0 && (
@@ -58,7 +67,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         </div>
       </div>
 
-      <div className="text-gray-600 border-t border-slate-200 p-2 border my-3 rounded-xl h-28 overflow-y-auto">
+      <div className="text-gray-600 border-t border-slate-200 p-2 border mt-3 rounded-xl h-28 overflow-y-auto">
         <div className="flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2">
           <BiCommentDetail className="text-xl" />
           <span>{toPersianDate(item.created_at)}</span>

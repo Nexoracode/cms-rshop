@@ -7,6 +7,7 @@ import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { MdOutlineCategory } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
+import { useDeleteProduct } from "@/core/hooks/api/products/useProduct";
 
 type Props = {
   product: any;
@@ -15,6 +16,8 @@ type Props = {
 
 const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
   const id = product.id;
+
+  const { mutate: deleteProduct } = useDeleteProduct(product.id);
 
   return (
     <BaseCard
@@ -52,11 +55,15 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
               <ActionButton
                 icon={<MdOutlineCategory size={18} />}
                 route={`/admin/products/create?edit_id=${id}&type=variant`}
-                className={product?.variants?.length ? "bg-purple-100 text-purple-600" : ""}
+                className={
+                  product?.variants?.length
+                    ? "bg-purple-100 text-purple-600"
+                    : ""
+                }
               />
               <DeleteButton
                 onDelete={() => {
-                  /* mutate hook اینجا */
+                  deleteProduct();
                 }}
               />
             </div>

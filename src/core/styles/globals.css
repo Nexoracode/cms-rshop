@@ -57,3 +57,20 @@
     @apply outline-none
   }
 }
+
+@layer utilities {
+  /* کلاس والد: اضافه کنید به هر کارت */
+  .hover-reveal-parent {
+    @apply relative group;
+  }
+  
+  /* کلاس فرزند: دکمه حذف یا هر المان دیگری که روی هاور ظاهر شود */
+  .hover-reveal-child {
+    @apply absolute top-2.5 left-2.5 z-50 opacity-0 pointer-events-none transition-all duration-200;
+  }
+  
+  .hover-reveal-parent:hover .hover-reveal-child {
+    @apply opacity-100 pointer-events-auto;
+  }
+
+}
