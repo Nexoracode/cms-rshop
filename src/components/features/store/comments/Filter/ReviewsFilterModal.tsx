@@ -36,8 +36,8 @@ const ReviewsFilterModal: React.FC = () => {
       type: "boolean01",
       default: "",
     },
-    { key: "user_id", label: "کاربران", type: "select", options: users },
-    { key: "product_id", label: "محصولات", type: "select", options: products },
+    { key: "user_id", label: "کاربران", type: "select", options: users, searchable: true },
+    { key: "product_id", label: "محصولات", type: "select", options: products, searchable: true },
   ];
 
   return <FilterModal title="فیلتر دیدگاه ها" fields={fields} />;

@@ -15,6 +15,7 @@ export type FilterField =
       options?: FieldOption[];
       remoteOptions?: () => Promise<FieldOption[]>;
       placeholder?: string;
+      searchable?: boolean; 
     }
   | {
       key: string;

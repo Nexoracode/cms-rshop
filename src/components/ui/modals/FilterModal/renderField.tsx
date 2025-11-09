@@ -8,6 +8,7 @@ import NumberRangeGroup from "@/components/forms/Inputs/NumberRangeGroup";
 import SelectBox from "../../inputs/SelectBox";
 import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import { FieldOption, FilterField } from ".";
+import AutocompleteInput from "../../inputs/AutocompleteInput";
 
 type Props = {
   f: FilterField;
@@ -38,6 +39,21 @@ export const renderField = ({
       );
 
     case "select":
+      if (f.searchable) {
+        return (
+          <AutocompleteInput
+            label={f.label}
+            placeholder={f.placeholder}
+            options={(f.options ?? remoteCache[f.key] ?? []).map((o: any) => ({
+              id: o.key,
+              title: o.title,
+            }))}
+            selectedId={state[f.key]}
+            onChange={(val) => setField(f.key, val)}
+          />
+        );
+      }
+
       return (
         <SelectBox
           label={f.label}
@@ -122,7 +138,7 @@ export const renderField = ({
           valueIsoRange={state[`${f.key}Range`]}
           onChangeIsoRange={(range) => {
             console.log(range);
-            setField(`${f.key}Range`, range)
+            setField(`${f.key}Range`, range);
           }}
         />
       );
