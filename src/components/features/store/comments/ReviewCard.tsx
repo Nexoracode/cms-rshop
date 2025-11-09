@@ -3,6 +3,7 @@
 import RatingStars from "@/components/common/RatingStars";
 import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
+import OptionButton from "@/components/ui/buttons/OptionButton";
 import { toPersianDate } from "@/core/utils/dateHelpers";
 import { BiCommentDetail } from "react-icons/bi";
 
@@ -67,16 +68,17 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         </div>
       </div>
 
-      <div className="text-gray-600 border-t border-slate-200 p-2 border mt-3 rounded-xl h-28 overflow-y-auto">
+      <div className="border-t border-slate-200 p-2 border mt-3 rounded-xl">
         <div className="flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2">
           <BiCommentDetail className="text-xl" />
           <span>{toPersianDate(item.created_at)}</span>
         </div>
-        <div className="text-sm mr-2 mt-2.5 text-gray-700 leading-relaxed">
+        <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
           {item.comment}
         </div>
-        <div className="flex items-center justify-end mt-1 ml-1">
+        <div className="flex items-center justify-between mt-1 ml-1">
           <RatingStars rating={item.rating} size={16} />
+          <OptionButton title="تایید کامنت" size="sm" />
         </div>
       </div>
     </BaseCard>
