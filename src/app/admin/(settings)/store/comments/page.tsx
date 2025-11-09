@@ -31,7 +31,7 @@ const AdminReviews = () => {
       isLoading={isLoading}
       isExistItems={isExistItems}
       searchInp={isFilteredView}
-      //meta={reviews?.data?.meta}
+      meta={reviews?.data?.meta}
       childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center md:justify-items-stretch"
     >
       {reviews?.data?.map((item: any) => (

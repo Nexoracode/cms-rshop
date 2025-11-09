@@ -29,3 +29,8 @@ export const isoToCal = (iso?: string | null): CalendarDate | undefined => {
     return undefined;
   }
 };
+
+export const toPersianDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("fa-IR");
+};

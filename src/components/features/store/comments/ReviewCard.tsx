@@ -1,6 +1,9 @@
 "use client";
 
-import { FaStar } from "react-icons/fa6";
+import RatingStars from "@/components/common/RatingStars";
+import BaseCard from "@/components/ui/BaseCard";
+import { toPersianDate } from "@/core/utils/dateHelpers";
+import { BiCommentDetail } from "react-icons/bi";
 
 type ReviewCardProps = {
   item: {
@@ -28,58 +31,46 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
     Math.round(price).toLocaleString("fa-IR");
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 flex flex-col gap-3 transition hover:shadow-md duration-200">
+    <BaseCard className="flex flex-col gap-3 p-1" bodyClassName="cursor-auto">
       {/* محصول */}
       <div className="flex items-center gap-3">
         <img
           src={product.image}
           alt={product.name}
-          width={64}
-          height={64}
-          className="rounded-xl object-cover w-16 h-16 border border-gray-100"
+          className="rounded-xl object-cover w-16 h-16"
         />
-        <div className="flex flex-col gap-1">
-          <h3 className="font-semibold text-gray-800 line-clamp-1">
-            {product.name}
-          </h3>
+        <div className="w-full h-full flex flex-col justify-between gap-1 py-1">
+          <h3 className="line-clamp-1">{product.name}</h3>
 
-          {/* قیمت‌ها */}
-          <div className="flex items-center gap-2">
-            {product.discount_percent > 0 && (
-              <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium">
-                {product.discount_percent}% تخفیف
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            {product.discount_percent > 0 && (
-              <p className="text-xs text-gray-400 line-through">
-                {formatPrice(product.price)} تومان
-              </p>
-            )}
-            <p className="text-sm text-gray-800 font-semibold">
-              {formatPrice(product.final_price)} تومان
-            </p>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-gray-700">
+              {formatPrice(product.final_price)}
+              تومان
+            </span>
+            <div className="flex items-center gap-2">
+              {product.discount_percent > 0 && (
+                <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+                  {product.discount_percent}% تخفیف
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* نظر */}
-      <p className="text-sm text-gray-700 leading-relaxed border-t pt-2">
-        {item.comment}
-      </p>
-
-      {/* امتیاز و تاریخ */}
-      <div className="flex items-center justify-between text-sm text-gray-500 mt-auto">
-        <div className="flex items-center gap-1 text-yellow-500">
-          {Array.from({ length: item.rating }).map((_, i) => (
-            <FaStar key={i} className="w-4 h-4" />
-          ))}
+      <div className="text-gray-600 border-t border-slate-200 p-2 border my-3 rounded-xl h-28 overflow-y-auto">
+        <div className="flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2">
+          <BiCommentDetail className="text-xl" />
+          <span>{toPersianDate(item.created_at)}</span>
         </div>
-        <span dir="ltr">{item.created_at.slice(0, 10)}</span>
+        <div className="text-sm mr-2 mt-2.5 text-gray-700 leading-relaxed">
+          {item.comment}
+        </div>
+        <div className="flex items-center justify-end mt-1 ml-1">
+          <RatingStars rating={item.rating} size={16} />
+        </div>
       </div>
-    </div>
+    </BaseCard>
   );
 };
 
