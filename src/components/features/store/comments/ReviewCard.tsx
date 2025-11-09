@@ -102,7 +102,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
           {item.comment}
         </div>
-        <div className="flex items-center justify-between mt-2 ml-1 border-t pt-2">
+        <div className="flex items-center justify-between mt-1">
           <RatingStars rating={item.rating} size={16} />
           <OptionButton
             title={isApproved ? "تایید شده" : "تایید کامنت"}
