@@ -1,4 +1,3 @@
-
 export type FieldOption = { key: string | number; title: string };
 
 export type FilterField =
@@ -15,7 +14,8 @@ export type FilterField =
       options?: FieldOption[];
       remoteOptions?: () => Promise<FieldOption[]>;
       placeholder?: string;
-      searchable?: boolean; 
+      searchable?: boolean;
+      syncSearchToUrl?: boolean
     }
   | {
       key: string;

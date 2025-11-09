@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
 
@@ -17,6 +17,9 @@ type AutocompleteInputProps = {
   onChange: (id: string) => void;
   isRequired?: boolean;
   className?: string;
+  searchValue?: string;
+  /** اگر true باشد، مقدار سرچ در URL ذخیره می‌شود */
+  syncSearchToUrl?: boolean;
 };
 
 const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
@@ -27,7 +30,25 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
   onChange,
   isRequired = false,
   className = "",
+  syncSearchToUrl = false,
 }) => {
+  // 🔹 تابع به‌روزرسانی URL در زمان تایپ
+  const handleSearchChange = useCallback(
+    (val: string) => {
+      if (syncSearchToUrl) {
+        const params = new URLSearchParams(window.location.search);
+        if (val) {
+          params.set("search", val);
+        } else {
+          params.delete("search");
+        }
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState(null, "", newUrl);
+      }
+    },
+    [syncSearchToUrl]
+  );
+
   return (
     <Autocomplete
       label={label}
@@ -41,6 +62,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       onSelectionChange={(key) => {
         if (key) onChange(key.toString());
       }}
+      onInputChange={handleSearchChange}
     >
       {options.length ? (
         options.map((opt) => (

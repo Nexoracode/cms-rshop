@@ -5,10 +5,12 @@ import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 import { FilterField } from "@/components/ui/modals/FilterModal";
 import { useGetAllUsers } from "@/core/hooks/api/users/useUsers";
 import { useGetProducts } from "@/core/hooks/api/products/useProduct";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const ReviewsFilterModal: React.FC = () => {
+  const { search } = useListQueryParams();
   const { data: usersData } = useGetAllUsers({ page: 1 });
-  const { data: productsData } = useGetProducts({ page: 1 });
+  const { data: productsData } = useGetProducts({ page: 1, search });
   console.log(productsData);
 
   const users = useMemo(
@@ -36,8 +38,21 @@ const ReviewsFilterModal: React.FC = () => {
       type: "boolean01",
       default: "",
     },
-    { key: "user_id", label: "کاربران", type: "select", options: users, searchable: true },
-    { key: "product_id", label: "محصولات", type: "select", options: products, searchable: true },
+    {
+      key: "user_id",
+      label: "کاربران",
+      type: "select",
+      options: users,
+      searchable: true,
+    },
+    {
+      key: "product_id",
+      label: "محصولات",
+      type: "select",
+      options: products,
+      searchable: true,
+      syncSearchToUrl: true,
+    },
   ];
 
   return <FilterModal title="فیلتر دیدگاه ها" fields={fields} />;
