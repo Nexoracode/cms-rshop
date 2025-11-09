@@ -17,7 +17,7 @@ const AdminReviews = () => {
     filter,
   });
 
-  const isExistItems = !!reviews?.data?.length;
+  const isExistItems = !!reviews?.data?.items?.length;
   console.log(reviews);
   
   return (
@@ -34,7 +34,7 @@ const AdminReviews = () => {
       meta={reviews?.data?.meta}
       childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center md:justify-items-stretch"
     >
-      {reviews?.data?.map((item: any) => (
+      {reviews?.data?.items?.map((item: any) => (
         <ReviewCard key={item.id} item={item} />
       ))}
     </UnifiedCard>

@@ -58,3 +58,21 @@ export const useUpdateReviewStatus = (id: number) => {
     },
   });
 };
+
+export const useDeleteReview = () => {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) =>
+      fetcher({
+        route: `/admin/reviews/${id}`,
+        method: "DELETE",
+        isActiveToast: true,
+        loadingText: "در حال حذف کامنت...",
+        successText: "کامنت با موفقیت حذف شد",
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["all-reviews"] });
+    },
+  });
+};

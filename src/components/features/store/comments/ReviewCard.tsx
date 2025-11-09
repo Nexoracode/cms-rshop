@@ -4,10 +4,15 @@ import RatingStars from "@/components/common/RatingStars";
 import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
 import OptionButton from "@/components/ui/buttons/OptionButton";
+import {
+  UpdateReviewStatusPayload,
+  useDeleteReview,
+  useUpdateReviewStatus,
+} from "@/core/hooks/api/useReview";
 import { toPersianDate } from "@/core/utils/dateHelpers";
 import Link from "next/link";
-import { BiCommentDetail } from "react-icons/bi";
-import { LuCircleUser, LuUserRound } from "react-icons/lu";
+import { useState } from "react";
+import { LuCircleUser } from "react-icons/lu";
 
 type ReviewCardProps = {
   item: {
@@ -25,20 +30,29 @@ type ReviewCardProps = {
       final_price: number;
     };
     user: {
-        id: number,
-        name: string
-    }
+      id: number;
+      name: string;
+    };
+    is_approved: boolean;
   };
 };
 
 const ReviewCard = ({ item }: ReviewCardProps) => {
   const { product } = item;
+  const [isApproved, setIsApproved] = useState(item.is_approved);
 
-  // فرمت قیمت با جداکننده هزارگان و بدون اعشار
+  const { mutate: updateStatus, isPending } = useUpdateReviewStatus(item.id);
+  const { mutate: deleteReview } = useDeleteReview();
+
+  const handleToggleApprove = () => {
+    const newStatus: UpdateReviewStatusPayload = { isApproved: !isApproved };
+    updateStatus(newStatus, {
+      onSuccess: () => setIsApproved(!isApproved),
+    });
+  };
+
   const formatPrice = (price: number) =>
     Math.round(price).toLocaleString("fa-IR");
-
-  //const { mutate: deleteReview } = useDeleteReview();
 
   return (
     <BaseCard
@@ -47,7 +61,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
     >
       {/* دکمه حذف */}
       <div className="hover-reveal-child">
-        <DeleteButton onDelete={() => {}} />
+        <DeleteButton onDelete={() => deleteReview(item.id)} />
       </div>
 
       {/* محصول */}
@@ -75,7 +89,10 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
       </div>
 
       <div className="p-2 mt-3 rounded-xl border border-slate-200">
-        <Link href={`/admin/store/customers/create?edit_id=${item.user.id}`} className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2">
+        <Link
+          href={`/admin/store/customers/create?edit_id=${item.user.id}`}
+          className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2"
+        >
           <div className="flex items-center gap-1.5">
             <LuCircleUser className="text-xl" />
             <span>{item.user.name}</span>
@@ -87,7 +104,13 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         </div>
         <div className="flex items-center justify-between mt-2 ml-1 border-t pt-2">
           <RatingStars rating={item.rating} size={16} />
-          <OptionButton title="تایید کامنت" size="sm" />
+          <OptionButton
+            title={isApproved ? "تایید شده" : "تایید کامنت"}
+            size="sm"
+            isLoading={isPending}
+            onClick={handleToggleApprove}
+            className={isApproved ? "bg-green-50 text-green-600" : ""}
+          />
         </div>
       </div>
     </BaseCard>
