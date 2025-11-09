@@ -23,9 +23,6 @@ const RatingStars = ({
 
   return (
     <div className={`flex items-start gap-2 ${className}`}>
-      {showNumber && (
-        <span className="text-gray-600 text-sm">{rating.toFixed(1)}</span>
-      )}
       <div className="flex items-center gap-0.5">
         {Array.from({ length: fullStars }).map((_, i) => (
           <FaStar key={`full-${i}`} size={size} />
@@ -43,6 +40,9 @@ const RatingStars = ({
           <FaRegStar key={`empty-${i}`} size={size} />
         ))}
       </div>
+      {showNumber && (
+        <span className="text-gray-600 text-sm">{rating.toFixed(1)}</span>
+      )}
     </div>
   );
 };

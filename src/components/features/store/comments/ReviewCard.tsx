@@ -5,7 +5,9 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import { toPersianDate } from "@/core/utils/dateHelpers";
+import Link from "next/link";
 import { BiCommentDetail } from "react-icons/bi";
+import { LuCircleUser, LuUserRound } from "react-icons/lu";
 
 type ReviewCardProps = {
   item: {
@@ -22,6 +24,10 @@ type ReviewCardProps = {
       discount_percent: number;
       final_price: number;
     };
+    user: {
+        id: number,
+        name: string
+    }
   };
 };
 
@@ -68,15 +74,18 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         </div>
       </div>
 
-      <div className="border-t border-slate-200 p-2 border mt-3 rounded-xl">
-        <div className="flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2">
-          <BiCommentDetail className="text-xl" />
+      <div className="p-2 mt-3 rounded-xl border border-slate-200">
+        <Link href={`/admin/store/customers/create?edit_id=${item.user.id}`} className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2">
+          <div className="flex items-center gap-1.5">
+            <LuCircleUser className="text-xl" />
+            <span>{item.user.name}</span>
+          </div>
           <span>{toPersianDate(item.created_at)}</span>
-        </div>
+        </Link>
         <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
           {item.comment}
         </div>
-        <div className="flex items-center justify-between mt-1 ml-1">
+        <div className="flex items-center justify-between mt-2 ml-1 border-t pt-2">
           <RatingStars rating={item.rating} size={16} />
           <OptionButton title="تایید کامنت" size="sm" />
         </div>
