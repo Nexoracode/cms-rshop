@@ -6,6 +6,7 @@ import ReviewCard from "@/components/features/store/comments/ReviewCard";
 import { LuMessagesSquare } from "react-icons/lu";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { ReviewSortBy } from "@/components/features/store/comments/review-types";
+import ReviewsFilter from "@/components/features/store/comments/Filter/ReviewsFilter";
 
 const AdminReviews = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -19,10 +20,10 @@ const AdminReviews = () => {
 
   const isExistItems = !!reviews?.data?.items?.length;
   console.log(reviews);
-  
+
   return (
     <UnifiedCard
-      searchFilter={null}
+      searchFilter={<ReviewsFilter />}
       headerProps={{
         title: "لیست نظرات کاربران",
         icon: <LuMessagesSquare />,

@@ -46,7 +46,7 @@ export const useUpdateReviewStatus = (id: number) => {
     mutationFn: (data: UpdateReviewStatusPayload) =>
       fetcher({
         route: `/admin/reviews/${id}/status`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
         isActiveToast: true,
         loadingText: "در حال بروزرسانی وضعیت نظر...",
