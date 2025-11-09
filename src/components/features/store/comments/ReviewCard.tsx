@@ -88,10 +88,10 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         </div>
       </div>
 
-      <div className="p-2 mt-3 rounded-xl border border-slate-200">
+      <div className="p-2 mt-4 rounded-xl border border-slate-200">
         <Link
           href={`/admin/store/customers/create?edit_id=${item.user.id}`}
-          className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-3 py-2"
+          className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-2 py-2"
         >
           <div className="flex items-center gap-1.5">
             <LuCircleUser className="text-xl" />
@@ -102,7 +102,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
           {item.comment}
         </div>
-        <div className="flex items-center justify-between mt-1">
+        <div className="flex items-center justify-between mt-1 px-1.5">
           <RatingStars rating={item.rating} size={16} />
           <OptionButton
             title={isApproved ? "تایید شده" : "تایید کامنت"}
