@@ -9,7 +9,6 @@ import { IoMdPaper } from "react-icons/io";
 import { TbTruckLoading } from "react-icons/tb";
 import { OrderData } from "../order-types";
 import StepContent from "./StepContent";
-import { StepKey } from "./type";
 
 type OrderProcessProps = {
   order: OrderData | undefined;
@@ -20,6 +19,8 @@ type OrderProcessProps = {
    */
   actionBox?: React.ReactNode;
 };
+
+type StepKey = any
 
 const statusToStep = (status: any /* OrderData["status"] */): any => { //StepKey
   switch (status) {

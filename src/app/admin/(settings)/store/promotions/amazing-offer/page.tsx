@@ -1,6 +1,5 @@
 "use client"
 
-import ProductItem from "@/components/features/dashboard/helpers/ProductItem";
 import { Button, Card, CardBody, DateRangePicker, NumberInput, useDisclosure } from "@heroui/react"
 import { useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
@@ -48,7 +47,7 @@ const AmazingOffer = () => {
                                     </div>
                                     :
                                     <div className="flex flex-col gap-4">
-                                        {
+                                       {/*  {
                                             specialProducts.map((pr, index) => (
                                                 <div className="bg-red-700/10 rounded-2xl p-2 flex flex-col gap-2">
                                                     <ProductItem
@@ -79,7 +78,7 @@ const AmazingOffer = () => {
                                                     </div>
                                                 </div>
                                             ))
-                                        }
+                                        } */}
                                     </div>
                             }
                         </div>
