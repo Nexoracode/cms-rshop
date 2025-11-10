@@ -9,7 +9,7 @@ import {
   useDeleteReview,
   useUpdateReviewStatus,
 } from "@/core/hooks/api/useReview";
-import { toPersianDate } from "@/core/utils/dateHelpers";
+import { toPersianUTC } from "@/core/utils/date";
 import Link from "next/link";
 import { useState } from "react";
 import { LuCircleUser } from "react-icons/lu";
@@ -97,7 +97,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
             <LuCircleUser className="text-xl" />
             <span>{item.user.name}</span>
           </div>
-          <span>{toPersianDate(item.created_at)}</span>
+          <span>{toPersianUTC(item.created_at)}</span>
         </Link>
         <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
           {item.comment}

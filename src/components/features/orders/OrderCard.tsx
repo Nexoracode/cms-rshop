@@ -11,6 +11,7 @@ import CardRows from "@/components/shared/CardRows";
 import PopoverSelect, {
   PopoverSelectItem,
 } from "@/components/ui/PopoverSelect";
+import { toPersianUTC } from "@/core/utils/date";
 
 type Props = {
   order: any;
@@ -51,8 +52,9 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
     order.status === "payment_confirmation_pending" ||
     order.status === "pending_approval";
   console.log(order.status);
-  
+
   const isNotDelivered = order.status === "not_delivered";
+  console.log(order.created_at);
 
   return (
     <BaseCard
@@ -77,9 +79,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">#{order?.id}</p>
             <span className="text-xs text-gray-500">
-              {order?.created_at
-                ? new Date(order.created_at).toLocaleString("fa-IR")
-                : "—"}
+              {toPersianUTC(order.created_at)}
             </span>
           </div>
         </div>
@@ -114,11 +114,13 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
 
       <div className="flex items-center justify-between w-full py-4 px-2">
         {order.status === "payment_confirmation_pending" ? (
-          <p className="text-yellow-600 animate-pulse">درانتظار تایید پرداخت...</p>
+          <p className="text-yellow-600 animate-pulse">
+            درانتظار تایید پرداخت...
+          </p>
         ) : (
           ""
         )}
-        
+
         {order.status === "pending_approval" ? (
           <p className="text-yellow-600 animate-pulse">در انتظار تایید...</p>
         ) : (
