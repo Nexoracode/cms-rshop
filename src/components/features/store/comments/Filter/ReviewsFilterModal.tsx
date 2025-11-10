@@ -8,10 +8,24 @@ import { useGetProducts } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const ReviewsFilterModal: React.FC = () => {
-  const { search } = useListQueryParams({searchKey: "search-inp"});
-  const { data: usersData } = useGetAllUsers({ page: 1 });
-  const { data: productsData } = useGetProducts({ page: 1, search });
-  console.log(productsData);
+  const { search: SearchInProducts } = useListQueryParams({
+    searchKey: "search-product",
+  });
+  const { search: SearchInUsers } = useListQueryParams({
+    searchKey: "search-user",
+  });
+
+  const { data: usersData } = useGetAllUsers({
+    page: 1,
+    search: SearchInUsers,
+  });
+  const { data: productsData } = useGetProducts({
+    page: 1,
+    search: SearchInProducts,
+  });
+
+  console.log("Product Data =>", productsData);
+  console.log("Users Data =>", usersData);
 
   const users = useMemo(
     () =>
@@ -44,6 +58,8 @@ const ReviewsFilterModal: React.FC = () => {
       type: "select",
       options: users,
       searchable: true,
+      syncSearchToUrl: true,
+      searchKey: "search-user",
     },
     {
       key: "product_id",
@@ -52,6 +68,7 @@ const ReviewsFilterModal: React.FC = () => {
       options: products,
       searchable: true,
       syncSearchToUrl: true,
+      searchKey: "search-product",
     },
   ];
 

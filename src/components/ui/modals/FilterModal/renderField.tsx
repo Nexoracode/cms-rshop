@@ -51,6 +51,7 @@ export const renderField = ({
             selectedId={state[f.key]}
             onChange={(val) => setField(f.key, val)}
             syncSearchToUrl={f.syncSearchToUrl}
+            searchKey={f.searchKey}
           />
         );
       }

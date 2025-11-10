@@ -16,6 +16,7 @@ export type FilterField =
       placeholder?: string;
       searchable?: boolean;
       syncSearchToUrl?: boolean
+      searchKey?: string
     }
   | {
       key: string;

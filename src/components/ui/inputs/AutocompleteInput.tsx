@@ -18,8 +18,8 @@ type AutocompleteInputProps = {
   onChange: (id: string) => void;
   isRequired?: boolean;
   className?: string;
-  /** اگر true باشد، مقدار سرچ در URL ذخیره می‌شود */
   syncSearchToUrl?: boolean;
+  searchKey?: string;
 };
 
 const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
@@ -31,10 +31,11 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
   isRequired = false,
   className = "",
   syncSearchToUrl = false,
+  searchKey = "",
 }) => {
   // اگر syncSearchToUrl فعال باشد، از هوک debounced استفاده می‌کنیم
   const { value, setValue } = useDebouncedUrlSearch(
-    syncSearchToUrl ? "search-inp" : undefined,
+    syncSearchToUrl ? searchKey ?? "search" : undefined,
     500
   );
 
