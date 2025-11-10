@@ -23,7 +23,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const initialStatus =
     statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
-
+  console.log("DDDD", order);
   const rowItems = [
     {
       label: "مبلغ کل",
@@ -41,7 +41,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
     },
     {
       label: "آدرس",
-      value: `${order.user?.addresses?.province} - ${order.user?.addresses?.city}`,
+      value: `${order?.address?.province} - ${order?.address?.city}`,
     },
   ];
 
@@ -50,7 +50,8 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const isAccept =
     order.status === "payment_confirmation_pending" ||
     order.status === "pending_approval";
-
+  console.log(order.status);
+  
   const isNotDelivered = order.status === "not_delivered";
 
   return (
@@ -112,7 +113,13 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
       <CardRows items={rowItems} />
 
       <div className="flex items-center justify-between w-full py-4 px-2">
-        {isAccept ? (
+        {order.status === "payment_confirmation_pending" ? (
+          <p className="text-yellow-600 animate-pulse">درانتظار تایید پرداخت...</p>
+        ) : (
+          ""
+        )}
+        
+        {order.status === "pending_approval" ? (
           <p className="text-yellow-600 animate-pulse">در انتظار تایید...</p>
         ) : (
           ""
@@ -123,20 +130,22 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
         ) : (
           ""
         )}
-        
+
         {!isNotDelivered && !isAccept ? (
           <p className="text-slate-600">محصولات انتخابی</p>
         ) : (
           ""
         )}
 
-        <AvatarGroup isBordered max={4} total={10} size="sm">
-          <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
-          <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
-          <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
-          <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
-          <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
-          <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
+        <AvatarGroup
+          isBordered
+          max={4}
+          total={order?.items?.length - 1}
+          size="sm"
+        >
+          {order.items.map((item: any) => (
+            <Avatar src={item.product.image} />
+          ))}
         </AvatarGroup>
       </div>
     </BaseCard>

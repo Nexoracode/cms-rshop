@@ -3,7 +3,7 @@
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrdersFilter from "@/components/features/orders/OrdersFilter";
-import OrderBox from "@/components/features/orders/OrderBox";
+import OrderCard from "@/components/features/orders/OrderCard";
 
 // Icons
 import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
@@ -42,7 +42,7 @@ const Orders = () => {
       childrenClassName="grid md:grid-cols-2"
     >
       {orders?.data?.items?.map((order: Order) => (
-        <OrderBox
+        <OrderCard
           key={order.id}
           order={order}
         />

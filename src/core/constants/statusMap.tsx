@@ -33,8 +33,8 @@ export const statusMap: Record<
   payment_confirmation_pending: {
     title: "در انتظار تایید پرداخت",
     icon: <LuClock />,
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
+    color: "text-yellow-600",
+    bgColor: "bg-yellow-50",
     borderColor: "border-purple-200",
   },
   preparing: {
