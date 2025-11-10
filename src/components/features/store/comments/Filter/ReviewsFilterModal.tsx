@@ -47,13 +47,13 @@ const ReviewsFilterModal: React.FC = () => {
 
   const fields: FilterField[] = [
     {
-      key: "is_approved",
+      key: "isApproved",
       label: "تایید کامنت",
       type: "boolean01",
       default: "",
     },
     {
-      key: "user_id",
+      key: "userId",
       label: "کاربران",
       type: "select",
       options: users,
@@ -62,7 +62,7 @@ const ReviewsFilterModal: React.FC = () => {
       searchKey: "search-user",
     },
     {
-      key: "product_id",
+      key: "productId",
       label: "محصولات",
       type: "select",
       options: products,
