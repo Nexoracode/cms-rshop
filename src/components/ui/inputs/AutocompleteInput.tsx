@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
 import { useDebouncedUrlSearch } from "@/core/hooks/common/useDebouncedUrlSearch";
@@ -31,13 +31,37 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
   isRequired = false,
   className = "",
   syncSearchToUrl = false,
-  searchKey = "",
+  searchKey = "search",
 }) => {
-  // اگر syncSearchToUrl فعال باشد، از هوک debounced استفاده می‌کنیم
-  const { value, setValue } = useDebouncedUrlSearch(
-    syncSearchToUrl ? searchKey ?? "search" : undefined,
+  const debounced = useDebouncedUrlSearch(
+    syncSearchToUrl ? searchKey : undefined,
     500
   );
+
+  const [localSearch, setLocalSearch] = useState<string>(debounced.value ?? "");
+
+  useEffect(() => {
+    if (!syncSearchToUrl) return;
+    if (!selectedId) setLocalSearch(debounced.value ?? "");
+  }, [debounced.value, syncSearchToUrl, selectedId]);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const sel = options.find((o) => String(o.id) === String(selectedId));
+    if (sel) setLocalSearch(sel.title);
+  }, [selectedId, options]);
+
+  const handleInputChange = (val: string) => {
+    setLocalSearch(val);
+    if (syncSearchToUrl) debounced.setValue(val);
+  };
+
+  const handleSelectionChange = (key: React.Key | null) => {
+    if (!key) return;
+    onChange(key.toString());
+    const sel = options.find((o) => String(o.id) === String(key));
+    if (sel) setLocalSearch(sel.title);
+  };
 
   return (
     <Autocomplete
@@ -49,13 +73,9 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       startContent={<FiSearch className="text-lg pointer-events-none" />}
       className={`w-full ${className}`}
       selectedKey={selectedId ? String(selectedId) : undefined}
-      onSelectionChange={(key) => {
-        if (key) onChange(key.toString());
-      }}
-      inputValue={syncSearchToUrl ? value : undefined}
-      onInputChange={(val) => {
-        if (syncSearchToUrl) setValue(val);
-      }}
+      onSelectionChange={handleSelectionChange}
+      inputValue={localSearch}
+      onInputChange={handleInputChange}
     >
       {options.length ? (
         options.map((opt) => (
