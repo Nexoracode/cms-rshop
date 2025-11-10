@@ -3,8 +3,14 @@
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
-export function useListQueryParams<TSort extends string = string>() {
+export function useListQueryParams<TSort extends string = string>(
+  options?: {
+    searchKey?: string;
+  }
+) {
   const searchParams = useSearchParams();
+
+  const searchKey = options?.searchKey ?? "search";
 
   // page
   const page = useMemo(() => {
@@ -19,11 +25,11 @@ export function useListQueryParams<TSort extends string = string>() {
     return sorts.length ? sorts : undefined;
   }, [searchParams.toString()]);
 
-  // search
+  // search (داینامیک با دیفالت "search")
   const search = useMemo(() => {
-    const s = searchParams.get("search")?.trim();
+    const s = searchParams.get(searchKey)?.trim();
     return s ? s : undefined;
-  }, [searchParams.toString()]);
+  }, [searchParams.toString(), searchKey]);
 
   // filters
   const filter = useMemo(() => {

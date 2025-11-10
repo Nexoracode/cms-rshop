@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React from "react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
+import { useDebouncedUrlSearch } from "@/core/hooks/common/useDebouncedUrlSearch";
 
 export type Option = {
   id: string | number;
@@ -17,7 +18,6 @@ type AutocompleteInputProps = {
   onChange: (id: string) => void;
   isRequired?: boolean;
   className?: string;
-  searchValue?: string;
   /** اگر true باشد، مقدار سرچ در URL ذخیره می‌شود */
   syncSearchToUrl?: boolean;
 };
@@ -32,21 +32,10 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
   className = "",
   syncSearchToUrl = false,
 }) => {
-  // 🔹 تابع به‌روزرسانی URL در زمان تایپ
-  const handleSearchChange = useCallback(
-    (val: string) => {
-      if (syncSearchToUrl) {
-        const params = new URLSearchParams(window.location.search);
-        if (val) {
-          params.set("search", val);
-        } else {
-          params.delete("search");
-        }
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        window.history.replaceState(null, "", newUrl);
-      }
-    },
-    [syncSearchToUrl]
+  // اگر syncSearchToUrl فعال باشد، از هوک debounced استفاده می‌کنیم
+  const { value, setValue } = useDebouncedUrlSearch(
+    syncSearchToUrl ? "search-inp" : undefined,
+    500
   );
 
   return (
@@ -62,7 +51,10 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       onSelectionChange={(key) => {
         if (key) onChange(key.toString());
       }}
-      onInputChange={handleSearchChange}
+      inputValue={syncSearchToUrl ? value : undefined}
+      onInputChange={(val) => {
+        if (syncSearchToUrl) setValue(val);
+      }}
     >
       {options.length ? (
         options.map((opt) => (

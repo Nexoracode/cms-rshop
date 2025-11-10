@@ -8,7 +8,7 @@ import { useGetProducts } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const ReviewsFilterModal: React.FC = () => {
-  const { search } = useListQueryParams();
+  const { search } = useListQueryParams({searchKey: "search-inp"});
   const { data: usersData } = useGetAllUsers({ page: 1 });
   const { data: productsData } = useGetProducts({ page: 1, search });
   console.log(productsData);
