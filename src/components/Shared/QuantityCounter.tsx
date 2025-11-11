@@ -13,7 +13,7 @@ type Props = {
 
 const QuantityCounter: React.FC<Props> = ({
   value,
-  min = 0,
+  min = 1,
   max = 999999,
   onChange,
   disabled = false,

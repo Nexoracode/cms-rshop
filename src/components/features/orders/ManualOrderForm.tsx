@@ -49,9 +49,10 @@ const ManualOrderForm = () => {
       />
 
       <SelectableProductsBox
-        onChange={(selectedProducts) =>
-          setFormData((prev) => ({ ...prev, products: selectedProducts }))
-        }
+        onChange={(selectedProducts) => {
+          console.log(selectedProducts);
+          setFormData((prev) => ({ ...prev, products: selectedProducts }));
+        }}
       />
 
       <SwitchWrapper
