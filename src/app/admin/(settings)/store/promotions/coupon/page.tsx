@@ -1,12 +1,13 @@
 "use client";
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import CouponsFilter from "@/components/features/store/promotions/coupon/CouponsFilter";
+import CouponsFilter from "@/components/features/store/promotions/coupon/Filter/CouponsFilter";
 import { useGetCoupons } from "@/core/hooks/api/useCoupon";
-import { LuPlus, LuTicket } from "react-icons/lu";
+import { LuTicket } from "react-icons/lu";
 import CouponCard from "@/components/features/store/promotions/coupon/CouponCard";
 import { CouponSortBy } from "@/components/features/store/promotions/coupon/coupon-types";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import CouponsListModal from "@/components/features/store/promotions/coupon/CouponsListModal";
 
 const Coupons = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -27,8 +28,7 @@ const Coupons = () => {
       headerProps={{
         title: "لیست کوپن ها",
         icon: <LuTicket className="text-2xl" />,
-        redirect: "/admin/store/promotions/coupon/create",
-        btnIcon: <LuPlus />,
+        children: <CouponsListModal />,
       }}
       isLoading={isLoading}
       isExistItems={hasItems}

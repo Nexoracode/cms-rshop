@@ -74,12 +74,13 @@ const PromotionsListModal: React.FC = () => {
         className: "bg-secondary-light text-secondary",
       }}
       isActiveFooter={false}
-      icon={<GiPartyPopper className="text-3xl"/>}
+      icon={<GiPartyPopper className="text-3xl" />}
       size="xl"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
-        {promotionItems.map((item) => (
+        {promotionItems.map((item, index) => (
           <MenuCard
+            key={index}
             title={item.title}
             subtitle={item.subtitle}
             icon={item.icon}
