@@ -8,8 +8,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*", // هر چی به /api خورده بشه
-        destination: "http://172.18.100.42:3001/api/:path*", // می‌ره به بک‌اند
+        source: "/api/:path*",
+        destination: "https://app-backend-rshop-nodejs.roohbakhshac.com/api/:path*",
       },
     ];
   }
