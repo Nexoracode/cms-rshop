@@ -1,4 +1,4 @@
-// components/DashboardMenuCard.tsx
+"use client"
 
 import React from "react";
 import BaseCard from "../ui/BaseCard";
@@ -9,7 +9,6 @@ interface DashboardMenuCardProps {
   icon: React.ReactNode;
   color: string;
   path: string;
-  onClick: (path: string) => void;
 }
 
 const MenuCard: React.FC<DashboardMenuCardProps> = ({
@@ -18,7 +17,6 @@ const MenuCard: React.FC<DashboardMenuCardProps> = ({
   icon,
   color,
   path,
-  onClick,
 }) => {
   return (
     <BaseCard

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import {
   TbMessage,
@@ -60,12 +59,6 @@ const promotionItems = [
 ];
 
 const PromotionsListModal: React.FC = () => {
-  const router = useRouter();
-
-  const handleClick = (path: string) => {
-    router.push(path);
-  };
-
   return (
     <BaseModal
       title="انواع پروموشن ها"
@@ -86,7 +79,6 @@ const PromotionsListModal: React.FC = () => {
             icon={item.icon}
             color={item.color}
             path={item.path}
-            onClick={handleClick}
           />
         ))}
       </div>

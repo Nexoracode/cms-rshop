@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { TbCategory2, TbPackages, TbRosetteDiscount } from "react-icons/tb";
 import MenuCard from "@/components/shared/MenuCard";
@@ -39,12 +38,6 @@ const promotionItems = [
 ];
 
 const CouponsListModal: React.FC = () => {
-  const router = useRouter();
-
-  const handleClick = (path: string) => {
-    router.push(path);
-  };
-
   return (
     <BaseModal
       title="انواع تخفیف ها"
@@ -65,7 +58,6 @@ const CouponsListModal: React.FC = () => {
             icon={item.icon}
             color={item.color}
             path={item.path}
-            onClick={handleClick}
           />
         ))}
       </div>
