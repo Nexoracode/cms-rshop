@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import { TbUsersGroup } from "react-icons/tb";
 import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./CustomersSelectionModal";
 import { useCustomersSelection } from "./CustomersSelectionContext";
 import { Customer } from "../customer.types";
+import { FiUsers } from "react-icons/fi";
 
 type Props = {
   onChange?: (userIds: number[]) => void;
@@ -25,7 +25,7 @@ const InnerSelectableUsersBox: React.FC<{
   return (
     <SelectionBox
       title="کاربران انتخاب شده"
-      icon={<TbUsersGroup className="text-5xl" />}
+      icon={<FiUsers className="text-5xl" />}
       initial={selectedCustomers}
       modal={<UsersSelectionModal />}
     >

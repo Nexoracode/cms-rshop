@@ -4,8 +4,8 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
-import { BsShop } from "react-icons/bs";
 import ProductVariants from "../ProductVariants/ProductVariants";
+import { TbPackages } from "react-icons/tb";
 
 type Props = {
   onChange?: (ids: number[]) => void;
@@ -24,7 +24,7 @@ const InnerSelectableProductsBox: React.FC<{
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده"
-      icon={<BsShop className="text-5xl" />}
+      icon={<TbPackages className="text-5xl" />}
       initial={selectedProducts}
       modal={<ProductsSelectionModal />}
     >

@@ -22,7 +22,7 @@ const MenuCard: React.FC<DashboardMenuCardProps> = ({
 }) => {
   return (
     <BaseCard
-      onClick={() => onClick(path)}
+      redirect={path}
       className="shadow-sm hover:border-secondary hover:shadow-md hover:shadow-secondary-light"
       bodyClassName="flex flex-row items-center gap-4 p-4 select-none"
     >

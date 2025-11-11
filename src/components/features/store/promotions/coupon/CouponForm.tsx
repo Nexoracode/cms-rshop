@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
-import { LuTicket } from "react-icons/lu";
 import { useCreateCoupon, useUpdateCoupon } from "@/core/hooks/api/useCoupon";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
@@ -19,6 +18,8 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import Switch from "@/components/ui/Switch";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
+import { FiUsers } from "react-icons/fi";
+import { TbCategory2, TbPackages, TbRosetteDiscount } from "react-icons/tb";
 
 const initialForm: CouponFormType = {
   code: "",
@@ -41,14 +42,14 @@ type CouponFormProps = {
   pageType: "create" | "category" | "product" | "customer";
   initialData?: CouponFormType;
   isLoading?: boolean;
-  onReset?: () => void
+  onReset?: () => void;
 };
 
 const CouponForm: React.FC<CouponFormProps> = ({
   pageType = "create",
   initialData,
   isLoading,
-  onReset
+  onReset,
 }) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -137,7 +138,11 @@ const CouponForm: React.FC<CouponFormProps> = ({
         wrapperContents
         CardHeaderProps={{
           title: isEditMode ? "ویرایش کد تخفیف" : "افزودن کد تخفیف",
-          icon: <LuTicket />,
+          icon:
+            (pageType === "customer" && <FiUsers />) ||
+            (pageType === "category" && <TbCategory2 />) ||
+            (pageType === "product" && <TbPackages />) ||
+            (pageType === "create" && <TbRosetteDiscount />),
           textBtn: "پاک سازی فرم",
           btnIcon: <MdOutlineCleaningServices />,
           onAdd: handleReset,

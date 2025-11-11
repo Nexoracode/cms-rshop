@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import { BiCategoryAlt } from "react-icons/bi";
 import { Category } from "../category.types";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
 import { CategoryNode } from "../CategoryTree/CategoryTree";
 import { useCategoriesSelection } from "./CategoriesSelectionContext";
+import { TbCategory2 } from "react-icons/tb";
 
 type Props = {
   onChange?: (ids: number[]) => void;
@@ -24,7 +24,7 @@ const InnerSelectableCategoriesBox: React.FC<{
   return (
     <SelectionBox
       title="دسته‌بندی‌های انتخاب‌شده"
-      icon={<BiCategoryAlt className="text-5xl" />}
+      icon={<TbCategory2 className="text-5xl" />}
       initial={selectedCategories}
       modal={<CategoriesSelectionModal />}
     >
