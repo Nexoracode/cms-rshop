@@ -11,8 +11,31 @@ import {
 import { LiaTruckLoadingSolid } from "react-icons/lia";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { BsBasket } from "react-icons/bs";
+import MenuCard from "@/components/shared/MenuCard";
+import { GiPartyPopper } from "react-icons/gi";
 
 const promotionItems = [
+  {
+    title: "کد تخفیف",
+    subtitle: "تعریف کد تخفیف نقدی یا درصدی",
+    icon: <TbRosetteDiscount className="text-3xl" />,
+    color: "text-purple-700 bg-purple-700/10",
+    path: "/admin/store/promotions/coupon",
+  },
+  {
+    title: "تخفیف خرید بعدی",
+    subtitle: "ارسال پیامک تخفیف برای خرید بعدی مشتری",
+    icon: <TbShoppingCartDiscount className="text-3xl" />,
+    color: "text-green-700 bg-green-700/10",
+    path: "/admin/store/promotions/next-purchase",
+  },
+  {
+    title: "پیشنهاد شگفت‌انگیز",
+    subtitle: "پیشنهادهای جذاب برای مشتریان موردنظر",
+    icon: <BsBasket className="text-3xl" />,
+    color: "text-red-700 bg-red-700/10",
+    path: "/admin/store/promotions/amazing-offer",
+  },
   {
     title: "خرید اول",
     subtitle: "مخصوص مشتریانی که برای بار اول می‌خواهند از شما خرید کنند",
@@ -34,27 +57,6 @@ const promotionItems = [
     color: "text-orange-700 bg-orange-700/10",
     path: "/admin/store/promotions/sms",
   },
-  {
-    title: "تخفیف خرید بعدی",
-    subtitle: "ارسال پیامک تخفیف برای خرید بعدی مشتری",
-    icon: <TbShoppingCartDiscount className="text-3xl" />,
-    color: "text-green-700 bg-green-700/10",
-    path: "/admin/store/promotions/next-purchase",
-  },
-  {
-    title: "کد تخفیف",
-    subtitle: "تعریف کد تخفیف نقدی یا درصدی",
-    icon: <TbRosetteDiscount className="text-3xl" />,
-    color: "text-purple-700 bg-purple-700/10",
-    path: "/admin/store/promotions/coupon",
-  },
-  {
-    title: "پیشنهاد شگفت‌انگیز",
-    subtitle: "پیشنهادهای جذاب برای مشتری",
-    icon: <BsBasket className="text-3xl" />,
-    color: "text-red-700 bg-red-700/10",
-    path: "/admin/store/promotions/amazing-offer",
-  },
 ];
 
 const PromotionsListModal: React.FC = () => {
@@ -69,30 +71,22 @@ const PromotionsListModal: React.FC = () => {
       title="انواع پروموشن ها"
       triggerProps={{
         title: "+ افزودن پروموشن",
-        className: "bg-secondary-light text-secondary"
+        className: "bg-secondary-light text-secondary",
       }}
-      confirmText="بستن"
-      cancelText=""
       isActiveFooter={false}
+      icon={<GiPartyPopper className="text-3xl"/>}
       size="xl"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
         {promotionItems.map((item) => (
-          <div
-            key={item.title}
-            onClick={() => handleClick(item.path)}
-            className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-md transition-all cursor-pointer"
-          >
-            <div
-              className={`w-12 h-12 flex items-center justify-center rounded-lg ${item.color}`}
-            >
-              {item.icon}
-            </div>
-            <div className="flex-1">
-              <h4 className="font-medium text-sm">{item.title}</h4>
-              <p className="text-xs text-gray-500 mt-1">{item.subtitle}</p>
-            </div>
-          </div>
+          <MenuCard
+            title={item.title}
+            subtitle={item.subtitle}
+            icon={item.icon}
+            color={item.color}
+            path={item.path}
+            onClick={handleClick}
+          />
         ))}
       </div>
     </BaseModal>
