@@ -138,11 +138,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
         wrapperContents
         CardHeaderProps={{
           title: isEditMode ? "ویرایش کد تخفیف" : "افزودن کد تخفیف",
-          icon:
-            (pageType === "customer" && <FiUsers />) ||
-            (pageType === "category" && <TbCategory2 />) ||
-            (pageType === "product" && <TbPackages />) ||
-            (pageType === "create" && <TbRosetteDiscount />),
+          icon: <TbRosetteDiscount />,
           textBtn: "پاک سازی فرم",
           btnIcon: <MdOutlineCleaningServices />,
           onAdd: handleReset,
