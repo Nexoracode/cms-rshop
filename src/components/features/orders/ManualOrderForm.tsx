@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SwitchWrapper from "@/components/shared/SwitchWrapper";
 import DiscountInput from "@/components/forms/Inputs/DiscountInput";
 import { Discount } from "@/core/types";
@@ -10,9 +10,23 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 
+type ManualOrderData = {
+  users: any[];
+  products: any[];
+};
+
 const ManualOrderForm = () => {
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
+
+  const [formData, setFormData] = useState<ManualOrderData>({
+    users: [],
+    products: [],
+  });
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const onDiscountChange = (type: Discount, value: number) => {
     console.log("Discount changed:", type, value);
@@ -28,9 +42,17 @@ const ManualOrderForm = () => {
       }}
       wrapperContents
     >
-      <SelectableUsersBox onChange={() => {}} />
+      <SelectableUsersBox
+        onChange={(selectedUsers) =>
+          setFormData((prev) => ({ ...prev, users: selectedUsers }))
+        }
+      />
 
-      <SelectableProductsBox onChange={() => {}} />
+      <SelectableProductsBox
+        onChange={(selectedProducts) =>
+          setFormData((prev) => ({ ...prev, products: selectedProducts }))
+        }
+      />
 
       <SwitchWrapper
         label="تخفیف فاکتور"
