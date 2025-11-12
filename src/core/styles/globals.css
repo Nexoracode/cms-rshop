@@ -1,0 +1,75 @@
+@import "./packages.css";
+@import "./tree.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: IRANSans;
+  src: url("/fonts/IRANSans/IRANSansWeb_Medium.woff");
+}
+
+:root {
+  /* 🌗 Backgrounds */
+  --color-bg: #FFFFFF;            /* اصلی */
+  --color-surface: #F5F5F4;       /* پس زمینه کمی روشن */
+  
+  /* ⚪ Neutral / Gray */
+  --color-gray-lightest: #F8FAFC; /* خاکستری خیلی روشن */
+  --color-gray-lighter: #EAEBED;  /* خاکستری کم رنگ */
+  
+  /* 🎨 Primary (Purple) */
+  --color-primary: #9333ea;
+  --color-primary-light: #F3E8FF;
+
+  /* 🌤️ Secondary (Sky Blue) */
+  --color-secondary: #0284c7;
+  --color-secondary-light: #E0F2FE;
+
+  /* 🖋 Text */
+  --color-text-primary: #1F1F1F;
+  --color-text-secondary: #4B5563;
+  --color-text-muted: #6B7280;
+
+  /* 🔘 Border */
+  --color-border: #E5E7EB;
+}
+
+
+@layer base {
+  html {
+    @apply !bg-gray-100;
+    scrollbar-gutter: stable both-edges;
+    scroll-behavior: smooth;
+  }
+
+ :where(*):not(.ltr, .ltr *) { direction: rtl; }
+
+ *{
+  font-family: IRANSans !important
+ }
+
+  body {
+    @apply max-w-[1080px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans] bg-gray-100 text-sm;
+  }
+
+  input:focus {
+    @apply outline-none
+  }
+}
+@layer utilities {
+  /* کلاس والد */
+  .hover-reveal-parent {
+    @apply relative;
+  }
+  
+  /* کلاس فرزند: دکمه حذف یا هر المان دیگری که روی هاور ظاهر شود */
+  .hover-reveal-child {
+    @apply absolute top-2.5 left-2.5 z-50 opacity-0 pointer-events-none transition-all duration-200;
+  }
+  
+  /* حالت hover والد */
+  .hover-reveal-parent:hover .hover-reveal-child {
+    @apply opacity-100 pointer-events-auto;
+  }
+}

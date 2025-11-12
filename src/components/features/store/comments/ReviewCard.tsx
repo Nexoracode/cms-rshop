@@ -1,0 +1,120 @@
+"use client";
+
+import RatingStars from "@/components/common/RatingStars";
+import DeleteButton from "@/components/shared/DeleteButton";
+import BaseCard from "@/components/ui/BaseCard";
+import OptionButton from "@/components/ui/buttons/OptionButton";
+import {
+  UpdateReviewStatusPayload,
+  useDeleteReview,
+  useUpdateReviewStatus,
+} from "@/core/hooks/api/useReview";
+import { toPersianUTC } from "@/core/utils/date";
+import Link from "next/link";
+import { useState } from "react";
+import { LuCircleUser } from "react-icons/lu";
+
+type ReviewCardProps = {
+  item: {
+    id: number;
+    rating: number;
+    comment: string;
+    created_at: string;
+    product: {
+      id: number;
+      name: string;
+      image: string;
+      price: number;
+      discount_amount: number;
+      discount_percent: number;
+      final_price: number;
+    };
+    user: {
+      id: number;
+      name: string;
+    };
+    is_approved: boolean;
+  };
+};
+
+const ReviewCard = ({ item }: ReviewCardProps) => {
+  const { product } = item;
+  const [isApproved, setIsApproved] = useState(item.is_approved);
+
+  const { mutate: updateStatus, isPending } = useUpdateReviewStatus(item.id);
+  const { mutate: deleteReview } = useDeleteReview();
+
+  const handleToggleApprove = () => {
+    const newStatus: UpdateReviewStatusPayload = { isApproved: !isApproved };
+    updateStatus(newStatus, {
+      onSuccess: () => setIsApproved(!isApproved),
+    });
+  };
+
+  const formatPrice = (price: number) =>
+    Math.round(price).toLocaleString("fa-IR");
+
+  return (
+    <BaseCard
+      className="flex flex-col gap-3 p-1 max-w-[377px] w-full hover-reveal-parent"
+      bodyClassName="overflow-hidden p-2.5 cursor-auto"
+    >
+      {/* دکمه حذف */}
+      <div className="hover-reveal-child">
+        <DeleteButton onDelete={() => deleteReview(item.id)} />
+      </div>
+
+      {/* محصول */}
+      <div className="flex items-center gap-3">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="rounded-xl object-cover w-16 h-16"
+        />
+        <div className="w-full h-full flex flex-col justify-between gap-1 py-1">
+          <h3 className="line-clamp-1 truncate w-56">{product.name}</h3>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-gray-700">
+              {formatPrice(product.final_price)} تومان
+            </span>
+            <div className="flex items-center gap-2">
+              {product.discount_percent > 0 && (
+                <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+                  {product.discount_percent}% تخفیف
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-2 mt-4 rounded-xl border border-slate-200">
+        <Link
+          href={`/admin/store/customers/create?edit_id=${item.user.id}`}
+          className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-2 py-2"
+        >
+          <div className="flex items-center gap-1.5">
+            <LuCircleUser className="text-xl" />
+            <span>{item.user.name}</span>
+          </div>
+          <span>{toPersianUTC(item.created_at)}</span>
+        </Link>
+        <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
+          {item.comment}
+        </div>
+        <div className="flex items-center justify-between mt-1 px-1.5">
+          <RatingStars rating={item.rating} size={16} />
+          <OptionButton
+            title={isApproved ? "تایید شده" : "تایید کامنت"}
+            size="sm"
+            isLoading={isPending}
+            onClick={handleToggleApprove}
+            className={isApproved ? "bg-green-50 text-green-600" : ""}
+          />
+        </div>
+      </div>
+    </BaseCard>
+  );
+};
+
+export default ReviewCard;
