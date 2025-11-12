@@ -11,7 +11,7 @@ const About = () => {
 
     return (
         <>
-            <Card className="shadow-md mt-6">
+            <Card className="shadow-md mt-6"> 
                {/*  <BoxHeader
                     title="درباره ما"
                     color="text-yellow-700 bg-yellow-700/10"
