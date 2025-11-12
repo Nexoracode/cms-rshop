@@ -18,8 +18,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import Switch from "@/components/ui/Switch";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
-import { FiUsers } from "react-icons/fi";
-import { TbCategory2, TbPackages, TbRosetteDiscount } from "react-icons/tb";
+import { TbRosetteDiscount } from "react-icons/tb";
 
 const initialForm: CouponFormType = {
   code: "",

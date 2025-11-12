@@ -149,7 +149,8 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
             {variantChildren 
               ? React.cloneElement(variantChildren as React.ReactElement, { 
                   children: variantContent, 
-                  variant
+                  variant,
+                  id: variant.id
                 }) 
               : variantContent
             }
