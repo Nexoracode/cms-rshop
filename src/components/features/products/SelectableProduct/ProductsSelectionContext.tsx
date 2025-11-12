@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type Product = Record<string, any>;
 
@@ -25,8 +25,11 @@ export const ProductsSelectionProvider: React.FC<{
   initialProducts?: Product[];
   children: React.ReactNode;
 }> = ({ initialProducts = [], children }) => {
-  const [selectedProducts, setSelectedProducts] =
-    useState<Product[]>(initialProducts);
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    setSelectedProducts(initialProducts)
+  }, [initialProducts]);
 
   return (
     <ProductsSelectionContext.Provider

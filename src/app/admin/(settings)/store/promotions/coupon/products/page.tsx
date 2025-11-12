@@ -15,7 +15,8 @@ const ProductsCoupon = () => {
   const handleReset = () => {
     //setCustomers([]);
   };
-
+  console.log(couponData?.data?.allowed_products);
+  
   return (
     <ProductsSelectionProvider
       initialProducts={couponData?.data?.allowed_products || []}
