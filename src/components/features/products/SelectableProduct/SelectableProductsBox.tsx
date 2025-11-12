@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariants from "../ProductVariants/ProductVariants";
+import ProductVariantsTemplate from "../ProductVariants/ProductVariantsTemplate"; // 🟢 تغییر import به template
 import { TbPackages } from "react-icons/tb";
 
 type Props = {
@@ -30,10 +30,10 @@ const InnerSelectableProductsBox: React.FC<{
     >
       <div className="flex flex-col gap-4">
         {selectedProducts.map((selectedProduct) => (
-          <ProductVariants
+          <ProductVariantsTemplate  // 🟢 تغییر به template (فقط نمایش)
             key={selectedProduct.id}
             product={selectedProduct}
-            disableSelect
+            // disableSelect لازم نیست – template همیشه نمایش می‌ده
           />
         ))}
       </div>

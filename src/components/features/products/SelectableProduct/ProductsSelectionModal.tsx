@@ -9,12 +9,12 @@ import ProductsFilter from "@/components/features/products/ProductsFilter";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuPlus } from "react-icons/lu";
-import ProductVariants from "../ProductVariants/ProductVariants";
+import SelectableProductVariants from "../ProductVariants/SelectableProductVariants"; // 🟢 تغییر import
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
 
 type Product = {
-    [x: string]: any;
+  [x: string]: any;
 }
 
 const ProductsSelectionModal = () => {
@@ -68,7 +68,7 @@ const ProductsSelectionModal = () => {
         meta={products?.data?.meta}
       >
         {products?.data?.items?.map((product: any) => (
-          <ProductVariants
+          <SelectableProductVariants  // 🟢 تغییر به جدید
             key={product.id}
             product={product}
             initialItemsSelected={selectedProducts}
