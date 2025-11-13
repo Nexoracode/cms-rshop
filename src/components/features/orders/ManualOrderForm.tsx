@@ -14,6 +14,11 @@ import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
 import SelectableAddressesBox from "./SelectableAddressesBox";
 import { toast } from "react-hot-toast";
 
+/* اضافه‌شده برای انتخاب وضعیت */
+import PopoverSelect from "@/components/ui/PopoverSelect";
+import { statusOptions } from "./order-constants";
+import { StatusOrder } from "./order-types";
+
 type ManualOrderData = {
   userId?: number;
   products: any[];
@@ -37,6 +42,10 @@ const ManualOrderForm = () => {
     if (formData.userId) refetch();
   }, [formData.userId, refetch]);
 
+  /* وضعیت پیش‌فرض: "awaiting_payment" (مطابق نمونه‌payload تو) */
+  const [selectedStatus, setSelectedStatus] =
+    useState<StatusOrder>("awaiting_payment");
+
   const handleSubmit = () => {
     if (!formData.userId || !formData.products.length || !formData.selectedAddressId) {
       toast.error("لطفا کاربر، آدرس و محصولات را انتخاب کنید");
@@ -54,6 +63,7 @@ const ManualOrderForm = () => {
             quantity: variant.quantity || 1,
           })) || [],
       })),
+      status: selectedStatus, // ← اینجا status اضافه شد
     };
 
     createOrder(orderData, {
@@ -61,6 +71,7 @@ const ManualOrderForm = () => {
         toast.success("سفارش دستی با موفقیت ایجاد شد");
         setFormData({ products: [] });
         setDiscountValue(0);
+        setSelectedStatus("awaiting_payment"); // ریست وضعیت به پیش‌فرض (اختیاری)
       },
       onError: (err: any) => {
         console.error(err);
@@ -115,6 +126,18 @@ const ManualOrderForm = () => {
           setFormData((prev) => ({ ...prev, products: selectedProducts }))
         }
       />
+
+      {/* انتخاب وضعیت سفارش (اضافه‌شده) */}
+      <div className="mt-4">
+        <label className="block text-sm text-gray-700 mb-2">وضعیت سفارش</label>
+        <PopoverSelect
+          items={statusOptions}
+          initialKey={selectedStatus}
+          onSelect={(key) => setSelectedStatus(key as StatusOrder)}
+          popoverClassName="w-[240px]"
+          buttonClassName="capitalize w-full xs:w-fit text-sm"
+        />
+      </div>
 
       {/* تخفیف فاکتور */}
       <SwitchWrapper
