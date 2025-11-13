@@ -112,11 +112,11 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
           <p className="text-gray-600">{product.variants.length} عدد</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 items-center justify-center">
+        <div className="grid grid-cols-4 gap-2">
           {product.variants.map((variant: any) => {
             const variantContent = (
-              <BaseCard bodyClassName="h-32 items-center justify-between py-3">
-                <div className="text-sm text-gray-600 leading-7">
+              <BaseCard bodyClassName="h-28 items-center justify-between">
+                <div className="text-xs text-gray-600 leading-7">
                   {variant.name}
                 </div>
 
@@ -124,9 +124,9 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
                   <div className="text-gray-600">
                     {variant.discount_amount > 0 ||
                     variant.discount_percent > 0 ? (
-                      <div className="flex flex-row-reverse items-center gap-1 bg-slate-50 rounded-xl p-2">
-                        <RiDiscountPercentLine className="text-orange-500 text-xl" />
-                        <span className="text-[15px] text-gray-700">
+                      <div className="flex flex-row-reverse items-center gap-1 bg-slate-50 rounded-lg p-1.5">
+                        <RiDiscountPercentLine className="text-orange-500 text-lg" />
+                        <span className="text-sm text-gray-700">
                           {Number(
                             Math.max(
                               0,
@@ -141,7 +141,7 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
                         </span>
                       </div>
                     ) : (
-                      <div className="text-[15px] text-gray-700 bg-slate-50 rounded-xl p-2">
+                      <div className="text-sm text-gray-700 bg-slate-50 rounded-xl p-1.5">
                         {Number(variant.price).toLocaleString("fa-IR")} تومان
                       </div>
                     )}
