@@ -6,6 +6,7 @@ import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
 import ProductVariantsTemplate from "../ProductVariants/ProductVariantsTemplate";
 import { TbPackages } from "react-icons/tb";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type Props = {
   onChange?: (ids: number[]) => void;
@@ -34,7 +35,16 @@ const InnerSelectableProductsBox: React.FC<{
             key={selectedProduct.id}
             product={selectedProduct}
             showVariants={selectedProduct?.variants?.length ? true : false}
-            productCardClassName={selectedProduct?.variants?.length ? "filter grayscale opacity-70" : ""}
+            contentProduct={
+              <div className="deselect-icon">
+                <AiOutlineCloseCircle onClick={() => {}} />
+              </div>
+            }
+            contentVariant={
+              <div className="deselect-icon">
+                <AiOutlineCloseCircle className="text-[16px]" onClick={() => {}} />
+              </div>
+            }
           />
         ))}
       </div>

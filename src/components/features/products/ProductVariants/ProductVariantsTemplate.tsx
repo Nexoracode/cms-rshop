@@ -12,7 +12,8 @@ interface ProductVariantsTemplateProps {
   children?: React.ReactNode;
   variantChildren?: React.ReactNode;
   showVariants?: boolean;
-  productCardClassName?: string;
+  contentProduct?: React.ReactNode;
+  contentVariant?: React.ReactNode;
 }
 
 const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
@@ -20,15 +21,18 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
   children,
   variantChildren,
   showVariants = true,
-  productCardClassName = "",
+  contentProduct,
+  contentVariant,
 }) => {
   const productContent = (
     <BaseCard
       className={`shadow-none ${!showVariants ? "border-none" : ""}`}
-      bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start ${
+      bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start hover-reveal-parent ${
         !showVariants ? "p-0" : ""
-      } ${productCardClassName}`}
+      }`}
     >
+      {contentProduct}
+
       <div className="relative w-fit h-full">
         <img
           alt="product cover"
@@ -115,7 +119,9 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
         <div className="grid grid-cols-4 gap-2">
           {product.variants.map((variant: any) => {
             const variantContent = (
-              <BaseCard bodyClassName="h-28 items-center justify-between">
+              <BaseCard bodyClassName="h-28 items-center justify-between hover-reveal-parent">
+                {contentVariant}
+
                 <div className="text-xs text-gray-600 leading-7">
                   {variant.name}
                 </div>

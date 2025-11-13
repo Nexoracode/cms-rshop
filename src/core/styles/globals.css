@@ -57,6 +57,7 @@
     @apply outline-none
   }
 }
+
 @layer utilities {
   /* کلاس والد */
   .hover-reveal-parent {
@@ -72,4 +73,9 @@
   .hover-reveal-parent:hover .hover-reveal-child {
     @apply opacity-100 pointer-events-auto;
   }
+
+  .deselect-icon {
+    @apply hover-reveal-child bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all
+  }
+
 }
