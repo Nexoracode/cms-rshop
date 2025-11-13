@@ -6,7 +6,8 @@ export type Product = Record<string, any>;
 
 type ProductsSelectionContextType = {
   selectedProducts: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>; // ✅ اصلاح شد
+  addProduct: (product: Product) => void;
+  removeProduct: (productId: number) => void;
 };
 
 const ProductsSelectionContext =
@@ -28,12 +29,23 @@ export const ProductsSelectionProvider: React.FC<{
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    setSelectedProducts(initialProducts)
+    setSelectedProducts(initialProducts);
   }, [initialProducts]);
+
+  const addProduct = (product: Product) => {
+    setSelectedProducts((prev) => {
+      const filtered = prev.filter((p: any) => p.id !== product.id);
+      return [...filtered, product];
+    });
+  };
+
+  const removeProduct = (productId: number) => {
+    setSelectedProducts((prev) => prev.filter((p: any) => p.id !== productId));
+  };
 
   return (
     <ProductsSelectionContext.Provider
-      value={{ selectedProducts, setProducts: setSelectedProducts }}
+      value={{ selectedProducts, addProduct, removeProduct }}
     >
       {children}
     </ProductsSelectionContext.Provider>

@@ -1,125 +1,90 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import SelectableCard from "@/components/ui/SelectableCard";
 import ProductVariantsTemplate from "./ProductVariantsTemplate";
+import { useProductsSelection } from "../SelectableProduct/ProductsSelectionContext";
 
 type Product = Record<string, any>;
 
 type Props = {
   product: Product;
-  initialItemsSelected?: Product[] | null;
   disableSelect?: boolean;
-  onChange?: (data: Product | null) => void;
 };
 
 const SelectableProductVariants: React.FC<Props> = ({
   product,
-  initialItemsSelected = null,
-  onChange,
   disableSelect,
 }) => {
-  const [selectedMood, setSelectedMood] = useState<
-    "variants" | "product" | "null"
-  >("null");
-  const [selectedProduct, setSelectedProduct] = useState(false);
-  const [selectedVariants, setSelectedVariants] = useState<number[]>([]);
+  const { selectedProducts, addProduct, removeProduct } =
+    useProductsSelection();
 
-  useEffect(() => {
-    if (!initialItemsSelected) return;
+  const isProductSelected = useMemo(() => {
+    return selectedProducts.some(
+      (p: any) => p.id === product.id && !p.variants?.length
+    );
+  }, [selectedProducts, product.id]);
 
-    const found = initialItemsSelected.find((p: any) => p.id === product.id);
-    if (!found) return;
+  const selectedVariantIds = useMemo(() => {
+    const found = selectedProducts.find((p: any) => p.id === product.id);
+    return found?.variants?.map((v: any) => v.id) || [];
+  }, [selectedProducts, product.id]);
 
-    if (!found.variants || !found.variants.length) {
-      setSelectedMood("product");
-      setSelectedProduct(true);
-      setSelectedVariants([]);
-    } else {
-      setSelectedMood("variants");
-      setSelectedProduct(false);
-      setSelectedVariants(found.variants.map((v: any) => v.id));
-    }
-  }, [initialItemsSelected, product]);
-
-  const emitChange = (
-    mode: "product" | "variants" | "null",
-    variants?: number[]
-  ) => {
-    if (mode === "null") {
-      onChange?.(null);
-    } else if (mode === "product") {
-      onChange?.({ ...product, variants: null });
-    } else {
-      const selectedVariantsData = product.variants?.filter((v: any) =>
-        variants?.includes(v.id)
-      );
-      onChange?.({ ...product, variants: selectedVariantsData });
-    }
-  };
+  const hasVariantsSelected = useMemo(() => {
+    return selectedVariantIds.length > 0;
+  }, [selectedVariantIds]);
 
   const handleProductSelect = (selected: boolean) => {
-    if (selected) {
-      setSelectedMood("product");
-      setSelectedProduct(true);
-      setSelectedVariants([]);
-      emitChange("product");
-    } else {
-      setSelectedMood("null");
-      setSelectedProduct(false);
-      setSelectedVariants([]);
-      emitChange("null");
-    }
+    if (selected) addProduct({ ...product, variants: [] });
+    else removeProduct(product.id);
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
-    let newSelected = [...selectedVariants];
-    if (selected) {
-      newSelected.push(variantId);
-    } else {
-      newSelected = newSelected.filter((v) => v !== variantId);
-    }
+    const found = selectedProducts.find((p: any) => p.id === product.id);
+    let newVariants: any[] = [];
 
-    if (newSelected.length === 0) {
-      setSelectedMood("null");
-      setSelectedProduct(false);
-      setSelectedVariants([]);
-      emitChange("null");
-    } else {
-      setSelectedMood("variants");
-      setSelectedProduct(false);
-      setSelectedVariants(newSelected);
-      emitChange("variants", newSelected);
-    }
+    if (found?.variants) {
+      if (selected) {
+        if (!found.variants.some((v: any) => v.id === variantId)) {
+          newVariants = [
+            ...found.variants,
+            product.variants?.find((v: any) => v.id === variantId),
+          ];
+        } else newVariants = found.variants;
+      } else
+        newVariants = found.variants.filter((v: any) => v.id !== variantId);
+    } else if (selected)
+      newVariants = [product.variants?.find((v: any) => v.id === variantId)];
+
+    if (newVariants.length === 0) removeProduct(product.id);
+    else addProduct({ ...product, variants: newVariants });
   };
 
-  const getSelectedProductIds = () => (selectedProduct ? [product.id] : []);
-  const getSelectedVariantIds = () => selectedVariants;
+  const getSelectedProductIds = () => (isProductSelected ? [product.id] : []);
+  const getSelectedVariantIds = () => selectedVariantIds;
 
-  // wrapper برای product (SelectableCard)
   const productWrapper = (
     <SelectableCard
       id={product.id}
       selectedIds={getSelectedProductIds()}
       onSelectionChange={(id, isSelected) => handleProductSelect(isSelected)}
-      disabled={disableSelect || selectedMood === "variants"}
+      disabled={disableSelect || hasVariantsSelected}
     />
   );
 
-  // wrapper برای هر variant (SelectableCard)
   const variantWrapper = (
     <SelectableCard
       selectedIds={getSelectedVariantIds()}
       onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
-      disabled={disableSelect || selectedMood === "product"}
+      disabled={disableSelect || isProductSelected}
     />
   );
 
   return (
     <ProductVariantsTemplate
       product={product}
-      children={productWrapper} // wrap productContent
-      variantChildren={variantWrapper} // wrap هر variantContent
+      children={productWrapper}
+      variantChildren={variantWrapper}
     />
   );
 };

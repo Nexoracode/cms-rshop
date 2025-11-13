@@ -9,18 +9,12 @@ import ProductsFilter from "@/components/features/products/ProductsFilter";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuPlus } from "react-icons/lu";
-import SelectableProductVariants from "../ProductVariants/SelectableProductVariants"; // 🟢 تغییر import
+import SelectableProductVariants from "../ProductVariants/SelectableProductVariants";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import { useProductsSelection } from "./ProductsSelectionContext";
-
-type Product = {
-  [x: string]: any;
-}
 
 const ProductsSelectionModal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<ProductSortBy[number]>();
-  const { selectedProducts, setProducts } = useProductsSelection();
 
   const { data: products, isLoading } = useGetProducts({
     page,
@@ -30,22 +24,6 @@ const ProductsSelectionModal = () => {
   });
 
   const isExistItems = !!products?.data?.items?.length;
-
-  const handleProductChange = (
-    data: Product | null,
-    productId: number
-  ) => {
-    setProducts((prev: Product[]) => {
-      if (!data) {
-        // حذف محصولی که از انتخاب خارج شده
-        return prev.filter((p: any) => p.id !== productId);
-      } else {
-        // اضافه کردن یا به‌روزرسانی محصول با فرمت کامل
-        const filtered = prev.filter((p) => p.id !== data.id);
-        return [...filtered, data];
-      }
-    });
-  };
 
   return (
     <BaseModal
@@ -68,12 +46,7 @@ const ProductsSelectionModal = () => {
         meta={products?.data?.meta}
       >
         {products?.data?.items?.map((product: any) => (
-          <SelectableProductVariants  // 🟢 تغییر به جدید
-            key={product.id}
-            product={product}
-            initialItemsSelected={selectedProducts}
-            onChange={(data) => handleProductChange(data, product.id)}
-          />
+          <SelectableProductVariants key={product.id} product={product} />
         ))}
       </UnifiedCard>
     </BaseModal>
