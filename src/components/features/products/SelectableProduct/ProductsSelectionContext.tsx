@@ -8,6 +8,7 @@ type ProductsSelectionContextType = {
   selectedProducts: Product[];
   addProduct: (product: Product) => void;
   removeProduct: (productId: number) => void;
+  setSelectedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 };
 
 const ProductsSelectionContext =
@@ -45,7 +46,7 @@ export const ProductsSelectionProvider: React.FC<{
 
   return (
     <ProductsSelectionContext.Provider
-      value={{ selectedProducts, addProduct, removeProduct }}
+      value={{ selectedProducts, addProduct, removeProduct, setSelectedProducts }}
     >
       {children}
     </ProductsSelectionContext.Provider>
