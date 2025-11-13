@@ -8,33 +8,71 @@ import BaseCard from "@/components/ui/BaseCard";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
-import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 import SelectableProductsBoxWithQuantity from "../products/SelectableProduct/SelectableProductsBoxWithQuantity";
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
+import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
+import SelectableAddressesBox from "./SelectableAddressesBox";
+import { toast } from "react-hot-toast";
 
 type ManualOrderData = {
-  users: any[];
+  userId?: number;
   products: any[];
+  selectedAddressId?: number;
 };
 
 const ManualOrderForm = () => {
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
-
   const [formData, setFormData] = useState<ManualOrderData>({
-    users: [],
     products: [],
   });
 
-  const { data: user } = useGetOneUser(formData.users[0]);
+  // فقط وقتی userId موجوده query فعال میشه (enabled داخل خود هوک هندل شده)
+  const { data: user, refetch, isFetching } = useGetOneUser(formData.userId ?? 0);
+  const { mutate: createOrder, isPending } = useCreateManualOrder();
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    // هر بار کاربر تغییر کرد آدرس باید ریست بشه
+    setFormData((prev) => ({ ...prev, selectedAddressId: undefined }));
+    if (formData.userId) refetch();
+  }, [formData.userId, refetch]);
 
-  const onDiscountChange = (type: Discount, value: number) => {
-    console.log("Discount changed:", type, value);
+  const handleSubmit = () => {
+    if (!formData.userId || !formData.products.length || !formData.selectedAddressId) {
+      toast.error("لطفا کاربر، آدرس و محصولات را انتخاب کنید");
+      return;
+    }
+
+    const orderData = {
+      userId: formData.userId,
+      addressId: formData.selectedAddressId,
+      items: formData.products.map((product: any) => ({
+        product_id: product.id,
+        variant_ids:
+          product.variants?.map((variant: any) => ({
+            id: variant.id,
+            quantity: variant.quantity || 1,
+          })) || [],
+      })),
+    };
+
+    createOrder(orderData, {
+      onSuccess: () => {
+        toast.success("سفارش دستی با موفقیت ایجاد شد");
+        setFormData({ products: [] });
+        setDiscountValue(0);
+      },
+      onError: (err: any) => {
+        console.error(err);
+        toast.error("خطا در ایجاد سفارش. لطفا مجدداً تلاش کنید.");
+      },
+    });
   };
+
+  const canSubmit =
+    !!formData.userId &&
+    formData.products.length > 0 &&
+    !!formData.selectedAddressId;
 
   return (
     <BaseCard
@@ -46,40 +84,58 @@ const ManualOrderForm = () => {
       }}
       wrapperContents
     >
+      {/* انتخاب کاربر */}
       <SelectableUsersBox
-        onChange={(selectedUsers) =>
-          setFormData((prev) => ({ ...prev, users: selectedUsers }))
-        }
-      />
-
-      <SelectableProductsBoxWithQuantity
-        onChange={(selectedProducts) => {
-          console.log(selectedProducts);
-          setFormData((prev) => ({ ...prev, products: selectedProducts }));
+        onChange={(selectedUsers) => {
+          const firstUserId = selectedUsers[0];
+          setFormData((prev) => ({ ...prev, userId: firstUserId }));
         }}
       />
 
+      {/* نمایش آدرس‌های کاربر */}
+      {isFetching ? (
+        <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
+      ) : user?.data?.addresses?.length > 0 ? (
+        <SelectableAddressesBox
+          addresses={user?.data.addresses}
+          selectedAddressId={formData.selectedAddressId}
+          onChange={(addressId) =>
+            setFormData((prev) => ({ ...prev, selectedAddressId: addressId }))
+          }
+        />
+      ) : formData.userId ? (
+        <p className="text-sm text-gray-500 mt-3">
+          هیچ آدرسی برای این کاربر ثبت نشده است.
+        </p>
+      ) : null}
+
+      {/* انتخاب محصولات */}
+      <SelectableProductsBoxWithQuantity
+        onChange={(selectedProducts) =>
+          setFormData((prev) => ({ ...prev, products: selectedProducts }))
+        }
+      />
+
+      {/* تخفیف فاکتور */}
       <SwitchWrapper
         label="تخفیف فاکتور"
         description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
       >
         <DiscountInput
           value={discountValue}
-          onValueChange={(val) => {
-            const v = val ?? 0;
-            setDiscountValue(v);
-            onDiscountChange(discountType, v);
-          }}
+          onValueChange={(val) => setDiscountValue(val ?? 0)}
           selectedKey={discountType}
-          onSelectChange={(val) => {
-            const t = val as Discount;
-            setDiscountType(t);
-            onDiscountChange(t, discountValue);
-          }}
+          onSelectChange={(val) => setDiscountType(val as Discount)}
         />
       </SwitchWrapper>
 
-      <FormActionButtons cancelHref="/admin/orders" onSubmit={() => {}} />
+      {/* دکمه‌های عملیات */}
+      <FormActionButtons
+        cancelHref="/admin/orders"
+        onSubmit={handleSubmit}
+        isSubmitting={!canSubmit || isPending}
+        submitText={isPending ? "در حال ایجاد..." : "ایجاد سفارش"}
+      />
     </BaseCard>
   );
 };

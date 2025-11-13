@@ -38,6 +38,40 @@ export const useGetOrders = ({
   });
 };
 
+export type ManualOrderPayload = {
+  userId: number;
+  addressId: number;
+  items: Array<{
+    product_id: number;
+    variant_ids: Array<{
+      id: number;
+      quantity: number;
+    }>[];
+  }>;
+};
+
+export const useCreateManualOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (orderData: ManualOrderPayload) =>
+      fetcher({
+        route: "/orders/manual",
+        method: "POST",
+        body: orderData,
+        isActiveToast: true,
+        loadingText: "در حال ثبت سفارش دستی...",
+        successText: "سفارش دستی با موفقیت ثبت شد",
+      }),
+    onSuccess: () => {
+      // invalidate all order lists
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-orders",
+      });
+    },
+  });
+};
+
 /* ------------------------------ Get One Order ------------------------------ */
 
 export const useGetOneOrder = (id?: number) => {
