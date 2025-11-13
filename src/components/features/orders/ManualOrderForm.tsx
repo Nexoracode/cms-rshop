@@ -9,6 +9,7 @@ import { HiOutlineDocumentText } from "react-icons/hi2";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
+import SelectableProductsBoxWithQuantity from "../products/SelectableProduct/SelectableProductsBoxWithQuantity";
 
 type ManualOrderData = {
   users: any[];
@@ -48,7 +49,7 @@ const ManualOrderForm = () => {
         }
       />
 
-      <SelectableProductsBox
+      <SelectableProductsBoxWithQuantity
         onChange={(selectedProducts) => {
           console.log(selectedProducts);
           setFormData((prev) => ({ ...prev, products: selectedProducts }));
