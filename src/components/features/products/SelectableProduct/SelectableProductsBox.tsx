@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariantsTemplate from "../ProductVariants/ProductVariantsTemplate"; 
+import ProductVariantsTemplate from "../ProductVariants/ProductVariantsTemplate";
 import { TbPackages } from "react-icons/tb";
 
 type Props = {
@@ -33,6 +33,8 @@ const InnerSelectableProductsBox: React.FC<{
           <ProductVariantsTemplate
             key={selectedProduct.id}
             product={selectedProduct}
+            showVariants={selectedProduct?.variants?.length ? true : false}
+            productCardClassName={selectedProduct?.variants?.length ? "filter grayscale opacity-70" : ""}
           />
         ))}
       </div>

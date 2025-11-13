@@ -30,16 +30,20 @@ const SelectableProductVariants: React.FC<Props> = ({
     return found?.variants?.map((v: any) => v.id) || [];
   }, [selectedProducts, product.id]);
 
-  const hasVariantsSelected = useMemo(() => {
-    return selectedVariantIds.length > 0;
-  }, [selectedVariantIds]);
-
   const handleProductSelect = (selected: boolean) => {
-    if (selected) addProduct({ ...product, variants: [] });
-    else removeProduct(product.id);
+    if (selected) {
+      removeProduct(product.id);
+      addProduct({ ...product, variants: [] });
+    } else {
+      removeProduct(product.id);
+    }
   };
 
   const handleVariantSelect = (variantId: number, selected: boolean) => {
+    if (isProductSelected) {
+      removeProduct(product.id);
+    }
+
     const found = selectedProducts.find((p: any) => p.id === product.id);
     let newVariants: any[] = [];
 
@@ -68,7 +72,7 @@ const SelectableProductVariants: React.FC<Props> = ({
       id={product.id}
       selectedIds={getSelectedProductIds()}
       onSelectionChange={(id, isSelected) => handleProductSelect(isSelected)}
-      disabled={disableSelect || hasVariantsSelected}
+      disabled={disableSelect}
     />
   );
 
@@ -76,7 +80,7 @@ const SelectableProductVariants: React.FC<Props> = ({
     <SelectableCard
       selectedIds={getSelectedVariantIds()}
       onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
-      disabled={disableSelect || isProductSelected}
+      disabled={disableSelect}
     />
   );
 

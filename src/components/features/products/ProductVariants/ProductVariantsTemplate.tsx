@@ -11,19 +11,23 @@ interface ProductVariantsTemplateProps {
   product: Product;
   children?: React.ReactNode;
   variantChildren?: React.ReactNode;
+  showVariants?: boolean;
+  productCardClassName?: string;
 }
 
 const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
   product,
   children,
   variantChildren,
+  showVariants = true,
+  productCardClassName = "",
 }) => {
   const productContent = (
     <BaseCard
-      className={`shadow-none ${!product?.variants ? "border-none" : ""}`}
+      className={`shadow-none ${!showVariants ? "border-none" : ""}`}
       bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start ${
-        !product?.variants ? "p-0" : ""
-      }`}
+        !showVariants ? "p-0" : ""
+      } ${productCardClassName}`}
     >
       <div className="relative w-fit h-full">
         <img
@@ -97,69 +101,70 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
     </BaseCard>
   );
 
-  const variantsContent = !product?.variants ? null : (
-    <div className="flex flex-col gap-2 mt-4 mx-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <MdOutlineCategory className="text-purple-500 text-xl" />
-          <p className="text-gray-600">تنوع محصول‌ها</p>
+  const variantsContent =
+    !product?.variants || !showVariants ? null : (
+      <div className="flex flex-col gap-2 mt-4 mx-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <MdOutlineCategory className="text-purple-500 text-xl" />
+            <p className="text-gray-600">تنوع محصول‌ها</p>
+          </div>
+          <p className="text-gray-600">{product.variants.length} عدد</p>
         </div>
-        <p className="text-gray-600">{product.variants.length} عدد</p>
-      </div>
 
-      <div className="grid grid-cols-3 gap-2 items-center justify-center">
-        {product.variants.map((variant: any) => {
-          const variantContent = (
-            <BaseCard bodyClassName="h-32 items-center justify-between py-3">
-              <div className="text-sm text-gray-600 leading-7">
-                {variant.name}
-              </div>
-
-              <div className="flex">
-                <div className="text-gray-600">
-                  {variant.discount_amount > 0 ||
-                  variant.discount_percent > 0 ? (
-                    <div className="flex flex-row-reverse items-center gap-1 bg-slate-50 rounded-xl p-2">
-                      <RiDiscountPercentLine className="text-orange-500 text-xl" />
-                      <span className="text-[15px] text-gray-700">
-                        {Number(
-                          Math.max(
-                            0,
-                            variant.price -
-                              (variant.discount_amount > 0
-                                ? variant.discount_amount
-                                : (variant.discount_percent / 100) *
-                                  variant.price)
-                          )
-                        ).toLocaleString("fa-IR")}{" "}
-                        تومان
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="text-[15px] text-gray-700 bg-slate-50 rounded-xl p-2">
-                      {Number(variant.price).toLocaleString("fa-IR")} تومان
-                    </div>
-                  )}
+        <div className="grid grid-cols-3 gap-3 items-center justify-center">
+          {product.variants.map((variant: any) => {
+            const variantContent = (
+              <BaseCard bodyClassName="h-32 items-center justify-between py-3">
+                <div className="text-sm text-gray-600 leading-7">
+                  {variant.name}
                 </div>
-              </div>
-            </BaseCard>
-          );
 
-          return (
-            <React.Fragment key={variant.id}>
-              {variantChildren
-                ? React.cloneElement(variantChildren as React.ReactElement, {
-                    children: variantContent,
-                    variant,
-                    id: variant.id,
-                  })
-                : variantContent}
-            </React.Fragment>
-          );
-        })}
+                <div className="flex">
+                  <div className="text-gray-600">
+                    {variant.discount_amount > 0 ||
+                    variant.discount_percent > 0 ? (
+                      <div className="flex flex-row-reverse items-center gap-1 bg-slate-50 rounded-xl p-2">
+                        <RiDiscountPercentLine className="text-orange-500 text-xl" />
+                        <span className="text-[15px] text-gray-700">
+                          {Number(
+                            Math.max(
+                              0,
+                              variant.price -
+                                (variant.discount_amount > 0
+                                  ? variant.discount_amount
+                                  : (variant.discount_percent / 100) *
+                                    variant.price)
+                            )
+                          ).toLocaleString("fa-IR")}{" "}
+                          تومان
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="text-[15px] text-gray-700 bg-slate-50 rounded-xl p-2">
+                        {Number(variant.price).toLocaleString("fa-IR")} تومان
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </BaseCard>
+            );
+
+            return (
+              <React.Fragment key={variant.id}>
+                {variantChildren
+                  ? React.cloneElement(variantChildren as React.ReactElement, {
+                      children: variantContent,
+                      variant,
+                      id: variant.id,
+                    })
+                  : variantContent}
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
 
   return (
     <BaseCard>
