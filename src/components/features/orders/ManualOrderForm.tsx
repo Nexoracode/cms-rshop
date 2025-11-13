@@ -10,6 +10,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 import SelectableProductsBoxWithQuantity from "../products/SelectableProduct/SelectableProductsBoxWithQuantity";
+import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 
 type ManualOrderData = {
   users: any[];
@@ -25,9 +26,11 @@ const ManualOrderForm = () => {
     products: [],
   });
 
+  const { data: user } = useGetOneUser(formData.users[0]);
+
   useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+    console.log(user);
+  }, [user]);
 
   const onDiscountChange = (type: Discount, value: number) => {
     console.log("Discount changed:", type, value);
