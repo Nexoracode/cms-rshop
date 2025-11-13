@@ -116,13 +116,13 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
           <p className="text-gray-600">{product.variants.length} عدد</p>
         </div>
 
-        <div className="grid grid-cols-4 gap-2">
+        <div className="flex flex-col gap-2">
           {product.variants.map((variant: any) => {
             const variantContent = (
-              <BaseCard bodyClassName="h-28 items-center justify-between hover-reveal-parent">
+              <BaseCard bodyClassName="w-full flex-row items-center justify-between gap-4 hover-reveal-parent px-3">
                 {typeof contentVariant === 'function' ? contentVariant(variant) : contentVariant} {/* 🟢 اگر function باشه، variant رو پاس بده */}
 
-                <div className="text-xs text-gray-600 leading-7">
+                <div className="text-sm text-gray-600 leading-7">
                   {variant.name}
                 </div>
 
