@@ -33,20 +33,16 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
 
   const removeVariantFromProduct = (productId: number, variantId: number) => {
     setSelectedProducts((prev: any) => {
-      return prev
-        .map((product: any) => {
-          if (product.id === productId && product.variants) {
-            const newVariants = product.variants.filter(
-              (v: any) => v.id !== variantId
-            );
-            if (newVariants.length === 0) {
-              return null; // Mark for removal
-            }
-            return { ...product, variants: newVariants };
-          }
-          return product;
-        })
-        .filter(Boolean); // Remove null products
+      return prev.map((product: any) => {
+        if (product.id === productId && product.variants) {
+          const newVariants = product.variants.filter(
+            (v: any) => v.id !== variantId
+          );
+          // حتی اگر همه واریانت‌ها حذف شدند، محصول را نگه دارید
+          return { ...product, variants: newVariants };
+        }
+        return product;
+      });
     });
   };
 
