@@ -2,8 +2,8 @@
 
 import React, { useMemo } from "react";
 import SelectableCard from "@/components/ui/SelectableCard";
-import ProductVariantsTemplate from "./ProductVariantsTemplate";
-import { useProductsSelection } from "../SelectableProduct/ProductsSelectionContext";
+import ProductVariantsTemplate from "../ProductVariantsTemplate";
+import { useProductsSelection } from "./ProductsSelectionContext";
 
 type Product = Record<string, any>;
 

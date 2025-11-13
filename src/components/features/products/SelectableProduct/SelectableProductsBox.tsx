@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariantsTemplate from "../ProductVariants/ProductVariantsTemplate";
+import ProductVariantsTemplate from "../ProductVariantsTemplate";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 

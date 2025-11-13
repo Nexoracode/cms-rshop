@@ -9,7 +9,7 @@ import ProductsFilter from "@/components/features/products/ProductsFilter";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuPlus } from "react-icons/lu";
-import SelectableProductVariants from "../ProductVariants/SelectableProductVariants";
+import SelectableProductVariants from "./SelectableProductVariants";
 import BaseModal from "@/components/ui/modals/BaseModal";
 
 const ProductsSelectionModal = () => {
