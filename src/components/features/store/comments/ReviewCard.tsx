@@ -88,7 +88,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
         </div>
       </div>
 
-      <div className="p-2 mt-4 rounded-xl border border-slate-200">
+      <div className="px-1 pt-1 mt-5 border-x-2 rounded-xl border-slate-200">
         <Link
           href={`/admin/store/customers/create?edit_id=${item.user.id}`}
           className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-2 py-2"
