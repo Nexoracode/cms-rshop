@@ -13,7 +13,7 @@ interface ProductVariantsTemplateProps {
   variantChildren?: React.ReactNode;
   showVariants?: boolean;
   contentProduct?: React.ReactNode;
-  contentVariant?: React.ReactNode;
+  contentVariant?: ((variant: any) => React.ReactNode) | React.ReactNode;
 }
 
 const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
@@ -120,7 +120,7 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
           {product.variants.map((variant: any) => {
             const variantContent = (
               <BaseCard bodyClassName="h-28 items-center justify-between hover-reveal-parent">
-                {contentVariant}
+                {typeof contentVariant === 'function' ? contentVariant(variant) : contentVariant} {/* 🟢 اگر function باشه، variant رو پاس بده */}
 
                 <div className="text-xs text-gray-600 leading-7">
                   {variant.name}

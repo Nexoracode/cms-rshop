@@ -15,7 +15,19 @@ type Props = {
 const InnerSelectableProductsBox: React.FC<{
   onChange?: (ids: number[]) => void;
 }> = ({ onChange }) => {
-  const { selectedProducts } = useProductsSelection();
+  const { selectedProducts, removeProduct, addProduct } = useProductsSelection();
+
+  const removeVariantFromProduct = (productId: number, variantId: number) => {
+    const product = selectedProducts.find((p: any) => p.id === productId);
+    if (!product || !product.variants) return;
+
+    const newVariants = product.variants.filter((v: any) => v.id !== variantId);
+    if (newVariants.length === 0) {
+      removeProduct(productId);
+    } else {
+      addProduct({ ...product, variants: newVariants });
+    }
+  };
 
   useEffect(() => {
     console.log(selectedProducts);
@@ -37,14 +49,19 @@ const InnerSelectableProductsBox: React.FC<{
             showVariants={selectedProduct?.variants?.length ? true : false}
             contentProduct={
               <div className="deselect-icon">
-                <AiOutlineCloseCircle onClick={() => {}} />
+                <AiOutlineCloseCircle 
+                  onClick={() => removeProduct(selectedProduct.id)}
+                />
               </div>
             }
-            contentVariant={
+            contentVariant={(variant: any) => (
               <div className="deselect-icon">
-                <AiOutlineCloseCircle className="text-[16px]" onClick={() => {}} />
+                <AiOutlineCloseCircle 
+                  className="text-[16px]" 
+                  onClick={() => removeVariantFromProduct(selectedProduct.id, variant.id)}
+                />
               </div>
-            }
+            )}
           />
         ))}
       </div>
