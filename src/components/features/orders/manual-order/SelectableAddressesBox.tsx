@@ -3,6 +3,10 @@
 import React from "react";
 import SelectableCard from "@/components/ui/SelectableCard";
 import BaseCard from "@/components/ui/BaseCard";
+import { HiOutlineOfficeBuilding, HiOutlineMail } from "react-icons/hi";
+import { LuMapPinned } from "react-icons/lu";
+import { MdOutlineMapsHomeWork } from "react-icons/md";
+import StatusBadge from "@/components/shared/StatusBadge";
 
 type Address = {
   id: number;
@@ -28,42 +32,61 @@ const SelectableAddressesBox: React.FC<Props> = ({
   onChange,
 }) => {
   const formatAddress = (address: Address) => {
-    return `${address.address_line}, پلاک ${address.plaque}${
-      address.unit ? `, واحد ${address.unit}` : ""
-    }, ${address.city}, ${address.province}, کد پستی: ${address.postal_code}`;
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
+        <div className="flex items-center gap-2">
+          <LuMapPinned className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
+          <span>
+            {address.city}, {address.province}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <MdOutlineMapsHomeWork className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
+          <span className="truncate">{address.address_line}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <HiOutlineOfficeBuilding className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
+          <span>
+            پلاک {address.plaque}
+            {address.unit ? `, واحد ${address.unit}` : ""}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <HiOutlineMail className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
+          <span>کد پستی: {address.postal_code}</span>
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="flex flex-col gap-4 mt-4">
       {addresses.map((address) => {
-        const isSelected = selectedAddressId === address.id;
-
         return (
           <SelectableCard
             key={address.id}
             id={address.id}
             selectedIds={selectedAddressId ? [selectedAddressId] : []}
             onSelectionChange={(id, selected) => {
-              if (selected) {
-                onChange(id as number);
-              }
+              if (selected) onChange(id as number);
             }}
           >
-            <BaseCard className={`p-3 ${isSelected ? "border-blue-300" : ""}`}>
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-medium text-gray-800">
+            <BaseCard className="p-2">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-gray-800 text-base flex items-center gap-2">
                   {address.address_name}
-                  {address.is_primary && (
-                    <span className="mr-2 text-xs bg-green-100 text-green-600 px-2 py-1 rounded">
-                      پیش‌فرض
-                    </span>
-                  )}
                 </h4>
+                {address.is_primary && (
+                  <StatusBadge
+                    isActive={true}
+                    size="md"
+                    activeText="پیش‌فرض"
+                    className="rounded-full"
+                  />
+                )}
               </div>
 
-              <p className="text-sm text-gray-600 mb-2">
-                {formatAddress(address)}
-              </p>
+              {formatAddress(address)}
             </BaseCard>
           </SelectableCard>
         );
