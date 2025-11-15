@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@heroui/react";
 import { useAddNewUser } from "@/core/hooks/api/users/useUsers";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { FiUserPlus } from "react-icons/fi";
@@ -11,11 +10,10 @@ const AddNewCustomerModal: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
 
   const addNewUser = useAddNewUser();
 
-  const addNewUserHandler = async (close: (open: boolean) => void) => {
+  const addNewUserHandler = async () => {
     let formattedPhone = phone.trim();
 
     if (!formattedPhone.startsWith("0")) {
@@ -26,32 +24,33 @@ const AddNewCustomerModal: React.FC = () => {
       first_name: firstName.trim(),
       last_name: lastName.trim(),
       phone: phone.trim(),
-      password: null,
+      password: "123456@Ss",
+      email: `${crypto.randomUUID()}@sdf.df`,
     };
 
-    addNewUser.mutate(newUser, {
-      onSuccess: () => {
-        setFirstName("");
-        setLastName("");
-        setPhone("");
-        close(false);
-        setIsOpen(false);
-      },
-      onError: (err) => {
-        console.error(err);
-      },
-    });
+    return addNewUser
+      .mutateAsync(newUser)
+      .then((res) => {
+        res.ok && resetDatas()
+        return res.ok
+      })
+      .catch(() => false);
+  };
+
+  const resetDatas = () => {
+    setFirstName("");
+    setLastName("");
+    setPhone("");
   };
 
   return (
     <BaseModal
-      isOpen={isOpen}
-      onOpenChange={setIsOpen}
       title="افزودن کاربر جدید"
       confirmText="تأیید و ثبت"
       cancelText="لغو"
       onConfirm={addNewUserHandler}
-      size="lg"
+      onCancel={resetDatas}
+      size="md"
       triggerProps={{
         className: "bg-secondary-light text-secondary",
         title: "+ افزودن",

@@ -49,7 +49,10 @@ const BaseModal: React.FC<BaseModalProps> = ({
   isActiveFooter = true,
   size = "md",
   trigger,
-  triggerProps= {title: "+ افزودن", className: "bg-secondary-light text-secondary"},
+  triggerProps = {
+    title: "+ افزودن",
+    className: "bg-secondary-light text-secondary",
+  },
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledIsOpen !== undefined;
@@ -111,11 +114,18 @@ const BaseModal: React.FC<BaseModalProps> = ({
                       onCancel?.();
                       onClose();
                     }}
-                    onSubmit={async () => {
-                      const shouldClose = await onConfirm?.(handleOpenChange);
-                      console.log(shouldClose);
-                      
-                      if (shouldClose !== false) onClose();
+                    onSubmit={() => {
+                      const result = onConfirm?.(handleOpenChange);
+
+                      if (result instanceof Promise) {
+                        return result.then((value) => {
+                          if (value === true) onClose();
+                        });
+                      }
+
+                      if (result === true) {
+                        onClose();
+                      }
                     }}
                     isSubmitting={isConfirmDisabled}
                   />
