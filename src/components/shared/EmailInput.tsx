@@ -46,12 +46,8 @@ const EmailInput: React.FC<EmailInputProps> = ({
         value={value}
         onChange={(val) => validateEmail(val)}
         isRequired={isRequired}
+        type="email"
         inputAlign="left"
-        allowSpecialChars={true}
-        allowedSpecialChars={["@", ".", "_", "-"]}
-        allowEnglishOnly={true}
-        allowNumbers={true}
-        allowSpaces={false}
       />
 
       {error && <span className="text-red-500 text-sm">{error}</span>}

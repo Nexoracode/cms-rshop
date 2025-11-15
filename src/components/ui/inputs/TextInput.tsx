@@ -79,6 +79,10 @@ export default function TextInput({
 }: Props) {
   const [localError, setLocalError] = useState<string>("");
 
+  // تشخیص خودکار بر اساس type
+  const shouldSkipSanitize = type === "email";
+  const emailAllowedChars = ["@", ".", "_", "-", "+"];
+
   const handleValueChange = (next: string) => {
     let filteredValue = next;
 
@@ -87,13 +91,28 @@ export default function TextInput({
       filteredValue = next.replace(/\D/g, "");
     }
 
-    const { out, firstError } = sanitizeInput(filteredValue, {
-      allowEnglishOnly,
-      allowSpaces,
-      allowSpecialChars,
-      allowedSpecialChars,
-      allowNumbers,
-    });
+    let out = filteredValue;
+    let firstError = "";
+
+    // اگر type=email باشد، sanitization را skip می‌کنیم
+    if (!shouldSkipSanitize) {
+      const sanitizeResult = sanitizeInput(filteredValue, {
+        allowEnglishOnly,
+        allowSpaces,
+        allowSpecialChars,
+        allowedSpecialChars,
+        allowNumbers,
+      });
+      out = sanitizeResult.out;
+      firstError = sanitizeResult.firstError || "";
+    } else {
+      // برای ایمیل، فقط اعتبارسنجی ساده انجام می‌دهیم
+      const emailRegex = /^[a-zA-Z0-9@._+-]*$/;
+      if (!emailRegex.test(next)) {
+        firstError = "کاراکترهای غیرمجاز در ایمیل";
+        out = next.replace(/[^a-zA-Z0-9@._+-]/g, "");
+      }
+    }
 
     if (firstError) setLocalError(firstError);
     else setLocalError("");
