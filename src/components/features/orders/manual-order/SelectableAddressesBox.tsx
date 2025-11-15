@@ -66,7 +66,7 @@ const SelectableAddressesBox: React.FC<Props> = ({
       CardHeaderProps={{
         title: "آدرس های کاربر",
         className: "p-2",
-        children: <>افزودن آدرس</>,
+        children: <>+ آدرس جدید</>,
       }}
     >
       {addresses.map((address) => {

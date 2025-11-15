@@ -35,7 +35,7 @@ const CustomerCard: React.FC<Props> = ({
       bodyClassName="w-full min-w-[341px]"
       redirect={`/admin/store/customers/create?edit_id=${id}`}
     >
-      <div className="flex items-center gap-2 mb-2 p-2">
+      <div className="flex items-center gap-2 mb-2">
         <div>
           {avatar_url ? (
             <img
