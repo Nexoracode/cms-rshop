@@ -37,10 +37,11 @@ type Props = {
   allowSpecialChars?: boolean;
   allowedSpecialChars?: string[];
   allowNumbers?: boolean;
+  allowChars?: boolean;
 
   /** ترازبندی‌ها */
-  inputAlign?: "left" | "right";   // فقط متن خود input
-  helperAlign?: "left" | "right";  // ارورها/توضیحات/هلپر
+  inputAlign?: "left" | "right"; // فقط متن خود input
+  helperAlign?: "left" | "right"; // ارورها/توضیحات/هلپر
 };
 
 export default function TextInput({
@@ -65,6 +66,7 @@ export default function TextInput({
   color = "default",
   maxLength,
   minLength,
+  allowChars = true,
 
   allowEnglishOnly = true,
   allowSpaces = true,
@@ -78,7 +80,14 @@ export default function TextInput({
   const [localError, setLocalError] = useState<string>("");
 
   const handleValueChange = (next: string) => {
-    const { out, firstError } = sanitizeInput(next, {
+    let filteredValue = next;
+
+    if (allowChars === false) {
+      // فقط اعداد مجاز
+      filteredValue = next.replace(/\D/g, "");
+    }
+
+    const { out, firstError } = sanitizeInput(filteredValue, {
       allowEnglishOnly,
       allowSpaces,
       allowSpecialChars,
@@ -93,7 +102,8 @@ export default function TextInput({
   };
 
   const showRequiredError =
-    (isInvalid ?? (isActiveError && isRequired && !value.trim())) && !localError;
+    (isInvalid ?? (isActiveError && isRequired && !value.trim())) &&
+    !localError;
 
   const finalIsInvalid = !!localError || showRequiredError;
   const finalErrorMessage = localError ? (
@@ -103,7 +113,8 @@ export default function TextInput({
   ) : undefined;
 
   // کلاس‌های تراز
-  const inputTextAlignClass = inputAlign === "left" ? "text-left" : "text-right";
+  const inputTextAlignClass =
+    inputAlign === "left" ? "text-left" : "text-right";
   const helperTextAlignClass =
     helperAlign === "left" ? "text-left" : "text-right";
 

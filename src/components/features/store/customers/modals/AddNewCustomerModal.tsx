@@ -16,6 +16,12 @@ const AddNewCustomerModal: React.FC = () => {
   const addNewUser = useAddNewUser();
 
   const addNewUserHandler = async (close: (open: boolean) => void) => {
+    let formattedPhone = phone.trim();
+
+    if (!formattedPhone.startsWith("0")) {
+      formattedPhone = "0" + formattedPhone;
+    }
+
     const newUser = {
       first_name: firstName.trim(),
       last_name: lastName.trim(),
@@ -78,8 +84,10 @@ const AddNewCustomerModal: React.FC = () => {
           onChange={setPhone}
           type="tel"
           maxLength={11}
+          minLength={11}
           isRequired
           inputAlign="left"
+          allowChars={false}
         />
       </div>
     </BaseModal>
