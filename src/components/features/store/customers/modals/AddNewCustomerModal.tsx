@@ -6,14 +6,16 @@ import BaseModal from "@/components/ui/modals/BaseModal";
 import { FiUserPlus } from "react-icons/fi";
 import TextInput from "@/components/ui/inputs/TextInput";
 import EmailInput from "@/components/shared/EmailInput";
+import PhoneInput from "@/components/shared/PhoneInput";
 
 const AddNewCustomerModal: React.FC = () => {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     phone: "",
+    phoneValid: true,
     email: "",
-    emailValid: true, // ⭐ مهم
+    emailValid: true,
   });
 
   const addNewUser = useAddNewUser();
@@ -23,23 +25,19 @@ const AddNewCustomerModal: React.FC = () => {
       firstName: "",
       lastName: "",
       phone: "",
+      phoneValid: true,
       email: "",
       emailValid: true,
     });
   };
 
   const addNewUserHandler = async () => {
-    if (!form.emailValid) return false;
-
-    let formattedPhone = form.phone.trim();
-    if (!formattedPhone.startsWith("0")) {
-      formattedPhone = "0" + formattedPhone;
-    }
+    if (!form.emailValid || !form.phoneValid) return false;
 
     const newUser = {
       first_name: form.firstName.trim(),
       last_name: form.lastName.trim(),
-      phone: formattedPhone,
+      phone: form.phone,
       password: "123456@Ss",
       email: form.email ? form.email.trim() : undefined,
     };
@@ -49,7 +47,7 @@ const AddNewCustomerModal: React.FC = () => {
       .then((res) => {
         if (res.ok) {
           resetForm();
-          return true; // ⭐ باعث بسته شدن مدال می‌شود
+          return true;
         }
         return false;
       })
@@ -90,18 +88,13 @@ const AddNewCustomerModal: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <TextInput
-            label="شماره تماس"
-            placeholder="09XXXXXXXXXX"
+          <PhoneInput
             value={form.phone}
-            onChange={(v) => setForm({ ...form, phone: v })}
-            type="tel"
-            maxLength={11}
-            minLength={11}
-            isRequired
-            inputAlign="left"
-            allowChars={false}
+            onChange={(val, valid) =>
+              setForm({ ...form, phone: val, phoneValid: valid })
+            }
           />
+          
           <EmailInput
             value={form.email}
             onChange={(val, valid) =>
