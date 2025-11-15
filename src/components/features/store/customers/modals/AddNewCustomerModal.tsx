@@ -41,7 +41,7 @@ const AddNewCustomerModal: React.FC = () => {
       last_name: form.lastName.trim(),
       phone: formattedPhone,
       password: "123456@Ss",
-      email: form.email ? form.email.trim() : undefined, // ⭐ انتخابی
+      email: form.email ? form.email.trim() : undefined,
     };
 
     return addNewUser
@@ -63,7 +63,7 @@ const AddNewCustomerModal: React.FC = () => {
       cancelText="لغو"
       onConfirm={addNewUserHandler}
       onCancel={resetForm}
-      size="md"
+      size="lg"
       triggerProps={{
         className: "bg-secondary-light text-secondary",
         title: "+ افزودن",
@@ -89,25 +89,26 @@ const AddNewCustomerModal: React.FC = () => {
           />
         </div>
 
-        <TextInput
-          label="شماره تماس"
-          placeholder="09XXXXXXXXXX"
-          value={form.phone}
-          onChange={(v) => setForm({ ...form, phone: v })}
-          type="tel"
-          maxLength={11}
-          minLength={11}
-          isRequired
-          inputAlign="left"
-          allowChars={false}
-        />
-
-        <EmailInput
-          value={form.email}
-          onChange={(val, valid) =>
-            setForm({ ...form, email: val, emailValid: valid })
-          }
-        />
+        <div className="flex items-center gap-2">
+          <TextInput
+            label="شماره تماس"
+            placeholder="09XXXXXXXXXX"
+            value={form.phone}
+            onChange={(v) => setForm({ ...form, phone: v })}
+            type="tel"
+            maxLength={11}
+            minLength={11}
+            isRequired
+            inputAlign="left"
+            allowChars={false}
+          />
+          <EmailInput
+            value={form.email}
+            onChange={(val, valid) =>
+              setForm({ ...form, email: val, emailValid: valid })
+            }
+          />
+        </div>
       </div>
     </BaseModal>
   );

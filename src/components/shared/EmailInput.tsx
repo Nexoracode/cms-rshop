@@ -39,19 +39,17 @@ const EmailInput: React.FC<EmailInputProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-1">
-      <TextInput
-        label={label}
-        placeholder={placeholder}
-        value={value}
-        onChange={(val) => validateEmail(val)}
-        isRequired={isRequired}
-        type="email"
-        inputAlign="left"
-      />
-
-      {error && <span className="text-red-500 text-sm">{error}</span>}
-    </div>
+    <TextInput
+      label={label}
+      placeholder={placeholder}
+      value={value}
+      onChange={(val) => validateEmail(val)}
+      isRequired={isRequired}
+      type="email"
+      inputAlign="left"
+      isInvalid={!!error.length}
+      errorText={error}
+    />
   );
 };
 
