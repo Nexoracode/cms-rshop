@@ -2,7 +2,7 @@
 
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import OrdersFilter from "@/components/features/orders/OrdersFilter";
+import OrdersFilter from "@/components/features/orders/Filter/OrdersFilter";
 import OrderCard from "@/components/features/orders/OrderCard";
 
 // Icons

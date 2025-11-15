@@ -1,8 +1,8 @@
 "use client";
 
-import SearchFilterCard from "../../common/Card/SearchFilterCard";
-import OrdersFilterModal from "./modals/OrdersFilterModal";
-import OrdersSortingModal from "./modals/OrdersSortModal";
+import SearchFilterCard from "../../../common/Card/SearchFilterCard";
+import OrdersFilterModal from "./OrdersFilterModal";
+import OrdersSortingModal from "./OrdersSortModal";
 
 const OrdersFilter = () => {
   return (

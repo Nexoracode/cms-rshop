@@ -1,6 +1,6 @@
 "use client";
 
-import ManualOrderForm from "@/components/features/orders/ManualOrderForm";
+import ManualOrderForm from "@/components/features/orders/manual-order/ManualOrderForm";
 import { ProductsSelectionProvider } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 import { CustomersSelectionProvider } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
 

@@ -8,7 +8,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
-import SelectableProductsBoxWithQuantity from "../products/SelectableProduct/SelectableProductsBoxWithQuantity";
+import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/SelectableProductsBoxWithQuantity";
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
 import SelectableAddressesBox from "./SelectableAddressesBox";
@@ -16,8 +16,8 @@ import { toast } from "react-hot-toast";
 
 /* اضافه‌شده برای انتخاب وضعیت */
 import PopoverSelect from "@/components/ui/PopoverSelect";
-import { statusOptions } from "./order-constants";
-import { StatusOrder } from "./order-types";
+import { statusOptions } from "../order-constants";
+import { StatusOrder } from "../order-types";
 
 type ManualOrderData = {
   userId?: number;
