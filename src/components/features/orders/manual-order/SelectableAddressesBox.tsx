@@ -60,7 +60,15 @@ const SelectableAddressesBox: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
+    <BaseCard
+      className="shadow-none cursor-auto"
+      bodyClassName="flex flex-col gap-2"
+      CardHeaderProps={{
+        title: "آدرس های کاربر",
+        className: "p-2",
+        children: <>افزودن آدرس</>,
+      }}
+    >
       {addresses.map((address) => {
         return (
           <SelectableCard
@@ -91,7 +99,7 @@ const SelectableAddressesBox: React.FC<Props> = ({
           </SelectableCard>
         );
       })}
-    </div>
+    </BaseCard>
   );
 };
 
