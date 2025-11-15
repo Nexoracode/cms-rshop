@@ -15,9 +15,10 @@ import SelectableAddressesBox from "./SelectableAddressesBox";
 import { toast } from "react-hot-toast";
 
 /* اضافه‌شده برای انتخاب وضعیت */
-import PopoverSelect from "@/components/ui/PopoverSelect";
 import { statusOptions } from "../order-constants";
 import { StatusOrder } from "../order-types";
+import SelectBox from "@/components/ui/inputs/SelectBox";
+import { useRouter } from "next/navigation";
 
 type ManualOrderData = {
   userId?: number;
@@ -26,6 +27,7 @@ type ManualOrderData = {
 };
 
 const ManualOrderForm = () => {
+  const router = useRouter()
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
   const [formData, setFormData] = useState<ManualOrderData>({
@@ -91,10 +93,7 @@ const ManualOrderForm = () => {
 
     createOrder(orderData, {
       onSuccess: () => {
-        toast.success("سفارش دستی با موفقیت ایجاد شد");
-        setFormData({ products: [] });
-        setDiscountValue(0);
-        setSelectedStatus("awaiting_payment"); // ریست وضعیت به پیش‌فرض (اختیاری)
+        router.push("/admin/orders")
       },
       onError: (err: any) => {
         console.error(err);
@@ -131,6 +130,7 @@ const ManualOrderForm = () => {
         <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
       ) : user?.data?.addresses?.length > 0 ? (
         <SelectableAddressesBox
+          key={user?.data.addresses.id}
           addresses={user?.data.addresses}
           selectedAddressId={formData.selectedAddressId}
           onChange={(addressId) =>
@@ -152,13 +152,16 @@ const ManualOrderForm = () => {
 
       {/* انتخاب وضعیت سفارش (اضافه‌شده) */}
       <div className="mt-4">
-        <label className="block text-sm text-gray-700 mb-2">وضعیت سفارش</label>
-        <PopoverSelect
-          items={statusOptions}
-          initialKey={selectedStatus}
-          onSelect={(key) => setSelectedStatus(key as StatusOrder)}
-          popoverClassName="w-[240px]"
-          buttonClassName="capitalize w-full xs:w-fit text-sm"
+        <SelectBox
+          label="وضعیت سفارش"
+          value={selectedStatus}
+          onChange={(val) => setSelectedStatus(val as StatusOrder)}
+          options={statusOptions.map((opt) => ({
+            key: opt.key,
+            title: opt.title,
+          }))}
+          placeholder="انتخاب وضعیت"
+          isRequired
         />
       </div>
 
@@ -179,8 +182,8 @@ const ManualOrderForm = () => {
       <FormActionButtons
         cancelHref="/admin/orders"
         onSubmit={handleSubmit}
-        isSubmitting={!canSubmit || isPending}
-        submitText={isPending ? "در حال ایجاد..." : "ایجاد سفارش"}
+        isSubmitting={canSubmit || isPending}
+        submitText={"ایجاد سفارش"}
       />
     </BaseCard>
   );
