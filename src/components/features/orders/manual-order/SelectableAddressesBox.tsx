@@ -33,15 +33,15 @@ const SelectableAddressesBox: React.FC<Props> = ({
 }) => {
   const formatAddress = (address: Address) => {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
+      <div className="grid gap-4 text-sm text-gray-600">
         <div className="flex items-center gap-2">
           <LuMapPinned className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
           <span>
             {address.city}, {address.province}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <MdOutlineMapsHomeWork className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
+        <div className="flex items-center gap-2 bg-slate-50 rounded-md py-1">
+          <MdOutlineMapsHomeWork className="text-gray-500 text-[26px] bg-slate-200 rounded-lg p-1" />
           <span className="truncate">{address.address_line}</span>
         </div>
         <div className="flex items-center gap-2">
@@ -51,8 +51,8 @@ const SelectableAddressesBox: React.FC<Props> = ({
             {address.unit ? `, واحد ${address.unit}` : ""}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <HiOutlineMail className="text-gray-500 text-[26px] bg-slate-100 rounded-lg p-1" />
+        <div className="flex items-center gap-2 bg-slate-50 rounded-md py-1">
+          <HiOutlineMail className="text-gray-500 text-[26px] bg-slate-200 rounded-lg p-1" />
           <span>کد پستی: {address.postal_code}</span>
         </div>
       </div>
@@ -62,7 +62,7 @@ const SelectableAddressesBox: React.FC<Props> = ({
   return (
     <BaseCard
       className="shadow-none cursor-auto"
-      bodyClassName="flex flex-col gap-2"
+      bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-2"
       CardHeaderProps={{
         title: "آدرس های کاربر",
         className: "p-2",

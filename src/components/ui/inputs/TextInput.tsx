@@ -72,7 +72,7 @@ export default function TextInput({
   allowedSpecialChars = [],
   allowNumbers = true,
 
-  inputAlign = "left",
+  inputAlign = "right",
   helperAlign = "right",
 }: Props) {
   const [localError, setLocalError] = useState<string>("");

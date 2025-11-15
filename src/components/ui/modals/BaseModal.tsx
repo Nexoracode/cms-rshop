@@ -113,9 +113,11 @@ const BaseModal: React.FC<BaseModalProps> = ({
                     }}
                     onSubmit={async () => {
                       const shouldClose = await onConfirm?.(handleOpenChange);
+                      console.log(shouldClose);
+                      
                       if (shouldClose !== false) onClose();
                     }}
-                    isSubmitting={isConfirmDisabled} // یا هر state دیگه که نشون‌دهنده غیرفعال بودن دکمه‌ست
+                    isSubmitting={isConfirmDisabled}
                   />
                 )}
               </ModalBody>
