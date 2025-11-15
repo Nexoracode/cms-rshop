@@ -23,7 +23,7 @@ const CardRows: React.FC<Props> = ({ items }) => {
           }`}
         >
           <span>{row.label}:</span>
-          <span className={`font-medium text-gray-600 ${row.bgLabel}`}>{row.value}</span>
+          <span className={`font-medium text-gray-600 ${row.bgLabel} truncate`}>{row.value}</span>
         </div>
       ))}
     </div>
