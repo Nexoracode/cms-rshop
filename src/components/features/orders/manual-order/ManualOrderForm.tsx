@@ -33,7 +33,11 @@ const ManualOrderForm = () => {
   });
 
   // فقط وقتی userId موجوده query فعال میشه (enabled داخل خود هوک هندل شده)
-  const { data: user, refetch, isFetching } = useGetOneUser(formData.userId ?? 0);
+  const {
+    data: user,
+    refetch,
+    isFetching,
+  } = useGetOneUser(formData.userId ?? 0);
   const { mutate: createOrder, isPending } = useCreateManualOrder();
 
   useEffect(() => {
@@ -42,12 +46,31 @@ const ManualOrderForm = () => {
     if (formData.userId) refetch();
   }, [formData.userId, refetch]);
 
+  // وقتی که دیتای کاربر لود شد، آدرس primary به صورت خودکار انتخاب شود
+  useEffect(() => {
+    if (user?.data?.addresses?.length) {
+      const primaryAddress = user.data.addresses.find((a: any) => a.is_primary);
+
+      // اگر primary وجود داشت و قبلاً آدرس انتخاب نشده بود → انتخاب کن
+      if (primaryAddress && !formData.selectedAddressId) {
+        setFormData((prev) => ({
+          ...prev,
+          selectedAddressId: primaryAddress.id,
+        }));
+      }
+    }
+  }, [user]);
+
   /* وضعیت پیش‌فرض: "awaiting_payment" (مطابق نمونه‌payload تو) */
   const [selectedStatus, setSelectedStatus] =
     useState<StatusOrder>("awaiting_payment");
 
   const handleSubmit = () => {
-    if (!formData.userId || !formData.products.length || !formData.selectedAddressId) {
+    if (
+      !formData.userId ||
+      !formData.products.length ||
+      !formData.selectedAddressId
+    ) {
       toast.error("لطفا کاربر، آدرس و محصولات را انتخاب کنید");
       return;
     }
