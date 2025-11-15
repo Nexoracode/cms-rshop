@@ -3,6 +3,7 @@
 import { useState } from "react";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { Radio, RadioGroup } from "@heroui/react";
+import BaseCard from "@/components/ui/BaseCard";
 
 type Props = {
   onChange: (data: {
@@ -65,15 +66,15 @@ export default function AddressReceiverSelector({ onChange }: Props) {
   };
 
   return (
-    <div className="w-full p-4 border border-gray-200 rounded-xl bg-white shadow-sm space-y-5">
-      <h3 className="font-medium text-gray-800 text-base">
+    <BaseCard className="mt-8 p-3">
+      <h3 className="text-gray-700 mb-5">
         سفارش‌های این آدرس توسط چه کسی تحویل گرفته شود؟
       </h3>
 
       <RadioGroup
         value={mode}
         onValueChange={handleModeChange}
-        className="space-y-3"
+        className="space-y-3 flex flex-row"
       >
         <Radio value="self" className="text-gray-700">
           تحویل به مشتری
@@ -109,6 +110,6 @@ export default function AddressReceiverSelector({ onChange }: Props) {
           />
         </div>
       )}
-    </div>
+    </BaseCard>
   );
 }

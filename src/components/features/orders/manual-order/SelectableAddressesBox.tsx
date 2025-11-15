@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import SelectableCard from "@/components/ui/SelectableCard";
 import AddressReceiverSelector from "./AddressReceiverSelector";
+import BaseCard from "@/components/ui/BaseCard";
 
 type Address = {
   id: number;
@@ -52,74 +53,68 @@ const SelectableAddressesBox: React.FC<Props> = ({
     }, ${address.city}, ${address.province}, کد پستی: ${address.postal_code}`;
   };
 
-  return (
-    <div className="flex flex-col gap-4 mt-4">
-      {addresses.map((address) => {
-        const isSelected = selectedAddressId === address.id;
+  return addresses.map((address) => {
+    const isSelected = selectedAddressId === address.id;
 
-        return (
-          <div key={address.id} className="w-full">
-            <SelectableCard
-              id={address.id}
-              selectedIds={selectedAddressId ? [selectedAddressId] : []}
-              onSelectionChange={(id, selected) => {
-                if (selected) {
-                  onChange(id as number);
+    return (
+      <div key={address.id} className="w-full">
+        <SelectableCard
+          id={address.id}
+          selectedIds={selectedAddressId ? [selectedAddressId] : []}
+          onSelectionChange={(id, selected) => {
+            if (selected) {
+              onChange(id as number);
 
-                  // اولیه‌سازی داده اگر وجود ندارد
-                  if (!receiverData[address.id]) {
-                    setReceiverData((prev) => ({
-                      ...prev,
-                      [address.id]: {
-                        is_self: true,
-                        recipient_name: null,
-                        recipient_phone: null,
-                      },
-                    }));
-                  }
-                }
-              }}
-            >
-              <div className="p-4 border border-gray-200 rounded-xl hover:border-blue-300 transition-colors">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium text-gray-800">
-                    {address.address_name}
-                    {address.is_primary && (
-                      <span className="mr-2 text-xs bg-green-100 text-green-600 px-2 py-1 rounded">
-                        پیش‌فرض
-                      </span>
-                    )}
-                  </h4>
-                </div>
+              // اولیه‌سازی داده اگر وجود ندارد
+              if (!receiverData[address.id]) {
+                setReceiverData((prev) => ({
+                  ...prev,
+                  [address.id]: {
+                    is_self: true,
+                    recipient_name: null,
+                    recipient_phone: null,
+                  },
+                }));
+              }
+            }
+          }}
+        >
+          <BaseCard className={`p-3 ${isSelected? "border-blue-300" : ""}`}>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-medium text-gray-800">
+                {address.address_name}
+                {address.is_primary && (
+                  <span className="mr-2 text-xs bg-green-100 text-green-600 px-2 py-1 rounded">
+                    پیش‌فرض
+                  </span>
+                )}
+              </h4>
+            </div>
 
-                <p className="text-sm text-gray-600 mb-2">
-                  {formatAddress(address)}
-                </p>
-              </div>
-            </SelectableCard>
+            <p className="text-sm text-gray-600 mb-2">
+              {formatAddress(address)}
+            </p>
 
             {isSelected && (
-              <div className="ml-7 mt-3">
-                <AddressReceiverSelector
-                  onChange={(data) => {
-                    setReceiverData((prev) => ({
-                      ...prev,
-                      [address.id]: data,
-                    }));
+              <AddressReceiverSelector
+                onChange={(data) => {
+                  setReceiverData((prev) => ({
+                    ...prev,
+                    [address.id]: data,
+                  }));
 
-                    onReceiverChange?.({
-                      addressId: address.id,
-                      ...data,
-                    });
-                  }}
-                />
-              </div>
+                  onReceiverChange?.({
+                    addressId: address.id,
+                    ...data,
+                  });
+                }}
+              />
             )}
-          </div>
-        );
-      })}
-    </div>
-  );
+          </BaseCard>
+        </SelectableCard>
+      </div>
+    );
+  });
 };
 
 export default SelectableAddressesBox;
