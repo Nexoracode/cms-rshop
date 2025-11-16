@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import SwitchWrapper from "@/components/shared/SwitchWrapper";
 import DiscountInput from "@/components/forms/Inputs/DiscountInput";
 import { Discount } from "@/core/types";
@@ -27,14 +27,13 @@ type ManualOrderData = {
 };
 
 const ManualOrderForm = () => {
+  const router = useRouter()
+  const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
   const [formData, setFormData] = useState<ManualOrderData>({
     products: [],
   });
-
-  // ref برای دسترسی به DOM element سوئیچ
-  const switchRef = useRef<HTMLInputElement>(null);
 
   // فقط وقتی userId موجوده query فعال میشه (enabled داخل خود هوک هندل شده)
   const {
@@ -64,7 +63,6 @@ const ManualOrderForm = () => {
     }
   }, [user]);
 
-  /* وضعیت پیش‌فرض: "awaiting_payment" (مطابق نمونه‌payload تو) */
   const [selectedStatus, setSelectedStatus] =
     useState<StatusOrder>("awaiting_payment");
 
@@ -77,9 +75,6 @@ const ManualOrderForm = () => {
       toast.error("لطفا کاربر، آدرس و محصولات را انتخاب کنید");
       return;
     }
-
-    // بررسی وضعیت سوئیچ با استفاده از ref
-    const isSwitchChecked = switchRef.current?.checked || false;
 
     const orderData: any = {
       userId: formData.userId,
@@ -95,23 +90,22 @@ const ManualOrderForm = () => {
       status: selectedStatus,
     };
 
-    // اضافه کردن فیلدهای تخفیف فقط اگر سوئیچ فعال باشد و مقدار تخفیف بیشتر از صفر باشد
-    if (isSwitchChecked && discountValue > 0) {
+    if (isDiscountEnabled && discountValue > 0) {
       orderData.manualDiscountType = discountType;
       orderData.manualDiscountValue = discountValue;
     }
 
     console.log("Data to send:", orderData);
 
-    /*     createOrder(orderData, {
+    createOrder(orderData, {
       onSuccess: () => {
-        router.push("/admin/orders")
+        router.push("/admin/orders");
       },
       onError: (err: any) => {
         console.error(err);
         toast.error("خطا در ایجاد سفارش. لطفا مجدداً تلاش کنید.");
       },
-    }); */
+    });
   };
 
   const canSubmit =
@@ -177,21 +171,19 @@ const ManualOrderForm = () => {
         />
       </div>
 
-      {/* تخفیف فاکتور */}
-      <div ref={switchRef}>
-        <SwitchWrapper
-          label="تخفیف فاکتور"
-          description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
-          initialSelected={false}
-        >
-          <DiscountInput
-            value={discountValue}
-            onValueChange={(val) => setDiscountValue(val ?? 0)}
-            selectedKey={discountType}
-            onSelectChange={(val) => setDiscountType(val as Discount)}
-          />
-        </SwitchWrapper>
-      </div>
+      <SwitchWrapper
+        label="تخفیف فاکتور"
+        description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
+        initialSelected={false}
+        onChange={setIsDiscountEnabled}
+      >
+        <DiscountInput
+          value={discountValue}
+          onValueChange={(val) => setDiscountValue(val ?? 0)}
+          selectedKey={discountType}
+          onSelectChange={(val) => setDiscountType(val as Discount)}
+        />
+      </SwitchWrapper>
 
       {/* دکمه‌های عملیات */}
       <FormActionButtons

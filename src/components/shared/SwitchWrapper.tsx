@@ -1,13 +1,14 @@
-"use client";
+"use client"
 
-import { useState, ReactNode } from "react";
-import { Switch } from "@heroui/react";
+import { useState } from "react";
+import Switch from "../ui/Switch";
 
 type SwitchWrapperProps = {
   label: string;
   description?: string;
   initialSelected?: boolean;
-  children?: ReactNode;
+  children?: React.ReactNode;
+  onChange?: (selected: boolean) => void;
 };
 
 const SwitchWrapper = ({
@@ -15,8 +16,14 @@ const SwitchWrapper = ({
   description,
   initialSelected = false,
   children,
+  onChange,
 }: SwitchWrapperProps) => {
   const [isSelected, setIsSelected] = useState(initialSelected);
+
+  const handleChange = (value: boolean) => {
+    setIsSelected(value);
+    onChange?.(value); // وضعیت رو به parent میفرسته
+  };
 
   return (
     <div className="flex flex-col gap-4 border rounded-xl p-3">
@@ -31,7 +38,7 @@ const SwitchWrapper = ({
           size="sm"
           aria-label={label}
           isSelected={isSelected}
-          onValueChange={setIsSelected}
+          onValueChange={handleChange}
         />
       </div>
 
