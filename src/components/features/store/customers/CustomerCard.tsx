@@ -22,17 +22,31 @@ const CustomerCard: React.FC<Props> = ({
   showDeselectIcon = false,
   onDelete,
 }) => {
-  const { id, first_name, last_name, phone, email, avatar_url, is_active, is_phone_verified } =
-    infos;
+  const {
+    id,
+    first_name,
+    last_name,
+    phone,
+    email,
+    avatar_url,
+    is_active,
+    is_phone_verified,
+  } = infos;
 
   const rowItems = [
-    { label: "شماره تماس", value: phone || "-", bgLabel: is_phone_verified ? "bg-green-50 text-green-700 rounded-md px-2 py-1" : "bg-red-50 text-red-700 rounded-md px-2 py-1" },
+    {
+      label: "شماره تماس",
+      value: phone || "-",
+      bgLabel: is_phone_verified
+        ? "bg-green-50 text-green-700 rounded-md px-2 py-1"
+        : "bg-red-50 text-red-700 rounded-md px-2 py-1",
+    },
     { label: "ایمیل", value: email || "-" },
   ];
 
   return (
     <BaseCard
-      bodyClassName="w-full min-w-[341px]"
+      bodyClassName="w-full min-w-[341px] hover-reveal-parent"
       redirect={`/admin/store/customers/create?edit_id=${id}`}
     >
       <div className="flex items-center gap-2 mb-2">
@@ -57,7 +71,11 @@ const CustomerCard: React.FC<Props> = ({
             <StatusBadge isActive={is_active} size="sm" />
           </div>
 
-          {!disableAction && <DeleteButton onDelete={() => onDelete?.(id)} />}
+          {!disableAction && (
+            <div className="hover-reveal-child">
+              <DeleteButton onDelete={() => onDelete?.(id)} />
+            </div>
+          )}
           {showDeselectIcon && (
             <div className="bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all">
               <AiOutlineCloseCircle

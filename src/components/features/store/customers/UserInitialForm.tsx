@@ -8,6 +8,9 @@ import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import TextInput from "@/components/ui/inputs/TextInput";
 import ProvinceCitySelector from "@/components/shared/ProvinceCitySelector";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
+import PhoneInput from "@/components/shared/PhoneInput";
+import EmailInput from "@/components/shared/EmailInput";
 
 type Address = {
   city: string;
@@ -101,11 +104,6 @@ const UserInitialForm = ({ user }: Props) => {
     });
   };
 
-  const handlePhoneChange = (val: string) => {
-    const clean = val.replace(/\D/g, "");
-    setData((prev: any) => ({ ...prev, phone: clean }));
-  };
-
   return (
     <>
       <BaseCard
@@ -141,29 +139,29 @@ const UserInitialForm = ({ user }: Props) => {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <TextInput
-            label="شماره تماس"
-            placeholder="شماره تماس را وارد کنید"
-            type="tel"
-            maxLength={11}
-            inputAlign="left"
+          <PhoneInput
             value={data.phone}
-            onChange={handlePhoneChange}
+            onChange={(phone, isValid) => {
+              setData((prev: any) => ({
+                ...prev,
+                phone: isValid ? phone : null,
+              }));
+            }}
+            label="شماره تماس"
+            placeholder="09XXXXXXXXXX"
+            isRequired
           />
 
-          <TextInput
-            label="ایمیل"
-            placeholder="ایمیل را وارد کنید"
-            type="email"
+          <EmailInput
             value={data.email}
-            onChange={(val) =>
-              setData((prev: any) => ({ ...prev, email: val }))
-            }
-            allowSpecialChars
+            onChange={(email) => setData((prev: any) => ({ ...prev, email }))}
+            label="ایمیل"
+            placeholder="example@mail.com"
+            isRequired
           />
         </div>
 
-        {/*  <ImageBoxUploader
+        {/* <ImageBoxUploader
           title="تصویر مشتری"
           defaultImg={data.avatar_url}
           onFile={() => {}}
@@ -178,17 +176,6 @@ const UserInitialForm = ({ user }: Props) => {
           >
             <span className="text-sm">
               وضعیت حساب {data.is_active ? "فعال" : "غیرفعال"}
-            </span>
-          </Checkbox>
-
-          <Checkbox
-            isSelected={data.is_phone_verified}
-            onValueChange={(value) =>
-              setData((prev: any) => ({ ...prev, is_phone_verified: value }))
-            }
-          >
-            <span className="text-sm">
-              وریفای شماره تلفن {data.is_phone_verified ? "فعال" : "غیرفعال"}
             </span>
           </Checkbox>
         </div>
