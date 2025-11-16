@@ -8,6 +8,9 @@ import CardRows from "@/components/shared/CardRows";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Customer } from "./customer.types";
+import UserAddressModal from "./modals/UserAddressModal";
+import { MdOutlineAddLocationAlt } from "react-icons/md";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
 
 type Props = {
   infos: Customer;
@@ -72,7 +75,14 @@ const CustomerCard: React.FC<Props> = ({
           </div>
 
           {!disableAction && (
-            <div className="hover-reveal-child">
+            <div className="hover-reveal-child flex items-center gap-1.5">
+              <UserAddressModal
+                btnAdd={
+                  <ActionButton
+                    icon={<MdOutlineAddLocationAlt size={20} />}
+                  />
+                }
+              />
               <DeleteButton onDelete={() => onDelete?.(id)} />
             </div>
           )}

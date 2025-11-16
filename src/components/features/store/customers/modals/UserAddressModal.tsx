@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import TextInput from "@/components/ui/inputs/TextInput";
 import PhoneInput from "@/components/shared/PhoneInput";
@@ -11,8 +11,15 @@ import { Checkbox } from "@heroui/react";
 import { LuMapPinHouse } from "react-icons/lu";
 import Textarea from "@/components/ui/inputs/Textarea";
 //import { useAddNewUserAddress } from "@/core/hooks/api/users/useUsers";
+/*   */
 
-const UserAddressModal = () => {
+type UserAddressModalProps = {
+  btnAdd?: React.ReactNode;
+};
+
+const UserAddressModal: React.FC<UserAddressModalProps> = ({
+  btnAdd = null,
+}) => {
   const [form, setForm] = useState({
     receiverType: "self", // self | other
     receiverName: "",
@@ -79,10 +86,15 @@ const UserAddressModal = () => {
       //onConfirm={handleSubmit}
       onCancel={resetForm}
       size="lg"
-      triggerProps={{
-        className: "bg-secondary-light text-secondary",
-        title: "+ افزودن آدرس",
-      }}
+      trigger={btnAdd}
+      triggerProps={
+        btnAdd
+          ? null
+          : {
+              className: "bg-secondary-light text-secondary",
+              title: "+ افزودن آدرس",
+            }
+      }
       icon={<LuMapPinHouse />}
     >
       <div className="flex flex-col gap-6">

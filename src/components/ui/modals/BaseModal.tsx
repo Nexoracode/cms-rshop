@@ -75,7 +75,16 @@ const BaseModal: React.FC<BaseModalProps> = ({
     <>
       {/* ✅ trigger با دو حالت */}
       {trigger ? (
-        <div onClick={() => handleOpenChange(true)}>{trigger}</div>
+        isValidElement(trigger) ? (
+          cloneElement(trigger, {
+            onClick: (e: any) => {
+              trigger.props.onClick?.(e);
+              handleOpenChange(true);
+            },
+          })
+        ) : (
+          <div onClick={() => handleOpenChange(true)}>{trigger}</div>
+        )
       ) : triggerProps ? (
         <OptionButton
           {...triggerProps}
