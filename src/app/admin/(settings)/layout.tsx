@@ -1,6 +1,6 @@
 "use client";
 
-import ShopInfosCard from "@/components/common/ArshopCard/ShopInfosCard";
+import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {

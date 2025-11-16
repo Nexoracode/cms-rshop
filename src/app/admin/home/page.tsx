@@ -1,6 +1,6 @@
 "use client";
 
-import ShopInfosCard from "@/components/common/ArshopCard/ShopInfosCard";
+import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
 import LatestOrders from "@/components/features/dashboard/LatestOrders";
 import ProductListMostViewed from "@/components/features/dashboard/ProductListMostViewed";
 import ReportsList from "@/components/features/dashboard/ReportsList";

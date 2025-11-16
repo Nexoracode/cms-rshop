@@ -11,12 +11,17 @@ import PhoneInput from "@/components/shared/PhoneInput";
 import EmailInput from "@/components/shared/EmailInput";
 import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
+import UserAddressCard from "./AddressUserCard";
 
-type Address = {
+export type Address = {
+  id: number;
+  address_line: string;
+  address_name: string;
   city: string;
   province: string;
-  address_line: string;
   postal_code: string;
+  plaque: string;
+  unit: string;
   is_primary: boolean;
 };
 
@@ -28,7 +33,6 @@ const UserInitialForm = ({ user }: Props) => {
   const router = useRouter();
   const updateUser = useUpdateUser(user?.id);
 
-  // مقدار اولیه‌ی امن برای رندر اولیه
   const [data, setData] = useState<any>({
     first_name: "",
     last_name: "",
@@ -37,20 +41,12 @@ const UserInitialForm = ({ user }: Props) => {
     is_active: false,
     is_phone_verified: false,
     avatar_url: "",
-    addresses: [
-      {
-        city: "",
-        province: "",
-        address_line: "",
-        postal_code: "",
-        is_primary: false,
-      },
-    ],
+    addresses: [],
   });
 
   useEffect(() => {
     if (!user) return;
-
+    
     setData({
       first_name: user.first_name ?? "",
       last_name: user.last_name ?? "",
@@ -59,24 +55,12 @@ const UserInitialForm = ({ user }: Props) => {
       is_active: !!user.is_active,
       is_phone_verified: !!user.is_phone_verified,
       avatar_url: user.avatar_url ?? "",
-      address:
-        user.address && user.address.length
-          ? user.address
-          : [
-              {
-                city: "",
-                province: "",
-                address_line: "",
-                postal_code: "",
-                is_primary: false,
-              },
-            ],
+      addresses: user?.addresses?.length ? user.addresses : null,
     });
   }, [user]);
 
   const handleUpdate = () => {
     const {
-      addresses,
       avatar_url,
       email,
       first_name,
@@ -94,9 +78,7 @@ const UserInitialForm = ({ user }: Props) => {
       is_active,
       is_phone_verified,
       avatar_url,
-      addresses,
     };
-    console.log(dataToSend);
 
     updateUser.mutate(dataToSend, {
       onSuccess: () => {
@@ -186,16 +168,14 @@ const UserInitialForm = ({ user }: Props) => {
         CardHeaderProps={{
           title: "آدرس های کاربر",
           icon: <LuMapPinHouse />,
-          children: <UserAddressModal userId={user?.id}/>,
+          children: <UserAddressModal userId={user?.id} />,
         }}
         bodyClassName={`grid grid-cols-1 ${
           data?.addresses?.length ? "sm:grid-cols-2" : ""
         } gap-4 px-4 pb-4`}
       >
         {data?.addresses?.map((addr: Address, index: number) => (
-          <BaseCard wrapperContents key={index}>
-            test
-          </BaseCard>
+          <UserAddressCard key={index} address={addr} />
         )) || (
           <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">
             <LuMapPinHouse className="text-5xl text-gray-600" />
