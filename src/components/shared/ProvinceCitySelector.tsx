@@ -39,7 +39,7 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
   }, [selectedProvince, selectedCity]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex gap-2">
       <AutocompleteInput
         label="استان"
         placeholder="انتخاب استان"
@@ -47,7 +47,7 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
         selectedId={selectedProvince}
         onChange={(id) => {
           setSelectedProvince(id);
-          setSelectedCity(""); // ریست شهرها هنگام تغییر استان
+          setSelectedCity("");
         }}
       />
 

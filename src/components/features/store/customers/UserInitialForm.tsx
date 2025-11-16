@@ -11,6 +11,7 @@ import ProvinceCitySelector from "@/components/shared/ProvinceCitySelector";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import PhoneInput from "@/components/shared/PhoneInput";
 import EmailInput from "@/components/shared/EmailInput";
+import UserAddressModal from "./modals/UserAddressModal";
 
 type Address = {
   city: string;
@@ -185,56 +186,15 @@ const UserInitialForm = ({ user }: Props) => {
         CardHeaderProps={{
           title: "آدرس های کاربر",
           icon: <LuMapPinHouse />,
-          children: "te"
+          children: <UserAddressModal />,
         }}
-        bodyClassName={`grid grid-cols-1 ${data?.addresses?.length ? "sm:grid-cols-2" : ""} gap-4 px-4 pb-4`}
+        bodyClassName={`grid grid-cols-1 ${
+          data?.addresses?.length ? "sm:grid-cols-2" : ""
+        } gap-4 px-4 pb-4`}
       >
         {data?.addresses?.map((addr: Address, index: number) => (
           <BaseCard wrapperContents key={index}>
-            <ProvinceCitySelector
-              provinceId={addr.province}
-              cityId={addr.city}
-              onChange={({ province, city }) => {
-                const updated = [...data.addresses];
-                updated[index].province = province;
-                updated[index].city = city;
-                setData((prev: any) => ({ ...prev, address: updated }));
-              }}
-            />
-
-            <TextInput
-              label="کد پستی"
-              placeholder="1Erg5hosd4"
-              value={addr.postal_code}
-              onChange={(val) => {
-                const updated = [...data.addresses];
-                updated[index].postal_code = val;
-                setData((prev: any) => ({ ...prev, address: updated }));
-              }}
-            />
-
-            <Textarea
-              label="آدرس کامل"
-              labelPlacement="outside"
-              placeholder="آدرس کامل را وارد کنید"
-              value={addr.address_line}
-              onValueChange={(value) => {
-                const updated = [...data.addresses];
-                updated[index].address_line = value;
-                setData((prev: any) => ({ ...prev, address: updated }));
-              }}
-            />
-
-            <Checkbox
-              isSelected={addr.is_primary}
-              onValueChange={(value) => {
-                const updated = [...data.addresses];
-                updated[index].is_primary = value;
-                setData((prev: any) => ({ ...prev, address: updated }));
-              }}
-            >
-              <span className="text-sm">آدرس اصلی</span>
-            </Checkbox>
+            test
           </BaseCard>
         )) || (
           <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { RadioGroup as RadioGroupHero, Radio } from "@heroui/react";
 
@@ -15,6 +15,8 @@ export interface RadioGroupProps {
   onChange: (value: string) => void;
   orientation?: "vertical" | "horizontal";
   className?: string;
+  groupClassName?: string;
+  radioSize?: "sm" | "md" | "lg";
 }
 
 export default function RadioGroup({
@@ -25,6 +27,8 @@ export default function RadioGroup({
   onChange,
   orientation = "vertical",
   className = "",
+  groupClassName = "",
+  radioSize = "sm",
 }: RadioGroupProps) {
   return (
     <div className={className}>
@@ -34,17 +38,21 @@ export default function RadioGroup({
         value={value}
         onValueChange={onChange}
         orientation={orientation}
-        className={
-          orientation === "horizontal"
-            ? "flex flex-row gap-4"
-            : "space-y-3"
-        }
       >
-        {options.map((opt) => (
-          <Radio key={opt.value} value={opt.value} className="text-gray-700">
-            {opt.label}
-          </Radio>
-        ))}
+        <div
+          className={`mt-2 mb-4 ${groupClassName}`}
+        >
+          {options.map((opt) => (
+            <Radio
+              key={opt.value}
+              value={opt.value}
+              className="text-gray-700 gap-1.5"
+              size={radioSize}
+            >
+              {opt.label}
+            </Radio>
+          ))}
+        </div>
       </RadioGroupHero>
     </div>
   );
