@@ -95,8 +95,6 @@ const ManualOrderForm = () => {
       orderData.manualDiscountValue = discountValue;
     }
 
-    console.log("Data to send:", orderData);
-
     createOrder(orderData, {
       onSuccess: () => {
         router.push("/admin/orders");
@@ -107,11 +105,6 @@ const ManualOrderForm = () => {
       },
     });
   };
-
-  const canSubmit =
-    !!formData.userId &&
-    formData.products.length > 0 &&
-    !!formData.selectedAddressId;
 
   return (
     <BaseCard
@@ -189,7 +182,7 @@ const ManualOrderForm = () => {
       <FormActionButtons
         cancelHref="/admin/orders"
         onSubmit={handleSubmit}
-        isSubmitting={canSubmit || isPending}
+        isSubmitting={isPending}
         submitText={"ایجاد سفارش"}
       />
     </BaseCard>
