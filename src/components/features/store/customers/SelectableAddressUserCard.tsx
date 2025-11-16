@@ -4,16 +4,15 @@ import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import SelectableCard from "@/components/ui/SelectableCard";
 import UserAddressCard, { Address } from "./AddressUserCard";
-import StatusBadge from "@/components/shared/StatusBadge";
 
 type Props = {
   addresses: Address[];
   selectedAddressId?: number;
   onChange: (addressId: number) => void;
-  addNewButton?: React.ReactNode; // برای دکمه + آدرس جدید
+  addNewButton?: React.ReactNode;
 };
 
-const SelectableAddressesBox: React.FC<Props> = ({
+const SelectableAddressUserCard: React.FC<Props> = ({
   addresses,
   selectedAddressId,
   onChange,
@@ -44,4 +43,4 @@ const SelectableAddressesBox: React.FC<Props> = ({
   );
 };
 
-export default SelectableAddressesBox;
+export default SelectableAddressUserCard;

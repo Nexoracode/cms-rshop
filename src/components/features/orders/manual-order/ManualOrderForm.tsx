@@ -11,7 +11,6 @@ import SelectableUsersBox from "@/components/features/store/customers/Selectable
 import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/SelectableProductsBoxWithQuantity";
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
-import SelectableAddressesBox from "../../store/customers/SelectableAddressesBox";
 import { toast } from "react-hot-toast";
 
 /* اضافه‌شده برای انتخاب وضعیت */
@@ -19,6 +18,7 @@ import { statusOptions } from "../order-constants";
 import { StatusOrder } from "../order-types";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useRouter } from "next/navigation";
+import SelectableAddressUserCard from "../../store/customers/SelectableAddressUserCard";
 
 type ManualOrderData = {
   userId?: number;
@@ -27,7 +27,6 @@ type ManualOrderData = {
 };
 
 const ManualOrderForm = () => {
-  const router = useRouter()
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
   const [formData, setFormData] = useState<ManualOrderData>({
@@ -51,16 +50,15 @@ const ManualOrderForm = () => {
     if (formData.userId) refetch();
   }, [formData.userId, refetch]);
 
-  // وقتی که دیتای کاربر لود شد، آدرس primary به صورت خودکار انتخاب شود
   useEffect(() => {
     if (user?.data?.addresses?.length) {
       const primaryAddress = user.data.addresses.find((a: any) => a.is_primary);
+      const firstAddress = user.data.addresses[0];
 
-      // اگر primary وجود داشت و قبلاً آدرس انتخاب نشده بود → انتخاب کن
-      if (primaryAddress && !formData.selectedAddressId) {
+      if (!formData.selectedAddressId) {
         setFormData((prev) => ({
           ...prev,
-          selectedAddressId: primaryAddress.id,
+          selectedAddressId: primaryAddress?.id || firstAddress.id,
         }));
       }
     }
@@ -105,7 +103,7 @@ const ManualOrderForm = () => {
 
     console.log("Data to send:", orderData);
 
-/*     createOrder(orderData, {
+    /*     createOrder(orderData, {
       onSuccess: () => {
         router.push("/admin/orders")
       },
@@ -143,7 +141,7 @@ const ManualOrderForm = () => {
       {isFetching ? (
         <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
       ) : user?.data?.addresses?.length > 0 ? (
-        <SelectableAddressesBox
+        <SelectableAddressUserCard
           key={user?.data.addresses.id}
           addresses={user?.data.addresses}
           selectedAddressId={formData.selectedAddressId}
