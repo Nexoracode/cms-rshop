@@ -32,7 +32,7 @@ type AddressPayload = {
 type UserAddressModalProps = {
   btnAdd?: React.ReactNode;
   userId: number;
-  defaultData?: AddressPayload; // اگر اپدیت است
+  defaultData?: AddressPayload;
 };
 
 const UserAddressModal: React.FC<UserAddressModalProps> = ({
@@ -60,7 +60,6 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     ? useUpdateUserAddress(userId, defaultData.id || 0)
     : null;
 
-  // اگر defaultData داریم، فرم رو پر کن
   useEffect(() => {
     if (defaultData) {
       setForm(defaultData);
@@ -139,7 +138,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
         />
 
         {!form.is_self && (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <TextInput
               label="نام تحویل‌گیرنده"
               value={form.recipient_name || ""}
