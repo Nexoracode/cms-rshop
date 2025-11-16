@@ -11,7 +11,7 @@ import SelectableUsersBox from "@/components/features/store/customers/Selectable
 import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/SelectableProductsBoxWithQuantity";
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
-import SelectableAddressesBox from "./SelectableAddressesBox";
+import SelectableAddressesBox from "../../store/customers/SelectableAddressesBox";
 import { toast } from "react-hot-toast";
 
 /* اضافه‌شده برای انتخاب وضعیت */
