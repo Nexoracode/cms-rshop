@@ -77,10 +77,9 @@ const CustomerCard: React.FC<Props> = ({
           {!disableAction && (
             <div className="hover-reveal-child flex items-center gap-1.5">
               <UserAddressModal
+                userId={id}
                 btnAdd={
-                  <ActionButton
-                    icon={<MdOutlineAddLocationAlt size={20} />}
-                  />
+                  <ActionButton icon={<MdOutlineAddLocationAlt size={20} />} />
                 }
               />
               <DeleteButton onDelete={() => onDelete?.(id)} />
