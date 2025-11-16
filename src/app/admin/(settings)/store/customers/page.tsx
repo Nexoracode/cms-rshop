@@ -2,7 +2,7 @@
 
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import CustomersFilter from "@/components/features/store/customers/CustomersFilter";
+import CustomersFilter from "@/components/features/store/customers/Filter/CustomersFilter";
 import CustomerCard from "@/components/features/store/customers/CustomerCard";
 import AddNewCustomerModal from "@/components/features/store/customers/modals/AddNewCustomerModal";
 // Icons

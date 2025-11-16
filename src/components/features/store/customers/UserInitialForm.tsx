@@ -185,9 +185,9 @@ const UserInitialForm = ({ user }: Props) => {
         CardHeaderProps={{
           title: "آدرس های کاربر",
           icon: <LuMapPinHouse />,
-          showIconInActionSlot: true,
+          children: "te"
         }}
-        bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 pb-4"
+        bodyClassName={`grid grid-cols-1 ${data?.addresses?.length ? "sm:grid-cols-2" : ""} gap-4 px-4 pb-4`}
       >
         {data?.addresses?.map((addr: Address, index: number) => (
           <BaseCard wrapperContents key={index}>
@@ -237,8 +237,8 @@ const UserInitialForm = ({ user }: Props) => {
             </Checkbox>
           </BaseCard>
         )) || (
-          <div className="w-full flex flex-col items-center gap-2 bg-slate-50 rounded-xl p-4">
-            <LuMapPinHouse className="text-5xl text-gray-600 animate-bounce" />
+          <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">
+            <LuMapPinHouse className="text-5xl text-gray-600" />
             آدرسی از سمت کاربر هنوز ثبت نشده!!
           </div>
         )}

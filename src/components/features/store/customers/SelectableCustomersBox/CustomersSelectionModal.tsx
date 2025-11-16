@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { TbUsers } from "react-icons/tb";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import CustomersFilter from "../CustomersFilter";
+import CustomersFilter from "../Filter/CustomersFilter";
 import CustomerCard from "../CustomerCard";
 import AddNewCustomerModal from "../modals/AddNewCustomerModal";
 import SelectableCard from "@/components/ui/SelectableCard";

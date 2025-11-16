@@ -1,8 +1,8 @@
 "use client";
 
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
-import CustomersSortModal from "./modals/CustomersSortModal";
-import CustomersFilterModal from "./modals/CustomersFilterModal";
+import CustomersSortModal from "./CustomersSortModal";
+import CustomersFilterModal from "./CustomersFilterModal";
 
 const CustomersFilter = () => {
   return (
