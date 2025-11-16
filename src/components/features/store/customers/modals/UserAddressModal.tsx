@@ -42,7 +42,6 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
   defaultData,
 }) => {
   const [form, setForm] = useState<AddressPayload>({
-    id: 0,
     city: "",
     province: "",
     address_line: "",
@@ -88,7 +87,8 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
       ...form,
       recipient_name: form.is_self ? null : form.recipient_name,
     };
-
+    console.log(payload, userId);
+    
     if (defaultData && updateAddressMutation) {
       return handleMutation(
         () => updateAddressMutation.mutateAsync(payload),
