@@ -11,6 +11,7 @@ import { Customer } from "./customer.types";
 import UserAddressModal from "./modals/UserAddressModal";
 import { MdOutlineAddLocationAlt } from "react-icons/md";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { useDeleteUser } from "@/core/hooks/api/users/useUsers";
 
 type Props = {
   infos: Customer;
@@ -35,6 +36,8 @@ const CustomerCard: React.FC<Props> = ({
     is_active,
     is_phone_verified,
   } = infos;
+
+  const deleteMutation = useDeleteUser(id);
 
   const rowItems = [
     {
@@ -82,7 +85,7 @@ const CustomerCard: React.FC<Props> = ({
                   <ActionButton icon={<MdOutlineAddLocationAlt size={20} />} />
                 }
               />
-              <DeleteButton onDelete={() => onDelete?.(id)} />
+              <DeleteButton onDelete={() => deleteMutation.mutate()} />
             </div>
           )}
           {showDeselectIcon && (

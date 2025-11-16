@@ -1,17 +1,16 @@
 "use client";
 
-import { Checkbox, Textarea } from "@heroui/react";
+import { Checkbox } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import TextInput from "@/components/ui/inputs/TextInput";
-import ProvinceCitySelector from "@/components/shared/ProvinceCitySelector";
-import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import PhoneInput from "@/components/shared/PhoneInput";
 import EmailInput from "@/components/shared/EmailInput";
 import UserAddressModal from "./modals/UserAddressModal";
+import { useRouter } from "next/navigation";
 
 type Address = {
   city: string;
@@ -26,6 +25,7 @@ type Props = {
 };
 
 const UserInitialForm = ({ user }: Props) => {
+  const router = useRouter();
   const updateUser = useUpdateUser(user?.id);
 
   // مقدار اولیه‌ی امن برای رندر اولیه
@@ -100,7 +100,7 @@ const UserInitialForm = ({ user }: Props) => {
 
     updateUser.mutate(dataToSend, {
       onSuccess: () => {
-        // success logic
+        router.push("/admin/store/customers");
       },
     });
   };
@@ -145,7 +145,7 @@ const UserInitialForm = ({ user }: Props) => {
             onChange={(phone, isValid) => {
               setData((prev: any) => ({
                 ...prev,
-                phone: isValid ? phone : null,
+                phone: phone,
               }));
             }}
             label="شماره تماس"
@@ -186,7 +186,7 @@ const UserInitialForm = ({ user }: Props) => {
         CardHeaderProps={{
           title: "آدرس های کاربر",
           icon: <LuMapPinHouse />,
-          children: <UserAddressModal/>,
+          children: <UserAddressModal />,
         }}
         bodyClassName={`grid grid-cols-1 ${
           data?.addresses?.length ? "sm:grid-cols-2" : ""

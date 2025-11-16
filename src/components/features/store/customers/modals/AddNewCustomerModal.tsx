@@ -7,6 +7,7 @@ import { FiUserPlus } from "react-icons/fi";
 import TextInput from "@/components/ui/inputs/TextInput";
 import EmailInput from "@/components/shared/EmailInput";
 import PhoneInput from "@/components/shared/PhoneInput";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 const AddNewCustomerModal: React.FC = () => {
   const [form, setForm] = useState({
@@ -42,16 +43,7 @@ const AddNewCustomerModal: React.FC = () => {
       email: form.email ? form.email.trim() : undefined,
     };
 
-    return addNewUser
-      .mutateAsync(newUser)
-      .then((res) => {
-        if (res.ok) {
-          resetForm();
-          return true;
-        }
-        return false;
-      })
-      .catch(() => false);
+    return handleMutation(() => addNewUser.mutateAsync(newUser), resetForm);
   };
 
   return (
@@ -94,7 +86,7 @@ const AddNewCustomerModal: React.FC = () => {
               setForm({ ...form, phone: val, phoneValid: valid })
             }
           />
-          
+
           <EmailInput
             value={form.email}
             onChange={(val, valid) =>

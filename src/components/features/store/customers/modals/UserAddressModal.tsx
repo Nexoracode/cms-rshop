@@ -13,6 +13,7 @@ import {
   useAddNewUserAddress,
   useUpdateUserAddress,
 } from "@/core/hooks/api/users/useAddressUsers";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 type AddressPayload = {
   id?: number;
@@ -82,23 +83,22 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     });
   };
 
-  const handleSubmit = async () => {
-    const payload: AddressPayload = {
+  const handleSubmit = () => {
+    const payload = {
       ...form,
       recipient_name: form.is_self ? null : form.recipient_name,
-      recipient_phone: form.is_self ? null : form.recipient_phone,
     };
 
     if (defaultData && updateAddressMutation) {
-      return updateAddressMutation.mutateAsync(payload).then((res) => {
-        resetForm();
-        return true;
-      });
+      return handleMutation(
+        () => updateAddressMutation.mutateAsync(payload),
+        resetForm
+      );
     } else {
-      return addAddressMutation.mutateAsync(payload).then((res) => {
-        resetForm();
-        return true;
-      });
+      return handleMutation(
+        () => addAddressMutation.mutateAsync(payload),
+        resetForm
+      );
     }
   };
 
@@ -177,8 +177,8 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
           <TextInput
             label="کد پستی"
             placeholder="مثلاً: 1234567890"
-            minLength={11}
-            maxLength={11}
+            minLength={10}
+            maxLength={10}
             inputAlign="left"
             allowChars={false}
             value={form.postal_code}
