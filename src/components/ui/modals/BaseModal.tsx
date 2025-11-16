@@ -100,7 +100,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
         placement={placement}
         size={size}
       >
-        <ModalContent>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
           {(onClose) => (
             <>
               {title && (

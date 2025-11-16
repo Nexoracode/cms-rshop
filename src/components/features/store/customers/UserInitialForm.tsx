@@ -186,7 +186,7 @@ const UserInitialForm = ({ user }: Props) => {
         CardHeaderProps={{
           title: "آدرس های کاربر",
           icon: <LuMapPinHouse />,
-          children: <UserAddressModal />,
+          children: <UserAddressModal/>,
         }}
         bodyClassName={`grid grid-cols-1 ${
           data?.addresses?.length ? "sm:grid-cols-2" : ""
