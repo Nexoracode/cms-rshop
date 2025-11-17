@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import StatusBadge from "@/components/shared/StatusBadge";
-import { LuMapPinned } from "react-icons/lu";
+import { LuMapPinned, LuUser } from "react-icons/lu";
 import { MdOutlineMapsHomeWork } from "react-icons/md";
 import { HiOutlineOfficeBuilding, HiOutlineMail } from "react-icons/hi";
 import UserAddressModal from "./modals/UserAddressModal";
+import { FiPhoneOutgoing } from "react-icons/fi";
 
 export type AddressPayload = {
   id?: number;
@@ -75,6 +76,19 @@ const UserAddressCard: React.FC<Props> = ({ address, userId }) => {
             <HiOutlineMail className="text-gray-500 text-[26px] p-1" />
             <span>کد پستی: {address.postal_code}</span>
           </div>
+
+          {address.recipient_name && (
+            <div className="flex items-center gap-1.5">
+              <LuUser className="text-gray-500 text-[26px] p-1" />
+              <span>نام تحویل‌گیرنده: {address.recipient_name}</span>
+            </div>
+          )}
+          {address.recipient_phone && (
+            <div className="flex items-center gap-1.5 bg-slate-50 rounded-md py-1">
+              <FiPhoneOutgoing className="text-gray-500 text-[26px] p-1" />
+              <span>شماره تحویل‌گیرنده: {address.recipient_phone}</span>
+            </div>
+          )}
         </div>
       </BaseCard>
 

@@ -5,7 +5,7 @@ export const handleMutation = async <T>(
   try {
     const res = await mutationFn();
     // اگر response دارای res.ok هست
-    if (res && (res as any).ok) {
+    if (res && (res as any)?.ok) {
       resetForm?.();
       return true;
     }

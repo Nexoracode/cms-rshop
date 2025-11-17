@@ -64,11 +64,9 @@ const UserInitialForm = ({ user }: Props) => {
 
   const handleUpdate = () => {
     const {
-      avatar_url,
       email,
       first_name,
       is_active,
-      is_phone_verified,
       last_name,
       phone,
     } = data;
@@ -79,13 +77,11 @@ const UserInitialForm = ({ user }: Props) => {
       phone,
       email,
       is_active,
-      is_phone_verified,
-      avatar_url,
     };
 
     updateUser.mutate(dataToSend, {
-      onSuccess: () => {
-        router.push("/admin/store/customers");
+      onSuccess: (res) => {
+        res.ok && router.push("/admin/store/customers");
       },
     });
   };
