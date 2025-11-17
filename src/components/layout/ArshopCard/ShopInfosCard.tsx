@@ -1,7 +1,7 @@
 "use client";
 
 import { useDisclosure, Card, CardBody } from "@heroui/react";
-import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { MdOutlineReportGmailerrorred, MdOutlineSupportAgent } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
@@ -65,6 +65,15 @@ const ShopInfosCard = () => {
             routeName="settings/finance"
             parentStyle="bg-white shadow-md"
             color="text-purple-700"
+          />
+
+          <BoxLink
+            key="store/support"
+            title="پشتیبانی"
+            icon={<MdOutlineSupportAgent className="text-2xl" />}
+            routeName="store/support"
+            parentStyle="bg-white shadow-md"
+            color="text-yellow-700"
           />
 
           <BoxLink
