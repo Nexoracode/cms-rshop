@@ -11,7 +11,7 @@ import PhoneInput from "@/components/shared/PhoneInput";
 import EmailInput from "@/components/shared/EmailInput";
 import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
-import UserAddressCard from "./UserAddressCard";
+import UserAddressCard from "./UserAddress/UserAddressCard";
 
 export type AddressPayload = {
   id?: number;

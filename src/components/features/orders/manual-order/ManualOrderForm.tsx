@@ -18,7 +18,7 @@ import { statusOptions } from "../order-constants";
 import { StatusOrder } from "../order-types";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useRouter } from "next/navigation";
-import SelectableAddressUserCard from "../../store/customers/SelectableAddressUserCard";
+import SelectableUserAddressCard from "../../store/customers/UserAddress/SelectableUserAddressCard";
 
 type ManualOrderData = {
   userId?: number;
@@ -127,7 +127,7 @@ const ManualOrderForm = () => {
       {isFetching ? (
         <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
       ) : user?.data?.addresses?.length > 0 ? (
-        <SelectableAddressUserCard
+        <SelectableUserAddressCard
           userId={user?.data.id}
           key={user?.data.addresses.id}
           addresses={user?.data.addresses}

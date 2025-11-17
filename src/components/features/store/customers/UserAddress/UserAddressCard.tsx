@@ -6,27 +6,13 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import { LuMapPinned, LuUser } from "react-icons/lu";
 import { MdOutlineMapsHomeWork } from "react-icons/md";
 import { HiOutlineOfficeBuilding, HiOutlineMail } from "react-icons/hi";
-import UserAddressModal from "./modals/UserAddressModal";
+import UserAddressModal from "../modals/UserAddressModal";
 import { FiPhoneOutgoing } from "react-icons/fi";
-
-export type AddressPayload = {
-  id?: number;
-  city: string;
-  province: string;
-  address_line: string;
-  plaque: string;
-  unit: string;
-  address_name?: string | null;
-  recipient_name?: string | null;
-  recipient_phone?: string | null;
-  postal_code: string;
-  is_self: boolean;
-  is_primary: boolean;
-};
+import { UserAddress } from "../customer.types";
 
 type Props = {
   userId: number;
-  address: AddressPayload;
+  address: UserAddress;
 };
 
 const UserAddressCard: React.FC<Props> = ({ address, userId }) => {

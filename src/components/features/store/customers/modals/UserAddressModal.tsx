@@ -14,28 +14,15 @@ import {
   useUpdateUserAddress,
 } from "@/core/hooks/api/users/useAddressUsers";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import { UserAddress } from "../customer.types";
 
-type AddressPayload = {
-  id?: number;
-  city: string;
-  province: string;
-  address_line: string;
-  plaque: string;
-  unit: string;
-  address_name?: string | null;
-  recipient_name?: string | null;
-  recipient_phone?: string | null;
-  postal_code: string;
-  is_self: boolean;
-  is_primary: boolean;
-};
 
 type UserAddressModalProps = {
   btnAdd?: React.ReactNode;
   userId: number;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  defaultData?: AddressPayload;
+  defaultData?: UserAddress;
 };
 
 const UserAddressModal: React.FC<UserAddressModalProps> = ({
@@ -45,7 +32,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
   onOpenChange,
   defaultData,
 }) => {
-  const [form, setForm] = useState<AddressPayload>({
+  const [form, setForm] = useState<UserAddress>({
     city: "",
     province: "",
     address_line: "",

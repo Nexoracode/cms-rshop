@@ -3,17 +3,18 @@
 import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import SelectableCard from "@/components/ui/SelectableCard";
-import UserAddressCard, { AddressPayload } from "./UserAddressCard";
+import UserAddressCard from "./UserAddressCard";
+import { UserAddress } from "../customer.types";
 
 type Props = {
   userId: number;
-  addresses: AddressPayload[];
+  addresses: UserAddress[];
   selectedAddressId?: number;
   onChange: (addressId: number) => void;
   addNewButton?: React.ReactNode;
 };
 
-const SelectableAddressUserCard: React.FC<Props> = ({
+const SelectableUserAddressCard: React.FC<Props> = ({
   addresses,
   selectedAddressId,
   onChange,
@@ -45,4 +46,4 @@ const SelectableAddressUserCard: React.FC<Props> = ({
   );
 };
 
-export default SelectableAddressUserCard;
+export default SelectableUserAddressCard;
