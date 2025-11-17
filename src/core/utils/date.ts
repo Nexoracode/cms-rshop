@@ -32,5 +32,5 @@ export const isoToCal = (iso?: string | null): CalendarDate | undefined => {
 
 export const toPersianUTC = (isoDate?: string | null) =>
   isoDate
-    ? new Date(isoDate).toLocaleString("fa-IR", { timeZone: "UTC" })
+    ? new Date(isoDate).toLocaleString("fa-IR", { timeZone: "Asia/Tehran" })
     : "—";

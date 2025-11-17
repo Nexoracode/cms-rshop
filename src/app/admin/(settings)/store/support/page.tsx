@@ -3,11 +3,14 @@
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import SupportFilter from "@/components/features/store/support/Filter/SupportFilter";
-import ProductCard from "@/components/features/products/ProductCard";
-import { SupportSortBy, useGetSupportList } from "@/core/hooks/api/support/useSupport";
+import {
+  SupportSortBy,
+  useGetSupportList,
+} from "@/core/hooks/api/support/useSupport";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 // Icons
 import { MdOutlineSupportAgent } from "react-icons/md";
+import ConversationList from "@/components/features/store/support/ConversationList";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -28,16 +31,14 @@ const Products = () => {
       headerProps={{
         title: "گفت و گوها",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
-        showIconInActionSlot: true        
+        showIconInActionSlot: true,
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={support?.data?.meta}
     >
-      {support?.data?.items?.map((support: any) => (
-        <ProductCard product={support} />
-      ))}
+      <ConversationList conversations={support?.data?.items} />
     </UnifiedCard>
   );
 };
