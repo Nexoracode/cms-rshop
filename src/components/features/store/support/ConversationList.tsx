@@ -19,7 +19,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   console.log(conversations);
 
   return (
-    <aside className="w-72 max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5">
+    <aside className="w-72 max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5 custom-scroll">
       {conversations.map((conv) => {
         const isSelected = conv.id === selectedId;
 
@@ -27,7 +27,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
           <div
             key={conv.id}
             onClick={() => onSelect?.(conv)}
-            className={`flex flex-col shadow-[0_0_3px_lightgray] rounded-lg !min-h-[100px] h-full max-h-[100px] cursor-pointer py-2 px-2.5 hover:opacity-75 transition 
+            className={`flex flex-col shadow-[0_0_3px_lightgray] rounded-lg !min-h-[100px] h-full max-h-[100px] cursor-pointer py-2 px-2.5 hover:shadow-lg transition 
               ${isSelected ? "bg-white shadow-md" : ""}`}
           >
             <div>
