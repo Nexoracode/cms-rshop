@@ -22,13 +22,13 @@ export const useAddNewUserAddress = (userId: number) => {
   });
 };
 
-export const useUpdateUserAddress = (userId: number, addressId: number) => {
+export const useUpdateUserAddress = (addressId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: Record<string, any>) =>
       fetcher({
-        route: `/addresses/${userId}/update/${addressId}`,
+        route: `/addresses/${addressId}/update`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
@@ -36,7 +36,7 @@ export const useUpdateUserAddress = (userId: number, addressId: number) => {
         loadingText: "در حال بروزرسانی آدرس...",
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-addresses", userId] });
+      queryClient.invalidateQueries({ queryKey: ["user-addresses"] });
       queryClient.invalidateQueries({ queryKey: ["all-users"] });
       queryClient.invalidateQueries({ queryKey: ["one-user"] });
     },

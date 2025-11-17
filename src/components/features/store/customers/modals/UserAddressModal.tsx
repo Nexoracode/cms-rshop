@@ -61,7 +61,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
 
   const addAddressMutation = useAddNewUserAddress(userId);
   const updateAddressMutation = defaultData
-    ? useUpdateUserAddress(userId, defaultData.id || 0)
+    ? useUpdateUserAddress(defaultData.id || 0)
     : null;
 
   useEffect(() => {
@@ -114,7 +114,8 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
       onConfirm={handleSubmit}
       onCancel={resetForm}
       size="lg"
-      trigger={btnAdd && !isOpen ? btnAdd : undefined}
+      triggerProps={isOpen === undefined ? {title: "+ افزودن", className: "bg-secondary-light text-secondary"} : null}
+      trigger={isOpen === undefined ? btnAdd : undefined}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       icon={<LuMapPinHouse />}
