@@ -12,21 +12,7 @@ import EmailInput from "@/components/shared/EmailInput";
 import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
 import UserAddressCard from "./UserAddress/UserAddressCard";
-
-export type AddressPayload = {
-  id?: number;
-  city: string;
-  province: string;
-  address_line: string;
-  plaque: string;
-  unit: string;
-  address_name?: string | null;
-  recipient_name?: string | null;
-  recipient_phone?: string | null;
-  postal_code: string;
-  is_self: boolean;
-  is_primary: boolean;
-};
+import { UserAddress } from "./customer.types";
 
 type Props = {
   user?: Record<string, any>;
@@ -173,7 +159,7 @@ const UserInitialForm = ({ user }: Props) => {
           data?.addresses?.length ? "sm:grid-cols-2" : ""
         } gap-4 px-4 pb-4`}
       >
-        {data?.addresses?.map((addr: AddressPayload, index: number) => (
+        {data?.addresses?.map((addr: UserAddress, index: number) => (
           <UserAddressCard key={index} address={addr} userId={user?.id}/>
         )) || (
           <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">
