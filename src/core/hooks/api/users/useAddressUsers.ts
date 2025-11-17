@@ -17,6 +17,7 @@ export const useAddNewUserAddress = (userId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-addresses", userId] });
       queryClient.invalidateQueries({ queryKey: ["all-users"] });
+      queryClient.invalidateQueries({ queryKey: ["one-user"] });
     },
   });
 };
@@ -37,6 +38,7 @@ export const useUpdateUserAddress = (userId: number, addressId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-addresses", userId] });
       queryClient.invalidateQueries({ queryKey: ["all-users"] });
+      queryClient.invalidateQueries({ queryKey: ["one-user"] });
     },
   });
 };

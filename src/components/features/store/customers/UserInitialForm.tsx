@@ -11,17 +11,20 @@ import PhoneInput from "@/components/shared/PhoneInput";
 import EmailInput from "@/components/shared/EmailInput";
 import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
-import UserAddressCard from "./AddressUserCard";
+import UserAddressCard from "./UserAddressCard";
 
-export type Address = {
-  id: number;
-  address_line: string;
-  address_name: string;
+export type AddressPayload = {
+  id?: number;
   city: string;
   province: string;
-  postal_code: string;
+  address_line: string;
   plaque: string;
   unit: string;
+  address_name?: string | null;
+  recipient_name?: string | null;
+  recipient_phone?: string | null;
+  postal_code: string;
+  is_self: boolean;
   is_primary: boolean;
 };
 
@@ -46,7 +49,7 @@ const UserInitialForm = ({ user }: Props) => {
 
   useEffect(() => {
     if (!user) return;
-    
+
     setData({
       first_name: user.first_name ?? "",
       last_name: user.last_name ?? "",
@@ -174,8 +177,8 @@ const UserInitialForm = ({ user }: Props) => {
           data?.addresses?.length ? "sm:grid-cols-2" : ""
         } gap-4 px-4 pb-4`}
       >
-        {data?.addresses?.map((addr: Address, index: number) => (
-          <UserAddressCard key={index} address={addr} />
+        {data?.addresses?.map((addr: AddressPayload, index: number) => (
+          <UserAddressCard key={index} address={addr} userId={user?.id}/>
         )) || (
           <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">
             <LuMapPinHouse className="text-5xl text-gray-600" />

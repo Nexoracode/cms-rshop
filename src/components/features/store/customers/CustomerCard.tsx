@@ -77,29 +77,27 @@ const CustomerCard: React.FC<Props> = ({
             <StatusBadge isActive={is_active} size="sm" />
           </div>
 
-          {!disableAction && (
-            <div className="hover-reveal-child flex items-center gap-1.5">
-              <UserAddressModal
-                userId={id}
-                btnAdd={
-                  <ActionButton icon={<MdOutlineAddLocationAlt size={20} />} />
-                }
-              />
+          <div className="hover-reveal-child flex items-center gap-1.5">
+            <UserAddressModal
+              userId={id}
+              btnAdd={
+                <ActionButton icon={<MdOutlineAddLocationAlt size={18} />} />
+              }
+            />
+            {!disableAction && (
               <DeleteButton onDelete={() => deleteMutation.mutate()} />
-            </div>
-          )}
-          {showDeselectIcon && (
-            <div className="bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all">
-              <AiOutlineCloseCircle
-                className=""
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+            )}
+            {showDeselectIcon && (
+              <ActionButton
+                icon={<AiOutlineCloseCircle size={18} />}
+                onClick={() => {
+                  /* e.preventDefault();
+                    e.stopPropagation(); */
                   onDelete?.(id);
                 }}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 

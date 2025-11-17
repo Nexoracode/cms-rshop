@@ -33,12 +33,16 @@ type AddressPayload = {
 type UserAddressModalProps = {
   btnAdd?: React.ReactNode;
   userId: number;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
   defaultData?: AddressPayload;
 };
 
 const UserAddressModal: React.FC<UserAddressModalProps> = ({
   btnAdd = null,
   userId,
+  isOpen,
+  onOpenChange,
   defaultData,
 }) => {
   const [form, setForm] = useState<AddressPayload>({
@@ -88,7 +92,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
       recipient_name: form.is_self ? null : form.recipient_name,
     };
     console.log(payload, userId);
-    
+
     if (defaultData && updateAddressMutation) {
       return handleMutation(
         () => updateAddressMutation.mutateAsync(payload),
@@ -110,15 +114,9 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
       onConfirm={handleSubmit}
       onCancel={resetForm}
       size="lg"
-      trigger={btnAdd}
-      triggerProps={
-        btnAdd
-          ? null
-          : {
-              className: "bg-secondary-light text-secondary",
-              title: defaultData ? "ویرایش آدرس" : "+ افزودن آدرس",
-            }
-      }
+      trigger={btnAdd && !isOpen ? btnAdd : undefined}
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
       icon={<LuMapPinHouse />}
     >
       <div className="flex flex-col gap-6">

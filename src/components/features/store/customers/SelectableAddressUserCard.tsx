@@ -3,10 +3,11 @@
 import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import SelectableCard from "@/components/ui/SelectableCard";
-import UserAddressCard, { Address } from "./AddressUserCard";
+import UserAddressCard, { AddressPayload } from "./UserAddressCard";
 
 type Props = {
-  addresses: Address[];
+  userId: number;
+  addresses: AddressPayload[];
   selectedAddressId?: number;
   onChange: (addressId: number) => void;
   addNewButton?: React.ReactNode;
@@ -17,11 +18,12 @@ const SelectableAddressUserCard: React.FC<Props> = ({
   selectedAddressId,
   onChange,
   addNewButton,
+  userId
 }) => {
   return (
     <BaseCard
       className="shadow-none cursor-auto"
-      bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-4"
+      bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-2"
       CardHeaderProps={{
         title: "آدرس های کاربر",
         children: addNewButton,
@@ -36,7 +38,7 @@ const SelectableAddressUserCard: React.FC<Props> = ({
             if (selected) onChange(id as number);
           }}
         >
-          <UserAddressCard address={address} />
+          <UserAddressCard address={address} userId={userId} />
         </SelectableCard>
       ))}
     </BaseCard>

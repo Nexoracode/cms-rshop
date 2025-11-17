@@ -27,7 +27,7 @@ type ManualOrderData = {
 };
 
 const ManualOrderForm = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
@@ -35,7 +35,6 @@ const ManualOrderForm = () => {
     products: [],
   });
 
-  // فقط وقتی userId موجوده query فعال میشه (enabled داخل خود هوک هندل شده)
   const {
     data: user,
     refetch,
@@ -129,6 +128,7 @@ const ManualOrderForm = () => {
         <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
       ) : user?.data?.addresses?.length > 0 ? (
         <SelectableAddressUserCard
+          userId={user?.data.id}
           key={user?.data.addresses.id}
           addresses={user?.data.addresses}
           selectedAddressId={formData.selectedAddressId}
