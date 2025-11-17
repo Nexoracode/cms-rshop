@@ -1,14 +1,66 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
+import { buildQueryString } from "@/core/utils/buildQueryString";
 
-export const useGetSupportList = () => {
+type SupportFilter = {
+  is_visible?: string[]; // $eq:1|0
+  requires_preparation?: string[]; // $eq:1|0
+  category_id?: string[]; // $eq:...
+  brand_id?: string[]; // $eq:...
+  price?: string[]; // $gte/$lte
+  stock?: string[]; // $gte/$lte
+  weight?: string[]; // $gte/$lte
+  discount_amount?: string[]; // $gte/$lte
+  discount_percent?: string[]; // $gte/$lte
+  created_at?: string[]; // $gte/$lte/$btw
+};
+
+export type SupportSortBy = Array<
+  | "id:ASC"
+  | "id:DESC"
+  | "name:ASC"
+  | "name:DESC"
+>;
+
+type UseGetSortParams = {
+  page?: number;
+  filter?: SupportFilter;
+  search?: string;
+  searchBy?: string[];
+  sortBy?: SupportSortBy;
+  limit?: number;
+};
+
+export const useGetSupportList = ({
+  page = 1,
+  filter,
+  search,
+  sortBy,
+  limit = 40,
+}: UseGetSortParams) => {
   return useQuery({
-    queryKey: ["support-list"],
-    queryFn: () =>
-      fetcher({
-        route: "/admin/support",
+    queryKey: ["support-list", page, filter, search, sortBy, limit],
+    queryFn: () => {
+      const params: Record<string, any> = { page, limit: limit };
+
+      if (filter) {
+        for (const key in filter) {
+          const values = filter[key as keyof SupportFilter];
+          if (values) {
+            params[`filter.${key}`] = values;
+          }
+        }
+      }
+
+      if (search) params.search = search;
+      if (sortBy) params.sortBy = sortBy;
+
+      const queryString = buildQueryString(params);
+      return fetcher({
+        route: `/admin/support?${queryString}`,
         isActiveToast: false,
-      }),
+      });
+    },
   });
 };
 

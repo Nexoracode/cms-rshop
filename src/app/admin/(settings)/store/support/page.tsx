@@ -2,21 +2,18 @@
 
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import ProductsFilter from "@/components/features/products/ProductsFilter";
+import SupportFilter from "@/components/features/store/support/Filter/SupportFilter";
 import ProductCard from "@/components/features/products/ProductCard";
-// Icons
-import {
-  ProductSortBy,
-  useGetProducts,
-} from "@/core/hooks/api/products/useProduct";
+import { SupportSortBy, useGetSupportList } from "@/core/hooks/api/support/useSupport";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+// Icons
 import { MdOutlineSupportAgent } from "react-icons/md";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =
-    useListQueryParams<ProductSortBy[number]>();
+    useListQueryParams<SupportSortBy[number]>();
 
-  const { data: support, isLoading } = useGetProducts({
+  const { data: support, isLoading } = useGetSupportList({
     page,
     filter,
     search,
@@ -27,9 +24,9 @@ const Products = () => {
 
   return (
     <UnifiedCard
-      searchFilter={<ProductsFilter />}
+      searchFilter={<SupportFilter />}
       headerProps={{
-        title: "پشتیبانی",
+        title: "گفت و گوها",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
         showIconInActionSlot: true        
       }}
@@ -38,8 +35,8 @@ const Products = () => {
       searchInp={isFilteredView}
       meta={support?.data?.meta}
     >
-      {support?.data?.items?.map((product: any) => (
-        <ProductCard product={product} />
+      {support?.data?.items?.map((support: any) => (
+        <ProductCard product={support} />
       ))}
     </UnifiedCard>
   );
