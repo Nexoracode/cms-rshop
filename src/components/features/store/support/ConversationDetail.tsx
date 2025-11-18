@@ -8,22 +8,124 @@ import {
 import { toPersianUTC } from "@/core/utils/date";
 import { useState, useRef, useEffect } from "react";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@heroui/react";
-import { BsEmojiGrimace } from "react-icons/bs";
+import { BsEmojiGrimace, BsEmojiSmile } from "react-icons/bs";
+import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 
+// ایموجی‌های کاملاً بدون تکرار
 const EMOJI_CATEGORIES: Record<string, string[]> = {
-  "صورتک‌ها": [
-    "😀","😃","😄","😁","😆","😅","😂","🤣","🥹","🙂","🙃","😉","😊","😇","🥰","😍","🤩","😘","😗","☺️","😚",
-    "😙","😋","😛","😜","🤪","😏","🥳","🤩","🤗","🤭","🤫","🤔","🫡","🥸","😎"
+  صورتک‌ها: [
+    "😀",
+    "😃",
+    "😄",
+    "😁",
+    "😆",
+    "😅",
+    "😂",
+    "🤣",
+    "🙂",
+    "🙃",
+    "😉",
+    "😊",
+    "😇",
+    "🥰",
+    "😍",
+    "🤩",
+    "😘",
+    "😗",
+    "☺️",
+    "😚",
+    "😙",
+    "😋",
+    "😛",
+    "😜",
+    "🤪",
+    "😏",
+    "🥳",
+    "🤗",
+    "🤭",
+    "🤫",
+    "🤔",
+    "😎",
   ],
-  "احساسات": ["❤️","🧡","💛","💚","💙","💜","🖤","🤍","💔","❣️","💕","💞","💓","💗","💖","✨","⭐","🌟","💫"],
-  "حرکات دست": ["👍","👎","👌","✌️","🤞","🤟","🤘","🤌","👈","👉","👆","👇","☝️","✋","🤚","🖐️","🫲","🫳"],
-  "غذا و نوشیدنی": ["🍎","🍊","🍋","🍌","🍉","🍇","🍓","🍑","🍍","🥭","🍔","🍕","🌮","🍣","🍰","🎂","☕","🍵","🍺"],
-  "فعالیت": ["⚽","🏀","🏈","⚾","🎾","🏐","🏓","🎯","🎮","🎲","🎪","🎨","🎭","🎪","✈️","🚗","🚀"]
+  احساسات: [
+    "❤️",
+    "🧡",
+    "💛",
+    "💚",
+    "💙",
+    "💜",
+    "🖤",
+    "🤍",
+    "💔",
+    "❣️",
+    "💕",
+    "💞",
+    "💓",
+    "💗",
+    "💖",
+    "✨",
+    "⭐",
+    "🌟",
+    "💫",
+  ],
+  "حرکات دست": [
+    "👍",
+    "👎",
+    "👌",
+    "✌️",
+    "🤞",
+    "🤟",
+    "👈",
+    "👉",
+    "👆",
+    "👇",
+    "☝️",
+    "✋",
+    "🤚",
+    "🖐️",
+  ],
+  "غذا و نوشیدنی": [
+    "🍎",
+    "🍊",
+    "🍋",
+    "🍌",
+    "🍉",
+    "🍇",
+    "🍓",
+    "🍑",
+    "🍍",
+    "🥭",
+    "🍔",
+    "🍕",
+    "🌮",
+    "🍣",
+    "🍰",
+    "🎂",
+    "☕",
+    "🍵",
+    "🍺",
+  ],
+  "فعالیت و اشیاء": [
+    "⚽",
+    "🏀",
+    "🏈",
+    "⚾",
+    "🎾",
+    "🏐",
+    "🏓",
+    "🎯",
+    "🎮",
+    "🎲",
+    "🎨",
+    "🎭",
+    "✈️",
+    "🚗",
+    "🚀",
+    "🏃",
+    "🚴",
+    "🏊",
+    "🎪",
+  ],
 };
 
 const ConversationDetail: React.FC = () => {
@@ -38,12 +140,10 @@ const ConversationDetail: React.FC = () => {
   const { data, isLoading } = useGetSupportDetail(chatId);
   const replyMutation = useReplySupport(chatId);
 
-  // اسکرول خودکار به پایین
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [data]);
 
-  // قرار دادن کرسر در انتهای متن
   const placeCaretAtEnd = () => {
     const input = inputRef.current;
     if (!input) return;
@@ -54,7 +154,7 @@ const ConversationDetail: React.FC = () => {
 
   const handleSend = () => {
     if (!message.trim() || replyMutation.isPending) return;
-    
+
     replyMutation.mutate(message, {
       onSuccess: () => {
         setMessage("");
@@ -67,14 +167,12 @@ const ConversationDetail: React.FC = () => {
     const newMessage = message + emoji;
     setMessage(newMessage);
     setIsPopoverOpen(false);
-    
-    // کرسر را دقیقاً بعد از ایموجی جدید قرار می‌دهیم
+
     setTimeout(() => {
       const input = inputRef.current;
       if (input) {
         input.focus();
-        const pos = newMessage.length;
-        input.setSelectionRange(pos, pos);
+        input.setSelectionRange(newMessage.length, newMessage.length);
       }
     }, 50);
   };
@@ -115,48 +213,49 @@ const ConversationDetail: React.FC = () => {
   }
 
   return (
-    <div className="relative flex flex-col h-[60vh] bg-gray-50 rounded-2xl overflow-hidden shadow-lg">
-      {/* پس‌زمینه مینیمال و زیبا */}
-      <div 
-        className="absolute inset-0 opacity-10 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 -z-10"
-      />
-
+    <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
       {/* هدر */}
       <div className="px-6 py-4 bg-white border-b border-gray-100 backdrop-blur-xl bg-opacity-90">
-        <h2 className="text-lg font-bold text-gray-800 truncate">{conv.subject}</h2>
+        <h2 className="text-lg font-bold text-gray-800 truncate">
+          {conv.subject}
+        </h2>
         <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت #{chatId}</p>
       </div>
 
-      {/* منطقه پیام‌ها */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-5 scrollbar-thin scrollbar-thumb-gray-300">
+      {/* پیام‌ها */}
+      <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {conv.messages.map((msg: any) => {
           const isAdmin = msg.sender?.role === "admin";
-          
+
           return (
             <div
               key={msg.id}
-              className={`flex ${isAdmin ? "justify-end" : "justify-start"}`}
+              className={`flex ${!isAdmin ? "justify-end" : "justify-start"}`}
             >
-              <div className={`flex flex-col ${isAdmin ? "items-end" : "items-start"} max-w-[80%]`}>
-                {/* نام فرستنده */}
+              <div
+                className={`flex flex-col ${
+                  isAdmin ? "items-end" : "items-start"
+                } max-w-[80%]`}
+              >
                 <span className="text-xs font-medium text-gray-500 mb-1 px-1">
                   {msg.sender?.name || (isAdmin ? "پشتیبانی" : "شما")}
                 </span>
 
-                {/* باکس پیام */}
                 <div
                   className={`relative px-4 py-3 rounded-2xl shadow-sm transition-all ${
                     isAdmin
-                      ? "bg-gradient-to-l from-blue-500 to-blue-600 text-white rounded-tr-sm"
+                      ? "bg-gradient-to-l from-blue-500 to-blue-400 text-white rounded-tr-sm"
                       : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm"
                   }`}
                 >
                   <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
                     {msg.content}
                   </p>
-                  
-                  {/* زمان */}
-                  <span className={`block text-xs mt-2 ${isAdmin ? "text-blue-100" : "text-gray-400"}`}>
+                  <span
+                    className={`block text-xs mt-2 ${
+                      isAdmin ? "text-blue-100" : "text-gray-400"
+                    }`}
+                  >
                     {toPersianUTC(msg.created_at)}
                   </span>
                 </div>
@@ -168,50 +267,50 @@ const ConversationDetail: React.FC = () => {
       </div>
 
       {/* نوار ورودی */}
-      <div className="p-4 bg-white border-t border-gray-100">
+      <div className="p-4 pt-3 bg-white border-t border-gray-100">
         <div className="flex items-end gap-3">
-          {/* دکمه ایموجی */}
+          {/* ایموجی - بدون asChild و بدون warning */}
           <Popover
             isOpen={isPopoverOpen}
             onOpenChange={setIsPopoverOpen}
             placement="top-start"
-            offset={12}
-            showArrow
           >
-            <PopoverTrigger asChild>
+            <PopoverTrigger>
               <button
                 className="p-2.5 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
                 aria-label="انتخاب ایموجی"
               >
-                <BsEmojiGrimace size={22} />
+                <BsEmojiSmile size={22} />
               </button>
             </PopoverTrigger>
 
-            <PopoverContent className="w-80 max-h-96 overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 p-4">
-              {Object.entries(EMOJI_CATEGORIES).map(([category, emojis]) => (
-                <div key={category} className="mb-5 last:mb-0">
-                  <h4 className="text-xs font-semibold text-gray-600 mb-2 px-1">
-                    {category}
-                  </h4>
-                  <div className="grid grid-cols-9 gap-1.5">
-                    {emojis.map((emoji) => (
-                      <button
-                        key={emoji}
-                        onClick={() => handleEmojiClick(emoji)}
-                        className="p-2 hover:bg-gray-100 rounded-lg transition-all hover:scale-110 text-xl"
-                        aria-label={emoji}
-                      >
-                        {emoji}
-                      </button>
-                    ))}
+            <PopoverContent className="w-72 px-0 py-3 max-h-52">
+              <div className="h-52 overflow-y-auto pr-2 pl-4">
+                {Object.entries(EMOJI_CATEGORIES).map(([category, emojis]) => (
+                  <div key={category} className="mb-5 last:mb-0">
+                    <h4 className="text-xs font-semibold text-gray-600 mb-2 px-1">
+                      {category}
+                    </h4>
+                    <div className="grid grid-cols-6 gap-2.5">
+                      {emojis.map((emoji) => (
+                        <button
+                          key={emoji} // key منحصر به فرد
+                          onClick={() => handleEmojiClick(emoji)}
+                          className="p-1 pb-0 hover:bg-gray-100 rounded-lg transition-all hover:scale-110 text-xl"
+                          aria-label={emoji}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </PopoverContent>
           </Popover>
 
           {/* اینپوت */}
-          <div className="flex-1 relative">
+          <div className="flex-1">
             <input
               ref={inputRef}
               type="text"
@@ -219,18 +318,18 @@ const ConversationDetail: React.FC = () => {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="پیام خود را بنویسید..."
-              className="w-full px-5 py-3 pr-12 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400"
+              className="w-full px-5 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400"
             />
           </div>
 
-          {/* دکمه ارسال */}
+          {/* ارسال */}
           <button
             onClick={handleSend}
             disabled={!message.trim() || replyMutation.isPending}
-            className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white shadow-lg transition-all hover:shadow-xl active:scale-95"
+            className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white shadow-md transition-all hover:shadow-xl active:scale-95"
             aria-label="ارسال پیام"
           >
-            <HiOutlinePaperAirplane size={20} className="rotate-[-45deg]" />
+            <HiOutlinePaperAirplane size={22} className="rotate-[-45deg]" />
           </button>
         </div>
       </div>
