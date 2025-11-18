@@ -9,7 +9,7 @@ import { CouponSortBy } from "@/components/features/store/promotions/coupon/coup
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import CouponsListModal from "@/components/features/store/promotions/coupon/CouponsListModal";
 
-const Coupons = () => {
+const Coupon = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<CouponSortBy[number]>();
   const { data: coupons, isLoading } = useGetCoupons({
@@ -42,4 +42,4 @@ const Coupons = () => {
   );
 };
 
-export default Coupons;
+export default Coupon;
