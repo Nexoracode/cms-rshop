@@ -40,7 +40,6 @@ const Products = () => {
       searchInp={isFilteredView}
       meta={support?.data?.meta}
       bodyClassName="p-0"
-      childrenClassName=""
     >
       <div className="flex flex-row gap-2">
         <ConversationList conversations={support?.data?.items} />
