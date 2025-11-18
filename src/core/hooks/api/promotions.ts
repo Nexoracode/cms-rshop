@@ -19,8 +19,6 @@ export const createPromotionHooks = (type: PromotionType, queryKeyPrefix: string
         const qs = buildQueryString({ ...params, type });
         return fetcher({ route: `/admin/promotions?${qs}`, isActiveToast: false });
       },
-      staleTime: 1000 * 60,
-      refetchOnWindowFocus: false,
     });
   };
 
