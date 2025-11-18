@@ -11,6 +11,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 // Icons
 import { MdOutlineSupportAgent } from "react-icons/md";
 import ConversationList from "@/components/features/store/support/ConversationList";
+import ConversationDetail from "@/components/features/store/support/ConversationDetail";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -32,13 +33,16 @@ const Products = () => {
         title: "گفت و گوها",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
         showIconInActionSlot: true,
+        className: "p-2 mb-4"
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={support?.data?.meta}
-    >
+      bodyClassName="p-0"
+      >
       <ConversationList conversations={support?.data?.items} />
+      <ConversationDetail/>
     </UnifiedCard>
   );
 };

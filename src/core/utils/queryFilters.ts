@@ -1,3 +1,5 @@
+import { ReadonlyURLSearchParams } from "next/navigation";
+
 // ISO با مرزبندی روز (شروع یا پایان روز)
 export const toISO = (d: Date, end = false) => {
   const x = new Date(d);
