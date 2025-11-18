@@ -184,15 +184,15 @@ const ConversationDetail: React.FC = () => {
     }
   };
 
-  if (!chatId) {
+  if (!chatId || !data?.data) {
     return (
         <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
       {/* هدر */}
-      <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
-        <h2 className="text-lg font-bold text-gray-800 truncate">
+     <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
+        <p className="text-lg text-gray-800 truncate">
           موضوع تیکت
-        </h2>
-        <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت # نامشخص</p>
+        </p>
+        <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت #{chatId}</p>
       </div>
 
       {/* پیام‌ها */}
@@ -225,12 +225,9 @@ const ConversationDetail: React.FC = () => {
           </button>
 
           <div className="flex-1">
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="پیام خود را بنویسید..."
-              className="w-full px-5 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400"
-            />
+            <div
+              className="w-full px-5 py-2.5 text-gray-500 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400"
+            >پیام خود را بنویسید...</div>
           </div>
         
           <button
@@ -245,13 +242,14 @@ const ConversationDetail: React.FC = () => {
     );
   }
 
+  const conv = data.data
+
   return (
     <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
-      {/* هدر */}
       <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
-        <h2 className="text-lg font-bold text-gray-800 truncate">
-          {conv.subject}
-        </h2>
+        <p className="text-lg text-gray-800 truncate">
+         {conv.subject}
+        </p>
         <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت #{chatId}</p>
       </div>
 
@@ -266,11 +264,9 @@ const ConversationDetail: React.FC = () => {
               className={`flex ${!isAdmin ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`flex flex-col ${
-                  isAdmin ? "items-end" : "items-start"
-                } max-w-[80%]`}
+                className={`flex flex-col items-start max-w-[80%]`}
               >
-                <span className="text-xs font-medium text-gray-500 mb-1 px-1">
+                <span className="text-xs font-medium text-gray-500 mb-1.5 px-1">
                   {msg.sender?.name || (isAdmin ? "پشتیبانی" : "شما")}
                 </span>
 
