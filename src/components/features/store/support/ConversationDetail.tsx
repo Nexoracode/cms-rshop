@@ -264,20 +264,20 @@ const ConversationDetail: React.FC = () => {
               className={`flex ${!isAdmin ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`flex flex-col items-start max-w-[80%]`}
+                className={`flex flex-col items-start max-w-52`}
               >
                 <span className="text-xs font-medium text-gray-500 mb-1.5 px-1">
                   {msg.sender?.name || (isAdmin ? "پشتیبانی" : "شما")}
                 </span>
 
                 <div
-                  className={`relative px-4 py-3 rounded-2xl shadow-sm transition-all ${
+                  className={`relative px-4 py-3 rounded-2xl max-w-52 shadow-sm transition-all ${
                     isAdmin
                       ? "bg-gradient-to-l from-blue-500 to-blue-400 text-white rounded-tr-sm"
                       : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm"
                   }`}
                 >
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                  <p className="text-sm leading-relaxed ">
                     {msg.content}
                   </p>
                   <span
