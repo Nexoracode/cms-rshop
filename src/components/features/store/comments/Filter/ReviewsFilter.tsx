@@ -10,8 +10,8 @@ const ReviewsFilter = () => {
       searchPlaceholder="جستجو در دیدگاه ها..."
       showSearchBar
     >
-      <ReviewsSortModal />
       <ReviewsFilterModal />
+      <ReviewsSortModal />
     </SearchFilterCard>
   );
 };

@@ -18,8 +18,8 @@ type SupportFilter = {
 export type SupportSortBy = Array<
   | "id:ASC"
   | "id:DESC"
-  | "name:ASC"
-  | "name:DESC"
+  | "updatedAt:ASC"
+  | "updatedAt:DESC"
 >;
 
 type UseGetSortParams = {
