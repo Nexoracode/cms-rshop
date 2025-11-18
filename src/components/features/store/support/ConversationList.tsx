@@ -23,7 +23,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   };
 
   return (
-    <aside className="min-w-64 max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5">
+    <aside className="min-w-64 max-w-64 max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5">
       {conversations.map((conv) => {
         const selectedId = Number(searchParams.get("chat-id"));
         const isSelected = selectedId === conv.id;
