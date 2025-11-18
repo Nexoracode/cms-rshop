@@ -33,16 +33,19 @@ const Products = () => {
         title: "گفت و گوها",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
         showIconInActionSlot: true,
-        className: "p-2 mb-4"
+        className: "p-2 mb-4",
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={support?.data?.meta}
       bodyClassName="p-0"
-      >
-      <ConversationList conversations={support?.data?.items} />
-      <ConversationDetail/>
+      childrenClassName=""
+    >
+      <div className="flex flex-row gap-2">
+        <ConversationList conversations={support?.data?.items} />
+        <ConversationDetail />
+      </div>
     </UnifiedCard>
   );
 };
