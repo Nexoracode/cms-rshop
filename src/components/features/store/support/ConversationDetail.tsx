@@ -8,7 +8,7 @@ import {
 import { toPersianUTC } from "@/core/utils/date";
 import { useState, useRef, useEffect } from "react";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
-import { BsEmojiGrimace, BsEmojiSmile } from "react-icons/bs";
+import { BsEmojiSmile } from "react-icons/bs";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 
 // ایموجی‌های کاملاً بدون تکرار
@@ -215,7 +215,7 @@ const ConversationDetail: React.FC = () => {
   return (
     <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
       {/* هدر */}
-      <div className="px-6 py-4 bg-white border-b border-gray-100 backdrop-blur-xl bg-opacity-90">
+      <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
         <h2 className="text-lg font-bold text-gray-800 truncate">
           {conv.subject}
         </h2>
