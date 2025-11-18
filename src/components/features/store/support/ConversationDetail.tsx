@@ -7,7 +7,7 @@ import {
 } from "@/core/hooks/api/support/useSupport";
 import { toPersianUTC } from "@/core/utils/date";
 import { useState, useRef, useEffect } from "react";
-import { HiOutlinePaperAirplane } from "react-icons/hi2";
+import { HiOutlineChatBubbleLeftRight, HiOutlinePaperAirplane } from "react-icons/hi2";
 import { BsEmojiSmile } from "react-icons/bs";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 
@@ -186,29 +186,62 @@ const ConversationDetail: React.FC = () => {
 
   if (!chatId) {
     return (
-      <div className="flex h-full items-center justify-center text-gray-400 text-lg font-medium">
-        یک گفت‌وگو انتخاب کنید
+        <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
+      {/* هدر */}
+      <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
+        <h2 className="text-lg font-bold text-gray-800 truncate">
+          موضوع تیکت
+        </h2>
+        <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت # نامشخص</p>
       </div>
-    );
-  }
 
-  if (isLoading) {
-    return (
-      <div className="flex h-full items-center justify-center text-gray-500">
-        <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
-          <span>در حال بارگذاری...</span>
+      {/* پیام‌ها */}
+      <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center text-gray-400">
+        {/* آیکون بزرگ */}
+        <HiOutlineChatBubbleLeftRight className="text-6xl text-gray-300" />
+
+        {/* متن راهنمای اصلی */}
+        <p className="text-lg font-semibold">
+          برای شروع، یک گفت‌وگو را انتخاب کنید
+        </p>
+
+        {/* متن توضیحی کوچک‌تر */}
+        <p className="text-sm text-gray-500 max-w-xs">
+          پس از انتخاب یک چت، پیام‌ها و جزئیات آن در اینجا نمایش داده می‌شوند.
+        </p>
+
+        {/* می‌توان یک تصویر یا آیکون اضافی برای جذابیت اضافه کرد */}
+      </div>
+
+
+      <div className="p-4 pt-3 bg-white border-t border-gray-100">
+        <div className="flex items-end gap-3">
+             
+          <button
+            className="p-2.5 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
+            aria-label="انتخاب ایموجی"
+          >
+            <BsEmojiSmile size={22} />
+          </button>
+
+          <div className="flex-1">
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="پیام خود را بنویسید..."
+              className="w-full px-5 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400"
+            />
+          </div>
+        
+          <button
+            onClick={handleSend}
+            className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white shadow-md transition-all hover:shadow-xl active:scale-95"            
+          >
+            <HiOutlinePaperAirplane size={22} className="rotate-[-45deg]" />
+          </button>
         </div>
       </div>
-    );
-  }
-
-  const conv = data?.data;
-  if (!conv) {
-    return (
-      <div className="flex h-full items-center justify-center text-red-500">
-        مشکلی در دریافت اطلاعات رخ داد
-      </div>
+    </div>
     );
   }
 
