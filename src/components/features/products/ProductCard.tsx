@@ -8,6 +8,7 @@ import { MdOutlineCategory } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useDeleteProduct } from "@/core/hooks/api/products/useProduct";
+import Image from "next/image";
 
 type Props = {
   product: any;
@@ -21,15 +22,24 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
 
   return (
     <BaseCard
-      className="min-w-[300px] w-full sm:max-w-full"
+      className="min-w-[320px] w-full sm:max-w-full"
       bodyClassName="flex flex-col items-center sm:flex-row gap-4"
       redirect={`/admin/products/create?edit_id=${id}&type=infos`}
     >
       <div className="relative w-full sm:w-[130px] h-[188px] sm:h-[110px]">
-        <img
+        {/* <img
           alt="product cover"
           src={product.media_pinned?.url ?? product.image}
           className="object-cover w-full h-full rounded-xl"
+        /> */}
+        <Image
+          src={product.media_pinned?.url ?? product.image}
+          alt="product cover"
+          fill
+          className="object-cover rounded-xl"
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="/images/placeholder.png"
         />
         {!product.is_visible && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-600/60 text-white text-lg rounded-lg shadow-lg">

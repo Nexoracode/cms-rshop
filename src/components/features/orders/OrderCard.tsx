@@ -8,10 +8,10 @@ import { statusOptions } from "./order-constants";
 import { StatusOrder } from "./order-types";
 import { statusMap } from "@/core/constants/statusMap";
 import CardRows from "@/components/shared/CardRows";
-import PopoverSelect, {
-  PopoverSelectItem,
-} from "@/components/ui/PopoverSelect";
+import type { PopoverSelectItem } from "@/components/ui/PopoverSelect";
+import PopoverSelect from "@/components/ui/PopoverSelect"; 
 import { toPersianUTC } from "@/core/utils/date";
+import Image from "next/image";
 
 type Props = {
   order: any;
@@ -58,7 +58,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
 
   return (
     <BaseCard
-      bodyClassName="flex flex-col gap-3 p-4 w-auto"
+      bodyClassName="flex flex-col gap-3 p-4 min-w-[320px] sm:w-[386px] md:w-full"
       redirect={`/admin/orders/order?id=${order.id}`}
       className={
         isAccept
@@ -139,6 +139,21 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
           ""
         )}
 
+        {/* <AvatarGroup
+          isBordered
+          max={4}
+          total={order?.items?.length - 1}
+          size="sm"
+        >
+          {order.items.map((item: any) => (
+            <Image
+              src={item.product.image}
+              alt={item.product.name}
+              width={40}
+              height={40}
+            />
+          ))}
+        </AvatarGroup> */}
         <AvatarGroup
           isBordered
           max={4}

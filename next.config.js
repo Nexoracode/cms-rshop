@@ -5,6 +5,9 @@ const nextConfig = {
   /* env: {
     NEXT_PUBLIC_BASE_URL: "http://172.18.100.42:3001/api",
   }, */
+  images: {
+    domains: ["dl.poshtybanman.ir"],
+  },
   async rewrites() {
     return [
       {
@@ -12,7 +15,7 @@ const nextConfig = {
         destination: "http://172.18.100.42:3000/api/:path*",
       },
     ];
-  }
+  },
 };
 
 module.exports = nextConfig;

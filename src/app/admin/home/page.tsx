@@ -1,11 +1,10 @@
-"use client";
-
+import dynamic from "next/dynamic";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
-import LatestOrders from "@/components/features/dashboard/LatestOrders";
-import ProductListMostViewed from "@/components/features/dashboard/ProductListMostViewed";
-import ReportsList from "@/components/features/dashboard/ReportsList";
+const LatestOrders = dynamic(() => import('@/components/features/dashboard/LatestOrders'));
+const ProductListMostViewed = dynamic(() => import('@/components/features/dashboard/ProductListMostViewed'));
+const ReportsList = dynamic(() => import("@/components/features/dashboard/ReportsList"));
 
-const Home = () => {
+const Dashboard = () => {
   return (
     <>
       <ShopInfosCard />
@@ -18,4 +17,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

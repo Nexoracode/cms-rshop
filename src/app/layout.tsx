@@ -1,20 +1,14 @@
-"use client";
-
 import "@/styles/globals.css";
-import * as React from "react";
-import { useRouter } from "next/navigation";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HeroUIProvider } from "@heroui/system";
 import { Toaster } from "react-hot-toast";
+import GlobalLoader from "@/components/layout/GlobalLoader";
+import ClientProviders from "@/components/layout/ClientProviders";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [queryClient] = React.useState(() => new QueryClient());
-  const router = useRouter();
-
   return (
     <html lang="fa">
       <head>
@@ -28,11 +22,10 @@ export default function RootLayout({
       </head>
       <body cz-shortcut-listen="false">
         <Toaster />
-        <QueryClientProvider client={queryClient}>
-          <HeroUIProvider navigate={router.push} locale="fa-IR">
-            <React.Suspense fallback={<p></p>}>{children}</React.Suspense>
-          </HeroUIProvider>
-        </QueryClientProvider>
+        <GlobalLoader />
+        <ClientProviders>
+          <Suspense fallback={<></>}>{children}</Suspense>
+        </ClientProviders>
       </body>
     </html>
   );

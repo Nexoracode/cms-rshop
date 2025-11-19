@@ -106,7 +106,7 @@ export default function App() {
         onSuccess: (res: any) => {
           if (res?.ok) {
             setSuccess(true);
-            setTimeout(() => router.push("/admin/home"), 1200);
+            router.push("/admin/home")
           }
         },
       }

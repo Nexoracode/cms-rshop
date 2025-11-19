@@ -2,7 +2,7 @@
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import CouponsFilter from "@/components/features/store/promotions/coupon/Filter/CouponsFilter";
-import { useGetCoupons } from "@/core/hooks/api/useCoupon";
+import { CouponHooks } from "@/core/hooks/api/usePromotions";
 import { LuTicket } from "react-icons/lu";
 import CouponCard from "@/components/features/store/promotions/coupon/CouponCard";
 import { CouponSortBy } from "@/components/features/store/promotions/coupon/coupon-types";
@@ -12,12 +12,14 @@ import CouponsListModal from "@/components/features/store/promotions/coupon/Coup
 const Coupon = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<CouponSortBy[number]>();
-  const { data: coupons, isLoading } = useGetCoupons({
+  const { data: coupons, isLoading } = CouponHooks.useGetList({
     page,
     sortBy,
     search,
     filter,
   });
+
+  console.log(coupons);
 
   const items = coupons?.data?.items || [];
   const hasItems = items.length > 0;

@@ -33,11 +33,11 @@ export default function Sidebar() {
 
   return (
     <motion.aside
-      className="h-fit w-full lg:h-[auto] sticky left-0 right-0 top-1 p-2 rounded-2xl shadow-none"
+      className="h-fit w-full lg:h-[auto] left-0 right-0 p-2 rounded-2xl shadow-none"
       {...asideEnterMotion}
     >
       {/* مرکزکننده: در دسکتاپ محتوا را وسط ویوپورت می‌نشاند، بدون نیاز به ارتفاع 100vh */}
-      <div className="lg:sticky top-3 lg:transform rounded-2xl">
+      <div className="lg:transform rounded-2xl">
 
         {/* برای جلوگیری از اسکرول افقی ناخواسته */}
         <div className="relative overflow-hidden">

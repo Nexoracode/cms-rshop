@@ -11,7 +11,7 @@ import {
 const MiniChart = ({ data, color = "#3b82f6" }: any) => {
   return (
     // ✅ عرض بیشتر برای خوانایی بهتر (مثلاً w-72 یا حتی full)
-    <div className="w-96 h-40 sm:w-80 md:w-full">
+    <div className="h-40 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}

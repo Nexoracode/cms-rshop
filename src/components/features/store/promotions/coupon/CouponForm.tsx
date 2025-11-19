@@ -5,25 +5,37 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import TextInput from "@/components/ui/inputs/TextInput";
-import { useCreateCoupon, useUpdateCoupon } from "@/core/hooks/api/useCoupon";
+import { CouponHooks } from "@/core/hooks/api/usePromotions";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import {
-  CouponFormType,
-  CouponPayload,
-} from "@/components/features/store/promotions/coupon/coupon-types";
+import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import BaseCard from "@/components/ui/BaseCard";
 import FormActionButtons from "@/components/common/FormActionButtons";
-import { MdOutlineCleaningServices } from "react-icons/md";
 import Switch from "@/components/ui/Switch";
-import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 import { TbRosetteDiscount } from "react-icons/tb";
+import { MdOutlineCleaningServices } from "react-icons/md";
+
+export type CouponFormType = {
+  code: string;
+  percent_discount: number;
+  amount_discount: number;
+  min_order_amount?: number;
+  max_discount_amount?: number;
+  usage_limit?: number;
+  start_date: string;
+  end_date: string;
+  is_active: boolean;
+  for_first_order: boolean;
+  allowed_users: number[];
+  allowed_products: number[];
+  allowed_categories: number[];
+};
 
 const initialForm: CouponFormType = {
   code: "",
-  type: "percent",
-  amount: 0,
+  percent_discount: 0,
+  amount_discount: 0,
   min_order_amount: undefined,
   max_discount_amount: undefined,
   usage_limit: undefined,
@@ -31,7 +43,6 @@ const initialForm: CouponFormType = {
   end_date: "",
   is_active: true,
   for_first_order: false,
-  // Optional
   allowed_users: [],
   allowed_products: [],
   allowed_categories: [],
@@ -39,7 +50,7 @@ const initialForm: CouponFormType = {
 
 type CouponFormProps = {
   pageType: "create" | "category" | "product" | "customer";
-  initialData?: CouponFormType;
+  initialData?: any; // data from backend /admin/promotions/:id
   isLoading?: boolean;
   onReset?: () => void;
 };
@@ -52,71 +63,112 @@ const CouponForm: React.FC<CouponFormProps> = ({
 }) => {
   const router = useRouter();
   const params = useSearchParams();
-
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
   const isEditMode = !!id;
-  // States
-  const [touched, setTouched] = useState(false);
-  const [form, setForm] = useState(initialForm);
-  //? Hooks
-  const createCoupon = useCreateCoupon();
-  const updateCoupon = useUpdateCoupon(id || 0);
-  //
-  const isShowLoader =
-    isLoading || (isEditMode ? updateCoupon.isPending : createCoupon.isPending);
+  console.log(initialData);
 
-  const updateForm = <K extends keyof CouponPayload>(
+  const [touched, setTouched] = useState(false);
+  const [form, setForm] = useState<CouponFormType>(initialForm);
+
+  const createPromotion = CouponHooks.useCreate();
+  const updatePromotion = CouponHooks.useUpdate(id || 0);
+
+  const isShowLoader =
+    isLoading ||
+    (isEditMode ? updatePromotion.isPending : createPromotion.isPending);
+
+  const updateForm = <K extends keyof CouponFormType>(
     key: K,
-    value: CouponPayload[K]
-  ) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
+    value: CouponFormType[K]
+  ) => setForm((prev) => ({ ...prev, [key]: value }));
 
   useEffect(() => {
     if (initialData) {
-      setForm(initialData);
+      setForm({
+        code: initialData.code || "",
+        percent_discount: initialData.percent_discount || 0,
+        amount_discount: initialData.amount_discount || 0,
+        min_order_amount: initialData.min_order_amount,
+        max_discount_amount: initialData.max_discount_amount,
+        usage_limit: initialData.usage_limit,
+        start_date: initialData.start_date || "",
+        end_date: initialData.end_date || "",
+        is_active: initialData.is_active ?? true,
+        for_first_order: initialData.for_first_order ?? false,
+        allowed_users: initialData.allowed_users || [],
+        allowed_products: initialData.allowed_products || [],
+        allowed_categories: initialData.allowed_categories || [],
+      });
     }
   }, [initialData]);
 
+  const buildPayload = () => {
+    const payload: any = {
+      name: `Coupon ${form.code}`, // این مورد الزامی است
+      code: form.code.trim(),
+      type: "coupon", // همیشه coupon
+      startsAt: form.start_date || null,
+      endsAt: form.end_date || null,
+      usageLimit: form.usage_limit ?? null,
+      isActive: form.is_active ?? false,
+      conditions: [],
+      actions: [],
+    };
+
+    // Conditions
+    if (form.min_order_amount)
+      payload.conditions.push({
+        type: "min_order_amount",
+        minAmount: form.min_order_amount,
+      });
+    if (form.allowed_products.length)
+      payload.conditions.push({
+        type: "product",
+        productIds: form.allowed_products,
+      });
+    if (form.allowed_categories.length)
+      payload.conditions.push({
+        type: "category",
+        categoryIds: form.allowed_categories,
+      });
+    if (form.allowed_users.length)
+      payload.conditions.push({ type: "user", userIds: form.allowed_users });
+    if (form.for_first_order) payload.conditions.push({ type: "first_order" });
+
+    // Actions
+    if (form.percent_discount && form.percent_discount > 0) {
+      const action: any = {
+        type: "percent_discount",
+        value: form.percent_discount,
+      };
+      if (form.max_discount_amount)
+        action.meta = { maxDiscountAmount: form.max_discount_amount };
+      payload.actions.push(action);
+    } else {
+      payload.actions.push({
+        type: "amount_discount",
+        value: form.amount_discount,
+      });
+    }
+
+    return payload;
+  };
+
   const handleSubmit = async () => {
     setTouched(true);
+    if (!form.code.trim() || form.amount_discount <= 0) return;
 
-    if (!(form.code.trim().length > 0 && form.amount > 0)) return;
-
-    const payload: CouponPayload = {
-      code: form.code.trim(),
-      type: form.type,
-      amount: form.amount,
-      is_active: form.is_active,
-      for_first_order: form.for_first_order,
-      start_date: form.start_date,
-      end_date: form.end_date,
-      usage_limit: form.usage_limit || undefined,
-      min_order_amount: form.min_order_amount || undefined,
-      max_discount_amount: form.max_discount_amount || undefined,
-      ...(pageType === "category"
-        ? { allowed_category_ids: form.allowed_category_ids }
-        : {}),
-      ...(pageType === "product"
-        ? { allowed_product_ids: form.allowed_product_ids }
-        : {}),
-      ...(pageType === "customer"
-        ? { allowed_user_ids: form.allowed_user_ids }
-        : {}),
-    };
+    const payload = buildPayload();
     console.log(payload);
 
     try {
       if (isEditMode) {
-        const updatedCoupon = await updateCoupon.mutateAsync(payload);
-        if (updatedCoupon.ok) {
+        const resp = await updatePromotion.mutateAsync(payload);
+        if (resp?.ok || resp?.data)
           router.push("/admin/store/promotions/coupon");
-        }
       } else {
-        const createdInfo = await createCoupon.mutateAsync(payload);
-        if (createdInfo.ok) {
-          handleReset();
-        }
+        const resp = await createPromotion.mutateAsync(payload);
+        if (resp?.ok || resp?.data) handleReset();
       }
     } catch (err) {
       console.error("Coupon submit failed:", err);
@@ -129,25 +181,27 @@ const CouponForm: React.FC<CouponFormProps> = ({
     setTouched(false);
   };
 
-  const loading = isEditMode ? updateCoupon.isPending : createCoupon.isPending;
+  const loading = isEditMode
+    ? updatePromotion.isPending
+    : createPromotion.isPending;
 
   return (
-    <>
-      <BaseCard
-        wrapperContents
-        CardHeaderProps={{
-          title: isEditMode ? "ویرایش کد تخفیف" : "افزودن کد تخفیف",
-          icon: <TbRosetteDiscount />,
-          textBtn: "پاک سازی فرم",
-          btnIcon: <MdOutlineCleaningServices />,
-          onAdd: handleReset,
-        }}
-        isLoading={isShowLoader}
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <BaseCard
+      wrapperContents
+      CardHeaderProps={{
+        title: isEditMode ? "ویرایش کد تخفیف" : "افزودن کد تخفیف",
+        icon: <TbRosetteDiscount />,
+        textBtn: "پاک سازی فرم",
+        btnIcon: <MdOutlineCleaningServices />,
+        onAdd: handleReset,
+      }}
+      isLoading={isShowLoader}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="flex items-center gap-4">
           <TextInput
-            label="کد تخفیف"
-            placeholder="مثلاً WELCOME10"
+            label="نام کد تخفیف"
+            placeholder="مثلاً کد تخفیف برای اولین سفارش"
             value={form.code}
             onChange={(val) => updateForm("code", val)}
             isRequired
@@ -157,127 +211,121 @@ const CouponForm: React.FC<CouponFormProps> = ({
             allowSpaces={false}
             allowSpecialChars
             allowedSpecialChars={["-", "_"]}
-            description="کد فقط می‌تواند شامل حروف انگلیسی، عدد و نمادهای - و _ باشد."
           />
-
-          {/* نوع و مقدار تخفیف */}
-          <NumberWithSelect
-            label="مقدار تخفیف"
-            placeholder={form.type === "percent" ? "مثلاً 10" : "مثلاً 50,000"}
-            maxValue={form.type === "percent" ? 100 : undefined}
-            value={form.amount ?? 0}
-            onValueChange={(val) =>
-              updateForm("amount", val === undefined ? 1 : val)
-            }
-            selectedKey={form.type}
-            onSelectChange={(val: any) =>
-              updateForm("type", val as "percent" | "fixed")
-            }
-            options={[
-              { key: "percent", title: "درصد" },
-              { key: "fixed", title: "مبلغ ثابت" },
-            ]}
+          <TextInput
+            label="کد تخفیف"
+            placeholder="مثلاً FirstORrderUser"
+            value={form.code}
+            onChange={(val) => updateForm("code", val)}
             isRequired
+            isActiveError={touched}
+            allowEnglishOnly
+            allowNumbers
+            allowSpaces={false}
+            allowSpecialChars
+            allowedSpecialChars={["-", "_"]}
           />
-
-          {/* سایر ورودی‌ها */}
-          <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <PriceNumberInput
-              value={form.min_order_amount}
-              onChange={(v) => updateForm("min_order_amount", v || undefined)}
-              label="حداقل مبلغ سفارش"
-              placeholder="مثلاً 100,000"
-              suffix="تومان"
-              isRequired={false}
-            />
-
-            <PriceNumberInput
-              value={form.max_discount_amount}
-              onChange={(v) =>
-                updateForm("max_discount_amount", v || undefined)
-              }
-              label="سقف تخفیف"
-              placeholder="مثلاً 50,000"
-              suffix="تومان"
-              isRequired={false}
-            />
-
-            <PriceNumberInput
-              value={form.usage_limit}
-              onChange={(v) => updateForm("usage_limit", v || undefined)}
-              label="محدودیت تعداد استفاده"
-              placeholder="مثلاً 100"
-              suffix="عدد"
-              isRequired={false}
-            />
-
-            <IsoDatePicker
-              label="بازه اعتبار کوپن"
-              enableRange
-              valueIsoRange={{
-                start: form.start_date,
-                end: form.end_date,
-              }}
-              onChangeIsoRange={(range) => {
-                updateForm("start_date", range?.start ?? null);
-                updateForm("end_date", range?.end ?? null);
-              }}
-              showMonthAndYearPickers
-              className="w-full"
-            />
-          </div>
         </div>
 
-        <div className="flex flex-wrap gap-6">
-          <Switch
-            isSelected={form.is_active}
-            onValueChange={(v) => updateForm("is_active", v)}
-            color="success"
-          >
-            فعال باشد
-          </Switch>
-
-          <Switch
-            isSelected={form.for_first_order}
-            onValueChange={(v) => updateForm("for_first_order", v)}
-            color="secondary"
-          >
-            فقط برای اولین سفارش
-          </Switch>
-        </div>
-
-        {pageType === "product" && (
-          <SelectableProductsBox
-            onChange={(ids) =>
-              ids.length && updateForm("allowed_product_ids", ids)
-            }
-          />
-        )}
-
-        {pageType === "category" && (
-          <SelectableCategoriesBox
-            onChange={(ids) =>
-              ids.length && updateForm("allowed_category_ids", ids)
-            }
-          />
-        )}
-
-        {pageType === "customer" && (
-          <SelectableUsersBox
-            onChange={(ids) => {
-              ids.length && updateForm("allowed_user_ids", ids);
+        <div className="flex items-center gap-4">
+          <PriceNumberInput
+            value={form.amount_discount ?? 0}
+            onChange={(val) => {
+              updateForm("amount_discount", val ?? 1);
             }}
+            label="تخفیف درصدی"
+            placeholder="مثلا 20%"
+            suffix="درصد"
+            max={100}
           />
-        )}
 
-        <FormActionButtons
-          cancelHref="/admin/store/promotions/coupon"
-          onSubmit={handleSubmit}
-          isSubmitting={loading}
-          submitText={isEditMode ? "ویرایش کد تخفیف" : "ثبت کد تخفیف"}
+          <PriceNumberInput
+            value={form.percent_discount ?? 0}
+            onChange={(val) => {
+              updateForm("percent_discount", val ?? 1);
+            }}
+            label="تخفیف ثابت"
+            placeholder="مثلا 50 هزارتومان"
+            suffix="تومان"
+          />
+        </div>
+
+        <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <PriceNumberInput
+            value={form.max_discount_amount}
+            onChange={(v) => updateForm("max_discount_amount", v || undefined)}
+            label="سقف تخفیف"
+            placeholder="مثلاً 50,000"
+            suffix="تومان"
+          />
+          <PriceNumberInput
+            value={form.usage_limit}
+            onChange={(v) => updateForm("usage_limit", v || undefined)}
+            label="محدودیت تعداد استفاده"
+            placeholder="مثلاً 100"
+            suffix="عدد"
+          />
+          <PriceNumberInput
+            value={form.min_order_amount}
+            onChange={(v) => updateForm("min_order_amount", v || undefined)}
+            label="حداقل مبلغ سفارش"
+            placeholder="مثلاً 100,000"
+            suffix="تومان"
+          />
+          <IsoDatePicker
+            label="بازه اعتبار کوپن"
+            enableRange
+            valueIsoRange={{ start: form.start_date, end: form.end_date }}
+            onChangeIsoRange={(range) => {
+              updateForm("start_date", range?.start ?? "");
+              updateForm("end_date", range?.end ?? "");
+            }}
+            showMonthAndYearPickers
+            className="w-full"
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-6">
+        <Switch
+          isSelected={form.is_active}
+          onValueChange={(v) => updateForm("is_active", v)}
+          color="success"
+        >
+          فعال باشد
+        </Switch>
+        <Switch
+          isSelected={form.for_first_order}
+          onValueChange={(v) => updateForm("for_first_order", v)}
+          color="secondary"
+        >
+          فقط برای اولین سفارش
+        </Switch>
+      </div>
+
+      {pageType === "product" && (
+        <SelectableProductsBox
+          onChange={(ids) => updateForm("allowed_products", ids)}
         />
-      </BaseCard>
-    </>
+      )}
+      {pageType === "category" && (
+        <SelectableCategoriesBox
+          onChange={(ids) => updateForm("allowed_categories", ids)}
+        />
+      )}
+      {pageType === "customer" && (
+        <SelectableUsersBox
+          onChange={(ids) => updateForm("allowed_users", ids)}
+        />
+      )}
+
+      <FormActionButtons
+        cancelHref="/admin/store/promotions/coupon"
+        onSubmit={handleSubmit}
+        isSubmitting={loading}
+        submitText={isEditMode ? "ویرایش کد تخفیف" : "ثبت کد تخفیف"}
+      />
+    </BaseCard>
   );
 };
 

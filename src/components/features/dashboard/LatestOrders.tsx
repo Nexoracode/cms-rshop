@@ -1,10 +1,12 @@
-"use client";
+"use client"
 
+import dynamic from "next/dynamic";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { IoReceiptOutline } from "react-icons/io5";
-import { Order } from "../orders/order-types";
-import OrderCard from "@/components/features/orders/OrderCard";
+const OrderCard = dynamic(() => import("@/components/features/orders/OrderCard"), { ssr: false });
 import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
+//
+import { Order } from "../orders/order-types";
+import { IoReceiptOutline } from "react-icons/io5";
 
 const LatestOrders = () => {
   const { data: orders, isLoading } = useGetOrders({

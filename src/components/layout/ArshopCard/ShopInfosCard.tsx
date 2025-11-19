@@ -2,11 +2,12 @@
 
 import { useDisclosure, Card, CardBody } from "@heroui/react";
 import { MdOutlineReportGmailerrorred, MdOutlineSupportAgent } from "react-icons/md";
+import BoxLink from "@/components/shared/BoxLink";
+//? Icons
 import { FiUsers } from "react-icons/fi";
 import { TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
 import { GrAnnounce } from "react-icons/gr";
-import BoxLink from "@/components/shared/BoxLink";
 import ProgrammerModal from "./ProgrammerModal";
 
 const ShopInfosCard = () => {
@@ -14,10 +15,10 @@ const ShopInfosCard = () => {
 
   return (
     <>
-      <div className="max-w-[794px] mx-auto">
-        <Card className="shadow-md bg-white rounded-2xl">
+      <div className="flex items-center flex-col">
+        <Card className="shadow-md bg-white rounded-2xl w-full">
           <CardBody className="p-2">
-            <div className="flex flex-col xs:flex-row xs:items-center justify-between">
+            <div className="flex flex-row items-center justify-between">
               <div className="flex items-center gap-3 text-start">
                 <img
                   src="/images/logo.png"
@@ -32,7 +33,7 @@ const ShopInfosCard = () => {
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75"></span>
                       <span className="relative inline-flex size-2.5 rounded-full bg-green-500"></span>
                     </span>
-                    <small className="">سفارش گیری فعال</small>
+                    <small>سفارش گیری فعال</small>
                   </div>
                 </div>
               </div>
@@ -48,7 +49,7 @@ const ShopInfosCard = () => {
           </CardBody>
         </Card>
 
-        <div className="flex items-center gap-6 justify-center mt-4 mb-16">
+        <div className="grid grid-cols-3 sm:flex justify-center items-center gap-3 md:gap-6 mt-4 mb-16">
           <BoxLink
             key="store/customers"
             title="مشتریان"

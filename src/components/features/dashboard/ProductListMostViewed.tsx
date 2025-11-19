@@ -1,9 +1,10 @@
-"use client";
+"use client"
 
+import dynamic from "next/dynamic";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { useGetProducts } from "@/core/hooks/api/products/useProduct";
 import { TfiShoppingCartFull } from "react-icons/tfi";
-import ProductCard from "../products/ProductCard";
+const ProductCard = dynamic(() => import("../products/ProductCard"), { ssr: false });
 
 const ProductListMostViewed = () => {
   const { data: products, isLoading } = useGetProducts({ page: 1, limit: 4 });
