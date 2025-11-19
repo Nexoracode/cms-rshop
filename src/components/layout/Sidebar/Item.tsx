@@ -21,10 +21,8 @@ const Item = ({ title, routeName, icon, iconStyle, parentStyle, active }: Props)
       href={`/admin/${routeName}`}
       className={`flex flex-col sm:flex-row items-center justify-center lg:justify-start text-md px-2 py-2 rounded-2xl lg:rounded-md transition ${parentStyle} ${isActive ? active : ""}`}
     >
-      {/* بدون تغییر کلاس‌ها؛ فقط motion اضافه شده */}
       <motion.span
         className={`rounded-md p-1 ${iconStyle}`}
-        whileHover={{ rotate: -4, y: -1 }}
         whileTap={{ scale: 0.96 }}
         transition={{ type: "spring", stiffness: 280, damping: 18 }}
       >

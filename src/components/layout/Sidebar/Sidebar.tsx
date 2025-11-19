@@ -2,9 +2,9 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { HiOutlineHome } from "react-icons/hi";
-import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
-import { AiOutlineShop } from "react-icons/ai";
+import { TbBrandGoogleAnalytics } from "react-icons/tb";
+import { IoReceiptOutline } from "react-icons/io5";
+import { LuPackage } from "react-icons/lu";
 import { motion } from "framer-motion";
 import Item from "./Item";
 
@@ -26,6 +26,7 @@ import {
   activePillMotion,
   iconFloat,
 } from "@/core/motions/sidebarVariants";
+import { BsShop } from "react-icons/bs";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -87,7 +88,7 @@ export default function Sidebar() {
 
               {/* عنوان و برچسب زیر عکس */}
               <motion.span
-                className="mt-6 font-extrabold text-slate-800 text-[15px] leading-5 tracking-tight"
+                className="mt-6 font-semibold text-slate-800 text-[15px] leading-5 tracking-tight"
                 {...titleRevealMotion}
               >
                 فروشگاه آرشاپ
@@ -117,7 +118,7 @@ export default function Sidebar() {
 
           {/* Nav: کلاس‌ها دقیقاً دست‌نخورده؛ هیچ max-height یا overflow-y-auto نداریم */}
           <motion.nav
-            className="bg-white p-0 xs:p-3 lg:p-0 rounded-t-2xl xs:rounded-t-3xl fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row lg:flex-col xs:gap-4 text-end"
+            className="bg-white border border-b-none w-fit lg:w-full mx-auto lg:border-0 p-0 sm:p-2 lg:p-0 rounded-t-3xl lg:rounded-none overflow-hidden fixed bottom-0 left-0 right-0 lg:relative lg:bg-transparent flex flex-row justify-center lg:flex-col xs:gap-4 text-end"
             variants={navVariants}
             initial="hidden"
             animate="show"
@@ -127,11 +128,11 @@ export default function Sidebar() {
               {isActive("home") && (
                 <motion.span
                   {...activePillMotion}
-                  className="absolute inset-0 -z-10 rounded-2xl lg:rounded-md bg-gradient-to-r from-green-500/10 via-green-500/5 to-transparent ring-1 ring-green-600/10"
+                  className="absolute inset-0 -z-10 rounded-2xl lg:rounded-xl bg-gradient-to-r from-green-500/10 via-green-500/5 to-transparent ring-1 ring-green-600/10"
                 />
               )}
               <motion.span
-                className="pointer-events-none absolute inset-0 -z-20 rounded-2xl lg:rounded-md"
+                className="pointer-events-none absolute inset-0 -z-20 rounded-2xl lg:rounded-xl"
                 style={{
                   background:
                     "radial-gradient(65% 55% at 50% 50%, rgba(16,185,129,0.10), transparent 70%)",
@@ -142,7 +143,7 @@ export default function Sidebar() {
                 title="داشبورد"
                 icon={
                   <motion.span {...iconFloat}>
-                    <HiOutlineHome className="text-2xl animate-pulse" />
+                    <TbBrandGoogleAnalytics className="text-2xl" />
                   </motion.span>
                 }
                 routeName="home"
@@ -172,7 +173,7 @@ export default function Sidebar() {
                 title="سفارشات"
                 icon={
                   <motion.span {...iconFloat}>
-                    <IoReceiptOutline className="text-2xl animate-bounce" />
+                    <IoReceiptOutline className="text-2xl" />
                   </motion.span>
                 }
                 routeName="orders"
@@ -202,7 +203,7 @@ export default function Sidebar() {
                 title="محصولات"
                 icon={
                   <motion.span {...iconFloat}>
-                    <AiOutlineShop className="text-2xl" />
+                    <LuPackage className="text-2xl" />
                   </motion.span>
                 }
                 routeName="products"
@@ -229,10 +230,10 @@ export default function Sidebar() {
                 {...glowPulse}
               />
               <Item
-                title="تنظیمات"
+                title="فروشگاه"
                 icon={
                   <motion.span {...iconFloat}>
-                    <IoSettingsOutline className="text-2xl animate-spin" />
+                    <BsShop className="text-2xl" />
                   </motion.span>
                 }
                 routeName="store"
