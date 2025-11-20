@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CouponForm from "@/components/features/store/promotions/coupon/CouponForm";
+import CouponForm from "@/components/features/store/promotions/PromotionForm";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
 
 const CreateCoupon = () => {

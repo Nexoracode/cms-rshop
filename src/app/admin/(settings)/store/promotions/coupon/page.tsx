@@ -4,14 +4,14 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import CouponsFilter from "@/components/features/store/promotions/coupon/Filter/CouponsFilter";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
 import { LuTicket } from "react-icons/lu";
-import CouponCard from "@/components/features/store/promotions/coupon/CouponCard";
-import { CouponSortBy } from "@/components/features/store/promotions/coupon/coupon-types";
+import CouponCard from "@/components/features/store/promotions/PromotionCard";
+import { PromotionSortBy } from "@/components/features/store/promotions/promotions-types";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import CouponsListModal from "@/components/features/store/promotions/coupon/CouponsListModal";
 
 const Coupon = () => {
   const { page, sortBy, search, filter, isFilteredView } =
-    useListQueryParams<CouponSortBy[number]>();
+    useListQueryParams<PromotionSortBy[number]>();
   const { data: coupons, isLoading } = CouponHooks.useGetList({
     page,
     sortBy,

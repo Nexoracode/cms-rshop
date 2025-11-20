@@ -15,8 +15,8 @@ const SORT_OPTIONS = [
   { key: "endDate-asc", value: "endDate:ASC", label: "تاریخ پایان (قدیمی‌ترین)", icon: <BiCalendarAlt className="text-xl text-danger-500 rotate-180" /> },
 ];
 
-const CouponsSortModal = () => {
+const PromotionsSortModal = () => {
   return <SortModal options={SORT_OPTIONS} title="مرتب‌سازی کدهای تخفیف" />;
 };
 
-export default CouponsSortModal;
+export default PromotionsSortModal;

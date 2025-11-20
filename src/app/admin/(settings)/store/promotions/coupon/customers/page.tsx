@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomersSelectionProvider, useCustomersSelection } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
-import CouponForm from "@/components/features/store/promotions/coupon/CouponForm";
+import CouponForm from "@/components/features/store/promotions/PromotionForm";
 import { useGetOneCoupon } from "@/core/hooks/api/useCoupon";
 import { useSearchParams } from "next/navigation";
 

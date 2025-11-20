@@ -2,13 +2,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
 import { buildQueryString } from "@/core/utils/buildQueryString";
 import {
-  CouponPayload,
-  CouponSortBy,
-} from "@/components/features/store/promotions/coupon/coupon-types";
+  PromotionSortBy,
+} from "@/components/features/store/promotions/promotions-types";
 
 type GetCouponsParams = {
   page?: number;
-  sortBy?: CouponSortBy;
+  sortBy?: PromotionSortBy;
   search?: string;
   filter?: Record<string, string[]>; // ← NEW
 };
@@ -50,7 +49,7 @@ export const useGetOneCoupon = (id?: number) => {
 export const useCreateCoupon = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CouponPayload) =>
+    mutationFn: (data: any) =>
       fetcher({
         route: "/coupon",
         method: "POST",
@@ -70,7 +69,7 @@ export const useCreateCoupon = () => {
 export const useUpdateCoupon = (id: number) => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: CouponPayload) =>
+    mutationFn: (data: any) =>
       fetcher({
         route: `/coupon/${id}`,
         method: "PATCH",

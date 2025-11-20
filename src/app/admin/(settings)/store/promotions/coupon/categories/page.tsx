@@ -1,7 +1,7 @@
 "use client";
 
 import { CategoriesSelectionProvider } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
-import CouponForm from "@/components/features/store/promotions/coupon/CouponForm";
+import CouponForm from "@/components/features/store/promotions/PromotionForm";
 import { useGetOneCoupon } from "@/core/hooks/api/useCoupon";
 import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
