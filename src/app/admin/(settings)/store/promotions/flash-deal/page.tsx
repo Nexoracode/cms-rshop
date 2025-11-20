@@ -26,7 +26,7 @@ const FlashDeal = () => {
     <UnifiedCard
       searchFilter={<CouponsFilter />}
       headerProps={{
-        title: "لیست پیشنهادها",
+        title: "لیست پیشنهادهای شگفت‌انگیز",
         icon: <BsBasket className="text-2xl" />,
         children: <FlashDealListModal />,
       }}

@@ -26,7 +26,7 @@ const FirstOrder = () => {
     <UnifiedCard
       searchFilter={<CouponsFilter />}
       headerProps={{
-        title: "لیست تخفیف‌های خرید اول",
+        title: "لیست خریدهای اول",
         icon: <TfiShoppingCartFull className="text-2xl" />,
         children: <FirstOrderListModal />,
       }}

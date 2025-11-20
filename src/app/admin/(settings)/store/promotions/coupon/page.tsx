@@ -3,11 +3,11 @@
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import CouponsFilter from "@/components/features/store/promotions/coupon/Filter/CouponsFilter";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
-import { LuTicket } from "react-icons/lu";
 import CouponCard from "@/components/features/store/promotions/PromotionCard";
 import { PromotionSortBy } from "@/components/features/store/promotions/promotions-types";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import CouponsListModal from "@/components/features/store/promotions/coupon/CouponsListModal";
+import { TbRosetteDiscount } from "react-icons/tb";
 
 const Coupon = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -26,8 +26,8 @@ const Coupon = () => {
     <UnifiedCard
       searchFilter={<CouponsFilter />}
       headerProps={{
-        title: "لیست کوپن ها",
-        icon: <LuTicket className="text-2xl" />,
+        title: "لیست تخفیف ها",
+        icon: <TbRosetteDiscount className="text-2xl" />,
         children: <CouponsListModal />,
       }}
       isLoading={isLoading}

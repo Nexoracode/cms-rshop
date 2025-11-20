@@ -26,7 +26,7 @@ const NextOrderReward = () => {
     <UnifiedCard
       searchFilter={<CouponsFilter />}
       headerProps={{
-        title: "لیست تخفیف‌های خرید بعدی",
+        title: "لیست خریدهای بعدی",
         icon: <TbShoppingCartDiscount className="text-2xl" />,
         children: <NextOrderRewardListModal />,
       }}
