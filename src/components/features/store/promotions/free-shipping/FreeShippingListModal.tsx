@@ -2,7 +2,6 @@
 
 import React from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import { TbCategory2, TbRosetteDiscount } from "react-icons/tb";
 import MenuCard from "@/components/shared/MenuCard";
 import { FiUsers } from "react-icons/fi";
 import { LiaTruckLoadingSolid } from "react-icons/lia";

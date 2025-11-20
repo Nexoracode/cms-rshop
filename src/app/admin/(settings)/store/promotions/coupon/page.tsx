@@ -19,8 +19,6 @@ const Coupon = () => {
     filter,
   });
 
-  console.log(coupons);
-
   const items = coupons?.data?.items || [];
   const hasItems = items.length > 0;
 

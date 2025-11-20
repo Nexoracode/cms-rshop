@@ -63,7 +63,7 @@ const PromotionsListModal: React.FC = () => {
     <BaseModal
       title="انواع پروموشن ها"
       triggerProps={{
-        title: "+ افزودن پروموشن",
+        title: "مدیریت پروموشن ها",
         className: "bg-secondary-light text-secondary",
       }}
       isActiveFooter={false}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import { TbCategory2, TbRosetteDiscount, TbShoppingCartDiscount } from "react-icons/tb";
+import { TbShoppingCartDiscount } from "react-icons/tb";
 import MenuCard from "@/components/shared/MenuCard";
 import { FiUsers } from "react-icons/fi";
 

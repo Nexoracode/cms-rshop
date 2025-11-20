@@ -10,14 +10,14 @@ export const FlashDealListModal: React.FC = () => {
   const items = [
     {
       title: "محصولات",
-      subtitle: "اعمال فقط روی محصولات مشخص",
+      subtitle: "اعمال فقط روی محصولات انتخابی",
       icon: <TbRosetteDiscount className="text-3xl" />,
       color: "text-orange-700 bg-orange-700/10",
       path: "/admin/store/promotions/flash-deal/products",
     },
     {
       title: "دسته بندی ها",
-      subtitle: "اعمال فقط روی دسته بندی‌ها",
+      subtitle: "اعمال فقط روی دسته بندی‌های انتخابی",
       icon: <TbCategory2 className="text-3xl" />,
       color: "text-emerald-700 bg-emerald-700/10",
       path: "/admin/store/promotions/flash-deal/categories",
@@ -26,16 +26,16 @@ export const FlashDealListModal: React.FC = () => {
 
   return (
     <BaseModal
-      title="انواع Flash Deal"
+      title="انواع پیشنهاد های شگفت انگیز"
       triggerProps={{
         title: "+ افزودن",
         className: "bg-secondary-light text-secondary",
       }}
       isActiveFooter={false}
-      icon={<BsBasket className="text-3xl" />}
-      size="xl"
+      icon={<BsBasket />}
+      size="sm"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+      <div className="grid grid-cols-1 gap-4 p-2">
         {items.map((item, index) => (
           <MenuCard
             key={index}
