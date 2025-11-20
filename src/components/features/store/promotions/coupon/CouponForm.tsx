@@ -26,7 +26,7 @@ export type CouponFormType = {
   start_date: string;
   end_date: string;
   is_active: boolean;
-  for_first_order: boolean;
+  first_order: boolean;
   allowed_users: number[];
   allowed_products: number[];
   allowed_categories: number[];
@@ -42,7 +42,7 @@ const initialForm: CouponFormType = {
   start_date: "",
   end_date: "",
   is_active: true,
-  for_first_order: false,
+  first_order: false,
   allowed_users: [],
   allowed_products: [],
   allowed_categories: [],
@@ -94,7 +94,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
         start_date: initialData.start_date || "",
         end_date: initialData.end_date || "",
         is_active: initialData.is_active ?? true,
-        for_first_order: initialData.for_first_order ?? false,
+        first_order: initialData.first_order ?? false,
         allowed_users: initialData.allowed_users || [],
         allowed_products: initialData.allowed_products || [],
         allowed_categories: initialData.allowed_categories || [],
@@ -133,7 +133,7 @@ const CouponForm: React.FC<CouponFormProps> = ({
       });
     if (form.allowed_users.length)
       payload.conditions.push({ type: "user", userIds: form.allowed_users });
-    if (form.for_first_order) payload.conditions.push({ type: "first_order" });
+    if (form.first_order) payload.conditions.push({ type: "first_order" });
 
     // Actions
     if (form.percent_discount && form.percent_discount > 0) {
@@ -198,57 +198,53 @@ const CouponForm: React.FC<CouponFormProps> = ({
       isLoading={isShowLoader}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="flex items-center gap-4">
-          <TextInput
-            label="نام کد تخفیف"
-            placeholder="مثلاً کد تخفیف برای اولین سفارش"
-            value={form.code}
-            onChange={(val) => updateForm("code", val)}
-            isRequired
-            isActiveError={touched}
-            allowEnglishOnly
-            allowNumbers
-            allowSpaces={false}
-            allowSpecialChars
-            allowedSpecialChars={["-", "_"]}
-          />
-          <TextInput
-            label="کد تخفیف"
-            placeholder="مثلاً FirstORrderUser"
-            value={form.code}
-            onChange={(val) => updateForm("code", val)}
-            isRequired
-            isActiveError={touched}
-            allowEnglishOnly
-            allowNumbers
-            allowSpaces={false}
-            allowSpecialChars
-            allowedSpecialChars={["-", "_"]}
-          />
-        </div>
+        <TextInput
+          label="نام کد تخفیف"
+          placeholder="مثلاً کد تخفیف برای این منظور"
+          value={form.code}
+          onChange={(val) => updateForm("code", val)}
+          isRequired
+          isActiveError={touched}
+          allowEnglishOnly
+          allowNumbers
+          allowSpaces={false}
+          allowSpecialChars
+          allowedSpecialChars={["-", "_"]}
+        />
+        <TextInput
+          label="کد تخفیف"
+          placeholder="مثلاً CodeForDiscount"
+          value={form.code}
+          onChange={(val) => updateForm("code", val)}
+          isRequired
+          isActiveError={touched}
+          allowEnglishOnly
+          allowNumbers
+          allowSpaces={false}
+          allowSpecialChars
+          allowedSpecialChars={["-", "_"]}
+        />
 
-        <div className="flex items-center gap-4">
-          <PriceNumberInput
-            value={form.amount_discount ?? 0}
-            onChange={(val) => {
-              updateForm("amount_discount", val ?? 1);
-            }}
-            label="تخفیف درصدی"
-            placeholder="مثلا 20%"
-            suffix="درصد"
-            max={100}
-          />
+        <PriceNumberInput
+          value={form.amount_discount ?? 0}
+          onChange={(val) => {
+            updateForm("amount_discount", val ?? 1);
+          }}
+          label="تخفیف درصدی"
+          placeholder="مثلا 20%"
+          suffix="درصد"
+          max={100}
+        />
 
-          <PriceNumberInput
-            value={form.percent_discount ?? 0}
-            onChange={(val) => {
-              updateForm("percent_discount", val ?? 1);
-            }}
-            label="تخفیف ثابت"
-            placeholder="مثلا 50 هزارتومان"
-            suffix="تومان"
-          />
-        </div>
+        <PriceNumberInput
+          value={form.percent_discount ?? 0}
+          onChange={(val) => {
+            updateForm("percent_discount", val ?? 1);
+          }}
+          label="تخفیف ثابت"
+          placeholder="مثلا 50 هزارتومان"
+          suffix="تومان"
+        />
 
         <div className="col-span-1 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
           <PriceNumberInput
@@ -294,13 +290,13 @@ const CouponForm: React.FC<CouponFormProps> = ({
         >
           فعال باشد
         </Switch>
-        <Switch
-          isSelected={form.for_first_order}
-          onValueChange={(v) => updateForm("for_first_order", v)}
+        {/* <Switch
+          isSelected={form.first_order}
+          onValueChange={(v) => updateForm("first_order", v)}
           color="secondary"
         >
           فقط برای اولین سفارش
-        </Switch>
+        </Switch> */}
       </div>
 
       {pageType === "product" && (
