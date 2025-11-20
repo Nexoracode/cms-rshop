@@ -61,7 +61,7 @@ const ReportsList = () => {
           <BoxLink
             title="بازدید"
             icon={<TbWorldSearch className="text-2xl" />}
-            routeName={"home/#"}
+            routeName={"dashboard/#"}
             parentStyle="text-gray-700 flex flex-col items-center"
             titleStyle="text-gray-600"
           />
@@ -72,7 +72,7 @@ const ReportsList = () => {
           <BoxLink
             title="فروش کل"
             icon={<PiMoneyWavyBold className="text-2xl" />}
-            routeName={"home/#"}
+            routeName={"dashboard/#"}
             parentStyle="text-gray-700 flex flex-col items-center"
             titleStyle="text-gray-600"
           />
@@ -83,7 +83,7 @@ const ReportsList = () => {
           <BoxLink
             title="سفارش‌ها"
             icon={<HiOutlineDocumentText className="text-2xl" />}
-            routeName={"home/#"}
+            routeName={"dashboard/#"}
             parentStyle="text-gray-700 flex flex-col items-center"
             titleStyle="text-gray-600"
           />
@@ -94,7 +94,7 @@ const ReportsList = () => {
           <BoxLink
             title="مشتری جدید"
             icon={<FiUsers className="text-2xl" />}
-            routeName={"home/#"}
+            routeName={"dashboard/#"}
             parentStyle="text-gray-700 flex flex-col items-center"
             titleStyle="text-gray-600"
           />

@@ -13,7 +13,7 @@ const breadcrumbMap: Record<string, string> = {
   // top-level
   "": "خانه",
   admin: "مدیریت",
-  home: "داشبورد",
+  dashboard: "داشبورد",
   signin: "ورود",
 
   // settings group (inside admin/(settings)/...)

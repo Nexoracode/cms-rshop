@@ -125,7 +125,7 @@ export default function Sidebar() {
           >
             {/* خانه */}
             <motion.div className="relative" variants={navItemVariants} {...itemHoverTap}>
-              {isActive("home") && (
+              {isActive("dashboard") && (
                 <motion.span
                   {...activePillMotion}
                   className="absolute inset-0 -z-10 rounded-2xl lg:rounded-xl bg-gradient-to-r from-green-500/10 via-green-500/5 to-transparent ring-1 ring-green-600/10"
@@ -146,7 +146,7 @@ export default function Sidebar() {
                     <TbBrandGoogleAnalytics className="text-2xl" />
                   </motion.span>
                 }
-                routeName="home"
+                routeName="dashboard"
                 parentStyle="text-green-700 w-full hover:text-green-700 hover:bg-green-700/5"
                 iconStyle="bg-green-700/10"
                 active="bg-green-700/5"

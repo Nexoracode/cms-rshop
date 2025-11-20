@@ -106,7 +106,7 @@ export default function App() {
         onSuccess: (res: any) => {
           if (res?.ok) {
             setSuccess(true);
-            router.push("/admin/home")
+            router.push("/admin/dashboard")
           }
         },
       }
