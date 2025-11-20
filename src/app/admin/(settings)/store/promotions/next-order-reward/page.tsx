@@ -6,8 +6,8 @@ import { NextOrderRewardHooks } from "@/core/hooks/api/usePromotions";
 import CouponCard from "@/components/features/store/promotions/PromotionCard";
 import { PromotionSortBy } from "@/components/features/store/promotions/promotions-types";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import { TfiShoppingCartFull } from "react-icons/tfi";
 import { NextOrderRewardListModal } from "@/components/features/store/promotions/next-order-reward/NextOrderRewardListModal";
+import { TbShoppingCartDiscount } from "react-icons/tb";
 
 const NextOrderReward = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -27,7 +27,7 @@ const NextOrderReward = () => {
       searchFilter={<CouponsFilter />}
       headerProps={{
         title: "لیست تخفیف‌های خرید بعدی",
-        icon: <TfiShoppingCartFull className="text-2xl" />,
+        icon: <TbShoppingCartDiscount className="text-2xl" />,
         children: <NextOrderRewardListModal />,
       }}
       isLoading={isLoading}

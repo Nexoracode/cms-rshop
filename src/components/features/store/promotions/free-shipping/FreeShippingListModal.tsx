@@ -17,7 +17,7 @@ export const FreeShippingListModal: React.FC = () => {
     },
     {
       title: "مشتریان",
-      subtitle: "اعمال فقط برای مشتریان خاص",
+      subtitle: "اعمال ارسال رایگان فقط برای مشتریان خاص",
       icon: <FiUsers className="text-3xl" />,
       color: "text-sky-700 bg-sky-700/10",
       path: "/admin/store/promotions/free-shipping/customers",
@@ -33,9 +33,9 @@ export const FreeShippingListModal: React.FC = () => {
       }}
       isActiveFooter={false}
       icon={<LiaTruckLoadingSolid className="text-3xl" />}
-      size="xl"
+      size="sm"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+      <div className="grid grid-cols-1 gap-4 p-2">
         {items.map((item, index) => (
           <MenuCard
             key={index}
