@@ -9,7 +9,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { BsBasket } from "react-icons/bs";
 import { FlashDealListModal } from "@/components/features/store/promotions/flash-deal/FlashDealListModal";
 
-const Coupon = () => {
+const FlashDeal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<PromotionSortBy[number]>();
   const { data: flashDeals, isLoading } = FlashDealHooks.useGetList({
@@ -42,4 +42,4 @@ const Coupon = () => {
   );
 };
 
-export default Coupon;
+export default FlashDeal;

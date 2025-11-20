@@ -16,7 +16,7 @@ export const FirstOrderListModal: React.FC = () => {
     },
     {
       title: "مشتریان",
-      subtitle: "اعمال فقط برای مشتریان خاص",
+      subtitle: "اعمال تخفیف خرید اول فقط برای مشتریان خاص",
       icon: <TfiShoppingCartFull className="text-3xl" />,
       color: "text-sky-700 bg-sky-700/10",
       path: "/admin/store/promotions/first-order/customers",
@@ -32,9 +32,9 @@ export const FirstOrderListModal: React.FC = () => {
       }}
       isActiveFooter={false}
       icon={<TfiShoppingCartFull className="text-3xl" />}
-      size="xl"
+      size="sm"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+      <div className="grid grid-cols-1 gap-4 p-2">
         {items.map((item, index) => (
           <MenuCard
             key={index}
