@@ -33,9 +33,9 @@ export const NextOrderRewardListModal: React.FC = () => {
       }}
       isActiveFooter={false}
       icon={<TbShoppingCartDiscount className="text-3xl" />}
-      size="xl"
+      size="sm"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+      <div className="grid grid-cols-1 gap-4 p-2">
         {items.map((item, index) => (
           <MenuCard
             key={index}

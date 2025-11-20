@@ -9,7 +9,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { FirstOrderListModal } from "@/components/features/store/promotions/first-order/FirstOrderListModal";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 
-const firstOrder = () => {
+const FirstOrder = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<PromotionSortBy[number]>();
   const { data: firstOrders, isLoading } = FirstOrderHooks.useGetList({
@@ -42,4 +42,4 @@ const firstOrder = () => {
   );
 };
 
-export default firstOrder;
+export default FirstOrder;
