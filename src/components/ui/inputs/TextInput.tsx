@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Input, InputProps } from "@heroui/react";
 import FieldErrorText from "@/components/forms/FieldErrorText";
 import { sanitizeInput } from "@/core/utils/sanitizeInput";
@@ -19,9 +18,7 @@ type Props = {
   className?: string;
 
   isRequired?: boolean;
-  isActiveError?: boolean;
-  errorText?: string;
-  isInvalid?: boolean;
+  errorMessage?: string;
   isDisabled?: boolean;
   onBlur?: () => void;
   onFocus?: () => void;
@@ -55,9 +52,7 @@ export default function TextInput({
   endContent,
   className,
   isRequired = false,
-  isActiveError = false,
-  errorText,
-  isInvalid,
+  errorMessage,
   isDisabled = false,
   onBlur,
   onFocus,
@@ -77,12 +72,6 @@ export default function TextInput({
   inputAlign = "right",
   helperAlign = "right",
 }: Props) {
-  const [localError, setLocalError] = useState<string>("");
-
-  // تشخیص خودکار بر اساس type
-  const shouldSkipSanitize = type === "email";
-  const emailAllowedChars = ["@", ".", "_", "-", "+"];
-
   const handleValueChange = (next: string) => {
     let filteredValue = next;
 
@@ -91,45 +80,16 @@ export default function TextInput({
       filteredValue = next.replace(/\D/g, "");
     }
 
-    let out = filteredValue;
-    let firstError = "";
+    const sanitizeResult = sanitizeInput(filteredValue, {
+      allowEnglishOnly,
+      allowSpaces,
+      allowSpecialChars,
+      allowedSpecialChars,
+      allowNumbers,
+    });
 
-    // اگر type=email باشد، sanitization را skip می‌کنیم
-    if (!shouldSkipSanitize) {
-      const sanitizeResult = sanitizeInput(filteredValue, {
-        allowEnglishOnly,
-        allowSpaces,
-        allowSpecialChars,
-        allowedSpecialChars,
-        allowNumbers,
-      });
-      out = sanitizeResult.out;
-      firstError = sanitizeResult.firstError || "";
-    } else {
-      // برای ایمیل، فقط اعتبارسنجی ساده انجام می‌دهیم
-      const emailRegex = /^[a-zA-Z0-9@._+-]*$/;
-      if (!emailRegex.test(next)) {
-        firstError = "کاراکترهای غیرمجاز در ایمیل";
-        out = next.replace(/[^a-zA-Z0-9@._+-]/g, "");
-      }
-    }
-
-    if (firstError) setLocalError(firstError);
-    else setLocalError("");
-
-    onChange(out);
+    onChange(sanitizeResult.out);
   };
-
-  const showRequiredError =
-    (isInvalid ?? (isActiveError && isRequired && !value.trim())) &&
-    !localError;
-
-  const finalIsInvalid = !!localError || showRequiredError;
-  const finalErrorMessage = localError ? (
-    <FieldErrorText error={localError} />
-  ) : showRequiredError ? (
-    <FieldErrorText error={errorText || `${label} الزامی است.`} />
-  ) : undefined;
 
   // کلاس‌های تراز
   const inputTextAlignClass =
@@ -153,13 +113,19 @@ export default function TextInput({
       size={size}
       variant={variant}
       color={color}
-      isDisabled={isDisabled}
       maxLength={maxLength}
       minLength={minLength}
+      //
+      isDisabled={isDisabled}
       isRequired={isRequired}
-      isInvalid={finalIsInvalid}
-      errorMessage={finalErrorMessage}
+      isInvalid={!!errorMessage?.length}
+      errorMessage={
+        errorMessage?.length ? (
+          <FieldErrorText error={errorMessage} />
+        ) : undefined
+      }
       description={description}
+      //
       autoComplete="off"
       classNames={{
         input: inputTextAlignClass,

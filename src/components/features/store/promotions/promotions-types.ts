@@ -89,7 +89,6 @@ export type PromotionFormConfig = {
   usage_limit: boolean;
   min_order_amount: boolean;
   max_discount_amount: boolean;
-  date_range: boolean;
   first_order: boolean;
   scope: Array<"product" | "category" | "user">;
 };

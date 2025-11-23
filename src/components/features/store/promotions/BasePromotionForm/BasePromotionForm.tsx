@@ -10,7 +10,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 //? Selectable
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox"
+import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 //? Hook
 import { createFormUpdater } from "@/core/hooks/common/useFormUpdater";
 //? Icon
@@ -73,6 +73,7 @@ export function BasePromotionForm({
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [form, setForm] = useState<PromotionForm>(initialLocalForm);
   const updateForm = createFormUpdater(setForm);
+  const [errors, setErrors] = useState<any>({});
 
   useEffect(() => {
     if (initialData) {
@@ -87,18 +88,67 @@ export function BasePromotionForm({
     setHasSubmitted(false);
   }, [resetSignal]);
 
-  const handleResetLocal = () => {
-    setForm(initialLocalForm);
-    setHasSubmitted(false);
-    onHandleReset?.();
-  };
+  function validateForm(
+    form: PromotionForm,
+    config: PromotionFormConfig,
+    scope: string
+  ) {
+    const errs: any = {};
+
+    // name
+    if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
+
+    // code (اگر در config فعال است)
+    if (config.code && !form.code?.trim()) {
+      errs.code = "کد تخفیف الزامی است.";
+    }
+
+    // discount logic
+    if (config.discount_fields) {
+      if (!form.percent_discount && !form.amount_discount) {
+        errs.discount = "حداقل یکی از درصد یا مبلغ تخفیف را وارد کنید.";
+      }
+    }
+
+    // scope validations
+    if (scope === "products" && config.scope.includes("product")) {
+      if (!form.allowed_products || form.allowed_products.length === 0) {
+        errs.allowed_products = "حداقل یک محصول باید انتخاب شود.";
+      }
+    }
+
+    if (scope === "categories" && config.scope.includes("category")) {
+      if (!form.allowed_categories || form.allowed_categories.length === 0) {
+        errs.allowed_categories = "حداقل یک دسته‌بندی باید انتخاب شود.";
+      }
+    }
+
+    if (scope === "customers" && config.scope.includes("user")) {
+      if (!form.allowed_users || form.allowed_users.length === 0) {
+        errs.allowed_users = "حداقل یک کاربر باید انتخاب شود.";
+      }
+    }
+
+    return errs;
+  }
 
   const handleSubmit = () => {
     setHasSubmitted(true);
 
-    const payload = mapLocalFormToAPI(form, formType);
-    console.log(payload);
-    //onHandleSubmit(payload);
+    const errs = validateForm(form, config, scope);
+    setErrors(errs);
+    console.log(errs);
+
+    if (Object.keys(errs).length > 0) return;
+
+    /*   const payload = mapLocalFormToAPI(form, formType);
+    onHandleSubmit(payload); */
+  };
+
+  const handleResetLocal = () => {
+    setForm(initialLocalForm);
+    setHasSubmitted(false);
+    onHandleReset?.();
   };
 
   return (
@@ -117,20 +167,21 @@ export function BasePromotionForm({
         <TextInput
           label="نام پروموشن"
           placeholder="مثلاً تخفیف تابستانه"
+          allowEnglishOnly={false}
           value={form.name}
           onChange={(val) => updateForm("name", val)}
           isRequired
-          isActiveError={hasSubmitted}
+          errorMessage={errors.name}
         />
 
         {config.code && (
           <TextInput
             label="کد"
+            placeholder="مثلاً SUMMER2026"
             value={form.code || ""}
             onChange={(val) => updateForm("code", val)}
-            placeholder="مثلاً SUMMER2026"
             isRequired
-            isActiveError={hasSubmitted}
+            errorMessage={errors.code}
           />
         )}
 
@@ -143,9 +194,8 @@ export function BasePromotionForm({
               placeholder="مثلاً 20"
               suffix="%"
               max={100}
-              isActiveError={hasSubmitted}
               isRequired
-              errorMessage="درصد تخفیف الزامی است."
+              errorMessage={errors.discount}
             />
 
             <PriceNumberInput
@@ -190,19 +240,17 @@ export function BasePromotionForm({
           />
         )}
 
-        {config.date_range && (
-          <IsoDatePicker
-            label="بازه اعتبار"
-            enableRange
-            valueIsoRange={{ start: form.start_date, end: form.end_date }}
-            onChangeIsoRange={(range) => {
-              updateForm("start_date", range?.start ?? "");
-              updateForm("end_date", range?.end ?? "");
-            }}
-            showMonthAndYearPickers
-            className="w-full"
-          />
-        )}
+        <IsoDatePicker
+          label="بازه اعتبار"
+          enableRange
+          valueIsoRange={{ start: form.start_date, end: form.end_date }}
+          onChangeIsoRange={(range) => {
+            updateForm("start_date", range?.start ?? "");
+            updateForm("end_date", range?.end ?? "");
+          }}
+          showMonthAndYearPickers
+          className="w-full"
+        />
       </div>
 
       <div className="mt-6">

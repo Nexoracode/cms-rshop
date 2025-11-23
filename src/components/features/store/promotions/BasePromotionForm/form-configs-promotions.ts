@@ -1,4 +1,4 @@
-import { PromotionFormConfig } from "./promotions-types";
+import { PromotionFormConfig } from "../promotions-types";
 
 export const FORM_CONFIGS = {
   coupon: {
@@ -7,7 +7,6 @@ export const FORM_CONFIGS = {
     usage_limit: true,
     min_order_amount: true,
     max_discount_amount: true,
-    date_range: true,
     first_order: false,
     scope: ["product", "category", "user"],
   },
@@ -18,7 +17,6 @@ export const FORM_CONFIGS = {
     usage_limit: false,
     min_order_amount: true,
     max_discount_amount: true,
-    date_range: true,
     first_order: true,
     scope: ["user"],
   },
@@ -29,7 +27,6 @@ export const FORM_CONFIGS = {
     usage_limit: true,
     min_order_amount: true,
     max_discount_amount: true,
-    date_range: true,
     first_order: false,
     scope: ["user"],
   },
@@ -40,7 +37,6 @@ export const FORM_CONFIGS = {
     usage_limit: true,
     min_order_amount: true,
     max_discount_amount: false,
-    date_range: true,
     first_order: false,
     scope: ["user"],
   },
@@ -51,7 +47,6 @@ export const FORM_CONFIGS = {
     usage_limit: false,
     min_order_amount: false,
     max_discount_amount: true,
-    date_range: true,
     first_order: false,
     scope: ["product", "category"],
   },

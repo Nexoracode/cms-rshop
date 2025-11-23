@@ -14,7 +14,6 @@ type Props = {
   isRequired?: boolean;
   min?: number;
   max?: number;
-  isActiveError?: boolean;
   errorMessage?: string;
 };
 
@@ -27,7 +26,6 @@ export default function NumberInput({
   isRequired = false,
   min,
   max,
-  isActiveError,
   errorMessage,
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -72,8 +70,6 @@ export default function NumberInput({
     });
   };
 
-  const showError = isRequired && isActiveError && (!value || (typeof min === "number" && value < min));
-
   return (
     <Input
       ref={inputRef as any}
@@ -96,8 +92,8 @@ export default function NumberInput({
         ) : null
       }
       autoComplete="off"
-      isInvalid={showError}
-      errorMessage={showError ? <FieldErrorText error={errorMessage || `${label || "عدد"} الزامی است`} /> : undefined}
+      isInvalid={!!errorMessage}
+      errorMessage={errorMessage?.length ? <FieldErrorText error={errorMessage} /> : undefined}
     />
   );
 }
