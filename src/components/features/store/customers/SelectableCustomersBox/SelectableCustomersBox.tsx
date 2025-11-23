@@ -11,11 +11,13 @@ import { FiUsers } from "react-icons/fi";
 type Props = {
   onChange?: (userIds: number[]) => void;
   initialUsers?: Customer[];
+  error?: boolean;
 };
 
 const InnerSelectableUsersBox: React.FC<{
   onChange?: (ids: number[]) => void;
-}> = ({ onChange }) => {
+  error?: boolean;
+}> = ({ onChange, error }) => {
   const { selectedCustomers, removeCustomer } = useCustomersSelection();
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const InnerSelectableUsersBox: React.FC<{
       icon={<FiUsers className="text-5xl" />}
       initial={selectedCustomers}
       modal={<UsersSelectionModal />}
+      error={error}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {selectedCustomers.map((user: Customer) => (
@@ -44,8 +47,8 @@ const InnerSelectableUsersBox: React.FC<{
   );
 };
 
-const SelectableUsersBox: React.FC<Props> = ({ onChange }) => {
-  return <InnerSelectableUsersBox onChange={onChange} />;
+const SelectableUsersBox: React.FC<Props> = ({ onChange, error }) => {
+  return <InnerSelectableUsersBox onChange={onChange} error={error} />;
 };
 
 export default SelectableUsersBox;

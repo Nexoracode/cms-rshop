@@ -6,7 +6,7 @@ import { CategoriesSelectionProvider } from "@/components/features/products/cate
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
 
-const CategoriesCouponPage: React.FC = () => {
+const CategoriesCoupon: React.FC = () => {
   const router = useRouter();
   const params = useSearchParams();
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
@@ -56,4 +56,4 @@ const CategoriesCouponPage: React.FC = () => {
   );
 };
 
-export default CategoriesCouponPage;
+export default CategoriesCoupon;

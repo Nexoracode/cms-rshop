@@ -10,11 +10,13 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type Props = {
   onChange?: (products: any[]) => void;
+  error?: boolean;
 };
 
 const InnerSelectableProductsBoxWithQuantity: React.FC<{
   onChange?: (products: any[]) => void;
-}> = ({ onChange }) => {
+  error?: boolean;
+}> = ({ onChange, error }) => {
   const { selectedProducts, removeProduct, setSelectedProducts } =
     useProductsSelection();
 
@@ -82,6 +84,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
       icon={<TbPackages className="text-5xl" />}
       initial={selectedProducts}
       modal={<ProductsSelectionModal />}
+      error={error}
     >
       <div className="flex flex-col gap-4">
         {selectedProducts.map((selectedProduct) => (
@@ -129,8 +132,8 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   );
 };
 
-const SelectableProductsBoxWithQuantity: React.FC<Props> = ({ onChange }) => {
-  return <InnerSelectableProductsBoxWithQuantity onChange={onChange} />;
+const SelectableProductsBoxWithQuantity: React.FC<Props> = ({ onChange, error }) => {
+  return <InnerSelectableProductsBoxWithQuantity onChange={onChange} error={error} />;
 };
 
 export default SelectableProductsBoxWithQuantity;

@@ -91,23 +91,9 @@ export function BasePromotionForm({
   const handleSubmit = () => {
     setHasSubmitted(true);
 
-    // validations
-    if (formType === "coupon" && !form.code?.trim()) {
-      return toast.error("کد تخفیف الزامی است");
-    }
-    if (!form.name?.trim()) {
-      return toast.error("نام پروموشن الزامی است");
-    }
-    const hasAnyAction =
-      (form.percent_discount ?? 0) > 0 ||
-      (form.amount_discount ?? 0) > 0 ||
-      formType === "free_shipping" ||
-      formType === "next_order_reward";
-    if (!hasAnyAction)
-      return toast.error("حداقل یک نوع تخفیف یا اکشن باید تعریف شود");
-
     const payload = mapLocalFormToAPI(form, formType);
-    onHandleSubmit(payload);
+    console.log(payload);
+    //onHandleSubmit(payload);
   };
 
   return (
@@ -124,20 +110,20 @@ export function BasePromotionForm({
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <TextInput
-          label="نام پروموشن (name)"
+          label="نام پروموشن"
+          placeholder="مثلاً تخفیف تابستانه"
           value={form.name}
           onChange={(val) => updateForm("name", val)}
-          placeholder="مثلاً 20% OFF Electronics"
           isRequired
           isActiveError={hasSubmitted}
         />
 
         {config.code && (
           <TextInput
-            label="کد (code)"
+            label="کد"
             value={form.code || ""}
             onChange={(val) => updateForm("code", val)}
-            placeholder="مثلاً SUMMER2025"
+            placeholder="مثلاً SUMMER2026"
             isRequired
             isActiveError={hasSubmitted}
           />
@@ -148,15 +134,20 @@ export function BasePromotionForm({
             <PriceNumberInput
               value={form.percent_discount ?? 0}
               onChange={(val) => updateForm("percent_discount", val ?? 0)}
-              label="درصد تخفیف (percent_discount)"
+              label="درصد تخفیف"
+              placeholder="مثلاً 20"
               suffix="%"
               max={100}
+              isActiveError={hasSubmitted}
+              isRequired
+              errorMessage="درصد تخفیف الزامی است."
             />
 
             <PriceNumberInput
               value={form.amount_discount ?? 0}
               onChange={(val) => updateForm("amount_discount", val ?? 0)}
-              label="تخفیف مبلغی (amount_discount)"
+              label="تخفیف مبلغی"
+              placeholder="مثلاً 50000"
               suffix="تومان"
             />
           </>
@@ -166,7 +157,8 @@ export function BasePromotionForm({
           <PriceNumberInput
             value={form.usage_limit}
             onChange={(val) => updateForm("usage_limit", val || undefined)}
-            label="محدودیت تعداد استفاده (usage_limit)"
+            label="محدودیت تعداد استفاده"
+            placeholder="تعداد دفعاتی که این پروموشن می‌تواند استفاده شود"
             suffix="عدد"
           />
         )}
@@ -175,7 +167,8 @@ export function BasePromotionForm({
           <PriceNumberInput
             value={form.min_order_amount}
             onChange={(val) => updateForm("min_order_amount", val || undefined)}
-            label="حداقل مبلغ سفارش (min_order_amount)"
+            label="حداقل مبلغ سفارش"
+            placeholder="حداقل مبلغ سفارش برای اعمال تخفیف"
             suffix="تومان"
           />
         )}
@@ -186,14 +179,15 @@ export function BasePromotionForm({
             onChange={(val) =>
               updateForm("max_discount_amount", val || undefined)
             }
-            label="سقف تخفیف (max_discount_amount)"
+            label="سقف تخفیف"
+            placeholder="حداکثر مبلغ تخفیف قابل اعمال"
             suffix="تومان"
           />
         )}
 
         {config.date_range && (
           <IsoDatePicker
-            label="بازه اعتبار (startsAt / endsAt)"
+            label="بازه اعتبار"
             enableRange
             valueIsoRange={{ start: form.start_date, end: form.end_date }}
             onChangeIsoRange={(range) => {
@@ -206,29 +200,22 @@ export function BasePromotionForm({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-6 mt-6">
+      <div className="mt-6">
         <Switch
           isSelected={form.is_active}
           onValueChange={(v) => updateForm("is_active", v)}
           color="success"
         >
-          فعال باشد (isActive)
+          فعال باشد
         </Switch>
-
-        {config.first_order && (
-          <Switch
-            isSelected={form.first_order}
-            onValueChange={(v) => updateForm("first_order", v)}
-            color="secondary"
-          >
-            فقط برای اولین سفارش (first_order)
-          </Switch>
-        )}
       </div>
 
       {scope === "products" && config.scope.includes("product") && (
         <SelectableProductsBoxWithQuantity
           onChange={(items) => updateForm("allowed_products", items)}
+          error={
+            hasSubmitted && form.allowed_products?.length === 0 ? true : false
+          }
         />
       )}
 
@@ -244,6 +231,9 @@ export function BasePromotionForm({
       {scope === "customers" && config.scope.includes("user") && (
         <SelectableUsersBox
           onChange={(ids) => updateForm("allowed_users", ids)}
+          error={
+            hasSubmitted && form.allowed_users?.length === 0 ? true : false
+          }
         />
       )}
 
