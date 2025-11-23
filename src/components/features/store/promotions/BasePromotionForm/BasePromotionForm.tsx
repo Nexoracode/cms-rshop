@@ -249,21 +249,21 @@ export function BasePromotionForm({
       {scope === "products" && config.scope.includes("product") && (
         <SelectableProductsBox
           onChange={(items) => handleFieldChange("allowed_products", items)}
-          error={hasSubmitted && form.allowed_products?.length === 0}
+          error={!!errors.allowed_products}
         />
       )}
 
       {scope === "categories" && config.scope.includes("category") && (
         <SelectableCategoriesBox
           onChange={(ids) => handleFieldChange("allowed_categories", ids)}
-          error={hasSubmitted && form.allowed_categories?.length === 0}
+          error={!!errors.allowed_categories}
         />
       )}
 
       {scope === "customers" && config.scope.includes("user") && (
         <SelectableUsersBox
           onChange={(ids) => handleFieldChange("allowed_users", ids)}
-          error={hasSubmitted && form.allowed_users?.length === 0}
+          error={!!errors.allowed_users?.length}
         />
       )}
 
