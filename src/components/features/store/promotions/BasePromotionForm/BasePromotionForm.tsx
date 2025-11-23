@@ -9,7 +9,6 @@ import Switch from "@/components/ui/Switch";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 //? Selectable
-import SelectableProductsBoxWithQuantity from "@/components/features/products/SelectableProduct/SelectableProductsBoxWithQuantity";
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox"
 //? Hook
@@ -25,6 +24,8 @@ import {
   PromotionForm,
   PromotionFormConfig,
 } from "../promotions-types";
+import SelectableProductVariants from "@/components/features/products/SelectableProduct/SelectableProductVariants";
+import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;
@@ -215,7 +216,7 @@ export function BasePromotionForm({
       </div>
 
       {scope === "products" && config.scope.includes("product") && (
-        <SelectableProductsBoxWithQuantity
+        <SelectableProductsBox
           onChange={(items) => updateForm("allowed_products", items)}
           error={
             hasSubmitted && form.allowed_products?.length === 0 ? true : false
