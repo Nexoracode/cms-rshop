@@ -104,7 +104,7 @@ export function BasePromotionForm({
     <BaseCard
       wrapperContents
       CardHeaderProps={{
-        title: isEditMode ? "ویرایش پروموشن" : `افزودن ${formType}`,
+        title: isEditMode ? "ویرایش" : `افزودن`,
         icon: <TbRosetteDiscount />,
         textBtn: "پاک سازی فرم",
         btnIcon: <MdOutlineCleaningServices />,
