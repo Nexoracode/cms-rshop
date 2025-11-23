@@ -11,8 +11,7 @@ import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 //? Selectable
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
-//? Hook
-import { createFormUpdater } from "@/core/hooks/common/useFormUpdater";
+import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 //? Icon
 import { TbRosetteDiscount } from "react-icons/tb";
 import { MdOutlineCleaningServices } from "react-icons/md";
@@ -24,19 +23,17 @@ import {
   PromotionForm,
   PromotionFormConfig,
 } from "../promotions-types";
-import SelectableProductVariants from "@/components/features/products/SelectableProduct/SelectableProductVariants";
-import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
+import { useFormHandler } from "@/core/hooks/common/useFormHandler";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;
   scope?: "general" | "products" | "categories" | "customers";
-  initialData?: any; // backend shape when editing
+  initialData?: any;
   isEditMode?: boolean;
   isShowLoader?: boolean;
-  onHandleSubmit: (payload: PromotionAPI) => void; // parent handles API
-  onHandleReset?: () => void; // optional hook parent wants
+  onHandleSubmit: (payload: PromotionAPI) => void;
+  onHandleReset?: () => void;
   loading?: boolean;
-  onResetSuccess?: () => void;
   resetSignal?: number;
 }
 
@@ -69,11 +66,12 @@ export function BasePromotionForm({
   resetSignal,
 }: BasePromotionFormProps) {
   const config: PromotionFormConfig = FORM_CONFIGS[formType];
-
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [form, setForm] = useState<PromotionForm>(initialLocalForm);
-  const updateForm = createFormUpdater(setForm);
-  const [errors, setErrors] = useState<any>({});
+
+  const { form, errors, handleFieldChange, setForm, setErrors } =
+    useFormHandler<PromotionForm>(initialLocalForm, (f) => validateForm(f));
+
+  console.log(errors);
 
   useEffect(() => {
     if (initialData) {
@@ -88,29 +86,21 @@ export function BasePromotionForm({
     setHasSubmitted(false);
   }, [resetSignal]);
 
-  function validateForm(
-    form: PromotionForm,
-    config: PromotionFormConfig,
-    scope: string
-  ) {
-    const errs: any = {};
+  function validateForm(form: PromotionForm) {
+    const errs: Record<string, string> = {};
 
-    // name
     if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
 
-    // code (اگر در config فعال است)
     if (config.code && !form.code?.trim()) {
       errs.code = "کد تخفیف الزامی است.";
     }
 
-    // discount logic
     if (config.discount_fields) {
       if (!form.percent_discount && !form.amount_discount) {
         errs.discount = "حداقل یکی از درصد یا مبلغ تخفیف را وارد کنید.";
       }
     }
 
-    // scope validations
     if (scope === "products" && config.scope.includes("product")) {
       if (!form.allowed_products || form.allowed_products.length === 0) {
         errs.allowed_products = "حداقل یک محصول باید انتخاب شود.";
@@ -135,14 +125,13 @@ export function BasePromotionForm({
   const handleSubmit = () => {
     setHasSubmitted(true);
 
-    const errs = validateForm(form, config, scope);
+    const errs = validateForm(form);
     setErrors(errs);
-    console.log(errs);
 
     if (Object.keys(errs).length > 0) return;
 
-    /*   const payload = mapLocalFormToAPI(form, formType);
-    onHandleSubmit(payload); */
+    const payload = mapLocalFormToAPI(form, formType);
+    onHandleSubmit(payload);
   };
 
   const handleResetLocal = () => {
@@ -155,7 +144,7 @@ export function BasePromotionForm({
     <BaseCard
       wrapperContents
       CardHeaderProps={{
-        title: isEditMode ? "ویرایش" : `افزودن`,
+        title: isEditMode ? "ویرایش" : "افزودن",
         icon: <TbRosetteDiscount />,
         textBtn: "پاک سازی فرم",
         btnIcon: <MdOutlineCleaningServices />,
@@ -169,7 +158,7 @@ export function BasePromotionForm({
           placeholder="مثلاً تخفیف تابستانه"
           allowEnglishOnly={false}
           value={form.name}
-          onChange={(val) => updateForm("name", val)}
+          onChange={(val) => handleFieldChange("name", val)}
           isRequired
           errorMessage={errors.name}
         />
@@ -179,7 +168,7 @@ export function BasePromotionForm({
             label="کد"
             placeholder="مثلاً SUMMER2026"
             value={form.code || ""}
-            onChange={(val) => updateForm("code", val)}
+            onChange={(val) => handleFieldChange("code", val)}
             isRequired
             errorMessage={errors.code}
           />
@@ -187,20 +176,19 @@ export function BasePromotionForm({
 
         {config.discount_fields && (
           <>
-            <PriceNumberInput
-              value={form.percent_discount ?? 0}
-              onChange={(val) => updateForm("percent_discount", val ?? 0)}
+            <TextInput
               label="درصد تخفیف"
               placeholder="مثلاً 20"
-              suffix="%"
-              max={100}
+              value={String(form.percent_discount)}
+              onChange={(val) => handleFieldChange("percent_discount", val)}
+              allowNumbers
+              maxLength={2}
               isRequired
               errorMessage={errors.discount}
             />
-
             <PriceNumberInput
               value={form.amount_discount ?? 0}
-              onChange={(val) => updateForm("amount_discount", val ?? 0)}
+              onChange={(val) => handleFieldChange("amount_discount", val)}
               label="تخفیف مبلغی"
               placeholder="مثلاً 50000"
               suffix="تومان"
@@ -211,9 +199,9 @@ export function BasePromotionForm({
         {config.usage_limit && (
           <PriceNumberInput
             value={form.usage_limit}
-            onChange={(val) => updateForm("usage_limit", val || undefined)}
+            onChange={(val) => handleFieldChange("usage_limit", val)}
             label="محدودیت تعداد استفاده"
-            placeholder="تعداد دفعاتی که این پروموشن می‌تواند استفاده شود"
+            placeholder="عدد"
             suffix="عدد"
           />
         )}
@@ -221,9 +209,9 @@ export function BasePromotionForm({
         {config.min_order_amount && (
           <PriceNumberInput
             value={form.min_order_amount}
-            onChange={(val) => updateForm("min_order_amount", val || undefined)}
+            onChange={(val) => handleFieldChange("min_order_amount", val)}
             label="حداقل مبلغ سفارش"
-            placeholder="حداقل مبلغ سفارش برای اعمال تخفیف"
+            placeholder="تومان"
             suffix="تومان"
           />
         )}
@@ -231,11 +219,9 @@ export function BasePromotionForm({
         {config.max_discount_amount && (
           <PriceNumberInput
             value={form.max_discount_amount}
-            onChange={(val) =>
-              updateForm("max_discount_amount", val || undefined)
-            }
+            onChange={(val) => handleFieldChange("max_discount_amount", val)}
             label="سقف تخفیف"
-            placeholder="حداکثر مبلغ تخفیف قابل اعمال"
+            placeholder="تومان"
             suffix="تومان"
           />
         )}
@@ -245,8 +231,8 @@ export function BasePromotionForm({
           enableRange
           valueIsoRange={{ start: form.start_date, end: form.end_date }}
           onChangeIsoRange={(range) => {
-            updateForm("start_date", range?.start ?? "");
-            updateForm("end_date", range?.end ?? "");
+            handleFieldChange("start_date", range?.start);
+            handleFieldChange("end_date", range?.end);
           }}
           showMonthAndYearPickers
           className="w-full"
@@ -256,7 +242,7 @@ export function BasePromotionForm({
       <div className="mt-6">
         <Switch
           isSelected={form.is_active}
-          onValueChange={(v) => updateForm("is_active", v)}
+          onValueChange={(v) => handleFieldChange("is_active", v)}
           color="success"
         >
           فعال باشد
@@ -265,28 +251,22 @@ export function BasePromotionForm({
 
       {scope === "products" && config.scope.includes("product") && (
         <SelectableProductsBox
-          onChange={(items) => updateForm("allowed_products", items)}
-          error={
-            hasSubmitted && form.allowed_products?.length === 0 ? true : false
-          }
+          onChange={(items) => handleFieldChange("allowed_products", items)}
+          error={hasSubmitted && form.allowed_products?.length === 0}
         />
       )}
 
       {scope === "categories" && config.scope.includes("category") && (
         <SelectableCategoriesBox
-          onChange={(ids) => updateForm("allowed_categories", ids)}
-          error={
-            hasSubmitted && form.allowed_categories?.length === 0 ? true : false
-          }
+          onChange={(ids) => handleFieldChange("allowed_categories", ids)}
+          error={hasSubmitted && form.allowed_categories?.length === 0}
         />
       )}
 
       {scope === "customers" && config.scope.includes("user") && (
         <SelectableUsersBox
-          onChange={(ids) => updateForm("allowed_users", ids)}
-          error={
-            hasSubmitted && form.allowed_users?.length === 0 ? true : false
-          }
+          onChange={(ids) => handleFieldChange("allowed_users", ids)}
+          error={hasSubmitted && form.allowed_users?.length === 0}
         />
       )}
 
