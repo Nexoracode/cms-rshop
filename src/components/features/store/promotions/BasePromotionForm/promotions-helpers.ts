@@ -4,7 +4,7 @@ import {
   PromotionAPI,
   PromotionConditionType,
   PromotionForm,
-} from "./promotions-types";
+} from "../promotions-types";
 
 export function normalizeSelectableProducts(items: { product_id: number; variants: number[] | null }[] = []) {
   const productIds: number[] = [];

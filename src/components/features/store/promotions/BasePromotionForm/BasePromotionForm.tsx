@@ -1,26 +1,30 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+//? Components
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
-import { MdOutlineCleaningServices } from "react-icons/md";
-import { TbRosetteDiscount } from "react-icons/tb";
-import SelectableCategoriesBox from "../../products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import SelectableUsersBox from "../customers/SelectableCustomersBox/SelectableCustomersBox";
-import FormActionButtons from "@/components/common/FormActionButtons";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import Switch from "@/components/ui/Switch";
+import FormActionButtons from "@/components/common/FormActionButtons";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
+//? Selectable
+import SelectableProductsBoxWithQuantity from "@/components/features/products/SelectableProduct/SelectableProductsBoxWithQuantity";
+import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
+import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox"
+//? Hook
+import { createFormUpdater } from "@/core/hooks/common/useFormUpdater";
+//? Icon
+import { TbRosetteDiscount } from "react-icons/tb";
+import { MdOutlineCleaningServices } from "react-icons/md";
+//? Other
+import { mapAPIToLocalForm, mapLocalFormToAPI } from "./promotions-helpers";
 import { FORM_CONFIGS } from "./form-configs-promotions";
 import {
   PromotionAPI,
   PromotionForm,
   PromotionFormConfig,
-} from "./promotions-types";
-import { mapAPIToLocalForm, mapLocalFormToAPI } from "./promotions-helpers";
-import toast from "react-hot-toast";
-import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/SelectableProductsBoxWithQuantity";
-import { createFormUpdater } from "@/core/hooks/common/useFormUpdater";
+} from "../promotions-types";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;

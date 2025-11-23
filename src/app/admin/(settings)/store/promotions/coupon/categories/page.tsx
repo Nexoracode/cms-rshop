@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CategoriesSelectionProvider } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
-import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm";
+import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
 
 const CategoriesCoupon: React.FC = () => {
