@@ -10,11 +10,10 @@ import { TbCategory2 } from "react-icons/tb";
 
 type Props = {
   onChange?: (ids: number[]) => void;
+  error?: boolean;
 };
 
-const InnerSelectableCategoriesBox: React.FC<{
-  onChange?: (ids: number[]) => void;
-}> = ({ onChange }) => {
+const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
   const { selectedCategories, removeCategory } = useCategoriesSelection();
 
   useEffect(() => {
@@ -22,31 +21,34 @@ const InnerSelectableCategoriesBox: React.FC<{
   }, [selectedCategories]);
 
   return (
-    <SelectionBox
-      title="دسته‌بندی‌های انتخاب‌شده"
-      icon={<TbCategory2 className="text-5xl" />}
-      initial={selectedCategories}
-      modal={<CategoriesSelectionModal />}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {selectedCategories.map((cat: Category) => (
-          <CategoryNode
-            key={cat.id}
-            node={cat}
-            chainTitles={[]}
-            onDelete={removeCategory}
-            disableAction
-            showDeselectIcon
-            disableShowChildren
-          />
-        ))}
-      </div>
-    </SelectionBox>
+    <div>
+      <SelectionBox
+        title="دسته‌بندی‌های انتخاب‌شده"
+        icon={<TbCategory2 className="text-5xl" />}
+        initial={selectedCategories}
+        modal={<CategoriesSelectionModal />}
+        error={error}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {selectedCategories.map((cat: Category) => (
+            <CategoryNode
+              key={cat.id}
+              node={cat}
+              chainTitles={[]}
+              onDelete={removeCategory}
+              disableAction
+              showDeselectIcon
+              disableShowChildren
+            />
+          ))}
+        </div>
+      </SelectionBox>
+    </div>
   );
 };
 
-const SelectableCategoriesBox: React.FC<Props> = ({ onChange }) => {
-  return <InnerSelectableCategoriesBox onChange={onChange} />;
+const SelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
+  return <InnerSelectableCategoriesBox onChange={onChange} error={error} />;
 };
 
 export default SelectableCategoriesBox;

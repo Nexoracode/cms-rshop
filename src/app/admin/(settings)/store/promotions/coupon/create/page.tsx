@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CouponForm from "@/components/features/store/promotions/PromotionForm";
+
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
 
 const CreateCoupon = () => {
@@ -13,12 +13,7 @@ const CreateCoupon = () => {
   const handleReset = () => {};
 
   return (
-    <CouponForm
-      pageType="create"
-      initialData={couponData?.data}
-      isLoading={isLoading}
-      onReset={handleReset}
-    />
+  <></>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductsSelectionProvider } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
-import CouponForm from "@/components/features/store/promotions/PromotionForm";
+
 import { useGetOneCoupon } from "@/core/hooks/api/useCoupon";
 import { useSearchParams } from "next/navigation";
 
@@ -21,12 +21,7 @@ const ProductsCoupon = () => {
     <ProductsSelectionProvider
       initialProducts={couponData?.data?.allowed_products || []}
     >
-      <CouponForm
-        pageType="product"
-        isLoading={isLoading}
-        initialData={couponData?.data}
-        onReset={handleReset}
-      />
+ <></>
     </ProductsSelectionProvider>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
-import CouponsSortModal from "../../PromotionsSortModal";
+import PromotionsSortModal from "../../PromotionsSortModal";
 import CouponsFilterModal from "./CouponsFilterModal";
 
 const CouponsFilter = () => {
@@ -11,7 +11,7 @@ const CouponsFilter = () => {
       showSearchBar
     >
       <CouponsFilterModal />
-      <CouponsSortModal />
+      <PromotionsSortModal />
     </SearchFilterCard>
   );
 };

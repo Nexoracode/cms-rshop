@@ -1,7 +1,6 @@
 "use client";
 
 import { CustomersSelectionProvider, useCustomersSelection } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
-import CouponForm from "@/components/features/store/promotions/PromotionForm";
 import { useGetOneCoupon } from "@/core/hooks/api/useCoupon";
 import { useSearchParams } from "next/navigation";
 
@@ -20,12 +19,7 @@ const CustomersCoupon = () => {
     <CustomersSelectionProvider
       initialCustomers={couponData?.data?.allowed_users || []}
     >
-      <CouponForm
-        pageType="customer"
-        isLoading={isLoading}
-        initialData={couponData?.data}
-        onReset={handleReset}
-      />
+  <></>
     </CustomersSelectionProvider>
   );
 };

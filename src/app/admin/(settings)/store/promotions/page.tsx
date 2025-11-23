@@ -1,15 +1,11 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import BaseTabs from "@/components/ui/BaseTabs";
-import { GrAnnounce } from "react-icons/gr";
 import { TbRosetteDiscount, TbShoppingCartDiscount } from "react-icons/tb";
 import { BsBasket } from "react-icons/bs";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { LiaTruckLoadingSolid } from "react-icons/lia";
-
-import PromotionsListModal from "@/components/features/store/promotions/PromotionsListModal";
 
 // import the page components you already have (they render their own UnifiedCard)
 import Coupon from "./coupon/page";
@@ -102,7 +98,6 @@ const Promotions = () => {
   return (
     <BaseTabs
       items={tabs}
-      className=""
       fullWidth
       activeKey={activeTab}
       onTabChange={(k) => handleTabChange(String(k))}
@@ -111,27 +106,3 @@ const Promotions = () => {
 };
 
 export default Promotions;
-
-/* 
-    <UnifiedCard
-      headerProps={{
-        title: "لیست پروموشن‌ها",
-        icon: <GrAnnounce className="text-2xl" />,
-        children: <PromotionsListModal />,
-      }}
-      isLoading={false}
-      isExistItems={true}
-      searchInp={false}
-      childrenClassName="p-4"
-    >
-      <div className="w-full">
-        <BaseTabs
-          items={tabs}
-          variant="underlined"
-          fullWidth
-          activeKey={activeTab}
-          onTabChange={(k) => handleTabChange(String(k))}
-        />
-      </div>
-    </UnifiedCard>
-*/

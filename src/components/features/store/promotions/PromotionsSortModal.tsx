@@ -16,7 +16,7 @@ const SORT_OPTIONS = [
 ];
 
 const PromotionsSortModal = () => {
-  return <SortModal options={SORT_OPTIONS} title="مرتب‌سازی کدهای تخفیف" />;
+  return <SortModal options={SORT_OPTIONS} title="مرتب‌سازی" />;
 };
 
 export default PromotionsSortModal;

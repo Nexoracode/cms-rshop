@@ -1,36 +1,59 @@
 "use client";
 
+import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CategoriesSelectionProvider } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
-import CouponForm from "@/components/features/store/promotions/PromotionForm";
-import { useGetOneCoupon } from "@/core/hooks/api/useCoupon";
-import { useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm";
+import { CouponHooks } from "@/core/hooks/api/usePromotions";
 
-const CategoriesCoupon = () => {
+const CategoriesCouponPage: React.FC = () => {
+  const router = useRouter();
   const params = useSearchParams();
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
-  const { data: couponData, isLoading } = useGetOneCoupon(id);
 
-  const handleReset = useCallback(() => {
-   /*  const {
-      useCategoriesSelection,
-    } = require("@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext");
-    const { setCategories } = useCategoriesSelection();
-    setCategories([]); */
-  }, []);
+  const [ctxKey, setCtxKey] = useState(0);
+  const [resetSignal, setResetSignal] = useState(0);
+
+  const isEditMode = !!id;
+
+  const { data: couponData, isLoading } = CouponHooks.useGetOne(id);
+  const createHook = CouponHooks.useCreate();
+  const updateHook = CouponHooks.useUpdate(id || 0);
+
+  const handleSubmit = async (payload: any) => {
+    if (isEditMode) {
+      const resp = await updateHook.mutateAsync(payload);
+      resp.ok && router.push("/admin/store/promotions");
+    } else {
+      const resp = await createHook.mutateAsync(payload);
+
+      if (resp.ok) {
+        setCtxKey((prev) => prev + 1);
+        setResetSignal((prev) => prev + 1);
+      }
+    }
+  };
 
   return (
     <CategoriesSelectionProvider
+      key={ctxKey}
       initialCategories={couponData?.data?.allowed_categories || []}
     >
-      <CouponForm
-        pageType="category"
-        isLoading={isLoading}
+      <BasePromotionForm
+        formType="coupon"
+        scope="categories"
         initialData={couponData?.data}
-        onReset={handleReset}
+        isEditMode={isEditMode}
+        isShowLoader={isLoading}
+        onHandleSubmit={handleSubmit}
+        onHandleReset={() => {
+          setCtxKey((prev) => prev + 1);
+          setResetSignal((prev) => prev + 1);
+        }}
+        resetSignal={resetSignal}
       />
     </CategoriesSelectionProvider>
   );
 };
 
-export default CategoriesCoupon;
+export default CategoriesCouponPage;

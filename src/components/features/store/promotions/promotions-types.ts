@@ -63,3 +63,33 @@ export type PromotionSortBy = Array<
   | "endDate:ASC"
   | "endDate:DESC"
 >;
+
+/*  */
+
+export type PromotionForm = {
+  name: string;
+  code?: string;
+  percent_discount: number;
+  amount_discount: number;
+  usage_limit?: number;
+  min_order_amount?: number;
+  max_discount_amount?: number;
+  start_date?: string;
+  end_date?: string;
+  is_active?: boolean;
+  first_order?: boolean;
+  allowed_products?: { product_id: number; variants: number[] | null }[];
+  allowed_categories?: number[];
+  allowed_users?: number[];
+};
+
+export type PromotionFormConfig = {
+  code: boolean;
+  discount_fields: boolean;
+  usage_limit: boolean;
+  min_order_amount: boolean;
+  max_discount_amount: boolean;
+  date_range: boolean;
+  first_order: boolean;
+  scope: Array<"product" | "category" | "user">;
+};
