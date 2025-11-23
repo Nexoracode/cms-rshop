@@ -68,11 +68,6 @@ export function BasePromotionForm({
   const config: PromotionFormConfig = FORM_CONFIGS[formType];
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const { form, errors, handleFieldChange, setForm, setErrors } =
-    useFormHandler<PromotionForm>(initialLocalForm, (f) => validateForm(f));
-
-  console.log(errors);
-
   useEffect(() => {
     if (initialData) {
       setForm(mapAPIToLocalForm(initialData, formType));
@@ -86,7 +81,13 @@ export function BasePromotionForm({
     setHasSubmitted(false);
   }, [resetSignal]);
 
-  function validateForm(form: PromotionForm) {
+  const { form, errors, handleFieldChange, canSubmit, setForm } =
+    useFormHandler<PromotionForm>(initialLocalForm, {
+      onValidate: (f) => validatePromotionForm(f),
+      runValidationOnChange: true,
+    });
+
+  const validatePromotionForm = (form: PromotionForm) => {
     const errs: Record<string, string> = {};
 
     if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
@@ -123,15 +124,11 @@ export function BasePromotionForm({
   }
 
   const handleSubmit = () => {
-    setHasSubmitted(true);
-
-    const errs = validateForm(form);
-    setErrors(errs);
-
-    if (Object.keys(errs).length > 0) return;
-
+    if (!canSubmit()) return;
+    
     const payload = mapLocalFormToAPI(form, formType);
-    onHandleSubmit(payload);
+    console.log(payload);
+    //onHandleSubmit(payload);
   };
 
   const handleResetLocal = () => {
