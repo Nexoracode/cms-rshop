@@ -64,7 +64,7 @@ export function BasePromotionForm({
   resetSignal,
 }: BasePromotionFormProps) {
   const config: PromotionFormConfig = FORM_CONFIGS[formType];
-  const { form, errors, handleFieldChange, canSubmit, setForm, setHasSubmitted, hasSubmitted } =
+  const { form, errors, handleFieldChange, canSubmit, setForm, setHasSubmitted } =
     useFormHandler<PromotionForm>(initialLocalForm, {
       onValidate: (f) => validatePromotionForm(f),
       runValidationOnChange: true,
@@ -120,6 +120,8 @@ export function BasePromotionForm({
   };
 
   const handleSubmit = () => {
+    console.log(errors);
+    
     if (!canSubmit()) return;
 
     const payload = mapLocalFormToAPI(form, formType);
