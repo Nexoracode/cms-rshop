@@ -87,7 +87,7 @@ const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
           placeholder="10,000"
           suffix="تومان"
           isRequired={false}
-          isActiveError={false}
+          //isActiveError={false}
         />
       </div>
     </BaseModal>

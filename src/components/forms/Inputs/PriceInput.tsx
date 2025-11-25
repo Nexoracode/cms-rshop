@@ -22,7 +22,7 @@ const PriceInput: React.FC<PriceInputProps> = ({
       isRequired
       value={value}
       onChange={onChange}
-      isActiveError={isActiveError}
+      //isActiveError={isActiveError}
     />
   );
 };

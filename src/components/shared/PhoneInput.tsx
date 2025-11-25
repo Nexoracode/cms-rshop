@@ -73,8 +73,8 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
       minLength={11}
       inputAlign="left"
       allowChars={false} // فقط اعداد
-      isInvalid={!!error} // دقیقاً مثل EmailInput
-      errorText={error} // دقیقاً مثل EmailInput
+      //isInvalid={!!error} // دقیقاً مثل EmailInput
+      errorMessage={error} // دقیقاً مثل EmailInput
     />
   );
 };

@@ -47,8 +47,8 @@ const EmailInput: React.FC<EmailInputProps> = ({
       isRequired={isRequired}
       type="email"
       inputAlign="left"
-      isInvalid={!!error.length}
-      errorText={error}
+      //isInvalid={!!error.length}
+      errorMessage={error}
     />
   );
 };

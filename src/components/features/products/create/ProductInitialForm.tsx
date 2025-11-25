@@ -229,7 +229,7 @@ const ProductInitialForm = () => {
           value={product.name}
           onChange={(name) => setProduct((p) => ({ ...p, name }))}
           isRequired
-          isActiveError={isSubmitAttempted && !fieldErrors.hasName}
+          //isActiveError={isSubmitAttempted && !fieldErrors.hasName}
           inputAlign="right"
           allowEnglishOnly={false}
         />

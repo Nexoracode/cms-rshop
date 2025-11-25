@@ -30,7 +30,7 @@ type BaseModalProps = {
   isConfirmDisabled?: boolean;
   isActiveFooter?: boolean;
   size?: ModalSize;
-  trigger?: React.ReactNode;
+  trigger?: React.ReactElement<any> | React.ReactNode;
   triggerProps?: Omit<OptionButtonProps, "onClick"> | null; // ✅ پراپ‌های OptionButton
 };
 
@@ -76,9 +76,9 @@ const BaseModal: React.FC<BaseModalProps> = ({
       {/* ✅ trigger با دو حالت */}
       {trigger ? (
         isValidElement(trigger) ? (
-          cloneElement(trigger, {
+          cloneElement(trigger as React.ReactElement<any>, {
             onClick: (e: any) => {
-              trigger.props.onClick?.(e);
+              (trigger as any).props.onClick?.(e);
               handleOpenChange(true);
             },
           })
