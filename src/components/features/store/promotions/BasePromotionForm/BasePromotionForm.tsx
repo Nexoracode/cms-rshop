@@ -120,7 +120,6 @@ export function BasePromotionForm({
   };
 
   const handleSubmit = () => {
-    setHasSubmitted(true);
     if (!canSubmit()) return;
 
     const payload = mapLocalFormToAPI(form, formType);
@@ -154,7 +153,7 @@ export function BasePromotionForm({
           value={form.name}
           onChange={(val) => handleFieldChange("name", val)}
           isRequired
-          errorMessage={hasSubmitted ? errors.name : ""}
+          errorMessage={errors.name}
         />
 
         {config.code && (

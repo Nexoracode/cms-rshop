@@ -5,7 +5,6 @@ interface UseFormHandlerOptions<T> {
   runValidationOnChange?: boolean;
   onValidate?: (form: T) => Record<string, string>;
 }
-
 export function useFormHandler<T extends Record<string, any>>(
   initialForm: T,
   options: UseFormHandlerOptions<T> = {}
@@ -25,11 +24,9 @@ export function useFormHandler<T extends Record<string, any>>(
   const handleFieldChange = (field: keyof T, value: any) => {
     const newForm = { ...form, [field]: value };
     setForm(newForm);
-
-    // هر بار که تغییر می‌کنه، touched اون فیلد true میشه
     setTouched((prev) => ({ ...prev, [field]: true }));
 
-    if (runValidationOnChange && onValidate) {
+    if (runValidationOnChange && onValidate && hasSubmitted) {
       const validation = onValidate(newForm);
       setErrors(validation);
     }
@@ -43,6 +40,7 @@ export function useFormHandler<T extends Record<string, any>>(
   };
 
   const canSubmit = () => {
+    setHasSubmitted(true); // submit زده شد
     const validation = validateForm();
     return Object.keys(validation).length === 0;
   };
@@ -53,10 +51,10 @@ export function useFormHandler<T extends Record<string, any>>(
     touched,
     hasSubmitted,
     setForm,
+    setHasSubmitted,
     setErrors,
     handleFieldChange,
     validateForm,
     canSubmit,
-    setHasSubmitted,
   };
 }
