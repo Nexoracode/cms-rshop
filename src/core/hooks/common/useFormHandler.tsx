@@ -20,6 +20,7 @@ export function useFormHandler<T extends Record<string, any>>(
       return acc;
     }, {} as Record<keyof T, boolean>)
   );
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleFieldChange = (field: keyof T, value: any) => {
     const newForm = { ...form, [field]: value };
@@ -49,11 +50,13 @@ export function useFormHandler<T extends Record<string, any>>(
   return {
     form,
     errors,
-    touched,      // همه فیلدها و وضعیت touched شون
+    touched,
+    hasSubmitted,
     setForm,
     setErrors,
     handleFieldChange,
     validateForm,
     canSubmit,
+    setHasSubmitted,
   };
 }

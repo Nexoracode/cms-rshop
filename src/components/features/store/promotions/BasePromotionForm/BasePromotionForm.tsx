@@ -31,7 +31,6 @@ interface BasePromotionFormProps {
   initialData?: any;
   isEditMode?: boolean;
   isShowLoader?: boolean;
-  onHandleSubmit: (payload: PromotionAPI) => void;
   onHandleReset?: () => void;
   loading?: boolean;
   resetSignal?: number;
@@ -60,13 +59,16 @@ export function BasePromotionForm({
   initialData,
   isEditMode = false,
   isShowLoader = false,
-  onHandleSubmit,
   onHandleReset,
   loading = false,
   resetSignal,
 }: BasePromotionFormProps) {
   const config: PromotionFormConfig = FORM_CONFIGS[formType];
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { form, errors, handleFieldChange, canSubmit, setForm, setHasSubmitted, hasSubmitted } =
+    useFormHandler<PromotionForm>(initialLocalForm, {
+      onValidate: (f) => validatePromotionForm(f),
+      runValidationOnChange: true,
+    });
 
   useEffect(() => {
     if (initialData) {
@@ -80,12 +82,6 @@ export function BasePromotionForm({
     setForm(initialLocalForm);
     setHasSubmitted(false);
   }, [resetSignal]);
-
-  const { form, errors, handleFieldChange, canSubmit, setForm } =
-    useFormHandler<PromotionForm>(initialLocalForm, {
-      onValidate: (f) => validatePromotionForm(f),
-      runValidationOnChange: true,
-    });
 
   const validatePromotionForm = (form: PromotionForm) => {
     const errs: Record<string, string> = {};
@@ -121,11 +117,12 @@ export function BasePromotionForm({
     }
 
     return errs;
-  }
+  };
 
   const handleSubmit = () => {
+    setHasSubmitted(true);
     if (!canSubmit()) return;
-    
+
     const payload = mapLocalFormToAPI(form, formType);
     console.log(payload);
     //onHandleSubmit(payload);
@@ -157,7 +154,7 @@ export function BasePromotionForm({
           value={form.name}
           onChange={(val) => handleFieldChange("name", val)}
           isRequired
-          errorMessage={errors.name}
+          errorMessage={hasSubmitted ? errors.name : ""}
         />
 
         {config.code && (
