@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "^1.4.0",
     "@heroui/react": "^2.7.11",
     "@hookform/resolvers": "^5.2.2",
     "@react-aria/ssr": "3.9.9",
