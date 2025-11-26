@@ -28,7 +28,8 @@ export const fetcher = async ({
   const isFormData = body instanceof FormData;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${route}`, {
+    //const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${route}`, {
+    const res = await fetch(`/api${route}`, {
       method,
       headers: {
         ...(isFormData ? {} : { "Content-Type": "application/json" }),
