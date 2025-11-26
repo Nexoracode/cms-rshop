@@ -8,7 +8,6 @@ import { Product } from "./types/product";
 import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
-import { useGetBrands } from "@/core/hooks/api/useBrand";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,7 +17,6 @@ import {
   useProductUpdate,
 } from "@/core/hooks/api/products/useProduct";
 import ToggleableSection from "./helpers/ToggleableSection";
-import { scrollToFirstErrorField } from "@/core/utils/scrollToErrorField";
 import TextInputWithError from "@/components/ui/inputs/TextInput";
 import CategorySelect from "../categories/CategorySelect";
 import BaseCard from "@/components/ui/BaseCard";
@@ -26,6 +24,7 @@ import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import BrandSelect from "../brands/BrandSelect";
+import { stripHtml } from "@/core/utils/helper";
 
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
@@ -59,21 +58,7 @@ const ProductInitialForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
-  //
   const [product, setProduct] = useState<Product>(initProduct);
-  //
-  const [isSubmitAttempted, setIsSubmitAttempted] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState({
-    hasMedia: false,
-    hasPinned: false,
-    hasName: false,
-    hasPrice: false,
-    hasCategory: false,
-    hasWeight: false,
-    hasBrand: false,
-    hasDesc: false,
-  });
-
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
@@ -82,16 +67,8 @@ const ProductInitialForm = () => {
   );
 
   useEffect(() => {
-    if (oneProduct?.data) {
-      setProduct(oneProduct.data);
-    }
+    if (oneProduct?.data) setProduct(oneProduct.data);
   }, [oneProduct]);
-
-  const stripHtml = (html?: string) =>
-    (html ?? "")
-      .replace(/<[^>]*>/g, "") // حذف تگ‌ها
-      .replace(/&nbsp;/g, " ") // حذف nbsp
-      .trim();
 
   const handleChangeProduct = () => {
     // بررسی فیلدها
@@ -105,35 +82,6 @@ const ProductInitialForm = () => {
     const hasWeight = Number(product.weight) > 0;
     const hasBrand = Number(product.brand_id) > 0;
     const hasDesc = stripHtml(product.description || "").length > 0;
-
-    // فعال کردن وضعیت بررسی
-    setIsSubmitAttempted(true);
-
-    // ذخیره وضعیت خطاها در state
-    setFieldErrors({
-      hasMedia,
-      hasPinned,
-      hasName,
-      hasPrice,
-      hasCategory,
-      hasWeight,
-      hasBrand,
-      hasDesc,
-    });
-
-    if (
-      !hasMedia ||
-      !hasPinned ||
-      !hasName ||
-      !hasPrice ||
-      !hasCategory ||
-      !hasWeight ||
-      !hasDesc ||
-      !hasBrand
-    ) {
-      setTimeout(() => scrollToFirstErrorField(), 0);
-      return;
-    }
 
     const {
       medias,
@@ -178,8 +126,6 @@ const ProductInitialForm = () => {
       ...other,
     };
 
-    console.log(result);
-
     if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
@@ -220,7 +166,7 @@ const ProductInitialForm = () => {
           }}
           initialMedias={product.medias}
           initialPinnedId={product.media_pinned_id}
-          isActiveError={isSubmitAttempted && !fieldErrors.hasMedia}
+          isActiveError={false}
         />
         <hr />
         <TextInputWithError
@@ -248,10 +194,11 @@ const ProductInitialForm = () => {
               discount_percent: type === "percent" ? +value : 0,
             }))
           }
-          isActiveError={
+          isActiveError={false}
+          /* isActiveError={
             isSubmitAttempted &&
             (!fieldErrors.hasPrice || !fieldErrors.hasPinned)
-          }
+          } */
         />
 
         <div className="flex flex-col md:flex-row gap-4">
@@ -287,7 +234,7 @@ const ProductInitialForm = () => {
             { key: "گرم", title: "گرم" },
             { key: "کیلوگرم", title: "کیلوگرم" },
           ]}
-          isActiveError={isSubmitAttempted && !fieldErrors.hasWeight}
+          isActiveError={false}
         />
 
         <TextEditor
@@ -299,7 +246,7 @@ const ProductInitialForm = () => {
             }))
           }
           label="توضیحات"
-          isActiveError={isSubmitAttempted && !fieldErrors.hasDesc}
+          isActiveError={false}
         />
       </BaseCard>
 
