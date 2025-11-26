@@ -22,14 +22,18 @@ export function useFormHandler<T extends Record<string, any>>(
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleFieldChange = (field: keyof T, value: any) => {
-    const newForm = { ...form, [field]: value };
-    setForm(newForm);
-    setTouched((prev) => ({ ...prev, [field]: true }));
+    // use functional update to avoid lost updates when calling this function multiple times synchronously
+    setForm((prev) => {
+      const newForm = { ...prev, [field]: value };
+      // run validation on the new form if required
+      if (runValidationOnChange && onValidate && hasSubmitted) {
+        const validation = onValidate(newForm);
+        setErrors(validation);
+      }
+      return newForm;
+    });
 
-    if (runValidationOnChange && onValidate && hasSubmitted) {
-      const validation = onValidate(newForm);
-      setErrors(validation);
-    }
+    setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const validateForm = () => {
