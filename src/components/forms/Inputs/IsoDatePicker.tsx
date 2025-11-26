@@ -5,6 +5,7 @@ import React from "react";
 import { DatePicker, DateRangePicker } from "@heroui/react";
 import type { CalendarDate } from "@internationalized/date";
 import { calToISO, isoToCal } from "@/core/utils/date";
+import FieldErrorText from "../FieldErrorText";
 
 type IsoRange = { start?: string | null; end?: string | null } | null;
 
@@ -13,8 +14,7 @@ type IsoDatePickerProps = {
   labelPlacement?: "inside" | "outside" | "outside-left";
   description?: React.ReactNode;
   isRequired?: boolean;
-  isInvalid?: boolean;
-  errorMessage?: React.ReactNode | ((v: any) => React.ReactNode);
+  errorMessage?: string;
   variant?: "flat" | "bordered" | "faded" | "underlined";
   showMonthAndYearPickers?: boolean;
   placeholderValue?: string | null;
@@ -37,7 +37,6 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
   label,
   description,
   isRequired,
-  isInvalid,
   errorMessage,
   variant = "flat",
   showMonthAndYearPickers = true,
@@ -72,8 +71,12 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
         labelPlacement={labelPlacement}
         description={description}
         isRequired={isRequired}
-        isInvalid={isInvalid}
-        errorMessage={errorMessage as any}
+        isInvalid={!!errorMessage?.length}
+        errorMessage={
+          errorMessage?.length ? (
+            <FieldErrorText error={errorMessage} />
+          ) : undefined
+        }
         variant={variant as any}
         showMonthAndYearPickers={showMonthAndYearPickers}
         value={isoToCalOrUndef(valueIso) as any}
@@ -110,6 +113,12 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
       label={label}
       labelPlacement={labelPlacement}
       value={rangeValue as any} // cast to any to satisfy TS types from lib
+      isInvalid={!!errorMessage?.length}
+      errorMessage={
+        errorMessage?.length ? (
+          <FieldErrorText error={errorMessage} />
+        ) : undefined
+      }
       onChange={(v: any) => {
         // v is RangeValue<DateValue> | null
         if (!onChangeIsoRange) return;

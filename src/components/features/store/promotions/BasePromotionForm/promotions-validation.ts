@@ -12,7 +12,7 @@ export function validatePromotionForm(
 
   if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
   
-  if (!form.starts_date?.trim() || !form.ends_date?.trim()) errs.starts_date = "تاریخ شروع و پایان الزامی است.";
+  if (!form.starts_date || !form.ends_date) errs.starts_date = "تاریخ شروع و پایان الزامی است.";
 
   if (config.code && !form.code?.trim()) {
     errs.code = "کد تخفیف الزامی است.";
