@@ -88,11 +88,6 @@ export function BasePromotionForm({
   }, [initialData, formType]);
 
   useEffect(() => {
-    console.log(form.starts_date, form.ends_date);
-    
-  }, [form]);
-
-  useEffect(() => {
     setForm(initialLocalForm);
     setHasSubmitted(false);
   }, [resetSignal]);
@@ -204,8 +199,6 @@ export function BasePromotionForm({
           enableRange
           valueIsoRange={{ start: form.starts_date, end: form.ends_date }}
           onChangeIsoRange={(range) => {
-            console.log("Change =< ", range);
-            
             handleFieldChange("starts_date", range?.start);
             handleFieldChange("ends_date", range?.end);
           }}

@@ -99,13 +99,13 @@ const IsoDatePicker: React.FC<IsoDatePickerProps> = ({
 
   // DateRangePicker's typing expects start & end to be DateValue (not undefined) when object provided,
   // so we ensure both are set (fallback to the other) — otherwise pass undefined (controlled empty).
-  let rangeValue: any = undefined;
+  let rangeValue: any = null;
   if (sCal || eCal) {
     const start = sCal ?? eCal!;
     const end = eCal ?? sCal!;
     rangeValue = { start, end };
   } else {
-    rangeValue = undefined;
+    rangeValue = null;
   }
 
   return (
