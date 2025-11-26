@@ -32,6 +32,7 @@ interface BasePromotionFormProps {
   isEditMode?: boolean;
   isShowLoader?: boolean;
   onHandleReset?: () => void;
+  onHandleSubmit: (data: PromotionAPI) => void;
   loading?: boolean;
   resetSignal?: number;
 }
@@ -60,6 +61,7 @@ export function BasePromotionForm({
   isEditMode = false,
   isShowLoader = false,
   onHandleReset,
+  onHandleSubmit,
   loading = false,
   resetSignal,
 }: BasePromotionFormProps) {
@@ -126,7 +128,7 @@ export function BasePromotionForm({
 
     const payload = mapLocalFormToAPI(form, formType);
     console.log(payload);
-    //onHandleSubmit(payload);
+    onHandleSubmit(payload);
   };
 
   const handleResetLocal = () => {

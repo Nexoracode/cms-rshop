@@ -17,6 +17,7 @@ type PromotionRouteWrapperProps = {
     initialData: any;
     isLoading: boolean;
     resetSignal: number;
+    handleSubmit: (payload: any) => void;
     setResetSignal: (n: number | ((p: number) => number)) => void;
   }) => React.ReactNode;
 };
@@ -55,6 +56,7 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
     initialData: data?.data,
     isLoading,
     resetSignal,
+    handleSubmit,
     setResetSignal
   });
 

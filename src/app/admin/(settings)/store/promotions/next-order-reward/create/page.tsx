@@ -7,13 +7,14 @@ import BasePromotionForm from "@/components/features/store/promotions/BasePromot
 const CreateCoupon = () => {
   return (
     <PromotionRouteWrapper Hooks={CouponHooks}>
-      {({ initialData, isLoading, resetSignal, setResetSignal }) => (
+      {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
         <BasePromotionForm
           formType="next_order_reward"
           scope="general"
           initialData={initialData}
           isShowLoader={isLoading}
           onHandleReset={() => setResetSignal((p) => p + 1)}
+          onHandleSubmit={(payload) => handleSubmit(payload)}
           resetSignal={resetSignal}
         />
       )}
