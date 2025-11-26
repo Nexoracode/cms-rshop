@@ -6,14 +6,14 @@ const ReportsList = dynamic(() => import("@/components/features/dashboard/Report
 
 const Dashboard = () => {
   return (
-    <>
+    <div>
       <ShopInfosCard />
       <section className="w-full flex flex-col gap-4">
         <ReportsList />
         <LatestOrders />
         <ProductListMostViewed />
       </section>
-    </>
+    </div>
   );
 };
 
