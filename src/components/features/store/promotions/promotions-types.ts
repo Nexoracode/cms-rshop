@@ -74,8 +74,8 @@ export type PromotionForm = {
   usage_limit?: number;
   min_order_amount?: number;
   max_discount_amount?: number;
-  starts_date?: string | null;
-  ends_date?: string | null;
+  starts_at?: string | null;
+  ends_at?: string | null;
   is_active?: boolean;
   first_order?: boolean;
   allowed_products?: { product_id: number; variants: number[] | null }[];

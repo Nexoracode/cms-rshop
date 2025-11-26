@@ -25,7 +25,8 @@ type Props = {
 
 const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
   const deleteCoupon = CouponHooks.useDelete();
-
+  console.log(item);
+  
   const rowItems = [
     { label: "عنوان", value: item.name },
     { label: "نوع", value: "مبلغ ثابت" },

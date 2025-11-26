@@ -46,8 +46,8 @@ const initialLocalForm: PromotionForm = {
   usage_limit: undefined,
   min_order_amount: undefined,
   max_discount_amount: undefined,
-  starts_date: null,
-  ends_date: null,
+  starts_at: null,
+  ends_at: null,
   is_active: true,
   first_order: false,
   allowed_users: [],
@@ -81,6 +81,7 @@ export function BasePromotionForm({
 
   useEffect(() => {
     if (initialData) {
+      console.log(initialData);
       setForm(mapAPIToLocalForm(initialData, formType));
     } else if (formType === "first_order") {
       setForm((prev) => ({ ...prev, first_order: true }));
@@ -93,12 +94,9 @@ export function BasePromotionForm({
   }, [resetSignal]);
 
   const handleSubmit = () => {
-    console.log(errors);
-
     if (!canSubmit()) return;
 
     const payload = mapLocalFormToAPI(form, formType);
-    console.log(payload);
     onHandleSubmit(payload);
   };
 
@@ -197,14 +195,14 @@ export function BasePromotionForm({
         <IsoDatePicker
           label="بازه اعتبار"
           enableRange
-          valueIsoRange={{ start: form.starts_date, end: form.ends_date }}
+          valueIsoRange={{ start: form.starts_at, end: form.ends_at }}
           onChangeIsoRange={(range) => {
-            handleFieldChange("starts_date", range?.start);
-            handleFieldChange("ends_date", range?.end);
+            handleFieldChange("starts_at", range?.start);
+            handleFieldChange("ends_at", range?.end);
           }}
           showMonthAndYearPickers
           className="w-full"
-          errorMessage={errors.starts_date}
+          errorMessage={errors.starts_at}
         />
       </div>
 
