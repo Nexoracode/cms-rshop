@@ -24,6 +24,7 @@ import {
   PromotionFormConfig,
 } from "../promotions-types";
 import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { validatePromotionForm } from "./promotions-validation";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;
@@ -74,7 +75,7 @@ export function BasePromotionForm({
     setForm,
     setHasSubmitted,
   } = useFormHandler<PromotionForm>(initialLocalForm, {
-    onValidate: (f) => validatePromotionForm(f),
+    onValidate: (f) => validatePromotionForm(f, config, scope),
     runValidationOnChange: true,
   });
 
@@ -90,36 +91,6 @@ export function BasePromotionForm({
     setForm(initialLocalForm);
     setHasSubmitted(false);
   }, [resetSignal]);
-
-  const validatePromotionForm = (form: PromotionForm) => {
-    const errs: Record<string, string> = {};
-
-    if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
-
-    if (config.code && !form.code?.trim()) errs.code = "کد تخفیف الزامی است.";
-
-    if (config.discount_fields) {
-      if (!form.percent_discount && !form.amount_discount)
-        errs.discount = "حداقل یکی از درصد یا مبلغ تخفیف را وارد کنید.";
-    }
-
-    if (scope === "products" && config.scope.includes("product")) {
-      if (!form.allowed_products || form.allowed_products.length === 0)
-        errs.allowed_products = "حداقل یک محصول باید انتخاب شود.";
-    }
-
-    if (scope === "categories" && config.scope.includes("category")) {
-      if (!form.allowed_categories || form.allowed_categories.length === 0)
-        errs.allowed_categories = "حداقل یک دسته‌بندی باید انتخاب شود.";
-    }
-
-    if (scope === "customers" && config.scope.includes("user")) {
-      if (!form.allowed_users || form.allowed_users.length === 0)
-        errs.allowed_users = "حداقل یک کاربر باید انتخاب شود.";
-    }
-
-    return errs;
-  };
 
   const handleSubmit = () => {
     console.log(errors);
