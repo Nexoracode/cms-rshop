@@ -204,6 +204,7 @@ export function BasePromotionForm({
           }}
           showMonthAndYearPickers
           className="w-full"
+          errorMessage={errors.starts_date}
         />
       </div>
 
