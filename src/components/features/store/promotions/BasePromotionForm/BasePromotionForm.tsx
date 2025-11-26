@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 //? Components
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -46,8 +46,8 @@ const initialLocalForm: PromotionForm = {
   usage_limit: undefined,
   min_order_amount: undefined,
   max_discount_amount: undefined,
-  start_date: "",
-  end_date: "",
+  starts_date: null,
+  ends_date: null,
   is_active: true,
   first_order: false,
   allowed_users: [],
@@ -197,10 +197,10 @@ export function BasePromotionForm({
         <IsoDatePicker
           label="بازه اعتبار"
           enableRange
-          valueIsoRange={{ start: form.start_date, end: form.end_date }}
+          valueIsoRange={{ start: form.starts_date, end: form.ends_date }}
           onChangeIsoRange={(range) => {
-            handleFieldChange("start_date", range?.start);
-            handleFieldChange("end_date", range?.end);
+            handleFieldChange("starts_date", range?.start);
+            handleFieldChange("ends_date", range?.end);
           }}
           showMonthAndYearPickers
           className="w-full"
