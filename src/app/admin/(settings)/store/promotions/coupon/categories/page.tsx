@@ -11,8 +11,15 @@ const CategoriesCoupon = () => {
       Hooks={CouponHooks}
       Provider={CategoriesSelectionProvider}
       providerProps={{ initialCategories: [] }}
+      formType="coupon"
     >
-      {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
+      {({
+        initialData,
+        isLoading,
+        resetSignal,
+        setResetSignal,
+        handleSubmit,
+      }) => (
         <BasePromotionForm
           formType="coupon"
           scope="categories"

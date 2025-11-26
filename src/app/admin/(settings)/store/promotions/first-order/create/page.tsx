@@ -6,7 +6,7 @@ import BasePromotionForm from "@/components/features/store/promotions/BasePromot
 
 const CreateCoupon = () => {
   return (
-    <PromotionRouteWrapper Hooks={CouponHooks}>
+    <PromotionRouteWrapper Hooks={CouponHooks} formType="first_order">
       {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
         <BasePromotionForm
           formType="first_order"

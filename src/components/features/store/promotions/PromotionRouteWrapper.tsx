@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { PromotionType } from "@/core/hooks/api/usePromotions";
 
 type HooksShape = {
   useGetOne: (id?: number) => any;
@@ -13,6 +14,7 @@ type PromotionRouteWrapperProps = {
   Hooks: HooksShape;
   Provider?: React.ComponentType<any>;
   providerProps?: any;
+  formType?: PromotionType;
   children: (opts: {
     initialData: any;
     isLoading: boolean;
@@ -26,7 +28,8 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
   Provider,
   providerProps,
   children,
-  Hooks
+  Hooks,
+  formType
 }) => {
   const router = useRouter();
   const params = useSearchParams();

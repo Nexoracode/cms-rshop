@@ -12,6 +12,7 @@ const CustomersCoupon = () => {
       Hooks={CouponHooks}
       Provider={CustomersSelectionProvider}
       providerProps={{ initialCustomers: [] }}
+      formType="next_order_reward"
     >
       {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
         <BasePromotionForm

@@ -11,6 +11,7 @@ const ProductsCoupon = () => {
       Hooks={CouponHooks}
       Provider={ProductsSelectionProvider}
       providerProps={{ initialProducts: [] }}
+      formType="flash_deal"
     >
       {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
         <BasePromotionForm
