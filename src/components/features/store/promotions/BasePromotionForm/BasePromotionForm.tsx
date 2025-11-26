@@ -10,7 +10,6 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 //? Selectable
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 //? Icon
 import { TbRosetteDiscount } from "react-icons/tb";
@@ -25,6 +24,7 @@ import {
 } from "../promotions-types";
 import { useFormHandler } from "@/core/hooks/common/useFormHandler";
 import { validatePromotionForm } from "./promotions-validation";
+import SelectableCustomersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;
@@ -97,6 +97,7 @@ export function BasePromotionForm({
     if (!canSubmit()) return;
 
     const payload = mapLocalFormToAPI(form, formType);
+    console.log(payload);
     onHandleSubmit(payload);
   };
 
@@ -231,7 +232,7 @@ export function BasePromotionForm({
       )}
 
       {scope === "customers" && config.scope.includes("user") && (
-        <SelectableUsersBox
+        <SelectableCustomersBox
           onChange={(ids) => handleFieldChange("allowed_users", ids)}
           error={!!errors.allowed_users?.length}
         />

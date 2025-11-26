@@ -47,8 +47,8 @@ const InnerSelectableUsersBox: React.FC<{
   );
 };
 
-const SelectableUsersBox: React.FC<Props> = ({ onChange, error }) => {
+const SelectableCustomersBox: React.FC<Props> = ({ onChange, error }) => {
   return <InnerSelectableUsersBox onChange={onChange} error={error} />;
 };
 
-export default SelectableUsersBox;
+export default SelectableCustomersBox;
