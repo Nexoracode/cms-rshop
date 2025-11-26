@@ -12,13 +12,12 @@ const CategoriesCoupon = () => {
       Provider={CategoriesSelectionProvider}
       providerProps={{ initialCategories: [] }}
     >
-      {({ initialData, isLoading, onSubmit, resetSignal, setResetSignal }) => (
+      {({ initialData, isLoading, resetSignal, setResetSignal }) => (
         <BasePromotionForm
           formType="flash_deal"
           scope="categories"
           initialData={initialData}
           isShowLoader={isLoading}
-          onHandleSubmit={onSubmit}
           onHandleReset={() => setResetSignal((p) => p + 1)}
           resetSignal={resetSignal}
         />

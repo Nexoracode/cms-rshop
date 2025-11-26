@@ -16,7 +16,6 @@ type PromotionRouteWrapperProps = {
   children: (opts: {
     initialData: any;
     isLoading: boolean;
-    onSubmit: (payload: any) => Promise<void>;
     resetSignal: number;
     setResetSignal: (n: number | ((p: number) => number)) => void;
   }) => React.ReactNode;
@@ -55,7 +54,6 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
   const content = children({
     initialData: data?.data,
     isLoading,
-    onSubmit: handleSubmit,
     resetSignal,
     setResetSignal
   });

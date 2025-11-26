@@ -13,13 +13,12 @@ const CustomersCoupon = () => {
       Provider={CustomersSelectionProvider}
       providerProps={{ initialCustomers: [] }}
     >
-      {({ initialData, isLoading, onSubmit, resetSignal, setResetSignal }) => (
+      {({ initialData, isLoading, resetSignal, setResetSignal }) => (
         <BasePromotionForm
           formType="next_order_reward"
           scope="customers"
           initialData={initialData}
           isShowLoader={isLoading}
-          onHandleSubmit={onSubmit}
           onHandleReset={() => setResetSignal((p) => p + 1)}
           resetSignal={resetSignal}
         />
