@@ -41,9 +41,6 @@ export interface ProductResponse {
 
   specifications: any[];
   attribute_nodes: AttributeNode[];
-
-  created_at: string;
-  updated_at: string;
 }
 
 export interface CreateProductRequest {

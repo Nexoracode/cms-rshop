@@ -54,8 +54,7 @@ const initialProductForm: CreateProductRequest = {
   media_ids: [],
   media_pinned_id: null,
   helper_id: 0,
-  brand_id: 0,
-  //medias: [],
+  brand_id: 0
 };
 
 const ProductInitialForm = () => {
@@ -83,9 +82,8 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct?.data) {
-      console.log("Data =>", oneProduct.data);
-      console.log("Data Maped =>", mapAPIToLocalProduct(oneProduct.data));
-
+      console.log(oneProduct.data);
+      
       setForm(mapAPIToLocalProduct(oneProduct.data));
     }
   }, [oneProduct?.data]);
@@ -163,7 +161,7 @@ const ProductInitialForm = () => {
           onMedia_pinned_id={(id) => {
             handleFieldChange("media_pinned_id", id);
           }}
-          initialMedias={form.medias || []}
+          initialMedias={oneProduct?.data?.medias || []}
           initialPinnedId={form.media_pinned_id}
           errorMessage={errors.media_ids || errors.media_pinned_id}
         />
@@ -351,7 +349,7 @@ const ProductInitialForm = () => {
           onHelperId={(id) => {
             handleFieldChange("helper_id", id);
           }}
-          sizeGuide={form.helper}
+          sizeGuide={oneProduct?.data?.helper}
         />
       </BaseCard>
 

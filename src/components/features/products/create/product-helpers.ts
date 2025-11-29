@@ -1,4 +1,3 @@
-// utils/product-mappers.ts
 import type { ProductResponse, CreateProductRequest } from "./types/product";
 
 export function mapAPIToLocalProduct(p: ProductResponse): CreateProductRequest {
