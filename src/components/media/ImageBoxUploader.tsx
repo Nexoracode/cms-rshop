@@ -95,7 +95,7 @@ const ImageBoxUploader: React.FC<Props> = ({
             </Chip>
             <Chip color="success" variant="flat" size="sm" className="mx-1">
               <small>JPG</small>
-            </Chip>
+            </Chip>  
             <Chip color="warning" variant="flat" size="sm">
               <small>PNG</small>
             </Chip>

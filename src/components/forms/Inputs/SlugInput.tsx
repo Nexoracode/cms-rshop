@@ -11,6 +11,7 @@ type Props = {
   placeholder?: string;
   isRequired?: boolean;
   isActiveError?: boolean;
+  errorMessage?: string;
 };
 
 export default function SlugInput({
@@ -20,6 +21,7 @@ export default function SlugInput({
   placeholder = "slug",
   isRequired = true,
   isActiveError = true,
+  errorMessage,
 }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
@@ -82,9 +84,9 @@ export default function SlugInput({
       value={value}
       onChange={handleChange}
       autoComplete="off"
-      isInvalid={!!showError}
+      isInvalid={!!showError || !!errorMessage?.length}
       errorMessage={
-        showError ? (
+        showError || errorMessage?.length ? (
           error ? (
             <FieldErrorText error={error} />
           ) : (

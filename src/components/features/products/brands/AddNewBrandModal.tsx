@@ -129,6 +129,7 @@ const AddNewBrandModal: React.FC<Props> = ({
           onChange={(val) => handleFieldChange("slug", val)}
           isActiveError={true}
           isRequired
+          errorMessage={errors.slug}
         />
 
         <ImageBoxUploader
