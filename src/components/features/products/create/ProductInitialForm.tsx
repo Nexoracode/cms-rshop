@@ -85,7 +85,7 @@ const ProductInitialForm = () => {
     if (oneProduct?.data) {
       console.log("Data =>", oneProduct.data);
       console.log("Data Maped =>", mapAPIToLocalProduct(oneProduct.data));
-      
+
       setForm(mapAPIToLocalProduct(oneProduct.data));
     }
   }, [oneProduct?.data]);
@@ -167,30 +167,33 @@ const ProductInitialForm = () => {
           initialPinnedId={form.media_pinned_id}
           errorMessage={errors.media_ids || errors.media_pinned_id}
         />
-        <TextInput
-          label="نام"
-          placeholder="نام محصول را وارد کنید"
-          value={form.name}
-          onChange={(name) => handleFieldChange("name", name)}
-          isRequired
-          inputAlign="right"
-          allowEnglishOnly={false}
-          errorMessage={errors.name}
-        />
 
-        <DiscountedPriceInput
-          price={form.price}
-          discount_amount={form.discount_amount ?? 0}
-          discount_percent={form.discount_percent ?? 0}
-          onPriceChange={(price) => handleFieldChange("price", +price)}
-          onDiscountChange={(type, value) =>
-            handleFieldChange(
-              type === "amount" ? "discount_amount" : "discount_percent",
-              +value
-            )
-          }
-          errorMessage={errors.price}
-        />
+        <div className="flex flex-col md:flex-row gap-4">
+          <TextInput
+            label="نام"
+            placeholder="نام محصول را وارد کنید"
+            value={form.name}
+            onChange={(name) => handleFieldChange("name", name)}
+            isRequired
+            inputAlign="right"
+            allowEnglishOnly={false}
+            errorMessage={errors.name}
+          />
+
+          <NumberWithSelect
+            isRequired
+            label="وزن"
+            value={form.weight}
+            onValueChange={(val) => handleFieldChange("weight", val ?? 0)}
+            selectedKey={form.weight_unit}
+            onSelectChange={(val) => handleFieldChange("weight_unit", val)}
+            options={[
+              { key: "گرم", title: "گرم" },
+              { key: "کیلوگرم", title: "کیلوگرم" },
+            ]}
+            errorMessage={errors.weight}
+          />
+        </div>
 
         <div className="flex flex-col md:flex-row gap-4">
           <CategorySelect
@@ -208,18 +211,18 @@ const ProductInitialForm = () => {
           />
         </div>
 
-        <NumberWithSelect
-          isRequired
-          label="وزن"
-          value={form.weight}
-          onValueChange={(val) => handleFieldChange("weight", val ?? 0)}
-          selectedKey={form.weight_unit}
-          onSelectChange={(val) => handleFieldChange("weight_unit", val)}
-          options={[
-            { key: "گرم", title: "گرم" },
-            { key: "کیلوگرم", title: "کیلوگرم" },
-          ]}
-          errorMessage={errors.weight}
+        <DiscountedPriceInput
+          price={form.price}
+          discount_amount={form.discount_amount ?? 0}
+          discount_percent={form.discount_percent ?? 0}
+          onPriceChange={(price) => handleFieldChange("price", +price)}
+          onDiscountChange={(type, value) =>
+            handleFieldChange(
+              type === "amount" ? "discount_amount" : "discount_percent",
+              +value
+            )
+          }
+          errorMessage={errors.price}
         />
 
         <TextEditor

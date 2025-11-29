@@ -92,7 +92,7 @@ const NumberWithSelect: FC<Props> = ({
   };
 
   return (
-    <div className={`flex flex-col gap-4 ${style || ""}`}>
+    <div className={`w-full flex flex-col gap-4 ${style || ""}`}>
       <Input
         ref={inputRef as any}
         dir="ltr"
