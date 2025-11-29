@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface UseFormHandlerOptions<T> {
   runValidationOnChange?: boolean;
@@ -59,6 +60,7 @@ export function useFormHandler<T extends Record<string, any>>(
 
     if (Object.keys(validation).length > 0) {
       window.scrollTo({ top: 80, behavior: "smooth" });
+      toast.error("لطفا مقادیر خواسته شده را تکمیل کنید.");
     }
 
     return Object.keys(validation).length === 0;
