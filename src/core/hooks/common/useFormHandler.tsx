@@ -58,7 +58,7 @@ export function useFormHandler<T extends Record<string, any>>(
     const validation = validateForm();
 
     if (Object.keys(validation).length > 0) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 80, behavior: "smooth" });
     }
 
     return Object.keys(validation).length === 0;

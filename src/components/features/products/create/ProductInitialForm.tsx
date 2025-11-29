@@ -121,15 +121,11 @@ const ProductInitialForm = () => {
       ...other,
     };
 
-    console.log("Form => ", form);
-    console.log("Result => ", result);
-
-    /* if (!editId) {
+    if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
             router.push("/admin/products");
-            setProduct(initProduct);
           }
         },
       });
@@ -138,11 +134,10 @@ const ProductInitialForm = () => {
         onSuccess: (res) => {
           if (res.ok) {
             router.push("/admin/products");
-            setProduct(initProduct);
           }
         },
       });
-    } */
+    }
   };
 
   return (
