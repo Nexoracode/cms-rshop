@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { TbBrandArc } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";
+import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { validateBrand } from "./brand-validation";
 
 type Props = {
   brandId?: number | null;
@@ -20,16 +22,28 @@ type Props = {
   onOpenChange?: (open: boolean) => void;
 };
 
+const initialBrandForm = {
+  name: "",
+  slug: "",
+  logo: null as File | string | null,
+};
+
 const AddNewBrandModal: React.FC<Props> = ({
   brandId,
   defaultValues,
   isOpen,
   onOpenChange,
 }) => {
-  const [data, setData] = useState({
-    name: "",
-    slug: "",
-    logo: null as File | string | null,
+
+  const {
+    form,
+    errors,
+    handleFieldChange,
+    canSubmit,
+    setForm,
+  } = useFormHandler(initialBrandForm, {
+    onValidate: validateBrand,
+    runValidationOnChange: true,
   });
 
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
@@ -41,29 +55,29 @@ const AddNewBrandModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (defaultValues) {
-      setData({
-        name: defaultValues.name || "",
-        slug: defaultValues.slug || "",
-        logo: defaultValues.logo || null,
+      setForm({
+        name: defaultValues.name ?? "",
+        slug: defaultValues.slug ?? "",
+        logo: defaultValues.logo ?? null,
       });
-    } else {
-      setData({ name: "", slug: "", logo: null });
     }
   }, [defaultValues]);
 
   const handleSubmit = async () => {
-    try {
-      let logoUrl = typeof data.logo === "string" ? data.logo : "";
+    if (!canSubmit()) return;
 
-      if (data.logo instanceof File) {
+    try {
+      let logoUrl = typeof form.logo === "string" ? form.logo : "";
+
+      if (form.logo instanceof File) {
         const formData = new FormData();
-        formData.append("files", data.logo);
+        formData.append("files", form.logo);
         const uploadRes = await uploadMedias(formData);
         if (!uploadRes.ok) return;
         logoUrl = uploadRes.data?.[0]?.url ?? null;
       }
 
-      const payload = { name: data.name, slug: data.slug, logo: logoUrl };
+      const payload = { name: form.name, slug: form.slug, logo: logoUrl };
 
       const res = brandId
         ? await updateBrand({ ...payload, id: brandId })
@@ -74,7 +88,7 @@ const AddNewBrandModal: React.FC<Props> = ({
       toast.success(
         brandId ? "برند با موفقیت بروزرسانی شد" : "برند با موفقیت ایجاد شد"
       );
-      setData({ name: "", slug: "", logo: null });
+      setForm({ name: "", slug: "", logo: null });
       onOpenChange?.(false);
     } catch (err) {
       console.error(err);
@@ -103,24 +117,27 @@ const AddNewBrandModal: React.FC<Props> = ({
         <TextInput
           label="نام برند"
           placeholder="نام برند را وارد کنید"
-          value={data.name}
-          onChange={(val) => setData((prev) => ({ ...prev, name: val }))}
-          isRequired
+          value={form.name}
+          onChange={(val) => handleFieldChange("name", val)}
           allowEnglishOnly={false}
+          isRequired
+          errorMessage={errors.name}
         />
 
         <SlugInput
-          value={data.slug}
-          onChange={(val) => setData((p) => ({ ...p, slug: val }))}
+          value={form.slug}
+          onChange={(val) => handleFieldChange("slug", val)}
           isActiveError={true}
+          isRequired
         />
 
         <ImageBoxUploader
-          textBtn={data.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
+          textBtn={form.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
           title="لوگوی برند"
-          changeStatusFile={data.logo}
-          defaultImg={data.logo}
-          onFile={(file) => setData((p) => ({ ...p, logo: file }))}
+          changeStatusFile={form.logo}
+          defaultImg={form.logo}
+          onFile={(file) => handleFieldChange("logo", file)}
+          errorMessage={errors.logo}
         />
       </div>
     </BaseModal>
