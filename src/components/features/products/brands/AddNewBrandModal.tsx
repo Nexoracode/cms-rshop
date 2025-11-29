@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Input } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -12,6 +11,7 @@ import {
 import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { TbBrandArc } from "react-icons/tb";
+import TextInput from "@/components/ui/inputs/TextInput";
 
 type Props = {
   brandId?: number | null;
@@ -39,14 +39,6 @@ const AddNewBrandModal: React.FC<Props> = ({
   const { mutateAsync: updateBrand, isPending: isPendingUpdate } =
     useUpdateBrand();
 
-  const isDisabled =
-    !data.name.trim() ||
-    !data.slug.trim() ||
-    (!brandId && !data.logo) ||
-    isPendingUpload ||
-    isPendingCreate ||
-    isPendingUpdate;
-
   useEffect(() => {
     if (defaultValues) {
       setData({
@@ -60,8 +52,6 @@ const AddNewBrandModal: React.FC<Props> = ({
   }, [defaultValues]);
 
   const handleSubmit = async () => {
-    if (isDisabled) return;
-
     try {
       let logoUrl = typeof data.logo === "string" ? data.logo : "";
 
@@ -107,33 +97,32 @@ const AddNewBrandModal: React.FC<Props> = ({
       title={brandId ? "ویرایش برند" : "افزودن برند جدید"}
       confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
       onConfirm={handleSubmit}
-      isConfirmDisabled={isDisabled}
-      size="xl"
       icon={<TbBrandArc />}
     >
-      <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4 mb-4">
-        <Input
-          isRequired
-          labelPlacement="outside"
+      <div className="flex flex-col gap-6">
+        <TextInput
           label="نام برند"
           placeholder="نام برند را وارد کنید"
           value={data.name}
-          onChange={(e) => setData((p) => ({ ...p, name: e.target.value }))}
+          onChange={(val) => setData((prev) => ({ ...prev, name: val }))}
+          isRequired
+          allowEnglishOnly={false}
         />
+
         <SlugInput
           value={data.slug}
           onChange={(val) => setData((p) => ({ ...p, slug: val }))}
           isActiveError={true}
         />
-      </div>
 
-      <ImageBoxUploader
-        textBtn={data.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
-        title="لوگوی برند"
-        changeStatusFile={data.logo}
-        defaultImg={data.logo}
-        onFile={(file) => setData((p) => ({ ...p, logo: file }))}
-      />
+        <ImageBoxUploader
+          textBtn={data.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
+          title="لوگوی برند"
+          changeStatusFile={data.logo}
+          defaultImg={data.logo}
+          onFile={(file) => setData((p) => ({ ...p, logo: file }))}
+        />
+      </div>
     </BaseModal>
   );
 };
