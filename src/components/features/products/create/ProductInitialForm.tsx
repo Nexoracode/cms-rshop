@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { Checkbox, NumberInput, Select, SelectItem } from "@heroui/react";
 import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
 import { useEffect, useState } from "react";
-import { Product } from "./types/product";
+import { ProductForm } from "./types/product";
 import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import SizeGuide from "./SizeGuide/SizeGuide";
@@ -30,7 +30,7 @@ const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
   ssr: false,
 });
 
-const initProduct: Product = {
+const initProduct: ProductForm = {
   name: "",
   price: 10000,
   stock: 0,
@@ -58,7 +58,7 @@ const ProductInitialForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
-  const [product, setProduct] = useState<Product>(initProduct);
+  const [product, setProduct] = useState<ProductForm>(initProduct);
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
@@ -112,7 +112,7 @@ const ProductInitialForm = () => {
       ...other
     } = sendableData;
 
-    const result: Product = {
+    const result: ProductForm = {
       discount_percent: (discount_percent && +discount_percent) || 0,
       discount_amount: (discount_amount && +discount_amount) || 0,
       ...(helper_id ? { helper_id: +helper_id } : {}),
@@ -125,8 +125,8 @@ const ProductInitialForm = () => {
       stock: +stock,
       ...other,
     };
-
-    if (!editId) {
+    console.log("Result  =>", result);
+    /* if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
@@ -144,7 +144,7 @@ const ProductInitialForm = () => {
           }
         },
       });
-    }
+    } */
   };
 
   return (

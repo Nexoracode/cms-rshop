@@ -9,7 +9,7 @@ export type ProductMedia = {
   created_at: string;
 };
 
-export interface Product {
+export interface ProductForm {
   id?: number;
   name: string;
   price: number;

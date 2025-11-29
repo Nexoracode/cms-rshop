@@ -1,4 +1,3 @@
-import { Product } from "@/components/features/products/create/types/product";
 import { buildQueryString } from "@/core/utils/buildQueryString";
 import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -98,7 +97,7 @@ export const useProductUpload = () => {
 
 export const useProductCreate = () => {
   return useMutation({
-    mutationFn: (data: Product) => {
+    mutationFn: (data: any) => {
       return fetcher({
         route: "/product",
         method: "POST",
@@ -114,7 +113,7 @@ export const useProductCreate = () => {
 
 export const useProductUpdate = (id: number | undefined) => {
   return useMutation({
-    mutationFn: (data: Product) => {
+    mutationFn: (data: any) => {
       return fetcher({
         route: `/product/${id}`,
         method: "PATCH",
