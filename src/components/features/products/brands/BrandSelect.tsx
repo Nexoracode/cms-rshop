@@ -12,7 +12,7 @@ type Props = {
   placeholder?: string;
   withAddButton?: boolean;
   onAddNewClick?: () => void;
-  isActiveError?: boolean;
+  errorMessage?: string;
   isDisabled?: boolean;
   withAddModal?: boolean;
 };
@@ -24,7 +24,7 @@ const BrandSelect: React.FC<Props> = ({
   placeholder = "برند مورد نظر را انتخاب کنید",
   withAddButton = false,
   onAddNewClick,
-  isActiveError = false,
+  errorMessage,
   isDisabled = false,
   withAddModal = false,
 }) => {
@@ -40,15 +40,13 @@ const BrandSelect: React.FC<Props> = ({
   }, [allBrands?.data?.items]);
 
   return (
-    <div className="w-full flex items-end gap-2">
+    <div className={`w-full flex ${errorMessage?.length ? "items-center" : "items-end"} gap-2`}>
       <SelectBox
         label={label}
         value={value ? String(value) : ""}
         onChange={(val) => onChange(val ?? null)}
         options={
-          options.length
-            ? options
-            : [{ key: "-1", title: "آیتمی موجود نیست" }]
+          options.length ? options : [{ key: "-1", title: "آیتمی موجود نیست" }]
         }
         placeholder={placeholder}
         disabled={isDisabled}
@@ -58,7 +56,7 @@ const BrandSelect: React.FC<Props> = ({
             ? { onClick: onAddNewClick, label: "+ افزودن برند" }
             : undefined
         }
-        isActiveError={isActiveError}
+        errorMessage={errorMessage}
       />
 
       {/* ✅ فقط اگر بخوای مدال رو فعال کنی */}

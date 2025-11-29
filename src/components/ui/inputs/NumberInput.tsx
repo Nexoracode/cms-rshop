@@ -1,7 +1,11 @@
 "use client";
 
 import FieldErrorText from "@/components/forms/FieldErrorText";
-import { caretFromDigitIndex, formatNumberWithCommas, normalizeDigits } from "@/core/utils/number";
+import {
+  caretFromDigitIndex,
+  formatNumberWithCommas,
+  normalizeDigits,
+} from "@/core/utils/number";
 import { Input } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -92,8 +96,12 @@ export default function NumberInput({
         ) : null
       }
       autoComplete="off"
-      isInvalid={!!errorMessage}
-      errorMessage={errorMessage?.length ? <FieldErrorText error={errorMessage} /> : undefined}
+      isInvalid={!!errorMessage?.length}
+      errorMessage={
+        errorMessage?.length ? (
+          <FieldErrorText error={errorMessage} />
+        ) : undefined
+      }
     />
   );
 }

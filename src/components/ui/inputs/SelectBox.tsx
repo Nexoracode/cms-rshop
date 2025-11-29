@@ -1,8 +1,8 @@
-// components/ui/inputs/SelectBox.tsx
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { Select, SelectItem } from "@heroui/react";
+import FieldErrorText from "@/components/forms/FieldErrorText";
 
 export type SelectOption = {
   key: string | number;
@@ -37,13 +37,12 @@ type Props = {
   /** UI extras (مثل SelectWithAddButton سابق) */
   startContent?: React.ReactNode;
   isRequired?: boolean;
-  isActiveError?: boolean;
-  errorText?: string;
   description?: React.ReactNode;
 
   /** optional add button (نمایان در کنار select) */
   addButton?: AddButtonProps | null;
   className?: string;
+  errorMessage?: string;
 };
 
 const SelectBox: React.FC<Props> = ({
@@ -57,8 +56,7 @@ const SelectBox: React.FC<Props> = ({
   variant = "flat",
   startContent,
   isRequired = false,
-  isActiveError = false,
-  errorText,
+  errorMessage,
   description,
   addButton = null,
   className,
@@ -67,8 +65,7 @@ const SelectBox: React.FC<Props> = ({
   const valueStr = value != null ? String(value) : "";
 
   return (
-    <div className={`flex items-center gap-2 w-full ${className ?? ""}`}>
-      <div className="flex-1">
+    <>
         <Select
           dir="rtl"
           label={label}
@@ -84,16 +81,18 @@ const SelectBox: React.FC<Props> = ({
           size={size}
           variant={variant}
           isRequired={isRequired}
+          isInvalid={!!errorMessage?.length}
           errorMessage={
-            isActiveError && errorText ? <span>{errorText}</span> : undefined
+            errorMessage?.length ? (
+              <FieldErrorText error={errorMessage} />
+            ) : undefined
           }
           description={description}
+          className={className}
         >
           {options.length ? (
             options.map((o: any) => (
-              <SelectItem key={String(o.key)}>
-                {o.title}
-              </SelectItem>
+              <SelectItem key={String(o.key)}>{o.title}</SelectItem>
             ))
           ) : (
             <SelectItem key="-1" isDisabled>
@@ -101,14 +100,8 @@ const SelectBox: React.FC<Props> = ({
             </SelectItem>
           )}
         </Select>
-        {isRequired && isActiveError && !valueStr && (
-          <p className="mt-1 text-red-500 text-sm">
-            {errorText ?? `${label} الزامی است.`}
-          </p>
-        )}
-      </div>
 
-      {addButton && (
+{/*       {addButton && (
         <button
           type="button"
           onClick={addButton.onClick}
@@ -119,8 +112,8 @@ const SelectBox: React.FC<Props> = ({
         >
           {addButton.label ?? "+ افزودن"}
         </button>
-      )}
-    </div>
+      )} */}
+    </>
   );
 };
 

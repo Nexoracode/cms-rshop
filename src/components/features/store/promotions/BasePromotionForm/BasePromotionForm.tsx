@@ -38,7 +38,7 @@ interface BasePromotionFormProps {
   resetSignal?: number;
 }
 
-const initialLocalForm: PromotionForm = {
+const initialPromotionForm: PromotionForm = {
   name: "",
   code: "",
   percent_discount: 0,
@@ -74,7 +74,7 @@ export function BasePromotionForm({
     canSubmit,
     setForm,
     setHasSubmitted,
-  } = useFormHandler<PromotionForm>(initialLocalForm, {
+  } = useFormHandler<PromotionForm>(initialPromotionForm, {
     onValidate: (f) => validatePromotionForm(f, config, scope),
     runValidationOnChange: true,
   });
@@ -89,7 +89,7 @@ export function BasePromotionForm({
   }, [initialData, formType]);
 
   useEffect(() => {
-    setForm(initialLocalForm);
+    setForm(initialPromotionForm);
     setHasSubmitted(false);
   }, [resetSignal]);
 
@@ -97,12 +97,11 @@ export function BasePromotionForm({
     if (!canSubmit()) return;
 
     const payload = mapLocalFormToAPI(form, formType);
-    console.log(payload);
     onHandleSubmit(payload);
   };
 
   const handleResetLocal = () => {
-    setForm(initialLocalForm);
+    setForm(initialPromotionForm);
     setHasSubmitted(false);
     onHandleReset?.();
   };

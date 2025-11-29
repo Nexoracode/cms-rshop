@@ -44,8 +44,13 @@ export function useFormHandler<T extends Record<string, any>>(
   };
 
   const canSubmit = () => {
-    setHasSubmitted(true); // submit زده شد
+    setHasSubmitted(true);
     const validation = validateForm();
+
+    if (Object.keys(validation).length > 0) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     return Object.keys(validation).length === 0;
   };
 

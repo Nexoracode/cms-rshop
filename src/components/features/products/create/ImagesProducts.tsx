@@ -2,7 +2,6 @@
 
 import { Button, Card, CardBody } from "@heroui/react";
 import React, { useEffect, useState } from "react";
-import { Media } from "@/components/media/types";
 import { useProductUpload } from "@/core/hooks/api/products/useProduct";
 import MediaPicker from "@/components/media/uploader/MediaPicker";
 import MediaPreview from "@/components/media/uploader/MediaPreview";
@@ -11,9 +10,9 @@ import FieldErrorText from "@/components/forms/FieldErrorText";
 type Props = {
   onMedia_ids: (medias: number[]) => void;
   onMedia_pinned_id: (id: number | null) => void;
-  initialMedias?: Media[];
+  initialMedias?: any[];
   initialPinnedId?: number | null;
-  isActiveError?: boolean;
+  errorMessage?: string;
 };
 
 const ImagesProducts = ({
@@ -21,21 +20,22 @@ const ImagesProducts = ({
   onMedia_pinned_id,
   initialMedias = [],
   initialPinnedId = null,
-  isActiveError = false,
+  errorMessage,
 }: Props) => {
   const [medias, setMedias] = useState<File[]>([]);
-  const [mediasUrl, setMediasUrl] = useState<Media[]>([]);
+  const [mediasUrl, setMediasUrl] = useState<any[]>([]);
   const [pinnedId, setPinnedId] = useState<number | null>(null);
   const { mutate: uploadMedias, isPending } = useProductUpload();
 
   useEffect(() => {
     if (!mediasUrl.length) {
-      setMedias([])
+      console.log("DDDDDDDDD");
+      setMedias([]);
     }
-  }, [mediasUrl])
+  }, [mediasUrl]);
 
   useEffect(() => {
-    initialMedias && setMediasUrl(initialMedias);
+    initialMedias.length && setMediasUrl(initialMedias);
   }, [initialMedias]);
 
   useEffect(() => {
@@ -74,30 +74,40 @@ const ImagesProducts = ({
 
     uploadMedias(formData, {
       onSuccess: (response) => {
-        setMediasUrl((prev) => [...prev, ...response.data]);
+        response.data && setMediasUrl((prev) => [...prev, ...response.data]);
       },
     });
   };
 
   return (
     <Card className="w-full shadow-none rounded-none">
-      <CardBody className="p-0">
-        <div>
-          <MediaPreview
-            onItemPinned={(id) => {
-              setPinnedId(id);
-              onMedia_pinned_id(id);
-            }}
-            onRemove={(id) => {
-              setMediasUrl((prev) => prev.filter((media) => media.id !== id));
-              if (id === pinnedId) {
-                setPinnedId(null);
-                onMedia_pinned_id(null);
-              }
-            }}
-            items={mediasUrl}
-            pinnedId={pinnedId}
-          />
+      <CardBody className="px-0 py-1">
+        <div
+          className={`p-4 ${
+            errorMessage?.length
+              ? "border-1.5 border-red-300 rounded-xl"
+              : "border border-slate-300 rounded-xl"
+          }`}
+        >
+          {mediasUrl.length ? (
+            <MediaPreview
+              onItemPinned={(id) => {
+                setPinnedId(id);
+                onMedia_pinned_id(id);
+              }}
+              onRemove={(id) => {
+                setMediasUrl((prev) => prev.filter((media) => media.id !== id));
+                if (id === pinnedId) {
+                  setPinnedId(null);
+                  onMedia_pinned_id(null);
+                }
+              }}
+              items={mediasUrl}
+              pinnedId={pinnedId}
+            />
+          ) : (
+            ""
+          )}
 
           <MediaPicker onSelect={(files) => setMedias(files)} />
           {medias.length ? (
@@ -113,9 +123,9 @@ const ImagesProducts = ({
             ""
           )}
         </div>
-        {isActiveError && !medias.length ? (
-          <div className="text-right mt-2 h-6">
-            <FieldErrorText error="حداقل یک تصویر باید آپلود شود" />
+        {errorMessage?.length ? (
+          <div className="text-right mt-2">
+            <FieldErrorText error={errorMessage} />
           </div>
         ) : (
           ""

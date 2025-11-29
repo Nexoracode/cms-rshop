@@ -3,7 +3,11 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Input, Select, SelectItem } from "@heroui/react";
 import FieldErrorText from "@/components/forms/FieldErrorText";
-import { normalizeDigits, formatNumberWithCommas, caretFromDigitIndex } from "@/core/utils/number";
+import {
+  normalizeDigits,
+  formatNumberWithCommas,
+  caretFromDigitIndex,
+} from "@/core/utils/number";
 
 type NumberOption = { key: string; title: string };
 
@@ -17,7 +21,7 @@ type Props = {
   options: NumberOption[];
   isRequired?: boolean;
   style?: string;
-  isActiveError?: boolean;
+  errorMessage?: string;
   maxValue?: number;
   minValue?: number;
   formatWithCommas?: boolean;
@@ -34,7 +38,7 @@ const NumberWithSelect: FC<Props> = ({
   options,
   isRequired = false,
   style,
-  isActiveError = false,
+  errorMessage,
   maxValue,
   minValue = 0,
   formatWithCommas = false,
@@ -69,7 +73,9 @@ const NumberWithSelect: FC<Props> = ({
       digits = String(num);
     }
 
-    const nextDisplay = formatWithCommas ? formatNumberWithCommas(digits) : digits;
+    const nextDisplay = formatWithCommas
+      ? formatNumberWithCommas(digits)
+      : digits;
     setDisplay(nextDisplay);
     onValueChange(digits === "" ? undefined : Number(digits));
 
@@ -116,7 +122,9 @@ const NumberWithSelect: FC<Props> = ({
               onChange={(e) => handleSelectChange(e.target.value)}
             >
               {options.length ? (
-                options.map((opt) => <SelectItem key={opt.key}>{opt.title}</SelectItem>)
+                options.map((opt) => (
+                  <SelectItem key={opt.key}>{opt.title}</SelectItem>
+                ))
               ) : (
                 <SelectItem key="-1" isDisabled>
                   گزینه‌ای وجود ندارد
@@ -126,10 +134,10 @@ const NumberWithSelect: FC<Props> = ({
           </div>
         }
         autoComplete="off"
-        isInvalid={isRequired && isActiveError && (!value || +value < (minValue ?? 0))}
+        isInvalid={!!errorMessage?.length}
         errorMessage={
-          isRequired && isActiveError && (!value || +value < (minValue ?? 0)) ? (
-            <FieldErrorText error={`${label} الزامی است`} />
+          errorMessage?.length ? (
+            <FieldErrorText error={errorMessage} />
           ) : undefined
         }
       />

@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useRef } from "react";
-import { Button } from "@heroui/react";
 import { LuImagePlus } from "react-icons/lu";
 import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 import toast from "react-hot-toast";
+import OptionButton from "@/components/ui/buttons/OptionButton";
 
 interface Props {
   onSelect: (files: File[]) => void;
@@ -33,7 +33,9 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
 
     if (files.length > limit) {
       toast.error(
-        `حداکثر ${limit} ${type === "image" ? "تصویر" : "ویدیو"} میتوانید همزمان انتخاب کنید`
+        `حداکثر ${limit} ${
+          type === "image" ? "تصویر" : "ویدیو"
+        } میتوانید همزمان انتخاب کنید`
       );
       e.target.value = "";
       return;
@@ -68,24 +70,21 @@ const MediaPicker: React.FC<Props> = ({ onSelect }) => {
           </div>
         </div>
         <div className="w-full sm:w-fit flex gap-2">
-          <Button
+          <OptionButton
             size="sm"
-            color="secondary"
             className="w-full"
-            variant="flat"
-            onPress={() => handlePick("image")}
-          >
-            <LuImagePlus className="text-xl" />
-          </Button>
-          <Button
+            icon={<LuImagePlus className="text-xl" />}
+            title=""
+            onClick={() => handlePick("image")}
+          />
+
+          <OptionButton
             size="sm"
-            color="secondary"
             className="w-full"
-            variant="flat"
-            onPress={() => handlePick("video")}
-          >
-            <AiOutlineVideoCameraAdd className="text-xl" />
-          </Button>
+            icon={<AiOutlineVideoCameraAdd className="text-xl" />}
+            title=""
+            onClick={() => handlePick("video")}
+          />
         </div>
       </div>
     </>

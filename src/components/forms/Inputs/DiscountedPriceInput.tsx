@@ -1,9 +1,9 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Discount } from "@/core/types"; 
-import PriceInput from "@/components/forms/Inputs/PriceInput";
+import { Discount } from "@/core/types";
 import DiscountInput from "./DiscountInput";
+import NumberInput from "@/components/ui/inputs/NumberInput";
 
 type Props = {
   price: number;
@@ -12,7 +12,7 @@ type Props = {
   onPriceChange: (price: number) => void;
   onDiscountChange: (type: Discount, value: number) => void;
   style?: string;
-  isActiveError?: boolean;
+  errorMessage?: string;
 };
 
 const DiscountedPriceInput: FC<Props> = ({
@@ -22,7 +22,7 @@ const DiscountedPriceInput: FC<Props> = ({
   onPriceChange,
   onDiscountChange,
   style,
-  isActiveError = false,
+  errorMessage,
 }) => {
   const [discountType, setDiscount] = useState<Discount>("percent");
   const [discountValue, setDiscountValue] = useState(0);
@@ -48,10 +48,15 @@ const DiscountedPriceInput: FC<Props> = ({
   return (
     <div className={!style ? "flex flex-col md:flex-row gap-4" : style}>
       <div className="w-full flex flex-col items-start">
-        <PriceInput
+        <NumberInput
+          label="قیمت"
+          placeholder="10,000"
+          suffix="تومان"
+          min={0}
+          isRequired
           value={price}
           onChange={onPriceChange}
-          isActiveError={isActiveError}
+          errorMessage={errorMessage}
         />
 
         {price > 0 && discountValue > 0 ? (

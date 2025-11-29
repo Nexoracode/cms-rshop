@@ -13,7 +13,7 @@ type Props = {
   placeholder?: string;
   withAddButton?: boolean;
   onAddNewClick?: () => void;
-  isActiveError?: boolean;
+  errorMessage?: string;
   isDisabled?: boolean;
   withAddModal?: boolean; // ✅ جدید
 };
@@ -25,7 +25,7 @@ const CategorySelect: React.FC<Props> = ({
   placeholder = "دسته‌بندی مورد نظر را انتخاب کنید",
   withAddButton = false,
   onAddNewClick,
-  isActiveError = false,
+  errorMessage,
   isDisabled = false,
   withAddModal = false, // مقدار پیش‌فرض
 }) => {
@@ -39,7 +39,7 @@ const CategorySelect: React.FC<Props> = ({
   }, [categoriesData?.data]);
 
   return (
-    <div className="w-full flex items-end gap-2">
+    <div className={`w-full flex ${errorMessage?.length ? "items-center" : "items-end"} gap-2`}>
       <SelectBox
         label={label}
         value={value ? String(value) : ""}
@@ -57,7 +57,7 @@ const CategorySelect: React.FC<Props> = ({
             ? { onClick: onAddNewClick, label: "+ افزودن" }
             : undefined
         }
-        isActiveError={isActiveError}
+        errorMessage={errorMessage}
       />
 
       {/* ✅ فقط وقتی با prop فعال شد */}

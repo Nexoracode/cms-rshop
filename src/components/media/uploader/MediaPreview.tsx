@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { LuPin } from "react-icons/lu";
-import { Media } from "@/components/media/types";
 
 interface Props {
-  items: Media[];
+  items: any[];
   onItemPinned: (id: number) => void;
   onRemove: (id: number) => void;
   pinnedId?: number | null;
@@ -15,7 +14,7 @@ const MediaPreview: React.FC<Props> = ({
   onRemove,
   onItemPinned,
 }) => {
-  const [imgs, setImgs] = useState<Media[]>(items);
+  const [imgs, setImgs] = useState<any[]>(items);
 
   useEffect(() => {
     setImgs(items);

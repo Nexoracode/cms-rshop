@@ -1,36 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Checkbox, NumberInput, Select, SelectItem } from "@heroui/react";
-import PriceWithDiscountInput from "../../../forms/Inputs/DiscountedPriceInput";
-import { useEffect, useState } from "react";
-import { ProductForm } from "./types/product";
-import NumberWithSelect from "../../../forms/Inputs/NumberWithSelect";
+//? Components
+import BaseCard from "@/components/ui/BaseCard";
+import TextInput from "@/components/ui/inputs/TextInput";
+import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput";
+import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
+import FormActionButtons from "@/components/common/FormActionButtons";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
-import SizeGuide from "./SizeGuide/SizeGuide";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
-import { useRouter, useSearchParams } from "next/navigation";
+import ToggleableSection from "./helpers/ToggleableSection";
+import SizeGuide from "./SizeGuide/SizeGuide";
+import BrandSelect from "../brands/BrandSelect";
+import CategorySelect from "../categories/CategorySelect";
+const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
+  ssr: false,
+});
+//? Icons
+import { LuScrollText } from "react-icons/lu";
+import { FiShoppingBag } from "react-icons/fi";
+//? Hooks
 import {
   useGetOneProduct,
   useProductCreate,
   useProductUpdate,
 } from "@/core/hooks/api/products/useProduct";
-import ToggleableSection from "./helpers/ToggleableSection";
-import TextInputWithError from "@/components/ui/inputs/TextInput";
-import CategorySelect from "../categories/CategorySelect";
-import BaseCard from "@/components/ui/BaseCard";
-import { LuScrollText } from "react-icons/lu";
-import { FiShoppingBag } from "react-icons/fi";
-import FormActionButtons from "@/components/common/FormActionButtons";
-import BrandSelect from "../brands/BrandSelect";
-import { stripHtml } from "@/core/utils/helper";
+import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { validateProduct } from "./product-validation";
+import { CreateProductRequest } from "./types/product";
+import { mapAPIToLocalProduct } from "./product-helpers";
 
-const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
-  ssr: false,
-});
-
-const initProduct: ProductForm = {
+const initialProductForm: CreateProductRequest = {
   name: "",
   price: 10000,
   stock: 0,
@@ -51,14 +55,13 @@ const initProduct: ProductForm = {
   media_pinned_id: null,
   helper_id: 0,
   brand_id: 0,
-  medias: [],
+  //medias: [],
 };
 
 const ProductInitialForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit_id");
-  const [product, setProduct] = useState<ProductForm>(initProduct);
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
   const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
@@ -66,37 +69,30 @@ const ProductInitialForm = () => {
     editId ? +editId : undefined
   );
 
+  const {
+    form,
+    errors,
+    handleFieldChange,
+    canSubmit,
+    setForm,
+    setHasSubmitted,
+  } = useFormHandler(initialProductForm, {
+    onValidate: validateProduct,
+    runValidationOnChange: true,
+  });
+
   useEffect(() => {
-    if (oneProduct?.data) setProduct(oneProduct.data);
-  }, [oneProduct]);
+    if (oneProduct?.data) {
+      console.log("Data =>", oneProduct.data);
+      console.log("Data Maped =>", mapAPIToLocalProduct(oneProduct.data));
+      
+      setForm(mapAPIToLocalProduct(oneProduct.data));
+    }
+  }, [oneProduct?.data]);
 
   const handleChangeProduct = () => {
-    // بررسی فیلدها
-    const hasMedia =
-      ((product.media_ids?.length || oneProduct?.data?.medias?.length) ?? 0) >
-      0;
-    const hasPinned = !!product.media_pinned_id;
-    const hasName = !!product.name?.trim();
-    const hasPrice = Number(product.price) > 0;
-    const hasCategory = Number(product.category_id) > 0;
-    const hasWeight = Number(product.weight) > 0;
-    const hasBrand = Number(product.brand_id) > 0;
-    const hasDesc = stripHtml(product.description || "").length > 0;
-
-    const {
-      medias,
-      helper,
-      media_pinned,
-      brand,
-      category,
-      updated_at,
-      created_at,
-      variants,
-      id,
-      specifications,
-      attribute_nodes,
-      ...sendableData
-    } = product;
+    console.log(form);
+    if (!canSubmit()) return;
 
     const {
       brand_id,
@@ -110,9 +106,9 @@ const ProductInitialForm = () => {
       weight,
       stock,
       ...other
-    } = sendableData;
+    } = form;
 
-    const result: ProductForm = {
+    const result: any = {
       discount_percent: (discount_percent && +discount_percent) || 0,
       discount_amount: (discount_amount && +discount_amount) || 0,
       ...(helper_id ? { helper_id: +helper_id } : {}),
@@ -125,7 +121,10 @@ const ProductInitialForm = () => {
       stock: +stock,
       ...other,
     };
-    console.log("Result  =>", result);
+
+    console.log("Form => ", form);
+    console.log("Result => ", result);
+
     /* if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
@@ -159,94 +158,75 @@ const ProductInitialForm = () => {
       >
         <ImagesProducts
           onMedia_ids={(datas) => {
-            setProduct((prev) => ({ ...prev, media_ids: datas }));
+            handleFieldChange("media_ids", datas);
           }}
           onMedia_pinned_id={(id) => {
-            setProduct((prev) => ({ ...prev, media_pinned_id: id }));
+            handleFieldChange("media_pinned_id", id);
           }}
-          initialMedias={product.medias}
-          initialPinnedId={product.media_pinned_id}
-          isActiveError={false}
+          initialMedias={form.medias || []}
+          initialPinnedId={form.media_pinned_id}
+          errorMessage={errors.media_ids || errors.media_pinned_id}
         />
-        <hr />
-        <TextInputWithError
+        <TextInput
           label="نام"
           placeholder="نام محصول را وارد کنید"
-          value={product.name}
-          onChange={(name) => setProduct((p) => ({ ...p, name }))}
+          value={form.name}
+          onChange={(name) => handleFieldChange("name", name)}
           isRequired
-          //isActiveError={isSubmitAttempted && !fieldErrors.hasName}
           inputAlign="right"
           allowEnglishOnly={false}
+          errorMessage={errors.name}
         />
 
-        <PriceWithDiscountInput
-          price={product.price}
-          discount_amount={product.discount_amount ?? 0}
-          discount_percent={product.discount_percent ?? 0}
-          onPriceChange={(price) =>
-            setProduct((prev) => ({ ...prev, price: +price }))
-          }
+        <DiscountedPriceInput
+          price={form.price}
+          discount_amount={form.discount_amount ?? 0}
+          discount_percent={form.discount_percent ?? 0}
+          onPriceChange={(price) => handleFieldChange("price", +price)}
           onDiscountChange={(type, value) =>
-            setProduct((prev) => ({
-              ...prev,
-              discount_amount: type === "amount" ? +value : 0,
-              discount_percent: type === "percent" ? +value : 0,
-            }))
+            handleFieldChange(
+              type === "amount" ? "discount_amount" : "discount_percent",
+              +value
+            )
           }
-          isActiveError={false}
-          /* isActiveError={
-            isSubmitAttempted &&
-            (!fieldErrors.hasPrice || !fieldErrors.hasPinned)
-          } */
+          errorMessage={errors.price}
         />
 
         <div className="flex flex-col md:flex-row gap-4">
           <CategorySelect
-            value={product.category_id}
-            onChange={(val) =>
-              setProduct((p) => ({ ...p, category_id: Number(val) }))
-            }
+            value={form.category_id}
+            onChange={(val) => handleFieldChange("category_id", Number(val))}
             withAddModal
+            errorMessage={errors.category_id}
           />
 
           <BrandSelect
-            value={product.brand_id}
-            onChange={(val) =>
-              setProduct((p) => ({ ...p, brand_id: Number(val) }))
-            }
+            value={form.brand_id}
+            onChange={(val) => handleFieldChange("brand_id", Number(val))}
             withAddModal
+            errorMessage={errors.brand_id}
           />
         </div>
 
         <NumberWithSelect
           isRequired
           label="وزن"
-          value={product.weight}
-          onValueChange={(val) =>
-            setProduct((prev) => ({ ...prev, weight: val ?? 0 }))
-          }
-          selectedKey={product.weight_unit}
-          onSelectChange={(val) =>
-            setProduct((prev) => ({ ...prev, weight_unit: val }))
-          }
+          value={form.weight}
+          onValueChange={(val) => handleFieldChange("weight", val ?? 0)}
+          selectedKey={form.weight_unit}
+          onSelectChange={(val) => handleFieldChange("weight_unit", val)}
           options={[
             { key: "گرم", title: "گرم" },
             { key: "کیلوگرم", title: "کیلوگرم" },
           ]}
-          isActiveError={false}
+          errorMessage={errors.weight}
         />
 
         <TextEditor
-          value={product.description ?? ""}
-          onChange={(content) =>
-            setProduct((prev) => ({
-              ...prev,
-              description: content,
-            }))
-          }
+          value={form.description ?? ""}
+          onChange={(content) => handleFieldChange("description", content)}
           label="توضیحات"
-          isActiveError={false}
+          errorMessage={errors.description}
         />
       </BaseCard>
 
@@ -259,16 +239,16 @@ const ProductInitialForm = () => {
         wrapperContents
       >
         <ShippingModeSwitcher
-          defaultMood={product.requires_preparation ? "mood2" : "mood1"}
-          onChangeType={(type) =>
-            setProduct((prev) => ({
+          defaultMood={form.requires_preparation ? "mood2" : "mood1"}
+          onChangeType={(type) => {
+            handleFieldChange((prev) => ({
               ...prev,
               requires_preparation: type === "mood2" ? true : false,
               preparation_days:
-                type === "mood2" ? product.preparation_days || 1 : 0,
+                type === "mood2" ? form.preparation_days || 1 : 0,
               is_same_day_shipping: type === "mood2" ? false : true,
-            }))
-          }
+            }));
+          }}
           title="شرایط ارسال"
           textMood1="محصول نیاز به زمان آماده‌ سازی دارد"
           textMood2="می‌خواهم محصول “ارسال امروز” داشته باشد."
@@ -278,9 +258,9 @@ const ProductInitialForm = () => {
               label="زمان آماده‌سازی"
               placeholder="3"
               minValue={1}
-              value={product.preparation_days ?? 0}
+              value={form.preparation_days ?? 0}
               onValueChange={(val) =>
-                setProduct((prev) => ({ ...prev, preparation_days: +val }))
+                handleFieldChange("preparation_days", +val)
               }
               endContent={
                 <div className="pointer-events-none flex items-center">
@@ -299,12 +279,12 @@ const ProductInitialForm = () => {
         />
         <OrderLimitSwitcher
           title="محدودیت تعداد برای هر سفارش"
-          initialMode={product.order_limit > 0 ? "enabled" : "disabled"}
+          initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
           onChange={(val) =>
-            setProduct((prev) => ({
-              ...prev,
-              order_limit: val === "enabled" ? +product.order_limit || 1 : 0,
-            }))
+            handleFieldChange(
+              "order_limit",
+              val === "enabled" ? +form.order_limit || 1 : 0
+            )
           }
         >
           <NumberInput
@@ -312,36 +292,25 @@ const ProductInitialForm = () => {
             label="حداکثر تعداد قابل سفارش"
             placeholder="3"
             minValue={1}
-            value={product.order_limit ?? 0}
+            value={form.order_limit ?? 0}
             labelPlacement="outside"
-            onValueChange={(val) =>
-              setProduct((prev) => ({
-                ...prev,
-                order_limit: +val || 1,
-              }))
-            }
+            onValueChange={(val) => handleFieldChange("order_limit", +val || 1)}
           />
         </OrderLimitSwitcher>
         <ToggleableSection
           label="موجودی نامحدود"
           onOptionalToggle={(checked) =>
-            setProduct((prev) => ({
-              ...prev,
-              is_limited_stock: checked,
-              stock: checked ? 0 : +product.stock,
-            }))
+            handleFieldChange("is_limited_stock", checked)
           }
-          isChecked={product.is_limited_stock}
+          isChecked={form.is_limited_stock}
         >
           <NumberInput
             hideStepper
             label="موجودی"
             placeholder="1"
             minValue={0}
-            value={product.stock}
-            onValueChange={(val) =>
-              setProduct((prev) => ({ ...prev, stock: +val }))
-            }
+            value={form.stock}
+            onValueChange={(val) => handleFieldChange("stock", +val)}
             labelPlacement="outside"
           />
         </ToggleableSection>
@@ -353,13 +322,10 @@ const ProductInitialForm = () => {
           label="وضعیت نمایش در وبسایت"
           placeholder="انتخاب وضعیت محصول"
           className="!mt-8"
-          selectedKeys={[product.is_visible ? "visible" : "hidden"]}
+          selectedKeys={[form.is_visible ? "visible" : "hidden"]}
           onSelectionChange={(keys) => {
             const value = Array.from(keys)[0];
-            setProduct((prev) => ({
-              ...prev,
-              is_visible: value === "visible",
-            }));
+            handleFieldChange("is_visible", value === "visible");
           }}
         >
           <SelectItem key="visible">
@@ -371,18 +337,18 @@ const ProductInitialForm = () => {
         </Select>
 
         <Checkbox
-          isSelected={product.is_featured}
+          isSelected={form.is_featured}
           onValueChange={(is_featured) =>
-            setProduct((prev) => ({ ...prev, is_featured }))
+            handleFieldChange("is_featured", is_featured)
           }
         >
           <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
         </Checkbox>
         <SizeGuide
           onHelperId={(id) => {
-            setProduct((prev) => ({ ...prev, helper_id: id }));
+            handleFieldChange("helper_id", id);
           }}
-          sizeGuide={product.helper}
+          sizeGuide={form.helper}
         />
       </BaseCard>
 

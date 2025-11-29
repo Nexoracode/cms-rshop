@@ -1,45 +1,49 @@
-// promotions-validation.ts
+import { stripHtml } from "@/core/utils/helper";
 
-import { ProductForm } from "./types/product";
-import { PromotionFormConfig } from "../promotions-types";
-
-export function validatePromotionForm(
-  form: ProductForm,
-  config: PromotionFormConfig,
-  scope: "general" | "products" | "categories" | "customers"
-) {
+export function validateProduct(product: any) {
   const errs: Record<string, string> = {};
 
-  if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
-  
-  if (!form.starts_at || !form.ends_at) errs.starts_at = "تاریخ شروع و پایان الزامی است.";
+  const hasMedia =
+    ((product.media_ids?.length || product.medias?.length) ?? 0) > 0;
 
-  if (config.code && !form.code?.trim()) {
-    errs.code = "کد تخفیف الزامی است.";
+  const hasPinned = !!product.media_pinned_id;
+  const hasName = !!product.name?.trim();
+  const hasPrice = Number(product.price) > 0;
+  const hasCategory = Number(product.category_id) > 0;
+  const hasWeight = Number(product.weight) > 0;
+  const hasBrand = Number(product.brand_id) > 0;
+  const hasDesc = stripHtml(product.description || "").length > 0;
+
+  if (!hasName) {
+    errs.name = "نام محصول الزامی است.";
   }
 
-  if (config.discount_fields) {
-    if (!form.percent_discount && !form.amount_discount) {
-      errs.discount = "حداقل یکی از درصد یا مبلغ تخفیف را وارد کنید.";
-    }
+  if (!hasPrice) {
+    errs.price = "قیمت معتبر نیست.";
   }
 
-  if (scope === "products" && config.scope.includes("product")) {
-    if (!form.allowed_products || form.allowed_products.length === 0) {
-      errs.allowed_products = "حداقل یک محصول باید انتخاب شود.";
-    }
+  if (!hasCategory) {
+    errs.category_id = "انتخاب دسته بندی الزامی است.";
   }
 
-  if (scope === "categories" && config.scope.includes("category")) {
-    if (!form.allowed_categories || form.allowed_categories.length === 0) {
-      errs.allowed_categories = "حداقل یک دسته‌بندی باید انتخاب شود.";
-    }
+  if (!hasWeight) {
+    errs.weight = "وزن معتبر نیست.";
   }
 
-  if (scope === "customers" && config.scope.includes("user")) {
-    if (!form.allowed_users || form.allowed_users.length === 0) {
-      errs.allowed_users = "حداقل یک کاربر باید انتخاب شود.";
-    }
+  if (!hasBrand) {
+    errs.brand_id = "انتخاب برند الزامی است.";
+  }
+
+  if (!hasDesc) {
+    errs.description = "توضیحات نمی‌تواند خالی باشد.";
+  }
+
+  if (!hasMedia) {
+    errs.media_ids = "حداقل یک تصویر باید انتخاب شود.";
+  }
+
+  if (!hasPinned) {
+    errs.media_pinned_id = "پین کردن یک تصویر الزامی است.";
   }
 
   return errs;
