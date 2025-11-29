@@ -54,7 +54,7 @@ const initialProductForm: CreateProductRequest = {
   media_ids: [],
   media_pinned_id: null,
   helper_id: 0,
-  brand_id: 0
+  brand_id: 0,
 };
 
 const ProductInitialForm = () => {
@@ -75,6 +75,7 @@ const ProductInitialForm = () => {
     canSubmit,
     setForm,
     setHasSubmitted,
+    handleMultipleFieldsChange,
   } = useFormHandler(initialProductForm, {
     onValidate: validateProduct,
     runValidationOnChange: true,
@@ -83,7 +84,7 @@ const ProductInitialForm = () => {
   useEffect(() => {
     if (oneProduct?.data) {
       console.log(oneProduct.data);
-      
+
       setForm(mapAPIToLocalProduct(oneProduct.data));
     }
   }, [oneProduct?.data]);
@@ -242,13 +243,12 @@ const ProductInitialForm = () => {
         <ShippingModeSwitcher
           defaultMood={form.requires_preparation ? "mood2" : "mood1"}
           onChangeType={(type) => {
-            handleFieldChange((prev) => ({
-              ...prev,
-              requires_preparation: type === "mood2" ? true : false,
+            handleMultipleFieldsChange({
+              requires_preparation: type === "mood2",
               preparation_days:
                 type === "mood2" ? form.preparation_days || 1 : 0,
-              is_same_day_shipping: type === "mood2" ? false : true,
-            }));
+              is_same_day_shipping: type !== "mood2",
+            });
           }}
           title="شرایط ارسال"
           textMood1="محصول نیاز به زمان آماده‌ سازی دارد"

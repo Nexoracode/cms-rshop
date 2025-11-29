@@ -21,6 +21,16 @@ export function useFormHandler<T extends Record<string, any>>(
   );
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  const handleMultipleFieldsChange = (updatedFields: Partial<T>) => {
+    setForm((prev) => {
+      const newForm = { ...prev, ...updatedFields };
+      if (runValidationOnChange && onValidate && hasSubmitted) {
+        setErrors(onValidate(newForm));
+      }
+      return newForm;
+    });
+  };
+
   const handleFieldChange = (field: keyof T, value: any) => {
     // use functional update to avoid lost updates when calling this function multiple times synchronously
     setForm((prev) => {
@@ -63,6 +73,7 @@ export function useFormHandler<T extends Record<string, any>>(
     setHasSubmitted,
     setErrors,
     handleFieldChange,
+    handleMultipleFieldsChange,
     validateForm,
     canSubmit,
   };

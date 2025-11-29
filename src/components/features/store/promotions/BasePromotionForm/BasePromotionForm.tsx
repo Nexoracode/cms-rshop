@@ -74,6 +74,7 @@ export function BasePromotionForm({
     canSubmit,
     setForm,
     setHasSubmitted,
+    handleMultipleFieldsChange,
   } = useFormHandler<PromotionForm>(initialPromotionForm, {
     onValidate: (f) => validatePromotionForm(f, config, scope),
     runValidationOnChange: true,
@@ -197,8 +198,10 @@ export function BasePromotionForm({
           enableRange
           valueIsoRange={{ start: form.starts_at, end: form.ends_at }}
           onChangeIsoRange={(range) => {
-            handleFieldChange("starts_at", range?.start);
-            handleFieldChange("ends_at", range?.end);
+            handleMultipleFieldsChange({
+              starts_at: range?.start,
+              ends_at: range?.end,
+            });
           }}
           showMonthAndYearPickers
           className="w-full"
