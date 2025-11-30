@@ -13,38 +13,21 @@ import { TbFileText } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { useFormHandler } from "@/core/hooks/common/useFormHandler";
 import Textarea from "@/components/ui/inputs/Textarea";
+import { validateSizeGuide } from "./sizeguide-validation";
+import { SizeGuideType } from "./type";
 
-// --- تایپ ساده فرم
-type SizeGuideForm = {
-  id?: number;
-  title: string;
-  description: string;
-  image: File | string | null;
-};
-
-const initialForm: SizeGuideForm = {
-  id: undefined,
+const initialForm: SizeGuideType = {
+  id: null,
   title: "",
   description: "",
   image: null,
 };
 
-// ولیدیشن ساده (مثل بقیه فرم‌ها)
-function validateSizeGuide(f: SizeGuideForm) {
-  const errs: Record<string, string> = {};
-  if (!f.title?.trim()) errs.title = "عنوان الزامی است.";
-  if (!f.description?.trim()) errs.description = "توضیحات الزامی است.";
-  const hasImage =
-    typeof f.image === "string" ? !!f.image : f.image instanceof File;
-  if (!hasImage) errs.image = "تصویر الزامی است.";
-  return errs;
-}
-
 type Props = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (datas: any) => void;
-  defaultValues?: SizeGuideForm | null;
+  defaultValues?: SizeGuideType | null;
   isNew?: boolean;
 };
 
@@ -56,7 +39,7 @@ export default function AddNewSizeGuideModal({
   isNew = true,
 }: Props) {
   const { form, errors, handleFieldChange, canSubmit, setForm, setErrors } =
-    useFormHandler<SizeGuideForm>(initialForm, {
+    useFormHandler<SizeGuideType>(initialForm, {
       onValidate: validateSizeGuide,
       runValidationOnChange: true,
     });

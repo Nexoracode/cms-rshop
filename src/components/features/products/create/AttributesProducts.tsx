@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import toast from "react-hot-toast";
 import VariantEditorCard from "./AttributesProduct/VariantEditorCard";
 import { useUpdateVariantProduct } from "@/core/hooks/api/attributes/useVariantProduct";
