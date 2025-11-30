@@ -1,24 +1,22 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox, NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
-  useGetAllCategories,
   useCreateCategory,
   useUpdateCategory,
   useCategoryImageUpload,
 } from "@/core/hooks/api/categories/useCategory";
-import { flattenCategories } from "@/core/utils/flattenCategories";
 import { useFormHandler } from "@/core/hooks/common/useFormHandler";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
-import SelectBox from "@/components/ui/inputs/SelectBox";
 import { BiCategoryAlt } from "react-icons/bi";
 import toast from "react-hot-toast";
 import { validateCategory } from "./category-validation";
 import TextInput from "@/components/ui/inputs/TextInput";
 import FieldErrorText from "@/components/forms/FieldErrorText";
+import CategorySelect from "./CategorySelect";
 
 const initialCategoryForm = {
   title: "",
@@ -29,7 +27,14 @@ const initialCategoryForm = {
   mediaFile: null,
 };
 
-const AddNewCategoryModal = ({
+type AddNewCategoryModalProps = {
+  categoryId?: number;
+  defaultValues?: any;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
+};
+
+const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   categoryId,
   defaultValues,
   isOpen,
@@ -37,7 +42,6 @@ const AddNewCategoryModal = ({
 }) => {
   const [isParent, setIsParent] = useState(true);
 
-  const { data: categoriesData } = useGetAllCategories();
   const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
   const { mutateAsync: updateCategory, isPending: isUpdating } =
@@ -77,11 +81,6 @@ const AddNewCategoryModal = ({
 
     setIsParent(parent_id === 0);
   }, [defaultValues]);
-
-  const flatOptions = useMemo(
-    () => flattenCategories(categoriesData?.data),
-    [categoriesData?.data]
-  );
 
   const handleSubmit = async () => {
     if (!canSubmit()) return;
@@ -127,8 +126,6 @@ const AddNewCategoryModal = ({
     }
   };
 
-  console.log(errors);
-
   return (
     <BaseModal
       isOpen={isOpen}
@@ -144,12 +141,10 @@ const AddNewCategoryModal = ({
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
       onConfirm={handleSubmit}
-      isConfirmDisabled={isCreating || isUpdating || isUploading}
       size="xl"
       icon={<BiCategoryAlt />}
     >
       <div className="flex flex-col gap-6">
-
         <div>
           <div
             className={`flex flex-col gap-4 p-4 border-1.5 rounded-2xl ${
@@ -158,18 +153,16 @@ const AddNewCategoryModal = ({
                 : "border-slate-300"
             }`}
           >
-            <SelectBox
+            <CategorySelect
               label="دسته‌بندی والد"
-              value={isParent ? "" : String(form.parentId)}
-              disabled={isParent}
+              value={isParent ? null : form.parentId}
               onChange={(val) =>
                 handleFieldChange("parentId", Number(val) || 0)
               }
-              options={flatOptions.map((opt) => ({
-                key: opt.id,
-                title: opt.title,
-              }))}
               placeholder="انتخاب کنید"
+              isDisabled={isParent}
+              errorMessage={errors.parentId}
+              withAddModal={false}
             />
             <Checkbox
               isSelected={isParent}
@@ -188,6 +181,18 @@ const AddNewCategoryModal = ({
             {errors.parentId ? <FieldErrorText error={errors.parentId} /> : ""}
           </div>
         </div>
+
+        <ImageBoxUploader
+          changeStatusFile={form.mediaFile}
+          defaultImg={form.mediaId ? form.mediaId : null}
+          onFile={(file) =>
+            handleMultipleFieldsChange({
+              mediaFile: file,
+              mediaId: typeof file === "string" ? file : "",
+            })
+          }
+          errorMessage={errors.mediaId}
+        />
 
         <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
           <TextInput
@@ -217,17 +222,6 @@ const AddNewCategoryModal = ({
           value={+form.discount}
           onValueChange={(val) =>
             handleFieldChange("discount", String(val) || "0")
-          }
-        />
-
-        <ImageBoxUploader
-          changeStatusFile={form.mediaFile}
-          defaultImg={form.mediaId ? form.mediaId : null}
-          onFile={(file) =>
-            handleMultipleFieldsChange({
-              mediaFile: file,
-              mediaId: typeof file === "string" ? file : "",
-            })
           }
         />
       </div>
