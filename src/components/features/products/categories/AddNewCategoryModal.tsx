@@ -24,7 +24,7 @@ const initialCategoryForm = {
   discount: "0",
   parentId: 0,
   mediaId: "",
-  mediaFile: null,
+  mediaFile: null as File | null,
 };
 
 type AddNewCategoryModalProps = {
@@ -56,10 +56,15 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     handleFieldChange,
     handleMultipleFieldsChange,
     canSubmit,
+    setHasSubmitted,
   } = useFormHandler(initialCategoryForm, {
     onValidate: validateCategory,
     runValidationOnChange: true,
   });
+
+  useEffect(() => {
+    !isOpen && setHasSubmitted(false);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!defaultValues) {
