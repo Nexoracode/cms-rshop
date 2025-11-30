@@ -11,7 +11,7 @@ import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
-import VaraintsForm from "./VaraintsForm";
+import VaraintsForm from "./variant/VaraintsForm";
 
 const AttributesProducts = () => {
   const pathname = usePathname();

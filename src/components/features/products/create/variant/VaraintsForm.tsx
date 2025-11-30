@@ -1,7 +1,7 @@
 "use client";
 
 import FormActionButtons from "@/components/common/FormActionButtons";
-import VariantEditorCard from "./AttributesProduct/VariantEditorCard";
+import VariantEditorCard from "./VariantEditorCard";
 import { useState } from "react";
 import { useUpdateVariantProduct } from "@/core/hooks/api/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";

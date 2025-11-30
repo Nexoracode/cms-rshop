@@ -110,6 +110,7 @@ const VariantRowEditor: React.FC<Props> = ({
           }))
         }
         style="flex flex-col gap-4"
+        errorMessage={""}
       />
 
       <NumberInput
