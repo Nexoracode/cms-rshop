@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Checkbox, NumberInput, Select, SelectItem } from "@heroui/react";
+import { NumberInput } from "@heroui/react";
 //? Components
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -13,7 +13,6 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
 import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
 import ImagesProducts from "./ImagesProducts";
-import ToggleableSection from "./helpers/ToggleableSection";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import BrandSelect from "../brands/BrandSelect";
 import CategorySelect from "../categories/CategorySelect";
