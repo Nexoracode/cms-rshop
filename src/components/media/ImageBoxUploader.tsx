@@ -6,7 +6,7 @@ import { RiImageAddLine } from "react-icons/ri";
 import FieldErrorText from "../forms/FieldErrorText";
 
 type Props = {
-  title: string;
+  title?: string;
   textBtn?: string;
   onFile: (file: File) => void;
   changeStatusFile?: any;

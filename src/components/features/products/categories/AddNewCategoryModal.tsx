@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Checkbox, Input, NumberInput } from "@heroui/react";
+import { Checkbox, NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -11,59 +11,71 @@ import {
   useCategoryImageUpload,
 } from "@/core/hooks/api/categories/useCategory";
 import { flattenCategories } from "@/core/utils/flattenCategories";
-import toast from "react-hot-toast";
+import { useFormHandler } from "@/core/hooks/common/useFormHandler";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { BiCategoryAlt } from "react-icons/bi";
+import toast from "react-hot-toast";
+import { validateCategory } from "./category-validation";
+import TextInput from "@/components/ui/inputs/TextInput";
+import FieldErrorText from "@/components/forms/FieldErrorText";
 
-type Props = {
-  categoryId?: number;
-  defaultValues?: any;
-  isOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+const initialCategoryForm = {
+  title: "",
+  slug: "",
+  discount: "0",
+  parentId: 0,
+  mediaId: "",
+  mediaFile: null,
 };
 
-const AddNewCategoryModal: React.FC<Props> = ({
+const AddNewCategoryModal = ({
   categoryId,
   defaultValues,
   isOpen,
   onOpenChange,
 }) => {
-  const [data, setData] = useState({
-    title: "",
-    slug: "",
-    discount: "0",
-    parentId: 0,
-    mediaId: "",
-  });
-  const [isSelected, setIsSelected] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null | string>(null);
+  const [isParent, setIsParent] = useState(true);
 
   const { data: categoriesData } = useGetAllCategories();
-  const { mutateAsync: createCategory, isPending: isPendingCategory } =
+  const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
-  const { mutateAsync: updateCategory, isPending: isPendingUpdate } =
+  const { mutateAsync: updateCategory, isPending: isUpdating } =
     useUpdateCategory();
-  const { mutateAsync: uploadImageCategory, isPending: isPendingUpload } =
+  const { mutateAsync: uploadImageCategory, isPending: isUploading } =
     useCategoryImageUpload();
+
+  const {
+    form,
+    errors,
+    setForm,
+    handleFieldChange,
+    handleMultipleFieldsChange,
+    canSubmit,
+  } = useFormHandler(initialCategoryForm, {
+    onValidate: validateCategory,
+    runValidationOnChange: true,
+  });
 
   useEffect(() => {
     if (!defaultValues) {
-      setData({ title: "", slug: "", discount: "0", parentId: 0, mediaId: "" });
-      setImageFile(null);
-      setIsSelected(false);
+      setForm(initialCategoryForm);
+      setIsParent(true);
       return;
     }
+
     const { discount, media, slug, title, parent_id } = defaultValues;
-    setData({
+
+    setForm({
       title,
       slug,
       discount,
       parentId: parent_id,
-      mediaId: media?.id ?? -1,
+      mediaId: media?.id ?? "",
+      mediaFile: null,
     });
-    setIsSelected(parent_id === 0);
-    setImageFile(media?.url);
+
+    setIsParent(parent_id === 0);
   }, [defaultValues]);
 
   const flatOptions = useMemo(
@@ -71,54 +83,51 @@ const AddNewCategoryModal: React.FC<Props> = ({
     [categoriesData?.data]
   );
 
-  const isDisabled =
-    !data.title.trim() ||
-    !data.slug.trim() ||
-    (!isSelected && !data.parentId) ||
-    (categoryId ? false : !imageFile) ||
-    isPendingUpload ||
-    isPendingCategory ||
-    isPendingUpdate;
-
   const handleSubmit = async () => {
-    if (isDisabled) return;
+    if (!canSubmit()) return;
 
     try {
-      let mediaId = data.mediaId;
-      if (typeof imageFile !== "string" && imageFile) {
-        const formData = new FormData();
-        formData.append("files", imageFile);
-        const res = await uploadImageCategory(formData);
+      let finalMediaId = form.mediaId;
+
+      if (form.mediaFile) {
+        const fd = new FormData();
+        fd.append("files", form.mediaFile);
+        const res = await uploadImageCategory(fd);
         if (!res.ok) return;
-        mediaId = res.data[0].id;
+        finalMediaId = res.data[0].id;
       }
 
       const payload = {
-        title: data.title,
-        slug: data.slug,
-        discount: data.discount,
-        parentId: data.parentId,
-        mediaId,
         id: categoryId,
+        title: form.title,
+        slug: form.slug,
+        discount: form.discount,
+        parentId: form.parentId,
+        mediaId: finalMediaId,
       };
-      const response = categoryId
+
+      const res = categoryId
         ? await updateCategory(payload)
         : await createCategory(payload);
-      if (!response.ok) return;
+
+      if (!res.ok) return;
 
       toast.success(
         categoryId
           ? "دسته‌بندی با موفقیت ویرایش شد"
           : "دسته‌بندی با موفقیت افزوده شد"
       );
-      setData({ title: "", slug: "", discount: "0", parentId: 0, mediaId: "" });
-      setImageFile(null);
+
+      setForm(initialCategoryForm);
+      setIsParent(false);
       onOpenChange?.(false);
-    } catch (error) {
-      console.error("خطا:", error);
+    } catch (err) {
+      console.error(err);
       toast.error("خطای ناشناخته. با برنامه‌نویس تماس بگیرید");
     }
   };
+
+  console.log(errors);
 
   return (
     <BaseModal
@@ -135,76 +144,93 @@ const AddNewCategoryModal: React.FC<Props> = ({
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
       onConfirm={handleSubmit}
-      isConfirmDisabled={isDisabled}
+      isConfirmDisabled={isCreating || isUpdating || isUploading}
       size="xl"
       icon={<BiCategoryAlt />}
     >
-      {/* انتخاب دسته‌بندی مادر */}
-      <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-2xl">
-        <SelectBox
-          label="دسته‌بندی والد"
-          value={isSelected ? "" : String(data.parentId)}
-          onChange={(val) =>
-            setData((prev) => ({ ...prev, parentId: Number(val) || 0 }))
-          }
-          options={flatOptions.map((opt) => ({
-            key: opt.id,
-            title: opt.title,
-          }))}
-          disabled={isSelected}
-          placeholder="انتخاب کنید"
-        />
-        <Checkbox
-          isSelected={isSelected}
-          onValueChange={(val) => {
-            setIsSelected(val);
-            if (val) setData((prev) => ({ ...prev, parentId: 0 }));
-          }}
-        >
-          <span className="text-sm">دسته‌بندی مادر</span>
-        </Checkbox>
-      </div>
+      <div className="flex flex-col gap-6">
 
-      {/* عنوان و اسلاگ */}
-      <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
-        <Input
-          isRequired
-          label="عنوان"
+        <div>
+          <div
+            className={`flex flex-col gap-4 p-4 border-1.5 rounded-2xl ${
+              errors?.parentId?.length
+                ? "border border-red-300"
+                : "border-slate-300"
+            }`}
+          >
+            <SelectBox
+              label="دسته‌بندی والد"
+              value={isParent ? "" : String(form.parentId)}
+              disabled={isParent}
+              onChange={(val) =>
+                handleFieldChange("parentId", Number(val) || 0)
+              }
+              options={flatOptions.map((opt) => ({
+                key: opt.id,
+                title: opt.title,
+              }))}
+              placeholder="انتخاب کنید"
+            />
+            <Checkbox
+              isSelected={isParent}
+              onValueChange={(val) => {
+                setIsParent(val);
+                if (!val) {
+                  setForm((prev) => ({ ...prev, parentId: -1 }));
+                }
+                if (val) handleFieldChange("parentId", 0);
+              }}
+            >
+              <span className="text-sm">دسته‌بندی مادر</span>
+            </Checkbox>
+          </div>
+          <div className="mt-2">
+            {errors.parentId ? <FieldErrorText error={errors.parentId} /> : ""}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
+          <TextInput
+            label="عنوان"
+            placeholder="عنوان دسته بندی را وارد کنید"
+            value={form.title}
+            errorMessage={errors.title}
+            isRequired
+            onChange={(val) => handleFieldChange("title", val)}
+          />
+
+          <SlugInput
+            value={form.slug}
+            onChange={(val) => handleFieldChange("slug", val)}
+            isActiveError={true}
+            errorMessage={errors.slug}
+          />
+        </div>
+
+        <NumberInput
+          label="تخفیف"
           labelPlacement="outside"
-          value={data.title}
-          placeholder="نام دسته‌بندی"
-          onChange={(e) => setData({ ...data, title: e.target.value })}
+          hideStepper
+          minValue={0}
+          maxValue={99}
+          endContent={<>%</>}
+          value={+form.discount}
+          onValueChange={(val) =>
+            handleFieldChange("discount", String(val) || "0")
+          }
         />
-        <SlugInput
-          value={data.slug}
-          onChange={(val) => setData((prev) => ({ ...prev, slug: val }))}
-          isActiveError={true}
+
+        <ImageBoxUploader
+          changeStatusFile={form.mediaFile}
+          defaultImg={form.mediaId ? form.mediaId : null}
+          onFile={(file) =>
+            handleMultipleFieldsChange({
+              mediaFile: file,
+              mediaId: typeof file === "string" ? file : "",
+            })
+          }
         />
       </div>
-
-      {/* تخفیف */}
-      <NumberInput
-        hideStepper
-        labelPlacement="outside"
-        label="تخفیف"
-        placeholder="مقدار تخفیف"
-        minValue={0}
-        maxValue={99}
-        endContent={<>%</>}
-        value={+data.discount}
-        onValueChange={(value) =>
-          setData({ ...data, discount: String(value) || "0" })
-        }
-      />
-
-      {/* آپلود عکس */}
-      <ImageBoxUploader
-        textBtn="+ افزودن تصویر"
-        title="تصویر دسته‌بندی"
-        changeStatusFile={imageFile}
-        defaultImg={imageFile}
-        onFile={(file) => setImageFile(file)}
-      />
     </BaseModal>
   );
 };
