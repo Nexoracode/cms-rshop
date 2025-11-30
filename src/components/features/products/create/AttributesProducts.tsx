@@ -1,28 +1,17 @@
 "use client";
 
-import toast from "react-hot-toast";
-import VariantEditorCard from "./AttributesProduct/VariantEditorCard";
-import { useUpdateVariantProduct } from "@/core/hooks/api/attributes/useVariantProduct";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetOneProduct } from "@/core/hooks/api/products/useProduct";
 import { useAttributeContext } from "./context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState } from "react";
-import { replaceOrAddById } from "@/core/utils/replaceOrAddById";
 import SpecTree from "./helpers/SpecTree";
 import { BiCategoryAlt } from "react-icons/bi";
-import { scrollToFirstErrorField } from "@/core/utils/scrollToErrorField";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
-import FormActionButtons from "@/components/common/FormActionButtons";
-
-type VariantValidity = {
-  hasPrice: boolean;
-  hasStock: boolean;
-  hasSku: boolean;
-};
+import VaraintsForm from "./VaraintsForm";
 
 const AttributesProducts = () => {
   const pathname = usePathname();
@@ -32,19 +21,11 @@ const AttributesProducts = () => {
   const page = +(sp.get("edit_id") ?? 1);
   const { setAttrInfos } = useAttributeContext();
 
-  const [variants, setVariants] = useState<any[]>([]);
-  const [variantErrors, setVariantErrors] = useState<
-    Record<number, VariantValidity>
-  >({});
-  const [isVariantsSubmitAttempted, setIsVariantsSubmitAttempted] =
-    useState(false);
-
   const [activeTab, setActiveTab] = useState<string>(
     searchParams.get("tab") ?? "variants"
   );
 
   const { data: productData } = useGetOneProduct(page);
-  const updateVariantProductMutation = useUpdateVariantProduct();
 
   useEffect(() => {
     if (!productData?.data?.category_id) return;
@@ -54,7 +35,6 @@ const AttributesProducts = () => {
   }, [productData?.data, router, pathname, searchParams]);
 
   useEffect(() => {
-    setVariants([]);
     let attrValues: any[] = [];
 
     if (productData?.data?.attribute_nodes) {
@@ -75,73 +55,12 @@ const AttributesProducts = () => {
     setAttrInfos(attrValues);
   }, [productData?.data, setAttrInfos]);
 
-  const updateVariantProduct = async () => {
-    setIsVariantsSubmitAttempted(true);
-
-    const currentVariants: any[] = productData?.data?.variants ?? [];
-
-    const invalid = currentVariants.filter((v) => {
-      const e = variantErrors[v.id];
-      return !e || !e.hasPrice || !e.hasStock || !e.hasSku;
-    });
-
-    if (invalid.length) {
-      toast.error("لطفاً فیلدهای الزامی واریانت‌های ناقص را تکمیل کنید.");
-      setTimeout(() => scrollToFirstErrorField(), 0);
-      return;
-    }
-
-    Promise.all(
-      variants.map((val) =>
-        updateVariantProductMutation.mutateAsync({ id: val.id, data: val })
-      )
-    )
-      .then(() => {
-        toast.success("متغیرها با موفقیت بروزرسانی شدند");
-        setIsVariantsSubmitAttempted(false);
-        router.push("/admin/products");
-      })
-      .catch((err) => {
-        toast.error("مشکلی در آپدیت یکی از واریانت‌ها پیش آمد");
-        console.error(err);
-      });
-  };
-
   const tabItems: BaseTabItem[] = [
     {
       key: "variants",
       title: "تنوع ها محصول",
       showEmpty: !productData?.data?.variants?.length,
-      content: (
-        <>
-          <div
-            className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-6"
-            data-scroll-parent="true"
-          >
-            {productData?.data?.variants?.map((variant: any) => (
-              <VariantEditorCard
-                key={variant.id}
-                variantName={variant?.name}
-                defaultValues={variant}
-                onHandleSubmit={(data) =>
-                  setVariants((prev) => replaceOrAddById(prev, data))
-                }
-                isSubmitAttempted={isVariantsSubmitAttempted}
-                onValidityChange={(id, valid) =>
-                  setVariantErrors((prev) => ({ ...prev, [id]: valid }))
-                }
-              />
-            ))}
-          </div>
-
-          {(productData?.data?.variants?.length || variants.length) && (
-            <FormActionButtons
-              cancelHref="/admin/products"
-              onSubmit={updateVariantProduct}
-            />
-          )}
-        </>
-      ),
+      content: <VaraintsForm productData={productData} />,
     },
     {
       key: "sort-variants",
@@ -206,7 +125,6 @@ const AttributesProducts = () => {
               scroll: false,
             });
           }}
-          
           tabListClassName="flex-wrap md:flex-nowrap mb-4"
         />
       }
