@@ -34,17 +34,11 @@ const AddNewBrandModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-
-  const {
-    form,
-    errors,
-    handleFieldChange,
-    canSubmit,
-    setForm,
-  } = useFormHandler(initialBrandForm, {
-    onValidate: validateBrand,
-    runValidationOnChange: true,
-  });
+  const { form, errors, handleFieldChange, canSubmit, setForm, setErrors } =
+    useFormHandler(initialBrandForm, {
+      onValidate: validateBrand,
+      runValidationOnChange: true,
+    });
 
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useBrandUpload();
@@ -99,7 +93,10 @@ const AddNewBrandModal: React.FC<Props> = ({
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
+      onOpenChange={(val) => {
+        onOpenChange?.(val);
+        !val && setErrors({});
+      }}
       triggerProps={
         brandId
           ? null
@@ -114,24 +111,6 @@ const AddNewBrandModal: React.FC<Props> = ({
       icon={<TbBrandArc />}
     >
       <div className="flex flex-col gap-6">
-        <TextInput
-          label="نام برند"
-          placeholder="نام برند را وارد کنید"
-          value={form.name}
-          onChange={(val) => handleFieldChange("name", val)}
-          allowEnglishOnly={false}
-          isRequired
-          errorMessage={errors.name}
-        />
-
-        <SlugInput
-          value={form.slug}
-          onChange={(val) => handleFieldChange("slug", val)}
-          isActiveError={true}
-          isRequired
-          errorMessage={errors.slug}
-        />
-
         <ImageBoxUploader
           textBtn={form.logo ? "تغییر لوگو" : "+ افزودن لوگو"}
           title="لوگوی برند"
@@ -140,6 +119,26 @@ const AddNewBrandModal: React.FC<Props> = ({
           onFile={(file) => handleFieldChange("logo", file)}
           errorMessage={errors.logo}
         />
+
+        <div className="flex gap-4">
+          <TextInput
+            label="نام برند"
+            placeholder="نام برند را وارد کنید"
+            value={form.name}
+            onChange={(val) => handleFieldChange("name", val)}
+            allowEnglishOnly={false}
+            isRequired
+            errorMessage={errors.name}
+          />
+
+          <SlugInput
+            value={form.slug}
+            onChange={(val) => handleFieldChange("slug", val)}
+            isActiveError={true}
+            isRequired
+            errorMessage={errors.slug}
+          />
+        </div>
       </div>
     </BaseModal>
   );
