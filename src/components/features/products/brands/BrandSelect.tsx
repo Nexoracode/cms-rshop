@@ -15,6 +15,7 @@ type Props = {
   errorMessage?: string;
   isDisabled?: boolean;
   withAddModal?: boolean;
+  isRequired?: boolean;
 };
 
 const BrandSelect: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const BrandSelect: React.FC<Props> = ({
   errorMessage,
   isDisabled = false,
   withAddModal = false,
+  isRequired = false,
 }) => {
   const { data: allBrands } = useGetBrands();
 
@@ -57,6 +59,7 @@ const BrandSelect: React.FC<Props> = ({
             : undefined
         }
         errorMessage={errorMessage}
+        isRequired={isRequired}
       />
 
       {/* ✅ فقط اگر بخوای مدال رو فعال کنی */}

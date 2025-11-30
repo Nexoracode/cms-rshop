@@ -195,6 +195,7 @@ const ProductInitialForm = () => {
             onChange={(val) => handleFieldChange("category_id", Number(val))}
             withAddModal
             errorMessage={errors.category_id}
+            isRequired
           />
 
           <BrandSelect
@@ -202,6 +203,7 @@ const ProductInitialForm = () => {
             onChange={(val) => handleFieldChange("brand_id", Number(val))}
             withAddModal
             errorMessage={errors.brand_id}
+            isRequired
           />
         </div>
 
@@ -233,7 +235,6 @@ const ProductInitialForm = () => {
           icon: <FiShoppingBag />,
           showIconInActionSlot: true,
         }}
-        wrapperContents
       >
         <ShippingModeSwitcher
           defaultMood={form.requires_preparation ? "mood2" : "mood1"}
@@ -265,79 +266,66 @@ const ProductInitialForm = () => {
             />
           }
           children={
-            <OrderLimitSwitcher
-              title="محدودیت تعداد برای هر سفارش"
-              initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
-              onChange={(val) =>
-                handleFieldChange(
-                  "order_limit",
-                  val === "enabled" ? +form.order_limit || 1 : 0
-                )
-              }
-            >
-              <NumberInput
-                hideStepper
-                placeholder="3"
-                minValue={1}
-                value={form.order_limit ?? 0}
-                labelPlacement="outside"
-                onValueChange={(val) =>
-                  handleFieldChange("order_limit", +val || 1)
+            <>
+              <OrderLimitSwitcher
+                title="محدودیت تعداد برای هر سفارش"
+                initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
+                onChange={(val) =>
+                  handleFieldChange(
+                    "order_limit",
+                    val === "enabled" ? +form.order_limit || 1 : 0
+                  )
                 }
-                endContent={
-                  <span className="text-default-400 text-small">عدد</span>
+              >
+                <NumberInput
+                  hideStepper
+                  placeholder="3"
+                  minValue={1}
+                  value={form.order_limit ?? 0}
+                  labelPlacement="outside"
+                  onValueChange={(val) =>
+                    handleFieldChange("order_limit", +val || 1)
+                  }
+                  endContent={
+                    <span className="text-default-400 text-small">عدد</span>
+                  }
+                />
+              </OrderLimitSwitcher>
+              <OrderLimitSwitcher
+                title="نمایش در فروشگاه"
+                initialMode={form.is_visible ? "enabled" : "disabled"}
+                onChange={(val) =>
+                  handleFieldChange("is_visible", val === "enabled")
                 }
               />
-            </OrderLimitSwitcher>
+              <OrderLimitSwitcher
+                title="افزودن محصول به لیست پیشنهاد ویژه"
+                initialMode={form.is_featured ? "enabled" : "disabled"}
+                onChange={(val) =>
+                  handleFieldChange("is_featured", val === "enabled")
+                }
+              />
+              <OrderLimitSwitcher
+                title="موجودی نامحدود"
+                initialMode={form.is_limited_stock ? "enabled" : "disabled"}
+                hideChildrenWhenEnabled // وقتی فعال شد، input مخفی میشه
+                onChange={(val) =>
+                  handleFieldChange("is_limited_stock", val === "enabled")
+                }
+              >
+                <NumberInput
+                  hideStepper
+                  label="موجودی"
+                  placeholder="1"
+                  minValue={0}
+                  value={form.stock}
+                  labelPlacement="outside"
+                  onValueChange={(val) => handleFieldChange("stock", +val)}
+                />
+              </OrderLimitSwitcher>
+            </>
           }
         />
-
-        <ToggleableSection
-          label="موجودی نامحدود"
-          onOptionalToggle={(checked) =>
-            handleFieldChange("is_limited_stock", checked)
-          }
-          isChecked={form.is_limited_stock}
-        >
-          <NumberInput
-            hideStepper
-            label="موجودی"
-            placeholder="1"
-            minValue={0}
-            value={form.stock}
-            onValueChange={(val) => handleFieldChange("stock", +val)}
-            labelPlacement="outside"
-          />
-        </ToggleableSection>
-
-        <Select
-          dir="rtl"
-          labelPlacement="outside"
-          label="وضعیت نمایش در وبسایت"
-          placeholder="انتخاب وضعیت محصول"
-          className="!mt-8"
-          selectedKeys={[form.is_visible ? "visible" : "hidden"]}
-          onSelectionChange={(keys) => {
-            const value = Array.from(keys)[0];
-            handleFieldChange("is_visible", value === "visible");
-          }}
-        >
-          <SelectItem key="visible">
-            نمایش - در فروشگاه نمایش داده میشود
-          </SelectItem>
-          <SelectItem key="hidden">
-            عدم نمایش - در فروشگاه نمایش داده نمی شود
-          </SelectItem>
-        </Select>
-
-        <Checkbox
-          isSelected={form.is_featured}
-          onValueChange={(is_featured) =>
-            handleFieldChange("is_featured", is_featured)
-          }
-        >
-          <span className="text-sm">افزودن محصول به لیست پیشنهاد ویژه</span>
-        </Checkbox>
         <SizeGuide
           onHelperId={(id) => {
             handleFieldChange("helper_id", id);

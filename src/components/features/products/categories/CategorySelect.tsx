@@ -16,6 +16,7 @@ type Props = {
   errorMessage?: string;
   isDisabled?: boolean;
   withAddModal?: boolean; // ✅ جدید
+  isRequired?: boolean;
 };
 
 const CategorySelect: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const CategorySelect: React.FC<Props> = ({
   errorMessage,
   isDisabled = false,
   withAddModal = false, // مقدار پیش‌فرض
+  isRequired = false,
 }) => {
   const { data: categoriesData } = useGetAllCategories();
 
@@ -58,6 +60,7 @@ const CategorySelect: React.FC<Props> = ({
             : undefined
         }
         errorMessage={errorMessage}
+        isRequired={isRequired}
       />
 
       {/* ✅ فقط وقتی با prop فعال شد */}

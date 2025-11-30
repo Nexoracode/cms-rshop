@@ -3,10 +3,8 @@
 import { useDisclosure } from "@heroui/react";
 import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
 import GuideBoxInfo from "./GuideBoxInfo";
-import HeaderAction from "../../../../common/Card/HeaderAction";
 import { SizeGuideProp } from "./type";
 import { useEffect, useState } from "react";
-import { PiNoteDuotone } from "react-icons/pi";
 
 type Props = {
   sizeGuide?: SizeGuideProp | null;
@@ -24,8 +22,8 @@ const SizeGuide = ({ sizeGuide, onHelperId }: Props) => {
   }, [sizeGuide]);
 
   return (
-    <div className="flex flex-col gap-4 text-start">
-      <div className="flex items-center justify-between bg-slate-50 rounded-xl p-4">
+    <div className="flex flex-col gap-4 text-start mt-4">
+      <div className="flex items-center justify-between border border-slate-300 rounded-2xl p-2 text-gray-700">
         <p>راهنمای سایز</p>
         <AddNewSizeGuideModal
           isOpen={isOpen}

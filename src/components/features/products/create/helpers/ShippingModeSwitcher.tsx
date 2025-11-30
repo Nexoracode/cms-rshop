@@ -39,7 +39,7 @@ const ShippingModeSwitcher: FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 border border-slate-200 p-2 rounded-2xl">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between bg-white text-gray-700 border border-slate-200 p-3 rounded-2xl">
         <div className="flex flex-col">
           <p>{textMood2}</p>
