@@ -22,8 +22,8 @@ const SizeGuide = ({ sizeGuide, onHelperId }: Props) => {
   }, [sizeGuide]);
 
   return (
-    <div className="flex flex-col gap-4 text-start mt-4">
-      <div className="flex items-center justify-between border border-slate-300 rounded-2xl p-2 text-gray-700">
+    <div className={`flex flex-col gap-4 text-start mt-4 ${helper ? "border border-slate-200 rounded-2xl p-3" : ""}`}>
+      <div className="flex items-center justify-between border border-slate-200 rounded-2xl p-2 text-gray-700">
         <p>راهنمای سایز</p>
         <AddNewSizeGuideModal
           isOpen={isOpen}

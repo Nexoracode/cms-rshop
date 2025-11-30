@@ -265,6 +265,24 @@ const ProductInitialForm = () => {
               labelPlacement="outside"
             />
           }
+          childrenTop={
+            <>
+              <OrderLimitSwitcher
+                title="نمایش در فروشگاه"
+                initialMode={form.is_visible ? "enabled" : "disabled"}
+                onChange={(val) =>
+                  handleFieldChange("is_visible", val === "enabled")
+                }
+              />
+              <OrderLimitSwitcher
+                title="افزودن محصول به لیست پیشنهاد ویژه"
+                initialMode={form.is_featured ? "enabled" : "disabled"}
+                onChange={(val) =>
+                  handleFieldChange("is_featured", val === "enabled")
+                }
+              />
+            </>
+          }
           children={
             <>
               <OrderLimitSwitcher
@@ -291,20 +309,6 @@ const ProductInitialForm = () => {
                   }
                 />
               </OrderLimitSwitcher>
-              <OrderLimitSwitcher
-                title="نمایش در فروشگاه"
-                initialMode={form.is_visible ? "enabled" : "disabled"}
-                onChange={(val) =>
-                  handleFieldChange("is_visible", val === "enabled")
-                }
-              />
-              <OrderLimitSwitcher
-                title="افزودن محصول به لیست پیشنهاد ویژه"
-                initialMode={form.is_featured ? "enabled" : "disabled"}
-                onChange={(val) =>
-                  handleFieldChange("is_featured", val === "enabled")
-                }
-              />
               <OrderLimitSwitcher
                 title="موجودی نامحدود"
                 initialMode={form.is_limited_stock ? "enabled" : "disabled"}

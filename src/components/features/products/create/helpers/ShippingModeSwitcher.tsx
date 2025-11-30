@@ -9,6 +9,7 @@ type Props = {
   textMood2: string;
   textMood1: string;
   children: React.ReactNode;
+  childrenTop: React.ReactNode;
   childrenMood1: React.ReactNode;
   onChangeType: (type: ShippingMode) => void;
   defaultMood?: "mood1" | "mood2";
@@ -21,6 +22,7 @@ const ShippingModeSwitcher: FC<Props> = ({
   onChangeType,
   defaultMood,
   children,
+  childrenTop,
 }) => {
   const [selectedMode, setSelectedMode] = useState<ShippingMode>("mood2");
 
@@ -40,6 +42,8 @@ const ShippingModeSwitcher: FC<Props> = ({
 
   return (
     <div className="flex flex-col gap-4">
+      {childrenTop}
+
       <div className="flex items-center justify-between bg-white text-gray-700 border border-slate-200 p-3 rounded-2xl">
         <div className="flex flex-col">
           <p>{textMood2}</p>

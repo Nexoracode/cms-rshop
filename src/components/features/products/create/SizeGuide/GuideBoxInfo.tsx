@@ -18,8 +18,8 @@ const GuideBoxInfo: React.FC<Props> = ({
 }) => {
   return (
     <div className="w-full flex items-center justify-center">
-      <Card className="w-[270px] sm:w-full shadow-md border">
-        <CardBody className="flex flex-col w-full sm:flex-row p-2 sm:items-center gap-3 text-start">
+      <Card className="w-[270px] sm:w-full shadow-none">
+        <CardBody className="flex flex-col w-full sm:flex-row p-0 sm:items-center gap-3 text-start">
           <div>
             {imageFile && (
               <img
