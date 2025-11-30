@@ -65,7 +65,6 @@ export default function AddNewSizeGuideModal({
   const { mutate: createSizeGuid } = useCreateSizeGuid();
   const { mutate: updateSizeGuid } = useUpdateSizeGuid(defaultValues?.id || 0);
 
-  // وقتی defaultValues (ویرایش) میاد، فرم رو پر کن
   useEffect(() => {
     if (defaultValues) {
       setForm({
@@ -123,33 +122,16 @@ export default function AddNewSizeGuideModal({
       description: form.description,
       image: imageValue,
     };
-    if (form.id) payload.id = form.id;
+
+    form.id && (payload.id = form.id);
 
     if (form.id && !isNew) {
       updateSizeGuid(payload, {
-        onSuccess: (response: any) => {
-          toast.success("راهنمای سایز با موفقیت ویرایش شد.");
-          setForm(initialForm);
-          setErrors({});
-          onSubmit(response.data);
-          onOpenChange(false);
-        },
-        onError: () => {
-          toast.error("ویرایش ناموفق بود.");
-        },
+        onSuccess: (response: any) => onSubmit(response.data),
       });
     } else {
       createSizeGuid(payload, {
-        onSuccess: (response: any) => {
-          toast.success("راهنمای سایز با موفقیت ایجاد شد.");
-          setForm(initialForm);
-          setErrors({});
-          onSubmit(response.data);
-          onOpenChange(false);
-        },
-        onError: () => {
-          toast.error("ایجاد ناموفق بود.");
-        },
+        onSuccess: (response: any) => onSubmit(response.data),
       });
     }
   };
@@ -159,7 +141,7 @@ export default function AddNewSizeGuideModal({
       isOpen={isOpen}
       onOpenChange={(val) => {
         onOpenChange(val);
-        if (!val) setErrors({});
+        !val && setErrors({});
       }}
       triggerProps={undefined}
       title={form.id ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}

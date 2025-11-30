@@ -245,13 +245,11 @@ const ProductInitialForm = () => {
               is_same_day_shipping: type !== "mood2",
             });
           }}
-          title="شرایط ارسال"
           textMood1="محصول نیاز به زمان آماده‌ سازی دارد"
           textMood2="می‌خواهم محصول “ارسال امروز” داشته باشد."
           childrenMood1={
             <NumberInput
               hideStepper
-              label="زمان آماده‌سازی"
               placeholder="3"
               minValue={1}
               value={form.preparation_days ?? 0}
@@ -266,33 +264,34 @@ const ProductInitialForm = () => {
               labelPlacement="outside"
             />
           }
-          childrenMood2={
-            <small className="text-gray-500 mt-1">
-              برچسب “ارسال امروز” روی کارت این محصول در فروشگاه نمایش داده خواهد
-              شد.
-            </small>
+          children={
+            <OrderLimitSwitcher
+              title="محدودیت تعداد برای هر سفارش"
+              initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
+              onChange={(val) =>
+                handleFieldChange(
+                  "order_limit",
+                  val === "enabled" ? +form.order_limit || 1 : 0
+                )
+              }
+            >
+              <NumberInput
+                hideStepper
+                placeholder="3"
+                minValue={1}
+                value={form.order_limit ?? 0}
+                labelPlacement="outside"
+                onValueChange={(val) =>
+                  handleFieldChange("order_limit", +val || 1)
+                }
+                endContent={
+                  <span className="text-default-400 text-small">عدد</span>
+                }
+              />
+            </OrderLimitSwitcher>
           }
         />
-        <OrderLimitSwitcher
-          title="محدودیت تعداد برای هر سفارش"
-          initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
-          onChange={(val) =>
-            handleFieldChange(
-              "order_limit",
-              val === "enabled" ? +form.order_limit || 1 : 0
-            )
-          }
-        >
-          <NumberInput
-            hideStepper
-            label="حداکثر تعداد قابل سفارش"
-            placeholder="3"
-            minValue={1}
-            value={form.order_limit ?? 0}
-            labelPlacement="outside"
-            onValueChange={(val) => handleFieldChange("order_limit", +val || 1)}
-          />
-        </OrderLimitSwitcher>
+
         <ToggleableSection
           label="موجودی نامحدود"
           onOptionalToggle={(checked) =>
@@ -311,7 +310,6 @@ const ProductInitialForm = () => {
           />
         </ToggleableSection>
 
-        <hr />
         <Select
           dir="rtl"
           labelPlacement="outside"

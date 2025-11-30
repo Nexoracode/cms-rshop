@@ -30,11 +30,9 @@ const OrderLimitSwitcher: FC<Props> = ({ onChange, initialMode, children, title 
 
   return (
     <div
-      className={`flex flex-col justify-between ${
-        mode === "enabled" ? "bg-stone-50 rounded-xl p-2" : ""
-      }`}
+      className={`flex flex-col justify-between border border-slate-300 p-3 rounded-2xl`}
     >
-      <div className="flex items-center justify-between mb-4 text-gray-700">
+      <div className="flex items-center justify-between text-gray-700">
         <p>{title}</p>
         <Switch
           isSelected={mode === "enabled"}
@@ -43,7 +41,7 @@ const OrderLimitSwitcher: FC<Props> = ({ onChange, initialMode, children, title 
         />
       </div>
 
-      {mode === "enabled" && children}
+      {mode === "enabled" && <div className="mt-4">{children}</div>}
     </div>
   );
 };

@@ -6,23 +6,21 @@ import { Switch } from "@heroui/react";
 type ShippingMode = "mood1" | "mood2";
 
 type Props = {
-  title: string;
   textMood2: string;
   textMood1: string;
+  children: React.ReactNode;
   childrenMood1: React.ReactNode;
-  childrenMood2: React.ReactNode;
   onChangeType: (type: ShippingMode) => void;
   defaultMood?: "mood1" | "mood2";
 };
 
 const ShippingModeSwitcher: FC<Props> = ({
-  title,
   textMood2,
   textMood1,
   childrenMood1,
-  childrenMood2,
   onChangeType,
   defaultMood,
+  children,
 }) => {
   const [selectedMode, setSelectedMode] = useState<ShippingMode>("mood2");
 
@@ -41,40 +39,34 @@ const ShippingModeSwitcher: FC<Props> = ({
   };
 
   return (
-    <div>
-      <p>{title}</p>
-
-      <div className="flex flex-col gap-6 mt-3">
-        <div
-          className={
-            `flex flex-col justify-between ` +
-            (selectedMode === "mood2" ? "bg-stone-50 rounded-xl p-2" : "")
-          }
-        >
-          <div className="flex items-center justify-between mb-4 text-gray-700">
-            <p>{textMood1}</p>
-            <Switch
-              isSelected={selectedMode === "mood2"}
-              onValueChange={toggleMode}
-              size="sm"
-            />
-          </div>
-
-          {selectedMode === "mood2" ? childrenMood1 : null}
+    <div className="flex flex-col gap-4 border border-slate-200 p-2 rounded-2xl">
+      <div className="flex items-center justify-between bg-white text-gray-700 border border-slate-200 p-3 rounded-2xl">
+        <div className="flex flex-col">
+          <p>{textMood2}</p>
         </div>
+        <Switch
+          isSelected={selectedMode === "mood1"}
+          onValueChange={toggleMode}
+          size="sm"
+        />
+      </div>
 
+      <div className="flex flex-col justify-between bg-white border border-slate-200 p-3 rounded-2xl">
         <div className="flex items-center justify-between text-gray-700">
-          <div className="flex flex-col">
-            <p>{textMood2}</p>
-            {selectedMode === "mood1" ? childrenMood2 : null}
-          </div>
+          <p>{textMood1}</p>
           <Switch
-            isSelected={selectedMode === "mood1"}
+            isSelected={selectedMode === "mood2"}
             onValueChange={toggleMode}
             size="sm"
           />
         </div>
+
+        {selectedMode === "mood2" ? (
+          <div className="mt-4">{childrenMood1}</div>
+        ) : null}
       </div>
+
+      {children}
     </div>
   );
 };

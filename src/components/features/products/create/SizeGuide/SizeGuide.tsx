@@ -10,53 +10,45 @@ import { PiNoteDuotone } from "react-icons/pi";
 
 type Props = {
   sizeGuide?: SizeGuideProp | null;
-  onHelperId: (id: number) => void
+  onHelperId: (id: number) => void;
 };
 
 const SizeGuide = ({ sizeGuide, onHelperId }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [helper, setHelper] = useState<SizeGuideProp | null>(null)
+  const [helper, setHelper] = useState<SizeGuideProp | null>(null);
 
   useEffect(() => {
     if (sizeGuide) {
-      setHelper(sizeGuide)
+      setHelper(sizeGuide);
     }
-  }, [sizeGuide])
+  }, [sizeGuide]);
 
   return (
-    <>
-      <div dir="rtl" className="flex flex-col gap-4 text-start">
-        <HeaderAction
-          title="راهنمای سایز"
-          textBtn="+ افزودن راهنما"
-          isDisabled={!!helper}
-          onPress={onOpen}
-          size="sm"
-          icon={<PiNoteDuotone className="text-3xl"/>}
+    <div className="flex flex-col gap-4 text-start">
+      <div className="flex items-center justify-between bg-slate-50 rounded-xl p-4">
+        <p>راهنمای سایز</p>
+        <AddNewSizeGuideModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onSubmit={(datas) => {
+            onHelperId(datas.id);
+            setHelper(datas);
+          }}
+          isNew={!helper}
+          defaultValues={helper}
         />
-        {helper ? (
-          <GuideBoxInfo
-            title={helper.title}
-            description={helper.description}
-            imageFile={helper.image}
-            onEdit={onOpen}
-          />
-        ) : (
-          ""
-        )}
       </div>
-
-      <AddNewSizeGuideModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        onSubmit={(datas) => {
-          onHelperId(datas.id)
-          setHelper(datas)
-        }}
-        isNew={!helper}
-        defaultValues={helper}
-      />
-    </>
+      {helper ? (
+        <GuideBoxInfo
+          title={helper.title}
+          description={helper.description}
+          imageFile={helper.image}
+          onEdit={onOpen}
+        />
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 
