@@ -56,15 +56,11 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     handleFieldChange,
     handleMultipleFieldsChange,
     canSubmit,
-    setHasSubmitted,
+    setErrors,
   } = useFormHandler(initialCategoryForm, {
     onValidate: validateCategory,
     runValidationOnChange: true,
   });
-
-  useEffect(() => {
-    !isOpen && setHasSubmitted(false);
-  }, [isOpen]);
 
   useEffect(() => {
     if (!defaultValues) {
@@ -134,7 +130,10 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
+      onOpenChange={(val) => {
+        onOpenChange?.(val);
+        !val && setErrors({});
+      }}
       triggerProps={
         categoryId
           ? null
