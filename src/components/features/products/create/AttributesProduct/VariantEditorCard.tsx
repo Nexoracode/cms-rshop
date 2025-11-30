@@ -3,8 +3,8 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import { Input } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
-import PriceNumberInput from "../../../../ui/inputs/NumberInput";
-import PriceWithDiscountInput from "../../../../forms/Inputs/DiscountedPriceInput";
+import NumberInput from "@/components/ui/inputs/NumberInput";
+import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput";
 import BaseCard from "@/components/ui/BaseCard";
 
 type Variant = any;
@@ -70,21 +70,32 @@ const VariantRowEditor: React.FC<Props> = ({
     onHandleSubmit?.(obj as Variant);
   }, [formData, variantName]);
 
-  const isCardInvalid =
-    isSubmitAttempted && (!hasPrice || !hasSku || !hasStock);
-
   return (
     <BaseCard
-      className={`w-full transition-all ${
-        isCardInvalid ? "border-red-400" : ""
-      }`}
+      className="w-full transition-all"
       bodyClassName="flex flex-col gap-4 p-4"
     >
-      <div className="text-center text-gray-600 mb-2 border-b pb-4">
+      <div className="cursor-auto text-center text-gray-600 mb-2 p-2.5 px-6 border rounded-xl">
         {variantName}
       </div>
-      {/* قیمت + تخفیف */}
-      <PriceWithDiscountInput
+
+      <Input
+        isClearable
+        isRequired
+        labelPlacement="outside"
+        label="کد انبار"
+        placeholder="مثلاً SKU12345"
+        className="bg-white rounded-xl text-right"
+        value={formData.sku}
+        onChange={(e) =>
+          setFormData((prev: any) => ({ ...prev, sku: e.target.value }))
+        }
+        onClear={() => setFormData((prev: any) => ({ ...prev, sku: "" }))}
+        isInvalid={isSubmitAttempted && !hasSku}
+        errorMessage={""}
+      />
+
+      <DiscountedPriceInput
         price={formData.price}
         discount_amount={formData.discount_amount ?? 0}
         discount_percent={formData.discount_percent ?? 0}
@@ -98,12 +109,10 @@ const VariantRowEditor: React.FC<Props> = ({
             discount_percent: type === "percent" ? +value : 0,
           }))
         }
-        isActiveError={isSubmitAttempted && !hasPrice}
         style="flex flex-col gap-4"
       />
 
-      {/* موجودی */}
-      <PriceNumberInput
+      <NumberInput
         label="موجودی"
         placeholder="مثلاً 100"
         suffix="عدد"
@@ -111,24 +120,6 @@ const VariantRowEditor: React.FC<Props> = ({
         isRequired={false}
         value={formData.stock}
         onChange={(stock) => setFormData((prev: any) => ({ ...prev, stock }))}
-      />
-
-      {/* کد انبار */}
-      <Input
-        isClearable
-        isRequired
-        labelPlacement="outside"
-        label="کد انبار"
-        className="bg-white rounded-xl text-right"
-        value={formData.sku}
-        onChange={(e) =>
-          setFormData((prev: any) => ({ ...prev, sku: e.target.value }))
-        }
-        onClear={() => setFormData((prev: any) => ({ ...prev, sku: "" }))}
-        isInvalid={isSubmitAttempted && !hasSku}
-        errorMessage={
-          isSubmitAttempted && !hasSku ? "کد انبار الزامی است" : undefined
-        }
       />
     </BaseCard>
   );
