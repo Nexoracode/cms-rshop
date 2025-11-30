@@ -107,6 +107,15 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
               </p>
             </ModalHeader>
             <ModalBody>
+              <ImageBoxUploader
+                textBtn={datas.image ? "تغییر تصویر" : "افزودن تصویر"}
+                title="تصویر"
+                changeStatusFile={datas.image}
+                onFile={(file) =>
+                  setDatas((prev) => ({ ...prev, image: file }))
+                }
+                sizeText="سایز تصویر: 540x540"
+              />
               <Input
                 labelPlacement="outside"
                 isRequired
@@ -127,15 +136,6 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
                 onChange={(e) =>
                   setDatas((prev) => ({ ...prev, description: e.target.value }))
                 }
-              />
-              <ImageBoxUploader
-                textBtn={datas.image ? "تغییر تصویر" : "افزودن تصویر"}
-                title="تصویر"
-                changeStatusFile={datas.image}
-                onFile={(file) =>
-                  setDatas((prev) => ({ ...prev, image: file }))
-                }
-                sizeText="سایز تصویر: 540x540"
               />
             </ModalBody>
             <ModalFooter>
