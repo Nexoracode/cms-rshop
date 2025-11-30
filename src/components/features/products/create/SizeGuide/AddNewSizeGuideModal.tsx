@@ -1,163 +1,203 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button, Input, ModalFooter, Textarea } from "@heroui/react";
-import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
+import React, { useEffect } from "react";
+import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import { SizeGuideProp } from "./type";
-import { useCreateSizeGuid, useSizeGuideUpload, useUpdateSizeGuid } from "@/core/hooks/api/useSizeGuide";
+import {
+  useSizeGuideUpload,
+  useCreateSizeGuid,
+  useUpdateSizeGuid,
+} from "@/core/hooks/api/useSizeGuide";
+import toast from "react-hot-toast";
+import { TbFileText } from "react-icons/tb";
+import TextInput from "@/components/ui/inputs/TextInput";
+import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import Textarea from "@/components/ui/inputs/Textarea";
+
+// --- تایپ ساده فرم
+type SizeGuideForm = {
+  id?: number;
+  title: string;
+  description: string;
+  image: File | string | null;
+};
+
+const initialForm: SizeGuideForm = {
+  id: undefined,
+  title: "",
+  description: "",
+  image: null,
+};
+
+// ولیدیشن ساده (مثل بقیه فرم‌ها)
+function validateSizeGuide(f: SizeGuideForm) {
+  const errs: Record<string, string> = {};
+  if (!f.title?.trim()) errs.title = "عنوان الزامی است.";
+  if (!f.description?.trim()) errs.description = "توضیحات الزامی است.";
+  const hasImage =
+    typeof f.image === "string" ? !!f.image : f.image instanceof File;
+  if (!hasImage) errs.image = "تصویر الزامی است.";
+  return errs;
+}
 
 type Props = {
   isOpen: boolean;
-  onOpenChange: () => void;
-  onSubmit: (datas: SizeGuideProp) => void;
-  defaultValues?: SizeGuideProp | null;
-  isNew: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubmit: (datas: any) => void;
+  defaultValues?: SizeGuideForm | null;
+  isNew?: boolean;
 };
 
-const AddNewSizeGuideModal: React.FC<Props> = ({
+export default function AddNewSizeGuideModal({
   isOpen,
   onOpenChange,
   onSubmit,
   defaultValues,
-  isNew,
-}) => {
-  const [datas, setDatas] = useState<SizeGuideProp>({
-    id: 0,
-    title: "",
-    description: "",
-    image: null
-  });
-  
+  isNew = true,
+}: Props) {
+  const { form, errors, handleFieldChange, canSubmit, setForm, setErrors } =
+    useFormHandler<SizeGuideForm>(initialForm, {
+      onValidate: validateSizeGuide,
+      runValidationOnChange: true,
+    });
+
   const { mutate: uploadMedias } = useSizeGuideUpload();
   const { mutate: createSizeGuid } = useCreateSizeGuid();
   const { mutate: updateSizeGuid } = useUpdateSizeGuid(defaultValues?.id || 0);
 
+  // وقتی defaultValues (ویرایش) میاد، فرم رو پر کن
   useEffect(() => {
     if (defaultValues) {
-      setDatas(defaultValues)
+      setForm({
+        id: defaultValues.id,
+        title: defaultValues.title ?? "",
+        description: defaultValues.description ?? "",
+        image: defaultValues.image ?? null,
+      });
+    } else {
+      setForm(initialForm);
     }
-  }, [defaultValues])
+  }, [defaultValues, setForm]);
 
-  const handleUpload = () => {
-    if (!datas.image) return;
-    const formData = new FormData();
-    formData.append("files", datas.image);
+  // handler نهایی ثبت
+  const handleUpload = async () => {
+    if (!canSubmit()) return;
 
-    if (!isNew) {
-      if (typeof datas.image !== "object") {
-        const { id, ...rest } = datas;
-        updateSizeGuid(
-          { ...rest, image: datas.image },
-          {
-            onSuccess: (response) => {
-              onSubmit(response.data);
-              onOpenChange();
-            },
-          }
-        );
-      } else {
-        uploadMedias(formData, {
-          onSuccess: (response) => {
-            const img = response.data[0];
-            if (img) {
-              const { id, ...rest } = datas;
-              updateSizeGuid(
-                { ...rest, image: img.url },
-                {
-                  onSuccess: (response) => {
-                    onSubmit(response.data);
-                    onOpenChange();
-                  },
-                }
-              );
+    try {
+      // اگر تصویر فایل هست آپلود می‌کنیم و url رو جایگزین می‌کنیم
+      let imageValue: string | null =
+        typeof form.image === "string" ? form.image : "";
+
+      if (form.image && form.image instanceof File) {
+        const fd = new FormData();
+        fd.append("files", form.image);
+        uploadMedias(fd, {
+          onSuccess: (res: any) => {
+            const img = res?.data?.[0];
+            if (!img) {
+              toast.error("آپلود تصویر ناموفق بود.");
+              return;
             }
+            imageValue = img.url;
+            // بعد از آپلود، یا create یا update رو اجرا کن
+            proceedWithCreateOrUpdate(imageValue);
+          },
+          onError: () => {
+            toast.error("آپلود تصویر ناموفق بود.");
           },
         });
+      } else {
+        // تصویر از قبل URL داشته یا خالیه
+        imageValue = typeof form.image === "string" ? form.image : null;
+        proceedWithCreateOrUpdate(imageValue);
       }
+    } catch (err) {
+      console.error(err);
+      toast.error("خطای ناشناخته رخ داد.");
+    }
+  };
+
+  const proceedWithCreateOrUpdate = (imageValue: string | null) => {
+    const payload: any = {
+      title: form.title,
+      description: form.description,
+      image: imageValue,
+    };
+    if (form.id) payload.id = form.id;
+
+    if (form.id && !isNew) {
+      updateSizeGuid(payload, {
+        onSuccess: (response: any) => {
+          toast.success("راهنمای سایز با موفقیت ویرایش شد.");
+          setForm(initialForm);
+          setErrors({});
+          onSubmit(response.data);
+          onOpenChange(false);
+        },
+        onError: () => {
+          toast.error("ویرایش ناموفق بود.");
+        },
+      });
     } else {
-      uploadMedias(formData, {
-        onSuccess: (response) => {
-          const img = response.data[0];
-          if (img) {
-            const { id, ...rest } = datas;
-            createSizeGuid(
-              { ...rest, image: img.url },
-              {
-                onSuccess: (response) => {
-                  onSubmit(response.data);
-                  onOpenChange();
-                },
-              }
-            );
-          }
+      createSizeGuid(payload, {
+        onSuccess: (response: any) => {
+          toast.success("راهنمای سایز با موفقیت ایجاد شد.");
+          setForm(initialForm);
+          setErrors({});
+          onSubmit(response.data);
+          onOpenChange(false);
+        },
+        onError: () => {
+          toast.error("ایجاد ناموفق بود.");
         },
       });
     }
   };
 
   return (
-    <Modal dir="rtl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[700px] w-full">
-        {(onClose) => (
-          <>
-            <ModalHeader>
-              <p className="font-normal text-[16px]">
-                {defaultValues ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
-              </p>
-            </ModalHeader>
-            <ModalBody>
-              <ImageBoxUploader
-                textBtn={datas.image ? "تغییر تصویر" : "افزودن تصویر"}
-                title="تصویر"
-                changeStatusFile={datas.image}
-                onFile={(file) =>
-                  setDatas((prev) => ({ ...prev, image: file }))
-                }
-                sizeText="سایز تصویر: 540x540"
-              />
-              <Input
-                labelPlacement="outside"
-                isRequired
-                label="عنوان"
-                placeholder="عنوان را وارد کنید"
-                value={datas.title}
-                onChange={(e) =>
-                  setDatas((prev) => ({ ...prev, title: e.target.value }))
-                }
-              />
-              <Textarea
-                labelPlacement="outside"
-                isRequired
-                label="توضیحات"
-                placeholder="اگر توضیحی دارید اینجا وارد کنید"
-                maxLength={300}
-                value={datas.description}
-                onChange={(e) =>
-                  setDatas((prev) => ({ ...prev, description: e.target.value }))
-                }
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                className="w-full"
-                variant="solid"
-                color="secondary"
-                isDisabled={
-                  !datas.title.trim() ||
-                  !datas.description.trim() ||
-                  !datas.image
-                }
-                onPress={handleUpload}
-              >
-                تایید و ثبت
-              </Button>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
-  );
-};
+    <BaseModal
+      isOpen={isOpen}
+      onOpenChange={(val) => {
+        onOpenChange(val);
+        if (!val) setErrors({});
+      }}
+      triggerProps={undefined}
+      title={form.id ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
+      confirmText={form.id ? "ویرایش" : "ایجاد"}
+      onConfirm={handleUpload}
+      icon={<TbFileText />}
+    >
+      <div className="flex flex-col gap-6">
+        <ImageBoxUploader
+          textBtn={form.image ? "تغییر تصویر" : "افزودن تصویر"}
+          title="تصویر"
+          changeStatusFile={form.image}
+          defaultImg={typeof form.image === "string" ? form.image : null}
+          onFile={(file) => handleFieldChange("image", file)}
+          sizeText="سایز تصویر: 540x540"
+          errorMessage={errors.image}
+        />
 
-export default AddNewSizeGuideModal;
+        <TextInput
+          label="عنوان"
+          placeholder="عنوان را وارد کنید"
+          value={form.title}
+          onChange={(val) => handleFieldChange("title", val)}
+          isRequired
+          errorMessage={errors.title}
+        />
+
+        <Textarea
+          value={form.description}
+          onChange={(e: any) =>
+            handleFieldChange("description", e.target.value)
+          }
+          label="توضیحات"
+          placeholder="توضیحات را وارد کنید"
+          isRequired
+          errorMessage={errors.description}
+        />
+      </div>
+    </BaseModal>
+  );
+}

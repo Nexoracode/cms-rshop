@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import FieldErrorText from "@/components/forms/FieldErrorText";
 import { Textarea as TextareaHero } from "@heroui/react";
 
 type TextareaProps = {
@@ -11,6 +11,7 @@ type TextareaProps = {
   isRequired?: boolean;
   minRows?: number;
   maxRows?: number;
+  errorMessage?: string;
 };
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -19,27 +20,11 @@ const Textarea: React.FC<TextareaProps> = ({
   label = "آدرس کامل",
   placeholder = "آدرس کامل را وارد کنید",
   isRequired = false,
-  minRows = 2,
-  maxRows = 5,
+  minRows = 4,
+  maxRows = 10,
+  errorMessage = "",
 }) => {
-  const [error, setError] = useState("");
-
   const validate = (txt: string) => {
-    // خالی بودن => ایراد ندارد
-    if (!txt.trim()) {
-      setError("");
-      onChange("", true);
-      return;
-    }
-
-    // حداقل طول (اختیاری – هرطور خواستی تنظیم کن)
-    if (txt.trim().length < 10) {
-      setError("آدرس باید حداقل ۱۰ کاراکتر باشد");
-      onChange(txt, false);
-      return;
-    }
-
-    setError("");
     onChange(txt, true);
   };
 
@@ -52,8 +37,12 @@ const Textarea: React.FC<TextareaProps> = ({
       isRequired={isRequired}
       minRows={minRows}
       maxRows={maxRows}
-      isInvalid={!!error.length}
-      errorMessage={error}
+      isInvalid={!!errorMessage?.length}
+      errorMessage={
+        errorMessage?.length ? (
+          <FieldErrorText error={errorMessage} />
+        ) : undefined
+      }
       labelPlacement="outside"
     />
   );
