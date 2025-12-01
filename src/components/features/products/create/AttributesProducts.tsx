@@ -60,7 +60,7 @@ const AttributesProducts = () => {
       key: "variants",
       title: "تنوع ها محصول",
       showEmpty: !productData?.data?.variants?.length,
-      content: <VaraintsForm productData={productData} />,
+      content: <VaraintsForm initialVariants={productData?.data?.variants} />,
     },
     {
       key: "sort-variants",
