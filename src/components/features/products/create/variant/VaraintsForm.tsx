@@ -2,112 +2,86 @@
 
 import FormActionButtons from "@/components/common/FormActionButtons";
 import VariantEditorCard from "./VariantEditorCard";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useUpdateVariantProduct } from "@/core/hooks/api/attributes/useVariantProduct";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { replaceOrAddById } from "@/core/utils/replaceOrAddById";
-import { useListFormHandler } from "@/core/hooks/common/useListFormHandler";
+import { useListForm } from "@/core/hooks/common/form/useListForm";
 import { validateVariant } from "./variant-validation";
+import toast from "react-hot-toast";
 
 type VaraintsFormProps = {
-  initialVariants: any;
+  initialVariants: any[];
 };
 
-const VaraintsForm: React.FC<VaraintsFormProps> = ({ initialVariants }) => {
+const VaraintsForm: React.FC<VaraintsFormProps> = ({
+  initialVariants = [],
+}) => {
   const router = useRouter();
   const updateVariantProductMutation = useUpdateVariantProduct();
-  console.log(initialVariants);
-
-  // initial variants from productData (may be undefined at mount)
-  const initVariants = initialVariants ?? [];
 
   const {
-    list: variantsList,
-    setList: setVariantsList,
+    items: variantsList,
     updateItem,
-    validateAll,
-    canSubmit,
     errors,
-    hasSubmitted,
-    setHasSubmitted,
-  } = useListFormHandler<any>(initialVariants, {
+    reset,
+    canSubmit,
+    getChangedItems,
+  } = useListForm<any>(initialVariants, {
+    idKey: "id",
     runValidationOnChange: true,
-    // onValidate expects an array and returns map: index -> fieldErrors
-    onValidate: (items) => {
-      return items.map((it) => validateVariant(it));
-    },
+    onValidate: (items) => items.map(validateVariant),
   });
 
-  // keep changed payloads (only items changed will be submitted)
-  const [changed, setChanged] = useState<any[]>([]);
-
-  // when productData updates, sync into hook
-  useEffect(() => {
-    if (initVariants) {
-      setVariantsList(initVariants);
-      setChanged([]); // reset change buffer
-      setHasSubmitted(false);
-    }
-  }, [initVariants]);
-
-  // child onChange handler -> update list and mark changed
-  const handleChildChange = useCallback(
-    (index: number, patch: Partial<any>) => {
-      updateItem(index, patch);
-
-      setChanged((prev) => {
-        const updated = { id: variantsList[index].id, ...patch };
-        return replaceOrAddById(prev, updated);
-      });
-    },
-    [updateItem, variantsList]
-  );
-
-  // child push payload (optional)
-  const handleChildPush = useCallback((payload: any) => {
-    setChanged((prev) => replaceOrAddById(prev, payload));
-  }, []);
+  useEffect(() => reset(initialVariants), [initialVariants]);
 
   const handleSubmit = async () => {
+    // اول اعتبارسنجی
     console.log(errors);
-
+    
     if (!canSubmit()) return;
 
-    try {
+    // بعد تغییرات رو بگیر
+    const changed = getChangedItems();
+    if (changed.length === 0) {
+      toast.error("هیچ تغییری اعمال نشده است");
+      return;
+    }
+
+    console.log(changed);
+
+   /*  try {
       await Promise.all(
-        changed.map((val) =>
-          updateVariantProductMutation.mutateAsync({ id: val.id, data: val })
+        changed.map((item) =>
+          updateVariantProductMutation.mutateAsync({ id: item.id, data: item })
         )
       );
-      toast.success("متغیرها با موفقیت بروزرسانی شدند");
+      toast.success(`${changed.length} واریانت بروزرسانی شد`);
       router.push("/admin/products");
-    } catch (err) {
-      console.error(err);
-      toast.error("مشکلی در آپدیت یکی از واریانت‌ها پیش آمد");
-    }
+    } catch {
+      toast.error("خطا در ذخیره تغییرات");
+    } */
   };
 
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-6">
-        {variantsList?.map((variant: any, idx: number) => (
+        {variantsList.map((variant, index) => (
           <VariantEditorCard
-            key={variant.id ?? idx}
-            index={idx}
+            key={variant.id ?? index}
+            index={index}
             value={variant}
-            onChange={(i, patch) => handleChildChange(i, patch)}
-            onPushPayload={handleChildPush}
-            errors={errors[idx] || {}}
-            isSubmitAttempted={hasSubmitted}
+            onChange={updateItem}
+            errors={errors[index] ?? {}}
+            isSubmitAttempted={true}
           />
         ))}
       </div>
 
-      {variantsList?.length && (
+      {variantsList.length > 0 && (
         <FormActionButtons
           cancelHref="/admin/products"
-          onSubmit={handleSubmit}
+          onSubmit={() => handleSubmit()}
+          isSubmitting={updateVariantProductMutation.isPending}
         />
       )}
     </>

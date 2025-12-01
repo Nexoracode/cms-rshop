@@ -22,7 +22,7 @@ import {
   PromotionForm,
   PromotionFormConfig,
 } from "../promotions-types";
-import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { useForm } from "@/core/hooks/common/form/useForm";
 import { validatePromotionForm } from "./promotions-validation";
 import SelectableCustomersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 
@@ -75,7 +75,7 @@ export function BasePromotionForm({
     setForm,
     setHasSubmitted,
     handleMultipleFieldsChange,
-  } = useFormHandler<PromotionForm>(initialPromotionForm, {
+  } = useForm<PromotionForm>(initialPromotionForm, {
     onValidate: (f) => validatePromotionForm(f, config, scope),
     runValidationOnChange: true,
   });

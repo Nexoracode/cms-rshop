@@ -9,7 +9,7 @@ import {
   useUpdateCategory,
   useCategoryImageUpload,
 } from "@/core/hooks/api/categories/useCategory";
-import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { useForm } from "@/core/hooks/common/form/useForm";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { BiCategoryAlt } from "react-icons/bi";
 import toast from "react-hot-toast";
@@ -57,7 +57,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     handleMultipleFieldsChange,
     canSubmit,
     setErrors,
-  } = useFormHandler(initialCategoryForm, {
+  } = useForm(initialCategoryForm, {
     onValidate: validateCategory,
     runValidationOnChange: true,
   });

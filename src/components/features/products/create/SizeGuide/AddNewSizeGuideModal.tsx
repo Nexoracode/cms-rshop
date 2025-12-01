@@ -11,7 +11,7 @@ import {
 import toast from "react-hot-toast";
 import { TbFileText } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";
-import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { useForm } from "@/core/hooks/common/form/useForm";
 import Textarea from "@/components/ui/inputs/Textarea";
 import { validateSizeGuide } from "./sizeguide-validation";
 import { SizeGuideType } from "./type";
@@ -39,7 +39,7 @@ export default function AddNewSizeGuideModal({
   isNew = true,
 }: Props) {
   const { form, errors, handleFieldChange, canSubmit, setForm, setErrors } =
-    useFormHandler<SizeGuideType>(initialForm, {
+    useForm<SizeGuideType>(initialForm, {
       onValidate: validateSizeGuide,
       runValidationOnChange: true,
     });

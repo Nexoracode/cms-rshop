@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { TbBrandArc } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";
-import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateBrand } from "./brand-validation";
 
 type Props = {
@@ -34,8 +34,8 @@ const AddNewBrandModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const { form, errors, handleFieldChange, canSubmit, setForm, setErrors } =
-    useFormHandler(initialBrandForm, {
+  const { form, errors, handleFieldChange, canSubmit, setForm, reset } =
+    useForm(initialBrandForm, {
       onValidate: validateBrand,
       runValidationOnChange: true,
     });
@@ -95,7 +95,7 @@ const AddNewBrandModal: React.FC<Props> = ({
       isOpen={isOpen}
       onOpenChange={(val) => {
         onOpenChange?.(val);
-        !val && setErrors({});
+        !val && reset();
       }}
       triggerProps={
         brandId

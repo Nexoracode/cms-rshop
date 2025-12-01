@@ -28,7 +28,7 @@ import {
   useProductCreate,
   useProductUpdate,
 } from "@/core/hooks/api/products/useProduct";
-import { useFormHandler } from "@/core/hooks/common/useFormHandler";
+import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateProduct } from "./product-validation";
 import { CreateProductRequest } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
@@ -75,7 +75,7 @@ const ProductInitialForm = () => {
     setForm,
     setHasSubmitted,
     handleMultipleFieldsChange,
-  } = useFormHandler(initialProductForm, {
+  } = useForm(initialProductForm, {
     onValidate: validateProduct,
     runValidationOnChange: true,
   });
