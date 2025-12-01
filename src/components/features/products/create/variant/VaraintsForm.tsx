@@ -37,7 +37,7 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
   const handleSubmit = async () => {
     // اول اعتبارسنجی
     console.log(errors);
-    
+
     if (!canSubmit()) return;
 
     // بعد تغییرات رو بگیر
@@ -49,7 +49,7 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
 
     console.log(changed);
 
-   /*  try {
+    /*  try {
       await Promise.all(
         changed.map((item) =>
           updateVariantProductMutation.mutateAsync({ id: item.id, data: item })

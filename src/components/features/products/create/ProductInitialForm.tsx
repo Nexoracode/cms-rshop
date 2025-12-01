@@ -73,7 +73,6 @@ const ProductInitialForm = () => {
     handleFieldChange,
     canSubmit,
     setForm,
-    setHasSubmitted,
     handleMultipleFieldsChange,
   } = useForm(initialProductForm, {
     onValidate: validateProduct,
@@ -82,8 +81,6 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct?.data) {
-      console.log(oneProduct.data);
-
       setForm(mapAPIToLocalProduct(oneProduct.data));
     }
   }, [oneProduct?.data]);
