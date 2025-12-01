@@ -112,4 +112,4 @@ const VariantRowEditor: React.FC<Props> = ({
 };
 
 const VariantEditorCard = memo(VariantRowEditor);
-export default VariantEditorCard;
+export default VariantRowEditor;

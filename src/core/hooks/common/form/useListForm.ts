@@ -74,7 +74,7 @@ export const useListForm: UseListForm = (initialItems = [], options = {}) => {
     updateItem,
     setList,
     getChangedItems,
-    canSubmit: core.validateAndShowErrors,
+    canSubmit: core.triggerValidation,
     reset,
   };
 };

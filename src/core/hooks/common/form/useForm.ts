@@ -1,6 +1,7 @@
+// src/core/hooks/common/form/useForm.ts
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useFormCore } from "./useFormCore";
 
 export const useForm = <T extends Record<string, any>>(
@@ -11,51 +12,105 @@ export const useForm = <T extends Record<string, any>>(
   } = {}
 ) => {
   const core = useFormCore(initialForm, options);
+  const initialFormRef = useRef(initialForm);
 
-  const handleFieldChange = useCallback((field: keyof T, value: any) => {
-    core.setData((prev: T) => {
-      const newForm = { ...prev, [field]: value } as T;
+  // ردیابی تغییرات — دقیقاً مثل useListForm
+  const [changedFields, setChangedFields] = useState<Partial<T>>({});
 
-      core.markFieldAsTouched("", String(field));
+  const shallowEqual = (a: any, b: any): boolean => {
+    if (a === b) return true;
+    if (Array.isArray(a) && Array.isArray(b)) {
+      if (a.length !== b.length) return false;
+      return a.every((item, i) => item === b[i]);
+    }
+    return false;
+  };
 
-      if (core.shouldValidateLive) {
-        core.runValidation(newForm);
-      }
+  const handleFieldChange = useCallback(
+    (field: keyof T, value: T[keyof T]) => {
+      core.setData((prev: T) => {
+        const newForm = { ...prev, [field]: value } as T;
 
-      return newForm;
-    });
-  }, [core]);
+        // خط جادویی — همه چیز رو حل می‌کنه!
+        if (
+          !Object.is(prev[field], value) &&
+          JSON.stringify(prev[field]) !== JSON.stringify(value)
+        ) {
+          setChangedFields((c) => ({ ...c, [field]: value }));
+        } else {
+          setChangedFields((c) => {
+            const { [field]: _, ...rest } = c;
+            return Object.keys(rest).length === 0 ? {} : rest;
+          });
+        }
 
-  const handleMultipleFieldsChange = useCallback((fields: Partial<T>) => {
-    core.setData((prev: T) => {
-      const newForm = { ...prev, ...fields };
+        core.markFieldAsTouched("", String(field));
 
-      Object.keys(fields).forEach((key) => {
-        core.markFieldAsTouched("", key);
+        if (core.shouldValidateLive) {
+          core.runValidation(newForm);
+        }
+
+        return newForm;
       });
+    },
+    [core]
+  );
 
-      if (core.shouldValidateLive) {
-        core.runValidation(newForm);
-      }
+  const handleMultipleFieldsChange = useCallback(
+    (fields: Partial<T>) => {
+      core.setData((prev: T) => {
+        const newForm = { ...prev, ...fields };
 
-      return newForm;
-    });
-  }, [core]);
+        const actuallyChanged: Partial<T> = {};
+        for (const key in fields) {
+          if (prev[key] !== fields[key]) {
+            actuallyChanged[key] = fields[key];
+            core.markFieldAsTouched("", key);
+          }
+        }
 
-  const reset = useCallback((values?: T) => {
-    core.setData(values ?? initialForm);
-    core.resetForm();
-  }, [core, initialForm]);
+        if (Object.keys(actuallyChanged).length > 0) {
+          setChangedFields((c) => ({ ...c, ...actuallyChanged }));
+        }
+
+        if (core.shouldValidateLive) {
+          core.runValidation(newForm);
+        }
+
+        return newForm;
+      });
+    },
+    [core]
+  );
+
+  const getChangedFields = useCallback(() => changedFields, [changedFields]);
+  const hasChanges = Object.keys(changedFields).length > 0;
+
+  const reset = useCallback(
+    (values?: T) => {
+      core.setData(values ?? initialFormRef.current);
+      setChangedFields({});
+      core.resetForm();
+    },
+    [core]
+  );
+
+  const resetChanges = useCallback(() => {
+    setChangedFields({});
+  }, []);
 
   return {
     form: core.data as T,
     errors: core.errors as Record<string, string>,
     hasSubmitted: core.hasSubmitted,
+    hasChanges,
+    getChangedFields,
 
     setForm: core.setData,
     handleFieldChange,
     handleMultipleFieldsChange,
-    canSubmit: core.validateAndShowErrors,
+    canSubmit: core.triggerValidation,
     reset,
+    resetChanges
   };
 };

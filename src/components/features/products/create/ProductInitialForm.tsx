@@ -32,6 +32,7 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateProduct } from "./product-validation";
 import { CreateProductRequest } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
+import toast from "react-hot-toast";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -51,7 +52,7 @@ const initialProductForm: CreateProductRequest = {
   order_limit: 0,
   is_visible: false,
   media_ids: [],
-  media_pinned_id: null,
+  media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
 };
@@ -74,6 +75,8 @@ const ProductInitialForm = () => {
     canSubmit,
     setForm,
     handleMultipleFieldsChange,
+    getChangedFields,
+    resetChanges
   } = useForm(initialProductForm, {
     onValidate: validateProduct,
     runValidationOnChange: true,
@@ -81,15 +84,28 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct?.data) {
+      console.log(oneProduct?.data);
       setForm(mapAPIToLocalProduct(oneProduct.data));
+      setTimeout(() => {
+      resetChanges();
+    }, 0);
     }
   }, [oneProduct?.data]);
 
   const handleChangeProduct = () => {
-    console.log(form);
+    // این الان درست کار می‌کنه — از اولین کلیک!
+    console.log(getChangedFields());
     if (!canSubmit()) return;
 
-    const {
+    const changed = getChangedFields();
+    
+    if (Object.keys(changed).length === 0) {
+      toast.error("هیچ تغییری اعمال نشده است");
+      return;
+    }
+    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQ");
+    
+   /*  const {
       brand_id,
       category_id,
       discount_amount,
@@ -133,7 +149,7 @@ const ProductInitialForm = () => {
           }
         },
       });
-    }
+    } */
   };
 
   return (
@@ -147,11 +163,11 @@ const ProductInitialForm = () => {
         wrapperContents
       >
         <ImagesProducts
-          onMedia_ids={(datas) => {
-            handleFieldChange("media_ids", datas);
+          onMedia_ids={(datas) => {            
+            datas?.length && handleFieldChange("media_ids", datas);
           }}
-          onMedia_pinned_id={(id) => {
-            handleFieldChange("media_pinned_id", id);
+          onMedia_pinned_id={(id) => {            
+            id && handleFieldChange("media_pinned_id", id);
           }}
           initialMedias={oneProduct?.data?.medias || []}
           initialPinnedId={form.media_pinned_id}

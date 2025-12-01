@@ -1,67 +1,42 @@
-// src/hooks/form/useFormCore.ts
-import { useState, useCallback, useMemo } from "react";
+"use client";
+
+import { useState, useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 
-export type ValidateFn<T> = (
-  data: T
-) => Record<string, string> | Record<string, string>[];
+export type ValidateFn<T> =
+  | ((data: T) => Record<string, string>)
+  | ((data: T) => Record<string, string>[]);
 
-export function useFormCore<T>(
+export const useFormCore = <T extends Record<string, any>>(
   initialData: T,
   options: {
     runValidationOnChange?: boolean;
     onValidate?: ValidateFn<T>;
   } = {}
-) {
-  const { runValidationOnChange = true, onValidate } = options;
+) => {
+  const { runValidationOnChange = false, onValidate } = options;
 
   const [data, setData] = useState<T>(initialData);
-  const [errors, setErrors] = useState<ReturnType<ValidateFn<T>>>([] as any);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [touched, setTouched] = useState<Partial<Record<string, any>>>({});
 
-  const [touched, setTouched] = useState<any>(
-    Array.isArray(initialData) ? initialData.map(() => ({})) : {}
-  );
+  const initialDataRef = useRef(initialData);
 
-  // وقتی فیلدی تغییر کرد، touched می‌شه
-  const markFieldAsTouched = useCallback(
-    (path: number | string, field: string) => {
-      setTouched((prev: any) => {
-        if (Array.isArray(prev)) {
-          const index = path as number;
-          const item = prev[index] || {};
-          const updatedItem = { ...item, [field]: true };
-          return [
-            ...prev.slice(0, index),
-            updatedItem,
-            ...prev.slice(index + 1),
-          ];
-        } else {
-          return { ...prev, [field]: true };
-        }
-      });
-    },
-    []
-  );
-
-  // اجرای validation + فیلتر کردن خطاها بر اساس touched/hasSubmitted
+  // اجرای validation و فیلتر خطاها بر اساس touched/hasSubmitted
   const runValidation = useCallback(
     (currentData: T) => {
       if (!onValidate) {
-        setErrors(Array.isArray(initialData) ? [] : {});
-        return;
+        return Array.isArray(initialDataRef.current) ? [] : {};
       }
 
       const rawErrors = onValidate(currentData);
 
-      const filterVisible = (
+      const filterVisibleErrors = (
         itemErrors: Record<string, string>,
         index?: number
       ): Record<string, string> => {
         const visible: Record<string, string> = {};
-        const touchedObj = Array.isArray(touched)
-          ? touched[index ?? 0] || {}
-          : touched;
+        const touchedObj = Array.isArray(touched) ? touched[index ?? 0] ?? {} : touched;
 
         for (const field in itemErrors) {
           if (touchedObj[field] || hasSubmitted) {
@@ -71,51 +46,79 @@ export function useFormCore<T>(
         return visible;
       };
 
-      const filteredErrors = Array.isArray(rawErrors)
-        ? rawErrors.map((err, i) => filterVisible(err as any, i))
-        : filterVisible(rawErrors as any);
+      const filtered = Array.isArray(rawErrors)
+        ? rawErrors.map((err, i) => filterVisibleErrors(err as any, i))
+        : filterVisibleErrors(rawErrors as any);
 
-      setErrors(filteredErrors as any);
-      return filteredErrors;
+      return filtered;
     },
-    [onValidate, touched, hasSubmitted, initialData]
+    [onValidate, touched, hasSubmitted]
   );
 
-  const validateAndShowErrors = useCallback(() => {
-    setHasSubmitted(true);
-    runValidation(data);
+  // متد اصلی اعتبارسنجی — کاملاً همزمان و درست
+  const triggerValidation = useCallback((): boolean => {
+    setHasSubmitted(true); // اول اینو ست می‌کنیم
 
-    const hasVisibleError = Array.isArray(errors)
-      ? errors.some((err) => Object.keys(err).length > 0)
-      : Object.keys(errors).length > 0;
+    const currentErrors = runValidation(data);
 
-    if (hasVisibleError) {
-      toast.error("لطفا خطاها را برطرف کنید");
+    const hasError = Array.isArray(currentErrors)
+      ? currentErrors.some((err) => Object.keys(err).length > 0)
+      : Object.keys(currentErrors).length > 0;
+
+    if (hasError) {
+      toast.error("لطفاً خطاها را برطرف کنید");
       window.scrollTo({ top: 100, behavior: "smooth" });
     }
 
-    return !hasVisibleError;
-  }, [data, runValidation, errors]);
+    return !hasError;
+  }, [data, runValidation]);
+
+  // برای live validation بعد از اولین سابمیت
+  const shouldValidateLive = runValidationOnChange && hasSubmitted;
+
+  const markFieldAsTouched = useCallback((path: string | number, field: string) => {
+    setTouched((prev) => {
+      if (typeof path === "number") {
+        // برای لیست‌ها (useListForm)
+        const list = prev as any[];
+        const item = list[path] || {};
+        return [
+          ...list.slice(0, path),
+          { ...item, [field]: true },
+          ...list.slice(path + 1),
+        ];
+      } else {
+        // برای فرم ساده
+        return { ...prev, [field]: true };
+      }
+    });
+  }, []);
 
   const resetForm = useCallback(() => {
     setHasSubmitted(false);
-    setTouched(Array.isArray(initialData) ? initialData.map(() => ({})) : {});
-    setErrors(Array.isArray(initialData) ? [] : {});
-  }, [initialData]);
+    setTouched(Array.isArray(initialDataRef.current) ? initialDataRef.current.map(() => ({})) : {});
+    setData(initialDataRef.current);
+  }, []);
 
-  // فقط بعد از اولین submit، validation زنده فعال بشه (UX بهتر)
-  const shouldValidateLive = runValidationOnChange && hasSubmitted;
+  // برای ریست با مقدار جدید
+  const resetWith = useCallback((newData: T) => {
+    initialDataRef.current = newData;
+    setData(newData);
+    setHasSubmitted(false);
+    setTouched(Array.isArray(newData) ? newData.map(() => ({})) : {});
+  }, []);
 
   return {
     data,
     setData,
-    errors,
+    errors: runValidation(data), // همیشه خطاهای قابل نمایش
     hasSubmitted,
-    setHasSubmitted,
-    markFieldAsTouched, // برای useForm و useListForm
-    runValidation,
-    validateAndShowErrors,
     shouldValidateLive,
+
+    markFieldAsTouched,
+    runValidation,
+    triggerValidation,        // اینو استفاده کن برای canSubmit
     resetForm,
+    resetWith,
   };
-}
+};
