@@ -158,12 +158,10 @@ const ProductInitialForm = () => {
       >
         <ImagesProducts
           onMedia_ids={(datas) => {
-            console.log("Datas =>", datas);
-            datas?.length && handleFieldChange("media_ids", datas);
+            handleFieldChange("media_ids", datas);
           }}
           onMedia_pinned_id={(id) => {
-            console.log("Id =>", id);
-            id && handleFieldChange("media_pinned_id", id);
+            handleFieldChange("media_pinned_id", id);
           }}
           initialMedias={oneProduct?.data?.medias || []}
           initialPinnedId={form.media_pinned_id}
