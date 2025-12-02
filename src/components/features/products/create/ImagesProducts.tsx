@@ -25,13 +25,11 @@ const ImagesProducts = ({
   const [medias, setMedias] = useState<File[]>([]);
   const [mediasUrl, setMediasUrl] = useState<any[]>([]);
   const [pinnedId, setPinnedId] = useState<number | null>(null);
+  //
   const { mutate: uploadMedias, isPending } = useProductUpload();
 
   useEffect(() => {
-    if (!mediasUrl.length) {
-      console.log("DDDDDDDDD");
-      setMedias([]);
-    }
+    !mediasUrl.length && setMedias([]);
   }, [mediasUrl]);
 
   useEffect(() => {
@@ -47,19 +45,19 @@ const ImagesProducts = ({
   }, [medias]);
 
   useEffect(() => {
-    onMedia_ids(mediasUrl.map((media) => media.id));
+    //onMedia_ids(mediasUrl.map((media) => media.id));
 
     const images = mediasUrl.filter((media) => media.type === "image");
     if (!images.length) {
       setPinnedId(null);
-      onMedia_pinned_id(null);
+      //onMedia_pinned_id(null);
     }
 
     if (images.length && !pinnedId) {
       mediasUrl.some((media) => {
         if (media.type === "image") {
           setPinnedId(media.id);
-          onMedia_pinned_id(media.id);
+          //onMedia_pinned_id(media.id);
           return;
         }
       });

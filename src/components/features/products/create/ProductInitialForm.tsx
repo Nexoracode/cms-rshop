@@ -76,7 +76,6 @@ const ProductInitialForm = () => {
     setForm,
     handleMultipleFieldsChange,
     getChangedFields,
-    resetChanges
   } = useForm(initialProductForm, {
     onValidate: validateProduct,
     runValidationOnChange: true,
@@ -84,28 +83,23 @@ const ProductInitialForm = () => {
 
   useEffect(() => {
     if (oneProduct?.data) {
-      console.log(oneProduct?.data);
       setForm(mapAPIToLocalProduct(oneProduct.data));
-      setTimeout(() => {
-      resetChanges();
-    }, 0);
     }
   }, [oneProduct?.data]);
 
   const handleChangeProduct = () => {
     // این الان درست کار می‌کنه — از اولین کلیک!
-    console.log(getChangedFields());
     if (!canSubmit()) return;
 
     const changed = getChangedFields();
-    
+
     if (Object.keys(changed).length === 0) {
       toast.error("هیچ تغییری اعمال نشده است");
       return;
     }
     console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQ");
-    
-   /*  const {
+
+    /*  const {
       brand_id,
       category_id,
       discount_amount,
@@ -163,10 +157,12 @@ const ProductInitialForm = () => {
         wrapperContents
       >
         <ImagesProducts
-          onMedia_ids={(datas) => {            
+          onMedia_ids={(datas) => {
+            console.log("Datas =>", datas);
             datas?.length && handleFieldChange("media_ids", datas);
           }}
-          onMedia_pinned_id={(id) => {            
+          onMedia_pinned_id={(id) => {
+            console.log("Id =>", id);
             id && handleFieldChange("media_pinned_id", id);
           }}
           initialMedias={oneProduct?.data?.medias || []}
@@ -179,7 +175,10 @@ const ProductInitialForm = () => {
             label="نام"
             placeholder="نام محصول را وارد کنید"
             value={form.name}
-            onChange={(name) => handleFieldChange("name", name)}
+            onChange={(name) => {
+              console.log("Name =>", name);
+              handleFieldChange("name", name);
+            }}
             isRequired
             inputAlign="right"
             allowEnglishOnly={false}

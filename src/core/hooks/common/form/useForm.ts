@@ -31,16 +31,13 @@ export const useForm = <T extends Record<string, any>>(
       core.setData((prev: T) => {
         const newForm = { ...prev, [field]: value } as T;
 
-        // خط جادویی — همه چیز رو حل می‌کنه!
-        if (
-          !Object.is(prev[field], value) &&
-          JSON.stringify(prev[field]) !== JSON.stringify(value)
-        ) {
+        // تشخیص تغییر واقعی
+        if (prev[field] !== value) {
           setChangedFields((c) => ({ ...c, [field]: value }));
         } else {
-          setChangedFields((c) => {
+          setChangedFields((c: any) => {
             const { [field]: _, ...rest } = c;
-            return Object.keys(rest).length === 0 ? {} : rest;
+            return rest;
           });
         }
 
@@ -95,10 +92,6 @@ export const useForm = <T extends Record<string, any>>(
     [core]
   );
 
-  const resetChanges = useCallback(() => {
-    setChangedFields({});
-  }, []);
-
   return {
     form: core.data as T,
     errors: core.errors as Record<string, string>,
@@ -111,6 +104,5 @@ export const useForm = <T extends Record<string, any>>(
     handleMultipleFieldsChange,
     canSubmit: core.triggerValidation,
     reset,
-    resetChanges
   };
 };
