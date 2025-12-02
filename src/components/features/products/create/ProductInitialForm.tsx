@@ -117,7 +117,7 @@ const ProductInitialForm = () => {
       ...other,
     };
 
-    /* if (!editId) {
+    if (!editId) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
@@ -133,7 +133,7 @@ const ProductInitialForm = () => {
           }
         },
       });
-    } */
+    }
   });
 
   return (
