@@ -106,6 +106,7 @@ const ManualOrderForm = () => {
       {/* انتخاب کاربر */}
       <SelectableUsersBox
         onChange={(selectedUsers) => {
+          console.log(selectedUsers);
           const firstUserId = selectedUsers[0];
           handleFieldChange("userId", firstUserId || null);
         }}
@@ -136,9 +137,10 @@ const ManualOrderForm = () => {
 
       {/* انتخاب محصولات */}
       <SelectableProductsBoxWithQuantity
-        onChange={(selectedProducts) =>
-          handleFieldChange("products", selectedProducts)
-        }
+        onChange={(selectedProducts) => {
+          console.log(selectedProducts);
+          handleFieldChange("products", selectedProducts);
+        }}
         error={!!errors?.products?.length}
       />
 
