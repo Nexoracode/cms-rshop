@@ -24,8 +24,7 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
     updateItem,
     errors,
     reset,
-    canSubmit,
-    getChangedItems,
+    submit,
   } = useListForm<any>(initialVariants, {
     idKey: "id",
     runValidationOnChange: true,
@@ -34,22 +33,10 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
 
   useEffect(() => reset(initialVariants), [initialVariants]);
 
-  const handleSubmit = async () => {
-    // اول اعتبارسنجی
-    console.log(errors);
-
-    if (!canSubmit()) return;
-
-    // بعد تغییرات رو بگیر
-    const changed = getChangedItems();
-    if (changed.length === 0) {
-      toast.error("هیچ تغییری اعمال نشده است");
-      return;
-    }
-
+  const handleSubmit = submit(async (changed) => {
     console.log(changed);
-
-    /*  try {
+/* 
+    try {
       await Promise.all(
         changed.map((item) =>
           updateVariantProductMutation.mutateAsync({ id: item.id, data: item })
@@ -60,7 +47,7 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
     } catch {
       toast.error("خطا در ذخیره تغییرات");
     } */
-  };
+  });
 
   return (
     <>

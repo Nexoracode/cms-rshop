@@ -4,25 +4,14 @@ import { useCallback, useRef, useState } from "react";
 import { useFormCore } from "./useFormCore";
 import toast from "react-hot-toast";
 
-type UseListForm = <T extends Record<string, any>>(
-  initialItems?: T[],
-  options?: {
+export const useListForm = <T extends Record<string, any>>(
+  initialItems: T[] = [],
+  options: {
     runValidationOnChange?: boolean;
     onValidate?: (items: T[]) => Record<string, string>[];
     idKey?: keyof T | null;
-  }
+  } = {}
 ) => {
-  items: T[];
-  errors: Record<string, string>[];
-  hasSubmitted: boolean;
-  updateItem: (index: number, patch: Partial<T>) => void;
-  setList: (nextItems: T[]) => void;
-  getChangedItems: () => T[];
-  canSubmit: () => boolean;
-  reset: (items?: T[]) => void;
-};
-
-export const useListForm: UseListForm = (initialItems = [], options = {}) => {
   const { idKey = null, ...coreOptions } = options;
   const core = useFormCore(initialItems, coreOptions);
 
