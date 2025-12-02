@@ -4,8 +4,8 @@ export function validateVariant(form: any) {
   const hasSku = !!(form.sku ?? "").toString().trim();
   const hasPrice = Number(form.price) > 0;
 
-  if (!hasSku) errs.sku = "کد کالا (SKU) الزامی است.";
-  if (!hasPrice) errs.price = "قیمت باید بزرگتر از صفر باشد.";
+  if (!hasSku) errs.sku = "کد انبار الزامی است.";
+  if (!hasPrice) errs.price = "قیمت الزامی است.";
 
   return errs;
 }

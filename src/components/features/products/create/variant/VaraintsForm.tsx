@@ -4,10 +4,10 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import VariantEditorCard from "./VariantEditorCard";
 import { useEffect } from "react";
 import { useUpdateVariantProduct } from "@/core/hooks/api/attributes/useVariantProduct";
-import { useRouter } from "next/navigation";
 import { useListForm } from "@/core/hooks/common/form/useListForm";
 import { validateVariant } from "./variant-validation";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type VaraintsFormProps = {
   initialVariants: any[];
@@ -16,7 +16,7 @@ type VaraintsFormProps = {
 const VaraintsForm: React.FC<VaraintsFormProps> = ({
   initialVariants = [],
 }) => {
-  const router = useRouter();
+  const router = useRouter()
   const updateVariantProductMutation = useUpdateVariantProduct();
 
   const {
@@ -31,22 +31,27 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
     onValidate: (items) => items.map(validateVariant),
   });
 
-  useEffect(() => reset(initialVariants), [initialVariants]);
+  useEffect(() => {
+    console.log(initialVariants);
+    reset(initialVariants)
+  }, [initialVariants]);
 
   const handleSubmit = submit(async (changed) => {
-    console.log(changed);
-/* 
     try {
       await Promise.all(
-        changed.map((item) =>
-          updateVariantProductMutation.mutateAsync({ id: item.id, data: item })
-        )
+        changed.map((item) => {
+          const { id, attributes, ...datas } = item;
+          return updateVariantProductMutation.mutateAsync({
+            id: id,
+            data: datas,
+          });
+        })
       );
-      toast.success(`${changed.length} واریانت بروزرسانی شد`);
-      router.push("/admin/products");
+      toast.success(`${changed.length} تنوع محصول بروزرسانی شد`);
+      router.push("/admin/products")
     } catch {
       toast.error("خطا در ذخیره تغییرات");
-    } */
+    }
   });
 
   return (
@@ -59,7 +64,6 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
             value={variant}
             onChange={updateItem}
             errors={errors[index] ?? {}}
-            isSubmitAttempted={true}
           />
         ))}
       </div>

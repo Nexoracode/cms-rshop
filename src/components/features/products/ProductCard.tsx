@@ -40,6 +40,9 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
           loading="lazy"
           placeholder="blur"
           blurDataURL="/images/placeholder.png"
+          onError={(e) => {
+            e.currentTarget.src = "/images/placeholder.png";
+          }}
         />
         {!product.is_visible && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-600/60 text-white text-lg rounded-lg shadow-lg">
