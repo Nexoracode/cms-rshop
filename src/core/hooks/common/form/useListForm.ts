@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useFormCore } from "./useFormCore";
+import toast from "react-hot-toast";
 
 type UseListForm = <T extends Record<string, any>>(
   initialItems?: T[],
@@ -28,44 +29,57 @@ export const useListForm: UseListForm = (initialItems = [], options = {}) => {
   const initialItemsRef = useRef(initialItems);
   const [changedMap, setChangedMap] = useState<Record<string, any>>({});
 
-  const updateItem = useCallback((index: number, patch: Partial<any>) => {
-    core.setData((prev: any[]) => {
-      const next = [...prev];
-      const newItem = { ...next[index], ...patch };
-      next[index] = newItem;
+  const updateItem = useCallback(
+    (index: number, patch: Partial<any>) => {
+      core.setData((prev: any[]) => {
+        const next = [...prev];
+        const newItem = { ...next[index], ...patch };
+        next[index] = newItem;
 
-      Object.keys(patch).forEach((field) => {
-        core.markFieldAsTouched(index, field);
+        Object.keys(patch).forEach((field) => {
+          core.markFieldAsTouched(index, field);
+        });
+
+        if (idKey && newItem[idKey] != null) {
+          setChangedMap((c) => ({
+            ...c,
+            [String(newItem[idKey])]: newItem,
+          }));
+        }
+
+        if (core.shouldValidateLive) {
+          core.runValidation(next);
+        }
+
+        return next;
       });
+    },
+    [core, idKey]
+  );
 
-      if (idKey && newItem[idKey] != null) {
-        setChangedMap((c) => ({
-          ...c,
-          [String(newItem[idKey])]: newItem,
-        }));
-      }
+  const reset = useCallback(
+    (items?: any[]) => {
+      core.setData(items ?? initialItemsRef.current);
+      setChangedMap({});
+      core.resetForm();
+    },
+    [core]
+  );
 
-      if (core.shouldValidateLive) {
-        core.runValidation(next);
-      }
+  const setList = useCallback(
+    (nextItems: any[]) => {
+      core.setData(nextItems);
+      setChangedMap({});
+      core.resetForm();
+    },
+    [core]
+  );
 
-      return next;
-    });
-  }, [core, idKey]);
-
-  const reset = useCallback((items?: any[]) => {
-    core.setData(items ?? initialItemsRef.current);
-    setChangedMap({});
-    core.resetForm();
-  }, [core]);
-
-  const setList = useCallback((nextItems: any[]) => {
-    core.setData(nextItems);
-    setChangedMap({});
-    core.resetForm();
-  }, [core]);
-
-  const getChangedItems = useCallback(() => Object.values(changedMap), [changedMap]);
+  const hasChanges = Object.keys(changedMap).length > 0;
+  const getChangedItems = useCallback(
+    () => Object.values(changedMap),
+    [changedMap]
+  );
 
   return {
     items: core.data,
@@ -76,5 +90,14 @@ export const useListForm: UseListForm = (initialItems = [], options = {}) => {
     getChangedItems,
     canSubmit: core.triggerValidation,
     reset,
+    submit: (handler: (changed: any[]) => void) => () => {
+      if (!core.triggerValidation()) return;
+      if (!hasChanges) {
+        toast.error("هیچ تغییری اعمال نشده است");
+        window.scrollTo({ top: 85, behavior: "smooth" });
+        return;
+      }
+      handler(getChangedItems());
+    },
   };
 };

@@ -3,6 +3,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useFormCore } from "./useFormCore";
+import toast from "react-hot-toast";
 
 export const useForm = <T extends Record<string, any>>(
   initialForm: T,
@@ -104,5 +105,14 @@ export const useForm = <T extends Record<string, any>>(
     handleMultipleFieldsChange,
     canSubmit: core.triggerValidation,
     reset,
+    submit: (handler: (changed: Partial<T>) => void) => () => {
+      if (!core.triggerValidation()) return;
+      if (!hasChanges) {
+        toast.error("هیچ تغییری اعمال نشده است");
+        window.scrollTo({ top: 85, behavior: "smooth" });
+        return;
+      }
+      handler(getChangedFields());
+    },
   };
 };
