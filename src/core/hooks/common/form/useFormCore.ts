@@ -67,7 +67,7 @@ export const useFormCore = <T extends Record<string, any>>(
 
     if (hasError) {
       toast.error("لطفاً خطاها را برطرف کنید");
-      window.scrollTo({ top: 100, behavior: "smooth" });
+      window.scrollTo({ top: 85, behavior: "smooth" });
     }
 
     return !hasError;

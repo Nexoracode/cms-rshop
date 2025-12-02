@@ -88,16 +88,15 @@ const ProductInitialForm = () => {
   }, [oneProduct?.data]);
 
   const handleChangeProduct = () => {
-    // این الان درست کار می‌کنه — از اولین کلیک!
     if (!canSubmit()) return;
 
     const changed = getChangedFields();
 
     if (Object.keys(changed).length === 0) {
       toast.error("هیچ تغییری اعمال نشده است");
+      window.scrollTo({ top: 85, behavior: "smooth" });
       return;
     }
-    console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQ");
 
     /*  const {
       brand_id,
