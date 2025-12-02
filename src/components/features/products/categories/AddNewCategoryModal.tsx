@@ -55,8 +55,8 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setForm,
     handleFieldChange,
     handleMultipleFieldsChange,
-    canSubmit,
-    setErrors,
+    reset,
+    submit,
   } = useForm(initialCategoryForm, {
     onValidate: validateCategory,
     runValidationOnChange: true,
@@ -83,9 +83,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setIsParent(parent_id === 0);
   }, [defaultValues]);
 
-  const handleSubmit = async () => {
-    if (!canSubmit()) return;
-
+  const handleSubmit = submit(async () => {
     try {
       let finalMediaId = form.mediaId;
 
@@ -125,14 +123,14 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       console.error(err);
       toast.error("خطای ناشناخته. با برنامه‌نویس تماس بگیرید");
     }
-  };
+  });
 
   return (
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => {
         onOpenChange?.(val);
-        !val && setErrors({});
+        !val && reset();
       }}
       triggerProps={
         categoryId

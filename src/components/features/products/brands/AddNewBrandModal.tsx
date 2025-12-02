@@ -34,7 +34,7 @@ const AddNewBrandModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const { form, errors, handleFieldChange, canSubmit, setForm, reset } =
+  const { form, errors, handleFieldChange, canSubmit, setForm, reset, submit } =
     useForm(initialBrandForm, {
       onValidate: validateBrand,
       runValidationOnChange: true,
@@ -57,9 +57,7 @@ const AddNewBrandModal: React.FC<Props> = ({
     }
   }, [defaultValues]);
 
-  const handleSubmit = async () => {
-    if (!canSubmit()) return;
-
+  const handleSubmit = submit(async () => {
     try {
       let logoUrl = typeof form.logo === "string" ? form.logo : "";
 
@@ -88,7 +86,7 @@ const AddNewBrandModal: React.FC<Props> = ({
       console.error(err);
       toast.error("خطای ناشناخته رخ داد.");
     }
-  };
+  });
 
   return (
     <BaseModal
