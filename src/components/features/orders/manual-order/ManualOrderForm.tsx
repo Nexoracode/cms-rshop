@@ -121,6 +121,7 @@ const ManualOrderForm = () => {
           const firstUserId = selectedUsers[0];
           setFormData((prev) => ({ ...prev, userId: firstUserId }));
         }}
+        error={true}
       />
 
       {/* نمایش آدرس‌های کاربر */}
@@ -135,11 +136,15 @@ const ManualOrderForm = () => {
           onChange={(addressId) =>
             setFormData((prev) => ({ ...prev, selectedAddressId: addressId }))
           }
+          error={true}
         />
       ) : formData.userId ? (
-        <p className="text-sm text-gray-500 mt-3">
-          هیچ آدرسی برای این کاربر ثبت نشده است.
-        </p>
+        <div className=" text-center">
+          <p>آدرسی یافت نشد.</p>
+          <p className="text-sm text-gray-500 mt-3">
+            هیچ آدرسی برای این کاربر ثبت نشده است. برای ثبت سفارش ابتدا برای کاربر آدرسی اضافه کنید.
+          </p>
+        </div>
       ) : null}
 
       {/* انتخاب محصولات */}
@@ -147,6 +152,7 @@ const ManualOrderForm = () => {
         onChange={(selectedProducts) =>
           setFormData((prev) => ({ ...prev, products: selectedProducts }))
         }
+        error={true}
       />
 
       {/* انتخاب وضعیت سفارش */}
@@ -160,7 +166,6 @@ const ManualOrderForm = () => {
             title: opt.title,
           }))}
           placeholder="انتخاب وضعیت"
-          isRequired
         />
       </div>
 
@@ -172,7 +177,7 @@ const ManualOrderForm = () => {
       >
         <DiscountInput
           value={discountValue}
-          onValueChange={(val) => setDiscountValue(val ?? 0)}
+          onValueChange={(val) => setDiscountValue(val ?? 1)}
           selectedKey={discountType}
           onSelectChange={(val) => setDiscountType(val as Discount)}
         />

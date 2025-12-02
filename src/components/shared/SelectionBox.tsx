@@ -2,6 +2,7 @@
 
 import React from "react";
 import BaseCard from "../ui/BaseCard";
+import FieldErrorText from "../forms/FieldErrorText";
 
 type Props<T = any> = {
   initial?: T[];
@@ -28,22 +29,28 @@ const SelectionBox = <T,>({
           className: "p-2",
           children: modal,
         }}
-        className="shadow-none"
+        className={`shadow-none ${error ? "border border-red-300" : ""}`}
         bodyClassName="cursor-auto"
       >
         {initial.length ? (
           children
         ) : (
-          <div className={`flex flex-col items-center justify-center py-6 text-gray-500 ${error ? "!bg-[var(--error)] rounded-xl" : ""}`}>
+          <div
+            className={`flex flex-col items-center justify-center py-6 text-gray-500 ${
+              error ? "!bg-[var(--error)] rounded-xl" : ""
+            }`}
+          >
             {icon}
             <p className="mt-2">هنوز موردی انتخاب نشده!</p>
           </div>
         )}
       </BaseCard>
-      {error && (
-        <p className="text-red-500 text-xs pt-2 pr-2 animate-pulse">
-          حداقل یک آیتم الزامی است
-        </p>
+      {error ? (
+        <div className="-mt-4">
+          <FieldErrorText error="انتخاب حداقل یک آیتم الزامی است" />
+        </div>
+      ) : (
+        ""
       )}
     </>
   );
