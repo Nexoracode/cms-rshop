@@ -12,73 +12,61 @@ import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
 import { toast } from "react-hot-toast";
-
-/* اضافه‌شده برای انتخاب وضعیت */
 import { statusOptions } from "../order-constants";
 import { StatusOrder } from "../order-types";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useRouter } from "next/navigation";
 import SelectableUserAddressCard from "../../store/customers/UserAddress/SelectableUserAddressCard";
 
-type ManualOrderData = {
-  userId?: number;
-  products: any[];
-  selectedAddressId?: number;
+// Hook و validation
+import { useForm } from "@/core/hooks/common/form/useForm";
+import { validateManualOrder } from "./manual-order-validation";
+
+const initialFormData = {
+  userId: null as number | null,
+  selectedAddressId: null as number | null,
+  products: [] as any[],
+  status: "awaiting_payment" as StatusOrder,
 };
 
 const ManualOrderForm = () => {
   const router = useRouter();
+
   const [isDiscountEnabled, setIsDiscountEnabled] = useState(false);
   const [discountValue, setDiscountValue] = useState(0);
   const [discountType, setDiscountType] = useState<Discount>("percent");
-  const [formData, setFormData] = useState<ManualOrderData>({
-    products: [],
-  });
 
-  const {
-    data: user,
-    refetch,
-    isFetching,
-  } = useGetOneUser(formData.userId ?? 0);
+  const { form, errors, handleFieldChange, setForm, submit } = useForm(
+    initialFormData,
+    {
+      onValidate: validateManualOrder,
+      runValidationOnChange: true,
+    }
+  );
+
+  const { data: user, refetch, isFetching } = useGetOneUser(form.userId ?? 0);
   const { mutate: createOrder, isPending } = useCreateManualOrder();
 
+  // ریست آدرس هنگام تغییر کاربر
   useEffect(() => {
-    // هر بار کاربر تغییر کرد آدرس باید ریست بشه
-    setFormData((prev) => ({ ...prev, selectedAddressId: undefined }));
-    if (formData.userId) refetch();
-  }, [formData.userId, refetch]);
+    handleFieldChange("selectedAddressId", null);
+    if (form.userId) refetch();
+  }, [form.userId]);
 
+  // انتخاب خودکار آدرس اصلی یا اولین آدرس
   useEffect(() => {
-    if (user?.data?.addresses?.length) {
-      const primaryAddress = user.data.addresses.find((a: any) => a.is_primary);
-      const firstAddress = user.data.addresses[0];
-
-      if (!formData.selectedAddressId) {
-        setFormData((prev) => ({
-          ...prev,
-          selectedAddressId: primaryAddress?.id || firstAddress.id,
-        }));
-      }
+    if (user?.data?.addresses?.length && !form.selectedAddressId) {
+      const primary = user.data.addresses.find((a: any) => a.is_primary);
+      const first = user.data.addresses[0];
+      handleFieldChange("selectedAddressId", primary?.id || first.id);
     }
-  }, [user]);
+  }, [user?.data?.addresses]);
 
-  const [selectedStatus, setSelectedStatus] =
-    useState<StatusOrder>("awaiting_payment");
-
-  const handleSubmit = () => {
-    if (
-      !formData.userId ||
-      !formData.products.length ||
-      !formData.selectedAddressId
-    ) {
-      toast.error("لطفا کاربر، آدرس و محصولات را انتخاب کنید");
-      return;
-    }
-
+  const handleSubmit = submit(() => {
     const orderData: any = {
-      userId: formData.userId,
-      addressId: formData.selectedAddressId,
-      items: formData.products.map((product: any) => ({
+      userId: form.userId,
+      addressId: form.selectedAddressId,
+      items: form.products.map((product: any) => ({
         product_id: product.id,
         variant_ids:
           product.variants?.map((variant: any) => ({
@@ -86,7 +74,7 @@ const ManualOrderForm = () => {
             quantity: variant.quantity || 1,
           })) || [],
       })),
-      status: selectedStatus,
+      status: form.status,
     };
 
     if (isDiscountEnabled && discountValue > 0) {
@@ -100,10 +88,10 @@ const ManualOrderForm = () => {
       },
       onError: (err: any) => {
         console.error(err);
-        toast.error("خطا در ایجاد سفارش. لطفا مجدداً تلاش کنید.");
+        toast.error("خطا در ایجاد سفارش");
       },
     });
-  };
+  });
 
   return (
     <BaseCard
@@ -119,30 +107,29 @@ const ManualOrderForm = () => {
       <SelectableUsersBox
         onChange={(selectedUsers) => {
           const firstUserId = selectedUsers[0];
-          setFormData((prev) => ({ ...prev, userId: firstUserId }));
+          handleFieldChange("userId", firstUserId || null);
         }}
-        error={true}
+        error={!!errors?.userId?.length}
       />
 
-      {/* نمایش آدرس‌های کاربر */}
+      {/* نمایش آدرس‌ها */}
       {isFetching ? (
         <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
       ) : user?.data?.addresses?.length > 0 ? (
         <SelectableUserAddressCard
           userId={user?.data.id}
-          key={user?.data.addresses.id}
           addresses={user?.data.addresses}
-          selectedAddressId={formData.selectedAddressId}
+          selectedAddressId={form.selectedAddressId ?? undefined} // این خط مشکل رو حل می‌کنه
           onChange={(addressId) =>
-            setFormData((prev) => ({ ...prev, selectedAddressId: addressId }))
+            handleFieldChange("selectedAddressId", addressId)
           }
-          error={true}
+          error={!!errors?.selectedAddressId?.length}
         />
-      ) : formData.userId ? (
-        <div className=" text-center">
-          <p>آدرسی یافت نشد.</p>
-          <p className="text-sm text-gray-500 mt-3">
-            هیچ آدرسی برای این کاربر ثبت نشده است. برای ثبت سفارش ابتدا برای کاربر آدرسی اضافه کنید.
+      ) : form.userId ? (
+        <div className="text-center py-8 text-red-600">
+          <p>هیچ آدرسی برای این کاربر ثبت نشده است.</p>
+          <p className="text-sm text-gray-500 mt-2">
+            برای ایجاد سفارش، ابتدا آدرس برای کاربر اضافه کنید.
           </p>
         </div>
       ) : null}
@@ -150,17 +137,17 @@ const ManualOrderForm = () => {
       {/* انتخاب محصولات */}
       <SelectableProductsBoxWithQuantity
         onChange={(selectedProducts) =>
-          setFormData((prev) => ({ ...prev, products: selectedProducts }))
+          handleFieldChange("products", selectedProducts)
         }
-        error={true}
+        error={!!errors?.products?.length}
       />
 
-      {/* انتخاب وضعیت سفارش */}
+      {/* وضعیت سفارش */}
       <div className="mt-4">
         <SelectBox
           label="وضعیت سفارش"
-          value={selectedStatus}
-          onChange={(val) => setSelectedStatus(val as StatusOrder)}
+          value={form.status}
+          onChange={(val) => handleFieldChange("status", val as StatusOrder)}
           options={statusOptions.map((opt) => ({
             key: opt.key,
             title: opt.title,
@@ -169,6 +156,7 @@ const ManualOrderForm = () => {
         />
       </div>
 
+      {/* تخفیف دستی */}
       <SwitchWrapper
         label="تخفیف فاکتور"
         description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
@@ -177,18 +165,18 @@ const ManualOrderForm = () => {
       >
         <DiscountInput
           value={discountValue}
-          onValueChange={(val) => setDiscountValue(val ?? 1)}
+          onValueChange={(val) => setDiscountValue(val ?? 0)}
           selectedKey={discountType}
           onSelectChange={(val) => setDiscountType(val as Discount)}
         />
       </SwitchWrapper>
 
-      {/* دکمه‌های عملیات */}
+      {/* دکمه‌ها */}
       <FormActionButtons
         cancelHref="/admin/orders"
         onSubmit={handleSubmit}
         isSubmitting={isPending}
-        submitText={"ایجاد سفارش"}
+        submitText="ایجاد سفارش"
       />
     </BaseCard>
   );
