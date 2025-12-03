@@ -11,13 +11,45 @@ export type PromotionType =
   | "next_order_reward";
 
 // Factory function
-export const createPromotionHooks = (type: PromotionType, queryKeyPrefix: string) => {
-  const useGetList = (params: Record<string, any> = {}) => {
+export const createPromotionHooks = (
+  type: PromotionType,
+  queryKeyPrefix: string
+) => {
+  const useGetList = ({
+    page = 1,
+    filter,
+    search,
+    sortBy,
+  }: {
+    page?: number;
+    filter?: Record<string, string[]>;
+    search?: string;
+    sortBy?: string[];
+  } = {}) => {
     return useQuery({
-      queryKey: [queryKeyPrefix + "-list", params],
+      queryKey: [queryKeyPrefix + "-list", { page, filter, search, sortBy }],
       queryFn: () => {
-        const qs = buildQueryString({ ...params, type });
-        return fetcher({ route: `/admin/promotions?${qs}`, isActiveToast: false });
+        const params: Record<string, any> = { page, type }; // type حتماً باشه
+
+        // دستی filter رو گسترش بده (دقیقاً مثل محصولات)
+        if (filter) {
+          for (const key in filter) {
+            const values = filter[key];
+            if (values?.length) {
+              params[`filter.${key}`] = values;
+            }
+          }
+        }
+
+        if (search) params.search = search;
+        if (sortBy?.length) params.sortBy = sortBy;
+
+        const queryString = buildQueryString(params);
+
+        return fetcher({
+          route: `/admin/promotions?${queryString}`,
+          isActiveToast: false,
+        });
       },
     });
   };
@@ -25,7 +57,8 @@ export const createPromotionHooks = (type: PromotionType, queryKeyPrefix: string
   const useGetOne = (id?: number) => {
     return useQuery({
       queryKey: [queryKeyPrefix + "-one", id],
-      queryFn: () => fetcher({ route: `/admin/promotions/${id}`, isActiveToast: false }),
+      queryFn: () =>
+        fetcher({ route: `/admin/promotions/${id}`, isActiveToast: false }),
       enabled: !!id,
     });
   };
@@ -116,7 +149,10 @@ export const createPromotionHooks = (type: PromotionType, queryKeyPrefix: string
     return useQuery({
       queryKey: ["active-" + queryKeyPrefix],
       queryFn: () =>
-        fetcher({ route: `/admin/promotions/active?type=${type}`, isActiveToast: false }),
+        fetcher({
+          route: `/admin/promotions/active?type=${type}`,
+          isActiveToast: false,
+        }),
     });
   };
 
@@ -135,7 +171,16 @@ export const createPromotionHooks = (type: PromotionType, queryKeyPrefix: string
    نمونه استفاده:
    ========================= */
 export const FlashDealHooks = createPromotionHooks("flash_deal", "flash-deal");
-export const FreeShippingHooks = createPromotionHooks("free_shipping", "free-shipping");
+export const FreeShippingHooks = createPromotionHooks(
+  "free_shipping",
+  "free-shipping"
+);
 export const CouponHooks = createPromotionHooks("coupon", "coupon");
-export const FirstOrderHooks = createPromotionHooks("first_order", "first-order");
-export const NextOrderRewardHooks = createPromotionHooks("next_order_reward", "next-order-reward");
+export const FirstOrderHooks = createPromotionHooks(
+  "first_order",
+  "first-order"
+);
+export const NextOrderRewardHooks = createPromotionHooks(
+  "next_order_reward",
+  "next-order-reward"
+);
