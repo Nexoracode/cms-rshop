@@ -138,7 +138,7 @@ const ManualOrderForm = () => {
       {/* انتخاب محصولات */}
       <SelectableProductsBoxWithQuantity
         onChange={(selectedProducts) => {
-          console.log(selectedProducts);
+          console.log("selectedProducts =>",selectedProducts);
           handleFieldChange("products", selectedProducts);
         }}
         error={!!errors?.products?.length}

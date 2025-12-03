@@ -22,32 +22,6 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
 
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
-  const updateQuantity = (
-    productId: number,
-    variantId: number,
-    quantity: number
-  ) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [`${productId}-${variantId}`]: Math.max(1, quantity),
-    }));
-  };
-
-  const removeVariantFromProduct = (productId: number, variantId: number) => {
-    setSelectedProducts((prev: any) => {
-      return prev.map((product: any) => {
-        if (product.id === productId && product.variants) {
-          const newVariants = product.variants.filter(
-            (v: any) => v.id !== variantId
-          );
-          // حتی اگر همه واریانت‌ها حذف شدند، محصول را نگه دارید
-          return { ...product, variants: newVariants };
-        }
-        return product;
-      });
-    });
-  };
-
   useEffect(() => {
     const newQuantities: Record<string, number> = {};
     selectedProducts.forEach((p: any) => {
@@ -66,7 +40,6 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   }, [selectedProducts]);
 
   useEffect(() => {
-    console.log(selectedProducts);
     const productsWithQuantity = selectedProducts.map((p: any) => ({
       ...p,
       variants:
@@ -77,6 +50,32 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
     }));
     onChange?.(productsWithQuantity);
   }, [selectedProducts, quantities]);
+
+  const removeVariantFromProduct = (productId: number, variantId: number) => {
+    setSelectedProducts((prev: any) => {
+      return prev.map((product: any) => {
+        if (product.id === productId && product.variants) {
+          const newVariants = product.variants.filter(
+            (v: any) => v.id !== variantId
+          );
+          // حتی اگر همه واریانت‌ها حذف شدند، محصول را نگه دارید
+          return { ...product, variants: newVariants };
+        }
+        return product;
+      });
+    });
+  };
+
+  const updateQuantity = (
+    productId: number,
+    variantId: number,
+    quantity: number
+  ) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [`${productId}-${variantId}`]: Math.max(1, quantity),
+    }));
+  };
 
   return (
     <SelectionBox
@@ -132,8 +131,13 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   );
 };
 
-const SelectableProductsBoxWithQuantity: React.FC<Props> = ({ onChange, error }) => {
-  return <InnerSelectableProductsBoxWithQuantity onChange={onChange} error={error} />;
+const SelectableProductsBoxWithQuantity: React.FC<Props> = ({
+  onChange,
+  error,
+}) => {
+  return (
+    <InnerSelectableProductsBoxWithQuantity onChange={onChange} error={error} />
+  );
 };
 
 export default SelectableProductsBoxWithQuantity;
