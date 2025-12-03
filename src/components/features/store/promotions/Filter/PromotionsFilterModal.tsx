@@ -8,12 +8,13 @@ const PromotionsFilterModal: React.FC = () => {
   const fields: FilterField[] = useMemo<FilterField[]>(
     () => [
       {
-        key: "isActive",
+        key: "is_active",
         label: "وضعیت فعال بودن",
         type: "boolean01",
         default: "",
       },
-      { key: "startDate", label: "بازه اعتبار", type: "dateRange" },
+      { key: "starts_at", label: "شروع بازه اعتبار", type: "dateRange" },
+      { key: "ends_at", label: "پایان بازه اعتبار", type: "dateRange" },
     ],
     []
   );
