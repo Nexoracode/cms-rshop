@@ -25,19 +25,14 @@ export type PromotionBase = {
   id?: number;
   name: string;
   code?: string | null;
-  type:
-    | "coupon"
-    | "flash_deal"
-    | "free_shipping"
-    | "first_order"
-    | "next_order_reward";
+  type: PromotionTypes;
   actions: PromotionActionType[];
   conditions?: PromotionConditionType[];
   starts_at?: string | null;
   ends_at?: string | null;
   usage_limit?: number;
-  used_count?: number;
-  is_active?: boolean;
+  used_count: number;
+  is_active: boolean;
   created_at?: string;
   max_discount_amount?: number;
 };
@@ -61,6 +56,8 @@ export type PromotionSortBy = Array<
   | "endsAt:DESC"
   | "endsAt:ASC"
 >;
+
+export type PromotionTypes = "coupon" | "flash_deal" | "free_shipping" | "first_order" | "next_order_reward"
 
 /*  */
 

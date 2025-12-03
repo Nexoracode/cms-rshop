@@ -21,7 +21,8 @@ const Coupon = () => {
 
   const items = coupons?.data?.items || [];
   const hasItems = items.length > 0;
-
+  console.log(items);
+  
   return (
     <UnifiedCard
       searchFilter={<CouponsFilter />}
