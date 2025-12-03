@@ -23,38 +23,37 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    const newQuantities: Record<string, number> = {};
+    const newQuantities: Record<string, number> = { ...quantities };
+    let hasNewVariant = false;
+
     selectedProducts.forEach((p: any) => {
       if (p.variants) {
         p.variants.forEach((v: any) => {
           const key = `${p.id}-${v.id}`;
-          if (quantities[key] === undefined) {
+          if (newQuantities[key] === undefined) {
             newQuantities[key] = 1;
-          } else {
-            newQuantities[key] = quantities[key];
+            hasNewVariant = true;
           }
         });
       }
     });
-    setQuantities(newQuantities);
-  }, [selectedProducts]);
 
-  useEffect(() => {
-    console.log("@@@@@@@@@@@@@@@@@@@@@");
+    hasNewVariant && setQuantities(newQuantities);
+
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    console.log("EEEEEEEEEEEEEEEEEE");
 
     const productsWithQuantity = selectedProducts.map((p: any) => ({
       ...p,
       variants:
         p.variants?.map((v: any) => ({
           ...v,
-          quantity: quantities[`${p.id}-${v.id}`] || 1,
-        })) || [],
+          quantity: newQuantities[`${p.id}-${v.id}`] ?? 1,
+        })) ?? [],
     }));
+
     onChange?.(productsWithQuantity);
   }, [selectedProducts, quantities]);
 
