@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./CustomersSelectionModal";
@@ -19,8 +19,14 @@ const InnerSelectableUsersBox: React.FC<{
   error?: boolean;
 }> = ({ onChange, error }) => {
   const { selectedCustomers, removeCustomer } = useCustomersSelection();
+  const isFirstRender = React.useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     onChange?.(selectedCustomers.map((u) => u.id));
   }, [selectedCustomers]);
 

@@ -30,7 +30,7 @@ export const CustomersSelectionProvider: React.FC<{
   const [selectedCustomers, setSelectedCustomers] = useState<Customer[]>([]);
 
   useEffect(() => {
-    setSelectedCustomers(initialCustomers);
+    initialCustomers.length && setSelectedCustomers(initialCustomers);
   }, [initialCustomers]);
 
   const addCustomer = (customer: Customer) => {

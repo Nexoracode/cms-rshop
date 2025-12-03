@@ -19,7 +19,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
 }> = ({ onChange, error }) => {
   const { selectedProducts, removeProduct, setSelectedProducts } =
     useProductsSelection();
-
+  const isFirstRender = React.useRef(true);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   useEffect(() => {
@@ -40,6 +40,13 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   }, [selectedProducts]);
 
   useEffect(() => {
+    console.log("@@@@@@@@@@@@@@@@@@@@@");
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    console.log("EEEEEEEEEEEEEEEEEE");
+
     const productsWithQuantity = selectedProducts.map((p: any) => ({
       ...p,
       variants:

@@ -106,8 +106,7 @@ const ManualOrderForm = () => {
       {/* انتخاب کاربر */}
       <SelectableUsersBox
         onChange={(selectedUsers) => {
-          console.log(selectedUsers);
-          const firstUserId = selectedUsers[0];
+          const firstUserId = selectedUsers[0];          
           handleFieldChange("userId", firstUserId || null);
         }}
         error={!!errors?.userId?.length}

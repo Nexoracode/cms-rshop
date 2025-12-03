@@ -30,7 +30,7 @@ export const ProductsSelectionProvider: React.FC<{
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    setSelectedProducts(initialProducts);
+    initialProducts.length && setSelectedProducts(initialProducts);
   }, [initialProducts]);
 
   const addProduct = (product: Product) => {

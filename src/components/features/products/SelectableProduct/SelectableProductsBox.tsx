@@ -17,7 +17,18 @@ const InnerSelectableProductsBox: React.FC<{
   onChange?: (ids: number[]) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
-  const { selectedProducts, removeProduct, addProduct } = useProductsSelection();
+  const { selectedProducts, removeProduct, addProduct } =
+    useProductsSelection();
+  const isFirstRender = React.useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    onChange?.(selectedProducts.map((c: any) => c.id));
+  }, [selectedProducts]);
 
   const removeVariantFromProduct = (productId: number, variantId: number) => {
     const product = selectedProducts.find((p: any) => p.id === productId);
@@ -30,11 +41,6 @@ const InnerSelectableProductsBox: React.FC<{
       addProduct({ ...product, variants: newVariants });
     }
   };
-
-  useEffect(() => {
-    console.log(selectedProducts);
-    onChange?.(selectedProducts.map((c: any) => c.id));
-  }, [selectedProducts]);
 
   return (
     <SelectionBox
@@ -52,16 +58,18 @@ const InnerSelectableProductsBox: React.FC<{
             showVariants={selectedProduct?.variants?.length ? true : false}
             contentProduct={
               <div className="deselect-icon">
-                <AiOutlineCloseCircle 
+                <AiOutlineCloseCircle
                   onClick={() => removeProduct(selectedProduct.id)}
                 />
               </div>
             }
             contentVariant={(variant: any) => (
               <div className="deselect-icon">
-                <AiOutlineCloseCircle 
-                  className="text-[16px]" 
-                  onClick={() => removeVariantFromProduct(selectedProduct.id, variant.id)}
+                <AiOutlineCloseCircle
+                  className="text-[16px]"
+                  onClick={() =>
+                    removeVariantFromProduct(selectedProduct.id, variant.id)
+                  }
                 />
               </div>
             )}
