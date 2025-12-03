@@ -117,7 +117,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
                       +e.target.value
                     )
                   }
-                  className="w-12 h-6 text-center border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-12 h-6 text-center border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="1"
                 />
                 <div className="deselect-icon">

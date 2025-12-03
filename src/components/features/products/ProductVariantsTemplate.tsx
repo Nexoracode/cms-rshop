@@ -120,38 +120,38 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
           {product.variants.map((variant: any) => {
             const variantContent = (
               <BaseCard bodyClassName="w-full flex-row items-center justify-between gap-4 hover-reveal-parent px-3">
-                {typeof contentVariant === 'function' ? contentVariant(variant) : contentVariant} {/* 🟢 اگر function باشه، variant رو پاس بده */}
-
-                <div className="text-sm text-gray-600 leading-7">
-                  {variant.name}
-                </div>
-
-                <div className="flex">
-                  <div className="text-gray-600">
-                    {variant.discount_amount > 0 ||
-                    variant.discount_percent > 0 ? (
-                      <div className="flex flex-row-reverse items-center gap-1 bg-slate-50 rounded-lg p-1.5">
-                        <RiDiscountPercentLine className="text-orange-500 text-lg" />
-                        <span className="text-sm text-gray-700">
-                          {Number(
-                            Math.max(
-                              0,
-                              variant.price -
-                                (variant.discount_amount > 0
-                                  ? variant.discount_amount
-                                  : (variant.discount_percent / 100) *
-                                    variant.price)
-                            )
-                          ).toLocaleString("fa-IR")}{" "}
-                          تومان
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="text-sm text-gray-700 bg-slate-50 rounded-xl p-1.5">
-                        {Number(variant.price).toLocaleString("fa-IR")} تومان
-                      </div>
-                    )}
+                <div className="flex items-center gap-2.5">
+                  {typeof contentVariant === "function"
+                    ? contentVariant(variant)
+                    : contentVariant}{" "}
+                  <div className="text-sm text-gray-600 leading-7">
+                    {variant.name}
                   </div>
+                </div>
+                <div className="text-gray-600">
+                  {variant.discount_amount > 0 ||
+                  variant.discount_percent > 0 ? (
+                    <div className="flex flex-row-reverse items-center gap-1 bg-slate-50 rounded-lg p-1.5">
+                      <RiDiscountPercentLine className="text-orange-500 text-lg" />
+                      <span className="text-sm text-gray-700">
+                        {Number(
+                          Math.max(
+                            0,
+                            variant.price -
+                              (variant.discount_amount > 0
+                                ? variant.discount_amount
+                                : (variant.discount_percent / 100) *
+                                  variant.price)
+                          )
+                        ).toLocaleString("fa-IR")}{" "}
+                        تومان
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-700 bg-slate-50 rounded-xl p-1.5">
+                      {Number(variant.price).toLocaleString("fa-IR")} تومان
+                    </div>
+                  )}
                 </div>
               </BaseCard>
             );
