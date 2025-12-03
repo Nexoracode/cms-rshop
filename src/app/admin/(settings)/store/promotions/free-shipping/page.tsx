@@ -1,7 +1,7 @@
 "use client";
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import CouponsFilter from "@/components/features/store/promotions/Filter/PromotionsFilter";
+import PromotionsFilter from "@/components/features/store/promotions/Filter/PromotionsFilter";
 import { FreeShippingHooks } from "@/core/hooks/api/usePromotions";
 import CouponCard from "@/components/features/store/promotions/PromotionCard";
 import { PromotionSortBy } from "@/components/features/store/promotions/promotions-types";
@@ -24,7 +24,7 @@ const FreeShipping = () => {
 
   return (
     <UnifiedCard
-      searchFilter={<CouponsFilter />}
+      searchFilter={<PromotionsFilter />}
       headerProps={{
         title: "لیست ارسال رایگان",
         icon: <LiaTruckLoadingSolid className="text-2xl" />,
