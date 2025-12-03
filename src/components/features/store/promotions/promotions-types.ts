@@ -54,14 +54,12 @@ export type PromotionAPI = Omit<
 // Promotion Sort By Options
 // ------------------------------
 export type PromotionSortBy = Array<
-  | "id:ASC"
   | "id:DESC"
-  | "createdAt:ASC"
-  | "createdAt:DESC"
-  | "startDate:ASC"
-  | "startDate:DESC"
-  | "endDate:ASC"
-  | "endDate:DESC"
+  | "id:ASC"
+  | "startsAt:DESC"
+  | "startsAt:ASC"
+  | "endsAt:DESC"
+  | "endsAt:ASC"
 >;
 
 /*  */

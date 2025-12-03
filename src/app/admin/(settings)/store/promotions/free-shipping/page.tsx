@@ -1,7 +1,7 @@
 "use client";
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import CouponsFilter from "@/components/features/store/promotions/coupon/Filter/CouponsFilter";
+import CouponsFilter from "@/components/features/store/promotions/Filter/PromotionsFilter";
 import { FreeShippingHooks } from "@/core/hooks/api/usePromotions";
 import CouponCard from "@/components/features/store/promotions/PromotionCard";
 import { PromotionSortBy } from "@/components/features/store/promotions/promotions-types";

@@ -1,16 +1,16 @@
 "use client";
 
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
-import PromotionsSortModal from "../../PromotionsSortModal";
-import CouponsFilterModal from "./CouponsFilterModal";
+import PromotionsSortModal from "./PromotionsSortModal";
+import PromotionsFilterModal from "./PromotionsFilterModal";
 
 const CouponsFilter = () => {
   return (
     <SearchFilterCard
-      searchPlaceholder="جستجو در کد تخفیف ها..."
+      searchPlaceholder="جستجو براساس عنوان و کد..."
       showSearchBar
     >
-      <CouponsFilterModal />
+      <PromotionsFilterModal />
       <PromotionsSortModal />
     </SearchFilterCard>
   );
