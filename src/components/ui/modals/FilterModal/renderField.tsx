@@ -145,6 +145,18 @@ export const renderField = ({
         />
       );
 
+    case "singleDate":
+      return (
+        <IsoDatePicker
+          label={f.label}
+          enableRange={false}
+          valueIso={state[f.key] ?? ""}
+          onChangeIso={(date) => {
+            setField(f.key, date || "");
+          }}
+        />
+      );
+
     case "text":
       return (
         <TextInput

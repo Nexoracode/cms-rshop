@@ -15,8 +15,8 @@ export type FilterField =
       remoteOptions?: () => Promise<FieldOption[]>;
       placeholder?: string;
       searchable?: boolean;
-      syncSearchToUrl?: boolean
-      searchKey?: string
+      syncSearchToUrl?: boolean;
+      searchKey?: string;
     }
   | {
       key: string;
@@ -52,6 +52,12 @@ export type FilterField =
       key: string;
       label: string;
       type: "dateRange";
+      placeholder?: string;
+    }
+  | {
+      key: string;
+      label: string;
+      type: "singleDate";
       placeholder?: string;
     }
   | {

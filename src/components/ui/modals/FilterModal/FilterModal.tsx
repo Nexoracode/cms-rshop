@@ -4,7 +4,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import BaseModal from "../BaseModal";
 import { IoFilter } from "react-icons/io5";
-import { add, eqBool10, eqId, rangeDate, rangeNum } from "@/core/utils/queryFilters";
+import {
+  add,
+  eqBool10,
+  eqId,
+  rangeDate,
+  rangeNum,
+} from "@/core/utils/queryFilters";
 import { FieldOption, FilterField } from ".";
 import { renderField } from "./renderField";
 
@@ -41,6 +47,9 @@ const makeInitialState = (fields?: FilterField[]) => {
       case "dateRange":
         initial[`${f.key}Range`] = null;
         break;
+      case "singleDate":
+        initial[f.key] = "";
+        break;
       case "multiSelect":
         initial[f.key] = [] as string[];
         break;
@@ -52,10 +61,7 @@ const makeInitialState = (fields?: FilterField[]) => {
   return initial;
 };
 
-const FilterModal: React.FC<Props> = ({
-  title = "فیلتر محصولات",
-  fields,
-}) => {
+const FilterModal: React.FC<Props> = ({ title = "فیلتر محصولات", fields }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -138,6 +144,13 @@ const FilterModal: React.FC<Props> = ({
           }
           break;
         }
+        case "singleDate": {
+          const value = state[f.key];
+          if (value && value !== "") {
+            add(params, f.key, `$eq:${value}`);
+          }
+          break;
+        }
         case "text": {
           const v = state[f.key];
           if (v !== "" && v != null) add(params, f.key, `$like:${v}`);
@@ -165,7 +178,9 @@ const FilterModal: React.FC<Props> = ({
   return (
     <BaseModal
       title={title}
-      icon={<IoFilter className="text-3xl text-sky-600 bg-sky-100 rounded-lg p-1" />}
+      icon={
+        <IoFilter className="text-3xl text-sky-600 bg-sky-100 rounded-lg p-1" />
+      }
       confirmText="اعمال فیلتر"
       cancelText="حذف فیلتر"
       onConfirm={handleApply}
@@ -179,7 +194,9 @@ const FilterModal: React.FC<Props> = ({
     >
       <div className="flex flex-col gap-6">
         {fields.map((f) => (
-          <div key={f.key}>{renderField({ f, state, setField, remoteCache })}</div>
+          <div key={f.key}>
+            {renderField({ f, state, setField, remoteCache })}
+          </div>
         ))}
       </div>
     </BaseModal>
