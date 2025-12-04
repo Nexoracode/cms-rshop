@@ -20,9 +20,10 @@ type OrderProcessProps = {
   actionBox?: React.ReactNode;
 };
 
-type StepKey = any
+type StepKey = any;
 
-const statusToStep = (status: any /* OrderData["status"] */): any => { //StepKey
+const statusToStep = (status: any /* OrderData["status"] */): any => {
+  //StepKey
   switch (status) {
     case "pending":
       return "1";
@@ -128,7 +129,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
       <div className="space-y-6">
         {/* باکس کد سفارش */}
         <Card className="shadow-md border border-gray-100">
-       {/*    <BoxHeader
+          {/*    <BoxHeader
             title={orderInfo.code}
             color="text-blue-700 bg-blue-700/10"
             textSize="text-[16px]"
@@ -139,7 +140,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         {/* باکس فاکتور */}
         <Card className="shadow-md border border-gray-100">
-        {/*   <BoxHeader
+          {/*   <BoxHeader
             title="محصولات و فاکتور"
             color="text-gray-100 bg-black"
             textSize="text-[16px]"
@@ -147,37 +148,92 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           /> */}
           <CardBody>
             <div className="mb-4">
-              {/* TODO: اگر order.items در OrderData اضافه شد، اینجا لیست محصولات رو دینامیک رندر کن */}
-              <div className="bg-white shadow p-2 rounded-xl w-full flex gap-2">
-                <img
-                  src="https://digifycdn.com/media/item_images/img0_1024x768_f0nxaeX.jpg"
-                  alt="product"
-                  className="rounded-xl w-16"
-                />
-                <div className="w-full flex flex-col justify-between py-1">
-                  <div className="w-full flex items-center justify-between">
-                    <p>ویندوز 10</p>
-                    <p>تعداد : 10</p>
+              {order.items?.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white shadow p-2 rounded-xl w-full flex flex-col gap-2"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={item.product?.image}
+                      alt={item.product?.name}
+                      className="rounded-xl w-16 h-16 object-cover shrink-0"
+                    />
+
+                    {/* — محتوای محصول + variant — */}
+                    <div className="w-full flex flex-col justify-between py-1">
+                      {/* محصول + تعداد */}
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-gray-700 font-medium">
+                          {item.product?.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          تعداد: {item.quantity}
+                        </p>
+                      </div>
+
+                      {/* قیمت‌ها */}
+                      <div className="flex items-center justify-between mt-1">
+                        <p className="text-xs text-gray-600">
+                          قیمت واحد: {item.unit_price.toLocaleString()} تومان
+                        </p>
+                        <p className="text-xs text-gray-700 font-semibold">
+                          مجموع: {item.line_total.toLocaleString()} تومان
+                        </p>
+                      </div>
+
+                      {/* — این قسمت: variant زیر کل باکس محصول — */}
+                    </div>
                   </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>50000 تومان</p>
-                  </div>
+                  {item.variant?.attributes?.length > 0 && (
+                    <div className="mt-2 border-t pt-2 text-xs text-gray-500 space-y-1">
+                      {item.variant.attributes.map((attr) => (
+                        <div
+                          key={attr.name}
+                          className="flex items-center gap-2"
+                        >
+                          <span>
+                            {attr.name}: {attr.value}
+                          </span>
+
+                          {/* دایره رنگ فقط اگر display_color وجود داشته باشد */}
+                          {attr.display_color && (
+                            <span
+                              className="inline-block w-3 h-3 rounded-full border"
+                              style={{ backgroundColor: attr.display_color }}
+                            ></span>
+                          )}
+                        </div>
+                      ))}
+                      <p className="text-xs">
+                        قیمت: {item.variant.price.toLocaleString()}{" "}
+                        تومان
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </div>
+              ))}
             </div>
 
             <div className="space-y-1">
               <InfoRow label="جمع کل" value={invoice.total} isActiveBg />
+
               <InfoRow label="تخفیف محصولات" value={invoice.discount} />
+
               <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg />
+
               <InfoRow label="مالیات" value={invoice.tax} />
+
               <InfoRow
                 label="هزینه ارسال"
                 value={invoice.shippingCost}
                 isActiveBg
               />
+
               <InfoRow label="هزینه بسته بندی" value={invoice.packagingCost} />
-              <Divider />
+
+              <Divider className="bg-gray-200" />
+
               <InfoRow label="مبلغ قابل پرداخت" value={invoice.totalDue} />
             </div>
           </CardBody>
@@ -188,7 +244,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
       <div className="space-y-6">
         {/* اطلاعات مشتری */}
         <Card className="shadow-md border border-gray-100">
-       {/*    <BoxHeader
+          {/*    <BoxHeader
             title="اطلاعات مشتری"
             color="text-orange-700 bg-orange-700/10"
             textSize="text-[16px]"
@@ -210,7 +266,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         {/* اطلاعات سفارش */}
         <Card className="shadow-md border border-gray-100">
-        {/*   <BoxHeader
+          {/*   <BoxHeader
             title="اطلاعات سفارش"
             color="text-orange-700 bg-orange-700/10"
             textSize="text-[16px]"
@@ -223,7 +279,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
               <InfoRow label="روش پرداخت" value={orderInfo.paymentMethod} />
               <InfoRow label="مبلغ" value={orderInfo.amount} isActiveBg />
               <InfoRow label="تاریخ تحویل" value={orderInfo.deliveryDate} />
-              <InfoRow label="آماده‌سازی" value={orderInfo.readyIn} isActiveBg />
+              <InfoRow
+                label="آماده‌سازی"
+                value={orderInfo.readyIn}
+                isActiveBg
+              />
               <InfoRow label="کد تخفیف" value={orderInfo.promoCode} />
             </div>
           </CardBody>
@@ -231,7 +291,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         {/* اطلاعات ارسال */}
         <Card className="shadow-md border border-gray-100">
-         {/*  <BoxHeader
+          {/*  <BoxHeader
             title="اطلاعات ارسال"
             color="text-orange-700 bg-orange-700/10"
             textSize="text-[16px]"

@@ -9,6 +9,8 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useDeleteProduct } from "@/core/hooks/api/products/useProduct";
 import Image from "next/image";
+import { IoMdEye } from "react-icons/io";
+import { LuStar } from "react-icons/lu";
 
 type Props = {
   product: any;
@@ -27,11 +29,6 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
       redirect={`/admin/products/create?edit_id=${id}&type=infos`}
     >
       <div className="relative w-full sm:w-[130px] h-[188px] sm:h-[110px]">
-        {/* <img
-          alt="product cover"
-          src={product.media_pinned?.url ?? product.image}
-          className="object-cover w-full h-full rounded-xl"
-        /> */}
         <Image
           src={product.media_pinned?.url ?? product.image}
           alt="product cover"
@@ -40,9 +37,6 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
           loading="lazy"
           placeholder="blur"
           blurDataURL="/images/placeholder.png"
-          onError={(e) => {
-            e.currentTarget.src = "/images/placeholder.png";
-          }}
         />
         {!product.is_visible && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-600/60 text-white text-lg rounded-lg shadow-lg">
@@ -87,11 +81,29 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
         <div className="flex items-end justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              {product.is_featured && (
-                <IoSparklesOutline className="text-fuchsia-500 text-xl animate-pulse" />
-              )}
+              <div className="flex items-center gap-1 ml-1">
+                {product ? (
+                  <div className="flex items-center gap-1 bg-yellow-50 rounded-lg px-3 py-0.5">
+                    <small>{product?.average_raiting}</small>
+                    <LuStar className="text-md text-yellow-600" />
+                  </div>
+                ) : (
+                  ""
+                )}
+                {product ? (
+                  <div className="flex items-center gap-1 bg-sky-50 rounded-lg px-3 py-0.5">
+                    <small>{product?.reviews_count}</small>
+                    <IoMdEye className="text-md text-sky-600" />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
               {product.is_same_day_shipping && (
                 <TbTruckDelivery className="text-orange-500 text-xl" />
+              )}
+              {product.is_featured && (
+                <IoSparklesOutline className="text-fuchsia-500 text-lg animate-pulse" />
               )}
             </div>
             <p className="text-gray-600 text-[13px]">
