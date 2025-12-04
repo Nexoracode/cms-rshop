@@ -234,15 +234,10 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         {/* اطلاعات مشتری */}
 
         <Card className="shadow-md border border-gray-100">
-          <CardHeader
-            title="اطلاعات مشتری"
-            icon={<TbUserQuestion />}
-            showIconInActionSlot
-          />
           <CardBody>
             <div className="space-y-1 -mt-1">
               <InfoRow
-                label="نام کامل"
+                label="نام و نام خوانوادگی"
                 value={`${order.user.first_name} ${order.user.last_name}`}
               />
               <InfoRow
@@ -265,10 +260,22 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
               />
               <div className="bg-slate-100 rounded-lg p-2 px-3 text-right !mt-2">
                 <p className="text-gray-700">آدرس کامل</p>
-                <div className="min-h-16 h-full p-2.5 flex items-center justify-center text-gray-800">
+                <div className="min-h-10 h-full p-2.5 flex items-center justify-center text-gray-800">
                   <p>{`${order.address.address_line} , پلاک ${order.address.plaque} , واحد ${order.address.unit} `}</p>
                 </div>
               </div>
+              <InfoRow
+                label="سفارش برای"
+                value={
+                  order.address.is_self
+                    ? "خودم"
+                    : order.address.recipient_name
+                    ? `${order.address.recipient_name} (${
+                        order.address.recipient_phone ?? "بدون شماره"
+                      })`
+                    : "شخص دیگر"
+                }
+              />
             </div>
           </CardBody>
         </Card>
