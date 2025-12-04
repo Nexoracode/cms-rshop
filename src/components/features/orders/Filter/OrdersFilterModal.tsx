@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 import { FilterField } from "@/components/ui/modals/FilterModal";
-import { statusOptions } from "../order-constants";
+import { statusOptions } from "../OrderProccess/order-constants";
 
 const OrdersFilterModal: React.FC = () => {
   const fields: FilterField[] = useMemo(

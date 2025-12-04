@@ -93,4 +93,18 @@ export const statusMap: Record<
     bgColor: "bg-red-50",
     borderColor: "border-red-200",
   },
+  processing: {
+    title: "در حال پردازش",
+    icon: <TfiShoppingCartFull />,
+    color: "text-purple-600",
+    bgColor: "bg-purple-50",
+    borderColor: "border-purple-200",
+  },
+  cancelled: {
+    title: "لغو شده",
+    icon: <MdOutlineCancel />,
+    color: "text-gray-600",
+    bgColor: "bg-gray-50",
+    borderColor: "border-gray-200",
+  },
 };

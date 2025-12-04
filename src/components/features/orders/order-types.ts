@@ -34,7 +34,9 @@ export type StatusOrder =
   | "expired"
   | "rejected"
   | "refunded"
-  | "payment_failed";
+  | "payment_failed"
+  | "processing"
+  | "cancelled"
 
 export type OrderData = {
   id: number;

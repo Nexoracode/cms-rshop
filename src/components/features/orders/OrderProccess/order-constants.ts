@@ -1,4 +1,4 @@
-import { StatusOrder } from "./order-types";
+import { StatusOrder } from "../order-types";
 
 export const statusOptions: { key: StatusOrder; title: string }[] = [
   { key: "pending_approval", title: "در انتظار تایید" },
@@ -12,4 +12,6 @@ export const statusOptions: { key: StatusOrder; title: string }[] = [
   { key: "rejected", title: "رد شده" },
   { key: "refunded", title: "عودت وجه" },
   { key: "payment_failed", title: "پرداخت ناموفق" },
+  { key: "payment_failed", title: "پرداخت ناموفق" },
+  { key: "cancelled", title: "لغو شده" },
 ];

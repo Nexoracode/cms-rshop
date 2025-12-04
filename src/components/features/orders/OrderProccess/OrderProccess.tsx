@@ -3,34 +3,21 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody, Divider } from "@heroui/react";
 import InfoRow from "../../../shared/InfoRow";
-import { LuUserRound } from "react-icons/lu";
-import { TiInfoLargeOutline } from "react-icons/ti";
-import { IoMdPaper } from "react-icons/io";
-import { TbTruckLoading, TbUserPin, TbUserQuestion } from "react-icons/tb";
 import { OrderData } from "../order-types";
 import StepContent from "./StepContent";
-import CardHeader from "@/components/common/Card/CardHeader";
 
 type OrderProcessProps = {
   order: OrderData | undefined;
-  /**
-   * اگر از بیرون خواستی کنترل StepContent رو بدی (مثلاً از OrderWizard)
-   * می‌تونی actionBox بسازی و پاس بدی؛ در غیر این صورت OrderProcess خودش
-   * یک actionBox می‌سازه و داخلی مدیریت مرحله رو انجام میده.
-   */
   actionBox?: React.ReactNode;
 };
 
 type StepKey = any;
 
 const statusToStep = (status: any /* OrderData["status"] */): any => {
-  //StepKey
   switch (status) {
     case "pending":
       return "1";
     case "paid":
-      // من اینجا paid رو به "3" نگاشت زدم (پرداخت انجام شده -> در انتظار تایید).
-      // اگر می‌خوای paid برابر "4" باشه (آماده‌سازی) اینجا تغییرش بده.
       return "3";
     case "shipped":
       return "5";
@@ -60,18 +47,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     created_at,
     user,
   } = order;
-
-  // === اطلاعات سفارش ===
-  const orderInfo = {
-    code: `ORD-${id}`,
-    date: new Date(created_at).toLocaleDateString("fa-IR"),
-    paymentMethod: is_manual ? "پرداخت دستی" : "درگاه بانکی",
-    amount: `${Number(total).toLocaleString("fa-IR")} تومان`,
-    deliveryDate: "-",
-    readyIn: "-",
-    promoCode: coupon_code ?? "ندارد",
-    instruction: note ?? "",
-  };
 
   // === اطلاعات فاکتور ===
   const invoice = {
@@ -239,15 +214,18 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
               <InfoRow
                 label="نام و نام خوانوادگی"
                 value={`${order.user.first_name} ${order.user.last_name}`}
+                hoverable
               />
               <InfoRow
                 label="شماره موبایل"
                 value={order.user.phone}
                 isActiveBg
+                hoverable
               />
               <InfoRow
                 label="ایمیل"
                 value={order.user.email ?? "example@gmail.com"}
+                hoverable
               />
               <InfoRow
                 label="سفارش برای"
@@ -261,15 +239,18 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                     : "شخص دیگر"
                 }
                 isActiveBg
+                hoverable
               />
               <InfoRow
                 label="کدپستی"
                 value={order.address.postal_code ?? "example@gmail.com"}
+                hoverable
               />
               <InfoRow
                 label="شهر و استان"
                 value={`${order.address.province} , ${order.address.city}`}
                 isActiveBg
+                hoverable
               />
               <div className="p-2 px-3 text-right !mt-2">
                 <div className="flex items-center gap-1 mb-1">
@@ -292,40 +273,19 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         {/* اطلاعات سفارش */}
         <Card className="shadow-md border border-gray-100">
-          {/*   <BoxHeader
-            title="اطلاعات سفارش"
-            color="text-orange-700 bg-orange-700/10"
-            textSize="text-[16px]"
-            icon={<TiInfoLargeOutline className="text-2xl" />}
-          /> */}
           <CardBody>
             <div className="space-y-1">
-              <InfoRow label="کد سفارش" value={orderInfo.code} />
-              <InfoRow label="تاریخ ثبت" value={orderInfo.date} isActiveBg />
-              <InfoRow label="روش پرداخت" value={orderInfo.paymentMethod} />
-              <InfoRow label="مبلغ" value={orderInfo.amount} isActiveBg />
-              <InfoRow label="تاریخ تحویل" value={orderInfo.deliveryDate} />
-              <InfoRow
-                label="آماده‌سازی"
-                value={orderInfo.readyIn}
-                isActiveBg
-              />
-              <InfoRow label="کد تخفیف" value={orderInfo.promoCode} />
+              <InfoRow label="کد سفارش" value={String(order.id)} hoverable/>
+              <InfoRow label="تاریخ ثبت سفارش" value={new Date(order.created_at).toLocaleDateString("fa")} isActiveBg />
+              <InfoRow label="روش پرداخت" value={order?.payment ? order.payment.payment_method === "online" ? "درگاه پرداخت (آنلابن)" : "کارت به کارت" : "پرداخت نشده"} />
             </div>
           </CardBody>
         </Card>
 
         {/* اطلاعات ارسال */}
         <Card className="shadow-md border border-gray-100">
-          {/*  <BoxHeader
-            title="اطلاعات ارسال"
-            color="text-orange-700 bg-orange-700/10"
-            textSize="text-[16px]"
-            icon={<TbTruckLoading className="text-2xl" />}
-          /> */}
           <CardBody>
             <div className="space-y-2">
-              <InfoRow label="روش ارسال" value={shipping.method} />
               <InfoRow label="هزینه ارسال" value={shipping.cost} isActiveBg />
               <InfoRow label="زمان ارسال" value={shipping.time} />
               <InfoRow label="وزن مرسوله" value={shipping.weight} isActiveBg />

@@ -4,14 +4,13 @@ import { useState } from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import { Chip, AvatarGroup, Avatar } from "@heroui/react";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
-import { statusOptions } from "./order-constants";
+import { statusOptions } from "./OrderProccess/order-constants";
 import { StatusOrder } from "./order-types";
 import { statusMap } from "@/core/constants/statusMap";
 import CardRows from "@/components/shared/CardRows";
 import type { PopoverSelectItem } from "@/components/ui/PopoverSelect";
-import PopoverSelect from "@/components/ui/PopoverSelect"; 
+import PopoverSelect from "@/components/ui/PopoverSelect";
 import { toPersianUTC } from "@/core/utils/date";
-import Image from "next/image";
 
 type Props = {
   order: any;
@@ -24,7 +23,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const initialStatus =
     statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
-  console.log("DDDD", order);
+
   const rowItems = [
     {
       label: "مبلغ کل",
@@ -51,10 +50,8 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const isAccept =
     order.status === "payment_confirmation_pending" ||
     order.status === "pending_approval";
-  console.log(order.status);
 
   const isNotDelivered = order.status === "not_delivered";
-  console.log(order.created_at);
 
   return (
     <BaseCard
