@@ -6,9 +6,10 @@ import InfoRow from "../../../shared/InfoRow";
 import { LuUserRound } from "react-icons/lu";
 import { TiInfoLargeOutline } from "react-icons/ti";
 import { IoMdPaper } from "react-icons/io";
-import { TbTruckLoading } from "react-icons/tb";
+import { TbTruckLoading, TbUserPin, TbUserQuestion } from "react-icons/tb";
 import { OrderData } from "../order-types";
 import StepContent from "./StepContent";
+import CardHeader from "@/components/common/Card/CardHeader";
 
 type OrderProcessProps = {
   order: OrderData | undefined;
@@ -59,17 +60,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     created_at,
     user,
   } = order;
-
-  // === اطلاعات مشتری ===
-  const customer = {
-    name:
-      user.first_name && user.last_name
-        ? `${user.first_name} ${user.last_name}`
-        : "بدون نام",
-    phone: user.phone,
-    address: "آدرس در حال حاضر در API نیست",
-    notes: note ?? "بدون توضیح",
-  };
 
   // === اطلاعات سفارش ===
   const orderInfo = {
@@ -206,8 +196,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                         </div>
                       ))}
                       <p className="text-xs">
-                        قیمت: {item.variant.price.toLocaleString()}{" "}
-                        تومان
+                        قیمت: {item.variant.price.toLocaleString()} تومان
                       </p>
                     </div>
                   )}
@@ -243,23 +232,43 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
       {/* ستون دوم */}
       <div className="space-y-6">
         {/* اطلاعات مشتری */}
+
         <Card className="shadow-md border border-gray-100">
-          {/*    <BoxHeader
+          <CardHeader
             title="اطلاعات مشتری"
-            color="text-orange-700 bg-orange-700/10"
-            textSize="text-[16px]"
-            icon={<LuUserRound className="text-2xl" />}
-          /> */}
+            icon={<TbUserQuestion />}
+            showIconInActionSlot
+          />
           <CardBody>
             <div className="space-y-1 -mt-1">
-              <InfoRow label="نام و نام خوانوادگی" value={customer.name} />
-              <InfoRow label="شماره موبایل" value={customer.phone} isActiveBg />
-              <InfoRow label="آدرس" value={customer.address} />
               <InfoRow
-                label="توضیحات مشتری"
-                value={customer.notes}
+                label="نام کامل"
+                value={`${order.user.first_name} ${order.user.last_name}`}
+              />
+              <InfoRow
+                label="شماره موبایل"
+                value={order.user.phone}
                 isActiveBg
               />
+              <InfoRow
+                label="ایمیل"
+                value={order.user.email ?? "example@gmail.com"}
+              />
+              <InfoRow
+                label="کدپستی"
+                value={order.address.postal_code ?? "example@gmail.com"}
+                isActiveBg
+              />
+              <InfoRow
+                label="شهر و استان"
+                value={`${order.address.province} , ${order.address.city}`}
+              />
+              <div className="bg-slate-100 rounded-lg p-2 px-3 text-right !mt-2">
+                <p className="text-gray-700">آدرس کامل</p>
+                <div className="min-h-16 h-full p-2.5 flex items-center justify-center text-gray-800">
+                  <p>{`${order.address.address_line} , پلاک ${order.address.plaque} , واحد ${order.address.unit} `}</p>
+                </div>
+              </div>
             </div>
           </CardBody>
         </Card>

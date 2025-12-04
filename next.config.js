@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  logging: {
+    fetches: {
+      hmrRefreshes: true,
+    },
+  },
+  logging: false,
   images: {
     domains: ["dl.poshtybanman.ir"],
   },
