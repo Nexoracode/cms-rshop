@@ -254,7 +254,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
               <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
               <InfoRow
                 label="قیمت کل"
-                value={`${Math.floor(payment.amount).toLocaleString()} تومان`}
+                value={`${Math.floor(+total).toLocaleString()} تومان`}
                 isActiveBg
               />
             </div>
