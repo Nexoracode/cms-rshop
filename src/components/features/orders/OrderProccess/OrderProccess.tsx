@@ -250,21 +250,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                 value={order.user.email ?? "example@gmail.com"}
               />
               <InfoRow
-                label="کدپستی"
-                value={order.address.postal_code ?? "example@gmail.com"}
-                isActiveBg
-              />
-              <InfoRow
-                label="شهر و استان"
-                value={`${order.address.province} , ${order.address.city}`}
-              />
-              <div className="bg-slate-100 rounded-lg p-2 px-3 text-right !mt-2">
-                <p className="text-gray-700">آدرس کامل</p>
-                <div className="min-h-10 h-full p-2.5 flex items-center justify-center text-gray-800">
-                  <p>{`${order.address.address_line} , پلاک ${order.address.plaque} , واحد ${order.address.unit} `}</p>
-                </div>
-              </div>
-              <InfoRow
                 label="سفارش برای"
                 value={
                   order.address.is_self
@@ -275,7 +260,32 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                       })`
                     : "شخص دیگر"
                 }
+                isActiveBg
               />
+              <InfoRow
+                label="کدپستی"
+                value={order.address.postal_code ?? "example@gmail.com"}
+              />
+              <InfoRow
+                label="شهر و استان"
+                value={`${order.address.province} , ${order.address.city}`}
+                isActiveBg
+              />
+              <div className="p-2 px-3 text-right !mt-2">
+                <div className="flex items-center gap-1 mb-1">
+                  <p className="text-gray-700">آدرس کامل</p>
+                  {order.address.is_primary ? (
+                    <p className="text-xs text-green-600 bg-green-100 rounded-lg p-0.5 px-2">
+                      اصلی
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="min-h-10 h-full flex items-center justify-center text-gray-700 leading-7">
+                  <p>{`${order.address.address_line} , پلاک ${order.address.plaque} , واحد ${order.address.unit} `}</p>
+                </div>
+              </div>
             </div>
           </CardBody>
         </Card>
