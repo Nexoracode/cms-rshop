@@ -234,7 +234,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         {/* اطلاعات مشتری */}
 
         <Card className="shadow-md border border-gray-100">
-          <CardBody>
+          <CardBody className="overflow-x-hidden">
             <div className="space-y-1 -mt-1">
               <InfoRow
                 label="نام و نام خوانوادگی"
