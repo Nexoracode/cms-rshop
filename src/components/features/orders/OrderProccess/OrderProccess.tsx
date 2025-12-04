@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Card, CardBody, Divider } from "@heroui/react";
 import InfoRow from "../../../shared/InfoRow";
@@ -11,13 +10,12 @@ type OrderProcessProps = {
   actionBox?: React.ReactNode;
 };
 
-type StepKey = any;
-
-const statusToStep = (status: any /* OrderData["status"] */): any => {
+const statusToStep = (status: string): string => {
   switch (status) {
     case "pending":
       return "1";
     case "paid":
+    case "preparing": // وضعیت جدید تو داده‌ها
       return "3";
     case "shipped":
       return "5";
@@ -34,7 +32,6 @@ const statusToStep = (status: any /* OrderData["status"] */): any => {
 const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
   if (!order) return null;
 
-  // --- استخراج پایه از order ---
   const {
     id,
     status,
@@ -42,163 +39,147 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     discount_total,
     total,
     coupon_code,
-    is_manual,
-    note,
     created_at,
     user,
+    address,
+    payment,
+    items,
   } = order;
 
-  // === اطلاعات فاکتور ===
+  // تبدیل تاریخ به فرمت شمسی خوانا
+  const persianDate = new Date(created_at).toLocaleDateString("fa-IR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // اطلاعات فاکتور
   const invoice = {
     total: `${Number(subtotal).toLocaleString("fa-IR")} تومان`,
     discount: `${Number(discount_total).toLocaleString("fa-IR")} تومان`,
     code: coupon_code ?? "ندارد",
-    tax: "۰ تومان",
-    shippingCost: "۰ تومان",
+    shippingCost: "رایگان",
     packagingCost: "۰ تومان",
     totalDue: `${Number(total).toLocaleString("fa-IR")} تومان`,
   };
 
-  // === اطلاعات ارسال (فعلاً از API موجود نیست، placeholder) ===
-  const shipping = {
-    method: "ارسال نشده",
-    cost: "۰ تومان",
-    time: "-",
-    weight: "-",
-  };
+  // مدیریت استپ‌ها
+  const [step, setStep] = useState<string>(() => statusToStep(status));
 
-  // === مدیریت مرحله (فقط در صورتی که actionBox از بیرون نیومده باشه) ===
-  const [step, setStep] = useState<StepKey>(() => statusToStep(status));
   useEffect(() => {
-    // اگر order تغییر کنه، مرحله رو بر اساس status جدید ریست کن
     setStep(statusToStep(status));
   }, [status]);
 
-  const next = () => {
-    const nextNum = Math.min(Number(step) + 1, 6);
-    setStep(String(nextNum) as StepKey);
-  };
-  const prev = () => {
-    const prevNum = Math.max(Number(step) - 1, 1);
-    setStep(String(prevNum) as StepKey);
-  };
+  const next = () => setStep((prev) => String(Math.min(Number(prev) + 1, 6)));
+  const prev = () => setStep((prev) => String(Math.max(Number(prev) - 1, 1)));
 
   const localActionBox = <StepContent step={step} onNextStep={next} />;
-
   const usedActionBox = actionBox ?? localActionBox;
 
-  // === UI === (استایل/طراحی دست نخورده؛ فقط داده‌ها از order پر میشه)
+  // وضعیت پرداخت
+  const paymentMethod = payment
+    ? payment.payment_method === "online"
+      ? "پرداخت آنلاین (زرین‌پال)"
+      : "کارت به کارت"
+    : "پرداخت نشده";
+
+  const paymentStatus =
+    payment?.status === "success"
+      ? "پرداخت موفق"
+      : payment?.status === "failed"
+      ? "پرداخت ناموفق"
+      : "در انتظار پرداخت";
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
       {/* ستون اول */}
       <div className="space-y-6">
-        {/* باکس کد سفارش */}
+        {/* استپ‌های سفارش */}
         <Card className="shadow-md border border-gray-100">
-          {/*    <BoxHeader
-            title={orderInfo.code}
-            color="text-blue-700 bg-blue-700/10"
-            textSize="text-[16px]"
-            icon={orderInfo.date}
-          /> */}
           <CardBody className="text-right">{usedActionBox}</CardBody>
         </Card>
 
-        {/* باکس فاکتور */}
+        {/* محصولات و فاکتور */}
         <Card className="shadow-md border border-gray-100">
-          {/*   <BoxHeader
-            title="محصولات و فاکتور"
-            color="text-gray-100 bg-black"
-            textSize="text-[16px]"
-            icon={<IoMdPaper className="text-2xl" />}
-          /> */}
           <CardBody>
-            <div className="mb-4">
-              {order.items?.map((item) => (
+            <h3 className="text-lg mb-4 text-right">محصولات</h3>
+            <div className="space-y-4 mb-6">
+              {items?.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white shadow p-2 rounded-xl w-full flex flex-col gap-2"
+                  className="bg-gray-50 rounded-xl p-4 flex gap-4 border border-gray-200"
                 >
-                  <div className="flex items-center">
-                    <img
-                      src={item.product?.image}
-                      alt={item.product?.name}
-                      className="rounded-xl w-16 h-16 object-cover shrink-0"
-                    />
+                  <img
+                    src={item.product?.image || "/placeholder.jpg"}
+                    alt={item.product?.name}
+                    className="w-20 h-20 rounded-lg object-cover"
+                  />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <p className="font-medium text-gray-800">
+                        {item.product?.name}
+                      </p>
+                      <span className="text-sm text-gray-500 mr-auto">
+                        تعداد: {item.quantity}
+                      </span>
+                    </div>
 
-                    {/* — محتوای محصول + variant — */}
-                    <div className="w-full flex flex-col justify-between py-1">
-                      {/* محصول + تعداد */}
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-gray-700 font-medium">
-                          {item.product?.name}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          تعداد: {item.quantity}
-                        </p>
-                      </div>
+                    {/* واریانت‌ها */}
+                    {item.variant?.attributes &&
+                      item.variant.attributes.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-600">
+                          {item.variant.attributes.map((attr: any) => (
+                            <div
+                              key={attr.name}
+                              className="flex items-center gap-2"
+                            >
+                              <span>
+                                {attr.name}: {attr.value}
+                              </span>
+                              {attr.display_color && (
+                                <span
+                                  className="w-4 h-4 rounded-full border-2 border-gray-300 inline-block"
+                                  style={{
+                                    backgroundColor: attr.display_color,
+                                  }}
+                                />
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
-                      {/* قیمت‌ها */}
-                      <div className="flex items-center justify-between mt-1">
-                        <p className="text-xs text-gray-600">
-                          قیمت واحد: {item.unit_price.toLocaleString()} تومان
-                        </p>
-                        <p className="text-xs text-gray-700 font-semibold">
-                          مجموع: {item.line_total.toLocaleString()} تومان
-                        </p>
-                      </div>
-
-                      {/* — این قسمت: variant زیر کل باکس محصول — */}
+                    <div className="flex justify-between mt-3 text-sm">
+                      <span className="text-gray-600">
+                        قیمت واحد:{" "}
+                        {Number(item.unit_price).toLocaleString("fa-IR")} تومان
+                      </span>
+                      <span className="font-semibold">
+                        {Number(item.line_total).toLocaleString("fa-IR")} تومان
+                      </span>
                     </div>
                   </div>
-                  {item.variant?.attributes?.length > 0 && (
-                    <div className="mt-2 border-t pt-2 text-xs text-gray-500 space-y-1">
-                      {item.variant.attributes.map((attr) => (
-                        <div
-                          key={attr.name}
-                          className="flex items-center gap-2"
-                        >
-                          <span>
-                            {attr.name}: {attr.value}
-                          </span>
-
-                          {/* دایره رنگ فقط اگر display_color وجود داشته باشد */}
-                          {attr.display_color && (
-                            <span
-                              className="inline-block w-3 h-3 rounded-full border"
-                              style={{ backgroundColor: attr.display_color }}
-                            ></span>
-                          )}
-                        </div>
-                      ))}
-                      <p className="text-xs">
-                        قیمت: {item.variant.price.toLocaleString()} تومان
-                      </p>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
 
             <div className="space-y-1">
-              <InfoRow label="جمع کل" value={invoice.total} isActiveBg />
-
-              <InfoRow label="تخفیف محصولات" value={invoice.discount} />
-
-              <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg />
-
-              <InfoRow label="مالیات" value={invoice.tax} />
-
+              <InfoRow
+                label="جمع کل محصولات"
+                value={invoice.total}
+                isActiveBg
+              />
+              <InfoRow label="تخفیف محصولات" value={invoice.discount}/>
+              <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg/>
               <InfoRow
                 label="هزینه ارسال"
                 value={invoice.shippingCost}
-                isActiveBg
               />
-
-              <InfoRow label="هزینه بسته بندی" value={invoice.packagingCost} />
-
-              <Divider className="bg-gray-200" />
-
-              <InfoRow label="مبلغ قابل پرداخت" value={invoice.totalDue} />
+              <InfoRow label="هزینه بسته‌بندی" value={invoice.packagingCost} isActiveBg/>
+              <Divider className="!mt-4"/>
+              <InfoRow label="مبلغ قابل پرداخت" value={invoice.totalDue} hoverable/>
             </div>
           </CardBody>
         </Card>
@@ -206,89 +187,101 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
       {/* ستون دوم */}
       <div className="space-y-6">
-        {/* اطلاعات مشتری */}
-
+        {/* اطلاعات مشتری و گیرنده */}
         <Card className="shadow-md border border-gray-100">
-          <CardBody className="overflow-x-hidden">
-            <div className="space-y-1 -mt-1">
+          <CardBody>
+            <h3 className="text-lg font-semibold mb-4">اطلاعات گیرنده</h3>
+            <div className="space-y-3">
               <InfoRow
-                label="نام و نام خوانوادگی"
-                value={`${order.user.first_name} ${order.user.last_name}`}
+                label="نام و نام خانوادگی"
+                value={`${user.first_name} ${user.last_name}`}
                 hoverable
               />
               <InfoRow
                 label="شماره موبایل"
-                value={order.user.phone}
+                value={user.phone}
                 isActiveBg
                 hoverable
               />
               <InfoRow
                 label="ایمیل"
-                value={order.user.email ?? "example@gmail.com"}
+                value={user.email || "ثبت نشده"}
                 hoverable
               />
+
               <InfoRow
                 label="سفارش برای"
                 value={
-                  order.address.is_self
+                  address.is_self
                     ? "خودم"
-                    : order.address.recipient_name
-                    ? `${order.address.recipient_name} (${
-                        order.address.recipient_phone ?? "بدون شماره"
+                    : `${address.recipient_name} (${
+                        address.recipient_phone || "بدون شماره"
                       })`
-                    : "شخص دیگر"
                 }
                 isActiveBg
-                hoverable
               />
+
               <InfoRow
-                label="کدپستی"
-                value={order.address.postal_code ?? "example@gmail.com"}
-                hoverable
-              />
-              <InfoRow
-                label="شهر و استان"
-                value={`${order.address.province} , ${order.address.city}`}
+                label="استان و شهر"
+                value={`${address.province}، ${address.city}`}
                 isActiveBg
-                hoverable
               />
-              <div className="p-2 px-3 text-right !mt-2">
-                <div className="flex items-center gap-1 mb-1">
-                  <p className="text-gray-700">آدرس کامل</p>
-                  {order.address.is_primary ? (
-                    <p className="text-xs text-green-600 bg-green-100 rounded-lg p-0.5 px-2">
-                      اصلی
-                    </p>
-                  ) : (
-                    ""
+              <InfoRow label="کد پستی" value={address.postal_code} />
+
+              <div className="bg-gray-50 rounded-lg p-4 mt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-medium">آدرس کامل</span>
+                  {address.is_primary && (
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                      آدرس اصلی
+                    </span>
                   )}
                 </div>
-                <div className="min-h-10 h-full flex items-center justify-center text-gray-700 leading-7">
-                  <p>{`${order.address.address_line} , پلاک ${order.address.plaque} , واحد ${order.address.unit} `}</p>
-                </div>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {address.address_line}
+                  {address.plaque && `، پلاک ${address.plaque}`}
+                  {address.unit && `، واحد ${address.unit}`}
+                </p>
               </div>
             </div>
           </CardBody>
         </Card>
 
-        {/* اطلاعات سفارش */}
+        {/* اطلاعات کلی سفارش */}
         <Card className="shadow-md border border-gray-100">
           <CardBody>
-            <div className="space-y-1">
-              <InfoRow label="کد سفارش" value={String(order.id)} hoverable/>
-              <InfoRow label="تاریخ ثبت سفارش" value={new Date(order.created_at).toLocaleDateString("fa")} isActiveBg />
-              <InfoRow label="روش پرداخت" value={order?.payment ? order.payment.payment_method === "online" ? "درگاه پرداخت (آنلابن)" : "کارت به کارت" : "پرداخت نشده"} />
+            <h3 className="text-lg font-semibold mb-4">اطلاعات سفارش</h3>
+            <div className="space-y-3">
+              <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
+              <InfoRow
+                label="تاریخ و ساعت ثبت"
+                value={persianDate}
+                isActiveBg
+              />
+              <InfoRow
+                label="وضعیت سفارش"
+                value={status === "preparing" ? "در حال آماده‌سازی" : status}
+                isActiveBg
+              />
+              <InfoRow label="روش پرداخت" value={paymentMethod} />
+              <InfoRow
+                label="وضعیت پرداخت"
+                value={paymentStatus}
+                className={
+                  payment?.status === "success"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }
+              />
             </div>
           </CardBody>
         </Card>
 
-        {/* اطلاعات ارسال */}
         <Card className="shadow-md border border-gray-100">
           <CardBody>
-            <div className="space-y-2">
-              <InfoRow label="هزینه ارسال" value={shipping.cost} isActiveBg />
-              <InfoRow label="زمان ارسال" value={shipping.time} />
-              <InfoRow label="وزن مرسوله" value={shipping.weight} isActiveBg />
+            <h3 className="text-lg mb-4 text-right">اطلاعات ارسال</h3>
+            <div className="text-sm text-gray-500 text-center">
+              <p>هنوز ارسال نشده است.</p>
             </div>
           </CardBody>
         </Card>
