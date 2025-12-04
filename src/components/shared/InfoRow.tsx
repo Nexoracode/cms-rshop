@@ -49,7 +49,7 @@ const InfoRow: React.FC<Props> = ({
           }`}
         >
           <p
-            className={`font-medium text-[13px] w-40 truncate ${
+            className={`font-medium text-[13px] w-48 truncate ${
               hoverable
                 ? "group-hover:overflow-visible group-hover:w-full group-hover:text-left group-hover:absolute top-2 -right-2.5 group-hover:whitespace-normal"
                 : ""

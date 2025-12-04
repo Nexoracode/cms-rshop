@@ -4,6 +4,9 @@ import { Card, CardBody, Divider } from "@heroui/react";
 import InfoRow from "../../../shared/InfoRow";
 import { OrderData } from "../order-types";
 import StepContent from "./StepContent";
+import { statusMap } from "@/core/constants/statusMap";
+import { getPaymentStatusText } from "./order-constants";
+import { toPersianDate } from "@/core/utils/date";
 
 type OrderProcessProps = {
   order: OrderData | undefined;
@@ -46,15 +49,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     items,
   } = order;
 
-  // تبدیل تاریخ به فرمت شمسی خوانا
-  const persianDate = new Date(created_at).toLocaleDateString("fa-IR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
   // اطلاعات فاکتور
   const invoice = {
     total: `${Number(subtotal).toLocaleString("fa-IR")} تومان`,
@@ -83,14 +77,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     ? payment.payment_method === "online"
       ? "پرداخت آنلاین (زرین‌پال)"
       : "کارت به کارت"
-    : "پرداخت نشده";
-
-  const paymentStatus =
-    payment?.status === "success"
-      ? "پرداخت موفق"
-      : payment?.status === "failed"
-      ? "پرداخت ناموفق"
-      : "در انتظار پرداخت";
+    : "-";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
@@ -104,7 +91,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         {/* محصولات و فاکتور */}
         <Card className="shadow-md border border-gray-100">
           <CardBody>
-            <h3 className="text-lg mb-4 text-right">محصولات</h3>
+            <h3 className="text-lg mb-4 text-center">محصولات</h3>
             <div className="space-y-4 mb-6">
               {items?.map((item) => (
                 <div
@@ -171,15 +158,20 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                 value={invoice.total}
                 isActiveBg
               />
-              <InfoRow label="تخفیف محصولات" value={invoice.discount}/>
-              <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg/>
+              <InfoRow label="تخفیف محصولات" value={invoice.discount} />
+              <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg />
+              <InfoRow label="هزینه ارسال" value={invoice.shippingCost} />
               <InfoRow
-                label="هزینه ارسال"
-                value={invoice.shippingCost}
+                label="هزینه بسته‌بندی"
+                value={invoice.packagingCost}
+                isActiveBg
               />
-              <InfoRow label="هزینه بسته‌بندی" value={invoice.packagingCost} isActiveBg/>
-              <Divider className="!mt-4"/>
-              <InfoRow label="مبلغ قابل پرداخت" value={invoice.totalDue} hoverable/>
+              <Divider className="!mt-4" />
+              <InfoRow
+                label="مبلغ قابل پرداخت"
+                value={invoice.totalDue}
+                hoverable
+              />
             </div>
           </CardBody>
         </Card>
@@ -190,7 +182,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         {/* اطلاعات مشتری و گیرنده */}
         <Card className="shadow-md border border-gray-100">
           <CardBody>
-            <h3 className="text-lg font-semibold mb-4">اطلاعات گیرنده</h3>
+            <h3 className="text-lg mb-4 text-center">اطلاعات گیرنده</h3>
             <div className="space-y-3">
               <InfoRow
                 label="نام و نام خانوادگی"
@@ -221,14 +213,15 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                 isActiveBg
               />
 
+              <InfoRow label="کد پستی" value={address.postal_code} />
+
               <InfoRow
                 label="استان و شهر"
                 value={`${address.province}، ${address.city}`}
                 isActiveBg
               />
-              <InfoRow label="کد پستی" value={address.postal_code} />
 
-              <div className="bg-gray-50 rounded-lg p-4 mt-4">
+              <div className="mt-4 p-2">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="font-medium">آدرس کامل</span>
                   {address.is_primary && (
@@ -237,7 +230,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed">
+                <p className="text-sm text-gray-700 leading-relaxed text-right">
                   {address.address_line}
                   {address.plaque && `، پلاک ${address.plaque}`}
                   {address.unit && `، واحد ${address.unit}`}
@@ -250,28 +243,41 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         {/* اطلاعات کلی سفارش */}
         <Card className="shadow-md border border-gray-100">
           <CardBody>
-            <h3 className="text-lg font-semibold mb-4">اطلاعات سفارش</h3>
+            <h3 className="text-lg text-center mb-4">اطلاعات سفارش</h3>
             <div className="space-y-3">
               <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
               <InfoRow
                 label="تاریخ و ساعت ثبت"
-                value={persianDate}
+                value={toPersianDate(created_at)}
                 isActiveBg
               />
+              <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
               <InfoRow
-                label="وضعیت سفارش"
-                value={status === "preparing" ? "در حال آماده‌سازی" : status}
+                label="قیمت کل"
+                value={`${Math.floor(payment.amount).toLocaleString()} تومان`}
                 isActiveBg
               />
-              <InfoRow label="روش پرداخت" value={paymentMethod} />
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* اطلاعات پرداخت */}
+        <Card className="shadow-md border border-gray-100">
+          <CardBody>
+            <h3 className="text-lg text-center mb-4">اطلاعات پرداخت</h3>
+            <div className="space-y-3">
+              <InfoRow
+                label="تاریخ پرداخت"
+                value={
+                  payment?.created_at
+                    ? toPersianDate(payment.created_at)
+                    : "پرداخت نشده"
+                }
+              />
+              <InfoRow label="روش پرداخت" value={paymentMethod} isActiveBg />
               <InfoRow
                 label="وضعیت پرداخت"
-                value={paymentStatus}
-                className={
-                  payment?.status === "success"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }
+                value={getPaymentStatusText(order?.payment)}
               />
             </div>
           </CardBody>
@@ -279,7 +285,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         <Card className="shadow-md border border-gray-100">
           <CardBody>
-            <h3 className="text-lg mb-4 text-right">اطلاعات ارسال</h3>
+            <h3 className="text-lg mb-4 text-center">اطلاعات ارسال</h3>
             <div className="text-sm text-gray-500 text-center">
               <p>هنوز ارسال نشده است.</p>
             </div>

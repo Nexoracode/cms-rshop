@@ -15,3 +15,32 @@ export const statusOptions: { key: StatusOrder; title: string }[] = [
   { key: "payment_failed", title: "پرداخت ناموفق" },
   { key: "cancelled", title: "لغو شده" },
 ];
+
+export const getPaymentStatusText = (payment: any): string => {
+  // پرداخت آنلاین
+  if (payment?.payment_method === "online" || payment?.gateway) {
+    switch (payment.status) {
+      case "success":     return "پرداخت موفق";
+      case "failed":       return "پرداخت ناموفق";
+      case "pending":
+      case "in_progress":  return "در انتظار پرداخت";
+      case "cancelled":    return "لغو شده توسط مشتری";
+      case "refunded":         return "وجه بازگشت داده شد";
+      default:             return "وضعیت پرداخت نامشخص";
+    }
+  }
+
+  // کارت به کارت
+  if (payment?.payment_method === "card_to_card") {
+    switch (payment.card_to_card_status) {
+      case "pending":       return "منتظر آپلود رسید";
+      case "uploaded":   return "رسید آپلود شد (در انتظار تأیید)";
+      case "approved":   return "تأیید شده توسط ادمین";
+      case "rejected":   return "رسید رد شد";
+      default:           return "کارت به کارت — در انتظار رسید";
+    }
+  }
+
+  // هیچ پرداختی ثبت نشده
+  return "پرداخت نشده";
+};
