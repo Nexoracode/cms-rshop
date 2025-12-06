@@ -38,11 +38,10 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
     }
   };
 
-  const prev = () => {
-    if (currentIndex > 0) {
-      setStep(stepOrder[currentIndex - 1]);
-    }
-  };
+  if (!order) {
+    return null
+  }
+
 
   // تبدیل استپ‌ها به فرمت BaseTabs
   const tabItems: BaseTabItem[] = stepOrder.map((key) => ({
