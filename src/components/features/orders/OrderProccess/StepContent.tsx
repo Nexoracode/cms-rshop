@@ -1,153 +1,149 @@
-"use client"
+"use client";
 
-import { Button, Input, Select, SelectItem, Switch } from "@heroui/react";
+import { Input, Select, SelectItem, Switch } from "@heroui/react";
 import { useState } from "react";
-import { TbTruckLoading } from "react-icons/tb";
 import DoubleClickBtn from "@/components/ui/buttons/DoubleClickBtn";
-
-type StepKey = "1" | "2" | "3" | "4" | "5" | "6"
+import { OrderStepKey } from "./orderSteps";
+import { FaTruckLoading } from "react-icons/fa";
 
 type Props = {
-    step: StepKey,
-    onNextStep: () => void
-}
+  step: OrderStepKey;
+  onNextStep: () => void;
+  order?: any; // اگر نیاز داشتی وضعیت دقیق رو ببینی
+};
 
 const StepContent = ({ step, onNextStep }: Props) => {
-    const [isSelected, setIsSelected] = useState(false);
+  const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
 
-    switch (step) {
-        case "1":
-            return (
-                <>
-                    <p className="text-default-600 leading-7">
-                        پس از تایید درخواست سفارش ، مشتری میتواند مبلغ سفارش را به صورت کارت به کارت پرداخت کند.
-                    </p>
-                    <div className="w-full flex items-center gap-2">
-                        <DoubleClickBtn
-                            onPress={() => console.log("Test")}
-                            textBtn="عدم تایید"
-                            color="danger"
-                            size="sm"
-                            className="mt-4 w-full"
-                            isActiveDoubleClick
-                        />
-                        <DoubleClickBtn
-                            onPress={onNextStep}
-                            textBtn="تایید درخواست"
-                            startContent={<TbTruckLoading className="text-lg" />}
-                            color="success"
-                            size="sm"
-                            className="mt-4 w-full"
-                            isActiveDoubleClick
-                        />
-                    </div>
-                </>
-            )
-        case "2":
-            return (
-                <p className="text-default-600 leading-7">
-                    سفارش در انتظار پرداخت مشتری است. محصولات آن تا 4 ساعت برای مشتری رزرو می شود.
-                </p>
-            )
-        case "3":
-            return (
-                <>
-                    <p className="text-default-600 leading-7">
-                        سفارش کارت به کارت توسط مشتری پرداخت شده و تصویر رسید ارسال شده است.
-                    </p>
-                    <div className="w-full flex items-center gap-2">
-                        <DoubleClickBtn
-                            onPress={() => console.log("Test")}
-                            textBtn="عدم تایید"
-                            color="danger"
-                            size="sm"
-                            className="mt-4 w-full"
-                            isActiveDoubleClick
-                        />
-                        <DoubleClickBtn
-                            onPress={onNextStep}
-                            textBtn="تایید"
-                            color="success"
-                            size="sm"
-                            className="mt-4 w-full"
-                            isActiveDoubleClick
-                        />
-                    </div>
-                </>
-            )
-        case "4":
-            return (
-                <>
-                    <p className="text-default-600 mb-4 leading-7">
-                        لطفا پس از آماده سازی محصولات، سفارش را ارسال کنید.
-                    </p>
+  switch (step) {
+    case "pending_approval":
+      return (
+        <>
+          <p className="text-default-600 leading-7">
+            سفارش ثبت شده و در انتظار تأیید اولیه شما است.
+          </p>
+          <div className="flex gap-3 mt-5">
+            <DoubleClickBtn
+              onPress={() => console.log("رد سفارش")}
+              textBtn="رد سفارش"
+              color="danger"
+              className="flex-1"
+              isActiveDoubleClick
+            />
+            <DoubleClickBtn
+              onPress={onNextStep}
+              textBtn="تایید درخواست"
+              startContent={<FaTruckLoading className="text-lg" />}
+              color="success"
+              className="flex-1"
+              isActiveDoubleClick
+            />
+          </div>
+        </>
+      );
 
-                    <div className="bg-slate-50 rounded-2xl p-3">
-                        <div>
-                            <div className="flex items-center justify-between mb-3">
-                                <p>کد پیگیری مرسوله</p>
-                                <Switch isSelected={isSelected} size="sm" onValueChange={setIsSelected} />
-                            </div>
-                            <p className="text-gray-600 mb-2 text-[13px] leading-7">اگر از خدمات پست ویا تیپاکس جهت ارسال مرسوله استفاده می‌کنید، میتوانید کد پیگیری مرسوله را در این بخش وارد کنید تا برای مشتری ارسال شود.</p>
-                        </div>
-                        {
-                            isSelected
-                                ?
-                                <div className="flex flex-col gap-4 mt-4">
-                                    <Input labelPlacement="outside" label="کد رهگیری" placeholder="کد را وارد کنید" />
-                                    <Select
-                                        dir="rtl"
-                                        label={"نوع فرستنده"}
-                                        labelPlacement={"outside"}
-                                        placeholder="نوع فرستنده را انتخاب کنید"
-                                    //selectedKeys={selectedCategoryType}
-                                    //onSelectionChange={setSelectedCategoryType}
-                                    >
-                                        <SelectItem key="all">پست</SelectItem>
-                                        <SelectItem key="selected">تیپاکس</SelectItem>
-                                    </Select>
-                                </div>
-                                :
-                                ""
-                        }
-                    </div>
+    case "awaiting_payment":
+      return (
+        <p className="text-default-600 leading-7">
+          سفارش تأیید شده و مشتری باید مبلغ را پرداخت کند (آنلاین یا کارت به کارت). محصولات تا ۴ ساعت رزرو هستند.
+        </p>
+      );
 
-                    <div className="w-full flex items-center gap-2">
-                        <DoubleClickBtn
-                            onPress={onNextStep}
-                            textBtn="تایید"
-                            color="success"
-                            size="sm"
-                            className="mt-4 w-full"
-                            isActiveDoubleClick
-                        />
-                    </div>
-                </>
-            )
-        case "5":
-            return (
-                <>
-                    <p className="text-default-600 leading-7">
-                        لطفا در صورت اطمینان از تحویل مرسوله به مشتری، وضعیت سفارش را "تحویل شده" تعیین کنید.
-                    </p>
-                    <div className="w-full flex items-center gap-2">
-                        <DoubleClickBtn
-                            onPress={onNextStep}
-                            textBtn="تحویل شده"
-                            color="secondary"
-                            size="sm"
-                            variant="solid"
-                            className="mt-4 w-full"
-                            isActiveDoubleClick
-                        />
-                    </div>
-                </>
-            )
-        case "6":
-            return <p>مرسوله به مشتری تحویل داده شده است.</p>
-        default:
-            return null
-    }
-}
+    case "confirming_payment":
+      return (
+        <>
+          <p className="text-default-600 leading-7 mb-4">
+            مشتری رسید کارت به کارت را آپلود کرده است. لطفاً رسید را بررسی و تأیید کنید.
+          </p>
+          <div className="flex gap-3">
+            <DoubleClickBtn
+              onPress={() => console.log("رد رسید")}
+              textBtn="رد رسید"
+              color="danger"
+              className="flex-1"
+              isActiveDoubleClick
+            />
+            <DoubleClickBtn
+              onPress={onNextStep}
+              textBtn="تایید پرداخت"
+              color="success"
+              className="flex-1"
+              isActiveDoubleClick
+            />
+          </div>
+        </>
+      );
 
-export default StepContent
+    case "preparing":
+      return (
+        <>
+          <p className="text-default-600 leading-7 mb-4">
+            پرداخت تأیید شده. لطفاً محصولات را آماده و ارسال کنید.
+          </p>
+
+          <div className="bg-slate-50 rounded-2xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="font-medium">وارد کردن کد رهگیری</p>
+              <Switch
+                isSelected={isTrackingEnabled}
+                onValueChange={setIsTrackingEnabled}
+                size="sm"
+              />
+            </div>
+            <p className="text-sm text-gray-600 mb-3">
+              در صورت استفاده از پست یا تیپاکس، کد رهگیری را وارد کنید تا برای مشتری نمایش داده شود.
+            </p>
+
+            {isTrackingEnabled && (
+              <div className="space-y-4 mt-4">
+                <Input label="کد رهگیری" placeholder="مثلاً: 12345678901234567890" />
+                <Select label="نوع ارسال" labelPlacement="outside" placeholder="انتخاب کنید">
+                  <SelectItem key="post">پست پیشتاز / سفارشی</SelectItem>
+                  <SelectItem key="tipax">تیپاکس</SelectItem>
+                  <SelectItem key="other">سایر</SelectItem>
+                </Select>
+              </div>
+            )}
+          </div>
+
+          <DoubleClickBtn
+            onPress={onNextStep}
+            textBtn="ثبت و ارسال سفارش"
+            color="success"
+            className="mt-5 w-full"
+            isActiveDoubleClick
+          />
+        </>
+      );
+
+    case "shipping":
+      return (
+        <>
+          <p className="text-default-600 leading-7">
+            مرسوله ارسال شده است. در صورت تحویل به مشتری، وضعیت را به "تحویل شده" تغییر دهید.
+          </p>
+          <DoubleClickBtn
+            onPress={onNextStep}
+            textBtn="تأیید تحویل به مشتری"
+            color="secondary"
+            variant="solid"
+            className="mt-5 w-full"
+            isActiveDoubleClick
+          />
+        </>
+      );
+
+    case "delivered":
+      return (
+        <div className="text-center py-8">
+          <p className="text-lg font-semibold text-green-600">مرسوله با موفقیت به مشتری تحویل داده شد!</p>
+          <p className="text-default-600 mt-2">سفارش با موفقیت تکمیل شد.</p>
+        </div>
+      );
+
+    default:
+      return null;
+  }
+};
+
+export default StepContent;

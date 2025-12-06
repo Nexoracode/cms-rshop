@@ -5,86 +5,104 @@ import { Tabs, Tab, Button } from "@heroui/react";
 import OrderProcess from "./OrderProccess";
 import StepContent from "./StepContent";
 import { OrderData } from "../order-types";
-
-const STEP_TITLES: any = {
-  "1": "درخواست شده",
-  "2": "در انتظار پرداخت",
-  "3": "در انتظار تایید",
-  "4": "در حال آماده‌سازی",
-  "5": "در حال ارسال",
-  "6": "تحویل شده",
-};
+import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./orderSteps";
 
 type Props = {
   order?: OrderData;
 };
 
-type StepKey = "1" | "2" | "3" | "4" | "5" | "6"
-
-const statusToStep = (status: any) => {
-  switch (status) {
-    case "pending":
-      return "1";
-    case "paid":
-      return "3";
-    case "shipped":
-      return "5";
-    case "delivered":
-      return "6";
-    case "cancelled":
-    case "refunded":
-    case "failed":
-    default:
-      return "1";
-  }
-};
-
 const OrderWizard: React.FC<Props> = ({ order }) => {
-  const initial = statusToStep(order?.status);
-  const [step, setStep] = useState<StepKey>(initial);
+  const [step, setStep] = useState<OrderStepKey>("pending_approval");
 
+  // اولین بار و هر بار که وضعیت سفارش تغییر کرد
   useEffect(() => {
-    setStep(statusToStep(order?.status));
+    if (order?.status) {
+      setStep(getCurrentStep(order.status));
+    }
   }, [order?.status]);
 
+  // ترتیب دقیق استپ‌ها (مهم برای دکمه‌های بعدی/قبلی)
+  const stepOrder: OrderStepKey[] = [
+    "pending_approval",
+    "awaiting_payment",
+    "confirming_payment",
+    "preparing",
+    "shipping",
+    "delivered",
+  ];
+
+  const currentIndex = stepOrder.indexOf(step);
+
   const next = () => {
-    const nextNum = Math.min(Number(step) + 1, 6);
-    setStep(String(nextNum) as StepKey);
-  };
-  const prev = () => {
-    const prevNum = Math.max(Number(step) - 1, 1);
-    setStep(String(prevNum) as StepKey);
+    if (currentIndex < stepOrder.length - 1) {
+      setStep(stepOrder[currentIndex + 1]);
+    }
   };
 
+  const prev = () => {
+    if (currentIndex > 0) {
+      setStep(stepOrder[currentIndex - 1]);
+    }
+  };
+
+  const goToStep = (key: OrderStepKey) => {
+    setStep(key);
+  };
+
+  if (!order) {
+    return;
+  }
+
   return (
-    <div className="space-y-4">
-      {/* Tabs */}
+    <div className="space-y-6">
+      {/* تب‌های مراحل سفارش */}
       <Tabs
-        aria-label="Order Steps"
         selectedKey={step}
-        onSelectionChange={(k) => setStep(k as StepKey)}
-        className="tabs-site w-full"
+        onSelectionChange={(k) => goToStep(k as OrderStepKey)}
+        aria-label="مراحل سفارش"
+        classNames={{
+          tabList: "w-full justify-between bg-gray-50 p-1 rounded-xl",
+          cursor: "bg-white shadow-md",
+          tab: "flex-1 py-3 font-medium",
+        }}
       >
-        {(Object.keys(STEP_TITLES) as StepKey[]).map((key) => (
+        {stepOrder.map((key) => (
           <Tab
             key={key}
             title={STEP_TITLES[key]}
+            // فقط استپ فعلی فعال باشه، بقیه غیرفعال (برای زیبایی)
             isDisabled={key !== step}
-            className="flex-1 text-center"
           />
         ))}
       </Tabs>
 
+      {/* محتوای اصلی + باکس اکشن سمت چپ */}
       <OrderProcess
         order={order}
         actionBox={<StepContent step={step} onNextStep={next} />}
       />
 
-      <div className="flex justify-between">
-        <Button variant="flat" onPress={prev} isDisabled={step === "1"}>
+      {/* دکمه‌های قبلی و بعدی */}
+      <div className="flex justify-between items-center">
+        <Button
+          variant="flat"
+          color="default"
+          onPress={prev}
+          isDisabled={currentIndex === 0}
+        >
           قبلی
         </Button>
-        <Button variant="flat" onPress={next} isDisabled={step === "6"}>
+
+        <div className="text-sm text-gray-500">
+          مرحله {currentIndex + 1} از {stepOrder.length}
+        </div>
+
+        <Button
+          variant="flat"
+          color="primary"
+          onPress={next}
+          isDisabled={currentIndex === stepOrder.length - 1}
+        >
           بعدی
         </Button>
       </div>

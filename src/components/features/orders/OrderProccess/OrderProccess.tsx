@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Card, CardBody, Divider } from "@heroui/react";
-import InfoRow from "../../../shared/InfoRow";
+import { Divider } from "@heroui/react";
+import InfoRow from "@/components/shared/InfoRow";
 import { OrderData } from "../order-types";
-import StepContent from "./StepContent";
 import { statusMap } from "@/core/constants/statusMap";
 import { getPaymentStatusText } from "./order-constants";
 import { toPersianDate } from "@/core/utils/date";
@@ -22,25 +20,6 @@ type OrderProcessProps = {
   actionBox?: React.ReactNode;
 };
 
-const statusToStep = (status: string): string => {
-  switch (status) {
-    case "pending":
-      return "1";
-    case "paid":
-    case "preparing":
-      return "3";
-    case "shipped":
-      return "5";
-    case "delivered":
-      return "6";
-    case "cancelled":
-    case "refunded":
-    case "failed":
-    default:
-      return "1";
-  }
-};
-
 const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
   const {
     id,
@@ -56,30 +35,17 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     items,
   } = order;
 
-  // اطلاعات فاکتور
   const invoice = {
     total: price(subtotal),
-    discount: `${Number(discount_total).toLocaleString("fa-IR")} تومان`,
+    discount: discount_total
+      ? `${Number(discount_total).toLocaleString("fa-IR")} تومان`
+      : "۰ تومان",
     code: coupon_code ?? "ندارد",
     shippingCost: "رایگان",
     packagingCost: "۰ تومان",
-    totalDue: `${Number(total).toLocaleString("fa-IR")} تومان`,
+    totalDue: price(total, false), // بدون "تومان" اگر نمی‌خوای تکرار بشه
   };
 
-  // مدیریت استپ‌ها
-  const [step, setStep] = useState<string>(() => statusToStep(status));
-
-  useEffect(() => {
-    setStep(statusToStep(status));
-  }, [status]);
-
-  const next = () => setStep((prev) => String(Math.min(Number(prev) + 1, 6)));
-  const prev = () => setStep((prev) => String(Math.max(Number(prev) - 1, 1)));
-
-  const localActionBox = <StepContent step={step} onNextStep={next} />;
-  const usedActionBox = actionBox ?? localActionBox;
-
-  // وضعیت پرداخت
   const paymentMethod = payment
     ? payment.payment_method === "online"
       ? "پرداخت آنلاین (زرین‌پال)"
@@ -90,7 +56,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 !mt-6">
       {/* ستون اول */}
       <div className="space-y-6">
-        <BaseCard>{usedActionBox}</BaseCard>
+        <BaseCard>{actionBox}</BaseCard>
 
         <BaseCard
           CardHeaderProps={{

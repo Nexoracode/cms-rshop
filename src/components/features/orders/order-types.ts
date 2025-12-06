@@ -36,7 +36,7 @@ export type StatusOrder =
   | "refunded"
   | "payment_failed"
   | "processing"
-  | "cancelled"
+  | "cancelled";
 
 export type OrderData = {
   id: number;
@@ -63,6 +63,9 @@ export type OrderData = {
     media_id: number | null;
     created_at: string;
   };
+  address: any;
+  payment: any;
+  items: any;
 };
 
 export type OrderSortBy = Array<
