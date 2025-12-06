@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { Card, CardBody, Divider } from "@heroui/react";
 import InfoRow from "../../../shared/InfoRow";
@@ -18,7 +19,7 @@ const statusToStep = (status: string): string => {
     case "pending":
       return "1";
     case "paid":
-    case "preparing": // وضعیت جدید تو داده‌ها
+    case "preparing":
       return "3";
     case "shipped":
       return "5";
@@ -92,62 +93,44 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         <Card className="shadow-md border border-gray-100">
           <CardBody>
             <h3 className="text-lg mb-4 text-center">محصولات</h3>
-            <div className="space-y-4 mb-6">
+            <div className="space-y-3 mb-6">
               {items?.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-gray-50 rounded-xl p-4 flex gap-4 border border-gray-200"
+                  className="rounded-xl p-2 flex flex-col gap-4 shadow border border-slate-200"
                 >
-                  <img
-                    src={item.product?.image || "/placeholder.jpg"}
-                    alt={item.product?.name}
-                    className="w-20 h-20 rounded-lg object-cover"
-                  />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <p className="font-medium text-gray-800">
+                  <div className="w-full flex items-center gap-2.5">
+                    <img
+                      src={item.product?.image || "/placeholder.jpg"}
+                      alt={item.product?.name}
+                      className="w-16 h-16 rounded-lg object-cover"
+                    />
+                    <div className="w-full flex flex-col justify-start text-right gap-2.5">
+                      <p className="w-full text-gray-800 text-right truncate">
                         {item.product?.name}
                       </p>
-                      <span className="text-sm text-gray-500 mr-auto">
-                        تعداد: {item.quantity}
-                      </span>
-                    </div>
-
-                    {/* واریانت‌ها */}
-                    {item.variant?.attributes &&
-                      item.variant.attributes.length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-600">
-                          {item.variant.attributes.map((attr: any) => (
-                            <div
-                              key={attr.name}
-                              className="flex items-center gap-2"
-                            >
-                              <span>
-                                {attr.name}: {attr.value}
-                              </span>
-                              {attr.display_color && (
-                                <span
-                                  className="w-4 h-4 rounded-full border-2 border-gray-300 inline-block"
-                                  style={{
-                                    backgroundColor: attr.display_color,
-                                  }}
-                                />
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                    <div className="flex justify-between mt-3 text-sm">
-                      <span className="text-gray-600">
-                        قیمت واحد:{" "}
-                        {Number(item.unit_price).toLocaleString("fa-IR")} تومان
-                      </span>
-                      <span className="font-semibold">
-                        {Number(item.line_total).toLocaleString("fa-IR")} تومان
-                      </span>
+                      <div className="w-full flex items-center justify-between">
+                        <span className="text-[13px] text-green-600 bg-green-50 rounded-lg p-0.5">
+                          قیمت کل:{" "}
+                          {Number(item.line_total).toLocaleString("fa-IR")}{" "}
+                          تومان
+                        </span>
+                        <span className="text-[13px] text-gray-500">
+                          {item.quantity} عدد
+                        </span>
+                      </div>
                     </div>
                   </div>
+
+                  {item.variant?.attributes &&
+                    item.variant.attributes.length > 0 && (
+                      <div className="w-full flex items-center justify-between gap-2 text-xs text-gray-600">
+                        <span className="truncate">{item.variant.sku}</span>
+                        <span>
+                          {Number(item.variant.price).toLocaleString("fa-IR")}{" "}
+                        </span>
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
@@ -211,9 +194,10 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
                       })`
                 }
                 isActiveBg
+                hoverable
               />
 
-              <InfoRow label="کد پستی" value={address.postal_code} />
+              <InfoRow label="کد پستی" value={address.postal_code} hoverable />
 
               <InfoRow
                 label="استان و شهر"
