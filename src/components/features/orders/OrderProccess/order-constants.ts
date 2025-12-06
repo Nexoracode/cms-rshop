@@ -12,7 +12,6 @@ export const statusOptions: { key: StatusOrder; title: string }[] = [
   { key: "rejected", title: "رد شده" },
   { key: "refunded", title: "عودت وجه" },
   { key: "payment_failed", title: "پرداخت ناموفق" },
-  { key: "payment_failed", title: "پرداخت ناموفق" },
   { key: "cancelled", title: "لغو شده" },
 ];
 

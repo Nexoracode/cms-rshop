@@ -64,7 +64,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             icon: <LuScrollText className="text-gray-700" />,
             showIconInActionSlot: true,
           }}
-          bodyClassName="space-y-1"
         >
           <div className="mb-5 space-y-3">
             {items?.map((item: any) => (
@@ -72,15 +71,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             ))}
           </div>
 
-          <InfoRow label="جمع کل محصولات" value={invoice.total} isActiveBg />
+          <InfoRow label="جمع کل محصولات" value={invoice.total} />
           <InfoRow label="تخفیف محصولات" value={invoice.discount} />
-          <InfoRow label="کد تخفیف" value={invoice.code} isActiveBg hoverable />
+          <InfoRow label="کد تخفیف" value={invoice.code} />
           <InfoRow label="هزینه ارسال" value={invoice.shippingCost} />
-          <InfoRow
-            label="هزینه بسته‌بندی"
-            value={invoice.packagingCost}
-            isActiveBg
-          />
+          <InfoRow label="هزینه بسته‌بندی" value={invoice.packagingCost} />
           <Divider className="!mt-4" />
           <InfoRow
             label="مبلغ قابل پرداخت"
@@ -112,7 +107,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             hoverable
           />
           <InfoRow label="ایمیل" value={user.email || "ثبت نشده"} hoverable />
-
           <InfoRow
             label="سفارش برای"
             value={
@@ -125,9 +119,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             isActiveBg
             hoverable
           />
-
           <InfoRow label="کد پستی" value={address.postal_code} hoverable />
-
           <InfoRow
             label="استان و شهر"
             value={`${address.province}، ${address.city}`}
@@ -140,25 +132,17 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
               address.plaque && `، پلاک ${address.plaque}`
             } ${address.unit && `، واحد ${address.unit}`}`}
             hoverable
-            valueStyle="group-hover:group-hover:pr-6 group-hover:text-right"
+            valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
           />
-        </BaseCard>
-
-        <BaseCard
-          CardHeaderProps={{
-            title: "اطلاعات سفارش",
-            icon: <HiOutlineDocumentText className="text-gray-700" />,
-            showIconInActionSlot: true,
-          }}
-          bodyClassName="space-y-1"
-        >
-          <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
           <InfoRow
-            label="تاریخ و ساعت ثبت"
-            value={toPersianDate(created_at)}
+            label="توضیحات مشتری"
+            value={`${address.address_line} ${
+              address.plaque && `، پلاک ${address.plaque}`
+            } ${address.unit && `، واحد ${address.unit}`}`}
+            hoverable
+            valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
             isActiveBg
           />
-          <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
         </BaseCard>
 
         <BaseCard
@@ -186,15 +170,39 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
         <BaseCard
           CardHeaderProps={{
+            title: "اطلاعات سفارش",
+            icon: <HiOutlineDocumentText className="text-gray-700" />,
+            showIconInActionSlot: true,
+          }}
+          bodyClassName="space-y-1"
+        >
+          <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
+          <InfoRow
+            label="تاریخ ثبت"
+            value={toPersianDate(created_at)}
+            isActiveBg
+          />
+          <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
+          <InfoRow label="روش پرداخت" value={"کارت به کارت"} />
+          <InfoRow label="مبلغ" value={"346000"} />
+          <InfoRow label="تاریخ تحویل" value={"1404/7/29"} />
+          <InfoRow label="آماده سازی" value={"1 روز"} />
+          <InfoRow label="کد تخفیف" value={"jx7xhikz"} />
+        </BaseCard>
+
+        <BaseCard
+          CardHeaderProps={{
             title: "اطلاعات ارسال",
             icon: <TbTruckDelivery className="text-gray-700" />,
             showIconInActionSlot: true,
           }}
           bodyClassName="space-y-1"
         >
-          <div className="text-sm text-gray-500 text-center">
-            <p>هنوز ارسال نشده است.</p>
-          </div>
+          <InfoRow label="کد رهگیری" value={"#sdfhljkv"} hoverable />
+          <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
+          <InfoRow label="هزینه ارسال" value={"رایگان"} />
+          <InfoRow label="زمان ارسال" value={"1404/4/12 - 08:51"} isActiveBg />
+          <InfoRow label="وزن مرسوله" value={"100 گرم"} />
         </BaseCard>
       </div>
     </div>
