@@ -136,10 +136,8 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           />
           <InfoRow
             label="توضیحات"
-            value={`${address.address_line} ${
-              address.plaque && `، پلاک ${address.plaque}`
-            } ${address.unit && `، واحد ${address.unit}`}`}
-            hoverable
+            value={payment?.customer_note || "توضیحی وجود ندارد"}
+            hoverable={payment?.customer_note}
             valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
             isActiveBg
           />
@@ -166,6 +164,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             label="وضعیت پرداخت"
             value={getPaymentStatusText(order?.payment)}
           />
+          <InfoRow label="مبلغ" value={price(payment?.amount) || "پرداخت نشده"} isActiveBg/>
         </BaseCard>
 
         <BaseCard
@@ -183,11 +182,9 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             isActiveBg
           />
           <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
-          <InfoRow label="روش پرداخت" value={"کارت به کارت"} isActiveBg/>
-          <InfoRow label="مبلغ" value={"346000"} />
-          <InfoRow label="تاریخ تحویل" value={"1404/7/29"} isActiveBg/>
+          <InfoRow label="تاریخ تحویل" value={"1404/7/29"} isActiveBg />
           <InfoRow label="آماده سازی" value={"1 روز"} />
-          <InfoRow label="کد تخفیف" value={"jx7xhikz"} isActiveBg hoverable/>
+          <InfoRow label="کد تخفیف" value={"jx7xhikz"} isActiveBg hoverable />
         </BaseCard>
 
         <BaseCard
@@ -198,7 +195,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           }}
           bodyClassName="space-y-1"
         >
-          <InfoRow label="کد رهگیری" value={"#sdfhljkv"} hoverable />
+          <InfoRow label="کد رهگیری" value={payment?.tracking_code || "ندارد"} hoverable />
           <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
           <InfoRow label="هزینه ارسال" value={"رایگان"} />
           <InfoRow label="زمان ارسال" value={"1404/4/12 - 08:51"} isActiveBg />
