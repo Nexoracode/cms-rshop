@@ -53,7 +53,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     : "-";
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 !mt-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* ستون اول */}
       <div className="space-y-6">
         <BaseCard>{actionBox}</BaseCard>
