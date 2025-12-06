@@ -38,7 +38,7 @@ export default function AddNewSizeGuideModal({
   defaultValues,
   isNew = true,
 }: Props) {
-  const { form, errors, handleFieldChange, canSubmit, setForm, setErrors } =
+  const { form, errors, handleFieldChange, canSubmit, setForm , reset} =
     useForm<SizeGuideType>(initialForm, {
       onValidate: validateSizeGuide,
       runValidationOnChange: true,
@@ -124,7 +124,7 @@ export default function AddNewSizeGuideModal({
       isOpen={isOpen}
       onOpenChange={(val) => {
         onOpenChange(val);
-        !val && setErrors({});
+        !val && reset()
       }}
       triggerProps={undefined}
       title={form.id ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
