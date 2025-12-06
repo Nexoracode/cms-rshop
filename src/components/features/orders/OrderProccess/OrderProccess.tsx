@@ -90,12 +90,8 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 !mt-6">
       {/* ستون اول */}
       <div className="space-y-6">
-        {/* استپ‌های سفارش */}
-        <Card className="shadow-md border border-gray-100">
-          <CardBody className="text-right">{usedActionBox}</CardBody>
-        </Card>
+        <BaseCard>{usedActionBox}</BaseCard>
 
-        {/* محصولات و فاکتور */}
         <BaseCard
           CardHeaderProps={{
             title: "اطلاعات محصولات",
@@ -170,23 +166,16 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             label="استان و شهر"
             value={`${address.province}، ${address.city}`}
             isActiveBg
+            hoverable
           />
-
-          <div className="mt-4 p-2">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-medium">آدرس کامل</span>
-              {address.is_primary && (
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                  آدرس اصلی
-                </span>
-              )}
-            </div>
-            <p className="text-sm text-gray-700 leading-relaxed text-right">
-              {address.address_line}
-              {address.plaque && `، پلاک ${address.plaque}`}
-              {address.unit && `، واحد ${address.unit}`}
-            </p>
-          </div>
+          <InfoRow
+            label="آدرس"
+            value={`${address.address_line} ${
+              address.plaque && `، پلاک ${address.plaque}`
+            } ${address.unit && `، واحد ${address.unit}`}`}
+            hoverable
+            valueStyle="group-hover:group-hover:pr-6 group-hover:text-right"
+          />
         </BaseCard>
 
         <BaseCard

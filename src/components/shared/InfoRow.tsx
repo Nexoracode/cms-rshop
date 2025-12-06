@@ -9,6 +9,7 @@ type Props = {
   value: string;
   isActiveBg?: boolean;
   hoverable?: boolean; // اضافه شد
+  valueStyle? : string
 };
 
 const InfoRow: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const InfoRow: React.FC<Props> = ({
   label,
   value,
   hoverable = false, // پیش‌فرض true
+  valueStyle= ""
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -51,7 +53,7 @@ const InfoRow: React.FC<Props> = ({
           <p
             className={`font-medium text-[13px] w-48 truncate text-left ${
               hoverable
-                ? "group-hover:overflow-visible group-hover:w-full group-hover:text-left group-hover:absolute top-2 -right-2.5 group-hover:whitespace-normal"
+                ? `group-hover:overflow-visible group-hover:w-full group-hover:absolute top-2 -right-2.5 group-hover:whitespace-normal ${valueStyle}`
                 : ""
             }`}
           >
