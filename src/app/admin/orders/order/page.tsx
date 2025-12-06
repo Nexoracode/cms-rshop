@@ -15,7 +15,7 @@ const OrderDetail = () => {
     orderId ? +orderId : undefined
   );
   
-  console.log(order);
+  console.log(order?.data);
   
   return (
     <UnifiedCard

@@ -135,7 +135,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
           />
           <InfoRow
-            label="توضیحات مشتری"
+            label="توضیحات"
             value={`${address.address_line} ${
               address.plaque && `، پلاک ${address.plaque}`
             } ${address.unit && `، واحد ${address.unit}`}`}
@@ -183,11 +183,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             isActiveBg
           />
           <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
-          <InfoRow label="روش پرداخت" value={"کارت به کارت"} />
+          <InfoRow label="روش پرداخت" value={"کارت به کارت"} isActiveBg/>
           <InfoRow label="مبلغ" value={"346000"} />
-          <InfoRow label="تاریخ تحویل" value={"1404/7/29"} />
+          <InfoRow label="تاریخ تحویل" value={"1404/7/29"} isActiveBg/>
           <InfoRow label="آماده سازی" value={"1 روز"} />
-          <InfoRow label="کد تخفیف" value={"jx7xhikz"} />
+          <InfoRow label="کد تخفیف" value={"jx7xhikz"} isActiveBg hoverable/>
         </BaseCard>
 
         <BaseCard
