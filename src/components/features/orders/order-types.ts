@@ -67,6 +67,8 @@ export type OrderData = {
   payment: any;
   items: any;
   updated_at?: string
+  shipping_cost: number
+  promotion_code: string
 };
 
 export type OrderSortBy = Array<

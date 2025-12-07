@@ -6,7 +6,7 @@ import { OrderData } from "../order-types";
 import { statusMap } from "@/core/constants/statusMap";
 import { getPaymentStatusText } from "./order-constants";
 import { toPersianUTC } from "@/core/utils/date";
-import { price } from "@/core/utils/helper";
+import { formatWeight, price } from "@/core/utils/helper";
 import ProductCardDetail from "./ProductCardDetail";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuScrollText } from "react-icons/lu";
@@ -33,7 +33,12 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     address,
     payment,
     items,
-    updated_at
+    updated_at,
+    shipping_cost,
+    promotion_code,
+    customer_note,
+    manual_discount_applied,
+    total_weight
   } = order;
 
   const invoice = {
@@ -51,7 +56,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     ? payment.payment_method === "online"
       ? "پرداخت آنلاین (زرین‌پال)"
       : "کارت به کارت"
-    : "-";
+    : "—";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -84,18 +89,27 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
               <ProductCardDetail key={item.id} item={item} />
             ))}
           </div>
-
-          <InfoRow label="جمع کل محصولات" value={invoice.total} />
-          <InfoRow label="تخفیف محصولات" value={invoice.discount} />
-          <InfoRow label="کد تخفیف" value={invoice.code} />
-          <InfoRow label="هزینه ارسال" value={invoice.shippingCost} />
-          <InfoRow label="هزینه بسته‌بندی" value={invoice.packagingCost} />
-          <Divider className="!mt-4" />
+          <InfoRow label="مجموع قیمت" value={price(subtotal)} />
           <InfoRow
-            label="مبلغ قابل پرداخت"
-            value={invoice.totalDue}
-            hoverable
+            label="مجموع تخفیفات"
+            value={discount_total ? price(discount_total) : "—"}
           />
+          <InfoRow
+            label="تخفیف دستی فاکتور"
+            value={
+              manual_discount_applied ? price(manual_discount_applied) : "—"
+            }
+          />
+          <InfoRow label="کد تخفیف" value={promotion_code ?? "—"} />
+          <InfoRow label="هزینه ارسال" value={"—"} />
+          <InfoRow
+            label="هزینه بسته بندی"
+            value={
+              shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))
+            }
+          />
+          <Divider className="!mt-3 mb-1" />
+          <InfoRow label="مبلغ قابل پرداخت" value={price(total)} hoverable />
         </BaseCard>
       </div>
 
@@ -150,8 +164,8 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           />
           <InfoRow
             label="توضیحات"
-            value={payment?.customer_note || "توضیحی وجود ندارد"}
-            hoverable={payment?.customer_note}
+            value={customer_note || "توضیحی وجود ندارد"}
+            hoverable={customer_note}
             valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
             isActiveBg
           />
@@ -166,21 +180,18 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           bodyClassName="space-y-1"
         >
           <InfoRow
-            label="تاریخ پرداخت"
-            value={
-              payment?.created_at
-                ? toPersianUTC(payment.created_at)
-                : "پرداخت نشده"
-            }
-          />
-          <InfoRow label="روش پرداخت" value={paymentMethod} isActiveBg />
-          <InfoRow
             label="وضعیت پرداخت"
             value={getPaymentStatusText(order?.payment)}
           />
           <InfoRow
+            label="تاریخ پرداخت"
+            value={payment?.created_at ? toPersianUTC(payment.created_at) : "—"}
+            isActiveBg
+          />
+          <InfoRow label="روش پرداخت" value={paymentMethod} />
+          <InfoRow
             label="مبلغ"
-            value={price(payment?.amount) || "پرداخت نشده"}
+            value={payment?.amount ? price(payment?.amount) : "—"}
             isActiveBg
           />
         </BaseCard>
@@ -200,8 +211,17 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             isActiveBg
           />
           <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
-          <InfoRow label="آماده سازی" value={"1 روز"} isActiveBg/>
-          <InfoRow label="کد تخفیف" value={"jx7xhikz"} hoverable />
+          <InfoRow label="آماده سازی" value={"1 روز"} isActiveBg />
+          <InfoRow
+            label="کد تخفیف"
+            value={promotion_code ? promotion_code : "ندارد"}
+            hoverable
+          />
+          <InfoRow
+            label="جمع تخفیفات"
+            value={discount_total ? price(discount_total) : "—"}
+            isActiveBg
+          />
         </BaseCard>
 
         <BaseCard
@@ -218,9 +238,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             hoverable
           />
           <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
-          <InfoRow label="هزینه ارسال" value={"رایگان"} />
-          <InfoRow label="زمان ارسال" value={toPersianUTC(updated_at, {showTime: false})} isActiveBg />
-          <InfoRow label="وزن مرسوله" value={"100 گرم"} />
+          <InfoRow
+            label="زمان ارسال"
+            value={toPersianUTC(updated_at, { showTime: false })}
+          />
+          <InfoRow label="وزن مرسوله" value={formatWeight(total_weight)} isActiveBg/>
         </BaseCard>
       </div>
     </div>

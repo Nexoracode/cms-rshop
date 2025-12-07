@@ -32,7 +32,14 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({ item }) => {
 
       {variant && (
         <div className="w-full flex mt-4 items-center justify-between gap-2 text-xs text-gray-600">
-          <span className="truncate">{variant.sku}</span>
+          <div className="flex items-center gap-1.5">
+            {variant.attributes.map((attr: any, index: number) => (
+              <span key={index}>
+                {attr.value}
+                {index < variant.attributes.length - 1 && "  ،"}
+              </span>
+            ))}
+          </div>
           <span>{Number(variant.price).toLocaleString("fa-IR")} </span>
         </div>
       )}

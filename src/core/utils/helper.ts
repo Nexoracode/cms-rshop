@@ -15,3 +15,13 @@ export const price = (
 
   return showToman ? `${formatted} تومان` : formatted;
 };
+
+export function formatWeight(weightInGrams: number): string {
+  if (weightInGrams >= 1000) {
+    return (Math.floor(weightInGrams) / 1000)
+      .toFixed(2)
+      .replace(/\.00$/, "")
+      .replace(/\.0$/, "") + " کیلوگرم";
+  }
+  return Math.floor(weightInGrams) + " گرم";
+}
