@@ -68,6 +68,7 @@ const ManualOrderForm = () => {
       addressId: form.selectedAddressId,
       items: form.products.map((product: any) => ({
         product_id: product.id,
+        quantity: !product.variants.length ? product.quantity || 1 : null,
         variant_ids:
           product.variants?.map((variant: any) => ({
             id: variant.id,
