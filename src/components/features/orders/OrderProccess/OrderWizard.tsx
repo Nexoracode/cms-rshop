@@ -6,6 +6,8 @@ import StepContent from "./StepContent";
 import { OrderData } from "../order-types";
 import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./orderSteps";
 import BaseTabs, { type BaseTabItem } from "@/components/ui/BaseTabs"; // مسیر درست رو بزن
+import BaseCard from "@/components/ui/BaseCard";
+import { toPersianUTC } from "@/core/utils/date";
 
 type Props = {
   order?: OrderData;
@@ -39,7 +41,7 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
   };
 
   if (!order) {
-    return null
+    return null;
   }
 
   // تبدیل استپ‌ها به فرمت BaseTabs
@@ -49,7 +51,7 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
     content: (
       <OrderProcess
         order={order}
-        actionBox={<StepContent step={key} onNextStep={next} order={order}/>}
+        actionBox={<StepContent step={key} onNextStep={next} order={order} />}
       />
     ),
     // فقط استپ فعلی محتوا داشته باشه — بقیه خالی (برای عملکرد بهتر)

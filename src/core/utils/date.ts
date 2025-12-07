@@ -30,51 +30,58 @@ export const isoToCal = (iso?: string | null): CalendarDate | undefined => {
   }
 };
 
-export const toPersianUTC = (isoDate?: string | null) =>
-  isoDate
-    ? new Date(isoDate).toLocaleString("fa-IR", { timeZone: "Asia/Tehran" })
-    : "—";
 
-/**
- * تبدیل تاریخ به فرمت زیبای فارسی
- * مثال خروجی: چهارشنبه ۱۴ آذر ۱۴۰۳، ساعت ۱۵:۴۵
- */
-export const toPersianDate = (
-  date: string | Date,
-  // قبول می‌کنه ISO string یا Date
+export const toPersianUTC = (
+  isoDate?: string | null,
+  options: { showTime?: boolean; withWeekday?: boolean } = {}
 ): string => {
-  return new Date(date).toLocaleDateString("fa-IR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  });
-};
+  const { showTime = true, withWeekday = false } = options;
 
-/**
- * فقط تاریخ (بدون ساعت)
- * مثال: چهارشنبه ۱۴ آذر ۱۴۰۳
- */
-export const toPersianDateOnly = (date: string | Date): string => {
-  return new Date(date).toLocaleDateString("fa-IR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
+  if (!isoDate) return "—";
 
-/**
- * فقط ساعت
- * مثال: ۱۵:۴۵
- */
-export const toPersianTime = (date: string | Date): string => {
-  return new Date(date).toLocaleTimeString("fa-IR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  });
+  const date = new Date(isoDate);
+
+  // گزینه‌های اصلی
+  const baseOptions: Intl.DateTimeFormatOptions = {
+    timeZone: "Asia/Tehran",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
+
+  // اضافه کردن ساعت و دقیقه فقط اگر showTime === true باشه
+  if (showTime) {
+    Object.assign(baseOptions, {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // ۲۴ ساعته
+    });
+  }
+
+  // اضافه کردن روز هفته اگر خواسته شده
+  if (withWeekday) {
+    Object.assign(baseOptions, {
+      weekday: "long",
+    });
+  }
+
+  const persianParts = new Intl.DateTimeFormat("fa-IR", baseOptions)
+    .formatToParts(date)
+    .reduce((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {} as Record<string, string>);
+
+  // ساخت خروجی نهایی
+  let result = `${persianParts.year}/${persianParts.month}/${persianParts.day}`;
+
+  if (showTime) {
+    result += `، ${persianParts.hour}:${persianParts.minute}`;
+  }
+
+  if (withWeekday) {
+    result = `${persianParts.weekday}، ${result}`;
+  }
+
+  return result;
 };

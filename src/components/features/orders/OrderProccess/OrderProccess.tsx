@@ -5,7 +5,7 @@ import InfoRow from "@/components/shared/InfoRow";
 import { OrderData } from "../order-types";
 import { statusMap } from "@/core/constants/statusMap";
 import { getPaymentStatusText } from "./order-constants";
-import { toPersianDate } from "@/core/utils/date";
+import { toPersianUTC } from "@/core/utils/date";
 import { price } from "@/core/utils/helper";
 import ProductCardDetail from "./ProductCardDetail";
 import BaseCard from "@/components/ui/BaseCard";
@@ -56,7 +56,20 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* ستون اول */}
       <div className="space-y-6">
-        <BaseCard>{actionBox}</BaseCard>
+        <BaseCard
+          CardHeaderProps={{
+            title: `#${order.id}`,
+            icon: (
+              <p className="text-sm text-gray-700">
+                {toPersianUTC(order.created_at, { showTime: false })}
+              </p>
+            ),
+            showIconInActionSlot: true,
+          }}
+          bodyClassName="cursor-auto"
+        >
+          {actionBox}
+        </BaseCard>
 
         <BaseCard
           CardHeaderProps={{
@@ -155,7 +168,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             label="تاریخ پرداخت"
             value={
               payment?.created_at
-                ? toPersianDate(payment.created_at)
+                ? toPersianUTC(payment.created_at)
                 : "پرداخت نشده"
             }
           />
@@ -164,7 +177,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             label="وضعیت پرداخت"
             value={getPaymentStatusText(order?.payment)}
           />
-          <InfoRow label="مبلغ" value={price(payment?.amount) || "پرداخت نشده"} isActiveBg/>
+          <InfoRow
+            label="مبلغ"
+            value={price(payment?.amount) || "پرداخت نشده"}
+            isActiveBg
+          />
         </BaseCard>
 
         <BaseCard
@@ -178,7 +195,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
           <InfoRow
             label="تاریخ ثبت"
-            value={toPersianDate(created_at)}
+            value={toPersianUTC(created_at)}
             isActiveBg
           />
           <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
@@ -195,7 +212,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           }}
           bodyClassName="space-y-1"
         >
-          <InfoRow label="کد رهگیری" value={payment?.tracking_code || "ندارد"} hoverable />
+          <InfoRow
+            label="کد رهگیری"
+            value={payment?.tracking_code || "ندارد"}
+            hoverable
+          />
           <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
           <InfoRow label="هزینه ارسال" value={"رایگان"} />
           <InfoRow label="زمان ارسال" value={"1404/4/12 - 08:51"} isActiveBg />
