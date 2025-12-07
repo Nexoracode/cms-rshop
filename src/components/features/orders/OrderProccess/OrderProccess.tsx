@@ -212,16 +212,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           />
           <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
           <InfoRow label="آماده سازی" value={"1 روز"} isActiveBg />
-          <InfoRow
-            label="کد تخفیف"
-            value={promotion_code ? promotion_code : "ندارد"}
-            hoverable
-          />
-          <InfoRow
-            label="جمع تخفیفات"
-            value={discount_total ? price(discount_total) : "—"}
-            isActiveBg
-          />
         </BaseCard>
 
         <BaseCard
