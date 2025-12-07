@@ -82,8 +82,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
       [`${productId}-${variantId}`]: Math.max(1, quantity),
     }));
   };
-  console.log(Object.keys(quantities).length);
-  
+
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده با تعداد"
@@ -106,7 +105,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
                       onClick={() => removeProduct(selectedProduct.id)}
                     />
                   </div>
-                  {!Object.keys(quantities).length ? (
+                  {!selectedProduct.variants?.length ? (
                     <input
                       type="number"
                       min="1"
