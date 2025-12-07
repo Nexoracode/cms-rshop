@@ -33,6 +33,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     address,
     payment,
     items,
+    updated_at
   } = order;
 
   const invoice = {
@@ -199,9 +200,8 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             isActiveBg
           />
           <InfoRow label="وضعیت سفارش" value={statusMap[status].title} />
-          <InfoRow label="تاریخ تحویل" value={"1404/7/29"} isActiveBg />
-          <InfoRow label="آماده سازی" value={"1 روز"} />
-          <InfoRow label="کد تخفیف" value={"jx7xhikz"} isActiveBg hoverable />
+          <InfoRow label="آماده سازی" value={"1 روز"} isActiveBg/>
+          <InfoRow label="کد تخفیف" value={"jx7xhikz"} hoverable />
         </BaseCard>
 
         <BaseCard
@@ -219,7 +219,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           />
           <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
           <InfoRow label="هزینه ارسال" value={"رایگان"} />
-          <InfoRow label="زمان ارسال" value={"1404/4/12 - 08:51"} isActiveBg />
+          <InfoRow label="زمان ارسال" value={toPersianUTC(updated_at, {showTime: false})} isActiveBg />
           <InfoRow label="وزن مرسوله" value={"100 گرم"} />
         </BaseCard>
       </div>

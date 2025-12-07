@@ -66,6 +66,7 @@ export type OrderData = {
   address: any;
   payment: any;
   items: any;
+  updated_at?: string
 };
 
 export type OrderSortBy = Array<
