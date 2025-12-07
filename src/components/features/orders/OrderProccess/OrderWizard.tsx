@@ -5,9 +5,7 @@ import OrderProcess from "./OrderProccess";
 import StepContent from "./StepContent";
 import { OrderData } from "../order-types";
 import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./orderSteps";
-import BaseTabs, { type BaseTabItem } from "@/components/ui/BaseTabs"; // مسیر درست رو بزن
-import BaseCard from "@/components/ui/BaseCard";
-import { toPersianUTC } from "@/core/utils/date";
+import BaseTabs, { type BaseTabItem } from "@/components/ui/BaseTabs";
 
 type Props = {
   order?: OrderData;

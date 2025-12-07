@@ -66,9 +66,17 @@ export type OrderData = {
   address: any;
   payment: any;
   items: any;
-  updated_at?: string
-  shipping_cost: number
-  promotion_code: string
+  updated_at?: string;
+  shipping_cost: number;
+  promotion_code: string;
+  customer_note: string;
+  manual_discount_applied: number;
+  total_weight: number;
+
+  gift_message: null;
+  gift_wrapping: null;
+  gift_wrapping_cost: 0;
+  is_gift: boolean;
 };
 
 export type OrderSortBy = Array<

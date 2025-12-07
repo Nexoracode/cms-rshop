@@ -11,7 +11,7 @@ import ProductCardDetail from "./ProductCardDetail";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuScrollText } from "react-icons/lu";
 import { RiShareCircleLine } from "react-icons/ri";
-import { PiMoneyWavy } from "react-icons/pi";
+import { PiGiftBold, PiMoneyWavy } from "react-icons/pi";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import { TbTruckDelivery } from "react-icons/tb";
 
@@ -27,7 +27,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     subtotal,
     discount_total,
     total,
-    coupon_code,
     created_at,
     user,
     address,
@@ -38,19 +37,12 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     promotion_code,
     customer_note,
     manual_discount_applied,
-    total_weight
+    total_weight,
+    gift_wrapping,
+    is_gift,
+    gift_message,
+    gift_wrapping_cost,
   } = order;
-
-  const invoice = {
-    total: price(subtotal),
-    discount: discount_total
-      ? `${Number(discount_total).toLocaleString("fa-IR")} تومان`
-      : "۰ تومان",
-    code: coupon_code ?? "ندارد",
-    shippingCost: "رایگان",
-    packagingCost: "۰ تومان",
-    totalDue: price(total, false), // بدون "تومان" اگر نمی‌خوای تکرار بشه
-  };
 
   const paymentMethod = payment
     ? payment.payment_method === "online"
@@ -113,7 +105,6 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
         </BaseCard>
       </div>
 
-      {/* ستون دوم */}
       <div className="space-y-6">
         <BaseCard
           CardHeaderProps={{
@@ -164,12 +155,39 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           />
           <InfoRow
             label="توضیحات"
-            value={customer_note || "توضیحی وجود ندارد"}
-            hoverable={customer_note}
+            value={customer_note ?? "توضیحی وجود ندارد"}
+            hoverable
             valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
             isActiveBg
           />
         </BaseCard>
+
+        {is_gift ? (
+          <BaseCard
+            CardHeaderProps={{
+              title: "هدیه",
+              icon: <PiGiftBold className="text-gray-700" />,
+              showIconInActionSlot: true,
+            }}
+            bodyClassName="space-y-1"
+          >
+            <img
+              src={gift_wrapping || "/images/placeholder.png"}
+              alt="عکس کاغذ کادو"
+              className="w-48 mx-auto mb-4 rounded-lg hover:scale-150 transition-all duration-300 shadow-lg"
+            />
+
+            <InfoRow label="پیام هدیه" value={gift_message ?? "—"} />
+
+            <InfoRow
+              label="هزینه بسته‌بندی"
+              value={gift_wrapping_cost ? price(gift_wrapping_cost) : "رایگان"}
+              isActiveBg
+            />
+          </BaseCard>
+        ) : (
+          ""
+        )}
 
         <BaseCard
           CardHeaderProps={{
@@ -232,7 +250,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
             label="زمان ارسال"
             value={toPersianUTC(updated_at, { showTime: false })}
           />
-          <InfoRow label="وزن مرسوله" value={formatWeight(total_weight)} isActiveBg/>
+          <InfoRow
+            label="وزن مرسوله"
+            value={formatWeight(total_weight)}
+            isActiveBg
+          />
         </BaseCard>
       </div>
     </div>

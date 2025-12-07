@@ -15,22 +15,22 @@ const OrderDetail = () => {
     orderId ? +orderId : undefined
   );
   
-  console.log(order?.data);
+  const orderData = order?.data
   
   return (
     <UnifiedCard
       isLoading={isLoading}
-      isExistItems={!!order?.data}
+      isExistItems={!!orderData}
       searchInp={false}
       headerProps={{
-        title: "مشخصات سفارش",
+        title: orderData.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
         icon: <IoReceiptOutline className="text-2xl" />,
         textBtn: "مشاهده فاکتور",
         btnIcon: <GoArrowUpRight />,
         redirect: `/orders/invoice/${orderId}`
       }}
     >
-      <OrderWizard order={order?.data} />
+      <OrderWizard order={orderData} />
     </UnifiedCard>
   );
 };
