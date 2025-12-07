@@ -1,16 +1,16 @@
 "use client";
 
-import { Input, Select, SelectItem, Switch } from "@heroui/react";
+import { Alert, Switch } from "@heroui/react";
 import { useState } from "react";
-import DoubleClickBtn from "@/components/ui/buttons/DoubleClickBtn";
 import { OrderStepKey } from "./orderSteps";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
-import OptionButton from "@/components/ui/buttons/OptionButton";
-import { FiCheckCircle } from "react-icons/fi";
-import TextInput from "@/components/ui/inputs/TextInput";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
+import { PiMoneyWavy } from "react-icons/pi";
+import { FiPhoneIncoming } from "react-icons/fi";
+import { MdCreditCard } from "react-icons/md";
+import InfoRow from "@/components/shared/InfoRow";
 
 type Props = {
   step: OrderStepKey;
@@ -20,6 +20,8 @@ type Props = {
 
 const StepContent = ({ step, onNextStep, order }: Props) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
+
+  console.log("sddddddddddd", step);
 
   switch (step) {
     case "pending_approval":
@@ -41,7 +43,31 @@ const StepContent = ({ step, onNextStep, order }: Props) => {
       );
 
     case "awaiting_payment":
-      return (
+      return order?.status === "expired" ? (
+        <div>
+          <Alert
+            color={"warning"}
+            title={
+              "متاسفانه مهلت بررسی سفارش به پایان رسیده و سفارش منقضی شده است."
+            }
+          />
+          <div className="my-4 space-y-1.5">
+            <InfoRow label="مبلغ قابل برگشت" value={`385000 تومان`} hoverable />
+            <InfoRow
+              label="شماره همراه مشتری"
+              value={order.user?.phone || order.user?.email}
+              hoverable
+              isActiveBg
+            />
+            <InfoRow label="شماره کارت مشتری" value={`-`} hoverable />
+          </div>
+          <FormActionButtons
+            onSubmit={() => {}}
+            isSubmitting={false}
+            submitText="پرداخت شد"
+          />
+        </div>
+      ) : (
         <div className="flex flex-col items-center justify-center cursor-default">
           <p className="text-default-600 leading-7 p-2 animate-pulse">
             سفارش در انتظار پرداخت مشتری است. محصولات آن تا 4 ساعت برای مشتری
@@ -127,10 +153,21 @@ const StepContent = ({ step, onNextStep, order }: Props) => {
     case "shipping":
       return (
         <>
-          <p className="text-default-600 leading-7 mb-4 p-2">
-            لطفا در صورت اطمینان از تحویل مرسوله به مشتری، وضعیت سفارش را "تحویل
-            شده" تعیین کنید.
-          </p>
+          {order?.status === "not_delivered" ? (
+            <div className="mb-4">
+              <Alert
+                color={"warning"}
+                title={
+                  "طبق گزارش مشتری ، سفارش به او تحویل داده نشده است. لطفا مشکل پیش آمده در ارسال را پیگیری کنید."
+                }
+              />
+            </div>
+          ) : (
+            <p className="text-default-600 leading-7 mb-4 p-2">
+              لطفا در صورت اطمینان از تحویل مرسوله به مشتری، وضعیت سفارش را
+              "تحویل شده" تعیین کنید.
+            </p>
+          )}
           <FormActionButtons
             onSubmit={() => {}}
             isSubmitting={false}

@@ -42,7 +42,6 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
     return null
   }
 
-
   // تبدیل استپ‌ها به فرمت BaseTabs
   const tabItems: BaseTabItem[] = stepOrder.map((key) => ({
     key,
@@ -50,7 +49,7 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
     content: (
       <OrderProcess
         order={order}
-        actionBox={<StepContent step={key} onNextStep={next} />}
+        actionBox={<StepContent step={key} onNextStep={next} order={order}/>}
       />
     ),
     // فقط استپ فعلی محتوا داشته باشه — بقیه خالی (برای عملکرد بهتر)

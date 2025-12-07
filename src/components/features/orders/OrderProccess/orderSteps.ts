@@ -27,7 +27,7 @@ export const statusToStepMap: Record<string, OrderStepKey> = {
   shipping: "shipping",
   not_delivered: "shipping", // هنوز در حال ارسال
   delivered: "delivered",
-  expired: "pending_approval",
+  expired: "awaiting_payment",
   rejected: "pending_approval",
   cancelled: "pending_approval",
   refunded: "delivered", // یا می‌تونی یه استپ جدا بزنی مثلا refunded
