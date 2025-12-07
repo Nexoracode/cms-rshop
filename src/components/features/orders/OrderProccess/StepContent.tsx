@@ -7,9 +7,6 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
-import { PiMoneyWavy } from "react-icons/pi";
-import { FiPhoneIncoming } from "react-icons/fi";
-import { MdCreditCard } from "react-icons/md";
 import InfoRow from "@/components/shared/InfoRow";
 
 type Props = {
@@ -20,8 +17,6 @@ type Props = {
 
 const StepContent = ({ step, onNextStep, order }: Props) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
-
-  console.log("sddddddddddd", step);
 
   switch (step) {
     case "pending_approval":
@@ -43,14 +38,25 @@ const StepContent = ({ step, onNextStep, order }: Props) => {
       );
 
     case "awaiting_payment":
-      return order?.status === "expired" ? (
+      return order?.status === "expired" || order?.status === "rejected" ? (
         <div>
-          <Alert
-            color={"warning"}
-            title={
-              "متاسفانه مهلت بررسی سفارش به پایان رسیده و سفارش منقضی شده است."
-            }
-          />
+          {
+            order?.status === "expired"
+            ?
+            <Alert
+              color={"warning"}
+              title={
+                "متاسفانه مهلت بررسی سفارش به پایان رسیده و سفارش منقضی شده است."
+              }
+            />
+            :
+            <Alert
+              color={"warning"}
+              title={
+                "سفارش مشتری بدلیل عدم تایید شما رد شده است."
+              }
+            />
+          }
           <div className="my-4 space-y-1.5">
             <InfoRow label="مبلغ قابل برگشت" value={`385000 تومان`} hoverable />
             <InfoRow
