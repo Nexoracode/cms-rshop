@@ -26,10 +26,8 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
 }) => {
   const productContent = (
     <BaseCard
-      className={`shadow-none ${!showVariants ? "border-none" : ""}`}
-      bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start hover-reveal-parent ${
-        !showVariants ? "p-0" : ""
-      }`}
+      className={`shadow-none border-none`}
+      bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start p-1`}
     >
       {contentProduct}
 

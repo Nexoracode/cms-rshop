@@ -82,7 +82,8 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
       [`${productId}-${variantId}`]: Math.max(1, quantity),
     }));
   };
-
+  console.log(Object.keys(quantities).length);
+  
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده با تعداد"
@@ -98,10 +99,26 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
             product={selectedProduct}
             showVariants={selectedProduct?.variants?.length ? true : false}
             contentProduct={
-              <div className="deselect-icon">
-                <AiOutlineCloseCircle
-                  onClick={() => removeProduct(selectedProduct.id)}
-                />
+              <div className="absolute top-2 left-2">
+                <div className="flex flex-row-reverse items-center gap-4">
+                  <div className="deselect-icon-show">
+                    <AiOutlineCloseCircle
+                      onClick={() => removeProduct(selectedProduct.id)}
+                    />
+                  </div>
+                  {!Object.keys(quantities).length ? (
+                    <input
+                      type="number"
+                      min="1"
+                      value={1}
+                      onChange={(e) => {}}
+                      className="w-12 h-6 text-center border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      placeholder="1"
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             }
             contentVariant={(variant: any) => (
