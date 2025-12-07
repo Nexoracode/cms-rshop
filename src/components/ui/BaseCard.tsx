@@ -28,11 +28,11 @@ const BaseCard: React.FC<BaseCardProps> = ({
 }) => {
   const CardContent = (
     <Card
-      className={`relative border shadow !transition-all duration-300 hover:shadow-none ${className}`}
+      className={`relative overflow-visible border shadow !transition-all duration-300 hover:shadow-none ${className}`}
     >
       {CardHeaderProps && <CardHeader {...CardHeaderProps} />}
       <CardBody
-        className={`relative p-2 cursor-pointer text-right ${bodyClassName} ${
+        className={`relative p-2 cursor-pointer overflow-visible text-right ${bodyClassName} ${
           wrapperContents ? "flex flex-col p-4 gap-6" : ""
         } ${isLoading ? "opacity-50 !cursor-auto pointer-events-none" : ""}`}
         onClick={(e) => {

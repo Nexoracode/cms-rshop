@@ -17,14 +17,19 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   onChange?: (products: any[]) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
-  const { selectedProducts, removeProduct, setSelectedProducts } = useProductsSelection();
+  const { selectedProducts, removeProduct, setSelectedProducts } =
+    useProductsSelection();
   const isFirstRender = useRef(true);
 
   // تعداد برای واریانت‌ها: key = "productId-variantId"
-  const [variantQuantities, setVariantQuantities] = useState<Record<string, number>>({});
+  const [variantQuantities, setVariantQuantities] = useState<
+    Record<string, number>
+  >({});
 
   // تعداد برای محصولات ساده (بدون واریانت)
-  const [simpleProductQuantities, setSimpleProductQuantities] = useState<Record<number, number>>({});
+  const [simpleProductQuantities, setSimpleProductQuantities] = useState<
+    Record<number, number>
+  >({});
 
   // مقداردهی اولیه برای محصولات ساده و واریانت‌ها
   useEffect(() => {
@@ -108,7 +113,11 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   };
 
   // آپدیت تعداد واریانت
-  const updateVariantQuantity = (productId: number, variantId: number, qty: number) => {
+  const updateVariantQuantity = (
+    productId: number,
+    variantId: number,
+    qty: number
+  ) => {
     setVariantQuantities((prev) => ({
       ...prev,
       [`${productId}-${variantId}`]: Math.max(1, qty || 1),
@@ -138,7 +147,9 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
     >
       <div className="flex flex-col gap-6 py-4">
         {selectedProducts.length === 0 ? (
-          <p className="text-center text-gray-500">هیچ محصولی انتخاب نشده است</p>
+          <p className="text-center text-gray-500">
+            هیچ محصولی انتخاب نشده است
+          </p>
         ) : (
           selectedProducts.map((product) => (
             <ProductVariantsTemplate
@@ -146,42 +157,54 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
               product={product}
               showVariants={!!product.variants?.length}
               contentProduct={
-                <div className="absolute top-3 left-3">
-                  <div className="flex flex-row-reverse items-center gap-4">
-                    {/* دکمه حذف محصول */}
+                <>
+                  <div className="deselect-icon !-mt-8 !-left-4">
                     <AiOutlineCloseCircle
-                      className="text-xl text-red-500 cursor-pointer hover:text-red-600"
                       onClick={() => removeProduct(product.id)}
                     />
-
+                  </div>
+                  
+                  <div className="absolute top-3 left-2">
                     {/* تعداد برای محصول بدون واریانت */}
                     {!product.variants?.length && (
                       <input
                         type="number"
                         min="1"
                         value={simpleProductQuantities[product.id] ?? 1}
-                        onChange={(e) => updateSimpleQuantity(product.id, +e.target.value)}
+                        onChange={(e) =>
+                          updateSimpleQuantity(product.id, +e.target.value)
+                        }
                         className="w-12 h-7 text-center border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
                       />
                     )}
                   </div>
-                </div>
+                </>
               }
               contentVariant={(variant: any) => (
                 <div className="flex items-center gap-3">
                   <input
                     type="number"
                     min="1"
-                    value={variantQuantities[`${product.id}-${variant.id}`] ?? 1}
+                    value={
+                      variantQuantities[`${product.id}-${variant.id}`] ?? 1
+                    }
                     onChange={(e) =>
-                      updateVariantQuantity(product.id, variant.id, +e.target.value)
+                      updateVariantQuantity(
+                        product.id,
+                        variant.id,
+                        +e.target.value
+                      )
                     }
                     className="w-12 h-7 text-center border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
-                  <AiOutlineCloseCircle
-                    className="text-lg text-red-500 cursor-pointer hover:text-red-600"
-                    onClick={() => removeVariantFromProduct(product.id, variant.id)}
-                  />
+                  <div className="deselect-icon !-left-6 !top-2">
+                    <AiOutlineCloseCircle
+                      className=""
+                      onClick={() =>
+                        removeVariantFromProduct(product.id, variant.id)
+                      }
+                    />
+                  </div>
                 </div>
               )}
             />
@@ -192,8 +215,13 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
   );
 };
 
-const SelectableProductsBoxWithQuantity: React.FC<Props> = ({ onChange, error }) => {
-  return <InnerSelectableProductsBoxWithQuantity onChange={onChange} error={error} />;
+const SelectableProductsBoxWithQuantity: React.FC<Props> = ({
+  onChange,
+  error,
+}) => {
+  return (
+    <InnerSelectableProductsBoxWithQuantity onChange={onChange} error={error} />
+  );
 };
 
 export default SelectableProductsBoxWithQuantity;
