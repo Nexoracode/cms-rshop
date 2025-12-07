@@ -220,6 +220,16 @@ const ProductInitialForm = () => {
           errorMessage={errors.price}
         />
 
+        <TextInput
+          label="کد انبار"
+          placeholder="مثلاً SKU12345"
+          className="bg-white rounded-xl text-right"
+          value={""}
+          onChange={(val) => {}}
+          isRequired
+          errorMessage={errors.sku}
+        />
+
         <TextEditor
           value={form.description ?? ""}
           onChange={(content) => handleFieldChange("description", content)}
