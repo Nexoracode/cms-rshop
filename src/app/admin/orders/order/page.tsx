@@ -16,14 +16,15 @@ const OrderDetail = () => {
   );
   
   const orderData = order?.data
-  
+  console.log(orderData);
+
   return (
     <UnifiedCard
       isLoading={isLoading}
       isExistItems={!!orderData}
       searchInp={false}
       headerProps={{
-        title: orderData.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
+        title: orderData?.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
         icon: <IoReceiptOutline className="text-2xl" />,
         textBtn: "مشاهده فاکتور",
         btnIcon: <GoArrowUpRight />,
