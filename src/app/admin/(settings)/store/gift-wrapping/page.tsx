@@ -2,30 +2,31 @@
 
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import ProductsFilter from "@/components/features/products/ProductsFilter";
-import ProductCard from "@/components/features/products/ProductCard";
 import { ProductSortBy } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { useGetGiftWrappings } from "@/core/hooks/api/gift/useGift";
 // Icons
 import { LuGift, LuPlus } from "react-icons/lu";
+import GiftCard from "@/components/features/store/gift/GiftCard";
+import GiftsFilter from "@/components/features/store/gift/Filter/GiftsFilter";
 
-const Gifts = () => {
+const giftWrapping = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<ProductSortBy[number]>();
 
-  const { data: products, isLoading } = useGetGiftWrappings({
+  const { data: gifts, isLoading } = useGetGiftWrappings({
     page,
     filter,
     search,
     sortBy,
   });
-
-  const isExistItems = !!products?.data?.items?.length;
+  console.log(gifts);
+  
+  const isExistItems = !!gifts?.data?.items?.length;
 
   return (
     <UnifiedCard
-      searchFilter={<ProductsFilter />}
+      searchFilter={<GiftsFilter />}
       headerProps={{
         title: "مدیریت بسته بندی ها",
         icon: <LuGift className="text-2xl" />,
@@ -35,13 +36,14 @@ const Gifts = () => {
       isLoading={isLoading}
       isExistItems={isExistItems}
       searchInp={isFilteredView}
-      meta={products?.data?.meta}
+      meta={gifts?.data?.meta}
+      childrenClassName="grid md:grid-cols-2"
     >
-      {products?.data?.items?.map((product: any) => (
-        <ProductCard product={product} />
+      {gifts?.data?.items?.map((gift: any) => (
+        <GiftCard gift={gift} />
       ))}
     </UnifiedCard>
   );
 };
 
-export default Gifts;
+export default giftWrapping;

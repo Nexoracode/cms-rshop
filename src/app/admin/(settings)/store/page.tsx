@@ -52,7 +52,7 @@ const orderSettingsLinks = [
   {
     title: "بسته‌بندی",
     icon: <LuPackage className="text-2xl" />,
-    route: "store/gift",
+    route: "store/gift-wrapping",
   },
   {
     title: "کارت به کارت",
