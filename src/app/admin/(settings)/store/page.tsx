@@ -5,7 +5,7 @@ import BoxLink from "@/components/shared/BoxLink";
 import { Card, CardBody } from "@heroui/react";
 import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
-import { IoShareSocialOutline } from "react-icons/io5";
+import { IoCardOutline, IoShareSocialOutline } from "react-icons/io5";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import {
   HiOutlineDocumentText,
@@ -50,14 +50,14 @@ const storeSettingsLinks = [
 // تنظیمات سفارش گیری
 const orderSettingsLinks = [
   {
-    title: "روش‌های ارسال",
-    icon: <TbTruckDelivery className="text-2xl" />,
-    route: "store/shippings",
-  },
-  {
     title: "بسته‌بندی",
     icon: <LuPackage className="text-2xl" />,
-    route: "store/pockets",
+    route: "store/gift",
+  },
+  {
+    title: "کارت به کارت",
+    icon: <IoCardOutline className="text-2xl" />,
+    route: "store/card-to-card",
   },
   {
     title: "تأیید خودکار",
@@ -65,14 +65,19 @@ const orderSettingsLinks = [
     route: "store/auto-approval",
   },
   {
+    title: "زمان رزرو",
+    icon: <RiTimerLine className="text-2xl" />,
+    route: "store/reservation-times",
+  },
+  {
     title: "پیش‌سفارش",
     icon: <HiOutlineClipboardDocumentCheck className="text-2xl" />,
     route: "store/pre-order",
   },
   {
-    title: "زمان رزرو",
-    icon: <RiTimerLine className="text-2xl" />,
-    route: "store/reservation-times",
+    title: "روش‌های ارسال",
+    icon: <TbTruckDelivery className="text-2xl" />,
+    route: "store/shippings",
   },
 ];
 
