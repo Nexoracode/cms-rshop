@@ -14,6 +14,7 @@ import { RiShareCircleLine } from "react-icons/ri";
 import { PiGiftBold, PiMoneyWavy } from "react-icons/pi";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import { TbTruckDelivery } from "react-icons/tb";
+import { useEffect, useState } from "react";
 
 type OrderProcessProps = {
   order: OrderData;
@@ -21,6 +22,8 @@ type OrderProcessProps = {
 };
 
 const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
+  const [products, setProducts] = useState<any[]>([]);
+
   const {
     id,
     status,
@@ -50,6 +53,89 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
       : "کارت به کارت"
     : "—";
 
+  useEffect(() => {
+    if (!items) return;
+
+    type Item = {
+      id: number;
+      line_total: number;
+      quantity: number;
+      unit_price: number;
+      variant: {
+        id: number;
+        price: number;
+        sku: string;
+        attributes: { value: string }[];
+      };
+      product: {
+        id: number;
+        image: string;
+        name: string;
+      };
+    };
+
+    const equalItems: Item[] = [];
+    const notEqualItems: Item[] = [];
+
+    for (let index = 0; index < items.length; index++) {
+      const element = items[index] as Item;
+
+      if (items[index + 1] !== undefined) {
+        if (element.product.id === items[index + 1].product.id)
+          equalItems.push(element);
+        else {
+          equalItems.find(
+            (eq) =>
+              eq.product.id !== element.product.id &&
+              notEqualItems.push(element)
+          );
+        }
+      }
+
+      if (items[index + 1] === undefined) {
+        notEqualItems.push(element);
+      }
+    }
+
+    const varaintsListEqual = equalItems.map((eq) => {
+      const { id, line_total, unit_price, variant, quantity } = eq;
+      return {
+        id,
+        line_total,
+        unit_price,
+        quantity,
+        variant,
+      };
+    });
+
+    const productEqual = [
+      {
+        product: equalItems[0].product,
+        variants: varaintsListEqual,
+      },
+    ];
+
+    const productNotEqual = notEqualItems.map((not) => {
+      const { id, line_total, unit_price, variant, product, quantity } = not;
+      return {
+        product,
+        variants: [
+          {
+            id,
+            quantity,
+            line_total,
+            unit_price,
+            variant,
+          },
+        ],
+      };
+    });
+
+    console.log("productEqual =>", productEqual);
+    console.log("productNotEqual =>", productNotEqual);
+    setProducts([...productEqual, ...productNotEqual]);
+  }, [items]);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* ستون اول */}
@@ -77,7 +163,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           }}
         >
           <div className="mb-5 space-y-3">
-            {items?.map((item: any) => (
+            {products?.map((item: any) => (
               <ProductCardDetail key={item.id} item={item} />
             ))}
           </div>
