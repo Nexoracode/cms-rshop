@@ -1,39 +1,47 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
-import { IoReceiptOutline } from "react-icons/io5";
-import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
+// Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { GoArrowUpRight } from "react-icons/go";
+import ProductsFilter from "@/components/features/products/ProductsFilter";
+import ProductCard from "@/components/features/products/ProductCard";
+import { ProductSortBy } from "@/core/hooks/api/products/useProduct";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { useGetGiftWrappings } from "@/core/hooks/api/gift/useGift";
+// Icons
+import { LuGift, LuPlus } from "react-icons/lu";
 
-const Gift = () => {
-  const searchParams = useSearchParams();
-  const orderId = searchParams.get("id");
+const Gifts = () => {
+  const { page, sortBy, search, filter, isFilteredView } =
+    useListQueryParams<ProductSortBy[number]>();
 
-  const { data: order, isLoading } = useGetOneOrder(
-    orderId ? +orderId : undefined
-  );
-  
-  const orderData = order?.data
-  console.log(orderData);
+  const { data: products, isLoading } = useGetGiftWrappings({
+    page,
+    filter,
+    search,
+    sortBy,
+  });
+
+  const isExistItems = !!products?.data?.items?.length;
 
   return (
     <UnifiedCard
-      isLoading={isLoading}
-      isExistItems={!!orderData}
-      searchInp={false}
+      searchFilter={<ProductsFilter />}
       headerProps={{
-        title: orderData?.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
-        icon: <IoReceiptOutline className="text-2xl" />,
-        textBtn: "مشاهده فاکتور",
-        btnIcon: <GoArrowUpRight />,
-        redirect: `/orders/invoice/${orderId}`
+        title: "مدیریت بسته بندی ها",
+        icon: <LuGift className="text-2xl" />,
+        redirect: "/admin/store/create?type=infos",
+        btnIcon: <LuPlus />,
       }}
+      isLoading={isLoading}
+      isExistItems={isExistItems}
+      searchInp={isFilteredView}
+      meta={products?.data?.meta}
     >
-      <OrderWizard order={orderData} />
+      {products?.data?.items?.map((product: any) => (
+        <ProductCard product={product} />
+      ))}
     </UnifiedCard>
   );
 };
 
-export default Gift;
+export default Gifts;
