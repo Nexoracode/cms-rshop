@@ -163,8 +163,8 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           }}
         >
           <div className="mb-5 space-y-3">
-            {products?.map((item: any) => (
-              <ProductCardDetail key={item.id} item={item} />
+            {products?.map((item: any, index: number) => (
+              <ProductCardDetail key={index} item={item} />
             ))}
           </div>
           <InfoRow label="مجموع قیمت" value={price(subtotal)} />
