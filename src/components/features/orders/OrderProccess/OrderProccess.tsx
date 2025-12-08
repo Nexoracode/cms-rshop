@@ -45,6 +45,11 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     is_gift,
     gift_message,
     gift_wrapping_cost,
+    manual_discount_type,
+    manual_discount_value,
+    promotions_discount_type,
+    promotions_discount_value,
+    promotions_discount_applied
   } = order;
 
   const paymentMethod = payment
@@ -55,6 +60,7 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
 
   useEffect(() => {
     if (!items) return;
+    console.log(items);
 
     type Item = {
       id: number;
@@ -169,14 +175,40 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
           </div>
           <InfoRow label="مجموع قیمت" value={price(subtotal)} />
           <InfoRow
-            label="مجموع تخفیفات"
-            value={discount_total ? price(discount_total) : "—"}
+            label="تخفیف دستی فاکتور"
+            value={
+              manual_discount_value
+                ? manual_discount_type === "percent"
+                  ? `${manual_discount_value}%`
+                  : price(manual_discount_value)
+                : "—"
+            }
           />
           <InfoRow
-            label="تخفیف دستی فاکتور"
+            label="قیمت پس از کسر تخفیف دستی"
             value={
               manual_discount_applied ? price(manual_discount_applied) : "—"
             }
+          />
+          <InfoRow
+            label="کدتخفیف"
+            value={
+              promotions_discount_value
+                ? promotions_discount_type === "percent"
+                  ? `${promotions_discount_value}%`
+                  : price(promotions_discount_value)
+                : "—"
+            }
+          />
+          <InfoRow
+            label="قیمت پس از کسر تخفیف پروموشن"
+            value={
+              promotions_discount_applied ? price(promotions_discount_applied) : "—"
+            }
+          />
+          <InfoRow
+            label="مجموع تخفیفات"
+            value={discount_total ? price(discount_total) : "—"}
           />
           <InfoRow label="کد تخفیف" value={promotion_code ?? "—"} />
           <InfoRow label="هزینه ارسال" value={"—"} />

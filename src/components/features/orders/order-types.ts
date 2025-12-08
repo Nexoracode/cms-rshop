@@ -77,6 +77,11 @@ export type OrderData = {
   gift_wrapping: null;
   gift_wrapping_cost: 0;
   is_gift: boolean;
+  manual_discount_type: string;
+  manual_discount_value: number;
+  promotions_discount_type: string;
+  promotions_discount_value: number;
+  promotions_discount_applied: number;
 };
 
 export type OrderSortBy = Array<
