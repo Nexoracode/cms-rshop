@@ -1,9 +1,10 @@
 "use client";
 
 import BaseCard from "@/components/ui/BaseCard";
-import { Chip } from "@heroui/react";
 import { toPersianUTC } from "@/core/utils/date";
 import { LuGift, LuPackage } from "react-icons/lu";
+import StatusBadge from "@/components/shared/StatusBadge";
+import { FiPackage } from "react-icons/fi";
 
 type GiftCardProps = {
   gift: {
@@ -12,7 +13,7 @@ type GiftCardProps = {
     description?: string | null;
     price: string | number;
     image?: string | null;
-    status: "active" | "inactive";
+    status: "active" | "disable";
     display_order: number;
     created_at: string;
     is_for_gift: boolean;
@@ -20,20 +21,23 @@ type GiftCardProps = {
 };
 
 const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
-  const isActive = gift.status === "active";
-
   return (
     <BaseCard
-      bodyClassName="flex flex-col gap-4 p-5 min-w-[320px] sm:w-[386px] md:w-full hover:shadow-lg transition-shadow"
-      redirect={`/admin/store/gift-wrapping/edit/${gift.id}`}
-      className="cursor-pointer"
+      bodyClassName="flex flex-col gap-4 p-4"
+      redirect={`/admin/store/gift-wrapping/create?edit_id=${gift.id}`}
     >
       {/* هدر کارت */}
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-br from-pink-100 to-purple-100 border-2 border-dashed border-pink-300 rounded-xl p-4">
-            <LuGift className="text-3xl text-pink-600" />
-          </div>
+          {gift.is_for_gift ? (
+            <div className="bg-gradient-to-br from-pink-100 to-purple-100 border-2 border-dashed border-pink-300 rounded-xl p-4">
+              <LuGift className="text-3xl text-pink-600" />
+            </div>
+          ) : (
+            <div className="bg-sky-50 border-2 border-dashed border-sky-300 rounded-xl p-4">
+              <FiPackage className="text-3xl text-sky-400" />
+            </div>
+          )}
           <div>
             <h3 className="text-lg font-bold text-gray-800">{gift.name}</h3>
             <span className="text-xs text-gray-500">
@@ -42,15 +46,10 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
           </div>
         </div>
 
-        {/* وضعیت فعال/غیرفعال */}
-        <Chip
-          size="sm"
-          variant={isActive ? "flat" : "faded"}
-          color={isActive ? "success" : "danger"}
-          className="font-medium"
-        >
-            {isActive ? "فعال" : "غیرفعال"}
-        </Chip>
+        <StatusBadge
+          isActive={gift.status === "active" ? true : false}
+          size="md"
+        />
       </div>
 
       {/* تصویر یا placeholder */}
@@ -62,7 +61,7 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
             className="w-full max-w-xs h-48 object-cover rounded-xl shadow-md hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl w-full max-w-xs h-48 flex flex-col items-center justify-center text-gray-400">
+          <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl w-48 h-44 flex flex-col items-center justify-center text-gray-400">
             <LuPackage className="text-5xl mb-2" />
             <p className="text-sm">بدون تصویر</p>
           </div>

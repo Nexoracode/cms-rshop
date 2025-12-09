@@ -14,7 +14,7 @@ const OrdersFilter = () => {
         },
         {
           title: "بسته بندی",
-          href: "/admin/store/gift",
+          href: "/admin/store/gift-wrapping",
         },
         {
           title: "پروموشن‌ها",
