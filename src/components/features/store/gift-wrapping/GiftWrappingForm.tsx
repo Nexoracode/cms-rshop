@@ -82,14 +82,8 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
         discount_value: form.discount_value,
       };
 
-      console.log(payload);
-
       const result = id ? await updateGift(payload) : await createGift(payload);
-
-      if (result.ok) {
-        toast.success(id ? "بسته‌بندی بروزرسانی شد" : "بسته‌بندی ایجاد شد");
-        router.push("/admin/gift-wrappings");
-      }
+      result.ok && router.push("/admin/store/gift-wrappings");
     } catch (err) {
       toast.error("خطایی رخ داد");
     }
@@ -113,7 +107,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
         defaultImg={form.image}
         onFile={async (file) => {
           const formData = new FormData();
-          formData.append("files", form.image_file);
+          formData.append("files", file);
           const uploadRes = await uploadImage(formData);
           if (!uploadRes.ok) return;
           handleMultipleFieldsChange({
