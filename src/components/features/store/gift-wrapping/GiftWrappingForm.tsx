@@ -104,7 +104,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
         textBtn={
           form.image_file || form.image_id ? "تغییر تصویر" : "+ افزودن تصویر"
         }
-        defaultImg={form.image}
+        defaultImg={form?.image?.url}
         onFile={async (file) => {
           const formData = new FormData();
           formData.append("files", file);

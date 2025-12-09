@@ -12,7 +12,7 @@ type GiftWrappingCardProps = {
     name: string;
     description?: string | null;
     price: string | number;
-    image?: string | null;
+    image?: any;
     status: "active" | "disable";
     display_order: number;
     created_at: string;
@@ -21,6 +21,8 @@ type GiftWrappingCardProps = {
 };
 
 const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
+  console.log(gift);
+  
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-4 p-4"
@@ -56,7 +58,7 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
       <div className="flex justify-center my-2">
         {gift.image ? (
           <img
-            src={gift.image}
+            src={gift.image.url}
             alt={gift.name}
             className="w-full max-w-xs h-48 object-cover rounded-xl shadow-md hover:scale-105 transition-transform duration-300"
           />
