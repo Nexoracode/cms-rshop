@@ -20,9 +20,7 @@ type GiftWrappingCardProps = {
   };
 };
 
-const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
-  console.log(gift);
-  
+const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {  
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-4 p-4"

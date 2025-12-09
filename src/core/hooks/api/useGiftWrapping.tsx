@@ -23,9 +23,7 @@ export const useGetOneGiftWrapping = (id?: number) => {
     queryFn: () =>
       fetcher({
         route: `/admin/gift-wrappings/${id}`,
-        isActiveToast: true,
-        loadingText: "درحال دریافت اطلاعات بسته‌بندی...",
-        successText: "اطلاعات آماده ویرایش است",
+        isActiveToast: false,
       }),
     enabled: !!id,
   });

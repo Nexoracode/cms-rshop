@@ -18,8 +18,7 @@ import {
   useUploadGiftWrappingImages,
 } from "@/core/hooks/api/useGiftWrapping";
 
-import { mapAPIToLocalGiftWrapping } from "./helpers/gift-wrapping-helpers";
-import { giftWrappingValidation } from "./helpers/gift-wrapping-validation";
+import { giftWrappingValidation } from "./gift-wrapping-validation";
 import toast from "react-hot-toast";
 import { FiGift } from "react-icons/fi";
 
@@ -65,8 +64,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
   });
 
   useEffect(() => {
-    console.log(data);
-    data && setForm(mapAPIToLocalGiftWrapping(data));
+    data && setForm(data);
   }, [data]);
 
   const handleSubmit = submit(async () => {
