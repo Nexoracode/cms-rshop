@@ -38,10 +38,14 @@ export const initialGiftWrappingForm: any = {
 type GiftWrappingFormProps = {
   data: any;
   id: number | null;
-  isLoading: boolean
+  isLoading: boolean;
 };
 
-const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading }) => {
+const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
+  data,
+  id,
+  isLoading,
+}) => {
   const router = useRouter();
 
   const { mutateAsync: createGift } = useCreateGiftWrapping();
@@ -61,6 +65,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading
   });
 
   useEffect(() => {
+    console.log(data);
     data && setForm(mapAPIToLocalGiftWrapping(data));
   }, [data]);
 
@@ -95,9 +100,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading
         discount_value: form.discount_value > 0 ? form.discount_value : null,
       };
 
-      const result = id
-        ? await updateGift(payload)
-        : await createGift(payload);
+      const result = id ? await updateGift(payload) : await createGift(payload);
 
       if (result.ok) {
         toast.success(id ? "بسته‌بندی بروزرسانی شد" : "بسته‌بندی ایجاد شد");
@@ -108,9 +111,6 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading
     }
   });
 
-  if (isLoading)
-    return <div className="text-center py-10">در حال بارگذاری...</div>;
-
   return (
     <BaseCard
       CardHeaderProps={{
@@ -119,6 +119,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading
         showIconInActionSlot: true,
       }}
       wrapperContents
+      isLoading={isLoading}
     >
       <ImageBoxUploader
         title="تصویر بسته‌بندی"
@@ -195,6 +196,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading
       <FormActionButtons
         cancelHref="/admin/gift-wrappings"
         onSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </BaseCard>
   );
