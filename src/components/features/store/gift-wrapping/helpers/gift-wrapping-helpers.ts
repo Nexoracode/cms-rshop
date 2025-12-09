@@ -1,25 +1,9 @@
-import { CreateGiftWrappingRequest } from "./gift-wrapping";
-
 const toNumber = (value: any, defaultValue = 0) =>
   value === null || value === undefined || value === ""
     ? defaultValue
     : Number(value);
 
-export const initialGiftWrappingForm: CreateGiftWrappingRequest = {
-  name: "",
-  description: "",
-  price: 0,
-  discount_type: "amount",
-  discount_value: 0,
-  image_id: null,
-  image_file: null,
-  status: "active",
-  is_for_gift: true,
-};
-
-export function mapAPIToLocalGiftWrapping(
-  data: GiftWrapping
-): typeof initialGiftWrappingForm {
+export function mapAPIToLocalGiftWrapping(data: any) {
   return {
     name: data.name ?? "",
     description: data.description ?? "",

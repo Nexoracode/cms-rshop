@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -13,28 +13,35 @@ import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput
 
 import { useForm } from "@/core/hooks/common/form/useForm";
 import {
-  useGetOneGiftWrapping,
   useCreateGiftWrapping,
   useUpdateGiftWrapping,
   useUploadGiftWrappingImages,
 } from "@/core/hooks/api/useGiftWrapping";
 
-import {
-  mapAPIToLocalGiftWrapping,
-  initialGiftWrappingForm,
-} from "./gift-wrapping-helpers";
-import { giftWrappingValidation } from "./gift-wrapping-validation";
+import { mapAPIToLocalGiftWrapping } from "./helpers/gift-wrapping-helpers";
+import { giftWrappingValidation } from "./helpers/gift-wrapping-validation";
 import toast from "react-hot-toast";
 import { FiGift } from "react-icons/fi";
 
-const GiftWrappingForm = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const editId = searchParams.get("id");
+export const initialGiftWrappingForm: any = {
+  name: "",
+  description: "",
+  price: 0,
+  discount_type: "amount",
+  discount_value: 0,
+  image_id: null,
+  image_file: null,
+  status: "active",
+  is_for_gift: true,
+};
 
-  const { data: giftData, isLoading } = useGetOneGiftWrapping(
-    editId ? +editId : undefined
-  );
+type GiftWrappingFormProps = {
+  giftWrapping: any;
+};
+
+const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({giftWrapping}) => {
+  const router = useRouter();
+
   const { mutateAsync: createGift } = useCreateGiftWrapping();
   const { mutateAsync: updateGift } = useUpdateGiftWrapping(
     editId ? +editId : undefined
@@ -54,10 +61,10 @@ const GiftWrappingForm = () => {
   });
 
   useEffect(() => {
-    if (giftData?.data) {
-      setForm(mapAPIToLocalGiftWrapping(giftData.data));
+    if (giftWrapping) {
+      setForm(mapAPIToLocalGiftWrapping(giftWrapping));
     }
-  }, [giftData?.data]);
+  }, [giftWrapping]);
 
   const handleSubmit = submit(async () => {
     try {

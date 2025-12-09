@@ -9,8 +9,6 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
 import { useDeleteProduct } from "@/core/hooks/api/products/useProduct";
 import Image from "next/image";
-import { IoMdEye } from "react-icons/io";
-import { LuStar } from "react-icons/lu";
 
 type Props = {
   product: any;
@@ -81,24 +79,6 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
         <div className="flex items-end justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 ml-1">
-                {product ? (
-                  <div className="flex items-center gap-1 bg-yellow-50 rounded-lg px-3 py-0.5">
-                    <small>{product?.average_raiting}</small>
-                    <LuStar className="text-md text-yellow-600" />
-                  </div>
-                ) : (
-                  ""
-                )}
-                {product ? (
-                  <div className="flex items-center gap-1 bg-sky-50 rounded-lg px-3 py-0.5">
-                    <small>{product?.reviews_count}</small>
-                    <IoMdEye className="text-md text-sky-600" />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
               {product.is_same_day_shipping && (
                 <TbTruckDelivery className="text-orange-500 text-xl" />
               )}

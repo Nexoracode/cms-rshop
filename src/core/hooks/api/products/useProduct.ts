@@ -111,7 +111,7 @@ export const useProductCreate = () => {
   });
 };
 
-export const useProductUpdate = (id: number | undefined) => {
+export const useProductUpdate = (id: number | null) => {
   return useMutation({
     mutationFn: (data: any) => {
       return fetcher({

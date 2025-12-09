@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { NumberInput } from "@heroui/react";
 //? Components
@@ -24,13 +24,12 @@ import { LuScrollText } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 //? Hooks
 import {
-  useGetOneProduct,
   useProductCreate,
   useProductUpdate,
 } from "@/core/hooks/api/products/useProduct";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateProduct } from "./product-validation";
-import { CreateProductRequest } from "./types/product";
+import { CreateProductRequest, ProductResponse } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
 
 const initialProductForm: CreateProductRequest = {
@@ -56,16 +55,19 @@ const initialProductForm: CreateProductRequest = {
   brand_id: 0,
 };
 
-const ProductInitialForm = () => {
+type ProductInitialFormProps = {
+  data: ProductResponse;
+  id: number | null;
+};
+
+const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
+  data,
+  id,
+}) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const editId = searchParams.get("edit_id");
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
-  const { data: oneProduct } = useGetOneProduct(editId ? +editId : undefined);
-  const { mutate: updateProduct } = useProductUpdate(
-    editId ? +editId : undefined
-  );
+  const { mutate: updateProduct } = useProductUpdate(id);
 
   const {
     form,
@@ -80,10 +82,8 @@ const ProductInitialForm = () => {
   });
 
   useEffect(() => {
-    if (oneProduct?.data) {
-      setForm(mapAPIToLocalProduct(oneProduct.data));
-    }
-  }, [oneProduct?.data]);
+    data && setForm(mapAPIToLocalProduct(data));
+  }, [data]);
 
   const handleSubmit = submit((changed) => {
     console.log(changed);
@@ -116,7 +116,7 @@ const ProductInitialForm = () => {
       ...other,
     };
 
-    if (!editId) {
+    if (!id) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
@@ -152,7 +152,7 @@ const ProductInitialForm = () => {
           onMedia_pinned_id={(id) => {
             handleFieldChange("media_pinned_id", id);
           }}
-          initialMedias={oneProduct?.data?.medias || []}
+          initialMedias={data?.medias || []}
           initialPinnedId={form.media_pinned_id}
           errorMessage={errors.media_ids || errors.media_pinned_id}
         />
@@ -342,7 +342,7 @@ const ProductInitialForm = () => {
           onHelperId={(id) => {
             handleFieldChange("helper_id", id);
           }}
-          sizeGuide={oneProduct?.data?.helper}
+          sizeGuide={data?.helper}
         />
       </BaseCard>
 
