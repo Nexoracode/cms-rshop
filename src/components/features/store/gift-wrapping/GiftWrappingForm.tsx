@@ -71,34 +71,18 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
 
   const handleSubmit = submit(async () => {
     try {
-      let finalImageId = form.image_id;
-
-      if (form.image_file) {
-        const fd = new FormData();
-        fd.append("files", form.image_file);
-        const res = await uploadImage(fd);
-        if (!res.ok || !res.data?.[0]?.id) {
-          toast.error("آپلود تصویر ناموفق بود");
-          return;
-        }
-        finalImageId = res.data[0].id;
-      }
-
-      if (!finalImageId) {
-        toast.error("انتخاب تصویر الزامی است");
-        return;
-      }
-
       const payload = {
         name: form.name.trim(),
         description: form.description.trim(),
         price: +form.price,
-        image_id: finalImageId,
-        status: form.status, // "active" یا "disable" — دقیقاً همون چیزی که خودت نوشتی
+        image_id: form.image_id,
+        status: form.status,
         is_for_gift: form.is_for_gift,
-        discount_type: form.discount_value > 0 ? form.discount_type : null,
-        discount_value: form.discount_value > 0 ? form.discount_value : null,
+        discount_type: form.discount_type,
+        discount_value: form.discount_value,
       };
+
+      console.log(payload);
 
       const result = id ? await updateGift(payload) : await createGift(payload);
 
@@ -126,11 +110,15 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
         textBtn={
           form.image_file || form.image_id ? "تغییر تصویر" : "+ افزودن تصویر"
         }
-        defaultImg={form.image_id ? `/uploads/${form.image_id}` : undefined}
-        onFile={(file) => {
+        defaultImg={form.image}
+        onFile={async (file) => {
+          const formData = new FormData();
+          formData.append("files", form.image_file);
+          const uploadRes = await uploadImage(formData);
+          if (!uploadRes.ok) return;
           handleMultipleFieldsChange({
-            image_file: file as File,
-            image_id: null,
+            image_id: uploadRes.data.id,
+            image: uploadRes.data.url,
           });
         }}
         errorMessage={errors.image_id}

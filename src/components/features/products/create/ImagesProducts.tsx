@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Card, CardBody } from "@heroui/react";
-import React, { useEffect, useRef, useState } from "react"; // useRef رو اضافه کن
+import React, { useEffect, useState } from "react"; // useRef رو اضافه کن
 import { useProductUpload } from "@/core/hooks/api/products/useProduct";
 import MediaPicker from "@/components/media/uploader/MediaPicker";
 import MediaPreview from "@/components/media/uploader/MediaPreview";

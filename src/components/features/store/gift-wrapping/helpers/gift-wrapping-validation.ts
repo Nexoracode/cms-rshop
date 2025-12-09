@@ -5,7 +5,7 @@ export function giftWrappingValidation(data: any) {
   if (!data.description.trim()) errs.description = "توضیحات الزامی است.";
   if (!data.price || data.price <= 0)
     errs.price = "قیمت باید بیشتر از صفر باشد.";
-  if (!data.image_id && !data.image_file) errs.image_id = "تصویر الزامی است.";
+  if (!data.image_id) errs.image_id = "تصویر الزامی است.";
 
   return errs;
 }

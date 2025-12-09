@@ -34,7 +34,7 @@ const AddNewBrandModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const { form, errors, handleFieldChange, canSubmit, setForm, reset, submit } =
+  const { form, errors, handleFieldChange, setForm, reset, submit } =
     useForm(initialBrandForm, {
       onValidate: validateBrand,
       runValidationOnChange: true,

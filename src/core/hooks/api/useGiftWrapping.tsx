@@ -40,7 +40,7 @@ export const useUploadGiftWrappingImages = () => {
         route: "/admin/gift-wrappings/upload",
         method: "POST",
         body: data,
-        isActiveToast: false,
+        
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["gift-wrappings"] });
