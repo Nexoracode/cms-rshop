@@ -11,7 +11,7 @@ import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
-import OrderLimitSwitcher from "./helpers/OrderLimitSwitcher";
+import ToggleSection from "../../../shared/ToggleSection";
 import ImagesProducts from "./ImagesProducts";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import BrandSelect from "../brands/BrandSelect";
@@ -32,7 +32,6 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateProduct } from "./product-validation";
 import { CreateProductRequest } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
-import toast from "react-hot-toast";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -276,14 +275,14 @@ const ProductInitialForm = () => {
           }
           childrenTop={
             <>
-              <OrderLimitSwitcher
+              <ToggleSection
                 title="نمایش در فروشگاه"
                 initialMode={form.is_visible ? "enabled" : "disabled"}
                 onChange={(val) =>
                   handleFieldChange("is_visible", val === "enabled")
                 }
               />
-              <OrderLimitSwitcher
+              <ToggleSection
                 title="افزودن محصول به لیست پیشنهاد ویژه"
                 initialMode={form.is_featured ? "enabled" : "disabled"}
                 onChange={(val) =>
@@ -294,7 +293,7 @@ const ProductInitialForm = () => {
           }
           children={
             <>
-              <OrderLimitSwitcher
+              <ToggleSection
                 title="محدودیت تعداد برای هر سفارش"
                 initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
                 onChange={(val) =>
@@ -317,8 +316,8 @@ const ProductInitialForm = () => {
                     <span className="text-default-400 text-small">عدد</span>
                   }
                 />
-              </OrderLimitSwitcher>
-              <OrderLimitSwitcher
+              </ToggleSection>
+              <ToggleSection
                 title="موجودی نامحدود"
                 initialMode={form.is_limited_stock ? "enabled" : "disabled"}
                 hideChildrenWhenEnabled // وقتی فعال شد، input مخفی میشه
@@ -335,7 +334,7 @@ const ProductInitialForm = () => {
                   labelPlacement="outside"
                   onValueChange={(val) => handleFieldChange("stock", +val)}
                 />
-              </OrderLimitSwitcher>
+              </ToggleSection>
             </>
           }
         />

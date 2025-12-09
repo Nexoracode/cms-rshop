@@ -4,11 +4,11 @@
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { ProductSortBy } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import { useGetGiftWrappings } from "@/core/hooks/api/gift/useGift";
+import { useGetGiftWrappings } from "@/core/hooks/api/useGiftWrapping";
 // Icons
 import { LuGift, LuPlus } from "react-icons/lu";
-import GiftCard from "@/components/features/store/gift/GiftCard";
-import GiftsFilter from "@/components/features/store/gift/Filter/GiftsFilter";
+import GiftsFilter from "@/components/features/store/gift-wrapping/Filter/GiftsFilter";
+import GiftWrappingCard from "@/components/features/store/gift-wrapping/GiftWrappingCard";
 
 const giftWrapping = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -21,7 +21,7 @@ const giftWrapping = () => {
     sortBy,
   });
   console.log(gifts);
-  
+
   const isExistItems = !!gifts?.data?.items?.length;
 
   return (
@@ -30,7 +30,7 @@ const giftWrapping = () => {
       headerProps={{
         title: "مدیریت بسته بندی ها",
         icon: <LuGift className="text-2xl" />,
-        redirect: "/admin/store/create?type=infos",
+        redirect: "/admin/store/gift-wrapping/create",
         btnIcon: <LuPlus />,
       }}
       isLoading={isLoading}
@@ -40,7 +40,7 @@ const giftWrapping = () => {
       childrenClassName="grid md:grid-cols-2"
     >
       {gifts?.data?.items?.map((gift: any) => (
-        <GiftCard gift={gift} />
+        <GiftWrappingCard key={gift.id} gift={gift} />
       ))}
     </UnifiedCard>
   );

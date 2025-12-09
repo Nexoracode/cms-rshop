@@ -11,7 +11,7 @@ type Props = {
   hideChildrenWhenEnabled?: boolean; // <-- اضافه شد
 };
 
-const OrderLimitSwitcher: FC<Props> = ({
+const ToggleSection: FC<Props> = ({
   onChange,
   initialMode,
   children,
@@ -52,4 +52,4 @@ const OrderLimitSwitcher: FC<Props> = ({
   );
 };
 
-export default OrderLimitSwitcher;
+export default ToggleSection;

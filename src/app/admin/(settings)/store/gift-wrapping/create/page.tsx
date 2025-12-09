@@ -1,32 +1,30 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
-import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { LuGift } from "react-icons/lu";
+import { useGetOneGiftWrapping } from "@/core/hooks/api/useGiftWrapping";
+import GiftWrappingForm from "@/components/features/store/gift-wrapping/GiftWrappingForm";
 
-const Gift = () => {
+const GiftWrappingDetailPage = () => {
   const searchParams = useSearchParams();
   const giftId = searchParams.get("id");
 
-  const { data: gift, isLoading } = useGetOneOrder(
+  const { data: giftData, isLoading } = useGetOneGiftWrapping(
     giftId ? +giftId : undefined
   );
 
-  const giftData = gift?.data;
-  console.log(giftData);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <span className="text-lg">در حال بارگذاری اطلاعات...</span>
+      </div>
+    );
+  }
 
   return (
-    <UnifiedCard
-      isLoading={isLoading}
-      isExistItems={!!giftData}
-      searchInp={false}
-      headerProps={{
-        title: "مشخصات بسته بندی",
-        icon: <LuGift className="text-2xl" />,
-      }}
-    ></UnifiedCard>
+    <GiftWrappingForm
+      giftWrapping={giftData?.data}
+    />
   );
 };
 
-export default Gift;
+export default GiftWrappingDetailPage;

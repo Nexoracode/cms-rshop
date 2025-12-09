@@ -6,7 +6,7 @@ import { LuGift, LuPackage } from "react-icons/lu";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { FiPackage } from "react-icons/fi";
 
-type GiftCardProps = {
+type GiftWrappingCardProps = {
   gift: {
     id: number;
     name: string;
@@ -20,7 +20,7 @@ type GiftCardProps = {
   };
 };
 
-const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
+const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-4 p-4"
@@ -95,4 +95,4 @@ const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
   );
 };
 
-export default GiftCard;
+export default GiftWrappingCard;
