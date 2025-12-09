@@ -129,35 +129,34 @@ const GiftWrappingForm = () => {
         }}
         errorMessage={errors.image_id}
       />
-      <div className="space-y-6">
-        <TextInput
-          label="نام بسته‌بندی"
-          placeholder="مثلاً: جعبه کادو لوکس"
-          value={form.name}
-          onChange={(val) => handleFieldChange("name", val)}
-          isRequired
-          errorMessage={errors.name}
-        />
+      <TextInput
+        label="نام بسته‌بندی"
+        placeholder="مثلاً: جعبه کادو لوکس"
+        value={form.name}
+        onChange={(val) => handleFieldChange("name", val)}
+        isRequired
+        errorMessage={errors.name}
+      />
 
-        <DiscountedPriceInput
-          price={form.price}
-          discount_amount={
-            form.discount_type === "amount" ? form.discount_value : 0
-          }
-          discount_percent={
-            form.discount_type === "percent" ? form.discount_value : 0
-          }
-          onPriceChange={(price) => handleFieldChange("price", +price)}
-          onDiscountChange={(type, value) => {
-            handleMultipleFieldsChange({
-              discount_type: type,
-              discount_value: +value || 0,
-            });
-          }}
-          errorMessage={errors.price || errors.discount_value}
-        />
+      <DiscountedPriceInput
+        price={form.price}
+        discount_amount={
+          form.discount_type === "amount" ? form.discount_value : 0
+        }
+        discount_percent={
+          form.discount_type === "percent" ? form.discount_value : 0
+        }
+        onPriceChange={(price) => handleFieldChange("price", +price)}
+        onDiscountChange={(type, value) => {
+          handleMultipleFieldsChange({
+            discount_type: type,
+            discount_value: +value || 0,
+          });
+        }}
+        errorMessage={errors.price || errors.discount_value}
+      />
 
-        {/* درست شده: status الان "active" یا "disable" هست */}
+      <div className="w-full flex items-center gap-4">
         <ToggleSection
           title="وضعیت"
           initialMode={form.status === "active" ? "enabled" : "disabled"}
@@ -178,17 +177,16 @@ const GiftWrappingForm = () => {
         />
       </div>
 
-      <div className="mt-8">
-        <Textarea
-          label="توضیحات"
-          placeholder="جنس، ابعاد، مناسب برای چه محصولاتی..."
-          value={form.description}
-          onChange={(val) => handleFieldChange("description", val)}
-          isRequired
-          minRows={5}
-          errorMessage={errors.description}
-        />
-      </div>
+      <Textarea
+        label="توضیحات"
+        placeholder="جنس، ابعاد، مناسب برای چه محصولاتی..."
+        value={form.description}
+        onChange={(val) => handleFieldChange("description", val)}
+        isRequired
+        minRows={5}
+        errorMessage={errors.description}
+      />
+
       <FormActionButtons
         cancelHref="/admin/gift-wrappings"
         onSubmit={handleSubmit}

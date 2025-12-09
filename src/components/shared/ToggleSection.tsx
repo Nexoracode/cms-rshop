@@ -37,7 +37,7 @@ const ToggleSection: FC<Props> = ({
   const showChildren = hideChildrenWhenEnabled ? mode === "disabled" : mode === "enabled";
 
   return (
-    <div className="flex flex-col justify-between border border-slate-200 p-3 rounded-2xl">
+    <div className="w-full flex flex-col justify-between border border-slate-200 p-3 rounded-2xl">
       <div className="flex items-center justify-between text-gray-700">
         <p>{title}</p>
         <Switch
