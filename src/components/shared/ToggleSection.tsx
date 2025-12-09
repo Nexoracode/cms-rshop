@@ -8,23 +8,23 @@ type Props = {
   children?: React.ReactNode;
   onChange: (val: "enabled" | "disabled") => void;
   initialMode?: "enabled" | "disabled";
-  hideChildrenWhenEnabled?: boolean; // <-- اضافه شد
+  hideChildrenWhenEnabled?: boolean;
 };
 
 const ToggleSection: FC<Props> = ({
   onChange,
-  initialMode,
+  initialMode = "disabled", // مقدار پیش‌فرض مستقیم اینجا
   children,
   title,
-  hideChildrenWhenEnabled = false, // پیش‌فرض false
+  hideChildrenWhenEnabled = false,
 }) => {
-  const [mode, setMode] = useState<"enabled" | "disabled">("disabled");
+  // فقط یک بار در mount مقدار اولیه ست می‌شه
+  const [mode, setMode] = useState<"enabled" | "disabled">(
+    initialMode || "disabled"
+  );
 
-  useEffect(() => {
-    if (initialMode) {
-      setMode(initialMode);
-    }
-  }, [initialMode]);
+  // این useEffect کاملاً حذف شد — مشکل اصلی همین بود!
+  // دیگر به تغییرات بعدی initialMode حساس نیستیم
 
   const handleSwitch = () => {
     setMode((prev) => (prev === "enabled" ? "disabled" : "enabled"));
@@ -34,7 +34,9 @@ const ToggleSection: FC<Props> = ({
     onChange(mode);
   }, [mode]);
 
-  const showChildren = hideChildrenWhenEnabled ? mode === "disabled" : mode === "enabled";
+  const showChildren = hideChildrenWhenEnabled 
+    ? mode === "disabled" 
+    : mode === "enabled";
 
   return (
     <div className="w-full flex flex-col justify-between border border-slate-200 p-3 rounded-2xl">

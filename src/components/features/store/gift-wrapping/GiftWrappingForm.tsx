@@ -81,7 +81,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
       };
 
       const result = id ? await updateGift(payload) : await createGift(payload);
-      result.ok && router.push("/admin/store/gift-wrappings");
+      result.ok && router.push("/admin/store/gift-wrapping");
     } catch (err) {
       toast.error("خطایی رخ داد");
     }
