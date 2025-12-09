@@ -36,16 +36,16 @@ export const initialGiftWrappingForm: any = {
 };
 
 type GiftWrappingFormProps = {
-  giftWrapping: any;
+  data: any;
+  id: number | null;
+  isLoading: boolean
 };
 
-const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({giftWrapping}) => {
+const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({ data, id, isLoading }) => {
   const router = useRouter();
 
   const { mutateAsync: createGift } = useCreateGiftWrapping();
-  const { mutateAsync: updateGift } = useUpdateGiftWrapping(
-    editId ? +editId : undefined
-  );
+  const { mutateAsync: updateGift } = useUpdateGiftWrapping(id);
   const { mutateAsync: uploadImage } = useUploadGiftWrappingImages();
 
   const {
@@ -61,10 +61,8 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({giftWrapping}) => {
   });
 
   useEffect(() => {
-    if (giftWrapping) {
-      setForm(mapAPIToLocalGiftWrapping(giftWrapping));
-    }
-  }, [giftWrapping]);
+    data && setForm(mapAPIToLocalGiftWrapping(data));
+  }, [data]);
 
   const handleSubmit = submit(async () => {
     try {
@@ -97,12 +95,12 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({giftWrapping}) => {
         discount_value: form.discount_value > 0 ? form.discount_value : null,
       };
 
-      const result = editId
+      const result = id
         ? await updateGift(payload)
         : await createGift(payload);
 
       if (result.ok) {
-        toast.success(editId ? "بسته‌بندی بروزرسانی شد" : "بسته‌بندی ایجاد شد");
+        toast.success(id ? "بسته‌بندی بروزرسانی شد" : "بسته‌بندی ایجاد شد");
         router.push("/admin/gift-wrappings");
       }
     } catch (err) {
@@ -116,7 +114,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({giftWrapping}) => {
   return (
     <BaseCard
       CardHeaderProps={{
-        title: editId ? "ویرایش بسته‌بندی" : "ایجاد بسته‌بندی",
+        title: id ? "ویرایش بسته‌بندی" : "ایجاد بسته‌بندی",
         icon: <FiGift className="w-6 h-6" />,
         showIconInActionSlot: true,
       }}

@@ -68,7 +68,7 @@ export const useCreateGiftWrapping = () => {
 };
 
 /* ---------------------- Update Gift Wrapping ---------------------- */
-export const useUpdateGiftWrapping = (id: number) => {
+export const useUpdateGiftWrapping = (id: number | null) => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: any) =>
