@@ -6,12 +6,13 @@ import { IoArrowForwardOutline } from "react-icons/io5";
 import { FiCheckCircle } from "react-icons/fi";
 
 type Props = {
-  cancelHref?: string;       // ✅ اختیاری
-  onCancel?: () => void;     // ✅ اختیاری
+  cancelHref?: string; // ✅ اختیاری
+  onCancel?: () => void; // ✅ اختیاری
   onSubmit: () => void;
   submitText?: string;
   cancelText?: string;
   isSubmitting?: boolean;
+  isLoading?: boolean;
 };
 
 const FormActionButtons: React.FC<Props> = ({
@@ -21,9 +22,14 @@ const FormActionButtons: React.FC<Props> = ({
   submitText = "ثبت تغییرات",
   cancelText = "لغو",
   isSubmitting = false,
+  isLoading,
 }) => {
   return (
-    <div className="flex items-center gap-3 px-4 mb-2">
+    <div
+      className={`flex items-center gap-3 px-4 mb-2 ${
+        isLoading ? "is-loading" : ""
+      }`}
+    >
       {cancelHref || onCancel ? (
         <OptionButton
           title={cancelText}

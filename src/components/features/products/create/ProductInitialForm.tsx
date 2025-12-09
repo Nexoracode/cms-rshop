@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { NumberInput } from "@heroui/react";
@@ -58,17 +58,19 @@ const initialProductForm: CreateProductRequest = {
 type ProductInitialFormProps = {
   data: ProductResponse;
   id: number | null;
+  isLoading: boolean
 };
 
 const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
   data,
   id,
+  isLoading
 }) => {
   const router = useRouter();
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
   const { mutate: updateProduct } = useProductUpdate(id);
-
+  
   const {
     form,
     errors,
@@ -134,7 +136,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
       });
     }
   });
-
+  
   return (
     <>
       <BaseCard
@@ -144,6 +146,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           showIconInActionSlot: true,
         }}
         wrapperContents
+        isLoading={isLoading}
       >
         <ImagesProducts
           onMedia_ids={(datas) => {
@@ -243,6 +246,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           icon: <FiShoppingBag />,
           showIconInActionSlot: true,
         }}
+        isLoading={isLoading}
       >
         <ShippingModeSwitcher
           defaultMood={form.requires_preparation ? "mood2" : "mood1"}
@@ -346,7 +350,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         />
       </BaseCard>
 
-      <FormActionButtons cancelHref="/admin/products" onSubmit={handleSubmit} />
+      <FormActionButtons cancelHref="/admin/products" onSubmit={handleSubmit} isLoading={isLoading}/>
     </>
   );
 };

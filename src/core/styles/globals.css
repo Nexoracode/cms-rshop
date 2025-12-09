@@ -81,6 +81,11 @@
 }
 
 @layer utilities {
+
+  .is-loading {
+    @apply animate-pulse cursor-default pointer-events-none select-none
+  }
+
   /* کلاس والد */
   .hover-reveal-parent {
     @apply relative;

@@ -5,20 +5,23 @@ import AttributesProducts from "@/components/features/products/create/Attributes
 import ProductInitialForm from "@/components/features/products/create/ProductInitialForm";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetOneProduct } from "@/core/hooks/api/products/useProduct";
+import { useFetchOnEdit } from "@/core/hooks/common/useFetchOnEdit";
 
 const CreateNewProduct = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const getEditId = searchParams.get("edit_id");
-  const editId = getEditId ? +getEditId : null;
-  const { data: product } = editId ? useGetOneProduct(+editId) : { data: null };
+  const type = searchParams.get("type");
 
   useEffect(() => {
-    !searchParams.get("type") && router.push("/admin/products");
-  }, []);
+    if (!type) {
+      router.replace("/admin/products");
+    }
+  }, [type, router]);
 
-  return searchParams.get("type") === "infos" ? (
-    <ProductInitialForm data={product?.data} id={editId} />
+  const { data, isLoading, editId } = useFetchOnEdit(useGetOneProduct);
+
+  return type === "infos" ? (
+    <ProductInitialForm data={data} id={editId} isLoading={isLoading}/>
   ) : (
     <AttributesProducts />
   );
