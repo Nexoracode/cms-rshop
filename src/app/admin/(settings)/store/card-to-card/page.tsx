@@ -6,9 +6,9 @@ import { ProductSortBy } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { useGetGiftWrappings } from "@/core/hooks/api/useGiftWrapping";
 // Icons
-import GiftsFilter from "@/components/features/store/gift-wrapping/Filter/GiftsFilter";
 import GiftWrappingCard from "@/components/features/store/gift-wrapping/GiftWrappingCard";
 import { IoCardOutline } from "react-icons/io5";
+import CardNumbersFilter from "@/components/features/store/card-to-card/Filter/CardNumbersFilter";
 
 const CardToCard = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -25,7 +25,7 @@ const CardToCard = () => {
 
   return (
     <UnifiedCard
-      searchFilter={<GiftsFilter />}
+      searchFilter={<CardNumbersFilter />}
       headerProps={{
         title: "کارت به کارت",
         icon: <IoCardOutline className="text-2xl" />,

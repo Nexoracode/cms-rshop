@@ -67,7 +67,9 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
     data && setForm(data);
   }, [data]);
 
-  const handleSubmit = submit(async () => {
+  const handleSubmit = submit(async (changed) => {
+    console.log(changed);
+
     try {
       const payload = {
         name: form.name.trim(),
@@ -122,6 +124,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
         onChange={(val) => handleFieldChange("name", val)}
         isRequired
         errorMessage={errors.name}
+        allowEnglishOnly={false}
       />
 
       <DiscountedPriceInput
@@ -158,8 +161,8 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
           initialMode={form.is_for_gift}
           onChange={(val) => {
             console.log(val);
-            
-            handleFieldChange("is_for_gift", val)
+
+            handleFieldChange("is_for_gift", val);
           }}
         />
       </div>

@@ -6,6 +6,8 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import { FiPackage } from "react-icons/fi";
 import { Image } from "@heroui/react";
 import DeleteButton from "@/components/shared/DeleteButton";
+import { useDeleteGiftWrapping } from "@/core/hooks/api/useGiftWrapping";
+import { price } from "@/core/utils/helper";
 
 type GiftWrappingCardProps = {
   gift: {
@@ -22,13 +24,15 @@ type GiftWrappingCardProps = {
 };
 
 const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
+  const { mutateAsync: deleteGift } = useDeleteGiftWrapping();
+
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-4 p-2 hover-reveal-parent group"
       redirect={`/admin/store/gift-wrapping/create?edit_id=${gift.id}`}
     >
       <div className="hover-reveal-child">
-        <DeleteButton onDelete={() => {}} />
+        <DeleteButton onDelete={() => deleteGift(gift.id)} />
       </div>
       <div className="relative flex justify-center">
         {gift.image ? (
@@ -41,7 +45,7 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
                 src={gift.image.url}
               />
             </div>
-            {gift.status === "active" ? (
+            {gift.status === "inactive" ? (
               <div className="z-50">
                 <StatusBadge
                   className="w-fit absolute top-2 right-2"
@@ -59,9 +63,12 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
           </div>
         )}
       </div>
-      <h3 className="text-md text-center font-semibold text-gray-700 mt-1">
-        {gift.name}
-      </h3>
+      <div className="flex flex-col gap-2">
+        <h3 className="text-md text-center font-semibold text-gray-700 mt-1 truncate">
+          {gift.name}
+        </h3>
+        <p className="text-center text-gray-600">{price(gift.price)}</p>
+      </div>
       <div className="flex items-center gap-3">
         {gift.is_for_gift ? (
           <div className="w-full flex items-center justify-center gap-1 bg-pink-50 p-1.5 px-2 rounded-lg">

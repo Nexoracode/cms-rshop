@@ -4,7 +4,7 @@ import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import CardNumberFilterModal from "./CardNumberFilterModal";
 import CardNumberSortModal from "./CardNumberSortModal";
 
-const GiftsFilter = () => {
+const CardNumbersFilter = () => {
   return (
     <SearchFilterCard
       searchPlaceholder="جستجو در شماره کارت ها..."
@@ -16,4 +16,4 @@ const GiftsFilter = () => {
   );
 };
 
-export default GiftsFilter;
+export default CardNumbersFilter;
