@@ -10,7 +10,8 @@ import TextInput from "@/components/ui/inputs/TextInput";
 import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import FormActionButtons from "@/components/common/FormActionButtons";
-import ToggleSection from "../../../shared/Toggle/ToggleSection";
+import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import ImagesProducts from "./ImagesProducts";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import BrandSelect from "../brands/BrandSelect";
@@ -27,10 +28,10 @@ import {
   useProductUpdate,
 } from "@/core/hooks/api/products/useProduct";
 import { useForm } from "@/core/hooks/common/form/useForm";
+//? Other
 import { validateProduct } from "./product-validation";
 import { CreateProductRequest, ProductResponse } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
-import DualToggleSection from "../../../shared/Toggle/DualToggleSection";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -247,12 +248,14 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           showIconInActionSlot: true,
         }}
         isLoading={isLoading}
+       bodyClassName="space-y-4"
       >
         <ToggleSection
           title="نمایش در فروشگاه"
           initialMode={form.is_visible}
           onChange={(val) => handleFieldChange("is_visible", val)}
         />
+
         <ToggleSection
           title="افزودن محصول به لیست پیشنهاد ویژه"
           initialMode={form.is_featured}
@@ -308,6 +311,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             }
           />
         </ToggleSection>
+
         <ToggleSection
           title="موجودی نامحدود"
           initialMode={form.is_limited_stock}
@@ -324,6 +328,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             onValueChange={(val) => handleFieldChange("stock", +val)}
           />
         </ToggleSection>
+
         <SizeGuide
           onHelperId={(id) => {
             handleFieldChange("helper_id", id);
