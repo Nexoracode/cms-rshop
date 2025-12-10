@@ -7,7 +7,7 @@ import { useFetchOnEdit } from "@/core/hooks/common/useFetchOnEdit";
 const GiftWrappingCreate = () => {
   const { data, isLoading, editId } = useFetchOnEdit(useGetOneGiftWrapping);
 
-  return <GiftWrappingForm data={data} isLoading={isLoading}  id={editId}/>;
+  return <GiftWrappingForm data={data} isLoading={isLoading} id={editId}/>;
 };
 
 export default GiftWrappingCreate;
