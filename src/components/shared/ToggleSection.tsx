@@ -5,49 +5,48 @@ import { Switch } from "@heroui/react";
 
 type Props = {
   title: string;
+  subtitle?: string;
   children?: React.ReactNode;
-  onChange: (val: "enabled" | "disabled") => void;
-  initialMode?: "enabled" | "disabled";
-  hideChildrenWhenEnabled?: boolean; // <-- اضافه شد
+  onChange: (val: boolean) => void;
+  initialMode?: boolean;
+  hideChildrenWhenEnabled?: boolean;
 };
 
 const ToggleSection: FC<Props> = ({
   onChange,
-  initialMode,
+  initialMode = false,
   children,
   title,
-  hideChildrenWhenEnabled = false, // پیش‌فرض false
+  subtitle= "",
+  hideChildrenWhenEnabled = false,
 }) => {
-  const [mode, setMode] = useState<"enabled" | "disabled">("disabled");
+  const [mode, setMode] = useState(false);
 
   useEffect(() => {
-    if (initialMode) {
-      setMode(initialMode);
-    }
+    setMode(initialMode);
   }, [initialMode]);
-
-  const handleSwitch = () => {
-    setMode((prev) => (prev === "enabled" ? "disabled" : "enabled"));
-  };
 
   useEffect(() => {
     onChange(mode);
   }, [mode]);
 
-  const showChildren = hideChildrenWhenEnabled ? mode === "disabled" : mode === "enabled";
-
   return (
-    <div className="w-full flex flex-col justify-between border border-slate-200 p-3 rounded-2xl">
+    <div className="w-full flex flex-col justify-between border border-slate-200 p-3 py-2 rounded-2xl">
       <div className="flex items-center justify-between text-gray-700">
-        <p>{title}</p>
+        <div className="flex flex-col">
+          <p>{title}</p>
+          {subtitle ? <small className="text-gray-600 mt-1">{subtitle}</small> : ""}
+        </div>
         <Switch
-          isSelected={mode === "enabled"}
-          onValueChange={handleSwitch}
+          isSelected={mode}
+          onValueChange={() => setMode((prev) => !prev)}
           size="sm"
         />
       </div>
 
-      {showChildren && <div className={`${children ? "mt-4" : ""}`}>{children}</div>}
+      {hideChildrenWhenEnabled && mode && (
+        <div className={`${children ? "mt-4" : ""}`}>{children}</div>
+      )}
     </div>
   );
 };

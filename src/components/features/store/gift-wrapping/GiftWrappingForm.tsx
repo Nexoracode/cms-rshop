@@ -145,21 +145,18 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
       <div className="w-full flex items-center gap-4">
         <ToggleSection
           title="وضعیت"
-          initialMode={form.status === "active" ? "enabled" : "disabled"}
+          subtitle="فعال یا غیرفعال"
+          initialMode={form.status === "active" ? true : false}
           onChange={(val) =>
-            handleFieldChange(
-              "status",
-              val === "enabled" ? "active" : "disable"
-            )
+            handleFieldChange("status", val ? "active" : "inactive")
           }
         />
 
         <ToggleSection
           title="مخصوص هدیه"
-          initialMode={form.is_for_gift ? "enabled" : "disabled"}
-          onChange={(val) =>
-            handleFieldChange("is_for_gift", val === "enabled")
-          }
+          subtitle="بسته بندی مخصوص هدیه است؟"
+          initialMode={form.is_for_gift}
+          onChange={(val) => handleFieldChange("is_for_gift", val)}
         />
       </div>
 
