@@ -37,7 +37,7 @@ const SigninForm = () => {
   const [success, setSuccess] = useState(false);
 
   const online = useOnlineStatus();
-  const otpTimer = useCountdown(120);
+  const otpTimer = useCountdown(30);
 
   const requestOtpMutation = useRequestOtpMutation();
   const verifyOtpMutation = useVerifyOtpMutation();
@@ -81,8 +81,10 @@ const SigninForm = () => {
 
     requestOtpMutation.mutate(phoneValue, {
       onSuccess: (res) => {
-        console.log(res);
-        if (res.ok) setSelected("otp");
+        if (res.ok) {
+          setSelected("otp");
+          otpTimer.start()
+        }
       },
     });
   };
@@ -227,7 +229,7 @@ const SigninForm = () => {
                                 animate={{
                                   width: otpTimer.isFinished
                                     ? "0%"
-                                    : `${(otpTimer.seconds / 120) * 100}%`,
+                                    : `${(otpTimer.seconds / 30) * 100}%`,
                                 }}
                                 transition={{ duration: 0.9, ease: "linear" }}
                               />
