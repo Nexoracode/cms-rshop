@@ -9,10 +9,6 @@ const OrdersFilter = () => {
     <SearchFilterCard
       relatedPages={[
         {
-          title: "کارت به کارت",
-          href: "/admin/store/card-to-card",
-        },
-        {
           title: "بسته بندی",
           href: "/admin/store/gift-wrapping",
         },

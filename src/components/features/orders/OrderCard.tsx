@@ -131,7 +131,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
         )}
 
         {!isNotDelivered && !isAccept ? (
-          <p className="text-slate-600">محصولات انتخابی</p>
+          <p className="text-slate-600">تعداد سفارش</p>
         ) : (
           ""
         )}
