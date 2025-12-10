@@ -259,35 +259,32 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           onChange={(val) => handleFieldChange("is_featured", val)}
         />
         <ShippingModeSwitcher
-          defaultMood={form.requires_preparation ? "mood2" : "mood1"}
-          onChangeType={(type) => {
+          title="محصول نیاز به زمان آماده‌سازی دارد"
+          mode2Title="می‌خواهم محصول ارسال امروز داشته باشد"
+          value={form.requires_preparation}
+          onChange={(isPreparation) => {
             handleMultipleFieldsChange({
-              requires_preparation: type === "mood2",
-              preparation_days:
-                type === "mood2" ? form.preparation_days || 1 : 0,
-              is_same_day_shipping: type !== "mood2",
+              requires_preparation: isPreparation,
+              preparation_days: isPreparation ? form.preparation_days || 1 : 0,
+              is_same_day_shipping: !isPreparation,
             });
           }}
-          textMood1="محصول نیاز به زمان آماده‌ سازی دارد"
-          textMood2="می‌خواهم محصول “ارسال امروز” داشته باشد."
-          childrenMood1={
-            <NumberInput
-              hideStepper
-              placeholder="3"
-              minValue={1}
-              value={form.preparation_days ?? 0}
-              onValueChange={(val) =>
-                handleFieldChange("preparation_days", +val)
-              }
-              endContent={
-                <div className="pointer-events-none flex items-center">
-                  <span className="text-default-400 text-small">روز</span>
-                </div>
-              }
-              labelPlacement="outside"
-            />
-          }
-        />
+        >
+          <NumberInput
+            hideStepper
+            placeholder="3"
+            minValue={1}
+            value={form.preparation_days ?? 0}
+            onValueChange={(val) => handleFieldChange("preparation_days", +val)}
+            endContent={
+              <div className="pointer-events-none flex items-center">
+                <span className="text-default-400 text-small">روز</span>
+              </div>
+            }
+            labelPlacement="outside"
+          />
+        </ShippingModeSwitcher>
+
         <ToggleSection
           title="محدودیت تعداد برای هر سفارش"
           initialMode={form.order_limit > 0 ? true : false}

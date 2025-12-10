@@ -21,7 +21,11 @@ const ToggleSection: FC<Props> = ({
   hideChildrenWhenEnabled = false,
 }) => {
   return (
-    <div className={`w-full flex flex-col justify-between border border-slate-200 p-3 ${subtitle ? "py-2" : ""} rounded-2xl`}>
+    <div
+      className={`w-full flex flex-col justify-between border border-slate-200 p-3 ${
+        subtitle ? "py-2" : ""
+      } rounded-2xl`}
+    >
       <div className="flex items-center justify-between text-gray-700">
         <div className="flex flex-col">
           <p>{title}</p>
@@ -38,7 +42,7 @@ const ToggleSection: FC<Props> = ({
         />
       </div>
 
-      {hideChildrenWhenEnabled && initialMode && (
+      {initialMode && !hideChildrenWhenEnabled && (
         <div className={`${children ? "mt-4" : ""}`}>{children}</div>
       )}
     </div>
