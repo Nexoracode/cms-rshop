@@ -37,7 +37,7 @@ const giftWrapping = () => {
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={gifts?.data?.meta}
-      childrenClassName="grid md:grid-cols-2"
+      childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
     >
       {gifts?.data?.items?.map((gift: any) => (
         <GiftWrappingCard key={gift.id} gift={gift} />
