@@ -8,7 +8,9 @@ export const useRequestOtpMutation = () => {
         route: "/auth/request-otp",
         method: "POST",
         body: { identifier: phone },
-        successText: "کد ارسال شده به تلفن همراه خود را وارد نمایید",
+        isActiveToast: true,
+        loadingText: "در حال ارسال کد",
+        successText: "کد با موفقیت ارسال شد"
       }),
   });
 };
@@ -20,7 +22,9 @@ export const useVerifyOtpMutation = () => {
         route: "/auth/verify-otp",
         method: "POST",
         body: { identifier: phone, code },
-        successText: "به ادمین پنل خوش آمدید",
+        isActiveToast: true,
+        loadingText: "درحال بررسی...",
+        successText: "خوش اومدی به ادمین پنل"
       }),
   });
 };
