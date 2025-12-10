@@ -1,37 +1,45 @@
-"use client";
+"use client"
 
-import { useSearchParams } from "next/navigation";
-import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
-import { IoReceiptOutline } from "react-icons/io5";
-import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
+// Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { GoArrowUpRight } from "react-icons/go";
+import { ProductSortBy } from "@/core/hooks/api/products/useProduct";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { useGetGiftWrappings } from "@/core/hooks/api/useGiftWrapping";
+// Icons
+import GiftsFilter from "@/components/features/store/gift-wrapping/Filter/GiftsFilter";
+import GiftWrappingCard from "@/components/features/store/gift-wrapping/GiftWrappingCard";
+import { IoCardOutline } from "react-icons/io5";
 
 const CardToCard = () => {
-  const searchParams = useSearchParams();
-  const orderId = searchParams.get("id");
+  const { page, sortBy, search, filter, isFilteredView } =
+    useListQueryParams<ProductSortBy[number]>();
 
-  const { data: order, isLoading } = useGetOneOrder(
-    orderId ? +orderId : undefined
-  );
-  
-  const orderData = order?.data
-  console.log(orderData);
+  const { data: gifts, isLoading } = useGetGiftWrappings({
+    page,
+    filter,
+    search,
+    sortBy,
+  });
+
+  const isExistItems = !!gifts?.data?.items?.length;
 
   return (
     <UnifiedCard
-      isLoading={isLoading}
-      isExistItems={!!orderData}
-      searchInp={false}
+      searchFilter={<GiftsFilter />}
       headerProps={{
-        title: orderData?.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
-        icon: <IoReceiptOutline className="text-2xl" />,
-        textBtn: "مشاهده فاکتور",
-        btnIcon: <GoArrowUpRight />,
-        redirect: `/orders/invoice/${orderId}`
+        title: "کارت به کارت",
+        icon: <IoCardOutline className="text-2xl" />,
+        showIconInActionSlot: true,
       }}
+      isLoading={isLoading}
+      isExistItems={isExistItems}
+      searchInp={isFilteredView}
+      meta={gifts?.data?.meta}
+      childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
     >
-      <OrderWizard order={orderData} />
+      {gifts?.data?.items?.map((gift: any) => (
+        <GiftWrappingCard key={gift.id} gift={gift} />
+      ))}
     </UnifiedCard>
   );
 };
