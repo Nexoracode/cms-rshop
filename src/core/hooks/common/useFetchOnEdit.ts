@@ -12,16 +12,16 @@ export const useFetchOnEdit = <T = any>(
   const idParam = searchParams.get(paramName);
 
   const editId = useMemo<number | null>(() => {
-    if (!idParam || idParam.trim() === "") return null;
+    if (!idParam) return null; // پارامتر اصلاً وجود ندارد
     const num = Number(idParam);
     return isNaN(num) || num <= 0 ? null : num;
   }, [idParam]);
 
   useEffect(() => {
-    if (editId === null) {
+    if (idParam !== null && (idParam.trim() === "" || isNaN(Number(idParam)) || Number(idParam) <= 0)) {
       router.back();
     }
-  }, [editId, router]);
+  }, [idParam, router]);
 
   const query = editId !== null ? queryFn(editId) : null;
 
