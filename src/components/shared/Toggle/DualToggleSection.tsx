@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import ToggleSection from "@/components/shared/ToggleSection";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 
 type Props = {
   title: string;
@@ -14,7 +14,7 @@ type Props = {
   onChange: (val: boolean) => void;
 };
 
-const ShippingModeSwitcher: FC<Props> = ({
+const DualToggleSection: FC<Props> = ({
   value,
   onChange,
 
@@ -28,26 +28,26 @@ const ShippingModeSwitcher: FC<Props> = ({
 }) => {
   return (
     <div className="flex flex-col gap-4">
-      {/* Mode 1 */}
       <ToggleSection
         title={title}
         subtitle={subtitle}
         initialMode={value === true}
         hideChildrenWhenEnabled={false}
         onChange={(newVal: any) => {
-          if (newVal) onChange(true);
+          onChange(newVal);
         }}
       >
         {children}
       </ToggleSection>
 
-      {/* Mode 2 */}
       <ToggleSection
         title={mode2Title}
         subtitle={mode2Subtitle}
         initialMode={value === false}
         hideChildrenWhenEnabled={false}
-        onChange={(newVal: any) => newVal && onChange(false)}
+        onChange={(newVal: any) => {
+          onChange(!newVal);
+        }}
       >
         {mode2Children}
       </ToggleSection>
@@ -55,4 +55,4 @@ const ShippingModeSwitcher: FC<Props> = ({
   );
 };
 
-export default ShippingModeSwitcher;
+export default DualToggleSection;

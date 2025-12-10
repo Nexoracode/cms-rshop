@@ -10,8 +10,7 @@ import TextInput from "@/components/ui/inputs/TextInput";
 import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput";
 import NumberWithSelect from "@/components/forms/Inputs/NumberWithSelect";
 import FormActionButtons from "@/components/common/FormActionButtons";
-import ShippingModeSwitcher from "./helpers/ShippingModeSwitcher";
-import ToggleSection from "../../../shared/ToggleSection";
+import ToggleSection from "../../../shared/Toggle/ToggleSection";
 import ImagesProducts from "./ImagesProducts";
 import SizeGuide from "./SizeGuide/SizeGuide";
 import BrandSelect from "../brands/BrandSelect";
@@ -31,6 +30,7 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateProduct } from "./product-validation";
 import { CreateProductRequest, ProductResponse } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
+import DualToggleSection from "../../../shared/Toggle/DualToggleSection";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -258,32 +258,36 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           initialMode={form.is_featured}
           onChange={(val) => handleFieldChange("is_featured", val)}
         />
-        <ShippingModeSwitcher
-          title="محصول نیاز به زمان آماده‌سازی دارد"
-          mode2Title="می‌خواهم محصول ارسال امروز داشته باشد"
+
+        <DualToggleSection
+          title="می‌خواهم محصول ارسال امروز داشته باشد"
+          mode2Title="محصول نیاز به زمان آماده‌سازی دارد"
           value={form.requires_preparation}
-          onChange={(isPreparation) => {
+          onChange={(isPreparation: any) => {
             handleMultipleFieldsChange({
               requires_preparation: isPreparation,
               preparation_days: isPreparation ? form.preparation_days || 1 : 0,
               is_same_day_shipping: !isPreparation,
             });
           }}
-        >
-          <NumberInput
-            hideStepper
-            placeholder="3"
-            minValue={1}
-            value={form.preparation_days ?? 0}
-            onValueChange={(val) => handleFieldChange("preparation_days", +val)}
-            endContent={
-              <div className="pointer-events-none flex items-center">
-                <span className="text-default-400 text-small">روز</span>
-              </div>
-            }
-            labelPlacement="outside"
-          />
-        </ShippingModeSwitcher>
+          mode2Children={
+            <NumberInput
+              hideStepper
+              placeholder="3"
+              minValue={1}
+              value={form.preparation_days ?? 0}
+              onValueChange={(val) =>
+                handleFieldChange("preparation_days", +val)
+              }
+              endContent={
+                <div className="pointer-events-none flex items-center">
+                  <span className="text-default-400 text-small">روز</span>
+                </div>
+              }
+              labelPlacement="outside"
+            />
+          }
+        />
 
         <ToggleSection
           title="محدودیت تعداد برای هر سفارش"

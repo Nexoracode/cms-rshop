@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import ToggleSection from "@/components/shared/ToggleSection";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import Textarea from "@/components/ui/inputs/Textarea";
 import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput";
