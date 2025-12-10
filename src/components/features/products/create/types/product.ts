@@ -41,6 +41,7 @@ export interface ProductResponse {
 
   specifications: any[];
   attribute_nodes: AttributeNode[];
+  sku: string
 }
 
 export interface CreateProductRequest {
@@ -64,6 +65,7 @@ export interface CreateProductRequest {
   media_pinned_id: number | null;
   helper_id: number | null;
   brand_id: number | null;
+  sku: string
 }
 
 

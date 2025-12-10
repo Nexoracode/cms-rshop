@@ -29,5 +29,6 @@ export function mapAPIToLocalProduct(p: ProductResponse): CreateProductRequest {
     media_pinned_id: p.media_pinned_id ?? null,
     helper_id: p.helper?.id ?? p.helper_id ?? null,
     brand_id: p.brand?.id ?? p.brand_id ?? null,
+    sku: p.sku || ""
   };
 }

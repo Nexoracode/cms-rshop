@@ -13,38 +13,17 @@ export function validateProduct(product: any) {
   const hasWeight = Number(product.weight) > 0;
   const hasBrand = Number(product.brand_id) > 0;
   const hasDesc = stripHtml(product.description || "").length > 0;
+  const hasSku = (product?.sku || "").length > 0;
 
-  if (!hasName) {
-    errs.name = "نام محصول الزامی است.";
-  }
-
-  if (!hasPrice) {
-    errs.price = "قیمت معتبر نیست.";
-  }
-
-  if (!hasCategory) {
-    errs.category_id = "انتخاب دسته بندی الزامی است.";
-  }
-
-  if (!hasWeight) {
-    errs.weight = "وزن معتبر نیست.";
-  }
-
-  if (!hasBrand) {
-    errs.brand_id = "انتخاب برند الزامی است.";
-  }
-
-  if (!hasDesc) {
-    errs.description = "توضیحات نمی‌تواند خالی باشد.";
-  }
-
-  if (!hasMedia) {
-    errs.media_ids = "حداقل یک تصویر باید انتخاب شود.";
-  }
-
-  if (!hasPinned) {
-    errs.media_pinned_id = "پین کردن یک تصویر الزامی است.";
-  }
+  !hasName && (errs.name = "نام محصول الزامی است.");
+  !hasPrice && (errs.price = "قیمت معتبر نیست.");
+  !hasCategory && (errs.category_id = "انتخاب دسته بندی الزامی است.");
+  !hasWeight && (errs.weight = "وزن معتبر نیست.");
+  !hasBrand && (errs.brand_id = "انتخاب برند الزامی است.");
+  !hasDesc && (errs.description = "توضیحات نمی‌تواند خالی باشد.");
+  !hasSku && (errs.sku = "کد انبار الزامی است");
+  !hasMedia && (errs.media_ids = "حداقل یک تصویر باید انتخاب شود.");
+  !hasPinned && (errs.media_pinned_id = "پین کردن یک تصویر الزامی است.");
 
   return errs;
 }

@@ -54,6 +54,7 @@ const initialProductForm: CreateProductRequest = {
   media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
+  sku: ""
 };
 
 type ProductInitialFormProps = {
@@ -226,10 +227,9 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         <TextInput
           label="کد انبار"
           placeholder="مثلاً SKU12345"
-          className="bg-white rounded-xl text-right"
-          value={""}
-          onChange={(val) => {}}
-          isRequired
+          value={form.sku}
+          inputAlign="left"
+          onChange={(val) => handleFieldChange("sku", val)}
           errorMessage={errors.sku}
         />
 
@@ -248,7 +248,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           showIconInActionSlot: true,
         }}
         isLoading={isLoading}
-       bodyClassName="space-y-4"
+        bodyClassName="space-y-4"
       >
         <ToggleSection
           title="نمایش در فروشگاه"
