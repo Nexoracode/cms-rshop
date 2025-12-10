@@ -21,12 +21,11 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit }) => {
 
   return (
     <BaseCard
-      className="cursor-auto shadow-md rounded-2xl border w-[250px] xs:w-full"
-      bodyClassName="overflow-hidden p-2.5 relative cursor-pointer"
+      //className="cursor-auto shadow-md rounded-2xl border w-[250px] xs:w-full"
+      bodyClassName="p-2 hover-reveal-parent group"
       onClick={() => onEdit?.(brand)}
     >
-      {/* دکمه حذف */}
-      <div className="absolute top-2.5 left-2.5 z-50">
+      <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteBrand(brand.id)} />
       </div>
 
@@ -34,7 +33,7 @@ const BrandCard: React.FC<BrandCardProps> = ({ brand, onEdit }) => {
       <div className="w-full h-full bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
         <Image
           alt={brand.name}
-          className="w-full min-h-[160px] md:min-h-[120px] object-cover rounded-2xl"
+          className="w-full group-hover:scale-150 min-h-[160px] md:min-h-[120px] object-cover rounded-2xl"
           radius="lg"
           width={"100%"}
           src={brand.logo}
