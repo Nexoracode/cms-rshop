@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import { Switch } from "@heroui/react";
 
 type Props = {
@@ -17,34 +17,28 @@ const ToggleSection: FC<Props> = ({
   initialMode = false,
   children,
   title,
-  subtitle= "",
+  subtitle = "",
   hideChildrenWhenEnabled = false,
 }) => {
-  const [mode, setMode] = useState(false);
-
-  useEffect(() => {
-    setMode(initialMode);
-  }, [initialMode]);
-
-  useEffect(() => {
-    onChange(mode);
-  }, [mode]);
-
   return (
-    <div className="w-full flex flex-col justify-between border border-slate-200 p-3 py-2 rounded-2xl">
+    <div className={`w-full flex flex-col justify-between border border-slate-200 p-3 ${subtitle ? "py-2" : ""} rounded-2xl`}>
       <div className="flex items-center justify-between text-gray-700">
         <div className="flex flex-col">
           <p>{title}</p>
-          {subtitle ? <small className="text-gray-600 mt-1">{subtitle}</small> : ""}
+          {subtitle ? (
+            <small className="text-gray-600 mt-1">{subtitle}</small>
+          ) : (
+            ""
+          )}
         </div>
         <Switch
-          isSelected={mode}
-          onValueChange={() => setMode((prev) => !prev)}
+          isSelected={initialMode}
+          onValueChange={() => onChange(!initialMode)}
           size="sm"
         />
       </div>
 
-      {hideChildrenWhenEnabled && mode && (
+      {hideChildrenWhenEnabled && initialMode && (
         <div className={`${children ? "mt-4" : ""}`}>{children}</div>
       )}
     </div>

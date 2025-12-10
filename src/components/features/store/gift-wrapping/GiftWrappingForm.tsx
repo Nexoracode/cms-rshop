@@ -156,7 +156,11 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
           title="مخصوص هدیه"
           subtitle="بسته بندی مخصوص هدیه است؟"
           initialMode={form.is_for_gift}
-          onChange={(val) => handleFieldChange("is_for_gift", val)}
+          onChange={(val) => {
+            console.log(val);
+            
+            handleFieldChange("is_for_gift", val)
+          }}
         />
       </div>
 

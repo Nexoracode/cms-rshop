@@ -58,19 +58,19 @@ const initialProductForm: CreateProductRequest = {
 type ProductInitialFormProps = {
   data: ProductResponse;
   id: number | null;
-  isLoading: boolean
+  isLoading: boolean;
 };
 
 const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
   data,
   id,
-  isLoading
+  isLoading,
 }) => {
   const router = useRouter();
   //? Hooks
   const { mutate: createProduct } = useProductCreate();
   const { mutate: updateProduct } = useProductUpdate(id);
-  
+
   const {
     form,
     errors,
@@ -136,7 +136,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
       });
     }
   });
-  
+
   return (
     <>
       <BaseCard
@@ -248,6 +248,16 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         }}
         isLoading={isLoading}
       >
+        <ToggleSection
+          title="نمایش در فروشگاه"
+          initialMode={form.is_visible}
+          onChange={(val) => handleFieldChange("is_visible", val)}
+        />
+        <ToggleSection
+          title="افزودن محصول به لیست پیشنهاد ویژه"
+          initialMode={form.is_featured}
+          onChange={(val) => handleFieldChange("is_featured", val)}
+        />
         <ShippingModeSwitcher
           defaultMood={form.requires_preparation ? "mood2" : "mood1"}
           onChangeType={(type) => {
@@ -277,71 +287,42 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
               labelPlacement="outside"
             />
           }
-          childrenTop={
-            <>
-              <ToggleSection
-                title="نمایش در فروشگاه"
-                initialMode={form.is_visible ? "enabled" : "disabled"}
-                onChange={(val) =>
-                  handleFieldChange("is_visible", val === "enabled")
-                }
-              />
-              <ToggleSection
-                title="افزودن محصول به لیست پیشنهاد ویژه"
-                initialMode={form.is_featured ? "enabled" : "disabled"}
-                onChange={(val) =>
-                  handleFieldChange("is_featured", val === "enabled")
-                }
-              />
-            </>
-          }
-          children={
-            <>
-              <ToggleSection
-                title="محدودیت تعداد برای هر سفارش"
-                initialMode={form.order_limit > 0 ? "enabled" : "disabled"}
-                onChange={(val) =>
-                  handleFieldChange(
-                    "order_limit",
-                    val === "enabled" ? +form.order_limit || 1 : 0
-                  )
-                }
-              >
-                <NumberInput
-                  hideStepper
-                  placeholder="3"
-                  minValue={1}
-                  value={form.order_limit ?? 0}
-                  labelPlacement="outside"
-                  onValueChange={(val) =>
-                    handleFieldChange("order_limit", +val || 1)
-                  }
-                  endContent={
-                    <span className="text-default-400 text-small">عدد</span>
-                  }
-                />
-              </ToggleSection>
-              <ToggleSection
-                title="موجودی نامحدود"
-                initialMode={form.is_limited_stock ? "enabled" : "disabled"}
-                hideChildrenWhenEnabled // وقتی فعال شد، input مخفی میشه
-                onChange={(val) =>
-                  handleFieldChange("is_limited_stock", val === "enabled")
-                }
-              >
-                <NumberInput
-                  hideStepper
-                  label="موجودی"
-                  placeholder="1"
-                  minValue={0}
-                  value={form.stock}
-                  labelPlacement="outside"
-                  onValueChange={(val) => handleFieldChange("stock", +val)}
-                />
-              </ToggleSection>
-            </>
-          }
         />
+        <ToggleSection
+          title="محدودیت تعداد برای هر سفارش"
+          initialMode={form.order_limit > 0 ? true : false}
+          onChange={(val) =>
+            handleFieldChange("order_limit", val ? +form.order_limit || 1 : 0)
+          }
+        >
+          <NumberInput
+            hideStepper
+            placeholder="3"
+            minValue={1}
+            value={form.order_limit ?? 0}
+            labelPlacement="outside"
+            onValueChange={(val) => handleFieldChange("order_limit", +val || 1)}
+            endContent={
+              <span className="text-default-400 text-small">عدد</span>
+            }
+          />
+        </ToggleSection>
+        <ToggleSection
+          title="موجودی نامحدود"
+          initialMode={form.is_limited_stock}
+          hideChildrenWhenEnabled
+          onChange={(val) => handleFieldChange("is_limited_stock", val)}
+        >
+          <NumberInput
+            hideStepper
+            label="موجودی"
+            placeholder="1"
+            minValue={0}
+            value={form.stock}
+            labelPlacement="outside"
+            onValueChange={(val) => handleFieldChange("stock", +val)}
+          />
+        </ToggleSection>
         <SizeGuide
           onHelperId={(id) => {
             handleFieldChange("helper_id", id);
@@ -350,7 +331,11 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         />
       </BaseCard>
 
-      <FormActionButtons cancelHref="/admin/products" onSubmit={handleSubmit} isLoading={isLoading}/>
+      <FormActionButtons
+        cancelHref="/admin/products"
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
+      />
     </>
   );
 };
