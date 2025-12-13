@@ -45,7 +45,7 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
                 src={gift.image.url}
               />
             </div>
-            {gift.status === "inactive" ? (
+            {!gift.status ? (
               <div className="z-50">
                 <StatusBadge
                   className="w-fit absolute top-2 right-2"

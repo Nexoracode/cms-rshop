@@ -6,6 +6,6 @@ export type CreateGiftWrappingRequest = {
   discount_value: number;
   image_id: number | null;
   image_file: File | null;
-  status: "active" | "disable";
+  status: boolean;
   is_for_gift: boolean;
 };
