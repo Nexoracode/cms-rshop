@@ -14,7 +14,7 @@ type GiftWrappingBoxProps = {
 const GiftWrappingBoxInfos: React.FC<GiftWrappingBoxProps> = ({ order }) => {
   const { gift_wrapping, is_gift, gift_message, gift_wrapping_cost } = order;
 
-  return (
+  return is_gift ? (
     <BaseCard
       CardHeaderProps={{
         title: is_gift ? "هدیه" : "بسته بندی",
@@ -50,6 +50,8 @@ const GiftWrappingBoxInfos: React.FC<GiftWrappingBoxProps> = ({ order }) => {
         isActiveBg
       />
     </BaseCard>
+  ) : (
+    ""
   );
 };
 
