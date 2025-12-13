@@ -6,7 +6,7 @@ import OrderBoxInfos from "./ProccessBox/OrderBoxInfos";
 import PaymentBoxInfos from "./ProccessBox/PaymentBoxInfos";
 import CustomerBoxInfos from "./ProccessBox/CustomerBoxInfos";
 import ShippingBoxInfos from "./ProccessBox/ShippingBoxInfos";
-import InvoiceBoxInfos from "./ProccessBox/InvoiceBoxInfos";
+import InvoiceBoxInfos from "./ProccessBox/InvoiceBoxInfos/InvoiceBoxInfos";
 import DynamicBoxInfos from "./ProccessBox/DynamicBoxInfos";
 
 type OrderProcessProps = {

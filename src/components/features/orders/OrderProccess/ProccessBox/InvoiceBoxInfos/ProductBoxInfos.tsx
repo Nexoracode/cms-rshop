@@ -56,7 +56,7 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
       </div>
 
       {/* لیست واریانت‌ها */}
-      {variants ? (
+      {variants.length ? (
         <div className="mt-4 space-y-3">
           {variants?.map((v) => (
             <div

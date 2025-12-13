@@ -54,6 +54,8 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
     const equalItems: Item[] = [];
     const notEqualItems: Item[] = [];
 
+    console.log("Items =>", items);
+
     for (let index = 0; index < items.length; index++) {
       const element = items[index] as Item;
 
@@ -87,7 +89,7 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
 
     const productEqual = [
       {
-        product: equalItems.length ? equalItems[0].product : [],
+        product: equalItems.length ? equalItems[0].product : null,
         variants: varaintsListEqual,
       },
     ];
@@ -108,9 +110,11 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
       };
     });
 
-    console.log("productEqual =>", productEqual);
-    console.log("productNotEqual =>", productNotEqual);
-    setProducts([...productEqual, ...productNotEqual]);
+    if (productEqual.length && productEqual[0].product) {
+      setProducts([...productEqual, ...productNotEqual]);
+    } else {
+      setProducts(productNotEqual);
+    }
   }, [items]);
 
   return (
