@@ -147,7 +147,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
 
       <div className="w-full flex items-center gap-4">
         <ToggleSection
-          title="وضعیت"
+          title="وضعیت نمایش"
           subtitle="فعال یا غیرفعال"
           initialMode={form.status === "active" ? true : false}
           onChange={(val) =>

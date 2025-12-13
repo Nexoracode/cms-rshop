@@ -1,44 +1,38 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { buildQueryString } from "@/core/utils/buildQueryString";
-
-export type UserFilter = {
-  isActive?: string[];        // ["like:John", "$not:$like:Jane"]
-  createdAt?: string[];       // ["$gte:2025-01-01", "$lte:2025-10-01"]
-};
+import { buildListQuery } from "@/core/utils/buildListQuery";
+import { ListQueryParams } from "@/core/types";
 
 export type UserSortBy = Array<
-  "id:ASC" | "id:DESC" |
-  "firstName:ASC" | "firstName:DESC" |
-  "email:ASC" | "email:DESC" |
-  "phone:ASC" | "phone:DESC"
+  | "id:ASC"
+  | "id:DESC"
+  | "firstName:ASC"
+  | "firstName:DESC"
+  | "email:ASC"
+  | "email:DESC"
+  | "phone:ASC"
+  | "phone:DESC"
 >;
 
-type UseGetAllUsersParams = {
-  page?: number;
-  filter?: UserFilter;
-  search?: string;
-  sortBy?: UserSortBy;
-};
-
-export const useGetAllUsers = ({ page = 1, filter, search, sortBy }: UseGetAllUsersParams) => {
+export const useGetAllUsers = ({
+  page = 1,
+  filter,
+  search,
+  sortBy,
+  limit = 10,
+}: ListQueryParams) => {
   return useQuery({
     queryKey: ["all-users", page, filter, search, sortBy],
     queryFn: () => {
-      const params: Record<string, any> = { page, limit: 40 };
+      const qs = buildListQuery({
+        page,
+        limit,
+        sortBy,
+        search,
+        filter,
+      });
 
-      if (filter) {
-        for (const key in filter) {
-          const values = filter[key as keyof UserFilter];
-          if (values) params[`filter.${key}`] = values;
-        }
-      }
-
-      if (search) params.search = search;
-      if (sortBy) params.sortBy = sortBy;
-
-      const queryString = buildQueryString(params);
-      return fetcher({ route: `/users?${queryString}`, isActiveToast: false });
+      return fetcher({ route: `/users?${qs}`, isActiveToast: false });
     },
   });
 };

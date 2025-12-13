@@ -6,12 +6,12 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import ProductsFilter from "@/components/features/products/ProductsFilter";
 import ProductsBulkActions from "@/components/features/products/ProductsBulkActions";
 import ProductCard from "@/components/features/products/ProductCard";
-// Icons
+import SelectableCard from "@/components/ui/SelectableCard";
 import { ProductSortBy, useGetProducts } from "@/core/hooks/api/products/useProduct";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+// Icons
 import { LuPlus } from "react-icons/lu";
 import { BsShop } from "react-icons/bs";
-import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import SelectableCard from "@/components/ui/SelectableCard";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =

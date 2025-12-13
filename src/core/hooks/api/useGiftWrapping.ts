@@ -2,14 +2,30 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
+import { ListQueryParams } from "@/core/types";
+import { buildListQuery } from "@/core/utils/buildListQuery";
 
 /* ---------------------- Get All Gift Wrappings ---------------------- */
-export const useGetGiftWrappings = () => {
+export const useGetGiftWrappings = ({
+  page = 1,
+  filter,
+  search,
+  sortBy,
+  limit = 40,
+}: ListQueryParams) => {
   return useQuery({
-    queryKey: ["gift-wrappings"],
+    queryKey: ["gift-wrappings", page, filter, search, sortBy, limit],
     queryFn: () => {
+      const qs = buildListQuery({
+        page,
+        limit,
+        sortBy,
+        search,
+        filter,
+      });
+
       return fetcher({
-        route: "/admin/gift-wrappings",
+        route: `/admin/gift-wrappings?${qs}`,
         isActiveToast: false,
       });
     },
@@ -38,7 +54,6 @@ export const useUploadGiftWrappingImages = () => {
         route: "/admin/gift-wrappings/upload",
         method: "POST",
         body: data,
-        
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["gift-wrappings"] });

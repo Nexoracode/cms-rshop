@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { buildQueryString } from "@/core/utils/buildQueryString";
+import { buildQueryString } from "@/core/utils/buildListQuery";
 
 type SupportFilter = {
   is_visible?: string[]; // $eq:1|0

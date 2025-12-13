@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { buildQueryString } from "@/core/utils/buildQueryString";
+import { buildQueryString } from "@/core/utils/buildListQuery";
 import { ReviewSortBy } from "@/components/features/store/comments/review-types";
 
 type GetReviewsParams = {

@@ -15,14 +15,14 @@ import {
 
 const SORT_OPTIONS = [
   {
-    key: "id-desc",
-    value: "id:DESC",
+    key: "createdAt-desc",
+    value: "createdAt:DESC",
     label: "جدیدترین",
     icon: <BiSortDown className="text-xl" />,
   },
   {
-    key: "id-asc",
-    value: "id:ASC",
+    key: "createdAt-asc",
+    value: "createdAt:ASC",
     label: "قدیمی‌ترین",
     icon: <BiSortUp className="text-xl" />,
   },
@@ -51,15 +51,15 @@ const SORT_OPTIONS = [
     icon: <BiTrendingDown className="text-xl" />,
   },
   {
-    key: "stock-desc",
-    value: "stock:DESC",
-    label: "بیشترین موجودی",
+    key: "displayOrder-asc",
+    value: "displayOrder:ASC",
+    label: "اولویت نمایش (کم→زیاد)",
     icon: <BiBarChartAlt2 className="text-xl" />,
   },
   {
-    key: "stock-asc",
-    value: "stock:ASC",
-    label: "کمترین موجودی",
+    key: "displayOrder-desc",
+    value: "displayOrder:DESC",
+    label: "اولویت نمایش (زیاد→کم)",
     icon: <BiBarChartAlt2 className="text-xl rotate-180" />,
   },
 ];

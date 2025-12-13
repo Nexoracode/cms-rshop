@@ -1,39 +1,30 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { buildQueryString } from "@/core/utils/buildQueryString";
-import { OrderSortBy } from "@/components/features/orders/order-types";
-
-type UseGetOrdersParams = {
-  page?: number;
-  sortBy?: OrderSortBy;
-  filter?: Record<string, string[]>;
-  search?: string;
-  limit?: number;
-};
+import { buildListQuery } from "@/core/utils/buildListQuery";
+import { ListQueryParams } from "@/core/types";
 
 export const useGetOrders = ({
   page = 1,
   sortBy,
   filter,
   search,
-  limit = 20,
-}: UseGetOrdersParams = {}) => {
+  limit = 10,
+}: ListQueryParams) => {
   return useQuery({
     queryKey: ["all-orders", page, sortBy, filter, search, limit],
     queryFn: () => {
-      const params: Record<string, any> = { page, limit };
-      if (sortBy) params.sortBy = sortBy;
-      if (search) params.search = search;
-      // ← پشتیبانی از filter.* شبیه بقیه صفحات
-      if (filter) {
-        for (const key in filter) {
-          const values = filter[key];
-          if (values?.length) params[`filter.${key}`] = values;
-        }
-      }
+      const qs = buildListQuery({
+        page,
+        limit,
+        sortBy,
+        search,
+        filter,
+      });
 
-      const qs = buildQueryString(params);
-      return fetcher({ route: `/orders/all?${qs}`, isActiveToast: false });
+      return fetcher({
+        route: `/orders/all?${qs}`,
+        isActiveToast: false,
+      });
     },
   });
 };

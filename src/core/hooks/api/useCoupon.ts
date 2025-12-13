@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { buildQueryString } from "@/core/utils/buildQueryString";
+import { buildQueryString } from "@/core/utils/buildListQuery";
 import {
   PromotionSortBy,
 } from "@/components/features/store/promotions/promotions-types";

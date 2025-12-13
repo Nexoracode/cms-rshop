@@ -4,12 +4,11 @@
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrdersFilter from "@/components/features/orders/Filter/OrdersFilter";
 import OrderCard from "@/components/features/orders/OrderCard";
-
-// Icons
-import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
-import { IoReceiptOutline } from "react-icons/io5";
-import { Order, OrderSortBy } from "@/components/features/orders/order-types";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { Order, OrderSortBy } from "@/components/features/orders/order-types";
+import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
+// Icons
+import { IoReceiptOutline } from "react-icons/io5";
 
 const Orders = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -21,8 +20,6 @@ const Orders = () => {
     filter,
     search,
   });
-
-  console.log(orders);
 
   const isExistItems = !!orders?.data?.items?.length;
 
