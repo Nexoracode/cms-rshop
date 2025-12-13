@@ -35,32 +35,23 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
         <DeleteButton onDelete={() => deleteGift(gift.id)} />
       </div>
       <div className="relative flex justify-center">
-        {gift.image ? (
-          <>
-            <div className="w-full h-full bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
-              <Image
-                alt={gift.name}
-                className="group-hover:scale-150 transition-transform duration-300 w-full min-h-[160px] md:min-h-[120px] object-cover"
-                width={"100%"}
-                src={gift.image.url}
-              />
-            </div>
-            {!gift.is_active ? (
-              <div className="z-50">
-                <StatusBadge
-                  className="w-fit absolute top-2 right-2"
-                  isActive={false}
-                />
-              </div>
-            ) : (
-              ""
-            )}
-          </>
-        ) : (
-          <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl w-48 h-44 flex flex-col items-center justify-center text-gray-400">
-            <LuPackage className="text-5xl mb-2" />
-            <p className="text-sm">بدون تصویر</p>
+        <div className="w-full h-full bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
+          <Image
+            alt={gift.name}
+            className="group-hover:scale-150 transition-transform duration-300 w-full min-h-[160px] md:min-h-[120px] object-cover"
+            width={"100%"}
+            src={gift?.image?.url}
+          />
+        </div>
+        {!gift.is_active ? (
+          <div className="z-50">
+            <StatusBadge
+              className="w-fit absolute top-2 right-2"
+              isActive={false}
+            />
           </div>
+        ) : (
+          ""
         )}
       </div>
       <h3 className="text-md text-center font-semibold text-gray-700 mt-1 truncate">
