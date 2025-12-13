@@ -1,0 +1,44 @@
+"use client";
+
+import InfoRow from "@/components/shared/InfoRow";
+import BaseCard from "@/components/ui/BaseCard";
+import { toPersianUTC } from "@/core/utils/date";
+import { formatWeight } from "@/core/utils/helper";
+import { TbTruckDelivery } from "react-icons/tb";
+
+type ShippingBoxInfosProps = {
+  order: any;
+};
+
+const ShippingBoxInfos: React.FC<ShippingBoxInfosProps> = ({ order }) => {
+  const { payment, updated_at, total_weight } = order;
+
+  return (
+    <BaseCard
+      CardHeaderProps={{
+        title: "اطلاعات ارسال",
+        icon: <TbTruckDelivery className="text-gray-700" />,
+        showIconInActionSlot: true,
+      }}
+      bodyClassName="space-y-1"
+    >
+      <InfoRow
+        label="کد رهگیری"
+        value={payment?.tracking_code || "ندارد"}
+        hoverable
+      />
+      <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
+      <InfoRow
+        label="زمان ارسال"
+        value={toPersianUTC(updated_at, { showTime: false })}
+      />
+      <InfoRow
+        label="وزن مرسوله"
+        value={formatWeight(total_weight)}
+        isActiveBg
+      />
+    </BaseCard>
+  );
+};
+
+export default ShippingBoxInfos;

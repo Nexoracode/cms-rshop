@@ -1,0 +1,52 @@
+"use client";
+
+import InfoRow from "@/components/shared/InfoRow";
+import BaseCard from "@/components/ui/BaseCard";
+import { toPersianUTC } from "@/core/utils/date";
+import { PiMoneyWavy } from "react-icons/pi";
+import { getPaymentStatusText } from "../order-constants";
+import { price } from "@/core/utils/helper";
+import React from "react";
+
+type PaymentBoxProps = {
+  order: any;
+};
+
+const PaymentBoxInfos: React.FC<PaymentBoxProps> = ({ order }) => {
+  const { payment } = order;
+
+  const paymentMethod = payment
+    ? payment.payment_method === "online"
+      ? "پرداخت آنلاین (زرین‌پال)"
+      : "کارت به کارت"
+    : "—";
+
+  return (
+    <BaseCard
+      CardHeaderProps={{
+        title: "اطلاعات پرداخت",
+        icon: <PiMoneyWavy className="text-gray-700" />,
+        showIconInActionSlot: true,
+      }}
+      bodyClassName="space-y-1"
+    >
+      <InfoRow
+        label="وضعیت پرداخت"
+        value={getPaymentStatusText(order?.payment)}
+      />
+      <InfoRow
+        label="تاریخ پرداخت"
+        value={payment?.created_at ? toPersianUTC(payment.created_at) : "—"}
+        isActiveBg
+      />
+      <InfoRow label="روش پرداخت" value={paymentMethod} />
+      <InfoRow
+        label="مبلغ"
+        value={payment?.amount ? price(payment?.amount) : "—"}
+        isActiveBg
+      />
+    </BaseCard>
+  );
+};
+
+export default PaymentBoxInfos;

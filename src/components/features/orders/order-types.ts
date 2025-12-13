@@ -73,7 +73,7 @@ export type OrderData = {
   manual_discount_applied: number;
   total_weight: number;
 
-  gift_message: null;
+  gift_message: "";
   gift_wrapping: null;
   gift_wrapping_cost: 0;
   is_gift: boolean;
