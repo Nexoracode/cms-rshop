@@ -16,7 +16,7 @@ type GiftWrappingCardProps = {
     description?: string | null;
     price: string | number;
     image?: any;
-    status: "active" | "inactive";
+    is_active: boolean;
     display_order: number;
     created_at: string;
     is_for_gift: boolean;
@@ -45,7 +45,7 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
                 src={gift.image.url}
               />
             </div>
-            {!gift.status ? (
+            {!gift.is_active ? (
               <div className="z-50">
                 <StatusBadge
                   className="w-fit absolute top-2 right-2"
@@ -63,24 +63,28 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-2">
-        <h3 className="text-md text-center font-semibold text-gray-700 mt-1 truncate">
-          {gift.name}
-        </h3>
-        <p className="text-center text-gray-600">{price(gift.price)}</p>
-      </div>
-      <div className="flex items-center gap-3">
-        {gift.is_for_gift ? (
-          <div className="w-full flex items-center justify-center gap-1 bg-pink-50 p-1.5 px-2 rounded-lg">
-            <LuGift className="text-2xl text-pink-600" />
-            <p className="text-sm text-pink-600">هدیه</p>
-          </div>
-        ) : (
-          <div className="w-full flex items-center justify-center gap-1 bg-sky-50 p-1.5 px-2 rounded-lg">
-            <FiPackage className="text-2xl text-sky-400" />
-            <p className="text-sm text-sky-500">بسته بندی</p>
-          </div>
-        )}
+      <h3 className="text-md text-center font-semibold text-gray-700 mt-1 truncate">
+        {gift.name}
+      </h3>
+      <div className="relative flex flex-row-reverse items-center gap-2 mb-2">
+        <div className="absolute flex items-center justify-end gap-3">
+          {gift.is_for_gift ? (
+            <div className="w-fit flex items-center justify-center gap-1 bg-pink-50 p-1.5 px-2 rounded-lg">
+              <LuGift className="text-xl text-pink-600" />
+              <p className="text-xs text-pink-600 group-hover:flex hidden">
+                هدیه
+              </p>
+            </div>
+          ) : (
+            <div className="w-fit flex items-center justify-center gap-1 bg-sky-50 p-1.5 px-2 rounded-lg">
+              <FiPackage className="text-xl text-sky-400" />
+              <p className="text-xs text-sky-500 group-hover:flex hidden">
+                بسته بندی
+              </p>
+            </div>
+          )}
+        </div>
+        <p className="w-full text-start text-gray-600">{price(gift.price)}</p>
       </div>
     </BaseCard>
   );

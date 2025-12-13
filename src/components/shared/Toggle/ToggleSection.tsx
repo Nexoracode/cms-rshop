@@ -30,7 +30,7 @@ const ToggleSection: FC<Props> = ({
         <div className="flex flex-col">
           <p>{title}</p>
           {subtitle ? (
-            <small className="text-gray-600 mt-1">{subtitle}</small>
+            <p className="text-xs text-gray-600 mt-1">{subtitle}</p>
           ) : (
             ""
           )}

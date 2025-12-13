@@ -9,7 +9,6 @@ import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import Textarea from "@/components/ui/inputs/Textarea";
-import DiscountedPriceInput from "@/components/forms/Inputs/DiscountedPriceInput";
 
 import { useForm } from "@/core/hooks/common/form/useForm";
 import {
@@ -21,16 +20,16 @@ import {
 import { giftWrappingValidation } from "./gift-wrapping-validation";
 import toast from "react-hot-toast";
 import { FiGift } from "react-icons/fi";
+import NumberInput from "@/components/ui/inputs/NumberInput";
+import { CreateGiftWrappingRequest } from "./gift-wrapping";
 
-export const initialGiftWrappingForm: any = {
+export const initialGiftWrappingForm: CreateGiftWrappingRequest = {
   name: "",
   description: "",
   price: 0,
-  discount_type: "amount",
-  discount_value: 0,
   image_id: null,
-  image_file: null,
-  status: "active",
+  image: null,
+  is_active: false,
   is_for_gift: true,
 };
 
@@ -68,20 +67,19 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
   }, [data]);
 
   const handleSubmit = submit(async (changed) => {
-    console.log(changed);
-
-    try {
+   console.log(changed);
+   
+     try {
       const payload = {
         name: form.name.trim(),
         description: form.description.trim(),
         price: +form.price,
         image_id: form.image_id,
-        status: form.status,
+        is_active: form.is_active,
         is_for_gift: form.is_for_gift,
-        discount_type: form.discount_type,
-        discount_value: form.discount_value,
       };
-
+      console.log(payload);
+      
       const result = id ? await updateGift(payload) : await createGift(payload);
       result.ok && router.push("/admin/store/gift-wrapping");
     } catch (err) {
@@ -101,9 +99,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
     >
       <ImageBoxUploader
         title="تصویر بسته‌بندی"
-        textBtn={
-          form.image_file || form.image_id ? "تغییر تصویر" : "+ افزودن تصویر"
-        }
+        textBtn={"+ افزودن تصویر"}
         defaultImg={form?.image?.url}
         onFile={async (file) => {
           const formData = new FormData();
@@ -112,47 +108,39 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
           if (!uploadRes.ok) return;
           handleMultipleFieldsChange({
             image_id: uploadRes.data.id,
-            image: uploadRes.data.url,
+            image: uploadRes.data,
           });
         }}
         errorMessage={errors.image_id}
       />
-      <TextInput
-        label="نام بسته‌بندی"
-        placeholder="مثلاً: جعبه کادو لوکس"
-        value={form.name}
-        onChange={(val) => handleFieldChange("name", val)}
-        isRequired
-        errorMessage={errors.name}
-        allowEnglishOnly={false}
-      />
+      <div className="flex items-center gap-4">
+        <TextInput
+          label="نام بسته‌بندی"
+          placeholder="مثلاً: جعبه کادو لوکس"
+          value={form.name}
+          onChange={(val) => handleFieldChange("name", val)}
+          isRequired
+          errorMessage={errors.name}
+          allowEnglishOnly={false}
+        />
 
-      <DiscountedPriceInput
-        price={form.price}
-        discount_amount={
-          form.discount_type === "amount" ? form.discount_value : 0
-        }
-        discount_percent={
-          form.discount_type === "percent" ? form.discount_value : 0
-        }
-        onPriceChange={(price) => handleFieldChange("price", +price)}
-        onDiscountChange={(type, value) => {
-          handleMultipleFieldsChange({
-            discount_type: type,
-            discount_value: +value || 0,
-          });
-        }}
-        errorMessage={errors.price || errors.discount_value}
-      />
+        <NumberInput
+          label="قیمت"
+          placeholder="مثلاً: 10,000"
+          suffix="تومان"
+          min={0}
+          value={form.price}
+          onChange={(price) => handleFieldChange("price", price)}
+          errorMessage={errors.price}
+        />
+      </div>
 
       <div className="w-full flex items-center gap-4">
         <ToggleSection
           title="وضعیت نمایش"
           subtitle="فعال یا غیرفعال"
-          initialMode={form.status === "active" ? true : false}
-          onChange={(val) =>
-            handleFieldChange("status", val ? "active" : "inactive")
-          }
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
 
         <ToggleSection
