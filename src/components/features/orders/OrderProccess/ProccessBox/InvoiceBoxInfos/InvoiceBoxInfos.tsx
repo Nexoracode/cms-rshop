@@ -2,7 +2,7 @@
 
 import BaseCard from "@/components/ui/BaseCard";
 import { LuScrollText } from "react-icons/lu";
-import ProductCardDetail from "../ProductCardDetail";
+import ProductBoxInfos from "./ProductBoxInfos";
 import InfoRow from "@/components/shared/InfoRow";
 import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
@@ -123,7 +123,7 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
     >
       <div className="mb-5 space-y-3">
         {products?.map((item: any, index: number) => (
-          <ProductCardDetail key={index} item={item} />
+          <ProductBoxInfos key={index} item={item} />
         ))}
       </div>
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />

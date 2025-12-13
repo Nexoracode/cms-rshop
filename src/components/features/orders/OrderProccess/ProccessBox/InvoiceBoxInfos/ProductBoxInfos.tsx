@@ -25,7 +25,7 @@ type ProductCardDetailProps = {
   item: GroupedProductItem;
 };
 
-const ProductCardDetail: React.FC<ProductCardDetailProps> = ({ item }) => {
+const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
   const { product, variants } = item;
 
   // محاسبه مجموع تعداد و قیمت کل برای این محصول
@@ -91,4 +91,4 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({ item }) => {
   );
 };
 
-export default ProductCardDetail;
+export default ProductBoxInfos;
