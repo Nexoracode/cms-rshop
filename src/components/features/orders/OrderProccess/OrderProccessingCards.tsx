@@ -2,7 +2,7 @@
 
 import { Alert, Spinner, Switch } from "@heroui/react";
 import { useState } from "react";
-import { OrderStepKey } from "./orderSteps";
+import { OrderStepKey } from "./types/order-steps";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";

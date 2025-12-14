@@ -12,7 +12,7 @@ import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
 import { toast } from "react-hot-toast";
-import { statusOptions } from "../OrderProccess/order-constants";
+import { statusOptions } from "../OrderProccess/types/order-constants";
 import { StatusOrder } from "../order-types";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useRouter } from "next/navigation";

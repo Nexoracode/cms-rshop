@@ -1,4 +1,4 @@
-import { StatusOrder } from "../order-types";
+import { StatusOrder } from "../../order-types";
 
 export const statusOptions: { key: StatusOrder; title: string }[] = [
   { key: "pending_approval", title: "در انتظار تایید" },

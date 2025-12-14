@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import OrderProcess from "./OrderProccess";
-import StepContent from "./StepContent";
+import OrderProccessingBoxes from "./OrderProccessingBoxes";
+import OrderProccessingCards from "./OrderProccessingCards";
 import { OrderData } from "../order-types";
-import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./orderSteps";
+import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./types/order-steps";
 import BaseTabs, { type BaseTabItem } from "@/components/ui/BaseTabs";
 
 type Props = {
@@ -47,9 +47,9 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
     key,
     title: STEP_TITLES[key],
     content: (
-      <OrderProcess
+      <OrderProccessingBoxes
         order={order}
-        actionBox={<StepContent step={key} onNextStep={next} order={order} />}
+        actionBox={<OrderProccessingCards step={key} onNextStep={next} order={order} />}
       />
     ),
     // فقط استپ فعلی محتوا داشته باشه — بقیه خالی (برای عملکرد بهتر)

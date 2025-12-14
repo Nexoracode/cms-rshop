@@ -1,13 +1,13 @@
 "use client";
 
 import { OrderData } from "../order-types";
-import GiftWrappingBoxInfos from "./ProccessBox/GiftWrappingBoxInfos";
-import OrderBoxInfos from "./ProccessBox/OrderBoxInfos";
-import PaymentBoxInfos from "./ProccessBox/PaymentBoxInfos";
-import CustomerBoxInfos from "./ProccessBox/CustomerBoxInfos";
-import ShippingBoxInfos from "./ProccessBox/ShippingBoxInfos";
-import InvoiceBoxInfos from "./ProccessBox/InvoiceBoxInfos/InvoiceBoxInfos";
-import DynamicBoxInfos from "./ProccessBox/DynamicBoxInfos";
+import GiftWrappingBoxInfos from "./ProccessingBox/GiftWrappingBoxInfos";
+import OrderBoxInfos from "./ProccessingBox/OrderBoxInfos";
+import PaymentBoxInfos from "./ProccessingBox/PaymentBoxInfos";
+import CustomerBoxInfos from "./ProccessingBox/CustomerBoxInfos";
+import ShippingBoxInfos from "./ProccessingBox/ShippingBoxInfos";
+import InvoiceBoxInfos from "./ProccessingBox/InvoiceBoxInfos/InvoiceBoxInfos";
+import DynamicBoxInfos from "./ProccessingBox/DynamicBoxInfos";
 
 type OrderProcessProps = {
   order: OrderData;
