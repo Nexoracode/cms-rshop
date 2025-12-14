@@ -33,8 +33,11 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
 
   // محاسبه مجموع تعداد و قیمت کل برای این محصول
   const totalQuantity = variants.reduce((sum, v) => sum + v.quantity, 0);
-  const totalPrice = variants.reduce((sum, v) => sum + v.line_total, 0);
-  console.log(variants);
+  const totalPrice = variants?.length
+    ? variants.reduce((sum, v) => sum + v.line_total, 0)
+    : product.base_price;
+
+  console.log("@@@", item);
 
   return (
     <BaseCard bodyClassName="cursor-auto">
@@ -44,7 +47,7 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
           <img
             src={product.image || "/placeholder.jpg"}
             alt={product.name}
-            className="w-20 h-20 rounded-xl object-cover shadow-md"
+            className="!min-w-20 max-w-20 !min-h-20 max-h-20 rounded-xl object-cover shadow-md"
           />
           <div className="w-full flex flex-col justify-between text-right h-14">
             <h3 className="text-gray-800 truncate">{product.name}</h3>
