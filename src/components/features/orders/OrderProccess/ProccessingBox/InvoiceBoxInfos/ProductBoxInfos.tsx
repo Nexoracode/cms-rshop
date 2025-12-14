@@ -36,7 +36,9 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
   const { product, variants, discount, line_total, quantity } = item;
 
   // محاسبه مجموع تعداد و قیمت کل برای این محصول
-  const totalQuantity = variants.reduce((sum, v) => sum + v.quantity, 0);
+  const totalQuantity = variants?.length
+    ? variants.reduce((sum, v) => sum + v.quantity, 0)
+    : quantity;
   const totalPrice = variants?.length
     ? variants.reduce((sum, v) => sum + v.line_total, 0)
     : product.price;
@@ -55,9 +57,13 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
           />
           <div className="w-full flex flex-col justify-between text-right h-14">
             <div className="flex items-center gap-2">
-              <span className="text-gray-600 bg-gray-100 px-2 rounded-lg">
-                {quantity} عدد
-              </span>
+              {!variants.length ? (
+                <span className="text-gray-600 bg-gray-100 px-2 rounded-lg">
+                  {quantity} عدد
+                </span>
+              ) : (
+                ""
+              )}
               <h3 className="text-gray-800 truncate">{product.name}</h3>
             </div>
             <div className="w-full flex items-center justify-between mt-2 gap-4">
@@ -86,7 +92,7 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
           {variants?.map((v) => (
             <div
               key={v.id}
-              className="flex flex-col gap-2 items-center text-sm text-gray-700 border border-slate-100 shadow rounded-lg p-2"
+              className="flex flex-col gap-2 items-center text-sm text-gray-700 border border-slate-100 shadow rounded-xl p-3"
             >
               <div className="w-full flex justify-between items-center gap-3">
                 <div className="flex items-center gap-3">
@@ -128,11 +134,19 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
       )}
 
       <div className="px-4 mt-6 mb-2">
-        <Divider className="mb-4" />
+        <Divider className="mb-2" />
+
+        <div className="mt-2 flex items-center justify-end"></div>
 
         <div className="mt-2 flex items-center justify-between">
           <p className="text-sm text-gray-500">{totalQuantity} عدد (مجموع)</p>
-          <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-lg">
+          <p className="text-sm text-orange-600 w-fit bg-orange-50 px-2 py-0.5 rounded-lg">
+            {discount ? `${price(discount)} تخفیف` : "بدون تخفیف"}
+          </p>
+        </div>
+        <div className="mt-2 flex items-center justify-between">
+          <p className="text-sm text-gray-500">مبلغ نهایی</p>
+          <span className="text-green-600 bg-green-50 px-2 py-0.5 w-fit rounded-lg">
             {totalPrice.toLocaleString("fa-IR")} تومان
           </span>
         </div>

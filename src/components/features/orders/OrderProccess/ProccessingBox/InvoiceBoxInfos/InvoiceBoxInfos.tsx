@@ -32,7 +32,6 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
 
   useEffect(() => {
     if (!items) return;
-    console.log("Items =>", items);
 
     type Item = {
       id: number;
