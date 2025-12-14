@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import OrderProccessingBoxes from "./OrderProccessingBoxes";
-import OrderProccessingCards from "./OrderProccessingCards";
+import StepContent from "./StepContent";
 import { OrderData } from "../order-types";
-import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./types/order-steps";
+import { getCurrentStep, STEP_TITLES, type OrderStepKey } from "./OrderSteps/const/order-steps";
 import BaseTabs, { type BaseTabItem } from "@/components/ui/BaseTabs";
 
 type Props = {
@@ -49,7 +49,7 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
     content: (
       <OrderProccessingBoxes
         order={order}
-        actionBox={<OrderProccessingCards step={key} onNextStep={next} order={order} />}
+        actionBox={<StepContent step={key} onNextStep={next} order={order} />}
       />
     ),
     // فقط استپ فعلی محتوا داشته باشه — بقیه خالی (برای عملکرد بهتر)

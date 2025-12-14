@@ -1,5 +1,3 @@
-// core/constants/orderSteps.ts
-
 export type OrderStepKey =
   | "pending_approval" // 1
   | "awaiting_payment" // 2
