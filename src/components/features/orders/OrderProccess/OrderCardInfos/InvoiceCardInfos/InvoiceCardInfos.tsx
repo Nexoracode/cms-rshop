@@ -9,6 +9,7 @@ import { price } from "@/core/utils/helper";
 import { useEffect, useState } from "react";
 import { InvoiceItemPayload } from "./invoice-card-infos-types";
 import { GoArrowUpRight } from "react-icons/go";
+import MoreInvoiceInfosModal from "./MoreInvoiceInfosModal";
 
 type InvoiceCardInfosProps = {
   order: any;
@@ -132,9 +133,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
       CardHeaderProps={{
         title: "اطلاعات محصولات",
         icon: <LuScrollText className="text-gray-700" />,
-        onAdd: () => {},
-        btnIcon: <GoArrowUpRight />,
-        textBtn: "بیشتر",
+        children: <MoreInvoiceInfosModal order={order} />,
       }}
     >
       <div className="mb-5 space-y-3">
@@ -143,36 +142,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         ))}
       </div>
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />
-      {/*  <InfoRow
-        label="تخفیف دستی فاکتور"
-        value={
-          manual_discount_value
-            ? manual_discount_type === "percent"
-              ? `${manual_discount_value}%`
-              : price(manual_discount_value)
-            : "—"
-        }
-      />
-      <InfoRow
-        label="قیمت پس از کسر تخفیف دستی"
-        value={manual_discount_applied ? price(manual_discount_applied) : "—"}
-      />
-      <InfoRow
-        label="کدتخفیف"
-        value={
-          promotions_discount_value
-            ? promotions_discount_type === "percent"
-              ? `${promotions_discount_value}%`
-              : price(promotions_discount_value)
-            : "—"
-        }
-      />
-      <InfoRow
-        label="قیمت پس از کسر تخفیف پروموشن"
-        value={
-          promotions_discount_applied ? price(promotions_discount_applied) : "—"
-        }
-      /> */}
+      
       <InfoRow
         label="مجموع تخفیفات"
         value={discount_total ? price(discount_total) : "—"}
