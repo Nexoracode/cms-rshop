@@ -32,6 +32,7 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
 
   useEffect(() => {
     if (!items) return;
+    console.log("Items =>", items);
 
     type Item = {
       id: number;
@@ -51,70 +52,86 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
       };
     };
 
+    //
     const equalItems: Item[] = [];
     const notEqualItems: Item[] = [];
-
-    console.log("Items =>", items);
 
     for (let index = 0; index < items.length; index++) {
       const element = items[index] as Item;
 
-      if (items[index + 1] !== undefined) {
-        if (element.product.id === items[index + 1].product.id)
-          equalItems.push(element);
-        else {
-          equalItems.find(
-            (eq) =>
-              eq.product.id !== element.product.id &&
-              notEqualItems.push(element)
-          );
+      if (element.variant) {
+        if (items[index + 1] !== undefined) {
+          if (element.product.id === items[index + 1].product.id)
+            equalItems.push(element);
+          else {
+            equalItems.find(
+              (eq) =>
+                eq.product.id !== element.product.id &&
+                notEqualItems.push(element)
+            );
+          }
         }
-      }
 
-      if (items[index + 1] === undefined) {
-        notEqualItems.push(element);
-      }
-    }
-
-    const varaintsListEqual = equalItems.map((eq) => {
-      const { id, line_total, unit_price, variant, quantity } = eq;
-      return {
-        id,
-        line_total,
-        unit_price,
-        quantity,
-        variant,
-      };
-    });
-
-    const productEqual = [
-      {
-        product: equalItems.length ? equalItems[0].product : null,
-        variants: varaintsListEqual,
-      },
-    ];
-
-    const productNotEqual = notEqualItems.map((not) => {
-      const { id, line_total, unit_price, variant, product, quantity } = not;
-      return {
-        product,
-        variants: [
+        if (items[index + 1] === undefined) {
+          notEqualItems.push(element);
+        }
+      } else {
+        setProducts([
           {
-            id,
-            quantity,
-            line_total,
-            unit_price,
-            variant,
+            product: element.product,
+            variants: [],
           },
-        ],
-      };
-    });
-
-    if (productEqual.length && productEqual[0].product) {
-      setProducts([...productEqual, ...productNotEqual]);
-    } else {
-      setProducts(productNotEqual);
+        ]);
+      }
     }
+
+    //
+    let productNotEqual = null;
+    let productEqual = null;
+
+    if (equalItems) {
+      const varaintsListEqual = equalItems.map((eq) => {
+        const { id, line_total, unit_price, variant, quantity } = eq;
+        return {
+          id,
+          line_total,
+          unit_price,
+          quantity,
+          variant,
+        };
+      });
+
+      productEqual = [
+        {
+          product: equalItems.length ? equalItems[0].product : null,
+          variants: varaintsListEqual,
+        },
+      ];
+    }
+
+    if (notEqualItems) {
+      productNotEqual = notEqualItems.map((not) => {
+        const { id, line_total, unit_price, variant, product, quantity } = not;
+        return {
+          product,
+          variants: [
+            {
+              id,
+              quantity,
+              line_total,
+              unit_price,
+              variant,
+            },
+          ],
+        };
+      });
+    }
+    console.log(productEqual, productNotEqual);
+    
+    if (productEqual && productEqual.length && productEqual[0].product)
+      setProducts(productEqual);
+
+    if (productNotEqual) setProducts((prev) => [...prev, ...productNotEqual]);
   }, [items]);
 
   return (

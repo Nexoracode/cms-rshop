@@ -67,7 +67,6 @@ const StepContent = ({ step, onNextStep, order }: Props) => {
               title="سفارش منقضی شده است"
               description="مهلت پرداخت مشتری به پایان رسیده و موجودی رزرو شده آزاد شد."
             />
-            <RefundSection refundableAmount={refundableAmount} order={order} />
           </div>
         );
       }
