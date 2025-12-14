@@ -37,18 +37,21 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
     type Item = {
       id: number;
       line_total: number;
+      discount: number;
       quantity: number;
-      unit_price: number;
       variant: {
         id: number;
         price: number;
         sku: string;
         attributes: { value: string }[];
+        variant_discount: { percent: number; amount: number };
       };
       product: {
         id: number;
         image: string;
         name: string;
+        price: number;
+        product_discount: { percent: number; amount: number };
       };
     };
 
@@ -76,9 +79,13 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
           notEqualItems.push(element);
         }
       } else {
+        const { discount, quantity, line_total, product } = element;
         setProducts([
           {
-            product: element.product,
+            line_total,
+            quantity,
+            discount,
+            product,
             variants: [],
           },
         ]);
@@ -89,45 +96,50 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
     let productNotEqual = null;
     let productEqual = null;
 
-    if (equalItems) {
+    if (equalItems.length) {
+      const { discount, line_total, quantity, product } = equalItems[0];
+
       const varaintsListEqual = equalItems.map((eq) => {
-        const { id, line_total, unit_price, variant, quantity } = eq;
+        const { discount, line_total, quantity, variant } = eq;
         return {
-          id,
           line_total,
-          unit_price,
           quantity,
+          discount,
           variant,
         };
       });
 
       productEqual = [
         {
-          product: equalItems.length ? equalItems[0].product : null,
+          line_total,
+          quantity,
+          discount,
+          product,
           variants: varaintsListEqual,
         },
       ];
     }
 
-    if (notEqualItems) {
-      productNotEqual = notEqualItems.map((not) => {
-        const { id, line_total, unit_price, variant, product, quantity } = not;
+    if (notEqualItems.length) {
+      productNotEqual = notEqualItems.map((notEq) => {
+        const { product, discount, line_total, quantity, variant } = notEq;
         return {
+          line_total,
+          quantity,
+          discount,
           product,
           variants: [
             {
-              id,
-              quantity,
               line_total,
-              unit_price,
+              quantity,
+              discount,
               variant,
             },
           ],
         };
       });
     }
-    console.log(productEqual, productNotEqual);
-    
+
     if (productEqual && productEqual.length && productEqual[0].product)
       setProducts(productEqual);
 

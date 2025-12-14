@@ -2,15 +2,19 @@
 
 import BaseCard from "@/components/ui/BaseCard";
 import { price } from "@/core/utils/helper";
+import { Divider } from "@heroui/react";
 
 type GroupedProductItem = {
   product: {
-    base_price: number;
+    price: number;
     id: number;
     name: string;
     image: string;
     product_discount: any;
   };
+  line_total: number;
+  discount: number;
+  quantity: number;
   variants: Array<{
     id: number;
     quantity: number;
@@ -29,13 +33,13 @@ type ProductCardDetailProps = {
 };
 
 const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
-  const { product, variants } = item;
+  const { product, variants, discount, line_total, quantity } = item;
 
   // محاسبه مجموع تعداد و قیمت کل برای این محصول
   const totalQuantity = variants.reduce((sum, v) => sum + v.quantity, 0);
   const totalPrice = variants?.length
     ? variants.reduce((sum, v) => sum + v.line_total, 0)
-    : product.base_price;
+    : product.price;
 
   console.log("@@@", item);
 
@@ -50,11 +54,17 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
             className="!min-w-20 max-w-20 !min-h-20 max-h-20 rounded-xl object-cover shadow-md"
           />
           <div className="w-full flex flex-col justify-between text-right h-14">
-            <h3 className="text-gray-800 truncate">{product.name}</h3>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600 bg-gray-100 px-2 rounded-lg">
+                {quantity} عدد
+              </span>
+              <h3 className="text-gray-800 truncate">{product.name}</h3>
+            </div>
             <div className="w-full flex items-center justify-between mt-2 gap-4">
-              <p className="text-sm text-gray-500">
-                {totalQuantity} عدد (مجموع)
-              </p>
+              <span className="text-sm text-gray-500">
+                قیمت تک : {price(product.price)}
+              </span>
+
               {product.product_discount.amount ||
               product.product_discount.percent ? (
                 <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
@@ -67,14 +77,6 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
               )}
             </div>
           </div>
-        </div>
-        <div className="mt-2 flex items-center justify-between">
-          <span className="text-sm text-gray-500">
-            قیمت تک : {price(product.base_price)}
-          </span>
-          <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-lg">
-            {totalPrice.toLocaleString("fa-IR")} تومان
-          </span>
         </div>
       </div>
 
@@ -100,11 +102,12 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
                     ))}
                   </div>
                 </div>
-                {v?.variant_discount?.amount || v?.variant_discount?.percent ? (
+                {v?.variant?.variant_discount?.amount ||
+                v?.variant?.variant_discount?.percent ? (
                   <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
-                    {v?.variant_discount?.amount
-                      ? `${price(v?.variant_discount?.amount)} تومان`
-                      : `${v?.variant_discount?.percent}%`}
+                    {v?.variant?.variant_discount?.amount
+                      ? `${price(v?.variant?.variant_discount?.amount)} تومان`
+                      : `${v?.variant?.variant_discount?.percent}%`}
                   </p>
                 ) : (
                   ""
@@ -112,7 +115,7 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
               </div>
 
               <div className="w-full mt-2 flex items-center justify-between gap-4 text-xs text-gray-600">
-                <span>قیمت تک : {price(v.unit_price)}</span>
+                <span>قیمت تک : {price(v.variant.price)}</span>
                 <span className="text-green-600 font-semibold">
                   {price(v.line_total)}
                 </span>
@@ -123,6 +126,17 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
       ) : (
         ""
       )}
+
+      <div className="px-4 mt-6 mb-2">
+        <Divider className="mb-4" />
+
+        <div className="mt-2 flex items-center justify-between">
+          <p className="text-sm text-gray-500">{totalQuantity} عدد (مجموع)</p>
+          <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-lg">
+            {totalPrice.toLocaleString("fa-IR")} تومان
+          </span>
+        </div>
+      </div>
     </BaseCard>
   );
 };
