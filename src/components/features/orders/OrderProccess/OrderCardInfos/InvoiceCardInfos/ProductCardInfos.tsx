@@ -50,7 +50,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
               product.product_discount.percent ? (
                 <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
                   {product.product_discount.amount
-                    ? price(product.product_discount.amount)
+                    ? `${price(product.product_discount.amount)} تخفیف`
                     : `${product.product_discount.percent}%`}
                 </p>
               ) : (
@@ -70,7 +70,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
               className="flex flex-col gap-2 items-center text-sm text-gray-700 border border-slate-100 shadow rounded-xl p-3"
             >
               <div className="w-full flex justify-between items-center gap-3">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <span className="text-gray-600 bg-gray-100 px-2 rounded-lg">
                     {v.quantity} عدد
                   </span>
@@ -108,17 +108,18 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
         ""
       )}
 
-      <div className="mt-6 mb-2">
-        <Divider className="mb-2" />
-
-        <div className="mt-2 flex items-center justify-end"></div>
-
-        <div className="mt-2 flex items-center justify-between">
-          <p className="text-sm text-gray-500">{totalQuantity} عدد (مجموع)</p>
-          <p className="text-sm text-orange-600 w-fit bg-orange-50 px-2 py-0.5 rounded-lg">
-            {discount ? `${price(discount)} تخفیف` : "بدون تخفیف"}
-          </p>
-        </div>
+      <div className="mt-4 mb-2">
+        <Divider className="mb-4" />
+        {variants.length ? (
+          <div className="mt-2 flex items-center justify-between">
+            <p className="text-sm text-gray-500">{totalQuantity} عدد (مجموع)</p>
+            <p className="text-sm text-orange-600 w-fit bg-orange-50 px-2 py-0.5 rounded-lg">
+              {discount ? `${price(discount)} تخفیف` : "بدون تخفیف"}
+            </p>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="mt-2 flex items-center justify-between">
           <p className="text-sm text-gray-500">مبلغ نهایی</p>
           <span className="text-green-600 bg-green-50 px-2 py-0.5 w-fit rounded-lg">

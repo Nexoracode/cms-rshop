@@ -8,6 +8,7 @@ import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
 import { useEffect, useState } from "react";
 import { InvoiceItemPayload } from "./invoice-card-infos-types";
+import { GoArrowUpRight } from "react-icons/go";
 
 type InvoiceCardInfosProps = {
   order: any;
@@ -131,7 +132,9 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
       CardHeaderProps={{
         title: "اطلاعات محصولات",
         icon: <LuScrollText className="text-gray-700" />,
-        showIconInActionSlot: true,
+        onAdd: () => {},
+        btnIcon: <GoArrowUpRight />,
+        textBtn: "بیشتر",
       }}
     >
       <div className="mb-5 space-y-3">
@@ -140,7 +143,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         ))}
       </div>
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />
-     {/*  <InfoRow
+      {/*  <InfoRow
         label="تخفیف دستی فاکتور"
         value={
           manual_discount_value
