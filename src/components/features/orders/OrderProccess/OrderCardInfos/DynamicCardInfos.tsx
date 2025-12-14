@@ -3,12 +3,12 @@
 import BaseCard from "@/components/ui/BaseCard";
 import { toPersianUTC } from "@/core/utils/date";
 
-type DynamicBoxInfosProps = {
+type DynamicCardInfosProps = {
   order: any;
   actionBox?: React.ReactNode;
 };
 
-const DynamicBoxInfos: React.FC<DynamicBoxInfosProps> = ({
+const DynamicCardInfos: React.FC<DynamicCardInfosProps> = ({
   order,
   actionBox,
 }) => {
@@ -32,4 +32,4 @@ const DynamicBoxInfos: React.FC<DynamicBoxInfosProps> = ({
   );
 };
 
-export default DynamicBoxInfos;
+export default DynamicCardInfos;

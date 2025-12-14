@@ -3,37 +3,14 @@
 import BaseCard from "@/components/ui/BaseCard";
 import { price } from "@/core/utils/helper";
 import { Divider } from "@heroui/react";
-
-type GroupedProductItem = {
-  product: {
-    price: number;
-    id: number;
-    name: string;
-    image: string;
-    product_discount: any;
-  };
-  line_total: number;
-  discount: number;
-  quantity: number;
-  variants: Array<{
-    id: number;
-    quantity: number;
-    line_total: number;
-    unit_price: number;
-    variant_discount: any;
-    variant: {
-      attributes: Array<{ value: string; display_color?: string }>;
-      price: number;
-    };
-  }>;
-};
+import { InvoiceItem } from "./invoice-card-infos-types";
 
 type ProductCardDetailProps = {
-  item: GroupedProductItem;
+  item: InvoiceItem;
 };
 
-const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
-  const { product, variants, discount, line_total, quantity } = item;
+const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
+  const { product, variants, discount, quantity } = item;
 
   // محاسبه مجموع تعداد و قیمت کل برای این محصول
   const totalQuantity = variants?.length
@@ -89,9 +66,9 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
       {/* لیست واریانت‌ها */}
       {variants.length ? (
         <div className="mt-4 space-y-3">
-          {variants?.map((v) => (
+          {variants?.map((v, index) => (
             <div
-              key={v.id}
+              key={index}
               className="flex flex-col gap-2 items-center text-sm text-gray-700 border border-slate-100 shadow rounded-xl p-3"
             >
               <div className="w-full flex justify-between items-center gap-3">
@@ -155,4 +132,4 @@ const ProductBoxInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
   );
 };
 
-export default ProductBoxInfos;
+export default ProductCardInfos;

@@ -5,11 +5,11 @@ import BaseCard from "@/components/ui/BaseCard";
 import React from "react";
 import { RiShareCircleLine } from "react-icons/ri";
 
-type CustomerInfosBoxProps = {
+type CustomerInfosCardProps = {
   order: any;
 };
 
-const CustomerBoxInfos: React.FC<CustomerInfosBoxProps> = ({ order }) => {
+const CustomerCardInfos: React.FC<CustomerInfosCardProps> = ({ order }) => {
   const { user, address, customer_note } = order;
 
   return (
@@ -66,4 +66,4 @@ const CustomerBoxInfos: React.FC<CustomerInfosBoxProps> = ({ order }) => {
   );
 };
 
-export default CustomerBoxInfos;
+export default CustomerCardInfos;

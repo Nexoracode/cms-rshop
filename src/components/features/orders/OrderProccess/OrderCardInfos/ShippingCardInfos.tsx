@@ -6,11 +6,11 @@ import { toPersianUTC } from "@/core/utils/date";
 import { formatWeight } from "@/core/utils/helper";
 import { TbTruckDelivery } from "react-icons/tb";
 
-type ShippingBoxInfosProps = {
+type ShippingCardInfosProps = {
   order: any;
 };
 
-const ShippingBoxInfos: React.FC<ShippingBoxInfosProps> = ({ order }) => {
+const ShippingCardInfos: React.FC<ShippingCardInfosProps> = ({ order }) => {
   const { payment, updated_at, total_weight } = order;
 
   return (
@@ -41,4 +41,4 @@ const ShippingBoxInfos: React.FC<ShippingBoxInfosProps> = ({ order }) => {
   );
 };
 
-export default ShippingBoxInfos;
+export default ShippingCardInfos;

@@ -2,17 +2,18 @@
 
 import BaseCard from "@/components/ui/BaseCard";
 import { LuScrollText } from "react-icons/lu";
-import ProductBoxInfos from "./ProductBoxInfos";
+import ProductBoxInfos from "./ProductCardInfos";
 import InfoRow from "@/components/shared/InfoRow";
 import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
 import { useEffect, useState } from "react";
+import { InvoiceItemPayload } from "./invoice-card-infos-types";
 
-type InvoiceBoxInfosProps = {
+type InvoiceCardInfosProps = {
   order: any;
 };
 
-const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
+const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
   const {
     manual_discount_type,
     manual_discount_value,
@@ -33,33 +34,11 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
   useEffect(() => {
     if (!items) return;
 
-    type Item = {
-      id: number;
-      line_total: number;
-      discount: number;
-      quantity: number;
-      variant: {
-        id: number;
-        price: number;
-        sku: string;
-        attributes: { value: string }[];
-        variant_discount: { percent: number; amount: number };
-      };
-      product: {
-        id: number;
-        image: string;
-        name: string;
-        price: number;
-        product_discount: { percent: number; amount: number };
-      };
-    };
-
-    //
-    const equalItems: Item[] = [];
-    const notEqualItems: Item[] = [];
+    const equalItems: InvoiceItemPayload[] = [];
+    const notEqualItems: InvoiceItemPayload[] = [];
 
     for (let index = 0; index < items.length; index++) {
-      const element = items[index] as Item;
+      const element = items[index] as InvoiceItemPayload;
 
       if (element.variant) {
         if (items[index + 1] !== undefined) {
@@ -205,4 +184,4 @@ const InvoiceBoxInfos: React.FC<InvoiceBoxInfosProps> = ({ order }) => {
   );
 };
 
-export default InvoiceBoxInfos;
+export default InvoiceCardInfos;

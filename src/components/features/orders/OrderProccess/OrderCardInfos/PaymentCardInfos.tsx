@@ -8,11 +8,11 @@ import { getPaymentStatusText } from "../const/order-constants";
 import { price } from "@/core/utils/helper";
 import React from "react";
 
-type PaymentBoxProps = {
+type PaymentCardProps = {
   order: any;
 };
 
-const PaymentBoxInfos: React.FC<PaymentBoxProps> = ({ order }) => {
+const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
   const { payment } = order;
 
   const paymentMethod = payment
@@ -49,4 +49,4 @@ const PaymentBoxInfos: React.FC<PaymentBoxProps> = ({ order }) => {
   );
 };
 
-export default PaymentBoxInfos;
+export default PaymentCardInfos;

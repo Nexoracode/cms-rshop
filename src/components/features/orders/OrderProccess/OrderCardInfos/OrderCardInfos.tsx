@@ -7,11 +7,11 @@ import { toPersianUTC } from "@/core/utils/date";
 import React from "react";
 import { HiOutlineDocumentText } from "react-icons/hi";
 
-type OrderBoxInfosProps = {
+type OrderCardInfosProps = {
   order: any;
 };
 
-const OrderBoxInfos: React.FC<OrderBoxInfosProps> = ({ order }) => {
+const OrderCardInfos: React.FC<OrderCardInfosProps> = ({ order }) => {
   const { id, created_at, status } = order;
 
   return (
@@ -31,4 +31,4 @@ const OrderBoxInfos: React.FC<OrderBoxInfosProps> = ({ order }) => {
   );
 };
 
-export default OrderBoxInfos;
+export default OrderCardInfos;

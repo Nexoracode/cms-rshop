@@ -7,11 +7,11 @@ import React from "react";
 import { FiPackage } from "react-icons/fi";
 import { PiGiftBold } from "react-icons/pi";
 
-type GiftWrappingBoxProps = {
+type GiftWrappingCardProps = {
   order: any;
 };
 
-const GiftWrappingBoxInfos: React.FC<GiftWrappingBoxProps> = ({ order }) => {
+const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
   const { gift_wrapping, is_gift, gift_message, gift_wrapping_cost } = order;
 
   return is_gift ? (
@@ -55,4 +55,4 @@ const GiftWrappingBoxInfos: React.FC<GiftWrappingBoxProps> = ({ order }) => {
   );
 };
 
-export default GiftWrappingBoxInfos;
+export default GiftWrappingCardInfos;
