@@ -77,23 +77,6 @@ export const useGetOneOrder = (id?: number) => {
   });
 };
 
-/* ------------------------------ Create Order (from cart) ------------------------------ */
-
-export const useCreateOrderFromCart = () => {
-  return useMutation({
-    mutationFn: (data: { note?: string; couponCode?: string }) => {
-      return fetcher({
-        route: "/orders/from-card",
-        method: "POST",
-        body: data,
-        isActiveToast: true,
-        loadingText: "در حال ثبت سفارش...",
-        successText: "سفارش با موفقیت ثبت شد",
-      });
-    },
-  });
-};
-
 /* ------------------------------ Update Order Status ------------------------------ */
 
 export const useUpdateOrderStatus = () => {
@@ -113,6 +96,75 @@ export const useUpdateOrderStatus = () => {
     onSuccess: (_, variables) => {
       // invalidate specific order and list
       queryClient.invalidateQueries({ queryKey: ["one-order", variables.id] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-orders",
+      });
+    },
+  });
+};
+
+/* ------------------------------ Mark Order Delivered ------------------------------ */
+
+export const useMarkOrderDelivered = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) =>
+      fetcher({
+        route: `/orders/${id}/mark-delivered`,
+        method: "POST",
+        isActiveToast: true,
+        loadingText: "در حال ثبت تحویل سفارش...",
+        successText: "سفارش با موفقیت تحویل شد",
+      }),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ["one-order", id] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-orders",
+      });
+    },
+  });
+};
+
+/* ------------------------------ Cancel Order ------------------------------ */
+
+export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) =>
+      fetcher({
+        route: `/orders/${id}/cancel`,
+        method: "POST",
+        isActiveToast: true,
+        loadingText: "در حال لغو سفارش...",
+        successText: "سفارش با موفقیت لغو شد",
+      }),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ["one-order", id] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-orders",
+      });
+    },
+  });
+};
+
+/* ------------------------------ Refund Order ------------------------------ */
+
+export const useRefundOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) =>
+      fetcher({
+        route: `/orders/${id}/refund`,
+        method: "POST",
+        isActiveToast: true,
+        loadingText: "در حال بازپرداخت سفارش...",
+        successText: "بازپرداخت سفارش با موفقیت انجام شد",
+      }),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ["one-order", id] });
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === "all-orders",
       });
