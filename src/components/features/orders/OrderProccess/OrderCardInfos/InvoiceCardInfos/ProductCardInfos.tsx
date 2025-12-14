@@ -20,8 +20,6 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
     ? variants.reduce((sum, v) => sum + v.line_total, 0)
     : product.price;
 
-  console.log("@@@", item);
-
   return (
     <BaseCard bodyClassName="cursor-auto">
       {/* بخش اصلی محصول - فقط یکبار */}
@@ -45,14 +43,14 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
             </div>
             <div className="w-full flex items-center justify-between mt-2 gap-4">
               <span className="text-sm text-gray-500">
-                قیمت تک : {price(product.price)}
+                {price(product.price)}
               </span>
 
               {product.product_discount.amount ||
               product.product_discount.percent ? (
                 <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
                   {product.product_discount.amount
-                    ? `${price(product.product_discount.amount)} تومان`
+                    ? price(product.product_discount.amount)
                     : `${product.product_discount.percent}%`}
                 </p>
               ) : (
@@ -89,7 +87,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
                 v?.variant?.variant_discount?.percent ? (
                   <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
                     {v?.variant?.variant_discount?.amount
-                      ? `${price(v?.variant?.variant_discount?.amount)} تومان`
+                      ? price(v?.variant?.variant_discount?.amount)
                       : `${v?.variant?.variant_discount?.percent}%`}
                   </p>
                 ) : (
@@ -98,7 +96,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
               </div>
 
               <div className="w-full mt-2 flex items-center justify-between gap-4 text-xs text-gray-600">
-                <span>قیمت تک : {price(v.variant.price)}</span>
+                <span>{price(v.variant.price)}</span>
                 <span className="text-green-600 font-semibold">
                   {price(v.line_total)}
                 </span>
@@ -110,7 +108,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
         ""
       )}
 
-      <div className="px-4 mt-6 mb-2">
+      <div className="mt-6 mb-2">
         <Divider className="mb-2" />
 
         <div className="mt-2 flex items-center justify-end"></div>

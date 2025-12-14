@@ -29,6 +29,8 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
     items,
   } = order;
 
+  console.log(order);
+
   const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
@@ -138,7 +140,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         ))}
       </div>
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />
-      <InfoRow
+     {/*  <InfoRow
         label="تخفیف دستی فاکتور"
         value={
           manual_discount_value
@@ -167,12 +169,12 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         value={
           promotions_discount_applied ? price(promotions_discount_applied) : "—"
         }
-      />
+      /> */}
       <InfoRow
         label="مجموع تخفیفات"
         value={discount_total ? price(discount_total) : "—"}
       />
-      <InfoRow label="کد تخفیف" value={promotion_code ?? "—"} />
+      {/* <InfoRow label="کد تخفیف" value={promotion_code ?? "—"} /> */}
       <InfoRow label="هزینه ارسال" value={"—"} />
       <InfoRow
         label="هزینه بسته بندی"
