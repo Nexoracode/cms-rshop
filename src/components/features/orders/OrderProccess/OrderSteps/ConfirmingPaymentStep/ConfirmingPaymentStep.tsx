@@ -28,14 +28,14 @@ const ConfirmingPaymentStep = ({ order }: { order: any }) => {
       </p>
 
       <Link
-        href={order?.payment?.receipt_image || "/images/placeholder.png"}
+        href={order?.payment?.receipt_image?.url || "/images/placeholder.png"}
         target="_blank"
         rel="noopener noreferrer"
       >
         <img
-          src={order?.payment?.receipt_image || "/images/placeholder.png"}
+          src={order?.payment?.receipt_image?.url || "/images/placeholder.png"}
           alt="رسید پرداخت"
-          className="w-48 mx-auto mt-4 rounded-lg hover:scale-110 transition-all cursor-pointer duration-300 shadow-lg"
+          className="w-32 mx-auto mt-4 rounded-lg hover:scale-110 transition-all cursor-pointer duration-300 shadow-lg"
         />
       </Link>
 

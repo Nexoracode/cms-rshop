@@ -4,6 +4,8 @@ import React, { useRef } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { GoArrowUpRight } from "react-icons/go";
 import { IoReceiptOutline } from "react-icons/io5";
+import { statusMap } from "@/core/constants/statusMap";
+import { StatusOrder } from "./order-types";
 
 type OrderFactorProps = {
   order: any;
@@ -38,7 +40,9 @@ const maskCard = (card?: string | null) => {
 
 const renderAttributes = (variant: any) => {
   if (!variant?.attributes?.length) return null;
-  return variant.attributes.map((a: any) => `${a.name}: ${a.value}`).join(" • ");
+  return variant.attributes
+    .map((a: any) => `${a.name}: ${a.value}`)
+    .join(" • ");
 };
 
 const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
@@ -54,7 +58,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
   const {
     id,
     created_at,
-    status,
     subtotal,
     discount_total,
     total,
@@ -71,10 +74,23 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
   } = order;
 
   // اگر discount_breakdown خلاصه وجود دارد از آن استفاده می‌کنیم
-  const manualDiscount = order.manual_discount_applied || discount_breakdown?.manual_discount?.total || 0;
-  const productDiscounts = discount_breakdown?.product_discounts?.total || discount_breakdown?.summary?.total_product_discounts || 0;
-  const promotionDiscounts = discount_breakdown?.promotion_discounts?.total || discount_breakdown?.summary?.total_promotion_discounts || 0;
-  const grandTotalDiscount = discount_total || discount_breakdown?.summary?.grand_total_discount || 0;
+  const manualDiscount =
+    order.manual_discount_applied ||
+    discount_breakdown?.manual_discount?.total ||
+    0;
+  const productDiscounts =
+    discount_breakdown?.product_discounts?.total ||
+    discount_breakdown?.summary?.total_product_discounts ||
+    0;
+  const promotionDiscounts =
+    discount_breakdown?.promotion_discounts?.total ||
+    discount_breakdown?.summary?.total_promotion_discounts ||
+    0;
+  const grandTotalDiscount =
+    discount_total || discount_breakdown?.summary?.grand_total_discount || 0;
+  //
+  const status = order.status as StatusOrder;
+  const statusInfo = statusMap[status];
 
   return (
     <BaseModal
@@ -94,8 +110,10 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-lg font-semibold">فروشگاه شما</h3>
-            <div className="text-xs text-gray-500">آدرس فروشگاه یا توضیحات کوتاه</div>
+            <h3 className="text-lg font-semibold">فروشگاه آرشاپ</h3>
+            <div className="text-xs text-gray-500">
+              فروش انواع محصولات فرهنگی و مذهبی
+            </div>
           </div>
 
           <div className="flex gap-6 text-xs">
@@ -109,7 +127,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             </div>
             <div>
               <div className="text-gray-500">وضعیت</div>
-              <div className="font-medium">{status ?? "-"}</div>
+              <div className="font-medium">{statusInfo.title}</div>
             </div>
           </div>
         </div>
@@ -132,8 +150,8 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             </div>
             <div className="text-sm mt-2">{address?.address_line || "-"}</div>
             <div className="text-xs text-gray-500 mt-2">
-              پلاک: {address?.plaque || "-"} — واحد: {address?.unit || "-"} — کدپستی:{" "}
-              {address?.postal_code || "-"}
+              پلاک: {address?.plaque || "-"} — واحد: {address?.unit || "-"} —
+              کدپستی: {address?.postal_code || "-"}
             </div>
           </div>
         </div>
@@ -144,12 +162,24 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             <table className="min-w-full divide-y">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">محصول</th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500 hidden sm:table-cell">ویژگی</th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">تعداد</th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500 hidden md:table-cell">قیمت واحد</th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">تخفیف</th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">مبلغ</th>
+                  <th className="px-4 py-3 text-right text-xs text-gray-500">
+                    محصول
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs text-gray-500 hidden sm:table-cell">
+                    ویژگی
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs text-gray-500">
+                    تعداد
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs text-gray-500 hidden md:table-cell">
+                    قیمت واحد
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs text-gray-500">
+                    تخفیف
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs text-gray-500">
+                    مبلغ
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y">
@@ -165,18 +195,26 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                             className="w-12 h-12 object-cover rounded"
                           />
                           <div className="text-sm">
-                            <div className="font-medium">{it.product?.name}</div>
-                            <div className="text-xs text-gray-500">SKU: {it.variant?.sku ?? "-"}</div>
+                            <div className="font-medium">
+                              {it.product?.name}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              SKU: {it.variant?.sku ?? "-"}
+                            </div>
                           </div>
                         </div>
                       </td>
 
                       <td className="px-4 py-3 align-top hidden sm:table-cell">
-                        <div className="text-xs text-gray-600">{renderAttributes(it.variant) || "-"}</div>
+                        <div className="text-xs text-gray-600">
+                          {renderAttributes(it.variant) || "-"}
+                        </div>
                       </td>
 
                       <td className="px-4 py-3 align-top">
-                        <div className="text-sm">{fmtPlainNumber(it.quantity)}</div>
+                        <div className="text-sm">
+                          {fmtPlainNumber(it.quantity)}
+                        </div>
                       </td>
 
                       <td className="px-4 py-3 align-top hidden md:table-cell">
@@ -184,11 +222,15 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                       </td>
 
                       <td className="px-4 py-3 align-top">
-                        <div className="text-sm text-rose-600">{fmt(it.discount)}</div>
+                        <div className="text-sm text-rose-600">
+                          {fmt(it.discount)}
+                        </div>
                       </td>
 
                       <td className="px-4 py-3 align-top">
-                        <div className="text-sm font-medium">{fmt(it.line_total)}</div>
+                        <div className="text-sm font-medium">
+                          {fmt(it.line_total)}
+                        </div>
                       </td>
                     </tr>
                   );
@@ -202,13 +244,23 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             {(items || []).map((it: any) => (
               <div key={it.id} className="border rounded-lg p-3">
                 <div className="flex items-start gap-3">
-                  <img src={it.product?.image} alt={it.product?.name} className="w-14 h-14 object-cover rounded" />
+                  <img
+                    src={it.product?.image}
+                    alt={it.product?.name}
+                    className="w-14 h-14 object-cover rounded"
+                  />
                   <div className="flex-1">
                     <div className="font-medium">{it.product?.name}</div>
-                    <div className="text-xs text-gray-500">{renderAttributes(it.variant) || "-"}</div>
-                    <div className="text-xs mt-2">تعداد: {fmtPlainNumber(it.quantity)}</div>
+                    <div className="text-xs text-gray-500">
+                      {renderAttributes(it.variant) || "-"}
+                    </div>
+                    <div className="text-xs mt-2">
+                      تعداد: {fmtPlainNumber(it.quantity)}
+                    </div>
                   </div>
-                  <div className="text-sm font-medium">{fmt(it.line_total)}</div>
+                  <div className="text-sm font-medium">
+                    {fmt(it.line_total)}
+                  </div>
                 </div>
               </div>
             ))}
@@ -225,26 +277,34 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
 
             <div className="flex justify-between text-xs text-gray-600 mt-2">
               <div>تخفیف کالاها</div>
-              <div className="font-medium text-rose-600">{fmt(productDiscounts)}</div>
+              <div className="font-medium text-rose-600">
+                {fmt(productDiscounts)}
+              </div>
             </div>
 
             {promotionDiscounts ? (
               <div className="flex justify-between text-xs text-gray-600 mt-2">
                 <div>کد/پروموشن</div>
-                <div className="font-medium text-rose-600">{fmt(promotionDiscounts)}</div>
+                <div className="font-medium text-rose-600">
+                  {fmt(promotionDiscounts)}
+                </div>
               </div>
             ) : null}
 
             {manualDiscount ? (
               <div className="flex justify-between text-xs text-gray-600 mt-2">
                 <div>تخفیف دستی</div>
-                <div className="font-medium text-rose-600">{fmt(manualDiscount)}</div>
+                <div className="font-medium text-rose-600">
+                  {fmt(manualDiscount)}
+                </div>
               </div>
             ) : null}
 
             <div className="flex justify-between text-xs text-gray-600 mt-2">
               <div>جمع تخفیفات</div>
-              <div className="font-medium text-rose-600">{fmt(grandTotalDiscount)}</div>
+              <div className="font-medium text-rose-600">
+                {fmt(grandTotalDiscount)}
+              </div>
             </div>
 
             <div className="flex justify-between text-xs text-gray-600 mt-2">
@@ -277,27 +337,43 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
 
             {payment?.card_to_card_status && (
               <>
-                <div className="text-xs text-gray-500 mt-2">وضعیت کارت‌به‌کارت</div>
+                <div className="text-xs text-gray-500 mt-2">
+                  وضعیت کارت‌به‌کارت
+                </div>
                 <div className="font-medium">{payment.card_to_card_status}</div>
               </>
             )}
 
             {payment?.sender_card_number && (
               <div className="text-xs text-gray-500 mt-2">
-                کارت ارسال‌کننده: <span className="font-medium">{maskCard(payment.sender_card_number)}</span>
+                کارت ارسال‌کننده:{" "}
+                <span className="font-medium">
+                  {maskCard(payment.sender_card_number)}
+                </span>
               </div>
             )}
 
             {payment?.tracking_code && (
-              <div className="text-xs text-gray-500 mt-2">کد پیگیری: <span className="font-medium">{payment.tracking_code}</span></div>
+              <div className="text-xs text-gray-500 mt-2">
+                کد پیگیری:{" "}
+                <span className="font-medium">{payment.tracking_code}</span>
+              </div>
             )}
 
             {payment?.deposit_date && (
-              <div className="text-xs text-gray-500 mt-2">تاریخ واریز: <span className="font-medium">{fmtDateTime(payment.deposit_date)}</span></div>
+              <div className="text-xs text-gray-500 mt-2">
+                تاریخ واریز:{" "}
+                <span className="font-medium">
+                  {fmtDateTime(payment.deposit_date)}
+                </span>
+              </div>
             )}
 
             {payment?.admin_note && (
-              <div className="text-xs text-gray-500 mt-2">یادداشت ادمین: <div className="font-medium">{payment.admin_note}</div></div>
+              <div className="text-xs text-gray-500 mt-2">
+                یادداشت ادمین:{" "}
+                <div className="font-medium">{payment.admin_note}</div>
+              </div>
             )}
           </div>
 
@@ -328,7 +404,10 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
         </div>
 
         <div className="mt-6 text-xs text-gray-500">
-          <div>تذکر: اعداد نمایش داده شده به تومان هستند و با گرد کردن نمایش داده می‌شوند.</div>
+          <div>
+            تذکر: اعداد نمایش داده شده به تومان هستند و با گرد کردن نمایش داده
+            می‌شوند.
+          </div>
         </div>
       </div>
     </BaseModal>
