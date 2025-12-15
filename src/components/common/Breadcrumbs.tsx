@@ -90,14 +90,23 @@ function segmentToLabel(seg: string) {
 export default function Breadcrumbs() {
   const pathname = usePathname() ?? "/";
   const segments = pathname.split("/").filter(Boolean); // ['admin','store','customers','create']
+  const breadcrumbHrefMap: Record<string, string> = {
+    admin: "/admin/dashboard",
+  };
   const crumbs = segments.map((seg, idx) => {
-    const href = "/" + segments.slice(0, idx + 1).join("/");
-    const label = segmentToLabel(seg);
+    const href =
+      breadcrumbHrefMap[seg] ?? "/" + segments.slice(0, idx + 1).join("/");
 
+    const label = segmentToLabel(seg);
     const isLast = idx === segments.length - 1;
+
     return (
       <span key={href} className="flex items-center whitespace-nowrap">
-        {idx > 0 && <span className="mx-2 text-gray-300"><IoChevronBack className="text-xl"/></span>}
+        {idx > 0 && (
+          <span className="mx-2 text-gray-300">
+            <IoChevronBack className="text-xl" />
+          </span>
+        )}
         {isLast ? (
           <span className="text-gray-600">{label}</span>
         ) : (
@@ -114,5 +123,12 @@ export default function Breadcrumbs() {
     return <nav className="text-sm text-gray-600">خانه</nav>;
   }
 
-  return <nav aria-label="Breadcrumb" className="w-fit text-sm flex bg-white shadow rounded-xl py-2.5 px-4">{crumbs}</nav>;
+  return (
+    <nav
+      aria-label="Breadcrumb"
+      className="w-fit text-sm flex bg-white shadow rounded-xl py-2.5 px-4"
+    >
+      {crumbs}
+    </nav>
+  );
 }
