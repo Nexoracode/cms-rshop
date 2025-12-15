@@ -134,17 +134,20 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
           <ProductBoxInfos key={index} item={item} />
         ))}
       </div>
+
+      <InfoRow label="هزینه ارسال" value={price(80000)} />
+      <InfoRow
+        label="هزینه بسته بندی"
+        value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
+      />
+
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />
 
       <InfoRow
         label="مجموع تخفیفات"
         value={discount_total ? price(discount_total) : "—"}
       />
-      <InfoRow label="هزینه ارسال" value={"—"} />
-      <InfoRow
-        label="هزینه بسته بندی"
-        value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
-      />
+
       <Divider className="!mt-3 mb-1" />
       <InfoRow label="مبلغ قابل پرداخت" value={price(total)} hoverable />
     </BaseCard>

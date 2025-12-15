@@ -39,23 +39,12 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
       isActiveFooter={false}
     >
       <div className="!space-y-1">
-        <InfoRow label="مجموع قیمت" value={price(subtotal)} />
+        <InfoRow label="هزینه ارسال" value={price(80000)} />
 
         <InfoRow
-          label="مجموع تخفیفات"
-          value={discount_total ? price(discount_total) : "—"}
+          label="هزینه بسته بندی"
+          value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
           isActiveBg
-        />
-
-        <InfoRow
-          label="کدتخفیف"
-          value={
-            promotions_discount_value
-              ? promotions_discount_type === "percent"
-                ? `${promotions_discount_value}%`
-                : price(promotions_discount_value)
-              : "—"
-          }
         />
 
         <InfoRow
@@ -67,12 +56,32 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
                 : price(manual_discount_value)
               : "—"
           }
-          isActiveBg
         />
 
         <InfoRow
+          label="تخفیف پروموشن"
+          value={
+            promotions_discount_value
+              ? promotions_discount_type === "percent"
+                ? `${promotions_discount_value}%`
+                : price(promotions_discount_value)
+              : "—"
+          }
+          isActiveBg
+        />
+
+        <InfoRow label="مجموع قیمت بدون تخفیف" value={price(subtotal)} />
+
+        <InfoRow
+          label="مجموع تخفیفات"
+          value={discount_total ? price(discount_total) : "—"}
+          isActiveBg
+        />
+
+        {/* <InfoRow
           label="قیمت پس از کسر تخفیف دستی"
           value={manual_discount_applied ? price(manual_discount_applied) : "—"}
+          isActiveBg
         />
 
         <InfoRow
@@ -82,19 +91,10 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
               ? price(promotions_discount_applied)
               : "—"
           }
-          isActiveBg
-        />
-
-        <InfoRow label="هزینه ارسال" value={"—"} />
-
-        <InfoRow
-          label="هزینه بسته بندی"
-          value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
-          isActiveBg
-        />
+        /> */}
       </div>
-      <Divider className="-mb-2"/>
-      <InfoRow label="مبلغ نهایی" value={price(total)} hoverable />
+      <Divider className="-mb-2" />
+      <InfoRow label="مبلغ قابل پرداخت" value={price(total)} hoverable />
     </BaseModal>
   );
 };

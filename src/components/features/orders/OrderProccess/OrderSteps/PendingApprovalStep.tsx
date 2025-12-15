@@ -1,7 +1,18 @@
 import { Alert } from "@heroui/react";
 import FormActionButtons from "@/components/common/FormActionButtons";
+import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 
 const PendingApprovalStep = ({ order }: { order: any }) => {
+  const updateOrderStatus = useUpdateOrderStatus();
+
+  const rejectOrder = () => {
+    updateOrderStatus.mutate({ id: order.id, status: "rejected" });
+  };
+
+  const acceptOrder = () => {
+    updateOrderStatus.mutate({ id: order.id, status: "awaiting_payment" });
+  };
+
   if (order?.status === "cancelled") {
     return (
       <Alert
@@ -19,8 +30,8 @@ const PendingApprovalStep = ({ order }: { order: any }) => {
       </p>
 
       <FormActionButtons
-        onCancel={() => {}}
-        onSubmit={() => {}}
+        onCancel={rejectOrder}
+        onSubmit={acceptOrder}
         isSubmitting={false}
         cancelText="عدم تأیید"
         submitText="تأیید سفارش"
