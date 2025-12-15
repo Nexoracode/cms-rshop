@@ -5,8 +5,8 @@ import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
 import { IoReceiptOutline } from "react-icons/io5";
 import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { GoArrowUpRight } from "react-icons/go";
 import OrderProccessFilter from "@/components/features/orders/OrderProccess/OrderProccessFilter";
+import OrderFactor from "@/components/features/orders/OrderFactor";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();
@@ -20,15 +20,19 @@ const OrderDetail = () => {
 
   return (
     <UnifiedCard
-      searchFilter={<OrderProccessFilter customerId={orderData?.user?.id} customerName={`${orderData?.user?.last_name}`}/>}
+      searchFilter={
+        <OrderProccessFilter
+          customerId={orderData?.user?.id}
+          customerName={`${orderData?.user?.last_name}`}
+        />
+      }
       isLoading={isLoading}
       isExistItems={!!orderData}
       searchInp={false}
       headerProps={{
         title: orderData?.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
         icon: <IoReceiptOutline className="text-2xl" />,
-        textBtn: "مشاهده فاکتور",
-        btnIcon: <GoArrowUpRight />,
+        children: <OrderFactor order={orderData}/>,
       }}
     >
       <OrderWizard order={orderData} />
