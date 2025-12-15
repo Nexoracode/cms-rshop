@@ -1,8 +1,8 @@
-import { Switch } from "@heroui/react";
 import { useState } from "react";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import FormActionButtons from "@/components/common/FormActionButtons";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 
 const PreparingStep = ({ order }: { order: any }) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
@@ -14,20 +14,14 @@ const PreparingStep = ({ order }: { order: any }) => {
         را ارسال کنید.
       </p>
 
-      <div className="rounded-xl border bg-gray-50/50 p-4 mx-2 mb-6">
-        <div className="flex items-center justify-between">
-          <span className="text-gray-700 font-medium">
-            کد پیگیری مرسوله
-          </span>
-          <Switch
-            isSelected={isTrackingEnabled}
-            onValueChange={setIsTrackingEnabled}
-            size="sm"
-          />
-        </div>
-
-        {isTrackingEnabled && (
-          <div className="!space-y-10 mt-10">
+      <div className="mx-2 mb-6">
+        <ToggleSection
+          title="کد پیگیری مرسوله"
+          subtitle="در صورت فعال‌سازی، اطلاعات ارسال را وارد کنید"
+          initialMode={isTrackingEnabled}
+          onChange={setIsTrackingEnabled}
+        >
+          <div className="!space-y-10">
             <SlugInput
               label="کد رهگیری"
               value=""
@@ -48,7 +42,7 @@ const PreparingStep = ({ order }: { order: any }) => {
               size="sm"
             />
           </div>
-        )}
+        </ToggleSection>
       </div>
 
       <FormActionButtons

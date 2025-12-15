@@ -22,6 +22,7 @@ export const useReviewCardToCardPayment = () => {
         successText: "رسید بررسی شد",
       }),
     onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["one-order"] });
       qc.invalidateQueries({ queryKey: ["card-to-card-payments"] });
       qc.invalidateQueries({ queryKey: ["card-to-card-payment"] });
       qc.invalidateQueries({ queryKey: ["card-to-card-pending"] });

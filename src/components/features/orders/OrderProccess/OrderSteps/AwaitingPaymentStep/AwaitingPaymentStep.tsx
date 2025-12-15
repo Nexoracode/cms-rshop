@@ -2,8 +2,12 @@
 
 import { Alert, Spinner } from "@heroui/react";
 import RefundSection from "./RefundSection";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import { useState } from "react";
 
 const AwaitingPaymentStep = ({ order }: { order: any }) => {
+  const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
+
   if (order?.status === "expired") {
     return (
       <Alert
@@ -21,8 +25,17 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
           color="danger"
           title="سفارش توسط شما رد شده است"
           description="شما رسید پرداخت را تأیید نکردید."
+          className="mb-4"
         />
-        <RefundSection order={order} />
+
+        <ToggleSection
+          title="بازگشت وجه"
+          subtitle="در صورت پرداخت مشتری، مبلغ را بازگردانید."
+          initialMode={isTrackingEnabled}
+          onChange={setIsTrackingEnabled}
+        >
+          <RefundSection order={order} />
+        </ToggleSection>
       </>
     );
   }
