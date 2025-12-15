@@ -2,8 +2,8 @@
 
 import { OrderStepKey } from "./OrderSteps/const/order-steps";
 import PendingApprovalStep from "./OrderSteps/PendingApprovalStep";
-import AwaitingPaymentStep from "./OrderSteps/AwaitingPaymentStep";
-import ConfirmingPaymentStep from "./OrderSteps/ConfirmingPaymentStep";
+import AwaitingPaymentStep from "./OrderSteps/AwaitingPaymentStep/AwaitingPaymentStep";
+import ConfirmingPaymentStep from "./OrderSteps/ConfirmingPaymentStep/ConfirmingPaymentStep";
 import PreparingStep from "./OrderSteps/PreparingStep";
 import ShippingStep from "./OrderSteps/ShippingStep";
 import DeliveredStep from "./OrderSteps/DeliveredStep";

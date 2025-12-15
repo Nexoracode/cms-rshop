@@ -4,22 +4,26 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
 
 /* ---------------------- Review Payment (Approve / Reject) ---------------------- */
-export const useReviewCardToCardPayment = (paymentId: number) => {
+export const useReviewCardToCardPayment = () => {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: { status: string; admin_note?: string }) =>
+    mutationFn: (data: {
+      paymentId: number;
+      status: string;
+      admin_note?: string;
+    }) =>
       fetcher({
-        route: `/admin/card-to-card/${paymentId}/review`,
+        route: `/admin/card-to-card/${data.paymentId}/review`,
         method: "POST",
-        body: data,
+        body: { status: data.status, admin_note: data.admin_note },
         isActiveToast: true,
         loadingText: "در حال بررسی پرداخت...",
         successText: "رسید بررسی شد",
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["card-to-card-payments"] });
-      qc.invalidateQueries({ queryKey: ["card-to-card-payment", paymentId] });
+      qc.invalidateQueries({ queryKey: ["card-to-card-payment"] });
       qc.invalidateQueries({ queryKey: ["card-to-card-pending"] });
     },
   });

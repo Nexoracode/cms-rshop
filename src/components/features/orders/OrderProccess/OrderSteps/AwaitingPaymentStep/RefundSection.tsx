@@ -1,17 +1,23 @@
 import InfoRow from "@/components/shared/InfoRow";
 import FormActionButtons from "@/components/common/FormActionButtons";
+import { price } from "@/core/utils/helper";
+import { useRefundOrder } from "@/core/hooks/api/orders/useOrder";
 
-const RefundSection = ({
-  refundableAmount,
-  order,
-}: {
-  refundableAmount: string;
-  order: any;
-}) => {
+const RefundSection = ({ order }: { order: any }) => {
+  const { mutate: RefundOrder } = useRefundOrder();
+
+  const refundOrderHandler = () => {
+    RefundOrder(order.id);
+  };
+
   return (
     <>
       <div className="my-6 space-y-1.5">
-        <InfoRow label="مبلغ قابل بازگشت" value={refundableAmount} hoverable />
+        <InfoRow
+          label="مبلغ قابل بازگشت"
+          value={price(order.total)}
+          hoverable
+        />
         <InfoRow
           label="شماره همراه مشتری"
           value={order?.user?.phone || order?.user?.email || "—"}
@@ -26,7 +32,7 @@ const RefundSection = ({
       </div>
 
       <FormActionButtons
-        onSubmit={() => {}}
+        onSubmit={refundOrderHandler}
         isSubmitting={false}
         submitText="تأیید پرداخت وجه به مشتری"
       />

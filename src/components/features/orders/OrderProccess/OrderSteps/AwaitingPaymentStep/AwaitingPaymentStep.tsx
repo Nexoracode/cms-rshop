@@ -1,11 +1,9 @@
+"use client";
+
 import { Alert, Spinner } from "@heroui/react";
 import RefundSection from "./RefundSection";
 
 const AwaitingPaymentStep = ({ order }: { order: any }) => {
-  const refundableAmount = order?.total_price
-    ? `${order.total_price.toLocaleString()} تومان`
-    : "—";
-
   if (order?.status === "expired") {
     return (
       <Alert
@@ -22,12 +20,9 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
         <Alert
           color="danger"
           title="سفارش توسط شما رد شده است"
-          description="شما سفارش را تأیید نکردید."
+          description="شما رسید پرداخت را تأیید نکردید."
         />
-        <RefundSection
-          refundableAmount={refundableAmount}
-          order={order}
-        />
+        <RefundSection order={order} />
       </>
     );
   }
