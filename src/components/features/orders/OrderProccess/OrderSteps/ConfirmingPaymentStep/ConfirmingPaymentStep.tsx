@@ -2,6 +2,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { useReviewCardToCardPayment } from "@/core/hooks/api/card/useCard";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import RejectReceiptImageModal from "./RejectReceiptImageModal";
+import Link from "next/link";
 
 const ConfirmingPaymentStep = ({ order }: { order: any }) => {
   const reviewCardToCardPayment = useReviewCardToCardPayment();
@@ -26,11 +27,17 @@ const ConfirmingPaymentStep = ({ order }: { order: any }) => {
           مشتری پرداخت کارت به کارت انجام داده و تصویر رسید را ارسال کرده است.
         </p>
 
-        <img
-          src={order?.payment?.receipt_image || "/images/placeholder.png"}
-          alt="رسید پرداخت"
-          className="w-48 mx-auto mt-4 rounded-lg hover:scale-125 transition-all duration-300 shadow-lg"
-        />
+        <Link
+          href={order?.payment?.receipt_image || "/images/placeholder.png"}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={order?.payment?.receipt_image || "/images/placeholder.png"}
+            alt="رسید پرداخت"
+            className="w-48 mx-auto mt-4 rounded-lg hover:scale-110 transition-all cursor-pointer duration-300 shadow-lg"
+          />
+        </Link>
 
         <div className="mt-8 flex items-center justify-center">
           <RejectReceiptImageModal
