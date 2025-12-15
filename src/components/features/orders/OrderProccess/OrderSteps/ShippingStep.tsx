@@ -1,7 +1,14 @@
 import { Alert } from "@heroui/react";
 import FormActionButtons from "@/components/common/FormActionButtons";
+import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 
 const ShippingStep = ({ order }: { order: any }) => {
+  const updateOrderStatus = useUpdateOrderStatus();
+
+  const dispatchOrder = () => {
+    updateOrderStatus.mutate({ id: order.id, status: "delivered" });
+  };
+
   return (
     <div>
       {order?.status === "not_delivered" && (
@@ -21,7 +28,7 @@ const ShippingStep = ({ order }: { order: any }) => {
 
       <div className="mt-8 text-center">
         <FormActionButtons
-          onSubmit={() => {}}
+          onSubmit={dispatchOrder}
           isSubmitting={false}
           submitText="تأیید تحویل به مشتری"
         />

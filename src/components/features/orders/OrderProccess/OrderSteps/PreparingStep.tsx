@@ -3,15 +3,21 @@ import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 
 const PreparingStep = ({ order }: { order: any }) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
+  const updateOrderStatus = useUpdateOrderStatus();
+
+  const dispatchOrder = () => {
+    updateOrderStatus.mutate({ id: order.id, status: "shipping" });
+  };
 
   return (
     <div>
       <p className="text-default-600 leading-7 text-center mb-6">
-        زمان آماده‌سازی سفارش به پایان رسیده. لطفاً در سریع‌ترین زمان سفارش
-        را ارسال کنید.
+        زمان آماده‌سازی سفارش به پایان رسیده. لطفاً در سریع‌ترین زمان سفارش را
+        ارسال کنید.
       </p>
 
       <div className="mx-2 mb-6">
@@ -46,7 +52,7 @@ const PreparingStep = ({ order }: { order: any }) => {
       </div>
 
       <FormActionButtons
-        onSubmit={() => {}}
+        onSubmit={dispatchOrder}
         isSubmitting={false}
         submitText="تأیید و ارسال مرسوله"
       />
