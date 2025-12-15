@@ -73,7 +73,6 @@ export function BasePromotionForm({
     handleFieldChange,
     canSubmit,
     setForm,
-    setHasSubmitted,
     handleMultipleFieldsChange,
   } = useForm<PromotionForm>(initialPromotionForm, {
     onValidate: (f) => validatePromotionForm(f, config, scope),
@@ -91,7 +90,6 @@ export function BasePromotionForm({
 
   useEffect(() => {
     setForm(initialPromotionForm);
-    setHasSubmitted(false);
   }, [resetSignal]);
 
   const handleSubmit = () => {
@@ -103,7 +101,6 @@ export function BasePromotionForm({
 
   const handleResetLocal = () => {
     setForm(initialPromotionForm);
-    setHasSubmitted(false);
     onHandleReset?.();
   };
 

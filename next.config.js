@@ -6,9 +6,9 @@ const nextConfig = {
       hmrRefreshes: true,
     },
   },
-  typescript: {
+  /* typescript: {
     ignoreBuildErrors: true,
-  },
+  }, */
   logging: false,
   images: {
     domains: ["dl.poshtybanman.ir"],

@@ -71,7 +71,7 @@ export type PromotionForm = {
   max_discount_amount?: number;
   starts_at?: string | null;
   ends_at?: string | null;
-  is_active?: boolean;
+  is_active: boolean;
   first_order?: boolean;
   allowed_products?: { product_id: number; variants: number[] | null }[];
   allowed_categories?: number[];
