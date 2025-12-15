@@ -30,7 +30,7 @@ const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
       <img
         src={gift_wrapping?.image?.url || "/images/placeholder.png"}
         alt="عکس کاغذ کادو"
-        className="w-48 mx-auto mb-4 rounded-lg hover:scale-150 transition-all duration-300 shadow-lg"
+        className="w-48 mx-auto mb-4 rounded-lg hover:scale-110 transition-all duration-300 shadow-lg"
       />
       <InfoRow label="نام بسته بندی" value={gift_wrapping?.name ?? "—"} />
       <InfoRow

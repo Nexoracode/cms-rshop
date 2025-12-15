@@ -19,6 +19,7 @@ export type BaseTabsProps = {
   fullWidth?: boolean;
   tabListClassName?: string;
   className?: string;
+  disableTabs?: boolean; // اضافه شد
 };
 
 const BaseTabs: React.FC<BaseTabsProps> = ({
@@ -29,6 +30,7 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
   fullWidth = true,
   tabListClassName = "",
   className = "",
+  disableTabs = false,
 }) => {
   return (
     <Tabs
@@ -37,11 +39,15 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
       fullWidth={fullWidth}
       classNames={{ tabList: tabListClassName }}
       selectedKey={activeKey}
-      onSelectionChange={(key) => onTabChange?.(key)}
+      onSelectionChange={(key) => !disableTabs && onTabChange?.(key)}
       className={className}
     >
       {items.map((tab) => (
-        <Tab key={tab.key} title={tab.title}>
+        <Tab
+          key={tab.key}
+          title={tab.title}
+          disabled={disableTabs} // اضافه شد
+        >
           {tab.showEmpty ? <EmptyStateCard /> : tab.content}
         </Tab>
       ))}

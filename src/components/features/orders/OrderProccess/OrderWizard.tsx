@@ -67,6 +67,7 @@ const OrderWizard: React.FC<Props> = ({ order }) => {
       fullWidth
       tabListClassName="bg-gray-50 p-1 rounded-xl"
       className="shadow-sm"
+      disableTabs
     />
   );
 };
