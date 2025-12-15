@@ -8,7 +8,6 @@ import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
 import { useEffect, useState } from "react";
 import { InvoiceItemPayload } from "./invoice-card-infos-types";
-import { GoArrowUpRight } from "react-icons/go";
 import MoreInvoiceInfosModal from "./MoreInvoiceInfosModal";
 
 type InvoiceCardInfosProps = {
@@ -17,18 +16,12 @@ type InvoiceCardInfosProps = {
 
 const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
   const {
-    manual_discount_type,
-    manual_discount_value,
-    promotions_discount_type,
-    promotions_discount_value,
-    promotions_discount_applied,
     shipping_cost,
-    promotion_code,
-    manual_discount_applied,
     subtotal,
     discount_total,
     total,
     items,
+    promotion_code,
   } = order;
 
   console.log(order);
@@ -142,12 +135,11 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         ))}
       </div>
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />
-      
+
       <InfoRow
         label="مجموع تخفیفات"
         value={discount_total ? price(discount_total) : "—"}
       />
-      {/* <InfoRow label="کد تخفیف" value={promotion_code ?? "—"} /> */}
       <InfoRow label="هزینه ارسال" value={"—"} />
       <InfoRow
         label="هزینه بسته بندی"
