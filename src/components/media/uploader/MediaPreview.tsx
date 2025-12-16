@@ -32,9 +32,8 @@ const MediaPreview: React.FC<Props> = ({
 
   return (
     <div className="w-full grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mb-4">
-      {imgs.map((item, idx) => {
-        const type = item.url?.match(/\.(mp4)$/i) ? "video" : "image";
-        const url = item.url;
+      {imgs?.map((item, idx) => {
+        const { url, type } = item;
 
         return (
           <div

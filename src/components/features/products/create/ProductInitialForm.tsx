@@ -90,8 +90,6 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
   }, [data]);
 
   const handleSubmit = submit(async (changed) => {
-    console.log(changed);
-
     const {
       brand_id,
       category_id,
