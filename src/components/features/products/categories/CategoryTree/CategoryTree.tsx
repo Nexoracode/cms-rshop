@@ -69,8 +69,8 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
 
   // محتوای کارت (بدون wrapper انتخاب)
   const nodeContent = (
-    <BaseCard onClick={() => onEdit?.(node)}>
-      <div className="flex flex-col min-h-[85px] h-full sm:flex-row items-center gap-3">
+    <BaseCard onClick={() => onEdit?.(node)} className="min-w-64">
+      <div className="hover-reveal-parent flex flex-col min-h-[85px] h-full sm:flex-row items-center gap-3">
         <div className="flex items-center gap-2">
           {!disableShowChildren && (
             <div className="hidden sm:flex">
@@ -82,7 +82,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
             </div>
           )}
 
-          <div className="w-28 h-28 sm:w-[72px] sm:h-[78px] overflow-hidden rounded-xl bg-default-100 shrink-0">
+          <div className="w-28 h-28 sm:w-[85px] sm:h-[80px] overflow-hidden rounded-xl bg-default-100 shrink-0">
             {node.media?.url ? (
               <Image
                 alt={node.media.alt ?? node.title}
@@ -99,7 +99,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
           </div>
         </div>
 
-        <div className="relative w-full flex flex-col flex-1 justify-between h-[85px] py-1 min-w-0">
+        <div className="relative w-full flex flex-col flex-1 justify-between h-[85px] py-1.5 min-w-0">
           <div className="flex items-center justify-between pb-3 sm:pb-0 border-b sm:border-0">
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
               <p className="text-[15px]">{node.title}</p>
@@ -111,7 +111,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
             </div>
 
             {!disableAction && (
-              <DeleteButton onDelete={() => deleteCategory(node.id)} />
+              <DeleteButton onDelete={() => deleteCategory(node.id)} activeBtnHover/>
             )}
             {showDeselectIcon && (
               <div className="bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all">
@@ -152,7 +152,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
                 node.discount !== "0" &&
                 node.discount !== "0%" && (
                   <Chip size="sm" color="warning" variant="flat" radius="sm">
-                    {node.discount} تخفیف
+                    {node.discount}% تخفیف
                   </Chip>
                 )}
             </div>
