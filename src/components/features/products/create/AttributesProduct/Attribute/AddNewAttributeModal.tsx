@@ -93,11 +93,10 @@ const AddNewAttributeModal: React.FC<Props> = ({
 
   const handleConfirm = async () => {
     if (type === "edit") {
-      return handleMutation(
-        () => updateAttribute(datas as Attribute),
-        resetForm
-      );
-    } else return handleMutation(() => createAttribute(datas), resetForm);
+      return handleMutation(() => updateAttribute(datas as Attribute), {
+        resetForm,
+      });
+    } else return handleMutation(() => createAttribute(datas), { resetForm });
   };
 
   const resetForm = () => {

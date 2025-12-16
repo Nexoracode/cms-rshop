@@ -54,8 +54,9 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
     const { id, ...rest } = datas as AttributeGroup;
 
     if (type === "edit") {
-      return handleMutation(() => updateAttributeGroup(rest), resetForm);
-    } else return handleMutation(() => createAttributeGroup(rest), resetForm);
+      return handleMutation(() => updateAttributeGroup(rest), { resetForm });
+    } else
+      return handleMutation(() => createAttributeGroup(rest), { resetForm });
   };
 
   const resetForm = () => {

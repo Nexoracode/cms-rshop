@@ -105,14 +105,18 @@ export const useForm = <T extends Record<string, any>>(
     handleMultipleFieldsChange,
     canSubmit: core.triggerValidation,
     reset,
-    submit: (handler: (changed: Partial<T>) => void) => () => {
-      if (!core.triggerValidation()) return;
-      if (!hasChanges) {
-        toast.error("هیچ تغییری اعمال نشده است");
-        window.scrollTo({ top: 85, behavior: "smooth" });
-        return;
-      }
-      handler(getChangedFields());
-    },
+    submit:
+      <R>(handler: (changed: Partial<T>) => Promise<R>) =>
+      async (): Promise<R | undefined> => {
+        if (!core.triggerValidation()) return;
+
+        if (!hasChanges) {
+          toast.error("هیچ تغییری اعمال نشده است");
+          window.scrollTo({ top: 85, behavior: "smooth" });
+          return;
+        }
+
+        return handler(getChangedFields());
+      },
   };
 };

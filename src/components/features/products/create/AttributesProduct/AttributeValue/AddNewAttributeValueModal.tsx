@@ -76,14 +76,14 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       const { id, ...rest } = datas as AttributeValue;
       return handleMutation(
         () => updateAttributeValue({ ...rest, attribute_id: attributeId }),
-        resetForm
+        { resetForm }
       );
     } else {
       const payload = {
         ...datas,
         attribute_id: attributeId,
       };
-      return handleMutation(() => createAttributeValue(payload), resetForm);
+      return handleMutation(() => createAttributeValue(payload), { resetForm });
     }
   };
 

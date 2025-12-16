@@ -14,7 +14,7 @@ type BaseModalProps = {
   children?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
-  onConfirm?: () => Promise<boolean> | Promise<void>;
+  onConfirm?: () => any;
   onCancel?: () => void;
   icon?: React.ReactNode;
   placement?: "auto" | "center" | "top" | "bottom";
