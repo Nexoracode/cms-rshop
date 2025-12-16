@@ -34,11 +34,13 @@ const AddNewBrandModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const { form, errors, handleFieldChange, setForm, reset, submit } =
-    useForm(initialBrandForm, {
+  const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
+    initialBrandForm,
+    {
       onValidate: validateBrand,
       runValidationOnChange: true,
-    });
+    }
+  );
 
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useBrandUpload();
@@ -107,6 +109,7 @@ const AddNewBrandModal: React.FC<Props> = ({
       confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
       onConfirm={handleSubmit}
       icon={<TbBrandArc />}
+      isConfirmDisabled={isPendingUpload || isPendingCreate || isPendingUpdate}
     >
       <div className="flex flex-col gap-6">
         <ImageBoxUploader

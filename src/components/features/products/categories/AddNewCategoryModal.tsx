@@ -82,39 +82,36 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setIsParent(parent_id === 0);
   }, [defaultValues]);
 
-  const handleSubmit = submit(async (changed) => {
-    try {
-      let finalMediaId = form.mediaId;
+  const handleSubmit = submit(async () => {
+/*     let finalMediaId = form.mediaId;
 
-      if (form.mediaFile) {
-        const fd = new FormData();
-        fd.append("files", form.mediaFile);
-        const res = await uploadImageCategory(fd);
-        if (!res.ok) return;
-        finalMediaId = res.data[0].id;
-      }
-
-      const payload = {
-        id: categoryId,
-        title: form.title,
-        slug: form.slug,
-        discount: form.discount,
-        parentId: form.parentId,
-        mediaId: finalMediaId,
-      };
-
-      const res = categoryId
-        ? await updateCategory(payload)
-        : await createCategory(payload);
-
+    if (form.mediaFile) {
+      const fd = new FormData();
+      fd.append("files", form.mediaFile);
+      const res = await uploadImageCategory(fd);
       if (!res.ok) return;
-
-      setForm(initialCategoryForm);
-      setIsParent(false);
-      onOpenChange?.(false);
-    } catch (err) {
-      console.error(err);
+      finalMediaId = res.data[0].id;
     }
+
+    const payload = {
+      id: categoryId,
+      title: form.title,
+      slug: form.slug,
+      discount: form.discount,
+      parentId: form.parentId,
+      mediaId: finalMediaId,
+    };
+
+    const res = categoryId
+      ? await updateCategory(payload)
+      : await createCategory(payload);
+
+    if (!res.ok) return;
+
+    setForm(initialCategoryForm);
+    setIsParent(false); */
+
+    return false;
   });
 
   return (
