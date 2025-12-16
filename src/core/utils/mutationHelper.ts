@@ -1,14 +1,20 @@
 export const handleMutation = async <T>(
   mutationFn: () => Promise<T>,
-  resetForm?: () => void
-): Promise<boolean> => {
+  options?: {
+    resetForm?: () => void;
+    returnResponse?: boolean;
+  }
+): Promise<boolean | T> => {
+  const { resetForm, returnResponse = false } = options ?? {};
+
   try {
     const res = await mutationFn();
-    // اگر response دارای res.ok هست
+
     if (res && (res as any)?.ok) {
       resetForm?.();
-      return true;
+      return returnResponse ? res : true;
     }
+
     return false;
   } catch (error) {
     console.error("Mutation error:", error);

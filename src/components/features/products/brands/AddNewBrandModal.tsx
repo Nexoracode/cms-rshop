@@ -14,6 +14,7 @@ import { TbBrandArc } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateBrand } from "./brand-validation";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 type Props = {
   brandId?: number | null;
@@ -60,35 +61,31 @@ const AddNewBrandModal: React.FC<Props> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    try {
-      let logoUrl = typeof form.logo === "string" ? form.logo : "";
+    let logoUrl = typeof form.logo === "string" ? form.logo : "";
 
-      if (form.logo instanceof File) {
-        const formData = new FormData();
-        formData.append("files", form.logo);
-        const uploadRes = await uploadMedias(formData);
-        if (!uploadRes.ok) return;
-        logoUrl = uploadRes.data?.[0]?.url ?? null;
-      }
+    if (form.logo instanceof File) {
+      const formData = new FormData();
+      formData.append("files", form.logo);
 
-      const payload = { name: form.name, slug: form.slug, logo: logoUrl };
+      const uploadRes = (await handleMutation(() => uploadMedias(formData), {
+        returnResponse: true,
+      })) as any;
 
-      const res = brandId
-        ? await updateBrand({ ...payload, id: brandId })
-        : await createBrand(payload);
-
-      if (!res.ok) return;
-
-      toast.success(
-        brandId ? "برند با موفقیت بروزرسانی شد" : "برند با موفقیت ایجاد شد"
-      );
-      setForm({ name: "", slug: "", logo: null });
-      onOpenChange?.(false);
-    } catch (err) {
-      console.error(err);
-      toast.error("خطای ناشناخته رخ داد.");
+      if (!uploadRes.ok) return false;
+      logoUrl = uploadRes.data?.[0]?.url ?? null;
     }
+
+    const { name, slug } = form;
+    const payload = { name, slug, logo: logoUrl };
+
+    if (brandId)
+      return handleMutation(() => updateBrand({ ...payload, id: brandId }), {
+        resetForm,
+      });
+    else return handleMutation(() => createBrand(payload), { resetForm });
   });
+
+  const resetForm = () => setForm({ name: "", slug: "", logo: null });
 
   return (
     <BaseModal
