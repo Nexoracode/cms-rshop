@@ -24,6 +24,7 @@ const initialCategoryForm = {
   discount: "0",
   parentId: 0,
   mediaId: "",
+  media: null as any,
   mediaFile: null as File | null,
 };
 
@@ -76,6 +77,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       slug,
       discount,
       parentId: parent_id,
+      media,
       mediaId: media?.id ?? "",
       mediaFile: null,
     });
@@ -181,7 +183,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
         <ImageBoxUploader
           changeStatusFile={form.mediaFile}
-          defaultImg={form.mediaId ? form.mediaId : null}
+          defaultImg={form?.media?.url ? form?.media?.url : null}
           onFile={(file) =>
             handleMultipleFieldsChange({
               mediaFile: file,

@@ -19,7 +19,9 @@ const Categories = () => {
     setEditCategory(category);
     setIsEditOpen(true);
   };
-
+  
+  console.log(editCategory);
+  
   return (
     <>
       {/* Modal for Edit */}
