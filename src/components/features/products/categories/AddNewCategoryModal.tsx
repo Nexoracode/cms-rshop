@@ -16,6 +16,7 @@ import { validateCategory } from "./category-validation";
 import TextInput from "@/components/ui/inputs/TextInput";
 import FieldErrorText from "@/components/forms/FieldErrorText";
 import CategorySelect from "./CategorySelect";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 const initialCategoryForm = {
   title: "",
@@ -83,14 +84,18 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-        let finalMediaId = form.mediaId;
+    let finalMediaId = form.mediaId;
 
     if (form.mediaFile) {
       const fd = new FormData();
       fd.append("files", form.mediaFile);
-      const res = await uploadImageCategory(fd);
-      if (!res.ok) return;
-      finalMediaId = res.data[0].id;
+
+      const uploadRes = (await handleMutation(() => uploadImageCategory(fd), {
+        returnResponse: true,
+      })) as any;
+
+      if (!uploadRes.ok) return false;
+      finalMediaId = uploadRes.data[0].id;
     }
 
     const payload = {
@@ -102,17 +107,17 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       mediaId: finalMediaId,
     };
 
-    const res = categoryId
-      ? await updateCategory(payload)
-      : await createCategory(payload);
+    if (categoryId)
+      return handleMutation(() => updateCategory(payload), {
+        resetForm,
+      });
+    else return handleMutation(() => createCategory(payload), { resetForm });
+  });
 
-    if (!res.ok) return;
-
+  const resetForm = () => {
     setForm(initialCategoryForm);
     setIsParent(false);
-
-    onOpenChange?.(false);
-  });
+  };
 
   return (
     <BaseModal
