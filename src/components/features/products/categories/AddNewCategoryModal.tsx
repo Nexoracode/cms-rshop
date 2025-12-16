@@ -86,7 +86,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   const handleSubmit = submit(async (changed) => {
     try {
       let finalMediaId = form.mediaId;
-      
+
       if (form.mediaFile) {
         const fd = new FormData();
         fd.append("files", form.mediaFile);
@@ -145,6 +145,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       onConfirm={handleSubmit}
       size="xl"
       icon={<BiCategoryAlt />}
+      isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-6">
         <div>

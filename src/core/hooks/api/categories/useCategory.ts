@@ -46,7 +46,9 @@ export const useCreateCategory = () => {
         route: "/category",
         method: "POST",
         body: data,
-        isActiveToast: false,
+        isActiveToast: true,
+        loadingText: "در حال اضافه کردن دسته بندی جدید",
+        successText: "دسته بندی با موفقیت اضافه شد!"
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-categories"] });
@@ -69,7 +71,9 @@ export const useUpdateCategory = () => {
           discount: data.discount,
           parentId: data.parentId,
         },
-        isActiveToast: false,
+        isActiveToast: true,
+        loadingText: "در حال بروزرسانی دسته بندی",
+        successText: "دسته بندی با موفقیت بروزرسانی شد!"
       }),
     onSuccess: (_res, variables) => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -106,7 +110,9 @@ export const useCategoryImageUpload = () => {
         route: "/category/upload",
         method: "POST",
         body: data,
-        isActiveToast: false,
+        isActiveToast: true,
+        loadingText: "در حال آپلود عکس",
+        successText: "آپلود عکس موفقیت آمیز بود!",
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-categories"] });
