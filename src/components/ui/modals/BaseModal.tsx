@@ -6,8 +6,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  Button,
 } from "@heroui/react";
 import { FiAlertCircle } from "react-icons/fi";
 import { ModalSize } from ".";
@@ -124,6 +122,8 @@ const BaseModal: React.FC<BaseModalProps> = ({
                       onClose();
                     }}
                     onSubmit={() => {
+                      console.log(isOpen);
+                      
                       const result = onConfirm?.(handleOpenChange);
 
                       if (result instanceof Promise) {

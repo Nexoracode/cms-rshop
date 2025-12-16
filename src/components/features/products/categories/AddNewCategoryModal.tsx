@@ -83,7 +83,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-/*     let finalMediaId = form.mediaId;
+    /*     let finalMediaId = form.mediaId;
 
     if (form.mediaFile) {
       const fd = new FormData();
@@ -111,7 +111,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setForm(initialCategoryForm);
     setIsParent(false); */
 
-    return false;
+    onOpenChange?.(false);
   });
 
   return (

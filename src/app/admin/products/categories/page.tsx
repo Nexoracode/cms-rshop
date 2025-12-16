@@ -22,7 +22,7 @@ const Categories = () => {
 
   return (
     <>
-      {/* Modal for Add / Edit */}
+      {/* Modal for Edit */}
       <AddNewCategoryModal
         categoryId={editCategory?.id || 1}
         defaultValues={editCategory}
