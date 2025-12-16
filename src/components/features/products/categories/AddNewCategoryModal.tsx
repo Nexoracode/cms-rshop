@@ -115,7 +115,8 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   });
 
   const resetForm = () => {
-    setForm(initialCategoryForm);
+    reset();
+    //setForm(initialCategoryForm);
     setIsParent(false);
   };
 
@@ -124,7 +125,6 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       isOpen={isOpen}
       onOpenChange={(val) => {
         onOpenChange?.(val);
-        !val && reset();
       }}
       triggerProps={
         categoryId

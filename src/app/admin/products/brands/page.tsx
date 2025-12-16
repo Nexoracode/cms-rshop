@@ -29,6 +29,8 @@ const BrandsProduct = () => {
     setIsEditOpen(true);
   };
 
+  console.log("###########", editBrand);
+
   return (
     <>
       <AddNewBrandModal

@@ -50,6 +50,7 @@ const AddNewBrandModal: React.FC<Props> = ({
     useUpdateBrand();
 
   useEffect(() => {
+    console.log(defaultValues);
     if (defaultValues) {
       setForm({
         name: defaultValues.name ?? "",
@@ -76,7 +77,6 @@ const AddNewBrandModal: React.FC<Props> = ({
 
     const { name, slug } = form;
     const payload = { name, slug, logo: logoUrl };
-
     if (brandId)
       return handleMutation(() => updateBrand({ ...payload, id: brandId }), {
         resetForm,
@@ -84,14 +84,13 @@ const AddNewBrandModal: React.FC<Props> = ({
     else return handleMutation(() => createBrand(payload), { resetForm });
   });
 
-  const resetForm = () => setForm({ name: "", slug: "", logo: null });
+  const resetForm = () => reset();
 
   return (
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => {
         onOpenChange?.(val);
-        !val && reset();
       }}
       triggerProps={
         brandId
