@@ -11,6 +11,7 @@ import {
   useUpdateAttributeValue,
 } from "@/core/hooks/api/attributes/useAttributeValue";
 import { AttributeValue, CreateAttributeValue } from "../attribute.types";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 type Props = {
   defaultDatas?: AttributeValue;
@@ -40,10 +41,12 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   );
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
 
-  const { mutate: createAttributeValue } = useCreateAttributeValue();
-  const { mutate: updateAttributeValue } = useUpdateAttributeValue(
-    type === "edit" ? (datas as AttributeValue).id : -1
-  );
+  const { mutateAsync: createAttributeValue, isPending: isPendingCreate } =
+    useCreateAttributeValue();
+  const { mutateAsync: updateAttributeValue, isPending: isPendingUpdate } =
+    useUpdateAttributeValue(
+      type === "edit" ? (datas as AttributeValue).id : -1
+    );
 
   useEffect(() => {
     if (isActiveColorPicker) {
@@ -68,35 +71,24 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     setIsActiveColorPicker(!!defaultDatas?.display_color);
   }, [defaultDatas, type, attributeId]);
 
-  const isDisabled =
-    !datas.value.trim() ||
-    (isActiveColorPicker && !datas.display_color?.trim());
-
-  const handleConfirm = (close: (open: boolean) => void) => {
+  const handleConfirm = async () => {
     if (type === "edit") {
       const { id, ...rest } = datas as AttributeValue;
-      updateAttributeValue(
-        { ...rest, attribute_id: attributeId },
-        {
-          onSuccess: () => {
-            close(false);
-            setDatas(initialState);
-          },
-        }
+      return handleMutation(
+        () => updateAttributeValue({ ...rest, attribute_id: attributeId }),
+        resetForm
       );
     } else {
       const payload = {
         ...datas,
         attribute_id: attributeId,
       };
-
-      createAttributeValue(payload, {
-        onSuccess: () => {
-          close(false);
-          setDatas(initialState);
-        },
-      });
+      return handleMutation(() => createAttributeValue(payload), resetForm);
     }
+  };
+
+  const resetForm = () => {
+    setDatas(initialState);
   };
 
   return (
@@ -119,7 +111,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       title={type === "edit" ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
-      isConfirmDisabled={isDisabled}
+      isConfirmDisabled={isPendingCreate || isPendingUpdate}
       isActiveFooter={true}
       size="md"
       icon={<FiCheckSquare />}

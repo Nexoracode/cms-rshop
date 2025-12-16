@@ -12,6 +12,7 @@ import { ImMakeGroup } from "react-icons/im";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import { AttributeGroup, CreateAttributeGroup } from "../attribute.types";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 type Props = {
   defaultDatas?: AttributeGroup;
@@ -32,12 +33,16 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<CreateAttributeGroup | AttributeGroup>(initialState);
-
-  const { mutate: createAttributeGroup } = useCreateAttributeGroup();
-  const { mutate: updateAttributeGroup } = useUpdateAttributeGroup(
-    type === "edit" ? (datas as AttributeGroup).id : -1
+  const [datas, setDatas] = useState<CreateAttributeGroup | AttributeGroup>(
+    initialState
   );
+
+  const { mutateAsync: createAttributeGroup, isPending: isPendingCreate } =
+    useCreateAttributeGroup();
+  const { mutateAsync: updateAttributeGroup, isPending: isPendingUpdate } =
+    useUpdateAttributeGroup(
+      type === "edit" ? (datas as AttributeGroup).id : -1
+    );
 
   useEffect(() => {
     type === "add"
@@ -45,26 +50,16 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
       : setDatas(defaultDatas || initialState);
   }, [defaultDatas, type]);
 
-  const isDisabled = !datas.name.trim() || !datas.slug.trim();
-
-  const handleConfirm = (close: (open: boolean) => void) => {
+  const handleConfirm = async () => {
     const { id, ...rest } = datas as AttributeGroup;
 
     if (type === "edit") {
-      updateAttributeGroup(rest, {
-        onSuccess: () => {
-          close(false);
-          setDatas(initialState);
-        },
-      });
-    } else {
-      createAttributeGroup(rest, {
-        onSuccess: () => {
-          close(false);
-          setDatas(initialState);
-        },
-      });
-    }
+      return handleMutation(() => updateAttributeGroup(rest), resetForm);
+    } else return handleMutation(() => createAttributeGroup(rest), resetForm);
+  };
+
+  const resetForm = () => {
+    setDatas(initialState);
   };
 
   return (
@@ -87,7 +82,7 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
       title={type === "edit" ? "ویرایش گروه ویژگی" : "افزودن گروه ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
-      isConfirmDisabled={isDisabled}
+      isConfirmDisabled={isPendingCreate || isPendingUpdate}
       isActiveFooter={true}
       size="md"
       icon={<ImMakeGroup />}

@@ -17,6 +17,7 @@ import { FiCheckSquare, FiCircle } from "react-icons/fi";
 import { MdNumbers } from "react-icons/md";
 import { ImCheckmark2 } from "react-icons/im";
 import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 type Props = {
   defaultDatas?: Attribute;
@@ -44,12 +45,10 @@ const AddNewAttributeModal: React.FC<Props> = ({
   const [datas, setDatas] = useState<CreateAttribute | Attribute>(initialState);
 
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
-  const { mutate: createAttribute } = useCreateAttribute(
-    datas.group_id || undefined
-  );
-  const { mutate: updateAttribute } = useUpdateAttribute(
-    type === "edit" ? (datas as Attribute).id : -1
-  );
+  const { mutateAsync: createAttribute, isPending: isPendingCreate } =
+    useCreateAttribute(datas.group_id || undefined);
+  const { mutateAsync: updateAttribute, isPending: isPendingUpdate } =
+    useUpdateAttribute(type === "edit" ? (datas as Attribute).id : -1);
 
   useEffect(() => {
     type === "add"
@@ -92,25 +91,17 @@ const AddNewAttributeModal: React.FC<Props> = ({
     },
   ];
 
-  //!datas.name.trim() || !datas.slug.trim() || !datas.group_id || !datas.type;
-
-  const handleConfirm = (close: (open: boolean) => void) => {
+  const handleConfirm = async () => {
     if (type === "edit") {
-      const payload = datas as Attribute;
-      updateAttribute(payload, {
-        onSuccess: () => {
-          close(false);
-          setDatas(initialState);
-        },
-      });
-    } else {
-      createAttribute(datas, {
-        onSuccess: () => {
-          close(false);
-          setDatas(initialState);
-        },
-      });
-    }
+      return handleMutation(
+        () => updateAttribute(datas as Attribute),
+        resetForm
+      );
+    } else return handleMutation(() => createAttribute(datas), resetForm);
+  };
+
+  const resetForm = () => {
+    setDatas(initialState);
   };
 
   return (
@@ -135,6 +126,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
       onConfirm={handleConfirm}
       size="lg"
       icon={<AiOutlineFontColors />}
+      isConfirmDisabled={isPendingCreate || isPendingUpdate}
     >
       <div className="flex flex-col gap-5 px-2">
         {/* عنوان */}

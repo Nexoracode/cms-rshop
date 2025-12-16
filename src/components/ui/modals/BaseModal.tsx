@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useState, cloneElement, isValidElement } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-} from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
 import { FiAlertCircle } from "react-icons/fi";
 import { ModalSize } from ".";
 import OptionButton, { OptionButtonProps } from "../buttons/OptionButton";
@@ -19,9 +14,7 @@ type BaseModalProps = {
   children?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
-  onConfirm?: (
-    close: (open: boolean) => void
-  ) => void | boolean | Promise<boolean> | Promise<void>;
+  onConfirm?: () => Promise<boolean> | Promise<void>;
   onCancel?: () => void;
   icon?: React.ReactNode;
   placement?: "auto" | "center" | "top" | "bottom";
@@ -34,7 +27,7 @@ type BaseModalProps = {
 
 const BaseModal: React.FC<BaseModalProps> = ({
   isOpen: controlledIsOpen,
-  onOpenChange: controlledOnOpenChange,
+  onOpenChange,
   title = "توجه",
   children,
   confirmText = "تأیید",
@@ -57,7 +50,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
   const isOpen = isControlled ? controlledIsOpen : internalOpen;
 
   const handleOpenChange = (open: boolean) => {
-    controlledOnOpenChange?.(open);
+    onOpenChange?.(open);
     setInternalOpen(open);
   };
 
@@ -121,22 +114,11 @@ const BaseModal: React.FC<BaseModalProps> = ({
                       onCancel?.();
                       onClose();
                     }}
-                    onSubmit={() => {
-                      console.log(isOpen);
-                      
-                      const result = onConfirm?.(handleOpenChange);
-
-                      if (result instanceof Promise) {
-                        return result.then((value) => {
-                          console.log("DDDDDD", value);
-
-                          if (value === true) onClose();
-                        });
-                      }
-                      console.log("!!!!!!!!!!!!!!!!", result);
+                    onSubmit={async () => {
+                      const result = await onConfirm?.();
 
                       if (result === true) {
-                        onClose();
+                        handleOpenChange(false);
                       }
                     }}
                     isLoading={isConfirmDisabled}
