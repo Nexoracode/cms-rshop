@@ -92,8 +92,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
     },
   ];
 
-  const isDisabled =
-    !datas.name.trim() || !datas.slug.trim() || !datas.group_id || !datas.type;
+  //!datas.name.trim() || !datas.slug.trim() || !datas.group_id || !datas.type;
 
   const handleConfirm = (close: (open: boolean) => void) => {
     if (type === "edit") {
@@ -134,8 +133,6 @@ const AddNewAttributeModal: React.FC<Props> = ({
       title={type === "edit" ? "ویرایش ویژگی" : "افزودن ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
-      isConfirmDisabled={isDisabled}
-      isActiveFooter={true}
       size="lg"
       icon={<AiOutlineFontColors />}
     >
