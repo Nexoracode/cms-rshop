@@ -162,11 +162,12 @@ const FilterModal: React.FC<Props> = ({ title = "فیلتر محصولات", fie
     return params;
   };
 
-  const handleApply = (close: (open: boolean) => void) => {
+  const handleApply = () => {
     const p = buildParams();
     const q = p.toString();
     router.push(q ? `${pathname}?${q}` : pathname);
-    close(false);
+    //close(false);
+    return true;
   };
 
   const handleClear = () => {

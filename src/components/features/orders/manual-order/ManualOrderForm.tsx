@@ -62,7 +62,7 @@ const ManualOrderForm = () => {
     }
   }, [user?.data?.addresses]);
 
-  const handleSubmit = submit(() => {
+  const handleSubmit = submit(async () => {
     const orderData: any = {
       userId: form.userId,
       addressId: form.selectedAddressId,

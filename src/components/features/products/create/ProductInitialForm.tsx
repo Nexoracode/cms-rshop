@@ -89,7 +89,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     data && setForm(mapAPIToLocalProduct(data));
   }, [data]);
 
-  const handleSubmit = submit((changed) => {
+  const handleSubmit = submit(async (changed) => {
     console.log(changed);
 
     const {
