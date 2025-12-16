@@ -6,6 +6,7 @@ import { TbCategory2 } from "react-icons/tb";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
 import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { CategoryTree } from "@/components/features/products/categories/CategoryTree/CategoryTree";
+import CategoriesFilter from "@/components/features/products/categories/Filter/CategoriesFilter";
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
@@ -18,7 +19,7 @@ const Categories = () => {
     setEditCategory(category);
     setIsEditOpen(true);
   };
-  
+
   return (
     <>
       {/* Modal for Add / Edit */}
@@ -31,6 +32,7 @@ const Categories = () => {
 
       {/* Main Card */}
       <UnifiedCard
+        searchFilter={<CategoriesFilter/>}
         headerProps={{
           title: "مدیریت دسته‌بندی‌ها",
           icon: <TbCategory2 className="text-2xl" />,
