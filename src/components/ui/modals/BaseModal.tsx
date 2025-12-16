@@ -128,15 +128,18 @@ const BaseModal: React.FC<BaseModalProps> = ({
 
                       if (result instanceof Promise) {
                         return result.then((value) => {
+                          console.log("DDDDDD", value);
+
                           if (value === true) onClose();
                         });
                       }
+                      console.log("!!!!!!!!!!!!!!!!", result);
 
                       if (result === true) {
                         onClose();
                       }
                     }}
-                    isSubmitting={isConfirmDisabled}
+                    isLoading={isConfirmDisabled}
                   />
                 )}
               </ModalBody>

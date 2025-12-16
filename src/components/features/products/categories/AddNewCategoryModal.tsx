@@ -12,7 +12,6 @@ import {
 import { useForm } from "@/core/hooks/common/form/useForm";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { BiCategoryAlt } from "react-icons/bi";
-import toast from "react-hot-toast";
 import { validateCategory } from "./category-validation";
 import TextInput from "@/components/ui/inputs/TextInput";
 import FieldErrorText from "@/components/forms/FieldErrorText";
@@ -110,18 +109,11 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
       if (!res.ok) return;
 
-      toast.success(
-        categoryId
-          ? "دسته‌بندی با موفقیت ویرایش شد"
-          : "دسته‌بندی با موفقیت افزوده شد"
-      );
-
       setForm(initialCategoryForm);
       setIsParent(false);
       onOpenChange?.(false);
     } catch (err) {
       console.error(err);
-      toast.error("خطای ناشناخته. با برنامه‌نویس تماس بگیرید");
     }
   });
 
