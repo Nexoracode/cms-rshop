@@ -8,7 +8,6 @@ import {
   useCreateBrand,
   useUpdateBrand,
 } from "@/core/hooks/api/useBrand";
-import toast from "react-hot-toast";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { TbBrandArc } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";

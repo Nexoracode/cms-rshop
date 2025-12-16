@@ -36,7 +36,9 @@ export const useCreateBrand = () => {
         route: "/brand",
         method: "POST",
         body: data,
-        isActiveToast: false,
+         isActiveToast: true,
+        loadingText: "در حال اضافه کردن برند جدید",
+        successText: "برند با موفقیت اضافه شد!"
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["brands"] });
@@ -64,7 +66,9 @@ export const useUpdateBrand = () => {
           slug: data.slug,
           logo: data.logo,
         },
-        isActiveToast: false,
+        isActiveToast: true,
+        loadingText: "در حال بروزرسانی برند",
+        successText: "برند با موفقیت بروزرسانی شد!",
       }),
     onSuccess: (_res, variables) => {
       queryClient.invalidateQueries({ queryKey: ["brands"] });
@@ -99,7 +103,9 @@ export const useBrandUpload = () => {
         route: "/product/upload",
         method: "POST",
         body: data,
-        isActiveToast: false,
+        isActiveToast: true,
+        loadingText: "در حال آپلود عکس",
+        successText: "آپلود عکس موفقیت آمیز بود!",
       });
     },
   });

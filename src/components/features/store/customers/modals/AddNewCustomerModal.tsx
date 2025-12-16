@@ -19,7 +19,7 @@ const AddNewCustomerModal: React.FC = () => {
     emailValid: true,
   });
 
-  const addNewUser = useAddNewUser();
+  const { mutateAsync: addNewUser, isPending } = useAddNewUser();
 
   const resetForm = () => {
     setForm({
@@ -43,7 +43,7 @@ const AddNewCustomerModal: React.FC = () => {
       email: form.email ? form.email.trim() : undefined,
     };
 
-    return handleMutation(() => addNewUser.mutateAsync(newUser), resetForm);
+    return handleMutation(() => addNewUser(newUser), { resetForm });
   };
 
   return (
@@ -59,6 +59,7 @@ const AddNewCustomerModal: React.FC = () => {
         title: "+ افزودن",
       }}
       icon={<FiUserPlus />}
+      isConfirmDisabled={isPending}
     >
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">

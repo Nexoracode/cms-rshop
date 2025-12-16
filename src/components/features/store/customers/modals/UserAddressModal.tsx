@@ -16,7 +16,6 @@ import {
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { UserAddress } from "../customer.types";
 
-
 type UserAddressModalProps = {
   btnAdd?: React.ReactNode;
   userId: number;
@@ -46,8 +45,9 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     is_primary: false,
   });
 
-  const addAddressMutation = useAddNewUserAddress(userId);
-  const updateAddressMutation = defaultData
+  const { mutateAsync: addAddressMutation, isPending: isPendingCreate} =
+    useAddNewUserAddress(userId);
+  const { mutateAsync: updateAddressMutation, isPending: isPendingUpdate} = defaultData
     ? useUpdateUserAddress(defaultData.id || 0)
     : null;
 
@@ -81,15 +81,13 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     console.log(payload, userId);
 
     if (defaultData && updateAddressMutation) {
-      return handleMutation(
-        () => updateAddressMutation.mutateAsync(payload),
-        resetForm
-      );
+      return handleMutation(() => updateAddressMutation.mutateAsync(payload), {
+        resetForm,
+      });
     } else {
-      return handleMutation(
-        () => addAddressMutation.mutateAsync(payload),
-        resetForm
-      );
+      return handleMutation(() => addAddressMutation.mutateAsync(payload), {
+        resetForm,
+      });
     }
   };
 
@@ -101,7 +99,14 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
       onConfirm={handleSubmit}
       onCancel={resetForm}
       size="lg"
-      triggerProps={isOpen === undefined ? {title: "+ افزودن", className: "bg-secondary-light text-secondary"} : null}
+      triggerProps={
+        isOpen === undefined
+          ? {
+              title: "+ افزودن",
+              className: "bg-secondary-light text-secondary",
+            }
+          : null
+      }
       trigger={isOpen === undefined ? btnAdd : undefined}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
