@@ -54,7 +54,7 @@ const initialProductForm: CreateProductRequest = {
   media_pinned_id: 0,
   helper_id: 0,
   brand_id: 0,
-  sku: ""
+  sku: "",
 };
 
 type ProductInitialFormProps = {
@@ -320,12 +320,12 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         >
           <NumberInput
             hideStepper
-            label="موجودی"
             placeholder="1"
             minValue={0}
             value={form.stock}
             labelPlacement="outside"
             onValueChange={(val) => handleFieldChange("stock", +val)}
+            endContent={"عدد"}
           />
         </ToggleSection>
 

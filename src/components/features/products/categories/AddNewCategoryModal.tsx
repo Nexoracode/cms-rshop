@@ -83,10 +83,10 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setIsParent(parent_id === 0);
   }, [defaultValues]);
 
-  const handleSubmit = submit(async () => {
+  const handleSubmit = submit(async (changed) => {
     try {
       let finalMediaId = form.mediaId;
-
+      
       if (form.mediaFile) {
         const fd = new FormData();
         fd.append("files", form.mediaFile);
@@ -204,6 +204,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
             errorMessage={errors.title}
             isRequired
             onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
           />
 
           <SlugInput

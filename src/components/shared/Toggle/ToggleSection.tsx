@@ -20,6 +20,10 @@ const ToggleSection: FC<Props> = ({
   subtitle = "",
   hideChildrenWhenEnabled = false,
 }) => {
+  const shouldShowChildren = hideChildrenWhenEnabled
+    ? !initialMode // وقتی پراپ هست: وقتی سوییچ خاموشه نشون بده (مثل موجودی نامحدود)
+    : initialMode; // وقتی پراپ نیست: وقتی سوییچ روشنه نشون بده (مثل محدودیت سفارش)
+
   return (
     <div
       className={`w-full flex flex-col justify-between border border-slate-200 p-3 ${
@@ -31,9 +35,7 @@ const ToggleSection: FC<Props> = ({
           <p>{title}</p>
           {subtitle ? (
             <p className="text-xs text-gray-600 mt-1">{subtitle}</p>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
         <Switch
           isSelected={initialMode}
@@ -42,7 +44,7 @@ const ToggleSection: FC<Props> = ({
         />
       </div>
 
-      {initialMode && !hideChildrenWhenEnabled && (
+      {shouldShowChildren && (
         <div className={`${children ? "mt-4" : ""}`}>{children}</div>
       )}
     </div>
