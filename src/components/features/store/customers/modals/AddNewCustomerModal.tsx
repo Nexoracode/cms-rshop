@@ -69,6 +69,7 @@ const AddNewCustomerModal: React.FC = () => {
             value={form.firstName}
             onChange={(v) => setForm({ ...form, firstName: v })}
             isRequired
+            allowEnglishOnly={false}
           />
 
           <TextInput
@@ -77,6 +78,7 @@ const AddNewCustomerModal: React.FC = () => {
             value={form.lastName}
             onChange={(v) => setForm({ ...form, lastName: v })}
             isRequired
+            allowEnglishOnly={false}
           />
         </div>
 

@@ -45,11 +45,10 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     is_primary: false,
   });
 
-  const { mutateAsync: addAddressMutation, isPending: isPendingCreate} =
+  const { mutateAsync: addAddressMutation, isPending: isPendingCreate } =
     useAddNewUserAddress(userId);
-  const { mutateAsync: updateAddressMutation, isPending: isPendingUpdate} = defaultData
-    ? useUpdateUserAddress(defaultData.id || 0)
-    : null;
+  const { mutateAsync: updateAddressMutation, isPending: isPendingUpdate } =
+    useUpdateUserAddress();
 
   useEffect(() => {
     if (defaultData) {
@@ -81,11 +80,18 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     console.log(payload, userId);
 
     if (defaultData && updateAddressMutation) {
-      return handleMutation(() => updateAddressMutation.mutateAsync(payload), {
-        resetForm,
-      });
+      return handleMutation(
+        () =>
+          updateAddressMutation({
+            data: payload,
+            addressId: defaultData.id || 0,
+          }),
+        {
+          resetForm,
+        }
+      );
     } else {
-      return handleMutation(() => addAddressMutation.mutateAsync(payload), {
+      return handleMutation(() => addAddressMutation(payload), {
         resetForm,
       });
     }
@@ -111,6 +117,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       icon={<LuMapPinHouse />}
+      isConfirmDisabled={isPendingCreate || isPendingUpdate}
     >
       <div className="flex flex-col gap-6">
         <RadioGroup

@@ -22,11 +22,17 @@ export const useAddNewUserAddress = (userId: number) => {
   });
 };
 
-export const useUpdateUserAddress = (addressId: number) => {
+export const useUpdateUserAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Record<string, any>) =>
+    mutationFn: ({
+      data,
+      addressId,
+    }: {
+      data: Record<string, any>;
+      addressId: number;
+    }) =>
       fetcher({
         route: `/addresses/${addressId}/update`,
         method: "PATCH",
