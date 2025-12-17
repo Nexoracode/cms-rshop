@@ -1,7 +1,8 @@
 // services/promotions.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { buildQueryString } from "@/core/utils/buildListQuery";
+import { buildListQuery } from "@/core/utils/buildListQuery";
+import { ListQueryParams } from "@/core/types";
 
 export type PromotionType =
   | "coupon"
@@ -20,34 +21,22 @@ export const createPromotionHooks = (
     filter,
     search,
     sortBy,
-  }: {
-    page?: number;
-    filter?: Record<string, string[]>;
-    search?: string;
-    sortBy?: string[];
-  } = {}) => {
+    limit = 10,
+  }: ListQueryParams) => {
     return useQuery({
-      queryKey: [queryKeyPrefix + "-list", { page, filter, search, sortBy }],
+      queryKey: [`${queryKeyPrefix}-list`, page, filter, search, sortBy, limit],
       queryFn: () => {
-        const params: Record<string, any> = { page, type }; // type حتماً باشه
-
-        // دستی filter رو گسترش بده (دقیقاً مثل محصولات)
-        if (filter) {
-          for (const key in filter) {
-            const values = filter[key];
-            if (values?.length) {
-              params[`filter.${key}`] = values;
-            }
-          }
-        }
-
-        if (search) params.search = search;
-        if (sortBy?.length) params.sortBy = sortBy;
-
-        const queryString = buildQueryString(params);
-
+        const qs = buildListQuery({
+          page,
+          limit,
+          sortBy,
+          search,
+          filter,
+        });
+        console.log("@@@@@@@@@",qs);
+        
         return fetcher({
-          route: `/admin/promotions?${queryString}`,
+          route: `/admin/promotions?${qs}`,
           isActiveToast: false,
         });
       },
