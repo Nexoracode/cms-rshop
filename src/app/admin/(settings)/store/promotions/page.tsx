@@ -16,7 +16,7 @@ import FreeShipping from "./free-shipping/page";
 
 const Promotions = () => {
   // active tab (controlled)
-  const [activeTab, setActiveTab] = useState<string>("coupons");
+  const [activeTab, setActiveTab] = useState<string>();
 
   // track which tabs have been mounted at least once
   const [mounted, setMounted] = useState<Record<string, boolean>>({
@@ -37,7 +37,7 @@ const Promotions = () => {
   const tabs = useMemo(
     () => [
       {
-        key: "coupons",
+        key: "coupon",
         title: (
           <span className="flex items-center gap-2">
             <TbRosetteDiscount className="text-lg" />
@@ -101,7 +101,7 @@ const Promotions = () => {
       fullWidth
       activeKey={activeTab}
       onTabChange={(k) => handleTabChange(String(k))}
-      queryKey="type"
+      queryKey="filter.type"
       syncWithQuery
     />
   );
