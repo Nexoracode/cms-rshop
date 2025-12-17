@@ -29,7 +29,6 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
     type,
     used_count,
     code,
-    conditions,
     starts_at,
     usage_limit,
     ends_at,
@@ -37,27 +36,30 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
   } = item;
 
   useEffect(() => {
-    console.log("Item => ", item);
+    if (!actions || actions.length === 0) {
+      setPromotionType({ name: "", value: "" });
+      return;
+    }
 
-    actions.map((act: PromotionActionType) => {
-      if (act.type === "percent_discount" && act.value) {
-        setPromotionType(() => ({
-          name: "درصد",
-          value: `%${String(act.value)}`,
-        }));
+    let names: string[] = [];
+    let values: string[] = [];
+
+    actions.forEach((act: PromotionActionType) => {
+      if (act.type === "percent_discount" && act.value !== undefined) {
+        names.push("درصد");
+        values.push(`%${act.value}`);
       }
-      if (act.type === "amount_discount" && act.value) {
-        setPromotionType((prev) => ({
-          name: `ثابت / ${prev.name}`,
-          value: `${price(act.value)} / ${prev.value}`,
-        }));
+      if (act.type === "amount_discount" && act.value !== undefined) {
+        names.push("ثابت");
+        values.push(price(act.value));
       }
     });
-  }, [item]);
 
-  useEffect(() => {
-    console.log("promotionType =>", promotionType);
-  }, [promotionType]);
+    setPromotionType({
+      name: names.join(" / "),
+      value: values.join(" / "),
+    });
+  }, [actions]);
 
   const rowItems = [
     { label: "عنوان", value: name },
