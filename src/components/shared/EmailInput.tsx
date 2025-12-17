@@ -51,13 +51,12 @@ const EmailInput: React.FC<EmailInputProps> = ({
       type="email"
       inputAlign="left"
       errorMessage={error}
-      
-      // تنظیمات sanitize مخصوص ایمیل
-      allowSpecialChars={true}
-      allowedSpecialChars={["@", "."]}
-      allowSpaces={false}              // فضای خالی در ایمیل ممنوع
-      allowEnglishOnly={true}          // معمولاً ایمیل فقط انگلیسیه
+      allowEnglishOnly={true}
       allowNumbers={true}
+      allowSpaces={false}
+      allowSpecialChars={true}
+      allowedSpecialChars={["@", ".", "-", "_", "+"]}
+      allowChars={true}
     />
   );
 };

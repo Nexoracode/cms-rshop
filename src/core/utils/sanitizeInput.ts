@@ -35,7 +35,7 @@ export function sanitizeInput(
     allowSpaces = true,
     allowSpecialChars = false,
     allowedSpecialChars = [],
-    allowNumbers = true, // ← پیش‌فرض عدد مجازه
+    allowNumbers = true,
   } = options;
 
   const specialsWhitelist = new Set(allowedSpecialChars);
@@ -43,7 +43,7 @@ export function sanitizeInput(
   let firstError = "";
 
   for (const ch of input) {
-    // فاصله‌ها
+    // ۱. فاصله‌ها
     if (isSpace(ch)) {
       if (allowSpaces) {
         out += ch;
@@ -53,7 +53,7 @@ export function sanitizeInput(
       continue;
     }
 
-    // اعداد
+    // ۲. اعداد
     if (isDigit(ch)) {
       if (allowNumbers) {
         out += ch;
@@ -63,7 +63,21 @@ export function sanitizeInput(
       continue;
     }
 
-    // حروف
+    // ۳. نمادها — این رو آوردیم بالا! قبل از حروف
+    if (allowSpecialChars) {
+      if (allowedSpecialChars.length > 0) {
+        if (specialsWhitelist.has(ch)) {
+          out += ch;
+          continue; // قبول شد، برو بعدی
+        }
+        // اگر در لیست نبود، ادامه بده به چک‌های بعدی (شاید حرف انگلیسی باشه؟ نه، اما حداقل حذف نمی‌شه فوری)
+      } else {
+        out += ch; // همه نمادها مجاز
+        continue;
+      }
+    }
+
+    // ۴. حروف — حالا نوبت حروفه
     if (allowEnglishOnly) {
       if (isEnglishLetter(ch)) {
         out += ch;
@@ -74,26 +88,13 @@ export function sanitizeInput(
     } else {
       if (isLetterUnicode(ch)) {
         out += ch;
-        continue;
       }
+      continue;
     }
 
-    // نمادها
-    if (!allowSpecialChars) {
-      if (!firstError) firstError = "استفاده از نمادها مجاز نیست.";
-      continue;
-    } else {
-      if (allowedSpecialChars.length > 0) {
-        if (specialsWhitelist.has(ch)) {
-          out += ch;
-        } else if (!firstError) {
-          firstError = `این نماد مجاز نیست: «${ch}». نمادهای مجاز: ${allowedSpecialChars.join(
-            " "
-          )}`;
-        }
-      } else {
-        out += ch; // همه‌ی نمادها مجازند
-      }
+    // اگر به اینجا رسید یعنی کاراکتر غیرمجاز بود (مثل نماد غیرمجاز یا حرف غیرانگلیسی در حالت only English)
+    if (!firstError) {
+      firstError = "کاراکتر غیرمجاز وارد شده است.";
     }
   }
 
