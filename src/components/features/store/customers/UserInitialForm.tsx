@@ -13,6 +13,7 @@ import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
 import UserAddressCard from "./UserAddress/UserAddressCard";
 import { UserAddress } from "./customer.types";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 type Props = {
   user?: Record<string, any>;
@@ -49,13 +50,7 @@ const UserInitialForm = ({ user }: Props) => {
   }, [user]);
 
   const handleUpdate = () => {
-    const {
-      email,
-      first_name,
-      is_active,
-      last_name,
-      phone,
-    } = data;
+    const { email, first_name, is_active, last_name, phone } = data;
 
     const dataToSend = {
       first_name,
@@ -123,8 +118,8 @@ const UserInitialForm = ({ user }: Props) => {
           <EmailInput
             value={data.email}
             onChange={(email) => setData((prev: any) => ({ ...prev, email }))}
-            label="ایمیل"
-            placeholder="example@mail.com"
+            isActiveError={true}
+            isRequired
           />
         </div>
 
@@ -159,7 +154,7 @@ const UserInitialForm = ({ user }: Props) => {
         } gap-4 px-4 pb-4`}
       >
         {data?.addresses?.map((addr: UserAddress, index: number) => (
-          <UserAddressCard key={index} address={addr} userId={user?.id}/>
+          <UserAddressCard key={index} address={addr} userId={user?.id} />
         )) || (
           <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">
             <LuMapPinHouse className="text-5xl text-gray-600" />

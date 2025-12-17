@@ -6,13 +6,14 @@ import FieldErrorText from "@/components/forms/FieldErrorText";
 
 type EmailInputProps = {
   value: string;
-  onChange: (email: string, isValid: boolean) => void;
+  onChange: (email: string) => void;
   label?: string;
   placeholder?: string;
   isRequired?: boolean;
+  isActiveError?: boolean;
+  errorMessage?: string;
+  size?: "sm" | "md" | "lg";
 };
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function EmailInput({
   value,
@@ -20,15 +21,20 @@ export default function EmailInput({
   label = "ایمیل",
   placeholder = "example@mail.com",
   isRequired = false,
+  isActiveError = true,
+  errorMessage,
+  size = "md",
 }: EmailInputProps) {
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
 
-  // ⏱ حذف خودکار ارور
+  // ⏱ حذف خودکار ارور بعد از ۳ ثانیه
   useEffect(() => {
     if (error) {
-      const t = setTimeout(() => setError(null), 3000);
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return () => clearTimeout(timer);
     }
   }, [error]);
 
@@ -36,41 +42,38 @@ export default function EmailInput({
     const raw = e.target.value;
     if (!touched) setTouched(true);
 
-    // ❌ space
+    // جلوگیری از فاصله
     if (/\s/.test(raw)) {
-      setError("فاصله در ایمیل مجاز نیست");
+      setError("فاصله مجاز نیست");
       return;
     }
 
-    // ❌ غیرلاتین (فارسی، عربی، ایموجی...)
-    if (/[^\x00-\x7F]/.test(raw)) {
-      setError("فقط کاراکترهای لاتین مجاز هستند");
+    // جلوگیری از حروف فارسی
+    if (/[\u0600-\u06FF]/.test(raw)) {
+      setError("حروف فارسی مجاز نیستند");
       return;
     }
 
-    // ❌ کاراکتر غیرمجاز ایمیل
-    if (/[^a-zA-Z0-9@._+\-]/.test(raw)) {
-      setError("فقط حروف انگلیسی، عدد و @ . _ + - مجاز هستند");
+    // فقط حروف مجاز انگلیسی، عدد، خط تیره و _
+    if (/[^a-zA-Z0-9-_]/.test(raw)) {
+      setError("فقط حروف انگلیسی، عدد، خط تیره و _ مجاز است");
       return;
     }
 
-    // ✅ اوکی
+    // جلوگیری از شروع با عدد
+    if (/^[0-9]/.test(raw)) {
+      setError("نامک نمی‌تواند با عدد شروع شود");
+      return;
+    }
+
+    // ✅ همه چیز درست بود
     setError(null);
-    const isValid =
-      raw.length > 0 ? emailRegex.test(raw) : !isRequired;
-
-    onChange(raw, isValid);
+    onChange(raw);
   };
 
   const showError =
     touched &&
-    (error || (isRequired && value.trim().length === 0));
-
-  const finalErrorMessage =
-    error ||
-    (isRequired && touched && value.trim().length === 0
-      ? "وارد کردن ایمیل الزامی است"
-      : null);
+    (error || (isActiveError && isRequired && value.trim().length === 0));
 
   return (
     <Input
@@ -82,12 +85,16 @@ export default function EmailInput({
       value={value}
       onChange={handleChange}
       autoComplete="off"
-      type="email"
-      size="md"
-      isInvalid={!!showError}
+      size={size}
+      inputMode="email"
+      isInvalid={!!showError || !!errorMessage?.length}
       errorMessage={
-        showError ? (
-          <FieldErrorText error={finalErrorMessage!} />
+        showError || errorMessage?.length ? (
+          error ? (
+            <FieldErrorText error={error} />
+          ) : (
+            <FieldErrorText error="وارد کردن ایمیل الزامی است" />
+          )
         ) : undefined
       }
     />
