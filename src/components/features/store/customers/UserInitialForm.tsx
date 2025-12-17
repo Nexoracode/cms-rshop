@@ -125,7 +125,6 @@ const UserInitialForm = ({ user }: Props) => {
             onChange={(email) => setData((prev: any) => ({ ...prev, email }))}
             label="ایمیل"
             placeholder="example@mail.com"
-            isRequired
           />
         </div>
 
