@@ -12,6 +12,7 @@ import { TbRosetteDiscount } from "react-icons/tb";
 const Coupon = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<PromotionSortBy[number]>();
+
   const { data: coupons, isLoading } = CouponHooks.useGetList({
     page,
     sortBy,
@@ -21,8 +22,7 @@ const Coupon = () => {
 
   const items = coupons?.data?.items || [];
   const hasItems = items.length > 0;
-  console.log(items);
-  
+
   return (
     <UnifiedCard
       searchFilter={<CouponsFilter />}

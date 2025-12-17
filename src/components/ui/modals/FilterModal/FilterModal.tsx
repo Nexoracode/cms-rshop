@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import BaseModal from "../BaseModal";
 import { IoFilter } from "react-icons/io5";
 import {
@@ -64,6 +64,7 @@ const makeInitialState = (fields?: FilterField[]) => {
 const FilterModal: React.FC<Props> = ({ title = "فیلتر محصولات", fields }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   // remote options cache
   const [remoteCache, setRemoteCache] = useState<Record<string, FieldOption[]>>(
@@ -86,9 +87,20 @@ const FilterModal: React.FC<Props> = ({ title = "فیلتر محصولات", fie
 
   const setField = (k: string, v: any) => setState((p) => ({ ...p, [k]: v }));
 
+  const removeExistingFilterKeys = (params: URLSearchParams) => {
+    // حذف فقط کلیدهای filter.* (نگه داشتن sortBy, search و غیره)
+    for (const key of Array.from(params.keys())) {
+      if (key.startsWith("filter.")) {
+        params.delete(key);
+      }
+    }
+  };
+
   const buildParams = () => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     params.set("page", "1");
+
+    removeExistingFilterKeys(params);
 
     for (const f of fields) {
       switch (f.type) {
@@ -166,16 +178,26 @@ const FilterModal: React.FC<Props> = ({ title = "فیلتر محصولات", fie
     const p = buildParams();
     const q = p.toString();
     router.push(q ? `${pathname}?${q}` : pathname);
-    //close(false);
     return true;
   };
 
   const handleClear = () => {
+    // فقط فیلترها را حذف کن، بقیه پارامترها (مثل sortBy) دست نخورده بمونند
+    const params = new URLSearchParams(searchParams.toString());
+    // حذف همه‌ی filter.*
+    for (const key of Array.from(params.keys())) {
+      if (key.startsWith("filter.")) params.delete(key);
+    }
+    // حتما صفحه را ریست کن
+    params.set("page", "1");
+
+    const q = params.toString();
+    router.push(q ? `${pathname}?${q}` : pathname);
+
+    // پاک کردن state محلی مودال
     const init = makeInitialState(fields);
     setState(init);
-    router.push(pathname);
   };
-
   return (
     <BaseModal
       title={title}
