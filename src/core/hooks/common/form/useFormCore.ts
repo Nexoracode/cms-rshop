@@ -36,7 +36,9 @@ export const useFormCore = <T extends Record<string, any>>(
         index?: number
       ): Record<string, string> => {
         const visible: Record<string, string> = {};
-        const touchedObj = Array.isArray(touched) ? touched[index ?? 0] ?? {} : touched;
+        const touchedObj = Array.isArray(touched)
+          ? touched[index ?? 0] ?? {}
+          : touched;
 
         for (const field in itemErrors) {
           if (touchedObj[field] || hasSubmitted) {
@@ -55,15 +57,16 @@ export const useFormCore = <T extends Record<string, any>>(
     [onValidate, touched, hasSubmitted]
   );
 
-  // متد اصلی اعتبارسنجی — کاملاً همزمان و درست
   const triggerValidation = useCallback((): boolean => {
-    setHasSubmitted(true); // اول اینو ست می‌کنیم
+    setHasSubmitted(true);
 
-    const currentErrors = runValidation(data);
+    if (!onValidate) return true;
 
-    const hasError = Array.isArray(currentErrors)
-      ? currentErrors.some((err) => Object.keys(err).length > 0)
-      : Object.keys(currentErrors).length > 0;
+    const rawErrors = onValidate(data);
+    
+    const hasError = Array.isArray(rawErrors)
+      ? rawErrors.some((err: any) => Object.keys(err).length > 0)
+      : Object.keys(rawErrors as any).length > 0;
 
     if (hasError) {
       toast.error("لطفاً خطاها را برطرف کنید");
@@ -71,32 +74,39 @@ export const useFormCore = <T extends Record<string, any>>(
     }
 
     return !hasError;
-  }, [data, runValidation]);
+  }, [data, onValidate]);
 
   // برای live validation بعد از اولین سابمیت
   const shouldValidateLive = runValidationOnChange && hasSubmitted;
 
-  const markFieldAsTouched = useCallback((path: string | number, field: string) => {
-    setTouched((prev) => {
-      if (typeof path === "number") {
-        // برای لیست‌ها (useListForm)
-        const list = prev as any[];
-        const item = list[path] || {};
-        return [
-          ...list.slice(0, path),
-          { ...item, [field]: true },
-          ...list.slice(path + 1),
-        ];
-      } else {
-        // برای فرم ساده
-        return { ...prev, [field]: true };
-      }
-    });
-  }, []);
+  const markFieldAsTouched = useCallback(
+    (path: string | number, field: string) => {
+      setTouched((prev) => {
+        if (typeof path === "number") {
+          // برای لیست‌ها (useListForm)
+          const list = prev as any[];
+          const item = list[path] || {};
+          return [
+            ...list.slice(0, path),
+            { ...item, [field]: true },
+            ...list.slice(path + 1),
+          ];
+        } else {
+          // برای فرم ساده
+          return { ...prev, [field]: true };
+        }
+      });
+    },
+    []
+  );
 
   const resetForm = useCallback(() => {
     setHasSubmitted(false);
-    setTouched(Array.isArray(initialDataRef.current) ? initialDataRef.current.map(() => ({})) : {});
+    setTouched(
+      Array.isArray(initialDataRef.current)
+        ? initialDataRef.current.map(() => ({}))
+        : {}
+    );
     setData(initialDataRef.current);
   }, []);
 
@@ -117,7 +127,7 @@ export const useFormCore = <T extends Record<string, any>>(
 
     markFieldAsTouched,
     runValidation,
-    triggerValidation,        // اینو استفاده کن برای canSubmit
+    triggerValidation, // اینو استفاده کن برای canSubmit
     resetForm,
     resetWith,
   };
