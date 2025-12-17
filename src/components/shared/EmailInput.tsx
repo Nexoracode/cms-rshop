@@ -21,14 +21,13 @@ const EmailInput: React.FC<EmailInputProps> = ({
   const [error, setError] = useState("");
 
   const validateEmail = (email: string) => {
-    if (!email) {
+    if (!email.trim()) {
       setError("");
-      onChange("", true);
+      onChange(email, true);
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!emailRegex.test(email)) {
       setError("ایمیل معتبر نیست");
       onChange(email, false);
@@ -43,12 +42,22 @@ const EmailInput: React.FC<EmailInputProps> = ({
       label={label}
       placeholder={placeholder}
       value={value}
-      onChange={(val) => validateEmail(val)}
+      onChange={(val) => {
+        onChange(val, true);
+        setError("");
+      }}
+      onBlur={() => validateEmail(value)}
       isRequired={isRequired}
       type="email"
       inputAlign="left"
-      //isInvalid={!!error.length}
       errorMessage={error}
+      
+      // تنظیمات sanitize مخصوص ایمیل
+      allowSpecialChars={true}
+      allowedSpecialChars={["@", "."]}
+      allowSpaces={false}              // فضای خالی در ایمیل ممنوع
+      allowEnglishOnly={true}          // معمولاً ایمیل فقط انگلیسیه
+      allowNumbers={true}
     />
   );
 };

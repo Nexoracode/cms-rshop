@@ -170,6 +170,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
             placeholder="مثلا محل کار یا خانه و..."
             value={form.address_name || ""}
             onChange={(val) => setForm({ ...form, address_name: val })}
+            allowEnglishOnly={false}
           />
 
           <TextInput
