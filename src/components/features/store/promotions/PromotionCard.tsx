@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CardRows from "@/components/shared/CardRows";
 import { LuPercent } from "react-icons/lu";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
-import { PromotionBase } from "./promotions-types";
+import { PromotionActionType, PromotionBase } from "./promotions-types";
+import { price } from "@/core/utils/helper";
 
 type Props = {
   item: PromotionBase;
@@ -16,56 +17,87 @@ type Props = {
 
 const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
   const deleteCoupon = CouponHooks.useDelete();
+  const [promotionType, setPromotionType] = useState({
+    name: "",
+    value: "",
+  });
+
+  const {
+    actions,
+    is_active,
+    name,
+    type,
+    used_count,
+    code,
+    conditions,
+    starts_at,
+    usage_limit,
+    ends_at,
+    id,
+  } = item;
+
+  useEffect(() => {
+    console.log("Item => ", item);
+
+    actions.map((act: PromotionActionType) => {
+      if (act.type === "percent_discount" && act.value) {
+        setPromotionType(() => ({
+          name: "درصد",
+          value: `%${String(act.value)}`,
+        }));
+      }
+      if (act.type === "amount_discount" && act.value) {
+        setPromotionType((prev) => ({
+          name: `ثابت / ${prev.name}`,
+          value: `${price(act.value)} / ${prev.value}`,
+        }));
+      }
+    });
+  }, [item]);
+
+  useEffect(() => {
+    console.log("promotionType =>", promotionType);
+  }, [promotionType]);
 
   const rowItems = [
-    { label: "عنوان", value: item.name },
-    { label: "نوع", value: "مبلغ ثابت" },
-    { label: "مقدار", value: "۰ تومان" },
+    { label: "عنوان", value: name },
+    { label: "نوع", value: promotionType.name },
+    { label: "مقدار", value: promotionType.value },
     {
       label: "اعتبار",
       value: `از   ${
-        item.starts_at
-          ? new Date(item.starts_at).toLocaleDateString("fa-IR")
-          : "—"
+        starts_at ? new Date(starts_at).toLocaleDateString("fa-IR") : "—"
       }   تا   ${
-        item.ends_at ? new Date(item.ends_at).toLocaleDateString("fa-IR") : "—"
+        ends_at ? new Date(ends_at).toLocaleDateString("fa-IR") : "—"
       }`,
     },
     {
       label: "استفاده شده",
-      value: item.usage_limit
-        ? `از ${item.usage_limit} تا ${item.used_count}`
-        : `${item.used_count} بار استفاده شده`,
+      value: usage_limit
+        ? `از ${usage_limit} تا ${used_count}`
+        : `${used_count} بار استفاده شده`,
     },
   ];
 
   const promotionsRedirects = () => {
-/*     item.conditions?.map(cond => {
-      if (cond.) {
-        
-      }
-    })
- */
-    if (item.type === "coupon") {
-      return `/admin/store/promotions/coupon/create?edit_id=${item.id}`;
-    }
-    if (item.type === "first_order") {
-      return `/admin/store/promotions/first-order/create?edit_id=${item.id}`;
-    }
-    if (item.type === "next_order_reward") {
-      return `/admin/store/promotions/next-order-reward/create?edit_id=${item.id}`;
-    }
-    if (item.type === "flash_deal") {
-      return `/admin/store/promotions/flash-deal/create?edit_id=${item.id}`;
-    }
-    if (item.type === "free_shipping") {
-      return `/admin/store/promotions/free-shipping/create?edit_id=${item.id}`;
+    const urlBase = "/admin/store/promotions";
+    switch (type) {
+      case "coupon":
+        return `${urlBase}/coupon/create?edit_id=${id}`;
+      case "first_order":
+        return `${urlBase}/first-order/create?edit_id=${id}`;
+      case "next_order_reward":
+        return `${urlBase}/next-order-reward/create?edit_id=${id}`;
+      case "flash_deal":
+        return `${urlBase}/flash-deal/create?edit_id=${id}`;
+      case "free_shipping":
+        return `${urlBase}/free-shipping/create?edit_id=${id}`;
     }
   };
 
   return (
     <BaseCard
-      bodyClassName="flex flex-col gap-2 p-4"
+      bodyClassName="flex flex-col gap-2 p-4 hover-reveal-parent"
       redirect={promotionsRedirects()}
     >
       {/* Header */}
@@ -75,15 +107,16 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
             <LuPercent />
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-[17px] text-primary">{item.code}</p>
-            <StatusBadge isActive={item.is_active} size="sm" />
+            <p className="text-[17px] text-primary">{code}</p>
+            <StatusBadge isActive={is_active} size="sm" />
           </div>
         </div>
 
         {!disableAction && (
-          <div className="pl-1.5">
-            <DeleteButton onDelete={() => deleteCoupon.mutate(item?.id!)} />
-          </div>
+          <DeleteButton
+            onDelete={() => deleteCoupon.mutate(item?.id!)}
+            activeBtnHover
+          />
         )}
       </div>
 
