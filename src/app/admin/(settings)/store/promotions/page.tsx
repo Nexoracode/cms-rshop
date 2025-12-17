@@ -101,6 +101,8 @@ const Promotions = () => {
       fullWidth
       activeKey={activeTab}
       onTabChange={(k) => handleTabChange(String(k))}
+      queryKey="type"
+      syncWithQuery
     />
   );
 };
