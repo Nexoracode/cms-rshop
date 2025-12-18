@@ -14,7 +14,6 @@ import { TbEdit } from "react-icons/tb";
 import { AiOutlineFontColors } from "react-icons/ai";
 import { BsMenuDown, BsPalette } from "react-icons/bs";
 import { FiCheckSquare, FiCircle } from "react-icons/fi";
-import { MdNumbers } from "react-icons/md";
 import { ImCheckmark2 } from "react-icons/im";
 import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
 import { handleMutation } from "@/core/utils/mutationHelper";
