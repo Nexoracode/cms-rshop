@@ -87,17 +87,28 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
   const promotionsRedirects = () => {
     const urlBase = "/admin/store/promotions";
+    if (!conditions || conditions.length === 0) return `${urlBase}/coupon/create?edit_id=${id}`;
+    let mood = "create"
+    
+    const productCond = conditions.find((c) => c.type === "product");
+    const categoryCond = conditions.find((c) => c.type === "category");
+    const userCond = conditions.find((c) => c.type === "user");
+    
+    if (productCond) mood = "products";
+    if (categoryCond) mood = "categories";
+    if (userCond) mood = "customers";
+
     switch (type) {
       case "coupon":
-        return `${urlBase}/coupon/create?edit_id=${id}`;
+        return `${urlBase}/coupon/${mood}?edit_id=${id}`;
       case "first_order":
-        return `${urlBase}/first-order/create?edit_id=${id}`;
+        return `${urlBase}/first-order/${mood}?edit_id=${id}`;
       case "next_order_reward":
-        return `${urlBase}/next-order-reward/create?edit_id=${id}`;
+        return `${urlBase}/next-order-reward/${mood}?edit_id=${id}`;
       case "flash_deal":
-        return `${urlBase}/flash-deal/create?edit_id=${id}`;
+        return `${urlBase}/flash-deal/${mood}?edit_id=${id}`;
       case "free_shipping":
-        return `${urlBase}/free-shipping/create?edit_id=${id}`;
+        return `${urlBase}/free-shipping/${mood}?edit_id=${id}`;
     }
   };
 
