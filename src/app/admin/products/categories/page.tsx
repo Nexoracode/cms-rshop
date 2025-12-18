@@ -10,7 +10,7 @@ import CategoriesFilter from "@/components/features/products/categories/Filter/C
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
-  const isExistItems = !!categories?.data?.length;
+  const isExistItems = !categories?.data?.length;
 
   const [editCategory, setEditCategory] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -20,7 +20,7 @@ const Categories = () => {
     setIsEditOpen(true);
   };
   
-  console.log(editCategory);
+  console.log(categories?.data.items);
   
   return (
     <>
@@ -46,7 +46,7 @@ const Categories = () => {
         meta={undefined}
       >
         <CategoryTree
-          categories={categories?.data}
+          categories={categories?.data?.items}
           onEdit={handleEditCategory}
         />
       </UnifiedCard>
