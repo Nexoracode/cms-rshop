@@ -27,29 +27,27 @@ const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
   }, [selectedCategories]);
 
   return (
-    <div>
-      <SelectionBox
-        title="دسته‌بندی‌های انتخاب‌شده"
-        icon={<TbCategory2 className="text-5xl" />}
-        initial={selectedCategories}
-        modal={<CategoriesSelectionModal />}
-        error={error}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {selectedCategories.map((cat: Category) => (
-            <CategoryNode
-              key={cat.id}
-              node={cat}
-              chainTitles={[]}
-              onDelete={removeCategory}
-              disableAction
-              showDeselectIcon
-              disableShowChildren
-            />
-          ))}
-        </div>
-      </SelectionBox>
-    </div>
+    <SelectionBox
+      title="دسته‌بندی‌های انتخاب‌شده"
+      icon={<TbCategory2 className="text-5xl" />}
+      initial={selectedCategories}
+      modal={<CategoriesSelectionModal />}
+      error={error}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {selectedCategories.map((cat: Category) => (
+          <CategoryNode
+            key={cat.id}
+            node={cat}
+            chainTitles={[]}
+            onDelete={removeCategory}
+            disableAction
+            showDeselectIcon
+            disableShowChildren
+          />
+        ))}
+      </div>
+    </SelectionBox>
   );
 };
 

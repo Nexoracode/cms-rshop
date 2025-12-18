@@ -80,8 +80,6 @@ export function BasePromotionForm({
     runValidationOnChange: true,
   });
 
-  console.log("VALIDATION RESULT", errors);
-
   useEffect(() => {
     if (initialData) {
       console.log(initialData);
@@ -97,8 +95,6 @@ export function BasePromotionForm({
   }, [resetSignal]);
 
   const handleSubmit = submit(async (changed) => {
-    console.log(changed);
-
     const payload = mapLocalFormToAPI(form, formType);
     onHandleSubmit(payload);
   });
@@ -107,8 +103,6 @@ export function BasePromotionForm({
     setForm(initialPromotionForm);
     onHandleReset?.();
   };
-
-  console.log("Errors =>", errors);
 
   return (
     <BaseCard
