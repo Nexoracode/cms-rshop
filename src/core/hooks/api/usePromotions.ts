@@ -109,49 +109,12 @@ export const createPromotionHooks = (
     });
   };
 
-  const useToggle = (id: number) => {
-    const qc = useQueryClient();
-    return useMutation({
-      mutationFn: (payload: { isActive: boolean }) =>
-        fetcher({
-          route: `/admin/promotions/${id}/toggle`,
-          method: "PATCH",
-          body: payload,
-          isActiveToast: true,
-          loadingText: payload.isActive
-            ? `در حال فعال‌سازی ${queryKeyPrefix}...`
-            : `در حال غیرفعال‌سازی ${queryKeyPrefix}...`,
-          successText: payload.isActive
-            ? `${queryKeyPrefix} فعال شد`
-            : `${queryKeyPrefix} غیرفعال شد`,
-        }),
-      onSuccess: () => {
-        qc.invalidateQueries({ queryKey: [queryKeyPrefix + "-list"] });
-        qc.invalidateQueries({ queryKey: [queryKeyPrefix + "-one", id] });
-        qc.invalidateQueries({ queryKey: ["admin-promotions-active"] });
-      },
-    });
-  };
-
-  const useGetActive = () => {
-    return useQuery({
-      queryKey: ["active-" + queryKeyPrefix],
-      queryFn: () =>
-        fetcher({
-          route: `/admin/promotions/active?type=${type}`,
-          isActiveToast: false,
-        }),
-    });
-  };
-
   return {
     useGetList,
     useGetOne,
     useCreate,
     useUpdate,
     useDelete,
-    useToggle,
-    useGetActive,
   };
 };
 
