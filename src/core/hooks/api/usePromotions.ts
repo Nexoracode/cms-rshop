@@ -21,7 +21,7 @@ export const createPromotionHooks = (
     filter,
     search,
     sortBy,
-    limit = 1,
+    limit = 10,
   }: ListQueryParams) => {
     return useQuery({
       queryKey: [`${queryKeyPrefix}-list`, page, filter, search, sortBy, limit],
@@ -33,7 +33,6 @@ export const createPromotionHooks = (
           search,
           filter,
         });
-        console.log("@@@@@@@@@",qs);
         
         return fetcher({
           route: `/admin/promotions?${qs}&filter.type=${type}`,
