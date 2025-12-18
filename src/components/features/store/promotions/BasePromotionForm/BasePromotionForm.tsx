@@ -99,8 +99,8 @@ export function BasePromotionForm({
   const handleSubmit = submit(async (changed) => {
     console.log(changed);
 
-    //const payload = mapLocalFormToAPI(form, formType);
-    //onHandleSubmit(payload);
+    const payload = mapLocalFormToAPI(form, formType);
+    onHandleSubmit(payload);
   });
 
   const handleResetLocal = () => {
