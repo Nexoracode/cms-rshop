@@ -101,21 +101,19 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
     }
   };
 
-  const promotionsIcons = () => {
-    if (!conditions?.length) return [];
+  const getPromotionIcon = (conditions?: PromotionBase["conditions"]) => {
+    if (!conditions || conditions.length === 0) return <LuPercent />;
 
-    return conditions.map((cond) => {
-      switch (cond.type) {
-        case "product":
-          return <LuPackage />;
-        case "category":
-          return <BiCategory />;
-        case "user":
-          return <LuUser />;
-        default:
-          return <LuPercent />;
-      }
-    });
+    const productCond = conditions.find((c) => c.type === "product");
+    if (productCond) return <LuPackage />;
+
+    const categoryCond = conditions.find((c) => c.type === "category");
+    if (categoryCond) return <BiCategory />;
+
+    const userCond = conditions.find((c) => c.type === "user");
+    if (userCond) return <LuUser />;
+
+    return <LuPercent />;
   };
 
   return (
@@ -126,8 +124,8 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
-          <div className="text-2xl text-gray-600 bg-slate-50 rounded-full p-4">
-            {promotionsIcons()}
+          <div className="text-2xl text-gray-600 bg-slate-50 rounded-full p-4 flex items-center justify-center">
+            {getPromotionIcon(conditions)}
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">{code}</p>
