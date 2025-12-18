@@ -26,7 +26,8 @@ const InnerSelectableProductsBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-
+    console.log("selectedProducts =>",selectedProducts);
+    
     onChange?.(selectedProducts.map((c: any) => c.id));
   }, [selectedProducts]);
 

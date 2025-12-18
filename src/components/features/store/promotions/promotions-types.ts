@@ -1,3 +1,7 @@
+type ProductVariantsPromotion = Array<{
+  product_id: number;
+  variant_ids: number[] | null;
+}>;
 // ------------------------------
 // Action Types
 // ------------------------------
@@ -12,9 +16,11 @@ export type PromotionActionType =
 // ------------------------------
 export type PromotionConditionType =
   | { type: "min_order_amount"; min_amount: number }
-  | { type: "product"; product_ids: number[] }
+  | {
+      type: "product";
+      products: ProductVariantsPromotion;
+    }
   | { type: "category"; category_ids: number[] }
-  | { type: "variant"; variant_ids: number[] }
   | { type: "user"; user_ids: number[] }
   | { type: "first_order" };
 
@@ -57,7 +63,12 @@ export type PromotionSortBy = Array<
   | "endsAt:ASC"
 >;
 
-export type PromotionTypes = "coupon" | "flash_deal" | "free_shipping" | "first_order" | "next_order_reward"
+export type PromotionTypes =
+  | "coupon"
+  | "flash_deal"
+  | "free_shipping"
+  | "first_order"
+  | "next_order_reward";
 
 /*  */
 
@@ -73,7 +84,7 @@ export type PromotionForm = {
   ends_at?: string | null;
   is_active: boolean;
   first_order?: boolean;
-  allowed_products?: { product_id: number; variants: number[] | null }[];
+  allowed_products?: ProductVariantsPromotion;
   allowed_categories?: number[];
   allowed_users?: number[];
 };
