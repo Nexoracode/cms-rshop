@@ -90,6 +90,7 @@ export function BasePromotionForm({
   }, [initialData, formType]);
 
   useEffect(() => {
+    //console.log(initialPromotionForm);
     setForm(initialPromotionForm);
     reset();
   }, [resetSignal]);
@@ -202,6 +203,7 @@ export function BasePromotionForm({
           }}
           showMonthAndYearPickers
           className="w-full"
+          isRequired
           errorMessage={errors.starts_at}
         />
       </div>
