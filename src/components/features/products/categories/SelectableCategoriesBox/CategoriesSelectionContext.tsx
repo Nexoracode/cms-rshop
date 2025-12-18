@@ -25,7 +25,7 @@ export const CategoriesSelectionProvider: React.FC<{
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    setSelectedCategories(initialCategories);
+    initialCategories.length && setSelectedCategories(initialCategories);
   }, [initialCategories]);
 
   const addCategory = (category: Category) => {

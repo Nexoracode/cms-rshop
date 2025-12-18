@@ -15,8 +15,14 @@ type Props = {
 
 const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
   const { selectedCategories, removeCategory } = useCategoriesSelection();
+  const isFirstRender = React.useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    console.log("Category Ok");
     onChange?.(selectedCategories.map((c) => c.id));
   }, [selectedCategories]);
 

@@ -71,13 +71,16 @@ export function BasePromotionForm({
     form,
     errors,
     handleFieldChange,
-    canSubmit,
+    reset,
+    submit,
     setForm,
     handleMultipleFieldsChange,
   } = useForm<PromotionForm>(initialPromotionForm, {
     onValidate: (f) => validatePromotionForm(f, config, scope),
     runValidationOnChange: true,
   });
+
+  console.log("VALIDATION RESULT", errors);
 
   useEffect(() => {
     if (initialData) {
@@ -90,19 +93,22 @@ export function BasePromotionForm({
 
   useEffect(() => {
     setForm(initialPromotionForm);
+    reset();
   }, [resetSignal]);
 
-  const handleSubmit = () => {
-    if (!canSubmit()) return;
+  const handleSubmit = submit(async (changed) => {
+    console.log(changed);
 
-    const payload = mapLocalFormToAPI(form, formType);
-    onHandleSubmit(payload);
-  };
+    //const payload = mapLocalFormToAPI(form, formType);
+    //onHandleSubmit(payload);
+  });
 
   const handleResetLocal = () => {
     setForm(initialPromotionForm);
     onHandleReset?.();
   };
+
+  console.log("Errors =>", errors);
 
   return (
     <BaseCard
@@ -226,7 +232,7 @@ export function BasePromotionForm({
       {scope === "categories" && config.scope.includes("category") && (
         <SelectableCategoriesBox
           onChange={(ids) => handleFieldChange("allowed_categories", ids)}
-          error={!!errors.allowed_categories}
+          error={!!errors.allowed_categories?.length}
         />
       )}
 

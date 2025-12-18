@@ -11,8 +11,9 @@ export function validatePromotionForm(
   const errs: Record<string, string> = {};
 
   if (!form.name?.trim()) errs.name = "نام پروموشن الزامی است.";
-  
-  if (!form.starts_at || !form.ends_at) errs.starts_at = "تاریخ شروع و پایان الزامی است.";
+
+  if (!form.starts_at || !form.ends_at)
+    errs.starts_at = "تاریخ شروع و پایان الزامی است.";
 
   if (config.code && !form.code?.trim()) {
     errs.code = "کد تخفیف الزامی است.";
