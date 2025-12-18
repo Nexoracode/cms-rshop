@@ -1,0 +1,76 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { fetcher } from "@/core/utils/fetcher";
+
+export const useGetSideBanners = (position?: string) => {
+  const queryKey = position ? ["side-banners", position] : ["side-banners"];
+  return useQuery({
+    queryKey,
+    queryFn: () =>
+      fetcher({
+        route: position
+          ? `/api/admin/side-banners?position=${position}`
+          : "/api/admin/side-banners",
+      }),
+  });
+};
+
+export const useGetOneSideBanner = (id?: number) => {
+  return useQuery({
+    queryKey: ["side-banner", id],
+    queryFn: () => fetcher({ route: `/api/admin/side-banners/${id}` }),
+    enabled: !!id,
+  });
+};
+
+export const useCreateSideBanner = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: any) =>
+      fetcher({
+        route: "/api/admin/side-banners",
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+        loadingText: "در حال ایجاد بنر...",
+        successText: "بنر با موفقیت ایجاد شد",
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["side-banners"] }),
+  });
+};
+
+export const useUpdateSideBanner = (id: number) => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: any) =>
+      fetcher({
+        route: `/api/admin/side-banners/${id}`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: true,
+        loadingText: "در حال بروزرسانی بنر...",
+        successText: "بنر با موفقیت بروزرسانی شد",
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["side-banners"] });
+      qc.invalidateQueries({ queryKey: ["side-banner", id] });
+    },
+  });
+};
+
+export const useDeleteSideBanner = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) =>
+      fetcher({
+        route: `/api/admin/side-banners/${id}`,
+        method: "DELETE",
+        isActiveToast: true,
+        loadingText: "در حال حذف بنر...",
+        successText: "بنر با موفقیت حذف شد",
+      }),
+    onSuccess: (_data, id) => {
+      qc.invalidateQueries({ queryKey: ["side-banners"] });
+      qc.invalidateQueries({ queryKey: ["side-banner", id] });
+    },
+  });
+};
