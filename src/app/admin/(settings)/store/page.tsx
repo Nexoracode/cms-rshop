@@ -5,20 +5,19 @@ import BoxLink from "@/components/shared/BoxLink";
 import { Card, CardBody } from "@heroui/react";
 import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
-import { IoCardOutline, IoShareSocialOutline } from "react-icons/io5";
+import { IoReceiptOutline, IoShareSocialOutline } from "react-icons/io5";
+import { SiMaterialformkdocs } from "react-icons/si";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import {
   HiOutlineDocumentText,
   HiOutlineClipboardDocumentCheck,
 } from "react-icons/hi2";
 import { RiTimerLine } from "react-icons/ri";
-import { LuPackage } from "react-icons/lu";
+import { LuPackage, LuSettings2 } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
-import { TfiShoppingCartFull } from "react-icons/tfi";
 import CardHeader from "@/components/common/Card/CardHeader";
 
-// تنظیمات فروشگاه
 const storeSettingsLinks = [
   {
     title: "حساب کاربری",
@@ -47,17 +46,35 @@ const storeSettingsLinks = [
   },
 ];
 
+const homePage = [
+  {
+    title: "اسلایدرهای اصلی",
+    icon: <FiUser className="text-2xl" />,
+    route: "home/hero-sliders",
+  },
+  {
+    title: "بنرهای جانبی",
+    icon: <FiUser className="text-2xl" />,
+    route: "home/side-banners",
+  },
+  {
+    title: "چینش صفحه اصلی",
+    icon: <FiUser className="text-2xl" />,
+    route: "home/sections",
+  },
+  {
+    title: "گزارش عملکرد",
+    icon: <FiUser className="text-2xl" />,
+    route: "home/analytics",
+  },
+];
+
 // تنظیمات سفارش گیری
 const orderSettingsLinks = [
   {
     title: "بسته‌بندی",
     icon: <LuPackage className="text-2xl" />,
     route: "store/gift-wrapping",
-  },
-  {
-    title: "کارت به کارت",
-    icon: <IoCardOutline className="text-2xl" />,
-    route: "store/card-to-card",
   },
   {
     title: "تأیید خودکار",
@@ -83,16 +100,15 @@ const orderSettingsLinks = [
 
 const Settings: React.FC = () => {
   return (
-    <div className="flex justify-center flex-col sm:flex-row lg:items-start lg:justify-between gap-4">
-      {/* تنظیمات فروشگاه */}
-      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
+    <div className="grid grid-cols-2 gap-6">
+      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl">
         <CardHeader
-          title="تنظیمات فروشگاه"
-          icon={<BsShop className="text-[24px]" />}
+          title="تنظیمات صفحه اصلی"
+          icon={<SiMaterialformkdocs className="text-[24px]" />}
           showIconInActionSlot
         />
         <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
-          {storeSettingsLinks.map(({ title, icon, route }) => (
+          {homePage.map(({ title, icon, route }) => (
             <BoxLink
               key={route}
               title={title}
@@ -105,11 +121,10 @@ const Settings: React.FC = () => {
         </CardBody>
       </Card>
 
-      {/* تنظیمات سفارش گیری */}
-      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full lg:w-1/2 rounded-2xl">
+      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl">
         <CardHeader
           title="تنظیمات سفارش گیری"
-          icon={<TfiShoppingCartFull className="text-[26px]" />}
+          icon={<IoReceiptOutline className="text-[26px]" />}
           showIconInActionSlot
         />
         <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
@@ -120,6 +135,26 @@ const Settings: React.FC = () => {
               icon={icon}
               routeName={route}
               parentStyle="text-blue-700"
+              titleStyle="text-gray-600"
+            />
+          ))}
+        </CardBody>
+      </Card>
+
+      <Card className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl">
+        <CardHeader
+          title="تنظیمات فروشگاه"
+          icon={<LuSettings2 className="text-[24px]" />}
+          showIconInActionSlot
+        />
+        <CardBody className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4">
+          {storeSettingsLinks.map(({ title, icon, route }) => (
+            <BoxLink
+              key={route}
+              title={title}
+              icon={icon}
+              routeName={route}
+              parentStyle="text-gray-700"
               titleStyle="text-gray-600"
             />
           ))}
