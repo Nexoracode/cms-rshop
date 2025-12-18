@@ -84,12 +84,7 @@ export function mapLocalFormToAPI(
       min_amount: form.min_order_amount,
     });
   if (form.allowed_products?.length) {
-    const products = form.allowed_products.map((p: any) => ({
-      product_id: p.id,
-      variant_ids: p.variants?.map((v: any) => v.id) ?? [],
-    }));
-
-    conditions.push({ type: "product", products });
+    conditions.push({ type: "product", products: form.allowed_products });
   }
   if (form.allowed_categories?.length)
     conditions.push({

@@ -220,10 +220,7 @@ export function BasePromotionForm({
 
       {scope === "products" && config.scope.includes("product") && (
         <SelectableProductsBox
-          onChange={(items) => {
-            console.log("SelectableProductsBox =>",items);
-            handleFieldChange("allowed_products", items)
-          }}
+          onChange={(items) => handleFieldChange("allowed_products", items)}
           error={!!errors.allowed_products}
         />
       )}

@@ -50,11 +50,11 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
       resp.ok && router.push("/admin/store/promotions");
     } else {
       console.log(payload);
-      //const resp = await createHook.mutateAsync(payload);
-      //if (resp.ok) {
-      //  setCtxKey((p) => p + 1);
-      //  setResetSignal((p) => p + 1);
-      //}
+      const resp = await createHook.mutateAsync(payload);
+      if (resp.ok) {
+        setCtxKey((p) => p + 1);
+        setResetSignal((p) => p + 1);
+      }
     }
   };
 

@@ -1,7 +1,5 @@
-type ProductVariantsPromotion = Array<{
-  product_id: number;
-  variant_ids: number[] | null;
-}>;
+import { ProductVariants } from "../../products/SelectableProduct/selectable-product";
+
 // ------------------------------
 // Action Types
 // ------------------------------
@@ -18,7 +16,7 @@ export type PromotionConditionType =
   | { type: "min_order_amount"; min_amount: number }
   | {
       type: "product";
-      products: ProductVariantsPromotion;
+      products: ProductVariants;
     }
   | { type: "category"; category_ids: number[] }
   | { type: "user"; user_ids: number[] }
@@ -84,7 +82,7 @@ export type PromotionForm = {
   ends_at?: string | null;
   is_active: boolean;
   first_order?: boolean;
-  allowed_products?: ProductVariantsPromotion;
+  allowed_products?: ProductVariants;
   allowed_categories?: number[];
   allowed_users?: number[];
 };

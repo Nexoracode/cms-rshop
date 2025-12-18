@@ -7,14 +7,10 @@ import { useProductsSelection } from "./ProductsSelectionContext";
 import ProductVariantsTemplate from "../ProductVariantsTemplate";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
-type Props = {
-  onChange?: (ids: number[]) => void;
-  error?: boolean;
-};
+import { ProductVariants } from "./selectable-product";
 
 const InnerSelectableProductsBox: React.FC<{
-  onChange?: (ids: number[]) => void;
+  onChange?: (data: ProductVariants) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
   const { selectedProducts, removeProduct, addProduct } =
@@ -26,9 +22,14 @@ const InnerSelectableProductsBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    console.log("selectedProducts =>",selectedProducts);
-    
-    onChange?.(selectedProducts.map((c: any) => c.id));
+    console.log(selectedProducts);
+
+    const products = selectedProducts.map((p: any) => ({
+      product_id: p.id,
+      variant_ids: p.variants?.map((v: any) => v.id) ?? [],
+    }));
+
+    onChange?.(products);
   }, [selectedProducts]);
 
   const removeVariantFromProduct = (productId: number, variantId: number) => {
@@ -79,6 +80,11 @@ const InnerSelectableProductsBox: React.FC<{
       </div>
     </SelectionBox>
   );
+};
+
+type Props = {
+  onChange?: (data: ProductVariants) => void;
+  error?: boolean;
 };
 
 const SelectableProductsBox: React.FC<Props> = ({ onChange, error }) => {
