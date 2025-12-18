@@ -5,10 +5,11 @@ import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CardRows from "@/components/shared/CardRows";
-import { LuPercent } from "react-icons/lu";
+import { LuPackage, LuPercent, LuUser } from "react-icons/lu";
 import { CouponHooks } from "@/core/hooks/api/usePromotions";
 import { PromotionActionType, PromotionBase } from "./promotions-types";
 import { price } from "@/core/utils/helper";
+import { BiCategory } from "react-icons/bi";
 
 type Props = {
   item: PromotionBase;
@@ -22,6 +23,8 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
     value: "",
   });
 
+  console.log("items =>", item);
+
   const {
     actions,
     is_active,
@@ -33,6 +36,7 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
     usage_limit,
     ends_at,
     id,
+    conditions,
   } = item;
 
   useEffect(() => {
@@ -97,6 +101,23 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
     }
   };
 
+  const promotionsIcons = () => {
+    if (!conditions?.length) return [];
+
+    return conditions.map((cond) => {
+      switch (cond.type) {
+        case "product":
+          return <LuPackage />;
+        case "category":
+          return <BiCategory />;
+        case "user":
+          return <LuUser />;
+        default:
+          return <LuPercent />;
+      }
+    });
+  };
+
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-2 p-4 hover-reveal-parent"
@@ -106,7 +127,7 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <div className="text-2xl text-gray-600 bg-slate-50 rounded-full p-4">
-            <LuPercent />
+            {promotionsIcons()}
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">{code}</p>
