@@ -63,7 +63,6 @@ const AddNewAttributeModal: React.FC<Props> = ({
       label: "متنی",
       icon: <AiOutlineFontColors className="w-4 h-4" />,
     },
-    { key: "number", label: "عددی", icon: <MdNumbers className="w-4 h-4" /> },
     {
       key: "color",
       label: "انتخاب رنگ",

@@ -192,6 +192,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
             allowChars={false}
             value={form.plaque}
             onChange={(val) => setForm({ ...form, plaque: val })}
+            allowEnglishOnly={false}
           />
 
           <TextInput
