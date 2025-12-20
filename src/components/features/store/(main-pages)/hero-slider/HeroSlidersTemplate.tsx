@@ -19,7 +19,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   if (!activeSliders?.length) return null;
 
   return (
-    <div className="relative w-full h-[320px] rounded-2xl overflow-hidden">
+    <div className="relative w-full h-[320px] rounded-2xl overflow-hidden hover:scale-95 transition-all cursor-pointer">
       {activeSliders.map((slider, index) => (
         <div
           key={slider.id}
@@ -51,12 +51,11 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
               )}
 
               {slider.button_text && slider.button_link && (
-                <Link
-                  href={slider.button_link}
-                  className="inline-block px-4 py-2 rounded-lg bg-black/70 text-white text-sm hover:scale-95 transition"
+                <div
+                  className="inline-block cursor-pointer px-4 py-2 rounded-lg bg-black/70 text-white text-sm hover:scale-95 transition"
                 >
                   {slider.button_text}
-                </Link>
+                </div>
               )}
             </div>
 
