@@ -4,7 +4,7 @@ import { fetcher } from "@/core/utils/fetcher";
 export const useGetHeroSliders = () => {
   return useQuery({
     queryKey: ["hero-sliders"],
-    queryFn: () => fetcher({ route: "/api/admin/hero-sliders" }),
+    queryFn: () => fetcher({ route: "/admin/hero-sliders" }),
   });
 };
 

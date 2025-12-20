@@ -111,9 +111,9 @@ const Settings: React.FC = () => {
         }}
         bodyClassName="grid grid-cols-2 items-center gap-4 mb-3"
       >
-        {homePage.map(({ title, icon, route }) => (
+        {homePage.map(({ title, icon, route }, index) => (
           <BoxLink
-            key={route}
+            key={index}
             title={title}
             icon={icon}
             routeName={route}
