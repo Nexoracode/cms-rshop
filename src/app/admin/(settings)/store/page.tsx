@@ -51,12 +51,12 @@ const homePage = [
   {
     title: "اسلایدرهای اصلی",
     icon: <TfiLayoutSliderAlt className="text-2xl" />,
-    route: "store/hero-sliders",
+    route: "store/sliders",
   },
   {
     title: "بنرهای جانبی",
     icon: <TfiLayoutSlider className="text-2xl" />,
-    route: "store/side-banners",
+    route: "store/sliders",
   },
   {
     title: "چینش صفحه اصلی",

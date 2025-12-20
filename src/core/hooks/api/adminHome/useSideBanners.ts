@@ -1,15 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
 
-export const useGetSideBanners = (position?: string) => {
-  const queryKey = position ? ["side-banners", position] : ["side-banners"];
+export const useGetSideBanners = () => {
+  const queryKey = ["side-banners"];
   return useQuery({
     queryKey,
     queryFn: () =>
       fetcher({
-        route: position
-          ? `/api/admin/side-banners?position=${position}`
-          : "/api/admin/side-banners",
+        route: "/admin/side-banners",
       }),
   });
 };
@@ -17,7 +15,7 @@ export const useGetSideBanners = (position?: string) => {
 export const useGetOneSideBanner = (id?: number) => {
   return useQuery({
     queryKey: ["side-banner", id],
-    queryFn: () => fetcher({ route: `/api/admin/side-banners/${id}` }),
+    queryFn: () => fetcher({ route: `/admin/side-banners/${id}` }),
     enabled: !!id,
   });
 };
@@ -27,7 +25,7 @@ export const useCreateSideBanner = () => {
   return useMutation({
     mutationFn: (data: any) =>
       fetcher({
-        route: "/api/admin/side-banners",
+        route: "/admin/side-banners",
         method: "POST",
         body: data,
         isActiveToast: true,
@@ -43,7 +41,7 @@ export const useUpdateSideBanner = (id: number) => {
   return useMutation({
     mutationFn: (data: any) =>
       fetcher({
-        route: `/api/admin/side-banners/${id}`,
+        route: `/admin/side-banners/${id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
@@ -62,7 +60,7 @@ export const useDeleteSideBanner = () => {
   return useMutation({
     mutationFn: (id: number) =>
       fetcher({
-        route: `/api/admin/side-banners/${id}`,
+        route: `/admin/side-banners/${id}`,
         method: "DELETE",
         isActiveToast: true,
         loadingText: "در حال حذف بنر...",
