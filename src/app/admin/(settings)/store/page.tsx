@@ -2,7 +2,6 @@
 
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
-import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
 import { IoReceiptOutline, IoShareSocialOutline } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
@@ -16,14 +15,17 @@ import { LuPackage, LuSettings2 } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbChartDots, TbTruckDelivery } from "react-icons/tb";
 import BaseCard from "@/components/ui/BaseCard";
-import { TfiLayoutSlider, TfiLayoutSliderAlt } from "react-icons/tfi";
-import { PiSliders } from "react-icons/pi";
 
 const storeSettingsLinks = [
   {
-    title: "حساب کاربری",
-    icon: <FiUser className="text-2xl" />,
-    route: "settings/user-infos",
+    title: "مدیریت صفحه اصلی",
+    icon: <SiMaterialformkdocs className="text-2xl" />,
+    route: "store/home-builder",
+  },
+  {
+    title: "گزارش عملکرد",
+    icon: <TbChartDots className="text-2xl" />,
+    route: "store/analytics",
   },
   {
     title: "اطلاعات فروشگاه",
@@ -44,29 +46,6 @@ const storeSettingsLinks = [
     title: "بلاگ‌ها",
     icon: <HiOutlineDocumentText className="text-2xl" />,
     route: "store/blog",
-  },
-];
-
-const homePage = [
-  {
-    title: "اسلایدرهای اصلی",
-    icon: <TfiLayoutSliderAlt className="text-2xl" />,
-    route: "store/home-builder",
-  },
-  {
-    title: "بنرهای جانبی",
-    icon: <TfiLayoutSlider className="text-2xl" />,
-    route: "store/home-builder",
-  },
-  {
-    title: "چینش صفحه اصلی",
-    icon: <PiSliders className="text-2xl" />,
-    route: "store/home-builder",
-  },
-  {
-    title: "گزارش عملکرد",
-    icon: <TbChartDots className="text-2xl" />,
-    route: "store/analytics",
   },
 ];
 
@@ -105,15 +84,15 @@ const Settings: React.FC = () => {
       <BaseCard
         className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
         CardHeaderProps={{
-          title: "تنظیمات صفحه اصلی",
-          icon: <SiMaterialformkdocs className="text-[24px]" />,
+          title: "تنظیمات فروشگاه",
+          icon: <LuSettings2 className="text-[24px]" />,
           showIconInActionSlot: true,
         }}
-        bodyClassName="grid grid-cols-2 items-center gap-4 mb-3"
+        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4 mb-3"
       >
-        {homePage.map(({ title, icon, route }, index) => (
+        {storeSettingsLinks.map(({ title, icon, route }) => (
           <BoxLink
-            key={index}
+            key={route}
             title={title}
             icon={icon}
             routeName={route}
@@ -139,27 +118,6 @@ const Settings: React.FC = () => {
             icon={icon}
             routeName={route}
             parentStyle="text-blue-700"
-            titleStyle="text-gray-600"
-          />
-        ))}
-      </BaseCard>
-
-      <BaseCard
-        className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
-        CardHeaderProps={{
-          title: "تنظیمات فروشگاه",
-          icon: <LuSettings2 className="text-[24px]" />,
-          showIconInActionSlot: true,
-        }}
-        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4 mb-3"
-      >
-        {storeSettingsLinks.map(({ title, icon, route }) => (
-          <BoxLink
-            key={route}
-            title={title}
-            icon={icon}
-            routeName={route}
-            parentStyle="text-gray-700"
             titleStyle="text-gray-600"
           />
         ))}

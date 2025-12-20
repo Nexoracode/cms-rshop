@@ -15,6 +15,8 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   sideBanners = [],
   sliders = [],
 }) => {
+  console.log("sliders =>", sliders);
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {/* Hero Sliders */}
