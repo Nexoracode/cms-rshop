@@ -17,7 +17,7 @@ export const useGetAllCategories = () => {
     queryKey: ["all-categories"],
     queryFn: () =>
       fetcher({
-        route: "/category",
+        route: "/category/site",
         isActiveToast: false,
       }),
   });

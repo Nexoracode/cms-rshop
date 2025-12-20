@@ -34,7 +34,7 @@ const CategorySelect: React.FC<Props> = ({
   const { data: categoriesData } = useGetAllCategories();
 
   const flatOptions: SelectOption[] = useMemo(() => {
-    return (flattenCategories(categoriesData?.data?.items) || []).map(
+    return (flattenCategories(categoriesData?.data) || []).map(
       (opt) => ({
         key: String(opt.id),
         title: opt.title,
