@@ -1,12 +1,12 @@
 "use client";
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import TemplateSliders from "@/components/features/store/(home-pages)/sliders/TemplateSliders";
+import TemplateSliders from "@/components/features/store/(main-pages)/TemplateSliders";
 import { useGetHeroSliders } from "@/core/hooks/api/adminHome/useHeroSlider";
 import { useGetSideBanners } from "@/core/hooks/api/adminHome/useSideBanners";
-import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import { SiMaterialformkdocs } from "react-icons/si";
 
-const Sliders = () => {
+const HomeBuilder = () => {
   const { data: sideBanners, isLoading: isLoadingSideBanners } =
     useGetSideBanners();
   const { data: sliders, isLoading: isLoadingSliders } = useGetHeroSliders();
@@ -14,8 +14,8 @@ const Sliders = () => {
   return (
     <UnifiedCard
       headerProps={{
-        title: "مدیریت اسلایدرها",
-        icon: <TfiLayoutSliderAlt className="text-2xl" />,
+        title: "مدیریت صفحه اصلی",
+        icon: <SiMaterialformkdocs className="text-2xl" />,
         showIconInActionSlot: true,
       }}
       isLoading={isLoadingSideBanners || isLoadingSliders}
@@ -30,4 +30,4 @@ const Sliders = () => {
   );
 };
 
-export default Sliders;
+export default HomeBuilder;

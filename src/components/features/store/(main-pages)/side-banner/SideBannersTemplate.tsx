@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { SideBanner } from "./sliders.types";
+import { SideBanner } from "../sliders/sliders.types";
 import { Chip } from "@heroui/react";
 import StatusBadge from "@/components/shared/StatusBadge";
 

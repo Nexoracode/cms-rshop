@@ -51,17 +51,17 @@ const homePage = [
   {
     title: "اسلایدرهای اصلی",
     icon: <TfiLayoutSliderAlt className="text-2xl" />,
-    route: "store/sliders",
+    route: "store/home-builder",
   },
   {
     title: "بنرهای جانبی",
     icon: <TfiLayoutSlider className="text-2xl" />,
-    route: "store/sliders",
+    route: "store/home-builder",
   },
   {
     title: "چینش صفحه اصلی",
     icon: <PiSliders className="text-2xl" />,
-    route: "store/sections",
+    route: "store/home-builder",
   },
   {
     title: "گزارش عملکرد",
