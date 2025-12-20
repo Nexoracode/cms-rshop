@@ -14,8 +14,10 @@ import {
 import { RiTimerLine } from "react-icons/ri";
 import { LuPackage, LuSettings2 } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
-import { TbTruckDelivery } from "react-icons/tb";
+import { TbChartDots, TbTruckDelivery } from "react-icons/tb";
 import BaseCard from "@/components/ui/BaseCard";
+import { TfiLayoutSlider, TfiLayoutSliderAlt } from "react-icons/tfi";
+import { PiSliders } from "react-icons/pi";
 
 const storeSettingsLinks = [
   {
@@ -48,22 +50,22 @@ const storeSettingsLinks = [
 const homePage = [
   {
     title: "اسلایدرهای اصلی",
-    icon: <FiUser className="text-2xl" />,
+    icon: <TfiLayoutSliderAlt className="text-2xl" />,
     route: "store/hero-sliders",
   },
   {
     title: "بنرهای جانبی",
-    icon: <FiUser className="text-2xl" />,
+    icon: <TfiLayoutSlider className="text-2xl" />,
     route: "store/side-banners",
   },
   {
     title: "چینش صفحه اصلی",
-    icon: <FiUser className="text-2xl" />,
+    icon: <PiSliders className="text-2xl" />,
     route: "store/sections",
   },
   {
     title: "گزارش عملکرد",
-    icon: <FiUser className="text-2xl" />,
+    icon: <TbChartDots className="text-2xl" />,
     route: "store/analytics",
   },
 ];
@@ -107,7 +109,7 @@ const Settings: React.FC = () => {
           icon: <SiMaterialformkdocs className="text-[24px]" />,
           showIconInActionSlot: true,
         }}
-        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4"
+        bodyClassName="grid grid-cols-2 items-center gap-4 mb-3"
       >
         {homePage.map(({ title, icon, route }) => (
           <BoxLink
@@ -128,7 +130,7 @@ const Settings: React.FC = () => {
           icon: <IoReceiptOutline className="text-[26px]" />,
           showIconInActionSlot: true,
         }}
-        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4"
+        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4 mb-3"
       >
         {orderSettingsLinks.map(({ title, icon, route }) => (
           <BoxLink
@@ -149,7 +151,7 @@ const Settings: React.FC = () => {
           icon: <LuSettings2 className="text-[24px]" />,
           showIconInActionSlot: true,
         }}
-        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4"
+        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4 mb-3"
       >
         {storeSettingsLinks.map(({ title, icon, route }) => (
           <BoxLink
