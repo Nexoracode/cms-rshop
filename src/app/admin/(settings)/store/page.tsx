@@ -2,7 +2,6 @@
 
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
-import { Card, CardBody } from "@heroui/react";
 import { FiUser } from "react-icons/fi";
 import { BsShop } from "react-icons/bs";
 import { IoReceiptOutline, IoShareSocialOutline } from "react-icons/io5";
@@ -16,7 +15,6 @@ import { RiTimerLine } from "react-icons/ri";
 import { LuPackage, LuSettings2 } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
-import CardHeader from "@/components/common/Card/CardHeader";
 import BaseCard from "@/components/ui/BaseCard";
 
 const storeSettingsLinks = [
@@ -51,22 +49,22 @@ const homePage = [
   {
     title: "اسلایدرهای اصلی",
     icon: <FiUser className="text-2xl" />,
-    route: "home/hero-sliders",
+    route: "store/hero-sliders",
   },
   {
     title: "بنرهای جانبی",
     icon: <FiUser className="text-2xl" />,
-    route: "home/side-banners",
+    route: "store/side-banners",
   },
   {
     title: "چینش صفحه اصلی",
     icon: <FiUser className="text-2xl" />,
-    route: "home/sections",
+    route: "store/sections",
   },
   {
     title: "گزارش عملکرد",
     icon: <FiUser className="text-2xl" />,
-    route: "home/analytics",
+    route: "store/analytics",
   },
 ];
 
