@@ -20,7 +20,18 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   return (
     <div className="grid grid-cols-2 gap-4">
       {/* Hero Sliders */}
-      <HeroSlidersTemplate sliders={sliders} />
+      <div className="flex flex-col gap-4 relative w-full h-[320px] rounded-2xl overflow-hidden hover:scale-95 transition-all cursor-pointer">
+        {sliders
+          .filter((s) => s.is_active)
+          .sort((a, b) => a.sort_order - b.sort_order)
+          .map((slider, index) => (
+            <HeroSlidersTemplate
+              key={slider.id}
+              slider={slider}
+              zIndex={sliders.length - index}
+            />
+          ))}
+      </div>
 
       {/* Side Banners */}
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
