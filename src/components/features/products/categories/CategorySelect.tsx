@@ -34,11 +34,13 @@ const CategorySelect: React.FC<Props> = ({
   const { data: categoriesData } = useGetAllCategories();
 
   const flatOptions: SelectOption[] = useMemo(() => {
-    return (flattenCategories(categoriesData?.data?.items) || []).map((opt) => ({
-      key: String(opt.id),
-      title: opt.title,
-    }));
-  }, [categoriesData?.data?.items]);
+    return (flattenCategories(categoriesData?.data?.items) || []).map(
+      (opt) => ({
+        key: String(opt.id),
+        title: opt.title,
+      })
+    );
+  }, [categoriesData]);
 
   return (
     <div
@@ -47,6 +49,7 @@ const CategorySelect: React.FC<Props> = ({
       } gap-2`}
     >
       <SelectBox
+        key={categoriesData?.data?.items?.length}
         label={label}
         value={value ? String(value) : ""}
         onChange={(val) => onChange(val ?? null)}
