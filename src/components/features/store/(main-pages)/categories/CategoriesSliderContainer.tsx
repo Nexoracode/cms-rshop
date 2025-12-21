@@ -1,5 +1,5 @@
 import Slider from "@/components/shared/Slider";
-import CategorySlidersTemplate from "./CategorySliderTemplate";
+import CategoryTemplate from "./CategoryTemplate";
 
 type Props = {
   categories?: any[];
@@ -15,7 +15,7 @@ const CategoriesSliderContainer: React.FC<Props> = ({ categories = [] }) => {
         parentStyle="w-fit gap-12 mx-auto"
         rowHeight={160}
         renderItem={(category) => (
-          <CategorySlidersTemplate category={category} />
+          <CategoryTemplate category={category} />
         )}
       />
     </div>

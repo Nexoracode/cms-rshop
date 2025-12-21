@@ -6,6 +6,8 @@ import { SideBanner } from "./side-banner/side-banner.types";
 import { HeroSlider } from "./hero-slider/hero-slider.types";
 import HeroSliderContainer from "./hero-slider/HeroSliderContainer";
 import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
+import { IoIosStar } from "react-icons/io";
+import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 
 type TemplateSlidersProps = {
   sideBanners?: SideBanner[];
@@ -19,6 +21,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   sideBanners = [],
   sliders = [],
   categories = [],
+  brands = [],
 }) => {
   console.log("sliders =>", sliders);
   console.log("sideBanners =>", sideBanners);
@@ -38,7 +41,17 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
       </div>
       <div className="w-full h-28 bg-gray-100 rounded-xl animate-pulse"></div>
 
-      <CategoriesSliderContainer categories={categories} />
+      <div className="flex flex-col gap-10 justify-center items-center">
+        <p className="text-lg text-gray-700">خرید بر اساس دسته‌بندی</p>
+        <CategoriesSliderContainer categories={categories} />
+      </div>
+      <div className="flex flex-col gap-10 justify-center items-center">
+        <div className="flex items-center gap-2.5">
+          <IoIosStar className="text-2xl text-yellow-400"/>
+          <p className="text-lg text-gray-700">محبوب‌ترین برندها</p>
+        </div>
+        <BrandsSliderContainer brands={brands} />
+      </div>
     </div>
   );
 };

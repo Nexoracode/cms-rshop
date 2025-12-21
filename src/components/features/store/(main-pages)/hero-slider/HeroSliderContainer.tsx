@@ -1,5 +1,5 @@
 import Slider from "@/components/shared/Slider";
-import HeroSlidersTemplate from "./HeroSlidersTemplate";
+import HeroTemplate from "./HeroTemplate";
 import { HeroSlider } from "./hero-slider.types";
 
 type Props = {
@@ -16,7 +16,7 @@ const HeroSliderContainer: React.FC<Props> = ({ sliders = [] }) => {
       <Slider
         items={sortedSliders}
         renderItem={(slider) => (
-          <HeroSlidersTemplate key={slider.id} slider={slider} />
+          <HeroTemplate key={slider.id} slider={slider} />
         )}
       />
     </div>
