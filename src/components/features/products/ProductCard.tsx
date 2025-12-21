@@ -13,20 +13,26 @@ import Image from "next/image";
 type Props = {
   product: any;
   disableAction?: boolean;
+  forceMobileLayout?: boolean;
 };
 
-const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
+const ProductCard: React.FC<Props> = ({
+  product,
+  disableAction = false,
+  forceMobileLayout = true,
+}) => {
   const id = product.id;
-
+  console.log(forceMobileLayout);
+  
   const { mutate: deleteProduct } = useDeleteProduct(product.id);
 
   return (
     <BaseCard
-      className="min-w-[320px] w-full sm:max-w-full"
-      bodyClassName="flex flex-col items-center sm:flex-row gap-4"
+      className={`min-w-[250px] w-full ${forceMobileLayout ? "sm:flex-col" : ""}`}
+      bodyClassName={`flex flex-col items-center ${forceMobileLayout ? "sm:flex-row" : ""} gap-4`}
       redirect={`/admin/products/create?edit_id=${id}&type=infos`}
     >
-      <div className="relative w-full sm:w-[130px] h-[188px] sm:h-[110px]">
+      <div className={`relative w-full ${forceMobileLayout ? "sm:w-[130px] sm:h-[110px]" : ""} h-[188px]`}>
         <Image
           src={product.media_pinned?.url ?? product.image}
           alt="product cover"
@@ -43,11 +49,11 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
         )}
       </div>
 
-      <div className="w-full sm:h-[110px] flex flex-col justify-between gap-4 sm:p-2">
+      <div className={`w-full ${forceMobileLayout ? "sm:flex-col sm:p-2" : ""} flex flex-col justify-between gap-4`}>
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-3">
-          <div className="text-[15px] text-black/80 flex flex-col sm:flex-row items-center gap-1">
-            <p className="truncate max-w-[220px] sm:max-w-[240px]">
+        <div className={`flex flex-col ${forceMobileLayout ? "sm:flex-row" : ""} justify-between items-center w-full gap-3`}>
+          <div className={`text-[15px] text-black/80 flex flex-col ${forceMobileLayout ? "sm:flex-row" : ""} items-center gap-1`}>
+            <p className={`truncate max-w-[220px] ${forceMobileLayout ? "sm:max-w-[240px]" : ""}`}>
               {product.name ?? product.title}
             </p>
             <span className="text-gray-600 text-xs">
@@ -98,7 +104,7 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
 
           <div className="flex items-end text-gray-600">
             {product.discount_amount > 0 || product.discount_percent > 0 ? (
-              <div className="flex flex-col items-end gap-2 sm:gap-1">
+              <div className={`flex flex-col items-end gap-2 ${forceMobileLayout ? "sm:gap-1" : ""}`}>
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
                     {Number(product.price).toLocaleString("fa-IR")}

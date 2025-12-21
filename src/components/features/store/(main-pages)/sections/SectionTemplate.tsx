@@ -11,7 +11,13 @@ type SectionTemplateProps = {
 const SectionTemplate: React.FC<SectionTemplateProps> = ({ section }) => {
   if (!section.products?.length) return null;
 
-  const { title, display_style, products, show_view_all_button, view_all_link } = section;
+  const {
+    title,
+    display_style,
+    products,
+    show_view_all_button,
+    view_all_link,
+  } = section;
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -33,22 +39,32 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({ section }) => {
           itemsPerView={4} // قابل تغییر بر اساس نیاز یا responsive
           rows={1}
           rowHeight={250} // یا هر چیزی که لازم داری
-          renderItem={(product) => <ProductCard key={product.id} product={product} />}
+          renderItem={(product) => (
+            <ProductCard key={product.id} product={product} forceMobileLayout={false}/>
+          )}
         />
       )}
 
       {display_style === "grid" && (
         <div className="grid grid-cols-4 gap-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product: any) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              forceMobileLayout={false}
+            />
           ))}
         </div>
       )}
 
       {display_style === "list" && (
         <div className="flex flex-col gap-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product: any) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              forceMobileLayout={false}
+            />
           ))}
         </div>
       )}
