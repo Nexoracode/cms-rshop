@@ -24,7 +24,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   console.log("sideBanners =>", sideBanners);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 select-none">
       <div className="grid grid-cols-2 gap-4">
         {/* Hero Sliders */}
         <HeroSliderContainer sliders={sliders} />
