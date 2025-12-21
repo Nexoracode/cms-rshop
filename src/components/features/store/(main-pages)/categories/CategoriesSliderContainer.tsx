@@ -12,7 +12,8 @@ const CategoriesSliderContainer: React.FC<Props> = ({ categories = [] }) => {
         items={categories}
         itemsPerView={5}
         rows={2}
-        parentStyle="w-fit gap-12 mx-auto"
+        className="w-fit gap-12 mx-auto"
+        childClassName="!h-fit"
         rowHeight={160}
         renderItem={(category) => (
           <CategoryTemplate category={category} />

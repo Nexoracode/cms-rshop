@@ -9,7 +9,8 @@ type SliderProps<T> = {
   rows?: number;         // تعداد آیتم عمودی داخل هر اسلاید
   rowHeight?: number | string; // ارتفاع هر row
   renderItem: (item: T, index: number) => ReactNode;
-  parentStyle?: string;
+  className?: string;
+  childClassName?: string;
 };
 
 function Slider<T>({
@@ -18,7 +19,8 @@ function Slider<T>({
   rows = 1,
   rowHeight = "1fr",
   renderItem,
-  parentStyle = "",
+  className = "",
+  childClassName = "",
 }: SliderProps<T>) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -56,17 +58,17 @@ function Slider<T>({
   return (
     <div className="relative group w-full h-full">
       <div
-        className={`grid gap-4 h-full ${parentStyle}`}
+        className={`grid gap-4 h-full ${className}`}
         style={{ gridTemplateColumns: `repeat(${itemsPerView}, 1fr)` }}
       >
         {visibleSlides.map((group, slideIndex) => (
           <div
             key={slideIndex}
-            className="grid gap-4"
+            className="grid gap-2"
             style={{ gridTemplateRows: rowTemplate }}
           >
             {group.map((item, itemIndex) => (
-              <div key={itemIndex} className="relative w-full h-full">
+              <div key={itemIndex} className={`relative w-full h-full flex justify-center items-center ${childClassName}`}>
                 {renderItem(item, itemIndex)}
               </div>
             ))}
