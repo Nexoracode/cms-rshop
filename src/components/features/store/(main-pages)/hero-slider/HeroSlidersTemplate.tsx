@@ -17,8 +17,9 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   return (
     <div key={slider.id} className="absolute inset-0" style={{ zIndex }}>
       <div
-        className="relative w-full h-full flex items-center px-5"
-        style={{ backgroundColor: slider.background_color || "#000" }}
+        className={`relative w-full h-full flex items-center px-5 ${
+          !slider.image_url ? `bg-[${slider.background_color || "bg-black/70"}]` : "bg-black/70"
+        }`}
       >
         <Chip
           variant="shadow"
@@ -39,14 +40,16 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
 
         {/* Content */}
         <div
-          className={`relative z-10 w-full p-4 bg-black/20 rounded-xl ${
+          className={`relative z-10 w-full p-4 ${
             slider.is_dark ? "text-black" : "text-white"
           }`}
         >
           <h2 className="text-2xl font-bold mb-2">{slider.title}</h2>
 
           {slider.description && (
-            <p className="text-sm opacity-90 mb-4 truncate">{slider.description}</p>
+            <p className="text-sm opacity-90 mb-4 truncate">
+              {slider.description}
+            </p>
           )}
 
           {slider.button_text && slider.button_link && (
@@ -62,7 +65,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
           alt={slider.title}
           fill
           priority
-          className="object-cover absolute inset-0 z-0 opacity-50"
+          className="object-cover absolute inset-0 z-0 opacity-40"
         />
       </div>
     </div>
