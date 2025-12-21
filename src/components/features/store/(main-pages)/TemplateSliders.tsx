@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import SideBannersTemplate from "./side-banner/SideBannersTemplate";
 import { SideBanner } from "./side-banner/side-banner.types";
 import { HeroSlider } from "./hero-slider/hero-slider.types";
@@ -9,6 +9,7 @@ import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
 import { IoIosStar } from "react-icons/io";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 import SectionsSliderContainer from "./sections/SectionsSliderContainer";
+import SectionIsFeatured from "./products/SectionIsFeatured";
 
 type TemplateSlidersProps = {
   sideBanners?: SideBanner[];
@@ -25,14 +26,21 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   brands = [],
   sections = [],
 }) => {
+  const [featuredSection, setFeaturedSection] = React.useState(null);
   console.log("sections =>", sections);
+
+  useEffect(() => {
+    const findedFeatured = sections.find(
+      (section) => section.section_type === "featured"
+    );
+    setFeaturedSection(findedFeatured);
+  }, [sections]);
 
   return (
     <div className="flex flex-col gap-8 select-none">
       <div className="grid grid-cols-2 gap-4">
         {/* Hero Sliders */}
         <HeroSliderContainer sliders={sliders} />
-
         {/* Side Banners */}
         <div className="grid grid-cols-2 grid-rows-2 gap-2">
           {sideBanners.map((banner) => (
@@ -40,6 +48,11 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
           ))}
         </div>
       </div>
+
+      {featuredSection && (
+        <SectionIsFeatured featuredSection={featuredSection} />
+      )}
+
       <div className="w-full h-28 bg-gray-100 rounded-xl animate-pulse"></div>
 
       <div className="flex flex-col gap-10 justify-center items-center">
