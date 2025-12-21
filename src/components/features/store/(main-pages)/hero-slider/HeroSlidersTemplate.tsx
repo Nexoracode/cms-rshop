@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { HeroSlider } from "./hero-slider.types";
 import StatusBadge from "@/components/shared/StatusBadge";
+import { Chip } from "@heroui/react";
 
 type HeroSlidersTemplateProps = {
   slider: HeroSlider;
@@ -16,27 +17,36 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   return (
     <div key={slider.id} className="absolute inset-0" style={{ zIndex }}>
       <div
-        className="relative w-full h-full flex items-center px-10"
+        className="relative w-full h-full flex items-center px-5"
         style={{ backgroundColor: slider.background_color || "#000" }}
       >
+        <Chip
+          variant="shadow"
+          color={slider.is_dark ? "default" : "secondary"}
+          size="sm"
+          radius="sm"
+          className={`absolute top-4 left-4 z-20`}
+        >
+          {slider.is_dark ? "تم تاریک" : "تم روشن"}
+        </Chip>
+
         {!slider.is_active && (
           <StatusBadge
             isActive={false}
-            size="sm"
-            className="absolute top-4 left-4 z-20"
+            className="absolute top-4 left-20 z-20"
           />
         )}
 
         {/* Content */}
         <div
-          className={`relative z-10 max-w-md ${
+          className={`relative z-10 w-full p-4 bg-black/20 rounded-xl ${
             slider.is_dark ? "text-black" : "text-white"
           }`}
         >
           <h2 className="text-2xl font-bold mb-2">{slider.title}</h2>
 
           {slider.description && (
-            <p className="text-sm opacity-90 mb-4">{slider.description}</p>
+            <p className="text-sm opacity-90 mb-4 truncate">{slider.description}</p>
           )}
 
           {slider.button_text && slider.button_link && (
@@ -52,7 +62,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
           alt={slider.title}
           fill
           priority
-          className="object-cover absolute inset-0 z-0 opacity-30"
+          className="object-cover absolute inset-0 z-0 opacity-50"
         />
       </div>
     </div>
