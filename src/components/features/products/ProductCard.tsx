@@ -51,7 +51,7 @@ const ProductCard: React.FC<Props> = ({ product, disableAction = false }) => {
               {product.name ?? product.title}
             </p>
             <span className="text-gray-600 text-xs">
-              ({product.category?.title})
+              {product?.category?.title ? `(${product.category.title})` : ""}
             </span>
           </div>
 
