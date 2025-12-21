@@ -42,7 +42,7 @@ function Slider<T>({
         {visibleItems.map((item, index) => (
           <div
             key={index}
-            className="relative w-full h-full overflow-hidden rounded-2xl"
+            className="relative w-full h-full rounded-2xl"
           >
             {renderItem(item, index)}
           </div>
