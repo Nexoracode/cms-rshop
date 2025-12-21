@@ -5,18 +5,33 @@ import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 type SliderProps<T> = {
   items: T[];
-  itemsPerView?: number;
+  itemsPerView?: number; // تعداد اسلاید کنار هم
+  rows?: number;         // تعداد آیتم عمودی داخل هر اسلاید
+  rowHeight?: number | string; // ارتفاع هر row
   renderItem: (item: T, index: number) => ReactNode;
+  parentStyle?: string;
 };
 
 function Slider<T>({
   items,
   itemsPerView = 1,
+  rows = 1,
+  rowHeight = "1fr",
   renderItem,
+  parentStyle = "",
 }: SliderProps<T>) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const maxIndex = Math.max(0, items.length - itemsPerView);
+  // هر اسلاید شامل rows آیتم است
+  const slideItems = useMemo(() => {
+    const result: T[][] = [];
+    for (let i = 0; i < items.length; i += rows) {
+      result.push(items.slice(i, i + rows));
+    }
+    return result;
+  }, [items, rows]);
+
+  const maxIndex = Math.max(0, slideItems.length - itemsPerView);
 
   const next = () => {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
@@ -26,30 +41,40 @@ function Slider<T>({
     setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
-  const visibleItems = useMemo(
-    () => items.slice(currentIndex, currentIndex + itemsPerView),
-    [items, currentIndex, itemsPerView]
+  const visibleSlides = useMemo(
+    () => slideItems.slice(currentIndex, currentIndex + itemsPerView),
+    [slideItems, currentIndex, itemsPerView]
   );
 
   if (!items.length) return null;
 
+  const rowTemplate =
+    typeof rowHeight === "number"
+      ? `repeat(${rows}, ${rowHeight}px)`
+      : `repeat(${rows}, ${rowHeight})`;
+
   return (
     <div className="relative group w-full h-full">
       <div
-        className="grid gap-4 h-full"
+        className={`grid gap-4 h-full ${parentStyle}`}
         style={{ gridTemplateColumns: `repeat(${itemsPerView}, 1fr)` }}
       >
-        {visibleItems.map((item, index) => (
+        {visibleSlides.map((group, slideIndex) => (
           <div
-            key={index}
-            className="relative w-full h-full rounded-2xl"
+            key={slideIndex}
+            className="grid gap-4"
+            style={{ gridTemplateRows: rowTemplate }}
           >
-            {renderItem(item, index)}
+            {group.map((item, itemIndex) => (
+              <div key={itemIndex} className="relative w-full h-full">
+                {renderItem(item, itemIndex)}
+              </div>
+            ))}
           </div>
         ))}
       </div>
 
-      {items.length > itemsPerView && (
+      {slideItems.length > itemsPerView && (
         <>
           <button
             onClick={prev}

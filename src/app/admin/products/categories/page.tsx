@@ -20,8 +20,6 @@ const Categories = () => {
     setIsEditOpen(true);
   };
   
-  console.log(categories?.data.items);
-  
   return (
     <>
       {/* Modal for Edit */}
