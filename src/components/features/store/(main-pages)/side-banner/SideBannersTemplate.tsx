@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { SideBanner } from "../sliders/sliders.types";
+import { SideBanner } from "./side-banner.types";
 import { Chip } from "@heroui/react";
 import StatusBadge from "@/components/shared/StatusBadge";
 
@@ -14,8 +14,13 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
 }) => {
   return (
     <div
-      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer`}
-      style={{ backgroundColor: banner.background_color || "#000" }}
+      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer
+        ${
+          !banner.image_url
+            ? `bg-[${banner.background_color || "bg-black/70"}]`
+            : "bg-black/70"
+        }
+        `}
     >
       {!banner.is_active ? (
         <StatusBadge
@@ -59,7 +64,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
         alt={banner.title}
         fill
         priority
-        className="object-cover absolute inset-0 z-0 opacity-30"
+        className="object-cover absolute inset-0 z-0 opacity-40"
       />
     </div>
   );
