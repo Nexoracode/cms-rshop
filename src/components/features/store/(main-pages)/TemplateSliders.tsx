@@ -8,7 +8,7 @@ import HeroSliderContainer from "./hero-slider/HeroSliderContainer";
 import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
 import { IoIosStar } from "react-icons/io";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
-import { BiCategoryAlt } from "react-icons/bi";
+import SectionsSliderContainer from "./sections/SectionsSliderContainer";
 
 type TemplateSlidersProps = {
   sideBanners?: SideBanner[];
@@ -23,9 +23,9 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   sliders = [],
   categories = [],
   brands = [],
+  sections = [],
 }) => {
-  console.log("sliders =>", sliders);
-  console.log("sideBanners =>", sideBanners);
+  console.log("sections =>", sections);
 
   return (
     <div className="flex flex-col gap-8 select-none">
@@ -46,6 +46,9 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
         <p className="text-lg text-gray-700">خرید بر اساس دسته‌بندی</p>
         <CategoriesSliderContainer categories={categories} />
       </div>
+      <div className="flex flex-col gap-10 justify-center items-center">
+        <SectionsSliderContainer sections={sections} />
+      </div>
       <div className="flex flex-col gap-10 justify-center items-center border border-gray-200 rounded-2xl pb-5 pt-2.5">
         <div className="flex items-center gap-2.5">
           <IoIosStar className="text-2xl text-yellow-400" />
@@ -53,7 +56,6 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
         </div>
         <BrandsSliderContainer brands={brands} />
       </div>
-      <div></div>
     </div>
   );
 };
