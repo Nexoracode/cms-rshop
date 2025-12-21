@@ -2,14 +2,13 @@
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import TemplateSliders from "@/components/features/store/(main-pages)/TemplateSliders";
-import { useGetHeroSliders } from "@/core/hooks/api/adminHome/useHeroSlider";
-import { useGetSideBanners } from "@/core/hooks/api/adminHome/useSideBanners";
+import { useGetHome } from "@/core/hooks/api/adminHome/useHome";
 import { SiMaterialformkdocs } from "react-icons/si";
 
 const HomeBuilder = () => {
-  const { data: sideBanners, isLoading: isLoadingSideBanners } =
-    useGetSideBanners();
-  const { data: sliders, isLoading: isLoadingSliders } = useGetHeroSliders();
+  const { data, isLoading: isLoading } = useGetHome();
+
+  const home = data?.data
 
   return (
     <UnifiedCard
@@ -18,13 +17,16 @@ const HomeBuilder = () => {
         icon: <SiMaterialformkdocs className="text-2xl" />,
         showIconInActionSlot: true,
       }}
-      isLoading={isLoadingSideBanners || isLoadingSliders}
+      isLoading={isLoading}
       isExistItems={true}
       searchInp={false}
     >
       <TemplateSliders
-        sideBanners={sideBanners?.data}
-        sliders={sliders?.data}
+        sliders={home?.hero_sliders}
+        sideBanners={home?.side_banners}
+        categories={home?.categories}
+        brands={home?.brands}
+        sections={home?.sections}
       />
     </UnifiedCard>
   );
