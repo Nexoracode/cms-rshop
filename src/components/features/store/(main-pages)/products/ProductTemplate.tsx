@@ -43,7 +43,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
       </div>
 
       <div className={`w-full flex flex-col justify-between gap-4`}>
-        <p className={`line-clamp-2 text-[12px] text-gray-500`}>
+        <p className="line-clamp-2 min-h-[32px] text-[12px] leading-4 text-gray-500">
           {name ?? title}
         </p>
 
