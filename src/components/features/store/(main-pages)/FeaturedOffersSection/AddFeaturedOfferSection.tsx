@@ -4,8 +4,7 @@ import AddSectionCard from "../shared/AddSectionCard";
 const AddFeaturedOfferSection = () => {
   return (
     <AddSectionCard
-      label="افزودن پیشنهاد شگفت انگیز برای"
-      className="h-[294px] border-5 hover:!border-white !bg-[#E5344E]"
+      className="h-[294px] !border-white !bg-[#E5344E]"
       children={
         <div className="flex flex-col gap-4 items-center">
           <img

@@ -9,7 +9,7 @@ type Props = {
 const CategoriesSliderContainer: React.FC<Props> = ({ categories = [] }) => {
   return (
     <div className="w-full">
-      {categories?.length ? (
+      {!categories?.length ? (
         <div className="flex flex-col gap-10 justify-center items-center">
           <p className="text-lg text-gray-700">خرید بر اساس دسته‌بندی</p>
           <Slider

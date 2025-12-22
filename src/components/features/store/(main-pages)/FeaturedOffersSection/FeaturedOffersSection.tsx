@@ -18,7 +18,7 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
 
   return (
     <div>
-      {featuredSection ? (
+      {!featuredSection ? (
         <div className="w-full hover-reveal-parent bg-[#E5344E] h-[294px] rounded-xl flex items-center justify-center p-4">
           <AmazingOfferCard />
 

@@ -19,7 +19,7 @@ const AddSectionCard: React.FC<AddSectionCardProps> = ({
     <div
       onClick={onClick}
       className={`
-        w-full h-28 border-2 border-dashed border-transparent 
+        w-full h-28 border-2 border-dashed
         border-slate-600 text-slate-600 bg-slate-50
         transition-all rounded-xl cursor-pointer
         flex justify-center items-center ${className} hover:opacity-70
