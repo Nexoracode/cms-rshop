@@ -10,6 +10,7 @@ import { IoIosStar } from "react-icons/io";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 import SectionsSliderContainer from "./sections/SectionsSliderContainer";
 import FeaturedOffersSection from "./FeaturedOffersSection/FeaturedOffersSection";
+import PromoBanner from "./PromoBanner";
 
 type TemplateSlidersProps = {
   sideBanners?: SideBanner[];
@@ -37,7 +38,9 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   }, [sections]);
 
   return (
-    <div className="flex flex-col gap-8 select-none">
+    <div className="flex flex-col gap-6 select-none">
+      <PromoBanner />
+
       <div className="grid grid-cols-2 gap-4">
         {/* Hero Sliders */}
         <HeroSliderContainer sliders={sliders} />

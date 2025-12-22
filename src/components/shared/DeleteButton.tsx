@@ -35,7 +35,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({
           <ActionButton
             icon={<LuTrash2 size={18} />}
             onClick={() => setIsOpenDeleteModal(true)}
-            className={`hover:text-red-600 border hover:border-red-300 hover:bg-red-100 !opacity-100`}
+            className={`hover:text-red-600 hover:border-red-300 hover:bg-red-100 !opacity-100`}
           />
         }
         onConfirm={handleConfirmDelete}
