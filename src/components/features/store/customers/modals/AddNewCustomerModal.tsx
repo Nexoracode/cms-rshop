@@ -16,7 +16,6 @@ const AddNewCustomerModal: React.FC = () => {
     phone: "",
     phoneValid: true,
     email: "",
-    emailValid: true,
   });
 
   const { mutateAsync: addNewUser, isPending } = useAddNewUser();
@@ -28,12 +27,11 @@ const AddNewCustomerModal: React.FC = () => {
       phone: "",
       phoneValid: true,
       email: "",
-      emailValid: true,
     });
   };
 
   const addNewUserHandler = async () => {
-    if (!form.emailValid || !form.phoneValid) return false;
+    if (!form.phoneValid) return false;
 
     const newUser = {
       first_name: form.firstName.trim(),
@@ -92,9 +90,7 @@ const AddNewCustomerModal: React.FC = () => {
 
           <EmailInput
             value={form.email}
-            onChange={(val, valid) =>
-              setForm({ ...form, email: val, emailValid: valid })
-            }
+            onChange={(val) => setForm({ ...form, email: val })}
           />
         </div>
       </div>
