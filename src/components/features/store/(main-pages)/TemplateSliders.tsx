@@ -9,7 +9,7 @@ import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
 import { IoIosStar } from "react-icons/io";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 import SectionsSliderContainer from "./sections/SectionsSliderContainer";
-import SectionIsFeatured from "./products/SectionIsFeatured";
+import FeaturedOffersSection from "./FeaturedOffersSection/FeaturedOffersSection";
 
 type TemplateSlidersProps = {
   sideBanners?: SideBanner[];
@@ -50,7 +50,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
       </div>
 
       {featuredSection && (
-        <SectionIsFeatured featuredSection={featuredSection} />
+        <FeaturedOffersSection featuredSection={featuredSection} />
       )}
 
       <div className="w-full h-28 bg-gray-100 rounded-xl animate-pulse"></div>
