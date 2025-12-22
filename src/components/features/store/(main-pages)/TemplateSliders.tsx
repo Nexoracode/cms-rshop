@@ -68,13 +68,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
       <div className="flex flex-col gap-10 justify-center items-center">
         <SectionsSliderContainer sections={otherSection} />
       </div>
-      <div className="flex flex-col gap-10 justify-center items-center border border-gray-200 rounded-2xl pb-5 pt-2.5">
-        <div className="flex items-center gap-2.5">
-          <IoIosStar className="text-2xl text-yellow-400" />
-          <p className="text-lg text-gray-700">محبوب‌ترین برندها</p>
-        </div>
-        <BrandsSliderContainer brands={brands} />
-      </div>
+      <BrandsSliderContainer brands={brands} />
     </div>
   );
 };

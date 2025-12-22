@@ -42,6 +42,7 @@ export const useCreateBrand = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["brands"] });
+      queryClient.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };
