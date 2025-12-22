@@ -10,7 +10,7 @@ const CategoriesSliderContainer: React.FC<Props> = ({ categories = [] }) => {
     <div className="w-full">
       <Slider
         items={categories}
-        itemsPerView={5}
+        itemsPerView={6}
         rows={2}
         className="w-fit gap-12 mx-auto"
         childClassName="!h-fit"
