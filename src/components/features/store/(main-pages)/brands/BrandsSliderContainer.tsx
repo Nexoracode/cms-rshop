@@ -11,7 +11,7 @@ const BrandsSliderContainer: React.FC<Props> = ({ brands = [] }) => {
       <Slider
         items={brands}
         itemsPerView={6}
-        className="w-fit gap-12 mx-auto"
+        className="w-fit !gap-10 mx-auto"
         renderItem={(brand) => (
           <BrandTemplate brand={brand} />
         )}

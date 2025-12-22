@@ -5,6 +5,7 @@ import ProductTemplate from "../products/ProductTemplate";
 import AmazingOfferCard from "./AmazingOfferCard";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
+import AddFeaturedOfferSection from "./AddFeaturedOfferSection";
 
 type SectionIsFeaturedProps = {
   featuredSection?: any;
@@ -16,22 +17,28 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
   console.log("featuredSection =>", featuredSection);
 
   return (
-    <div className="w-full hover-reveal-parent bg-[#E5344E] h-[294px] rounded-xl flex items-center justify-center p-4">
-      <AmazingOfferCard />
+    <div>
+      {featuredSection ? (
+        <div className="w-full hover-reveal-parent bg-[#E5344E] h-[294px] rounded-xl flex items-center justify-center p-4">
+          <AmazingOfferCard />
 
-      <div className="hover-reveal-child">
-        <ActionButton
-          icon={<TbEdit className="text-gray-700" size={18}/>}
-          route="/admin/products"
-        />
-      </div>
+          <div className="hover-reveal-child">
+            <ActionButton
+              icon={<TbEdit className="text-gray-700" size={18} />}
+              route="/admin/products"
+            />
+          </div>
 
-      <Slider
-        items={featuredSection?.products || []}
-        itemsPerView={6}
-        className="w-fit !gap-1.5 mx-auto"
-        renderItem={(product: any) => <ProductTemplate product={product} />}
-      />
+          <Slider
+            items={featuredSection?.products || []}
+            itemsPerView={6}
+            className="w-fit !gap-1.5 mx-auto"
+            renderItem={(product: any) => <ProductTemplate product={product} />}
+          />
+        </div>
+      ) : (
+        <AddFeaturedOfferSection />
+      )}
     </div>
   );
 };

@@ -11,6 +11,7 @@ import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 import SectionsSliderContainer from "./sections/SectionsSliderContainer";
 import FeaturedOffersSection from "./FeaturedOffersSection/FeaturedOffersSection";
 import PromoBanner from "./PromoBanner";
+import AddSectionCard from "./shared/AddSectionCard";
 
 type TemplateSlidersProps = {
   sideBanners?: SideBanner[];
@@ -28,19 +29,23 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
   sections = [],
 }) => {
   const [featuredSection, setFeaturedSection] = React.useState(null);
+  const [otherSection, setOtherSection] = React.useState<any[]>([]);
   console.log("sections =>", sections);
 
   useEffect(() => {
     const findedFeatured = sections.find(
       (section) => section.section_type === "featured"
     );
-    setFeaturedSection(findedFeatured);
+    const findedOther = sections.filter(
+      (section) => section.section_type !== "featured"
+    );
+    findedOther && setOtherSection(findedOther);
+    findedFeatured && setFeaturedSection(findedFeatured);
   }, [sections]);
 
   return (
     <div className="flex flex-col gap-6 select-none">
       <PromoBanner />
-
       <div className="grid grid-cols-2 gap-4">
         {/* Hero Sliders */}
         <HeroSliderContainer sliders={sliders} />
@@ -51,19 +56,17 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({
           ))}
         </div>
       </div>
-
       {featuredSection && (
         <FeaturedOffersSection featuredSection={featuredSection} />
       )}
-
-      <div className="w-full h-28 bg-gray-100 rounded-xl animate-pulse"></div>
-
+      <AddSectionCard
+        label="ویژگی ها و خدمات (مزایای سایت)"
+        onClick={() => console.log("اضافه شد!")}
+        className="!border-gray-600 !text-gray-600 !bg-gray-50"
+      />
+      <CategoriesSliderContainer categories={categories} />
       <div className="flex flex-col gap-10 justify-center items-center">
-        <p className="text-lg text-gray-700">خرید بر اساس دسته‌بندی</p>
-        <CategoriesSliderContainer categories={categories} />
-      </div>
-      <div className="flex flex-col gap-10 justify-center items-center">
-        <SectionsSliderContainer sections={sections} />
+        <SectionsSliderContainer sections={otherSection} />
       </div>
       <div className="flex flex-col gap-10 justify-center items-center border border-gray-200 rounded-2xl pb-5 pt-2.5">
         <div className="flex items-center gap-2.5">

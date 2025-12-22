@@ -1,7 +1,13 @@
+import AddSectionCard from "./shared/AddSectionCard";
+
 const PromoBanner = () => {
   return (
-    <div className="w-full h-[60px] bg-gray-100 rounded-xl animate-pulse flex items-center justify-center">
-      بنر اطلاع رسانی
+    <div>
+      <AddSectionCard
+        label="بنر اطلاع رسانی تبلیغاتی"
+        onClick={() => console.log("اضافه شد!")}
+        className="h-[60px]"
+      />
     </div>
   );
 };
