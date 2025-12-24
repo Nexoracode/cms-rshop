@@ -10,7 +10,7 @@ type Props = {
 const BrandsSliderContainer: React.FC<Props> = ({ brands = [] }) => {
   return (
     <div className="w-full">
-      {!brands.length ? (
+      {brands.length ? (
         <div className="flex flex-col gap-10 justify-center items-center border border-gray-200 rounded-2xl pb-5 pt-2.5">
           <div className="flex items-center gap-2.5">
             <IoIosStar className="text-2xl text-yellow-400" />

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Slider from "@/components/shared/Slider";
-import ProductTemplate from "../products/ProductTemplate";
+import ProductTemplate from "../ProductTemplate";
 import { MdArrowBack } from "react-icons/md";
 
 type SectionTemplateProps = {
