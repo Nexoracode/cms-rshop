@@ -64,7 +64,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     reset,
     submit,
   } = useForm(initialSliderForm, {
-    onValidate: validateHeroSlider,
+    onValidate: (data) => validateHeroSlider(data, showButtonFields),
     runValidationOnChange: true,
   });
 
@@ -106,19 +106,29 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       finalImageUrl = uploadRes.data[0].url;
     }
 
+    const {
+      background_color,
+      button_link,
+      button_text,
+      description,
+      is_active,
+      is_dark,
+      title,
+      use_background,
+    } = form;
+
     const payload = {
-      title: form.title,
-      description: form.description,
+      title,
+      description,
       image_url: finalImageUrl,
-
-      background_color: form.use_background ? form.background_color : undefined,
-      is_dark: form.use_background ? form.is_dark : undefined,
-
-      button_text: form.button_text || undefined,
-      button_link: form.button_link || undefined,
-
-      is_active: form.is_active,
+      ...(use_background ? { background_color } : {}),
+      ...(button_text ? { button_text } : {}),
+      ...(button_link ? { button_link } : {}),
+      is_dark: form.use_background ? Boolean(form.is_dark) : false,
+      is_active,
     };
+
+    console.log(payload);
 
     if (sliderId) {
       return handleMutation(

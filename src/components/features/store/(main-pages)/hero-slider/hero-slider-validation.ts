@@ -1,16 +1,21 @@
-export function validateHeroSlider(data: any) {
+export function validateHeroSlider(data: any, showButtonFields: boolean) {
   const errors: Record<string, string> = {};
 
-  if (!data.userId) {
-    errors.userId = "لطفاً کاربر را انتخاب کنید.";
+  if (!data.title || data.title.trim() === "") {
+    errors.title = "لطفاً عنوان اسلایدر را وارد کنید.";
   }
 
-  if (!data.selectedAddressId) {
-    errors.selectedAddressId = "لطفاً آدرس تحویل را انتخاب کنید.";
+  if (!data.description || data.description.trim() === "") {
+    errors.description = "لطفاً توضیحات اسلایدر را وارد کنید.";
   }
 
-  if (!data.products || data.products.length === 0) {
-    errors.products = "حداقل یک محصول باید انتخاب شود.";
+  if (showButtonFields) {
+    if (!data.button_text || data.button_text.trim() === "") {
+      errors.button_text = "لطفاً عنوان دکمه را وارد کنید.";
+    }
+    if (!data.button_link || data.button_link.trim() === "") {
+      errors.button_link = "لطفاً لینک دکمه را وارد کنید.";
+    }
   }
 
   return errors;

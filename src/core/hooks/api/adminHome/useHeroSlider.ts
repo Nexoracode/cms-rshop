@@ -11,7 +11,7 @@ export const useGetHeroSliders = () => {
 export const useGetOneHeroSlider = (id?: number) => {
   return useQuery({
     queryKey: ["hero-slider", id],
-    queryFn: () => fetcher({ route: `/api/admin/hero-sliders/${id}` }),
+    queryFn: () => fetcher({ route: `/admin/hero-sliders/${id}` }),
     enabled: !!id,
   });
 };
@@ -21,14 +21,14 @@ export const useCreateHeroSlider = () => {
   return useMutation({
     mutationFn: (data: any) =>
       fetcher({
-        route: "/api/admin/hero-sliders",
+        route: "/admin/hero-sliders",
         method: "POST",
         body: data,
         isActiveToast: true,
         loadingText: "در حال ایجاد اسلایدر...",
         successText: "اسلایدر با موفقیت ایجاد شد",
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["hero-sliders"] }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["home"] }),
   });
 };
 
@@ -37,7 +37,7 @@ export const useUpdateHeroSlider = () => {
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: number }) =>
       fetcher({
-        route: `/api/admin/hero-sliders/${id}`,
+        route: `/admin/hero-sliders/${id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
@@ -45,8 +45,8 @@ export const useUpdateHeroSlider = () => {
         successText: "اسلایدر با موفقیت بروزرسانی شد",
       }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["hero-sliders"] });
       qc.invalidateQueries({ queryKey: ["hero-slider"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };
@@ -56,7 +56,7 @@ export const useDeleteHeroSlider = () => {
   return useMutation({
     mutationFn: (id: number) =>
       fetcher({
-        route: `/api/admin/hero-sliders/${id}`,
+        route: `/admin/hero-sliders/${id}`,
         method: "DELETE",
         isActiveToast: true,
         loadingText: "در حال حذف اسلایدر...",
@@ -74,7 +74,7 @@ export const useUpdateHeroSlidersSortOrder = () => {
   return useMutation({
     mutationFn: (data: { id: number; sort_order: number }[]) =>
       fetcher({
-        route: "/api/admin/hero-sliders/sort-order",
+        route: "/admin/hero-sliders/sort-order",
         method: "POST",
         body: data,
         isActiveToast: true,
