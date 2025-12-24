@@ -35,14 +35,14 @@ const initialSliderForm = {
 };
 
 type HeroSliderFormModalProps = {
-  categoryId?: number;
+  sliderId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
 const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
-  categoryId,
+  sliderId,
   defaultValues,
   isOpen,
   onOpenChange,
@@ -120,9 +120,9 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       is_active: form.is_active,
     };
 
-    if (categoryId) {
+    if (sliderId) {
       return handleMutation(
-        () => updateSlider({ id: categoryId, ...payload }),
+        () => updateSlider({ id: sliderId, data: payload }),
         {
           resetForm,
         }
@@ -143,15 +143,15 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
-        categoryId
+        sliderId
           ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
-      title={categoryId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
-      confirmText={categoryId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
+      title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
+      confirmText={sliderId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
       onConfirm={handleSubmit}
       size="xl"
       icon={<TfiLayoutSlider />}
