@@ -157,7 +157,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       icon={<TfiLayoutSlider />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         <TextInput
           label="عنوان"
           placeholder="عنوان اسلایدر را وارد کنید"
@@ -173,6 +173,13 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
+          isRequired
+        />
+
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
 
         <ToggleSection
@@ -212,43 +219,44 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
           title="پس‌زمینه عکس‌دار"
-          value={Boolean(form.use_background)}
-          onChange={(isBackground: boolean) => {
-            if (isBackground) {
+          value={!form.use_background} // اینطوری وقتی عکس هست switch روی عکس‌دار می‌مونه
+          onChange={(isPhotoBackground: boolean) => {
+            if (isPhotoBackground) {
+              // وقتی switch رو روی عکس می‌کنه
               handleMultipleFieldsChange({
-                use_background: true,
-                mediaFile: null,
+                use_background: false, // رنگ خاموش
+                background_color: "", // پاک کردن رنگ
               });
             } else {
+              // وقتی switch روی رنگه
               handleMultipleFieldsChange({
-                use_background: false,
-                background_color: "",
-                is_dark: false,
+                use_background: true,
+                // mediaFile دست نخورده باقی می‌مونه
               });
             }
           }}
           children={
             <ImageBoxUploader
               changeStatusFile={form.mediaFile}
-              defaultImg={form?.image_url ? form?.image_url : null}
+              defaultImg={form?.image_url ?? null}
               onFile={(file) =>
                 handleMultipleFieldsChange({
                   mediaFile: file,
-                  use_background: false,
+                  use_background: false, // وقتی عکس انتخاب شد، background رنگی خاموش بشه
                 })
               }
               errorMessage={errors.image_url}
             />
           }
           mode2Children={
-            <div className="flex flex-col gap-4">
+            <div className="flex gap-4">
               <ColorPickerField
                 label=""
                 value={form.background_color}
                 onChange={(color) => {
                   handleMultipleFieldsChange({
                     background_color: color,
-                    use_background: true,
+                    use_background: true, // فقط رنگ روشن بشه، عکس پاک نشه
                   });
                 }}
               />
@@ -259,12 +267,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               />
             </div>
           }
-        />
-
-        <ToggleSection
-          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
