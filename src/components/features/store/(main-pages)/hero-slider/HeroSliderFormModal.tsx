@@ -20,12 +20,18 @@ import Textarea from "@/components/ui/inputs/Textarea";
 
 const initialSliderForm = {
   title: "",
-  image_url: null as any,
+  description: "",
+  image_url: "",
   mediaFile: null as File | null,
-  is_dark: false,
+
   background_color: "",
   use_background: false,
-  is_active: false,
+  is_dark: false,
+
+  button_text: "",
+  button_link: "",
+
+  is_active: true,
 };
 
 type HeroSliderFormModalProps = {
@@ -67,22 +73,25 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       return;
     }
 
-    const { title, background_color, is_dark, image_url, is_active } =
-      defaultValues;
-
     setForm({
-      title,
-      image_url,
-      is_active,
+      title: defaultValues.title ?? "",
+      description: defaultValues.description ?? "",
+      image_url: defaultValues.image_url ?? "",
       mediaFile: null,
-      background_color: background_color ?? "",
-      is_dark: Boolean(is_dark),
-      use_background: Boolean(background_color),
+
+      background_color: defaultValues.background_color ?? "",
+      use_background: Boolean(defaultValues.background_color),
+      is_dark: Boolean(defaultValues.is_dark),
+
+      button_text: defaultValues.button_text ?? "",
+      button_link: defaultValues.button_link ?? "",
+
+      is_active: Boolean(defaultValues.is_active),
     });
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    let finalMediaId = form.image_url;
+    let finalImageUrl = form.image_url;
 
     if (form.mediaFile) {
       const fd = new FormData();
@@ -93,25 +102,32 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       })) as any;
 
       if (!uploadRes.ok) return false;
-      finalMediaId = uploadRes.data[0].url;
+      finalImageUrl = uploadRes.data[0].url;
     }
 
     const payload = {
-      id: categoryId,
       title: form.title,
-      mediaId: finalMediaId,
+      description: form.description,
+      image_url: finalImageUrl,
+
       background_color: form.use_background ? form.background_color : undefined,
       is_dark: form.use_background ? form.is_dark : undefined,
+
+      button_text: form.button_text || undefined,
+      button_link: form.button_link || undefined,
+
+      is_active: form.is_active,
     };
 
-    if (categoryId)
-      return handleMutation(() => updateSlider(payload), {
+    if (categoryId) {
+      return handleMutation(() => updateSlider({ id: categoryId, ...payload }), {
         resetForm,
       });
-    else
+    } else {
       return handleMutation(() => createSlider(payload), {
         resetForm,
       });
+    }
   });
 
   const resetForm = () => {
@@ -121,9 +137,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={(val) => {
-        onOpenChange?.(val);
-      }}
+      onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
         categoryId
           ? null
@@ -153,35 +167,38 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         <Textarea
           label="توضیحات"
           value={form.description}
-          onChange={(value) => handleFieldChange("description", val)}
+          onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
         />
 
         <ToggleSection
           title={"نمایش دکمه"}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
-          children={
-            <div className="flex items-center gap-2">
-              <TextInput
-                placeholder="عنوان دکمه را وارد کنید"
-                value={form.title}
-                errorMessage={errors.title}
-                isRequired
-                onChange={(val) => handleFieldChange("title", val)}
-                allowEnglishOnly={false}
-              />
-              <TextInput
-                placeholder="لینک دکمه را وارد کنید"
-                value={form.title}
-                errorMessage={errors.title}
-                isRequired
-                onChange={(val) => handleFieldChange("title", val)}
-                allowEnglishOnly={false}
-              />
-            </div>
-          }
-        />
+          initialMode={Boolean(form.button_text || form.button_link)}
+          onChange={(val) => {
+            if (!val) {
+              handleMultipleFieldsChange({
+                button_text: "",
+                button_link: "",
+              });
+            }
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <TextInput
+              placeholder="عنوان دکمه را وارد کنید"
+              value={form.button_text}
+              errorMessage={errors.button_text}
+              onChange={(val) => handleFieldChange("button_text", val)}
+              allowEnglishOnly={false}
+            />
+            <TextInput
+              placeholder="لینک دکمه را وارد کنید"
+              value={form.button_link}
+              errorMessage={errors.button_link}
+              onChange={(val) => handleFieldChange("button_link", val)}
+            />
+          </div>
+        </ToggleSection>
 
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
@@ -211,7 +228,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                   use_background: false,
                 })
               }
-              errorMessage={errors.mediaId}
+              errorMessage={errors.image_url}
             />
           }
           mode2Children={
@@ -220,7 +237,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                 label=""
                 value={form.background_color}
                 onChange={(color) => {
-                  // وقتی کاربر رنگ را انتخاب می‌کند، مود background را فعال کن و رنگ را ذخیره کن
                   handleMultipleFieldsChange({
                     background_color: color,
                     use_background: true,
@@ -235,6 +251,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             </div>
           }
         />
+
         <ToggleSection
           title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
           initialMode={form.is_active}
