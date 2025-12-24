@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -9,20 +8,23 @@ import {
   useUpdateHeroSlider,
 } from "@/core/hooks/api/adminHome/useHeroSlider";
 import { useForm } from "@/core/hooks/common/form/useForm";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
 import { validateHeroSlider } from "./hero-slider-validation";
+import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
+import ColorPickerField from "@/components/shared/ColorPickerField";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 
 const initialSliderForm = {
   title: "",
-  slug: "",
-  discount: "0",
-  mediaId: "",
-  media: null as any,
+  image_url: null as any,
   mediaFile: null as File | null,
+  is_dark: false,
+  background_color: "",
+  use_background: false,
+  is_active: false,
 };
 
 type HeroSliderFormModalProps = {
@@ -58,27 +60,30 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     runValidationOnChange: true,
   });
 
+  // وقتی defaultValues می‌آید، هم فیلدها را ست کن و هم use_background را بر اساس background_color مقدار بده
   useEffect(() => {
     if (!defaultValues) {
       setForm(initialSliderForm);
       return;
     }
 
-    const { discount, media, slug, title } = defaultValues;
+    const { discount, media, slug, title, background_color, is_dark } =
+      defaultValues;
 
     setForm({
       title,
-      slug,
-      discount,
-      media,
-      mediaId: media?.id ?? "",
+      image_url,
+      is_active,
       mediaFile: null,
+      background_color: background_color ?? "",
+      is_dark: Boolean(is_dark),
+      // اگر بک‌اند background_color داشت، مود background را فعال کن
+      use_background: Boolean(background_color),
     });
-
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    let finalMediaId = form.mediaId;
+    let finalMediaId = form.image_url;
 
     if (form.mediaFile) {
       const fd = new FormData();
@@ -89,27 +94,30 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       })) as any;
 
       if (!uploadRes.ok) return false;
-      finalMediaId = uploadRes.data[0].id;
+      finalMediaId = uploadRes.data[0].url;
     }
 
     const payload = {
       id: categoryId,
       title: form.title,
-      slug: form.slug,
-      discount: form.discount,
       mediaId: finalMediaId,
+      // اگر use_background هست، ممکنه لازم باشه background_color و is_dark هم ارسال شوند
+      background_color: form.use_background ? form.background_color : undefined,
+      is_dark: form.use_background ? form.is_dark : undefined,
     };
 
     if (categoryId)
       return handleMutation(() => updateSlider(payload), {
         resetForm,
       });
-    else return handleMutation(() => createSlider(payload), { resetForm });
+    else
+      return handleMutation(() => createSlider(payload), {
+        resetForm,
+      });
   });
 
   const resetForm = () => {
     reset();
-    //setForm(initialSliderForm);
   };
 
   return (
@@ -134,48 +142,82 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-6">
-        <ImageBoxUploader
-          changeStatusFile={form.mediaFile}
-          defaultImg={form?.media?.url ? form?.media?.url : null}
-          onFile={(file) =>
-            handleMultipleFieldsChange({
-              mediaFile: file,
-              mediaId: typeof file === "string" ? file : "",
-            })
-          }
-          errorMessage={errors.mediaId}
+        <TextInput
+          label="عنوان"
+          placeholder="عنوان اسلایدر را وارد کنید"
+          value={form.title}
+          errorMessage={errors.title}
+          isRequired
+          onChange={(val) => handleFieldChange("title", val)}
+          allowEnglishOnly={false}
         />
 
-        <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
-          <TextInput
-            label="عنوان"
-            placeholder="عنوان دسته بندی را وارد کنید"
-            value={form.title}
-            errorMessage={errors.title}
-            isRequired
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
-
-          <SlugInput
-            value={form.slug}
-            onChange={(val) => handleFieldChange("slug", val)}
-            isActiveError={true}
-            errorMessage={errors.slug}
-          />
-        </div>
-
-        <NumberInput
-          label="تخفیف"
-          labelPlacement="outside"
-          hideStepper
-          minValue={0}
-          maxValue={99}
-          endContent={<>%</>}
-          value={+form.discount}
-          onValueChange={(val) =>
-            handleFieldChange("discount", String(val) || "0")
+        <DualToggleSection
+          mode2Title="پس‌زمینه بدون عکس"
+          title="پس‌زمینه عکس‌دار"
+          // نکته: منبع حقیقت صریح الان form.use_background است (مثل ProductInitialForm)
+          value={Boolean(form.use_background)}
+          onChange={(isBackground: boolean) => {
+            // وقتی مود تغییر می‌کند، هم خود فیلد مود را ست کن و هم فیلدهای وابسته را منطقی پاک/تنظیم کن
+            if (isBackground) {
+              handleMultipleFieldsChange({
+                use_background: true,
+                // پاک کردن مدیا وقتی می‌خواهیم بک‌گراند رنگی داشته باشیم
+                mediaFile: null,
+                mediaId: "",
+                // اگر بخواهی، می‌توان یک رنگ پیش‌فرض هم ست کرد
+                // background_color: form.background_color || "#000000",
+              });
+            } else {
+              handleMultipleFieldsChange({
+                use_background: false,
+                // پاک کردن تنظیمات بک‌گراند وقتی به حالت تصویر برمی‌گردیم
+                background_color: "",
+                is_dark: false,
+              });
+            }
+          }}
+          children={
+            <ImageBoxUploader
+              changeStatusFile={form.mediaFile}
+              defaultImg={form?.media?.url ? form?.media?.url : null}
+              onFile={(file) =>
+                handleMultipleFieldsChange({
+                  mediaFile: file,
+                  mediaId: typeof file === "string" ? file : "",
+                  // وقتی کاربر تصویری آپلود یا انتخاب می‌کند، مود تصویر را فعال کن
+                  use_background: false,
+                })
+              }
+              errorMessage={errors.mediaId}
+            />
           }
+          mode2Children={
+            <div className="flex gap-4">
+              <ToggleSection
+                title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
+                initialMode={form.is_dark}
+                onChange={(val) => handleFieldChange("is_dark", val)}
+              />
+              <ColorPickerField
+                label=""
+                value={form.background_color}
+                onChange={(color) => {
+                  // وقتی کاربر رنگ را انتخاب می‌کند، مود background را فعال کن و رنگ را ذخیره کن
+                  handleMultipleFieldsChange({
+                    background_color: color,
+                    use_background: true,
+                  });
+                }}
+              />
+            </div>
+          }
+        />
+        <ToggleSection
+          title="وضعیت نمایش"
+          subtitle="فعال یا غیرفعال"
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
