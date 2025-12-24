@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -53,6 +53,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     useUpdateHeroSlider();
   const { mutateAsync: uploadImageSlider, isPending: isUploading } =
     useUploadSliderImages();
+  const [showButtonFields, setShowButtonFields] = useState<boolean>(false);
 
   const {
     form,
@@ -120,9 +121,12 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     };
 
     if (categoryId) {
-      return handleMutation(() => updateSlider({ id: categoryId, ...payload }), {
-        resetForm,
-      });
+      return handleMutation(
+        () => updateSlider({ id: categoryId, ...payload }),
+        {
+          resetForm,
+        }
+      );
     } else {
       return handleMutation(() => createSlider(payload), {
         resetForm,
@@ -173,8 +177,9 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
 
         <ToggleSection
           title={"نمایش دکمه"}
-          initialMode={Boolean(form.button_text || form.button_link)}
+          initialMode={showButtonFields}
           onChange={(val) => {
+            setShowButtonFields(val);
             if (!val) {
               handleMultipleFieldsChange({
                 button_text: "",
@@ -185,13 +190,17 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         >
           <div className="flex items-center gap-2">
             <TextInput
+              label="عنوان دکمه"
               placeholder="عنوان دکمه را وارد کنید"
               value={form.button_text}
+              isRequired
               errorMessage={errors.button_text}
               onChange={(val) => handleFieldChange("button_text", val)}
               allowEnglishOnly={false}
             />
             <TextInput
+              label="لینک دکمه"
+              isRequired
               placeholder="لینک دکمه را وارد کنید"
               value={form.button_link}
               errorMessage={errors.button_link}
