@@ -16,6 +16,7 @@ import { validateHeroSlider } from "./hero-slider-validation";
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import Textarea from "@/components/ui/inputs/Textarea";
 
 const initialSliderForm = {
   title: "",
@@ -149,11 +150,37 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           allowEnglishOnly={false}
         />
 
+        <Textarea
+          label="توضیحات"
+          value={form.description}
+          onChange={(value) => handleFieldChange("description", val)}
+          placeholder="توضیحات را وارد کنید"
+        />
+
         <ToggleSection
-          title="وضعیت نمایش"
-          subtitle="فعال یا غیرفعال"
+          title={"نمایش دکمه"}
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
+          children={
+            <div className="flex items-center gap-2">
+              <TextInput
+                placeholder="عنوان دکمه را وارد کنید"
+                value={form.title}
+                errorMessage={errors.title}
+                isRequired
+                onChange={(val) => handleFieldChange("title", val)}
+                allowEnglishOnly={false}
+              />
+              <TextInput
+                placeholder="لینک دکمه را وارد کنید"
+                value={form.title}
+                errorMessage={errors.title}
+                isRequired
+                onChange={(val) => handleFieldChange("title", val)}
+                allowEnglishOnly={false}
+              />
+            </div>
+          }
         />
 
         <DualToggleSection
@@ -188,12 +215,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             />
           }
           mode2Children={
-            <div className="flex gap-4">
-              <ToggleSection
-                title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
-                initialMode={form.is_dark}
-                onChange={(val) => handleFieldChange("is_dark", val)}
-              />
+            <div className="flex flex-col gap-4">
               <ColorPickerField
                 label=""
                 value={form.background_color}
@@ -205,8 +227,18 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                   });
                 }}
               />
+              <ToggleSection
+                title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
+                initialMode={form.is_dark}
+                onChange={(val) => handleFieldChange("is_dark", val)}
+              />
             </div>
           }
+        />
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
