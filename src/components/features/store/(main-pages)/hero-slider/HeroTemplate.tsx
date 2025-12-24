@@ -23,7 +23,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
       <div
         className={`relative w-full h-full flex items-center px-5 ${
           !slider.image_url
-            ? `bg-[${slider.background_color || "bg-black/70"}]`
+            ? `border-2 rounded-2xl bg-[${slider.background_color || "gray"}]`
             : "bg-black/70"
         }`}
       >
@@ -70,13 +70,17 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
         </div>
 
         {/* Image */}
-        <Image
-          src={slider.image_url}
-          alt={slider.title}
-          fill
-          priority
-          className="object-cover absolute inset-0 z-0 opacity-40"
-        />
+        {slider.image_url ? (
+          <Image
+            src={slider.image_url}
+            alt={slider.title}
+            fill
+            priority
+            className="object-cover absolute inset-0 z-0 opacity-40"
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
