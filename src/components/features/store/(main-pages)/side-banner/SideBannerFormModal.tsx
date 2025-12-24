@@ -1,54 +1,59 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Checkbox, NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
-  useCreateCategory,
-  useUpdateCategory,
-  useCategoryImageUpload,
-} from "@/core/hooks/api/categories/useCategory";
+  useCreateHeroSlider,
+  useUpdateHeroSlider,
+} from "@/core/hooks/api/adminHome/useHeroSlider";
 import { useForm } from "@/core/hooks/common/form/useForm";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
-import { BiCategoryAlt } from "react-icons/bi";
-import { validateCategory } from "@/components/features/products/categories/category-validation";
 import TextInput from "@/components/ui/inputs/TextInput";
-import FieldErrorText from "@/components/forms/FieldErrorText";
-import CategorySelect from "@/components/features/products/categories/CategorySelect";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import { TfiLayoutSlider } from "react-icons/tfi";
+import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
+import { validateSideBanner } from "./side-banner-validation";
+import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
+import ColorPickerField from "@/components/shared/ColorPickerField";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import Textarea from "@/components/ui/inputs/Textarea";
 
-const initialCategoryForm = {
+const initialSliderForm = {
   title: "",
-  slug: "",
-  discount: "0",
-  parentId: 0,
-  mediaId: "",
-  media: null as any,
+  description: "",
+  image_url: "",
   mediaFile: null as File | null,
+
+  background_color: "",
+  use_background: false,
+  is_dark: false,
+
+  button_text: "",
+  button_link: "",
+
+  is_active: true,
 };
 
 type SideBannerFormModalProps = {
-  categoryId?: number;
+  sliderId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
 const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
-  categoryId,
+  sliderId,
   defaultValues,
   isOpen,
   onOpenChange,
 }) => {
-  const [isParent, setIsParent] = useState(true);
-
-  const { mutateAsync: createCategory, isPending: isCreating } =
-    useCreateCategory();
-  const { mutateAsync: updateCategory, isPending: isUpdating } =
-    useUpdateCategory();
-  const { mutateAsync: uploadImageCategory, isPending: isUploading } =
-    useCategoryImageUpload();
+  const { mutateAsync: createSlider, isPending: isCreating } =
+    useCreateHeroSlider();
+  const { mutateAsync: updateSlider, isPending: isUpdating } =
+    useUpdateHeroSlider();
+  const { mutateAsync: uploadImageSlider, isPending: isUploading } =
+    useUploadSliderImages();
+  const [showButtonFields, setShowButtonFields] = useState<boolean>(false);
 
   const {
     form,
@@ -58,170 +63,219 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
     handleMultipleFieldsChange,
     reset,
     submit,
-  } = useForm(initialCategoryForm, {
-    onValidate: validateCategory,
+  } = useForm(initialSliderForm, {
+    onValidate: (data) => validateSideBanner(data, showButtonFields),
     runValidationOnChange: true,
   });
 
   useEffect(() => {
     if (!defaultValues) {
-      setForm(initialCategoryForm);
-      setIsParent(true);
+      setForm(initialSliderForm);
       return;
     }
 
-    const { discount, media, slug, title, parent_id } = defaultValues;
-
     setForm({
-      title,
-      slug,
-      discount,
-      parentId: parent_id,
-      media,
-      mediaId: media?.id ?? "",
+      title: defaultValues.title ?? "",
+      description: defaultValues.description ?? "",
+      image_url: defaultValues.image_url ?? "",
       mediaFile: null,
-    });
 
-    setIsParent(parent_id === 0);
+      background_color: defaultValues.background_color ?? "",
+      use_background: Boolean(defaultValues.background_color),
+      is_dark: Boolean(defaultValues.is_dark),
+
+      button_text: defaultValues.button_text ?? "",
+      button_link: defaultValues.button_link ?? "",
+
+      is_active: Boolean(defaultValues.is_active),
+    });
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    let finalMediaId = form.mediaId;
+    let finalImageUrl = form.image_url;
 
     if (form.mediaFile) {
       const fd = new FormData();
       fd.append("files", form.mediaFile);
 
-      const uploadRes = (await handleMutation(() => uploadImageCategory(fd), {
+      const uploadRes = (await handleMutation(() => uploadImageSlider(fd), {
         returnResponse: true,
       })) as any;
 
       if (!uploadRes.ok) return false;
-      finalMediaId = uploadRes.data[0].id;
+      finalImageUrl = uploadRes.data[0].url;
     }
 
+    const {
+      background_color,
+      button_link,
+      button_text,
+      description,
+      is_active,
+      is_dark,
+      title,
+      use_background,
+    } = form;
+
     const payload = {
-      id: categoryId,
-      title: form.title,
-      slug: form.slug,
-      discount: form.discount,
-      parentId: form.parentId,
-      mediaId: finalMediaId,
+      title,
+      description,
+      image_url: finalImageUrl,
+      ...(use_background ? { background_color } : {}),
+      ...(button_text ? { button_text } : {}),
+      ...(button_link ? { button_link } : {}),
+      is_dark: form.use_background ? Boolean(form.is_dark) : false,
+      is_active,
     };
 
-    if (categoryId)
-      return handleMutation(() => updateCategory(payload), {
+    console.log(payload);
+
+    if (sliderId) {
+      return handleMutation(
+        () => updateSlider({ id: sliderId, data: payload }),
+        {
+          resetForm,
+        }
+      );
+    } else {
+      return handleMutation(() => createSlider(payload), {
         resetForm,
       });
-    else return handleMutation(() => createCategory(payload), { resetForm });
+    }
   });
 
   const resetForm = () => {
     reset();
-    //setForm(initialCategoryForm);
-    setIsParent(false);
   };
 
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={(val) => {
-        onOpenChange?.(val);
-      }}
+      onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
-        categoryId
+        sliderId
           ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
-      title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
-      confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
+      title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
+      confirmText={sliderId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
       onConfirm={handleSubmit}
       size="xl"
-      icon={<BiCategoryAlt />}
+      icon={<TfiLayoutSlider />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
-      <div className="flex flex-col gap-6">
-        <div>
-          <div
-            className={`flex flex-col gap-4 p-4 border-1.5 rounded-2xl ${
-              errors?.parentId?.length
-                ? "border border-red-300"
-                : "border-slate-300"
-            }`}
-          >
-            <CategorySelect
-              label="دسته‌بندی والد"
-              value={isParent ? null : form.parentId}
-              onChange={(val) =>
-                handleFieldChange("parentId", Number(val) || 0)
-              }
-              placeholder="انتخاب کنید"
-              isDisabled={isParent}
-              errorMessage={errors.parentId}
-              withAddModal={false}
-            />
-            <Checkbox
-              isSelected={isParent}
-              onValueChange={(val) => {
-                setIsParent(val);
-                if (!val) {
-                  setForm((prev) => ({ ...prev, parentId: -1 }));
-                }
-                if (val) handleFieldChange("parentId", 0);
-              }}
-            >
-              <span className="text-sm">دسته‌بندی مادر</span>
-            </Checkbox>
-          </div>
-          <div className="mt-2">
-            {errors.parentId ? <FieldErrorText error={errors.parentId} /> : ""}
-          </div>
-        </div>
-
-        <ImageBoxUploader
-          changeStatusFile={form.mediaFile}
-          defaultImg={form?.media?.url ? form?.media?.url : null}
-          onFile={(file) =>
-            handleMultipleFieldsChange({
-              mediaFile: file,
-              mediaId: typeof file === "string" ? file : "",
-            })
-          }
-          errorMessage={errors.mediaId}
+      <div className="flex flex-col gap-4">
+        <TextInput
+          label="عنوان"
+          placeholder="عنوان اسلایدر را وارد کنید"
+          value={form.title}
+          errorMessage={errors.title}
+          isRequired
+          onChange={(val) => handleFieldChange("title", val)}
+          allowEnglishOnly={false}
         />
 
-        <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
-          <TextInput
-            label="عنوان"
-            placeholder="عنوان دسته بندی را وارد کنید"
-            value={form.title}
-            errorMessage={errors.title}
-            isRequired
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
+        <Textarea
+          label="توضیحات"
+          value={form.description}
+          onChange={(val) => handleFieldChange("description", val)}
+          placeholder="توضیحات را وارد کنید"
+          isRequired
+        />
 
-          <SlugInput
-            value={form.slug}
-            onChange={(val) => handleFieldChange("slug", val)}
-            isActiveError={true}
-            errorMessage={errors.slug}
-          />
-        </div>
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
+        />
 
-        <NumberInput
-          label="تخفیف"
-          labelPlacement="outside"
-          hideStepper
-          minValue={0}
-          maxValue={99}
-          endContent={<>%</>}
-          value={+form.discount}
-          onValueChange={(val) =>
-            handleFieldChange("discount", String(val) || "0")
+        <ToggleSection
+          title={"نمایش دکمه"}
+          initialMode={showButtonFields}
+          onChange={(val) => {
+            setShowButtonFields(val);
+            if (!val) {
+              handleMultipleFieldsChange({
+                button_text: "",
+                button_link: "",
+              });
+            }
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <TextInput
+              label="عنوان دکمه"
+              placeholder="عنوان دکمه را وارد کنید"
+              value={form.button_text}
+              isRequired
+              errorMessage={errors.button_text}
+              onChange={(val) => handleFieldChange("button_text", val)}
+              allowEnglishOnly={false}
+            />
+            <TextInput
+              label="لینک دکمه"
+              isRequired
+              placeholder="لینک دکمه را وارد کنید"
+              value={form.button_link}
+              errorMessage={errors.button_link}
+              onChange={(val) => handleFieldChange("button_link", val)}
+            />
+          </div>
+        </ToggleSection>
+
+        <DualToggleSection
+          mode2Title="پس‌زمینه بدون عکس"
+          title="پس‌زمینه عکس‌دار"
+          value={!form.use_background} // اینطوری وقتی عکس هست switch روی عکس‌دار می‌مونه
+          onChange={(isPhotoBackground: boolean) => {
+            if (isPhotoBackground) {
+              // وقتی switch رو روی عکس می‌کنه
+              handleMultipleFieldsChange({
+                use_background: false, // رنگ خاموش
+                background_color: "", // پاک کردن رنگ
+              });
+            } else {
+              // وقتی switch روی رنگه
+              handleMultipleFieldsChange({
+                use_background: true,
+                // mediaFile دست نخورده باقی می‌مونه
+              });
+            }
+          }}
+          children={
+            <ImageBoxUploader
+              changeStatusFile={form.mediaFile}
+              defaultImg={form?.image_url ?? null}
+              onFile={(file) =>
+                handleMultipleFieldsChange({
+                  mediaFile: file,
+                  use_background: false, // وقتی عکس انتخاب شد، background رنگی خاموش بشه
+                })
+              }
+              errorMessage={errors.image_url}
+            />
+          }
+          mode2Children={
+            <div className="flex gap-4">
+              <ColorPickerField
+                label=""
+                value={form.background_color}
+                onChange={(color) => {
+                  handleMultipleFieldsChange({
+                    background_color: color,
+                    use_background: true, // فقط رنگ روشن بشه، عکس پاک نشه
+                  });
+                }}
+              />
+              <ToggleSection
+                title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
+                initialMode={form.is_dark}
+                onChange={(val) => handleFieldChange("is_dark", val)}
+              />
+            </div>
           }
         />
       </div>
