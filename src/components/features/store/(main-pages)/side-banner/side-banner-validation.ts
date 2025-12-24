@@ -1,20 +1,43 @@
-export function validateSideBanner(data: any, showButtonFields: boolean) {
+export function validateSideBanner(
+  data: any,
+  showLinkFields: boolean,
+  showBadgeFields: boolean
+) {
   const errors: Record<string, string> = {};
 
+  // عنوان (اجباری)
   if (!data.title || data.title.trim() === "") {
-    errors.title = "لطفاً عنوان اسلایدر را وارد کنید.";
+    errors.title = "لطفاً عنوان بنر را وارد کنید.";
   }
 
-  if (!data.description || data.description.trim() === "") {
-    errors.description = "لطفاً توضیحات اسلایدر را وارد کنید.";
+  // زیرعنوان (اجباری)
+  if (!data.subtitle || data.subtitle.trim() === "") {
+    errors.subtitle = "لطفاً متن بنر را وارد کنید.";
   }
 
-  if (showButtonFields) {
-    if (!data.button_text || data.button_text.trim() === "") {
-      errors.button_text = "لطفاً عنوان دکمه را وارد کنید.";
+  // تصویر یا رنگ پس‌زمینه (حداقل یکی)
+  if (
+    (!data.image_url || data.image_url.trim() === "") &&
+    (!data.background_color || data.background_color.trim() === "")
+  ) {
+    errors.image_url = "لطفاً تصویر یا رنگ پس‌زمینه را مشخص کنید.";
+  }
+
+  // لینک (در صورت فعال بودن)
+  if (showLinkFields) {
+    if (!data.link || data.link.trim() === "") {
+      errors.link = "لطفاً لینک بنر را وارد کنید.";
     }
-    if (!data.button_link || data.button_link.trim() === "") {
-      errors.button_link = "لطفاً لینک دکمه را وارد کنید.";
+  }
+
+  // برچسب تخفیف (Badge)
+  if (showBadgeFields) {
+    if (!data.badge_text || data.badge_text.trim() === "") {
+      errors.badge_text = "لطفاً متن برچسب را وارد کنید.";
+    }
+
+    if (!data.badge_color || data.badge_color.trim() === "") {
+      errors.badge_color = "لطفاً رنگ برچسب را انتخاب کنید.";
     }
   }
 

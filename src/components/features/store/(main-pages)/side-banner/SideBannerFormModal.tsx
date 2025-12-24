@@ -3,57 +3,61 @@
 import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import {
-  useCreateHeroSlider,
-  useUpdateHeroSlider,
-} from "@/core/hooks/api/adminHome/useHeroSlider";
+import { useCreateSideBanner, useUpdateSideBanner } from "@/core/hooks/api/adminHome/useSideBanners";
+import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
+import Textarea from "@/components/ui/inputs/Textarea";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { TfiLayoutSlider } from "react-icons/tfi";
-import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
-import { validateSideBanner } from "./side-banner-validation";
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
-import Textarea from "@/components/ui/inputs/Textarea";
+import { validateSideBanner } from "./side-banner-validation";
+import { SideBannerPosition } from "./side-banner.types";
 
-const initialSliderForm = {
-  title: "",
-  description: "",
-  image_url: "",
-  mediaFile: null as File | null,
-
-  background_color: "",
-  use_background: false,
-  is_dark: false,
-
-  button_text: "",
-  button_link: "",
-
-  is_active: true,
-};
-
-type SideBannerFormModalProps = {
-  sliderId?: number;
+type Props = {
+  bannerId?: number;
+  position: SideBannerPosition; // از والد پاس داده میشه (top_left | top_right | ...)
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
-const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
-  sliderId,
+const initialForm = {
+  title: "",
+  subtitle: "",
+  image_url: "",
+  mediaFile: null as File | null,
+
+  background_color: "",
+  is_dark: false,
+
+  link: "",
+  show_link: false,
+
+  badge_text: "",
+  badge_color: "",
+  show_badge: false,
+
+  is_active: true,
+};
+
+const SideBannerFormModal: React.FC<Props> = ({
+  bannerId,
+  position,
   defaultValues,
   isOpen,
   onOpenChange,
 }) => {
-  const { mutateAsync: createSlider, isPending: isCreating } =
-    useCreateHeroSlider();
-  const { mutateAsync: updateSlider, isPending: isUpdating } =
-    useUpdateHeroSlider();
-  const { mutateAsync: uploadImageSlider, isPending: isUploading } =
-    useUploadSliderImages();
-  const [showButtonFields, setShowButtonFields] = useState<boolean>(false);
+  // hooks for API
+  const { mutateAsync: createBanner, isPending: isCreating } = useCreateSideBanner();
+  // useUpdateSideBanner takes id as argument when creating the hook instance
+  const { mutateAsync: updateBanner, isPending: isUpdating } = useUpdateSideBanner(bannerId ?? 0);
+  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadSliderImages();
+
+  const [showLinkFields, setShowLinkFields] = useState<boolean>(false);
+  const [showBadgeFields, setShowBadgeFields] = useState<boolean>(false);
 
   const {
     form,
@@ -63,33 +67,43 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
     handleMultipleFieldsChange,
     reset,
     submit,
-  } = useForm(initialSliderForm, {
-    onValidate: (data) => validateSideBanner(data, showButtonFields),
+  } = useForm(initialForm, {
+    // pass showLinkFields & showBadgeFields to validator so it can check link/badge conditionally
+    onValidate: (data: any) => validateSideBanner(data, showLinkFields, showBadgeFields),
     runValidationOnChange: true,
   });
 
+  // initialize form from defaultValues (edit flow)
   useEffect(() => {
     if (!defaultValues) {
-      setForm(initialSliderForm);
+      setForm(initialForm);
+      setShowLinkFields(false);
+      setShowBadgeFields(false);
       return;
     }
 
     setForm({
       title: defaultValues.title ?? "",
-      description: defaultValues.description ?? "",
+      subtitle: defaultValues.subtitle ?? "",
       image_url: defaultValues.image_url ?? "",
       mediaFile: null,
 
       background_color: defaultValues.background_color ?? "",
-      use_background: Boolean(defaultValues.background_color),
       is_dark: Boolean(defaultValues.is_dark),
 
-      button_text: defaultValues.button_text ?? "",
-      button_link: defaultValues.button_link ?? "",
+      link: defaultValues.link ?? "",
+      show_link: Boolean(defaultValues.link),
+
+      badge_text: defaultValues.badge_text ?? "",
+      badge_color: defaultValues.badge_color ?? "",
+      show_badge: Boolean(defaultValues.badge_text),
 
       is_active: Boolean(defaultValues.is_active),
     });
-  }, [defaultValues]);
+
+    setShowLinkFields(Boolean(defaultValues.link));
+    setShowBadgeFields(Boolean(defaultValues.badge_text));
+  }, [defaultValues, setForm]);
 
   const handleSubmit = submit(async () => {
     let finalImageUrl = form.image_url;
@@ -98,7 +112,7 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
       const fd = new FormData();
       fd.append("files", form.mediaFile);
 
-      const uploadRes = (await handleMutation(() => uploadImageSlider(fd), {
+      const uploadRes = (await handleMutation(() => uploadImage(fd), {
         returnResponse: true,
       })) as any;
 
@@ -106,39 +120,56 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
       finalImageUrl = uploadRes.data[0].url;
     }
 
+    // build payload according to backend spec for side-banners
     const {
-      background_color,
-      button_link,
-      button_text,
-      description,
-      is_active,
-      is_dark,
       title,
-      use_background,
+      subtitle,
+      background_color,
+      is_dark,
+      link,
+      badge_text,
+      badge_color,
+      is_active,
+      show_link,
+      show_badge,
     } = form;
 
-    const payload = {
+    const payload: Record<string, any> = {
       title,
-      description,
+      subtitle,
       image_url: finalImageUrl,
-      ...(use_background ? { background_color } : {}),
-      ...(button_text ? { button_text } : {}),
-      ...(button_link ? { button_link } : {}),
-      is_dark: form.use_background ? Boolean(form.is_dark) : false,
+      position, // position must come from parent
       is_active,
     };
 
-    console.log(payload);
+    // optional background_color
+    if (background_color && background_color.trim() !== "") {
+      payload.background_color = background_color;
+    }
 
-    if (sliderId) {
-      return handleMutation(
-        () => updateSlider({ id: sliderId, data: payload }),
-        {
-          resetForm,
-        }
-      );
+    // include is_dark only if a background color is used
+    payload.is_dark = background_color && background_color.trim() !== "" ? Boolean(is_dark) : false;
+
+    // link (optional) but only if show_link true or link provided
+    if (showLinkFields || (link && link.trim() !== "")) {
+      payload.link = link && link.trim() !== "" ? link : undefined;
+    }
+
+    // badge (optional)
+    if (showBadgeFields || (badge_text && badge_text.trim() !== "")) {
+      payload.badge_text = badge_text && badge_text.trim() !== "" ? badge_text : undefined;
+      payload.badge_color = badge_color && badge_color.trim() !== "" ? badge_color : undefined;
+    }
+
+    // send
+    if (bannerId) {
+      // update: updateBanner expects data as body (hook was created with id param)
+      return handleMutation(() => updateBanner(payload), {
+        resetForm,
+      });
     } else {
-      return handleMutation(() => createSlider(payload), {
+      // create
+      return handleMutation(() => createBanner(payload), {
         resetForm,
       });
     }
@@ -146,6 +177,8 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
 
   const resetForm = () => {
     reset();
+    setShowLinkFields(false);
+    setShowBadgeFields(false);
   };
 
   return (
@@ -153,15 +186,15 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
-        sliderId
+        bannerId
           ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
-      title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
-      confirmText={sliderId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
+      title={bannerId ? "ویرایش بنر جانبی" : "افزودن بنر جانبی جدید"}
+      confirmText={bannerId ? "ویرایش بنر" : "ایجاد بنر"}
       onConfirm={handleSubmit}
       size="xl"
       icon={<TfiLayoutSlider />}
@@ -170,7 +203,7 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
       <div className="flex flex-col gap-4">
         <TextInput
           label="عنوان"
-          placeholder="عنوان اسلایدر را وارد کنید"
+          placeholder="عنوان بنر را وارد کنید"
           value={form.title}
           errorMessage={errors.title}
           isRequired
@@ -179,10 +212,10 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
         />
 
         <Textarea
-          label="توضیحات"
-          value={form.description}
-          onChange={(val) => handleFieldChange("description", val)}
-          placeholder="توضیحات را وارد کنید"
+          label="متن / زیرعنوان"
+          value={form.subtitle}
+          onChange={(val) => handleFieldChange("subtitle", val)}
+          placeholder="زیرعنوان را وارد کنید"
           isRequired
         />
 
@@ -192,56 +225,90 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
           onChange={(val) => handleFieldChange("is_active", val)}
         />
 
+        {/* link toggle */}
         <ToggleSection
-          title={"نمایش دکمه"}
-          initialMode={showButtonFields}
+          title={"نمایش لینک"}
+          initialMode={showLinkFields}
           onChange={(val) => {
-            setShowButtonFields(val);
+            setShowLinkFields(val);
+            handleMultipleFieldsChange({
+              show_link: val,
+            });
             if (!val) {
               handleMultipleFieldsChange({
-                button_text: "",
-                button_link: "",
+                link: "",
               });
             }
           }}
         >
           <div className="flex items-center gap-2">
             <TextInput
-              label="عنوان دکمه"
-              placeholder="عنوان دکمه را وارد کنید"
-              value={form.button_text}
-              isRequired
-              errorMessage={errors.button_text}
-              onChange={(val) => handleFieldChange("button_text", val)}
-              allowEnglishOnly={false}
-            />
-            <TextInput
-              label="لینک دکمه"
-              isRequired
-              placeholder="لینک دکمه را وارد کنید"
-              value={form.button_link}
-              errorMessage={errors.button_link}
-              onChange={(val) => handleFieldChange("button_link", val)}
+              label="لینک"
+              placeholder="لینک بنر را وارد کنید"
+              value={form.link}
+              errorMessage={errors.link}
+              onChange={(val) => {
+                handleFieldChange("link", val);
+                // keep showLinkFields true when user types
+                if (!showLinkFields && val) setShowLinkFields(true);
+                handleMultipleFieldsChange({ show_link: Boolean(val) });
+              }}
             />
           </div>
         </ToggleSection>
 
+        {/* badge toggle */}
+        <ToggleSection
+          title={"نمایش برچسب (Badge)"}
+          initialMode={showBadgeFields}
+          onChange={(val) => {
+            setShowBadgeFields(val);
+            handleMultipleFieldsChange({
+              show_badge: val,
+            });
+            if (!val) {
+              handleMultipleFieldsChange({
+                badge_text: "",
+                badge_color: "",
+              });
+            }
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <TextInput
+              label="متن برچسب"
+              placeholder="مثلاً 14% یا جدید"
+              value={form.badge_text}
+              errorMessage={errors.badge_text}
+              onChange={(val) => {
+                handleFieldChange("badge_text", val);
+                if (!showBadgeFields && val) setShowBadgeFields(true);
+                handleMultipleFieldsChange({ show_badge: Boolean(val) });
+              }}
+              allowEnglishOnly={false}
+            />
+            <ColorPickerField
+              label="رنگ برچسب"
+              value={form.badge_color}
+              onChange={(color) => handleFieldChange("badge_color", color)}
+            />
+          </div>
+        </ToggleSection>
+
+        {/* image / background */}
         <DualToggleSection
-          mode2Title="پس‌زمینه بدون عکس"
+          mode2Title="پس‌زمینه رنگی"
           title="پس‌زمینه عکس‌دار"
-          value={!form.use_background} // اینطوری وقتی عکس هست switch روی عکس‌دار می‌مونه
+          value={!Boolean(form.background_color)}
           onChange={(isPhotoBackground: boolean) => {
             if (isPhotoBackground) {
-              // وقتی switch رو روی عکس می‌کنه
               handleMultipleFieldsChange({
-                use_background: false, // رنگ خاموش
-                background_color: "", // پاک کردن رنگ
+                background_color: "",
               });
             } else {
-              // وقتی switch روی رنگه
+              // user chose background color mode; keep mediaFile intact (do not clear it)
               handleMultipleFieldsChange({
-                use_background: true,
-                // mediaFile دست نخورده باقی می‌مونه
+                // nothing else forced here
               });
             }
           }}
@@ -252,23 +319,23 @@ const SideBannerFormModal: React.FC<SideBannerFormModalProps> = ({
               onFile={(file) =>
                 handleMultipleFieldsChange({
                   mediaFile: file,
-                  use_background: false, // وقتی عکس انتخاب شد، background رنگی خاموش بشه
+                  // if user selects an image, background color shouldn't be prioritized
+                  background_color: "",
                 })
               }
               errorMessage={errors.image_url}
             />
           }
           mode2Children={
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4">
               <ColorPickerField
                 label=""
                 value={form.background_color}
-                onChange={(color) => {
+                onChange={(color) =>
                   handleMultipleFieldsChange({
                     background_color: color,
-                    use_background: true, // فقط رنگ روشن بشه، عکس پاک نشه
-                  });
-                }}
+                  })
+                }
               />
               <ToggleSection
                 title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
