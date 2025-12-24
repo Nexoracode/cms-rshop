@@ -152,6 +152,13 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           allowEnglishOnly={false}
         />
 
+        <ToggleSection
+          title="وضعیت نمایش"
+          subtitle="فعال یا غیرفعال"
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
+        />
+
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
           title="پس‌زمینه عکس‌دار"
@@ -212,12 +219,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               />
             </div>
           }
-        />
-        <ToggleSection
-          title="وضعیت نمایش"
-          subtitle="فعال یا غیرفعال"
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
