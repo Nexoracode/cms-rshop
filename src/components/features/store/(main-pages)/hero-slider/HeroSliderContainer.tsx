@@ -11,7 +11,7 @@ const HeroSliderContainer: React.FC<Props> = ({ sliders = [] }) => {
   const sortedSliders = [...sliders].sort(
     (a, b) => a.sort_order - b.sort_order
   );
-
+  
   return (
     <div className="w-full h-[320px] rounded-2xl overflow-hidden">
       {sortedSliders.length ? (

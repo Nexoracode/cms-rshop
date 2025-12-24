@@ -32,10 +32,10 @@ export const useCreateHeroSlider = () => {
   });
 };
 
-export const useUpdateHeroSlider = (id: number) => {
+export const useUpdateHeroSlider = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: ({ data, id }: { data: any; id: number }) =>
       fetcher({
         route: `/api/admin/hero-sliders/${id}`,
         method: "PATCH",
@@ -46,7 +46,7 @@ export const useUpdateHeroSlider = (id: number) => {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["hero-sliders"] });
-      qc.invalidateQueries({ queryKey: ["hero-slider", id] });
+      qc.invalidateQueries({ queryKey: ["hero-slider"] });
     },
   });
 };

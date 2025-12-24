@@ -1,28 +1,25 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Checkbox, NumberInput } from "@heroui/react";
+import React, { useEffect } from "react";
+import { NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
-  useCreateCategory,
-  useUpdateCategory,
-  useCategoryImageUpload,
-} from "@/core/hooks/api/categories/useCategory";
+  useCreateHeroSlider,
+  useUpdateHeroSlider,
+} from "@/core/hooks/api/adminHome/useHeroSlider";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
-import { BiCategoryAlt } from "react-icons/bi";
-import { validateCategory } from "@/components/features/products/categories/category-validation";
 import TextInput from "@/components/ui/inputs/TextInput";
-import FieldErrorText from "@/components/forms/FieldErrorText";
-import CategorySelect from "@/components/features/products/categories/CategorySelect";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import { TfiLayoutSlider } from "react-icons/tfi";
+import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
+import { validateHeroSlider } from "./hero-slider-validation";
 
-const initialCategoryForm = {
+const initialSliderForm = {
   title: "",
   slug: "",
   discount: "0",
-  parentId: 0,
   mediaId: "",
   media: null as any,
   mediaFile: null as File | null,
@@ -41,14 +38,12 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [isParent, setIsParent] = useState(true);
-
-  const { mutateAsync: createCategory, isPending: isCreating } =
-    useCreateCategory();
-  const { mutateAsync: updateCategory, isPending: isUpdating } =
-    useUpdateCategory();
-  const { mutateAsync: uploadImageCategory, isPending: isUploading } =
-    useCategoryImageUpload();
+  const { mutateAsync: createSlider, isPending: isCreating } =
+    useCreateHeroSlider();
+  const { mutateAsync: updateSlider, isPending: isUpdating } =
+    useUpdateHeroSlider();
+  const { mutateAsync: uploadImageSlider, isPending: isUploading } =
+    useUploadSliderImages();
 
   const {
     form,
@@ -58,31 +53,28 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     handleMultipleFieldsChange,
     reset,
     submit,
-  } = useForm(initialCategoryForm, {
-    onValidate: validateCategory,
+  } = useForm(initialSliderForm, {
+    onValidate: validateHeroSlider,
     runValidationOnChange: true,
   });
 
   useEffect(() => {
     if (!defaultValues) {
-      setForm(initialCategoryForm);
-      setIsParent(true);
+      setForm(initialSliderForm);
       return;
     }
 
-    const { discount, media, slug, title, parent_id } = defaultValues;
+    const { discount, media, slug, title } = defaultValues;
 
     setForm({
       title,
       slug,
       discount,
-      parentId: parent_id,
       media,
       mediaId: media?.id ?? "",
       mediaFile: null,
     });
 
-    setIsParent(parent_id === 0);
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
@@ -92,7 +84,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       const fd = new FormData();
       fd.append("files", form.mediaFile);
 
-      const uploadRes = (await handleMutation(() => uploadImageCategory(fd), {
+      const uploadRes = (await handleMutation(() => uploadImageSlider(fd), {
         returnResponse: true,
       })) as any;
 
@@ -105,21 +97,19 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       title: form.title,
       slug: form.slug,
       discount: form.discount,
-      parentId: form.parentId,
       mediaId: finalMediaId,
     };
 
     if (categoryId)
-      return handleMutation(() => updateCategory(payload), {
+      return handleMutation(() => updateSlider(payload), {
         resetForm,
       });
-    else return handleMutation(() => createCategory(payload), { resetForm });
+    else return handleMutation(() => createSlider(payload), { resetForm });
   });
 
   const resetForm = () => {
     reset();
-    //setForm(initialCategoryForm);
-    setIsParent(false);
+    //setForm(initialSliderForm);
   };
 
   return (
@@ -136,51 +126,14 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
-      title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
-      confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
+      title={categoryId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
+      confirmText={categoryId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
       onConfirm={handleSubmit}
       size="xl"
-      icon={<BiCategoryAlt />}
+      icon={<TfiLayoutSlider />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-6">
-        <div>
-          <div
-            className={`flex flex-col gap-4 p-4 border-1.5 rounded-2xl ${
-              errors?.parentId?.length
-                ? "border border-red-300"
-                : "border-slate-300"
-            }`}
-          >
-            <CategorySelect
-              label="دسته‌بندی والد"
-              value={isParent ? null : form.parentId}
-              onChange={(val) =>
-                handleFieldChange("parentId", Number(val) || 0)
-              }
-              placeholder="انتخاب کنید"
-              isDisabled={isParent}
-              errorMessage={errors.parentId}
-              withAddModal={false}
-            />
-            <Checkbox
-              isSelected={isParent}
-              onValueChange={(val) => {
-                setIsParent(val);
-                if (!val) {
-                  setForm((prev) => ({ ...prev, parentId: -1 }));
-                }
-                if (val) handleFieldChange("parentId", 0);
-              }}
-            >
-              <span className="text-sm">دسته‌بندی مادر</span>
-            </Checkbox>
-          </div>
-          <div className="mt-2">
-            {errors.parentId ? <FieldErrorText error={errors.parentId} /> : ""}
-          </div>
-        </div>
-
         <ImageBoxUploader
           changeStatusFile={form.mediaFile}
           defaultImg={form?.media?.url ? form?.media?.url : null}
