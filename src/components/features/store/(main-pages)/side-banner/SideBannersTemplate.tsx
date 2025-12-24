@@ -6,7 +6,7 @@ import { Chip } from "@heroui/react";
 import StatusBadge from "@/components/shared/StatusBadge";
 
 type SideBannersTemplateProps = {
-  banner: SideBanner;
+  banner: any;
 };
 
 const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
@@ -18,9 +18,9 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
     <div
       className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer ${
         !banner.image_url
-          ? `bg-[${banner.background_color || "bg-black/70"}]`
+          ? `bg-[ "bg-black/70"}]`
           : "bg-black/70"
-      }`}
+      }`}/* ${banner.background_color || */
     >
       {!banner.is_active ? (
         <StatusBadge

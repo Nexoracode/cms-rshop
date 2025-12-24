@@ -1,5 +1,4 @@
 import AddSectionCard from "../shared/AddSectionCard";
-import HeroSliderFormModal from "./SideBannerFormModal";
 import { CiImageOn } from "react-icons/ci";
 
 const SideBannerEmptyState = () => {
@@ -9,7 +8,7 @@ const SideBannerEmptyState = () => {
       children={
         <div className="flex flex-col gap-4 items-center">
           <CiImageOn className="text-gray-600 text-[70px]" />
-          <HeroSliderFormModal />
+          {/* <HeroSliderFormModal position="top_left" bannerId={1} defaultValues={[]} isOpen={false} onOpenChange={() => {}}/> */}
         </div>
       }
     />
