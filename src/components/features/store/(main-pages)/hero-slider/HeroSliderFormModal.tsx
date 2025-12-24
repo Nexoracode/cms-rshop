@@ -60,14 +60,13 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     runValidationOnChange: true,
   });
 
-  // وقتی defaultValues می‌آید، هم فیلدها را ست کن و هم use_background را بر اساس background_color مقدار بده
   useEffect(() => {
     if (!defaultValues) {
       setForm(initialSliderForm);
       return;
     }
 
-    const { discount, media, slug, title, background_color, is_dark } =
+    const { title, background_color, is_dark, image_url, is_active } =
       defaultValues;
 
     setForm({
@@ -77,7 +76,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       mediaFile: null,
       background_color: background_color ?? "",
       is_dark: Boolean(is_dark),
-      // اگر بک‌اند background_color داشت، مود background را فعال کن
       use_background: Boolean(background_color),
     });
   }, [defaultValues]);
@@ -101,7 +99,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       id: categoryId,
       title: form.title,
       mediaId: finalMediaId,
-      // اگر use_background هست، ممکنه لازم باشه background_color و is_dark هم ارسال شوند
       background_color: form.use_background ? form.background_color : undefined,
       is_dark: form.use_background ? form.is_dark : undefined,
     };
@@ -162,23 +159,16 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
           title="پس‌زمینه عکس‌دار"
-          // نکته: منبع حقیقت صریح الان form.use_background است (مثل ProductInitialForm)
           value={Boolean(form.use_background)}
           onChange={(isBackground: boolean) => {
-            // وقتی مود تغییر می‌کند، هم خود فیلد مود را ست کن و هم فیلدهای وابسته را منطقی پاک/تنظیم کن
             if (isBackground) {
               handleMultipleFieldsChange({
                 use_background: true,
-                // پاک کردن مدیا وقتی می‌خواهیم بک‌گراند رنگی داشته باشیم
                 mediaFile: null,
-                mediaId: "",
-                // اگر بخواهی، می‌توان یک رنگ پیش‌فرض هم ست کرد
-                // background_color: form.background_color || "#000000",
               });
             } else {
               handleMultipleFieldsChange({
                 use_background: false,
-                // پاک کردن تنظیمات بک‌گراند وقتی به حالت تصویر برمی‌گردیم
                 background_color: "",
                 is_dark: false,
               });
@@ -187,12 +177,10 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           children={
             <ImageBoxUploader
               changeStatusFile={form.mediaFile}
-              defaultImg={form?.media?.url ? form?.media?.url : null}
+              defaultImg={form?.image_url ? form?.image_url : null}
               onFile={(file) =>
                 handleMultipleFieldsChange({
                   mediaFile: file,
-                  mediaId: typeof file === "string" ? file : "",
-                  // وقتی کاربر تصویری آپلود یا انتخاب می‌کند، مود تصویر را فعال کن
                   use_background: false,
                 })
               }
