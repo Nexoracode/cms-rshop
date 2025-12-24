@@ -15,21 +15,31 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   zIndex,
 }) => {
   return (
-    <div key={slider.id} className="absolute inset-0 cursor-pointer" style={{ zIndex }}>
+    <div
+      key={slider.id}
+      className="absolute inset-0 cursor-pointer"
+      style={{ zIndex }}
+    >
       <div
         className={`relative w-full h-full flex items-center px-5 ${
-          !slider.image_url ? `bg-[${slider.background_color || "bg-black/70"}]` : "bg-black/70"
+          !slider.image_url
+            ? `bg-[${slider.background_color || "bg-black/70"}]`
+            : "bg-black/70"
         }`}
       >
-        <Chip
-          variant="shadow"
-          color={slider.is_dark ? "default" : "secondary"}
-          size="sm"
-          radius="sm"
-          className={`absolute top-4 left-4 z-20`}
-        >
-          {slider.is_dark ? "تم تاریک" : "تم روشن"}
-        </Chip>
+        {slider.background_color ? (
+          <Chip
+            variant="shadow"
+            color={slider.is_dark ? "default" : "secondary"}
+            size="sm"
+            radius="sm"
+            className={`absolute top-4 left-4 z-20`}
+          >
+            {slider.is_dark ? "تم تاریک" : "تم روشن"}
+          </Chip>
+        ) : (
+          ""
+        )}
 
         {!slider.is_active && (
           <StatusBadge
