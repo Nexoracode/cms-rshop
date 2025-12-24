@@ -12,15 +12,15 @@ type SideBannersTemplateProps = {
 const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
   banner,
 }) => {
+  console.log("Banner =>", banner);
+
   return (
     <div
-      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer
-        ${
-          !banner.image_url
-            ? `bg-[${banner.background_color || "bg-black/70"}]`
-            : "bg-black/70"
-        }
-        `}
+      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer ${
+        !banner.image_url
+          ? `bg-[${banner.background_color || "bg-black/70"}]`
+          : "bg-black/70"
+      }`}
     >
       {!banner.is_active ? (
         <StatusBadge
@@ -35,7 +35,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
       <div className="relative z-10 flex flex-col gap-1">
         <h3 className="text-lg font-bold truncate">{banner.title}</h3>
         {banner.subtitle && (
-          <p className="text-sm opacity-90 truncate">{banner.subtitle}</p>
+          <p className="text-sm truncate">{banner.subtitle}</p>
         )}
       </div>
 

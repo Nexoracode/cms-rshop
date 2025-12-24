@@ -21,13 +21,7 @@ const HomeBuilder = () => {
       isExistItems={true}
       searchInp={false}
     >
-      <TemplateSliders
-        sliders={home?.hero_sliders}
-        sideBanners={home?.side_banners}
-        categories={home?.categories}
-        brands={home?.brands}
-        sections={home?.sections}
-      />
+      <TemplateSliders allSections={home}/>
     </UnifiedCard>
   );
 };
