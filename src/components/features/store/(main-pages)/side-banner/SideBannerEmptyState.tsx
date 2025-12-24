@@ -1,18 +1,14 @@
 import AddSectionCard from "../shared/AddSectionCard";
-import { TfiLayoutSlider } from "react-icons/tfi";
 import HeroSliderFormModal from "./SideBannerFormModal";
+import { CiImageOn } from "react-icons/ci";
 
 const SideBannerEmptyState = () => {
   return (
     <AddSectionCard
-      className="w-[388px] h-[320px]"
+      className="w-[190px] h-[156px]"
       children={
         <div className="flex flex-col gap-4 items-center">
-          <TfiLayoutSlider className="text-gray-600 text-[70px]" />
-          <p className="text-center leading-7">
-            وبسایت اسلایدر صفحه اصلی جهت نمایش ندارد!! <br />
-            حداقل یک اسلایدر ایجاد کنید
-          </p>
+          <CiImageOn className="text-gray-600 text-[70px]" />
           <HeroSliderFormModal />
         </div>
       }
