@@ -221,6 +221,8 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               placeholder="لینک دکمه را وارد کنید"
               value={form.button_link}
               errorMessage={errors.button_link}
+              allowSpecialChars
+              allowedSpecialChars={["/", "-"]}
               onChange={(val) => handleFieldChange("button_link", val)}
             />
           </div>

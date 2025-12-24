@@ -3,7 +3,10 @@
 import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import { useCreateSideBanner, useUpdateSideBanner } from "@/core/hooks/api/adminHome/useSideBanners";
+import {
+  useCreateSideBanner,
+  useUpdateSideBanner,
+} from "@/core/hooks/api/adminHome/useSideBanners";
 import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -51,10 +54,13 @@ const SideBannerFormModal: React.FC<Props> = ({
   onOpenChange,
 }) => {
   // hooks for API
-  const { mutateAsync: createBanner, isPending: isCreating } = useCreateSideBanner();
+  const { mutateAsync: createBanner, isPending: isCreating } =
+    useCreateSideBanner();
   // useUpdateSideBanner takes id as argument when creating the hook instance
-  const { mutateAsync: updateBanner, isPending: isUpdating } = useUpdateSideBanner(bannerId ?? 0);
-  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadSliderImages();
+  const { mutateAsync: updateBanner, isPending: isUpdating } =
+    useUpdateSideBanner(bannerId ?? 0);
+  const { mutateAsync: uploadImage, isPending: isUploading } =
+    useUploadSliderImages();
 
   const [showLinkFields, setShowLinkFields] = useState<boolean>(false);
   const [showBadgeFields, setShowBadgeFields] = useState<boolean>(false);
@@ -69,7 +75,8 @@ const SideBannerFormModal: React.FC<Props> = ({
     submit,
   } = useForm(initialForm, {
     // pass showLinkFields & showBadgeFields to validator so it can check link/badge conditionally
-    onValidate: (data: any) => validateSideBanner(data, showLinkFields, showBadgeFields),
+    onValidate: (data: any) =>
+      validateSideBanner(data, showLinkFields, showBadgeFields),
     runValidationOnChange: true,
   });
 
@@ -148,7 +155,10 @@ const SideBannerFormModal: React.FC<Props> = ({
     }
 
     // include is_dark only if a background color is used
-    payload.is_dark = background_color && background_color.trim() !== "" ? Boolean(is_dark) : false;
+    payload.is_dark =
+      background_color && background_color.trim() !== ""
+        ? Boolean(is_dark)
+        : false;
 
     // link (optional) but only if show_link true or link provided
     if (showLinkFields || (link && link.trim() !== "")) {
@@ -157,8 +167,10 @@ const SideBannerFormModal: React.FC<Props> = ({
 
     // badge (optional)
     if (showBadgeFields || (badge_text && badge_text.trim() !== "")) {
-      payload.badge_text = badge_text && badge_text.trim() !== "" ? badge_text : undefined;
-      payload.badge_color = badge_color && badge_color.trim() !== "" ? badge_color : undefined;
+      payload.badge_text =
+        badge_text && badge_text.trim() !== "" ? badge_text : undefined;
+      payload.badge_color =
+        badge_color && badge_color.trim() !== "" ? badge_color : undefined;
     }
 
     // send
@@ -201,15 +213,31 @@ const SideBannerFormModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
-        <TextInput
-          label="عنوان"
-          placeholder="عنوان بنر را وارد کنید"
-          value={form.title}
-          errorMessage={errors.title}
-          isRequired
-          onChange={(val) => handleFieldChange("title", val)}
-          allowEnglishOnly={false}
-        />
+        <div className="flex items-center gap-2">
+          <TextInput
+            label="عنوان"
+            placeholder="عنوان بنر را وارد کنید"
+            value={form.title}
+            errorMessage={errors.title}
+            isRequired
+            onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
+          />
+          <TextInput
+            label="لینک"
+            placeholder="لینک بنر را وارد کنید"
+            value={form.link}
+            errorMessage={errors.link}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            onChange={(val) => {
+              handleFieldChange("link", val);
+              // keep showLinkFields true when user types
+              if (!showLinkFields && val) setShowLinkFields(true);
+              handleMultipleFieldsChange({ show_link: Boolean(val) });
+            }}
+          />
+        </div>
 
         <Textarea
           label="متن / زیرعنوان"
@@ -224,38 +252,6 @@ const SideBannerFormModal: React.FC<Props> = ({
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
         />
-
-        {/* link toggle */}
-        <ToggleSection
-          title={"نمایش لینک"}
-          initialMode={showLinkFields}
-          onChange={(val) => {
-            setShowLinkFields(val);
-            handleMultipleFieldsChange({
-              show_link: val,
-            });
-            if (!val) {
-              handleMultipleFieldsChange({
-                link: "",
-              });
-            }
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <TextInput
-              label="لینک"
-              placeholder="لینک بنر را وارد کنید"
-              value={form.link}
-              errorMessage={errors.link}
-              onChange={(val) => {
-                handleFieldChange("link", val);
-                // keep showLinkFields true when user types
-                if (!showLinkFields && val) setShowLinkFields(true);
-                handleMultipleFieldsChange({ show_link: Boolean(val) });
-              }}
-            />
-          </div>
-        </ToggleSection>
 
         {/* badge toggle */}
         <ToggleSection
@@ -336,11 +332,6 @@ const SideBannerFormModal: React.FC<Props> = ({
                     background_color: color,
                   })
                 }
-              />
-              <ToggleSection
-                title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
-                initialMode={form.is_dark}
-                onChange={(val) => handleFieldChange("is_dark", val)}
               />
             </div>
           }
