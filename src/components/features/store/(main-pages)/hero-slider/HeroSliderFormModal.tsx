@@ -77,6 +77,18 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     });
   }, [defaultValues]);
 
+  useEffect(() => {
+    console.log("Form =>", form);
+    if (form) {
+      if (form?.background_color?.length) {
+        handleFieldChange("use_background", true);
+      }
+      if (form?.button_text?.length) {
+        setShowButtonFields(true);
+      }
+    }
+  }, [isOpen]);
+
   const handleSubmit = submit(async () => {
     let finalImageUrl = form.image_url;
 
@@ -183,12 +195,12 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           title={"نمایش دکمه"}
           initialMode={showButtonFields}
           onChange={(val) => {
+            console.log("DDDDDDD", val);
+
             setShowButtonFields(val);
             if (!val) {
-              handleMultipleFieldsChange({
-                button_text: "",
-                button_link: "",
-              });
+              form.button_link?.length && handleFieldChange("button_link", "")
+              form.button_text?.length && handleFieldChange("button_text", "")
             }
           }}
         >
@@ -196,7 +208,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             <TextInput
               label="عنوان دکمه"
               placeholder="عنوان دکمه را وارد کنید"
-              value={form.button_text}
+              value={form.button_text || ""}
               isRequired
               errorMessage={errors.button_text}
               onChange={(val) => handleFieldChange("button_text", val)}
@@ -206,7 +218,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               label="لینک دکمه"
               isRequired
               placeholder="/page/path/1"
-              value={form.button_link}
+              value={form.button_link || ""}
               errorMessage={errors.button_link}
               allowSpecialChars
               allowedSpecialChars={["/", "-"]}
