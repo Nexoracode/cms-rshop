@@ -32,14 +32,14 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
             : "bg-black/70"
         }`}
       >
-        <div className="hover-reveal-child flex items-center gap-2">
+        <div className="hover-reveal-child flex items-center gap-2 bg-white rounded-lg px-2 py-1.5">
           <HeroSliderFormModal />
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />
         </div>
 
         {slider.background_color ? (
           <Chip
-            variant="shadow"
+            variant="solid"
             color={slider.is_dark ? "default" : "secondary"}
             size="sm"
             radius="sm"

@@ -17,7 +17,6 @@ import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import Textarea from "@/components/ui/inputs/Textarea";
-import { FiPlus } from "react-icons/fi";
 
 const initialSliderForm = {
   title: "",
@@ -157,9 +156,8 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         sliderId
           ? null
           : {
-              title: "",
-              icon: <FiPlus/>,
-              className: "bg-secondary-light text-secondary mb-1",
+              title: "+ افزودن",
+              className: "bg-secondary-light text-secondary",
             }
       }
       title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
