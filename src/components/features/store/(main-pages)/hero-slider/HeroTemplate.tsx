@@ -20,8 +20,8 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   const { mutate: deleteSlider } = useDeleteHeroSlider();
   console.log(slider);
 
-  const textColor = !slider.is_dark ? "text-black" : "text-white";
-  const bgColor = !slider.is_dark ? "bg-gray-200" : "bg-gray-500";
+  const textColor = !slider.image_url ? !slider.is_dark ? "text-black" : "text-white" : "text-white"
+  const bgColor = !slider.image_url ? !slider.is_dark ? "bg-gray-200" : "bg-gray-500" : "bg-gray-800"
 
   return (
     <div
@@ -39,31 +39,29 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
             : "gray",
         }}
       >
-        <div className={`hover-reveal-child flex items-center gap-2 rounded-lg px-2 py-1.5 ${bgColor}`}>
+        <div
+          className={`hover-reveal-child flex items-center gap-2 rounded-lg px-2 py-1.5 ${bgColor}`}
+        >
           <HeroSliderFormModal />
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />
         </div>
 
-        {slider.background_color ? (
-          <Chip
-            variant="solid"
-            color={slider.is_dark ? "default" : "secondary"}
-            size="sm"
-            radius="sm"
-            className={`absolute top-4 left-4 z-20`}
-          >
-            {slider.is_dark ? "تم تاریک" : "تم روشن"}
-          </Chip>
-        ) : (
-          ""
-        )}
+        <div className="absolute top-4 left-4">
+          {slider.background_color ? (
+            <Chip
+              variant="solid"
+              color={slider.is_dark ? "default" : "secondary"}
+              size="sm"
+              radius="sm"
+            >
+              {slider.is_dark ? "تم تاریک" : "تم روشن"}
+            </Chip>
+          ) : (
+            ""
+          )}
 
-        {!slider.is_active && (
-          <StatusBadge
-            isActive={false}
-            className="absolute top-4 left-20 z-20"
-          />
-        )}
+          {!slider.is_active && <StatusBadge isActive={false} />}
+        </div>
 
         {/* Content */}
         <div className={`relative z-10 w-full p-4`}>
@@ -78,7 +76,9 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
           )}
 
           {slider.button_text && slider.button_link && (
-            <div className={`inline-block cursor-pointer px-4 py-2 rounded-lg text-sm hover:scale-95 transition ${textColor} ${bgColor}`}>
+            <div
+              className={`inline-block cursor-pointer px-4 py-2 rounded-lg text-sm hover:scale-95 transition ${textColor} ${bgColor}`}
+            >
               {slider.button_text}
             </div>
           )}

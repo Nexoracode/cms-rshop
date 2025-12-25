@@ -33,7 +33,7 @@ const StatusBadge: React.FC<Props> = ({
   return (
     <span
       className={`${sizeClasses} rounded-lg w-fit py-1 ${
-        isActive ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-500"
+        isActive ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-700"
       } ${className}`}
     >
       {isActive ? activeText : inactiveText}
