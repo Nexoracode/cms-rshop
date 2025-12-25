@@ -12,12 +12,12 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
 import Textarea from "@/components/ui/inputs/Textarea";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { TfiLayoutSlider } from "react-icons/tfi";
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import { validateSideBanner } from "./side-banner-validation";
 import { SideBannerPosition } from "./side-banner.types";
+import { CiImageOn } from "react-icons/ci";
 
 type Props = {
   bannerId?: number;
@@ -209,7 +209,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       confirmText={bannerId ? "ویرایش بنر" : "ایجاد بنر"}
       onConfirm={handleSubmit}
       size="xl"
-      icon={<TfiLayoutSlider />}
+      icon={<CiImageOn />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
@@ -227,9 +227,10 @@ const SideBannerFormModal: React.FC<Props> = ({
             label="لینک"
             placeholder="لینک بنر را وارد کنید"
             value={form.link}
-            errorMessage={errors.link}
             allowSpecialChars
             allowedSpecialChars={["/", "-"]}
+            isRequired
+            errorMessage={errors.link}
             onChange={(val) => {
               handleFieldChange("link", val);
               // keep showLinkFields true when user types
@@ -275,13 +276,14 @@ const SideBannerFormModal: React.FC<Props> = ({
               label="متن برچسب"
               placeholder="مثلاً 14% یا جدید"
               value={form.badge_text}
-              errorMessage={errors.badge_text}
               onChange={(val) => {
                 handleFieldChange("badge_text", val);
                 if (!showBadgeFields && val) setShowBadgeFields(true);
                 handleMultipleFieldsChange({ show_badge: Boolean(val) });
               }}
               allowEnglishOnly={false}
+              isRequired
+              errorMessage={errors.badge_text}
             />
             <ColorPickerField
               label="رنگ برچسب"
@@ -323,17 +325,15 @@ const SideBannerFormModal: React.FC<Props> = ({
             />
           }
           mode2Children={
-            <div className="flex flex-col gap-4">
-              <ColorPickerField
-                label=""
-                value={form.background_color}
-                onChange={(color) =>
-                  handleMultipleFieldsChange({
-                    background_color: color,
-                  })
-                }
-              />
-            </div>
+            <ColorPickerField
+              label=""
+              value={form.background_color}
+              onChange={(color) =>
+                handleMultipleFieldsChange({
+                  background_color: color,
+                })
+              }
+            />
           }
         />
       </div>
