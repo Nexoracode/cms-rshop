@@ -7,28 +7,42 @@ import { Chip } from "@heroui/react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteHeroSlider } from "@/core/hooks/api/adminHome/useHeroSlider";
 import HeroSliderFormModal from "./HeroSliderFormModal";
+import { useState } from "react";
 
 type HeroSlidersTemplateProps = {
   slider: HeroSlider;
-  zIndex?: number;
 };
 
 const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   slider,
-  zIndex,
 }) => {
   const { mutate: deleteSlider } = useDeleteHeroSlider();
-  console.log(slider);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const textColor = !slider.image_url ? !slider.is_dark ? "text-black" : "text-white" : "text-white"
-  const bgColor = !slider.image_url ? !slider.is_dark ? "bg-gray-200" : "bg-gray-500" : "bg-gray-800"
+  const textColor = !slider.image_url
+    ? !slider.is_dark
+      ? "text-black"
+      : "text-white"
+    : "text-white";
+  const bgColor = !slider.image_url
+    ? !slider.is_dark
+      ? "bg-gray-200"
+      : "bg-gray-500"
+    : "bg-gray-800";
 
   return (
     <div
       key={slider.id}
       className="absolute inset-0 cursor-pointer"
-      style={{ zIndex }}
+      onClick={() => setIsEditOpen(true)}
     >
+      <HeroSliderFormModal
+        sliderId={slider.id}
+        defaultValues={slider}
+        isOpen={isEditOpen}
+        onOpenChange={setIsEditOpen}
+      />
+
       <div
         className={`hover-reveal-parent w-full h-full flex items-center px-5 ${
           !slider.image_url ? `border-2 rounded-2xl` : "bg-black/70"
