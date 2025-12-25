@@ -72,13 +72,12 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     if (!defaultValues) return;
 
     setForm({
-      ...initialSliderForm, // فرم اولیه
-      ...defaultValues, // فقط فیلدهای موجود در defaultValues
+      ...initialSliderForm,
+      ...defaultValues,
     });
   }, [defaultValues]);
 
   useEffect(() => {
-    console.log("Form =>", form);
     if (form) {
       if (form?.background_color?.length) {
         handleFieldChange("use_background", true);
@@ -122,7 +121,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       ...(use_background ? { background_color } : {}),
       ...(button_text ? { button_text } : {}),
       ...(button_link ? { button_link } : {}),
-      is_dark: form.use_background ? Boolean(form.is_dark) : false,
+      is_dark: form.use_background ? Boolean(is_dark) : false,
       is_active,
     };
 
@@ -195,12 +194,10 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           title={"نمایش دکمه"}
           initialMode={showButtonFields}
           onChange={(val) => {
-            console.log("DDDDDDD", val);
-
             setShowButtonFields(val);
             if (!val) {
-              form.button_link?.length && handleFieldChange("button_link", "")
-              form.button_text?.length && handleFieldChange("button_text", "")
+              form.button_link?.length && handleFieldChange("button_link", "");
+              form.button_text?.length && handleFieldChange("button_text", "");
             }
           }}
         >
