@@ -90,6 +90,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
         onOpenChange={handleOpenChange}
         placement={placement}
         size={size}
+        isDismissable={false}
       >
         <ModalContent onClick={(e) => e.stopPropagation()}>
           {(onClose) => (

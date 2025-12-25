@@ -17,6 +17,7 @@ import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import Textarea from "@/components/ui/inputs/Textarea";
+import { FiPlus } from "react-icons/fi";
 
 const initialSliderForm = {
   title: "",
@@ -156,7 +157,8 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         sliderId
           ? null
           : {
-              title: "+ افزودن",
+              title: "",
+              icon: <FiPlus/>,
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
@@ -184,6 +186,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
           isRequired
+          errorMessage={errors.description}
         />
 
         <ToggleSection
@@ -218,12 +221,14 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             <TextInput
               label="لینک دکمه"
               isRequired
-              placeholder="لینک دکمه را وارد کنید"
+              placeholder="/page/path/1"
               value={form.button_link}
               errorMessage={errors.button_link}
               allowSpecialChars
               allowedSpecialChars={["/", "-"]}
               onChange={(val) => handleFieldChange("button_link", val)}
+              inputAlign="left"
+              allowSpaces={false}
             />
           </div>
         </ToggleSection>

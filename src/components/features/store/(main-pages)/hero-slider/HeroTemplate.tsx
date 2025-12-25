@@ -6,6 +6,7 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import { Chip } from "@heroui/react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteHeroSlider } from "@/core/hooks/api/adminHome/useHeroSlider";
+import HeroSliderFormModal from "./HeroSliderFormModal";
 
 type HeroSlidersTemplateProps = {
   slider: HeroSlider;
@@ -31,7 +32,10 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
             : "bg-black/70"
         }`}
       >
-        <DeleteButton activeBtnHover onDelete={() => deleteSlider(slider.id)} />
+        <div className="hover-reveal-child flex items-center gap-2">
+          <HeroSliderFormModal />
+          <DeleteButton onDelete={() => deleteSlider(slider.id)} />
+        </div>
 
         {slider.background_color ? (
           <Chip
