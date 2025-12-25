@@ -19,7 +19,7 @@ const SideBannerContainer: React.FC<Props> = ({ banners = [] }) => {
         return banner ? (
           <SideBannersTemplate key={banner.id} banner={banner} />
         ) : (
-          <SideBannerEmptyState key={position} />
+          <SideBannerEmptyState key={position} position={position} />
         );
       })}
     </div>

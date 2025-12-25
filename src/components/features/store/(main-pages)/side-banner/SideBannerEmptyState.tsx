@@ -2,14 +2,20 @@ import AddSectionCard from "../shared/AddSectionCard";
 import { CiImageOn } from "react-icons/ci";
 import SideBannerFormModal from "./SideBannerFormModal";
 
-const SideBannerEmptyState = () => {
+type SideBannerEmptyStateProps = {
+  position: any;
+};
+
+const SideBannerEmptyState: React.FC<SideBannerEmptyStateProps> = ({
+  position,
+}) => {
   return (
     <AddSectionCard
       className="w-[190px] h-[156px]"
       children={
         <div className="flex flex-col gap-4 items-center">
           <CiImageOn className="text-gray-600 text-[70px]" />
-          <SideBannerFormModal position="top_left" bannerId={1} defaultValues={[]} isOpen={false} onOpenChange={() => {}}/>
+          <SideBannerFormModal position={position} />
         </div>
       }
     />
