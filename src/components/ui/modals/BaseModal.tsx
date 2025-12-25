@@ -93,7 +93,6 @@ const BaseModal: React.FC<BaseModalProps> = ({
         isDismissable={false}
       >
         <ModalContent onClick={(e) => {
-          e.preventDefault()
           e.stopPropagation()
         }}>
           {(onClose) => (

@@ -61,7 +61,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />
         </div>
 
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 flex gap-2 items-center">
           {slider.background_color ? (
             <Chip
               variant="solid"
