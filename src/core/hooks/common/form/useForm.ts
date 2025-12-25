@@ -84,11 +84,24 @@ export const useForm = <T extends Record<string, any>>(
   const getChangedFields = useCallback(() => changedFields, [changedFields]);
   const hasChanges = Object.keys(changedFields).length > 0;
 
-  const reset = useCallback(
+  /*   const reset = useCallback(
     (values?: T) => {
       core.setData(values ?? initialFormRef.current);
       setChangedFields({});
       core.resetForm();
+    },
+    [core]
+  ); */
+
+  const reset = useCallback(
+    (values?: T) => {
+      if (values) {
+        core.resetWith(values);
+      } else {
+        core.resetWith(initialFormRef.current);
+      }
+
+      setChangedFields({});
     },
     [core]
   );

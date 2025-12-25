@@ -30,6 +30,8 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
       : "bg-gray-500"
     : "bg-gray-800";
 
+  console.log("slider => ", slider);
+
   return (
     <div
       key={slider.id}

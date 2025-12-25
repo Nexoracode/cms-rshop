@@ -69,13 +69,12 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
   });
 
   useEffect(() => {
-    if (!defaultValues) {
-      setForm(initialSliderForm);
-      return;
-    }
-    console.log("defaultValues =>",defaultValues);
+    if (!defaultValues) return;
 
-    setForm(defaultValues);
+    setForm({
+      ...initialSliderForm, // فرم اولیه
+      ...defaultValues, // فقط فیلدهای موجود در defaultValues
+    });
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {

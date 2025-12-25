@@ -14,7 +14,6 @@ type SectionIsFeaturedProps = {
 const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
   featuredSection,
 }) => {
-  console.log("featuredSection =>", featuredSection);
 
   return (
     <div>

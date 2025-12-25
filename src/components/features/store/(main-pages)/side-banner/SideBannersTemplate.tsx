@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { SideBanner } from "./side-banner.types";
 import { Chip } from "@heroui/react";
 import StatusBadge from "@/components/shared/StatusBadge";
 
@@ -12,7 +11,6 @@ type SideBannersTemplateProps = {
 const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
   banner,
 }) => {
-  console.log("Banner =>", banner);
 
   return (
     <div
