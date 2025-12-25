@@ -18,6 +18,10 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   zIndex,
 }) => {
   const { mutate: deleteSlider } = useDeleteHeroSlider();
+  console.log(slider);
+
+  const textColor = !slider.is_dark ? "text-black" : "text-white";
+  const bgColor = !slider.is_dark ? "bg-gray-200" : "bg-gray-500";
 
   return (
     <div
@@ -27,12 +31,15 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
     >
       <div
         className={`hover-reveal-parent w-full h-full flex items-center px-5 ${
-          !slider.image_url
-            ? `border-2 rounded-2xl bg-[${slider.background_color || "gray"}]`
-            : "bg-black/70"
+          !slider.image_url ? `border-2 rounded-2xl` : "bg-black/70"
         }`}
+        style={{
+          backgroundColor: !slider.image_url
+            ? slider.background_color || "gray"
+            : "gray",
+        }}
       >
-        <div className="hover-reveal-child flex items-center gap-2 bg-white rounded-lg px-2 py-1.5">
+        <div className={`hover-reveal-child flex items-center gap-2 rounded-lg px-2 py-1.5 ${bgColor}`}>
           <HeroSliderFormModal />
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />
         </div>
@@ -59,21 +66,19 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
         )}
 
         {/* Content */}
-        <div
-          className={`relative z-10 w-full p-4 ${
-            slider.is_dark ? "text-black" : "text-white"
-          }`}
-        >
-          <h2 className="text-2xl font-bold mb-2">{slider.title}</h2>
+        <div className={`relative z-10 w-full p-4`}>
+          <h2 className={`text-2xl font-bold mb-2 ${textColor}`}>
+            {slider.title}
+          </h2>
 
           {slider.description && (
-            <p className="text-sm opacity-90 mb-4 truncate">
+            <p className={`text-sm opacity-90 mb-4 truncate ${textColor}`}>
               {slider.description}
             </p>
           )}
 
           {slider.button_text && slider.button_link && (
-            <div className="inline-block cursor-pointer px-4 py-2 rounded-lg bg-black/70 text-white text-sm hover:scale-95 transition">
+            <div className={`inline-block cursor-pointer px-4 py-2 rounded-lg text-sm hover:scale-95 transition ${textColor} ${bgColor}`}>
               {slider.button_text}
             </div>
           )}
