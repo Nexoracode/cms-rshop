@@ -45,16 +45,17 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
 
       <div
         className={`hover-reveal-parent w-full h-full flex items-center px-5 ${
-          !slider.image_url ? `border-2 rounded-2xl` : "bg-black/70"
+          !slider.image_url ? `border-2 rounded-2xl` : "bg-black/80"
         }`}
         style={{
           backgroundColor: !slider.image_url
             ? slider.background_color || "gray"
-            : "gray",
+            : "",
         }}
       >
         <div
           className={`hover-reveal-child flex items-center gap-2 rounded-lg px-2 py-1.5 ${bgColor}`}
+          onClick={(e) => e.stopPropagation()}
         >
           <HeroSliderFormModal />
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />

@@ -73,22 +73,9 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       setForm(initialSliderForm);
       return;
     }
+    console.log("defaultValues =>",defaultValues);
 
-    setForm({
-      title: defaultValues.title ?? "",
-      description: defaultValues.description ?? "",
-      image_url: defaultValues.image_url ?? "",
-      mediaFile: null,
-
-      background_color: defaultValues.background_color ?? "",
-      use_background: Boolean(defaultValues.background_color),
-      is_dark: Boolean(defaultValues.is_dark),
-
-      button_text: defaultValues.button_text ?? "",
-      button_link: defaultValues.button_link ?? "",
-
-      is_active: Boolean(defaultValues.is_active),
-    });
+    setForm(defaultValues);
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
