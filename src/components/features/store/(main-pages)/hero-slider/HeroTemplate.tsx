@@ -4,6 +4,8 @@ import Image from "next/image";
 import { HeroSlider } from "./hero-slider.types";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { Chip } from "@heroui/react";
+import DeleteButton from "@/components/shared/DeleteButton";
+import { useDeleteHeroSlider } from "@/core/hooks/api/adminHome/useHeroSlider";
 
 type HeroSlidersTemplateProps = {
   slider: HeroSlider;
@@ -14,6 +16,8 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   slider,
   zIndex,
 }) => {
+  const { mutate: deleteSlider } = useDeleteHeroSlider();
+
   return (
     <div
       key={slider.id}
@@ -21,12 +25,14 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
       style={{ zIndex }}
     >
       <div
-        className={`relative w-full h-full flex items-center px-5 ${
+        className={`hover-reveal-parent w-full h-full flex items-center px-5 ${
           !slider.image_url
             ? `border-2 rounded-2xl bg-[${slider.background_color || "gray"}]`
             : "bg-black/70"
         }`}
       >
+        <DeleteButton activeBtnHover onDelete={() => deleteSlider(slider.id)} />
+
         {slider.background_color ? (
           <Chip
             variant="shadow"

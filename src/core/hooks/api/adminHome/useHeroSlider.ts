@@ -65,6 +65,7 @@ export const useDeleteHeroSlider = () => {
     onSuccess: (_data, id) => {
       qc.invalidateQueries({ queryKey: ["hero-sliders"] });
       qc.invalidateQueries({ queryKey: ["hero-slider", id] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };
