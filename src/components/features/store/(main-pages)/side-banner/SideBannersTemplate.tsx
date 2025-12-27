@@ -17,7 +17,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
 
   return (
     <div
-      className="relative h-[160px] overflow-hidden rounded-xl pr-2 py-10 hover:scale-95 transition-all hover:shadow-xl cursor-pointer"
+      className="relative flex items-center h-[160px] overflow-hidden rounded-xl pr-2 py-10 hover:scale-95 transition-all hover:shadow-xl cursor-pointer"
       style={{
         backgroundColor: banner.background_color ?? "",
       }}
@@ -43,7 +43,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
 
       <div className="flex flex-col">
         <div className="flex items-center gap-4 justify-between">
-          <div className="relative z-10 flex flex-col gap-1 w-20">
+          <div className="relative z-10 flex flex-col gap-1 w-24">
             {banner.badge_text ? (
               <Chip
                 variant="flat"
@@ -52,7 +52,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
                 style={{ backgroundColor: banner.badge_color ?? "gray" }}
               >
                 <div className="!text-xs !truncate !w-16">
-                  {banner.badge_text} sdf sdf
+                  {banner.badge_text}
                 </div>
               </Chip>
             ) : (
@@ -65,7 +65,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
           <img
             src={banner.image_url ?? ""}
             alt={banner.title}
-            className="w-full h-24"
+            className="w-full h-28 translate-x-3"
           />
         </div>
       </div>
