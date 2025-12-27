@@ -133,7 +133,7 @@ const SideBannerFormModal: React.FC<Props> = ({
     };
     console.log(payload);
 
-    if (bannerId) {
+   /*  if (bannerId) {
       return handleMutation(() => updateBanner(payload), {
         resetForm,
       });
@@ -141,7 +141,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       return handleMutation(() => createBanner(payload), {
         resetForm,
       });
-    }
+    } */
   });
 
   const resetForm = () => {
@@ -265,6 +265,8 @@ const SideBannerFormModal: React.FC<Props> = ({
               handleMultipleFieldsChange({
                 use_background: true,
                 background_color: "#000",
+                image_url: "",
+                mediaFile: null
               });
             }
           }}

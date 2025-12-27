@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { Chip } from "@heroui/react";
 import StatusBadge from "@/components/shared/StatusBadge";
+import SideBannerFormModal from "./SideBannerFormModal";
+import { useState } from "react";
 
 type SideBannersTemplateProps = {
   banner: any;
@@ -11,14 +13,25 @@ type SideBannersTemplateProps = {
 const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
   banner,
 }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   return (
     <div
       className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer
-        ${
-          !banner.image_url ? `rounded-2xl` : "bg-black/80"
-        }`}
-      style={{backgroundColor: !banner.image_url ? banner.background_color ?? "" : ""}}
+        ${!banner.image_url ? `rounded-2xl` : "bg-black/80"}`}
+      style={{
+        backgroundColor: !banner.image_url ? banner.background_color ?? "" : "",
+      }}
+      onClick={() => setIsEditOpen(true)}
     >
+      <SideBannerFormModal
+        bannerId={banner.id}
+        defaultValues={banner}
+        position={banner.position}
+        isOpen={isEditOpen}
+        onOpenChange={setIsEditOpen}
+      />
+
       {!banner.is_active ? (
         <StatusBadge
           isActive={false}
@@ -41,7 +54,7 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
           variant="flat"
           size="sm"
           className={`text-white mt-2 rounded-lg z-20`}
-          style={{backgroundColor: banner.badge_color ?? "gray" }}
+          style={{ backgroundColor: banner.badge_color ?? "gray" }}
         >
           <span
             style={{

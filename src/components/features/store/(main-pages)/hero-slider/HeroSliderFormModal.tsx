@@ -239,7 +239,9 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             } else {
               handleMultipleFieldsChange({
                 use_background: true,
-                background_color: "#000"
+                background_color: "#000",
+                image_url: "",
+                mediaFile: null
               });
             }
           }}
