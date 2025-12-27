@@ -11,14 +11,13 @@ type SideBannersTemplateProps = {
 const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
   banner,
 }) => {
-
   return (
     <div
-      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer ${
-        !banner.image_url
-          ? `bg-[ "bg-black/70"}]`
-          : "bg-black/70"
-      }`}/* ${banner.background_color || */
+      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer
+        ${
+          !banner.image_url ? `rounded-2xl` : "bg-black/80"
+        }`}
+      style={{backgroundColor: !banner.image_url ? banner.background_color ?? "" : ""}}
     >
       {!banner.is_active ? (
         <StatusBadge
@@ -41,9 +40,8 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
         <Chip
           variant="flat"
           size="sm"
-          className={`${
-            banner.badge_color ? banner.badge_color : "bg-gray-700"
-          } text-white mt-2 rounded-lg z-20`}
+          className={`text-white mt-2 rounded-lg z-20`}
+          style={{backgroundColor: banner.badge_color ?? "gray" }}
         >
           <span
             style={{
@@ -57,13 +55,17 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
         ""
       )}
 
-      <Image
-        src={banner.image_url}
-        alt={banner.title}
-        fill
-        priority
-        className="object-cover absolute inset-0 z-0 opacity-40"
-      />
+      {banner.image_url ? (
+        <Image
+          src={banner.image_url}
+          alt={banner.title}
+          fill
+          priority
+          className="object-cover absolute inset-0 z-0 opacity-40"
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

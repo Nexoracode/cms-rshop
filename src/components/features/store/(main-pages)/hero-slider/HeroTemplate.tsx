@@ -45,7 +45,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
 
       <div
         className={`hover-reveal-parent w-full h-full flex items-center px-5 ${
-          !slider.image_url ? `border-2 rounded-2xl` : "bg-black/80"
+          !slider.image_url ? `rounded-2xl` : "bg-black/80"
         }`}
         style={{
           backgroundColor: !slider.image_url
