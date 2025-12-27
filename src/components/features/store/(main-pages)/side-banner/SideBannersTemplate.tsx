@@ -17,10 +17,9 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl px-4 py-10 text-white hover:scale-95 transition-all hover:shadow-xl cursor-pointer
-        ${!banner.image_url ? `rounded-2xl` : "bg-black/80"}`}
+      className="relative h-[160px] overflow-hidden rounded-xl pr-2 py-10 hover:scale-95 transition-all hover:shadow-xl cursor-pointer"
       style={{
-        backgroundColor: !banner.image_url ? banner.background_color ?? "" : "",
+        backgroundColor: banner.background_color ?? "",
       }}
       onClick={() => setIsEditOpen(true)}
     >
@@ -36,45 +35,40 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
         <StatusBadge
           isActive={false}
           size="sm"
-          className="absolute top-3 left-3 z-20"
+          className="absolute top-1 left-1 z-20"
         />
       ) : (
         ""
       )}
 
-      <div className="relative z-10 flex flex-col gap-1">
-        <h3 className="text-lg font-bold truncate">{banner.title}</h3>
-        {banner.subtitle && (
-          <p className="text-sm truncate">{banner.subtitle}</p>
-        )}
+      <div className="flex flex-col">
+        <div className="flex items-center gap-4 justify-between">
+          <div className="relative z-10 flex flex-col gap-1 w-20">
+            {banner.badge_text ? (
+              <Chip
+                variant="flat"
+                size="sm"
+                className={`text-white rounded-lg z-20 mt-4`}
+                style={{ backgroundColor: banner.badge_color ?? "gray" }}
+              >
+                <div className="!text-xs !truncate !w-16">
+                  {banner.badge_text} sdf sdf
+                </div>
+              </Chip>
+            ) : (
+              ""
+            )}
+            <h3 className="truncate text-gray-900">{banner.title}</h3>
+            <p className="text-xs truncate text-gray-800">{banner.subtitle}</p>
+          </div>
+
+          <img
+            src={banner.image_url ?? ""}
+            alt={banner.title}
+            className="w-full h-24"
+          />
+        </div>
       </div>
-
-      {banner.badge_text ? (
-        <Chip
-          variant="flat"
-          size="sm"
-          className={`text-white mt-2 rounded-lg z-20`}
-          style={{ backgroundColor: banner.badge_color ?? "gray" }}
-        >
-          <span
-            style={{
-              textShadow: "0 0px 15px rgba(0,0,0)",
-            }}
-          >
-            {banner.badge_text}
-          </span>
-        </Chip>
-      ) : (
-        ""
-      )}
-
-      <Image
-        src={banner.image_url}
-        alt={banner.title}
-        fill
-        priority
-        className="object-cover absolute inset-0 z-0 opacity-40"
-      />
     </div>
   );
 };

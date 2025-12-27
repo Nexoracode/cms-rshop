@@ -165,12 +165,7 @@ const SideBannerFormModal: React.FC<Props> = ({
         <ImageBoxUploader
           changeStatusFile={form.mediaFile}
           defaultImg={form?.image_url ?? null}
-          onFile={(file) =>
-            handleMultipleFieldsChange({
-              mediaFile: file,
-              background_color: "",
-            })
-          }
+          onFile={(file) => handleFieldChange("mediaFile", file)}
           errorMessage={errors.image_url}
         />
 
