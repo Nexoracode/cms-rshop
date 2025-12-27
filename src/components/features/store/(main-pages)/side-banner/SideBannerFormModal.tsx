@@ -108,7 +108,6 @@ const SideBannerFormModal: React.FC<Props> = ({
       finalImageUrl = uploadRes.data[0].url;
     }
 
-    // build payload according to backend spec for side-banners
     const {
       title,
       subtitle,
@@ -117,42 +116,26 @@ const SideBannerFormModal: React.FC<Props> = ({
       badge_text,
       badge_color,
       is_active,
+      use_background
     } = form;
 
     const payload: Record<string, any> = {
       title,
       subtitle,
       image_url: finalImageUrl,
-      position, // position must come from parent
+      position,
       is_active,
+      link,
+      ...(use_background ? { background_color } : {}),
+      ...(badge_text ? { badge_text } : {}),
+      ...(badge_color ? { badge_color } : {}),
     };
 
-    // optional background_color
-    if (background_color && background_color.trim() !== "") {
-      payload.background_color = background_color;
-    }
-
-    // link (optional) but only if show_link true or link provided
-    if (link && link.trim() !== "") {
-      payload.link = link && link.trim() !== "" ? link : undefined;
-    }
-
-    // badge (optional)
-    if (showBadgeFields || (badge_text && badge_text.trim() !== "")) {
-      payload.badge_text =
-        badge_text && badge_text.trim() !== "" ? badge_text : undefined;
-      payload.badge_color =
-        badge_color && badge_color.trim() !== "" ? badge_color : undefined;
-    }
-
-    // send
     if (bannerId) {
-      // update: updateBanner expects data as body (hook was created with id param)
       return handleMutation(() => updateBanner(payload), {
         resetForm,
       });
     } else {
-      // create
       return handleMutation(() => createBanner(payload), {
         resetForm,
       });
@@ -196,7 +179,7 @@ const SideBannerFormModal: React.FC<Props> = ({
           />
           <TextInput
             label="لینک"
-            placeholder="لینک بنر را وارد کنید"
+            placeholder="path/to/1"
             value={form.link}
             allowSpecialChars
             allowedSpecialChars={["/", "-"]}
@@ -205,6 +188,8 @@ const SideBannerFormModal: React.FC<Props> = ({
             onChange={(val) => {
               handleFieldChange("link", val);
             }}
+            inputAlign="left"
+            allowSpaces={false}
           />
         </div>
 
@@ -214,6 +199,7 @@ const SideBannerFormModal: React.FC<Props> = ({
           onChange={(val) => handleFieldChange("subtitle", val)}
           placeholder="زیرعنوان را وارد کنید"
           isRequired
+          errorMessage={errors.subtitle}
         />
 
         <ToggleSection
@@ -230,6 +216,7 @@ const SideBannerFormModal: React.FC<Props> = ({
             setShowBadgeFields(val);
             handleMultipleFieldsChange({
               show_badge: val,
+              badge_color: "#000",
             });
             if (!val) {
               handleMultipleFieldsChange({
@@ -286,7 +273,6 @@ const SideBannerFormModal: React.FC<Props> = ({
               onFile={(file) =>
                 handleMultipleFieldsChange({
                   mediaFile: file,
-                  // if user selects an image, background color shouldn't be prioritized
                   background_color: "",
                 })
               }

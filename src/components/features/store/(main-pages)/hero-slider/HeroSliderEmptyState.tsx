@@ -5,7 +5,7 @@ import HeroSliderFormModal from "./HeroSliderFormModal";
 const HeroSliderEmptyState = () => {
   return (
     <AddSectionCard
-      className="w-[388px] h-[320px]"
+      className="w-[388px] h-[335px]"
       children={
         <div className="flex flex-col gap-4 items-center">
           <TfiLayoutSlider className="text-gray-600 text-[70px]" />

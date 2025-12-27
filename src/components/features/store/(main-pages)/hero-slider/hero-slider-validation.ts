@@ -18,5 +18,13 @@ export function validateHeroSlider(data: any, showButtonFields: boolean) {
     }
   }
 
+  if (
+    (!data.image_url || data.image_url.trim() === "") &&
+    !data.mediaFile &&
+    (!data.background_color || data.background_color.trim() === "")
+  ) {
+    errors.image_url = "لطفاً تصویر یا رنگ پس‌زمینه را مشخص کنید.";
+  }
+
   return errors;
 }

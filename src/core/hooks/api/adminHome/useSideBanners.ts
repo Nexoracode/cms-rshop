@@ -32,7 +32,10 @@ export const useCreateSideBanner = () => {
         loadingText: "در حال ایجاد بنر...",
         successText: "بنر با موفقیت ایجاد شد",
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["side-banners"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["side-banners"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
+    },
   });
 };
 
@@ -51,6 +54,7 @@ export const useUpdateSideBanner = (id: number) => {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["side-banners"] });
       qc.invalidateQueries({ queryKey: ["side-banner", id] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };

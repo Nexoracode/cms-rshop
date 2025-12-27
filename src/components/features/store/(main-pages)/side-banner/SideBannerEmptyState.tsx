@@ -11,7 +11,7 @@ const SideBannerEmptyState: React.FC<SideBannerEmptyStateProps> = ({
 }) => {
   return (
     <AddSectionCard
-      className="w-[190px] h-[156px]"
+      className="w-[190px] h-[164px]"
       children={
         <div className="flex flex-col gap-4 items-center">
           <CiImageOn className="text-gray-600 text-[70px]" />
