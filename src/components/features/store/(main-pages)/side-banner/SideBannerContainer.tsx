@@ -15,7 +15,7 @@ const SideBannerContainer: React.FC<Props> = ({ banners = [] }) => {
     <div className="grid grid-cols-2 grid-rows-2 gap-2">
       {SIDE_BANNER_POSITIONS.map((position) => {
         const banner = bannerMap[position];
-
+        
         return banner ? (
           <SideBannersTemplate key={banner.id} banner={banner} />
         ) : (

@@ -84,6 +84,7 @@ const SideBannerFormModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (form) {
+      console.log(form);
       if (form?.background_color?.length) {
         handleFieldChange("use_background", true);
       }
@@ -116,7 +117,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       badge_text,
       badge_color,
       is_active,
-      use_background
+      use_background,
     } = form;
 
     const payload: Record<string, any> = {
@@ -130,6 +131,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       ...(badge_text ? { badge_text } : {}),
       ...(badge_color ? { badge_color } : {}),
     };
+    console.log(payload);
 
     if (bannerId) {
       return handleMutation(() => updateBanner(payload), {

@@ -10,10 +10,10 @@ export type SideBanner = {
 };
 
 export const SIDE_BANNER_POSITIONS = [
-  "top_left",
   "top_right",
-  "bottom_left",
+  "top_left",
   "bottom_right",
+  "bottom_left",
 ] as const;
 
 export type SideBannerPosition = (typeof SIDE_BANNER_POSITIONS)[number];
