@@ -12,7 +12,6 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
 import Textarea from "@/components/ui/inputs/Textarea";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import { validateSideBanner } from "./side-banner-validation";
@@ -39,7 +38,6 @@ const initialForm = {
 
   mediaFile: null as File | null,
   show_badge: false,
-  use_background: false,
 };
 
 const SideBannerFormModal: React.FC<Props> = ({
@@ -84,10 +82,6 @@ const SideBannerFormModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (form) {
-      console.log(form);
-      if (form?.background_color?.length) {
-        handleFieldChange("use_background", true);
-      }
       if (form?.badge_text?.length) {
         setShowBadgeFields(true);
       }
@@ -117,7 +111,6 @@ const SideBannerFormModal: React.FC<Props> = ({
       badge_text,
       badge_color,
       is_active,
-      use_background,
     } = form;
 
     const payload: Record<string, any> = {
@@ -127,7 +120,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       position,
       is_active,
       link,
-      ...(use_background ? { background_color } : {}),
+      background_color,
       badge_text,
       badge_color: badge_color,
     };
@@ -168,7 +161,19 @@ const SideBannerFormModal: React.FC<Props> = ({
       icon={<CiImageOn />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
+        <ImageBoxUploader
+          changeStatusFile={form.mediaFile}
+          defaultImg={form?.image_url ?? null}
+          onFile={(file) =>
+            handleMultipleFieldsChange({
+              mediaFile: file,
+              background_color: "",
+            })
+          }
+          errorMessage={errors.image_url}
+        />
+
         <div className="flex items-center gap-2">
           <TextInput
             label="عنوان"
@@ -204,11 +209,25 @@ const SideBannerFormModal: React.FC<Props> = ({
           errorMessage={errors.subtitle}
         />
 
-        <ToggleSection
-          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
-        />
+        <div className="flex items-center gap-2">
+          <ColorPickerField
+            label="رنگ پس زمینه"
+            value={form.background_color}
+            onChange={(color) =>
+              handleMultipleFieldsChange({
+                background_color: color,
+              })
+            }
+          />
+          <div className="w-full flex flex-col gap-2">
+            <p className="text-gray-600 text-sm">وضعیت نمایش</p>
+            <ToggleSection
+              title={form.is_active ? "فعال" : "غیرفعال"}
+              initialMode={form.is_active}
+              onChange={(val) => handleFieldChange("is_active", val)}
+            />
+          </div>
+        </div>
 
         {/* badge toggle */}
         <ToggleSection
@@ -249,52 +268,6 @@ const SideBannerFormModal: React.FC<Props> = ({
             />
           </div>
         </ToggleSection>
-
-        {/* image / background */}
-        <DualToggleSection
-          mode2Title="پس‌زمینه رنگی"
-          title="پس‌زمینه عکس‌دار"
-          value={form.use_background}
-          onChange={(isPhotoBackground: boolean) => {
-            if (isPhotoBackground) {
-              handleMultipleFieldsChange({
-                use_background: false,
-                background_color: "",
-              });
-            } else {
-              handleMultipleFieldsChange({
-                use_background: true,
-                background_color: "#000",
-                image_url: "",
-                mediaFile: null,
-              });
-            }
-          }}
-          children={
-            <ImageBoxUploader
-              changeStatusFile={form.mediaFile}
-              defaultImg={form?.image_url ?? null}
-              onFile={(file) =>
-                handleMultipleFieldsChange({
-                  mediaFile: file,
-                  background_color: "",
-                })
-              }
-              errorMessage={errors.image_url}
-            />
-          }
-          mode2Children={
-            <ColorPickerField
-              label=""
-              value={form.background_color}
-              onChange={(color) =>
-                handleMultipleFieldsChange({
-                  background_color: color,
-                })
-              }
-            />
-          }
-        />
       </div>
     </BaseModal>
   );

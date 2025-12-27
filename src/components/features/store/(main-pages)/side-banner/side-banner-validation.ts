@@ -9,12 +9,8 @@ export function validateSideBanner(data: any, showBadgeFields: boolean) {
     errors.subtitle = "لطفاً متن بنر را وارد کنید.";
   }
 
-  if (
-    (!data.image_url || data.image_url.trim() === "") &&
-    !data.mediaFile &&
-    (!data.background_color || data.background_color.trim() === "")
-  ) {
-    errors.image_url = "لطفاً تصویر یا رنگ پس‌زمینه را مشخص کنید.";
+  if ((!data.image_url || data.image_url.trim() === "") && !data.mediaFile) {
+    errors.image_url = "تصویر الزامی است.";
   }
 
   if (!data.link || data.link.trim() === "") {

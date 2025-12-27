@@ -68,17 +68,13 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
         ""
       )}
 
-      {banner.image_url ? (
-        <Image
-          src={banner.image_url}
-          alt={banner.title}
-          fill
-          priority
-          className="object-cover absolute inset-0 z-0 opacity-40"
-        />
-      ) : (
-        ""
-      )}
+      <Image
+        src={banner.image_url}
+        alt={banner.title}
+        fill
+        priority
+        className="object-cover absolute inset-0 z-0 opacity-40"
+      />
     </div>
   );
 };
