@@ -56,7 +56,8 @@ const SideBannerFormModal: React.FC<Props> = ({
   const { mutateAsync: uploadImage, isPending: isUploading } =
     useUploadSliderImages();
 
-  const [showBadgeFields, setShowBadgeFields] = useState<boolean>(false);
+  const [showBadge, setShowBadge] = useState<boolean>(false);
+  const [showBgColor, setShowBgColor] = useState<boolean>(false);
 
   const {
     form,
@@ -67,7 +68,7 @@ const SideBannerFormModal: React.FC<Props> = ({
     reset,
     submit,
   } = useForm(initialForm, {
-    onValidate: (data: any) => validateSideBanner(data, showBadgeFields),
+    onValidate: (data: any) => validateSideBanner(data, showBadge),
     runValidationOnChange: true,
   });
 
@@ -82,8 +83,11 @@ const SideBannerFormModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (form) {
+      if (form?.badge_color) {
+        setShowBgColor(true);
+      }
       if (form?.badge_text?.length) {
-        setShowBadgeFields(true);
+        setShowBadge(true);
       }
     }
   }, [isOpen]);
@@ -139,7 +143,8 @@ const SideBannerFormModal: React.FC<Props> = ({
 
   const resetForm = () => {
     reset();
-    setShowBadgeFields(false);
+    setShowBadge(false);
+    setShowBgColor(false);
   };
 
   return (
@@ -162,12 +167,23 @@ const SideBannerFormModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-6">
-        <ImageBoxUploader
-          changeStatusFile={form.mediaFile}
-          defaultImg={form?.image_url ?? null}
-          onFile={(file) => handleFieldChange("mediaFile", file)}
-          errorMessage={errors.image_url}
-        />
+        <div className="w-full flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-2xl">
+          <ImageBoxUploader
+            changeStatusFile={form.mediaFile}
+            defaultImg={form?.image_url ?? null}
+            onFile={(file) => handleFieldChange("mediaFile", file)}
+            errorMessage={errors.image_url}
+          />
+          <ColorPickerField
+            label=""
+            value={form.background_color}
+            onChange={(color) =>
+              handleMultipleFieldsChange({
+                background_color: color,
+              })
+            }
+          />
+        </div>
 
         <div className="flex items-center gap-2">
           <TextInput
@@ -204,64 +220,57 @@ const SideBannerFormModal: React.FC<Props> = ({
           errorMessage={errors.subtitle}
         />
 
-        <div className="flex items-center gap-2">
-          <ColorPickerField
-            label="رنگ پس زمینه"
-            value={form.background_color}
-            onChange={(color) =>
-              handleMultipleFieldsChange({
-                background_color: color,
-              })
-            }
-          />
-          <div className="w-full flex flex-col gap-2">
-            <p className="text-gray-600 text-sm">وضعیت نمایش</p>
-            <ToggleSection
-              title={form.is_active ? "فعال" : "غیرفعال"}
-              initialMode={form.is_active}
-              onChange={(val) => handleFieldChange("is_active", val)}
-            />
-          </div>
-        </div>
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
+        />
 
         {/* badge toggle */}
         <ToggleSection
           title={"نمایش برچسب (Badge)"}
-          initialMode={showBadgeFields}
+          initialMode={showBadge}
           onChange={(val) => {
-            setShowBadgeFields(val);
-            handleMultipleFieldsChange({
-              show_badge: val,
-              badge_color: "#000" as any,
-            });
+            setShowBadge(val);
+            handleFieldChange("show_badge", val);
             if (!val) {
-              handleMultipleFieldsChange({
-                badge_text: "",
-                badge_color: null,
-              });
+              handleFieldChange("badge_text", "");
             }
           }}
         >
-          <div className="flex items-center gap-2">
-            <TextInput
-              label="متن برچسب"
-              placeholder="مثلاً 14% یا جدید"
-              value={form.badge_text}
-              onChange={(val) => {
-                handleFieldChange("badge_text", val);
-                if (!showBadgeFields && val) setShowBadgeFields(true);
-                handleMultipleFieldsChange({ show_badge: Boolean(val) });
-              }}
-              allowEnglishOnly={false}
-              isRequired
-              errorMessage={errors.badge_text}
-            />
+          <TextInput
+            label="متن برچسب"
+            placeholder="مثلاً 14% یا جدید"
+            value={form.badge_text}
+            onChange={(val) => {
+              handleFieldChange("badge_text", val);
+              if (!showBadge && val) setShowBadge(true);
+              handleMultipleFieldsChange({ show_badge: Boolean(val) });
+            }}
+            allowSpecialChars
+            allowEnglishOnly={false}
+            isRequired
+            errorMessage={errors.badge_text}
+            className="mb-4"
+          />
+          <ToggleSection
+            title={"رنگ پس زمینه پرچسب"}
+            initialMode={showBgColor}
+            onChange={(val) => {
+              setShowBgColor(val);
+              handleFieldChange("badge_color", "#000" as any);
+              if (!val) {
+                handleFieldChange("badge_color", null);
+              }
+            }}
+          >
             <ColorPickerField
-              label="رنگ برچسب"
+              label=""
               value={form.badge_color ?? ""}
               onChange={(color) => handleFieldChange("badge_color", color)}
+              widthFull
             />
-          </div>
+          </ToggleSection>
         </ToggleSection>
       </div>
     </BaseModal>

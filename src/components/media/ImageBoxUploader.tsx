@@ -46,9 +46,9 @@ const ImageBoxUploader: React.FC<Props> = ({
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div
-        className={`flex items-center gap-4 rounded-xl p-2 border-1.5 ${
+        className={`w-full flex items-center gap-4 rounded-xl p-2 border-1.5 ${
           errorMessage?.length ? "border border-red-300" : "border-slate-300"
         }`}
       >
