@@ -229,19 +229,17 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
           title="پس‌زمینه عکس‌دار"
-          value={!form.use_background} // اینطوری وقتی عکس هست switch روی عکس‌دار می‌مونه
+          value={!form.use_background}
           onChange={(isPhotoBackground: boolean) => {
             if (isPhotoBackground) {
-              // وقتی switch رو روی عکس می‌کنه
               handleMultipleFieldsChange({
-                use_background: false, // رنگ خاموش
-                background_color: "", // پاک کردن رنگ
+                use_background: false,
+                background_color: "",
               });
             } else {
-              // وقتی switch روی رنگه
               handleMultipleFieldsChange({
                 use_background: true,
-                // mediaFile دست نخورده باقی می‌مونه
+                background_color: "#000"
               });
             }
           }}
