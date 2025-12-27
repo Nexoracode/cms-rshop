@@ -31,19 +31,15 @@ const initialForm = {
   title: "",
   subtitle: "",
   image_url: "",
-  mediaFile: null as File | null,
-
   background_color: "",
-  is_dark: false,
-
   link: "",
-  show_link: false,
-
   badge_text: "",
   badge_color: "",
-  show_badge: false,
-
   is_active: true,
+
+  mediaFile: null as File | null,
+  show_badge: false,
+  use_background: false,
 };
 
 const SideBannerFormModal: React.FC<Props> = ({
@@ -62,7 +58,6 @@ const SideBannerFormModal: React.FC<Props> = ({
   const { mutateAsync: uploadImage, isPending: isUploading } =
     useUploadSliderImages();
 
-  const [showLinkFields, setShowLinkFields] = useState<boolean>(false);
   const [showBadgeFields, setShowBadgeFields] = useState<boolean>(false);
 
   const {
@@ -74,43 +69,29 @@ const SideBannerFormModal: React.FC<Props> = ({
     reset,
     submit,
   } = useForm(initialForm, {
-    // pass showLinkFields & showBadgeFields to validator so it can check link/badge conditionally
-    onValidate: (data: any) =>
-      validateSideBanner(data, showLinkFields, showBadgeFields),
+    onValidate: (data: any) => validateSideBanner(data, showBadgeFields),
     runValidationOnChange: true,
   });
 
-  // initialize form from defaultValues (edit flow)
   useEffect(() => {
-    if (!defaultValues) {
-      setForm(initialForm);
-      setShowLinkFields(false);
-      setShowBadgeFields(false);
-      return;
-    }
+    if (!defaultValues) return;
 
     setForm({
-      title: defaultValues.title ?? "",
-      subtitle: defaultValues.subtitle ?? "",
-      image_url: defaultValues.image_url ?? "",
-      mediaFile: null,
-
-      background_color: defaultValues.background_color ?? "",
-      is_dark: Boolean(defaultValues.is_dark),
-
-      link: defaultValues.link ?? "",
-      show_link: Boolean(defaultValues.link),
-
-      badge_text: defaultValues.badge_text ?? "",
-      badge_color: defaultValues.badge_color ?? "",
-      show_badge: Boolean(defaultValues.badge_text),
-
-      is_active: Boolean(defaultValues.is_active),
+      ...initialForm,
+      ...defaultValues,
     });
+  }, [defaultValues]);
 
-    setShowLinkFields(Boolean(defaultValues.link));
-    setShowBadgeFields(Boolean(defaultValues.badge_text));
-  }, [defaultValues, setForm]);
+  useEffect(() => {
+    if (form) {
+      if (form?.background_color?.length) {
+        handleFieldChange("use_background", true);
+      }
+      if (form?.badge_text?.length) {
+        setShowBadgeFields(true);
+      }
+    }
+  }, [isOpen]);
 
   const handleSubmit = submit(async () => {
     let finalImageUrl = form.image_url;
@@ -132,13 +113,10 @@ const SideBannerFormModal: React.FC<Props> = ({
       title,
       subtitle,
       background_color,
-      is_dark,
       link,
       badge_text,
       badge_color,
       is_active,
-      show_link,
-      show_badge,
     } = form;
 
     const payload: Record<string, any> = {
@@ -154,14 +132,8 @@ const SideBannerFormModal: React.FC<Props> = ({
       payload.background_color = background_color;
     }
 
-    // include is_dark only if a background color is used
-    payload.is_dark =
-      background_color && background_color.trim() !== ""
-        ? Boolean(is_dark)
-        : false;
-
     // link (optional) but only if show_link true or link provided
-    if (showLinkFields || (link && link.trim() !== "")) {
+    if (link && link.trim() !== "") {
       payload.link = link && link.trim() !== "" ? link : undefined;
     }
 
@@ -189,7 +161,6 @@ const SideBannerFormModal: React.FC<Props> = ({
 
   const resetForm = () => {
     reset();
-    setShowLinkFields(false);
     setShowBadgeFields(false);
   };
 
@@ -233,9 +204,6 @@ const SideBannerFormModal: React.FC<Props> = ({
             errorMessage={errors.link}
             onChange={(val) => {
               handleFieldChange("link", val);
-              // keep showLinkFields true when user types
-              if (!showLinkFields && val) setShowLinkFields(true);
-              handleMultipleFieldsChange({ show_link: Boolean(val) });
             }}
           />
         </div>
@@ -297,16 +265,17 @@ const SideBannerFormModal: React.FC<Props> = ({
         <DualToggleSection
           mode2Title="پس‌زمینه رنگی"
           title="پس‌زمینه عکس‌دار"
-          value={!Boolean(form.background_color)}
+          value={!form.use_background}
           onChange={(isPhotoBackground: boolean) => {
             if (isPhotoBackground) {
               handleMultipleFieldsChange({
+                use_background: false,
                 background_color: "",
               });
             } else {
-              // user chose background color mode; keep mediaFile intact (do not clear it)
               handleMultipleFieldsChange({
-                // nothing else forced here
+                use_background: true,
+                background_color: "#000",
               });
             }
           }}
