@@ -34,7 +34,7 @@ const initialForm = {
   background_color: "",
   link: "",
   badge_text: "",
-  badge_color: "",
+  badge_color: null,
   is_active: true,
 
   mediaFile: null as File | null,
@@ -128,12 +128,12 @@ const SideBannerFormModal: React.FC<Props> = ({
       is_active,
       link,
       ...(use_background ? { background_color } : {}),
-      ...(badge_text ? { badge_text } : {}),
-      ...(badge_color ? { badge_color } : {}),
+      badge_text,
+      badge_color: badge_color,
     };
     console.log(payload);
 
-   /*  if (bannerId) {
+    if (bannerId) {
       return handleMutation(() => updateBanner(payload), {
         resetForm,
       });
@@ -141,7 +141,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       return handleMutation(() => createBanner(payload), {
         resetForm,
       });
-    } */
+    }
   });
 
   const resetForm = () => {
@@ -218,12 +218,12 @@ const SideBannerFormModal: React.FC<Props> = ({
             setShowBadgeFields(val);
             handleMultipleFieldsChange({
               show_badge: val,
-              badge_color: "#000",
+              badge_color: "#000" as any,
             });
             if (!val) {
               handleMultipleFieldsChange({
                 badge_text: "",
-                badge_color: "",
+                badge_color: null,
               });
             }
           }}
@@ -244,7 +244,7 @@ const SideBannerFormModal: React.FC<Props> = ({
             />
             <ColorPickerField
               label="رنگ برچسب"
-              value={form.badge_color}
+              value={form.badge_color ?? ""}
               onChange={(color) => handleFieldChange("badge_color", color)}
             />
           </div>
@@ -254,7 +254,7 @@ const SideBannerFormModal: React.FC<Props> = ({
         <DualToggleSection
           mode2Title="پس‌زمینه رنگی"
           title="پس‌زمینه عکس‌دار"
-          value={!form.use_background}
+          value={form.use_background}
           onChange={(isPhotoBackground: boolean) => {
             if (isPhotoBackground) {
               handleMultipleFieldsChange({
@@ -266,7 +266,7 @@ const SideBannerFormModal: React.FC<Props> = ({
                 use_background: true,
                 background_color: "#000",
                 image_url: "",
-                mediaFile: null
+                mediaFile: null,
               });
             }
           }}
