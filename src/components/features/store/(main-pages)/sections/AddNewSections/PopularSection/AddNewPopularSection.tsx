@@ -1,6 +1,6 @@
 import { GiHeartBottle } from "react-icons/gi";
-import AddSectionCard from "../../shared/AddSectionCard";
-import AddNewSectionModal from "../AddNewSectionModal";
+import AddSectionCard from "../../../shared/AddSectionCard";
+import PopularSectionModal from "./PopularSectionModal";
 
 const AddNewPopularSection = () => {
   return (
@@ -14,7 +14,7 @@ const AddNewPopularSection = () => {
             <br />
             برای نمایش این بخش، حداقل یک محصول اضافه کنید.
           </p>
-          <AddNewSectionModal />
+          <PopularSectionModal />
         </div>
       }
     />

@@ -1,4 +1,4 @@
-import AddNewPopularSection from "./AddNewSections/AddNewPopularSection";
+import AddNewPopularSection from "./AddNewSections/PopularSection/AddNewPopularSection";
 import AddNewProducsSection from "./AddNewSections/AddNewProducsSection";
 import AddNewCategorySection from "./AddNewSections/CategorySection/AddNewCategorySection";
 import SectionTemplate from "./SectionTemplate";
