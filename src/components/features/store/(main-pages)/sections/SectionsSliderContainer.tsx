@@ -8,6 +8,10 @@ type Props = {
 };
 
 const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
+  
+  console.log(sections);
+  
+
   return (
     <div className="flex flex-col gap-10 justify-center items-center">
       <div className="w-full flex flex-col gap-8">

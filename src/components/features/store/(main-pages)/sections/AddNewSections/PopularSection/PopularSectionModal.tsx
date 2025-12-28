@@ -28,7 +28,7 @@ const initialForm = {
   description: "",
   section_type: "most_popular",
   display_style: "carousel",
-  products_limit: 10,
+  products_limit: 0,
   show_view_all_button: false,
   view_all_link: "",
   is_active: true,

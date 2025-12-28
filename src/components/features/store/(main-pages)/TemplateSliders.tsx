@@ -29,6 +29,8 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     allSections;
 
   useEffect(() => {
+    console.log(sections);
+    
     const findedFeatured = sections.find(
       (section) => section.section_type === "featured"
     );

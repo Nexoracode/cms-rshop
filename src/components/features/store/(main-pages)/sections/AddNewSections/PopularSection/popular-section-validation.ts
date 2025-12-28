@@ -1,7 +1,7 @@
 export function popularValidation(data: any, showViewAllLink: boolean) {
   const errors: Record<string, string> = {};
 
-  if (isNaN(data.products_limit) || data.products_limit < 0) {
+  if (isNaN(data.products_limit) || data.products_limit <= 0) {
     errors.products_limit = "تعداد نمایش باید یک عدد معتبر باشد.";
   }
 
