@@ -28,7 +28,10 @@ export const useCreateHomeSection = () => {
         loadingText: "در حال ایجاد بخش...",
         successText: "بخش با موفقیت ایجاد شد",
       }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["home-sections"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["home-sections"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
+    },
   });
 };
 
@@ -47,6 +50,7 @@ export const useUpdateHomeSection = (id: number) => {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["home-sections"] });
       qc.invalidateQueries({ queryKey: ["home-section", id] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };
@@ -72,8 +76,7 @@ export const useDeleteHomeSection = () => {
 export const useGetHomeSectionProducts = (id: number) => {
   return useQuery({
     queryKey: ["home-section-products", id],
-    queryFn: () =>
-      fetcher({ route: `/admin/home-sections/${id}/products` }),
+    queryFn: () => fetcher({ route: `/admin/home-sections/${id}/products` }),
     enabled: !!id,
   });
 };

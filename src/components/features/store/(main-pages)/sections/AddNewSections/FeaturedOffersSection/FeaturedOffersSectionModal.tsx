@@ -56,9 +56,13 @@ const FeaturedOffersSectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
+    const { show_view_all_button, view_all_link, products } = defaultValues;
+    
     setForm({
       ...initialForm,
-      ...defaultValues,
+      show_view_all_button,
+      view_all_link,
+      products_limit: products.length ?? 10,
     });
   }, [defaultValues]);
 
@@ -71,21 +75,9 @@ const FeaturedOffersSectionModal: React.FC<Props> = ({
   }, [isOpen]);
 
   const handleSubmit = submit(async () => {
-    const {
-      description,
-      display_style,
-      is_active,
-      products_limit,
-      section_type,
-      show_view_all_button,
-      slug,
-      title,
-      view_all_link,
-    } = form;
     const payload: Record<string, any> = {
       ...form,
     };
-    console.log(payload);
 
     if (defaultValues?.id) {
       return handleMutation(() => updateSection(payload), {
