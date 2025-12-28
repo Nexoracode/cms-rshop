@@ -1,54 +1,55 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Checkbox, NumberInput } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import {
-  useCreateCategory,
-  useUpdateCategory,
-  useCategoryImageUpload,
-} from "@/core/hooks/api/categories/useCategory";
 import { useForm } from "@/core/hooks/common/form/useForm";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
-import { BiCategoryAlt } from "react-icons/bi";
-import { validateCategory } from "@/components/features/products/categories/category-validation";
 import TextInput from "@/components/ui/inputs/TextInput";
-import FieldErrorText from "@/components/forms/FieldErrorText";
-import CategorySelect from "@/components/features/products/categories/CategorySelect";
+import Textarea from "@/components/ui/inputs/Textarea";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import { validateSideBanner } from "../side-banner/side-banner-validation";
+import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
+import NumberInput from "@/components/ui/inputs/NumberInput";
+import {
+  useCreateHomeSection,
+  useUpdateHomeSection,
+} from "@/core/hooks/api/adminHome/useHomeSections";
 
-const initialCategoryForm = {
-  title: "",
-  slug: "",
-  discount: "0",
-  parentId: 0,
-  mediaId: "",
-  media: null as any,
-  mediaFile: null as File | null,
-};
-
-type AddNewSectionModalProps = {
-  categoryId?: number;
+type Props = {
+  sectionId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
-const AddNewSectionModal: React.FC<AddNewSectionModalProps> = ({
-  categoryId,
+const initialForm = {
+  title: "",
+  slug: "",
+  description: "",
+  section_type: "",
+  display_style: "",
+  products_limit: 10,
+  show_view_all_button: false,
+  view_all_link: "",
+  is_active: true,
+};
+
+const AddNewSectionModal: React.FC<Props> = ({
+  sectionId,
   defaultValues,
   isOpen,
   onOpenChange,
 }) => {
-  const [isParent, setIsParent] = useState(true);
-
-  const { mutateAsync: createCategory, isPending: isCreating } =
-    useCreateCategory();
-  const { mutateAsync: updateCategory, isPending: isUpdating } =
-    useUpdateCategory();
-  const { mutateAsync: uploadImageCategory, isPending: isUploading } =
-    useCategoryImageUpload();
+  const { mutateAsync: createSection, isPending: isCreating } =
+    useCreateHomeSection();
+  const { mutateAsync: updateSection, isPending: isUpdating } =
+    useUpdateHomeSection(sectionId ?? 0);
+  //
+  const [showLink, setShowLink] = useState<boolean>(false);
+  const [sectionType, setSectionType] = useState<string | null>(null);
+  const [displayType, setDisplayType] = useState<string | null>(null);
 
   const {
     form,
@@ -58,172 +59,181 @@ const AddNewSectionModal: React.FC<AddNewSectionModalProps> = ({
     handleMultipleFieldsChange,
     reset,
     submit,
-  } = useForm(initialCategoryForm, {
-    onValidate: validateCategory,
+  } = useForm(initialForm, {
+    onValidate: (data: any) => validateSideBanner(data, showLink),
     runValidationOnChange: true,
   });
 
   useEffect(() => {
-    if (!defaultValues) {
-      setForm(initialCategoryForm);
-      setIsParent(true);
-      return;
-    }
-
-    const { discount, media, slug, title, parent_id } = defaultValues;
+    if (!defaultValues) return;
 
     setForm({
-      title,
-      slug,
-      discount,
-      parentId: parent_id,
-      media,
-      mediaId: media?.id ?? "",
-      mediaFile: null,
+      ...initialForm,
+      ...defaultValues,
     });
-
-    setIsParent(parent_id === 0);
   }, [defaultValues]);
 
-  const handleSubmit = submit(async () => {
-    let finalMediaId = form.mediaId;
-
-    if (form.mediaFile) {
-      const fd = new FormData();
-      fd.append("files", form.mediaFile);
-
-      const uploadRes = (await handleMutation(() => uploadImageCategory(fd), {
-        returnResponse: true,
-      })) as any;
-
-      if (!uploadRes.ok) return false;
-      finalMediaId = uploadRes.data[0].id;
+  useEffect(() => {
+    if (form) {
+      if (form.show_view_all_button) {
+        setShowLink(true);
+      }
     }
+  }, [isOpen]);
 
-    const payload = {
-      id: categoryId,
-      title: form.title,
-      slug: form.slug,
-      discount: form.discount,
-      parentId: form.parentId,
-      mediaId: finalMediaId,
+  const handleSubmit = submit(async () => {
+    const {
+      description,
+      display_style,
+      is_active,
+      products_limit,
+      section_type,
+      show_view_all_button,
+      slug,
+      title,
+      view_all_link,
+    } = form;
+
+    const payload: Record<string, any> = {
+      ...form,
     };
+    console.log(payload);
 
-    if (categoryId)
-      return handleMutation(() => updateCategory(payload), {
+    /* if (sectionId) {
+      return handleMutation(() => updateBanner(payload), {
         resetForm,
       });
-    else return handleMutation(() => createCategory(payload), { resetForm });
+    } else {
+      return handleMutation(() => createBanner(payload), {
+        resetForm,
+      });
+    } */
   });
 
   const resetForm = () => {
     reset();
-    //setForm(initialCategoryForm);
-    setIsParent(false);
+    setShowLink(false);
   };
+
+  const sectionOptions: SelectOption[] = [
+    { key: "featured", title: "محصولات ویژه" },
+    { key: "special_products", title: "محصولات دستی" },
+    { key: "most_popular", title: "محبوب ترین" },
+    { key: "category_based", title: "دسته بندی محور" },
+  ];
+
+  const displayOptions: SelectOption[] = [
+    { key: "carousel", title: "اسلایدر" },
+    { key: "grid", title: "شبکه ای" },
+    { key: "list", title: "لیستی" },
+  ];
 
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={(val) => {
-        onOpenChange?.(val);
-      }}
+      onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
-        categoryId
+        sectionId
           ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
-      title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
-      confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
+      title={sectionId ? "ویرایش بخش" : "افزودن بخش جدید"}
+      confirmText={sectionId ? "ویرایش بخش" : "ایجاد بخش"}
       onConfirm={handleSubmit}
       size="xl"
-      icon={<BiCategoryAlt />}
-      isConfirmDisabled={isCreating || isUpdating || isUploading}
+      icon={<TfiLayoutSliderAlt />}
+      isConfirmDisabled={isCreating || isUpdating}
     >
       <div className="flex flex-col gap-6">
-        <div>
-          <div
-            className={`flex flex-col gap-4 p-4 border-1.5 rounded-2xl ${
-              errors?.parentId?.length
-                ? "border border-red-300"
-                : "border-slate-300"
-            }`}
-          >
-            <CategorySelect
-              label="دسته‌بندی والد"
-              value={isParent ? null : form.parentId}
-              onChange={(val) =>
-                handleFieldChange("parentId", Number(val) || 0)
-              }
-              placeholder="انتخاب کنید"
-              isDisabled={isParent}
-              errorMessage={errors.parentId}
-              withAddModal={false}
-            />
-            <Checkbox
-              isSelected={isParent}
-              onValueChange={(val) => {
-                setIsParent(val);
-                if (!val) {
-                  setForm((prev) => ({ ...prev, parentId: -1 }));
-                }
-                if (val) handleFieldChange("parentId", 0);
-              }}
-            >
-              <span className="text-sm">دسته‌بندی مادر</span>
-            </Checkbox>
-          </div>
-          <div className="mt-2">
-            {errors.parentId ? <FieldErrorText error={errors.parentId} /> : ""}
-          </div>
+        <div className="flex items-center gap-2">
+          <SelectBox
+            label="نوع بخش"
+            value={sectionType}
+            onChange={(val) => setSectionType(val)}
+            options={sectionOptions}
+            placeholder="انتخاب نوع بخش"
+            isRequired
+          />
+          <SelectBox
+            label="نوع نمایش"
+            value={displayType}
+            onChange={(val) => setDisplayType(val)}
+            options={displayOptions}
+            placeholder="انتخاب نوع نمایش"
+            isRequired
+          />
         </div>
 
-        <ImageBoxUploader
-          changeStatusFile={form.mediaFile}
-          defaultImg={form?.media?.url ? form?.media?.url : null}
-          onFile={(file) =>
-            handleMultipleFieldsChange({
-              mediaFile: file,
-              mediaId: typeof file === "string" ? file : "",
-            })
-          }
-          errorMessage={errors.mediaId}
-        />
-
-        <div className="flex flex-col gap-6 sm:flex-row items-start sm:gap-4">
+        <div className="flex items-center gap-2">
           <TextInput
             label="عنوان"
-            placeholder="عنوان دسته بندی را وارد کنید"
+            placeholder="عنوان بنر را وارد کنید"
             value={form.title}
             errorMessage={errors.title}
             isRequired
             onChange={(val) => handleFieldChange("title", val)}
             allowEnglishOnly={false}
           />
-
           <SlugInput
             value={form.slug}
             onChange={(val) => handleFieldChange("slug", val)}
             isActiveError={true}
+            isRequired
             errorMessage={errors.slug}
           />
         </div>
 
         <NumberInput
-          label="تخفیف"
-          labelPlacement="outside"
-          hideStepper
-          minValue={0}
-          maxValue={99}
-          endContent={<>%</>}
-          value={+form.discount}
-          onValueChange={(val) =>
-            handleFieldChange("discount", String(val) || "0")
-          }
+          label="تعداد محدودیت نمایش"
+          placeholder="10"
+          suffix="عدد"
+          min={0}
+          max={30}
+          value={form.products_limit}
+          onChange={(limit) => handleFieldChange("products_limit", limit)}
         />
+
+        <Textarea
+          label="توضیحات"
+          value={form.description}
+          onChange={(val) => handleFieldChange("description", val)}
+          placeholder="توضیحات را وارد کنید"
+          isRequired
+          errorMessage={errors.description}
+        />
+
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
+        />
+
+        <ToggleSection
+          title={"نمایش لینک"}
+          initialMode={showLink}
+          onChange={(val) => {
+            handleFieldChange("show_view_all_button", val);
+            setShowLink(val);
+          }}
+        >
+          <TextInput
+            label=""
+            placeholder="path/to/1"
+            value={form.view_all_link}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            isRequired
+            errorMessage={errors.view_all_link}
+            onChange={(val) => {
+              handleFieldChange("view_all_link", val);
+            }}
+            inputAlign="left"
+            allowSpaces={false}
+          />
+        </ToggleSection>
       </div>
     </BaseModal>
   );
