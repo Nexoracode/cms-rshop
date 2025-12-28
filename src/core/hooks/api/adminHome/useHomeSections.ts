@@ -4,14 +4,14 @@ import { fetcher } from "@/core/utils/fetcher";
 export const useGetHomeSections = () => {
   return useQuery({
     queryKey: ["home-sections"],
-    queryFn: () => fetcher({ route: "/api/admin/home-sections" }),
+    queryFn: () => fetcher({ route: "/admin/home-sections" }),
   });
 };
 
 export const useGetOneHomeSection = (id?: number) => {
   return useQuery({
     queryKey: ["home-section", id],
-    queryFn: () => fetcher({ route: `/api/admin/home-sections/${id}` }),
+    queryFn: () => fetcher({ route: `/admin/home-sections/${id}` }),
     enabled: !!id,
   });
 };
@@ -21,7 +21,7 @@ export const useCreateHomeSection = () => {
   return useMutation({
     mutationFn: (data: any) =>
       fetcher({
-        route: "/api/admin/home-sections",
+        route: "/admin/home-sections",
         method: "POST",
         body: data,
         isActiveToast: true,
@@ -37,7 +37,7 @@ export const useUpdateHomeSection = (id: number) => {
   return useMutation({
     mutationFn: (data: any) =>
       fetcher({
-        route: `/api/admin/home-sections/${id}`,
+        route: `/admin/home-sections/${id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
@@ -56,7 +56,7 @@ export const useDeleteHomeSection = () => {
   return useMutation({
     mutationFn: (id: number) =>
       fetcher({
-        route: `/api/admin/home-sections/${id}`,
+        route: `/admin/home-sections/${id}`,
         method: "DELETE",
         isActiveToast: true,
         loadingText: "در حال حذف بخش...",
@@ -73,7 +73,7 @@ export const useGetHomeSectionProducts = (id: number) => {
   return useQuery({
     queryKey: ["home-section-products", id],
     queryFn: () =>
-      fetcher({ route: `/api/admin/home-sections/${id}/products` }),
+      fetcher({ route: `/admin/home-sections/${id}/products` }),
     enabled: !!id,
   });
 };

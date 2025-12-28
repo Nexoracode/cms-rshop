@@ -48,8 +48,6 @@ const AddNewSectionModal: React.FC<Props> = ({
     useUpdateHomeSection(sectionId ?? 0);
   //
   const [showLink, setShowLink] = useState<boolean>(false);
-  const [sectionType, setSectionType] = useState<string | null>(null);
-  const [displayType, setDisplayType] = useState<string | null>(null);
 
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
@@ -146,8 +144,8 @@ const AddNewSectionModal: React.FC<Props> = ({
         <div className="flex items-center gap-2">
           <SelectBox
             label="نوع بخش"
-            value={sectionType}
-            onChange={(val) => setSectionType(val)}
+            value={form.section_type}
+            onChange={(val) => handleFieldChange("section_type", val)}
             options={sectionOptions}
             placeholder="انتخاب نوع بخش"
             isRequired
@@ -155,8 +153,8 @@ const AddNewSectionModal: React.FC<Props> = ({
           />
           <SelectBox
             label="نوع نمایش"
-            value={displayType}
-            onChange={(val) => setDisplayType(val)}
+            value={form.display_style}
+            onChange={(val) => handleFieldChange("display_style", val)}
             options={displayOptions}
             placeholder="انتخاب نوع نمایش"
             isRequired
