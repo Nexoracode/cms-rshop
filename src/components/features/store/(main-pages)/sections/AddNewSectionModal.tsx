@@ -5,9 +5,7 @@ import BaseModal from "@/components/ui/modals/BaseModal";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
 import Textarea from "@/components/ui/inputs/Textarea";
-import { handleMutation } from "@/core/utils/mutationHelper";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
-import { validateSideBanner } from "../side-banner/side-banner-validation";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
@@ -16,6 +14,8 @@ import {
   useCreateHomeSection,
   useUpdateHomeSection,
 } from "@/core/hooks/api/adminHome/useHomeSections";
+import { validateHomeSection } from "./home-section-validation";
+import { handleMutation } from "@/core/utils/mutationHelper";
 
 type Props = {
   sectionId?: number;
@@ -51,18 +51,13 @@ const AddNewSectionModal: React.FC<Props> = ({
   const [sectionType, setSectionType] = useState<string | null>(null);
   const [displayType, setDisplayType] = useState<string | null>(null);
 
-  const {
-    form,
-    errors,
-    setForm,
-    handleFieldChange,
-    handleMultipleFieldsChange,
-    reset,
-    submit,
-  } = useForm(initialForm, {
-    onValidate: (data: any) => validateSideBanner(data, showLink),
-    runValidationOnChange: true,
-  });
+  const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
+    initialForm,
+    {
+      onValidate: (data: any) => validateHomeSection(data, showLink),
+      runValidationOnChange: true,
+    }
+  );
 
   useEffect(() => {
     if (!defaultValues) return;
@@ -99,15 +94,15 @@ const AddNewSectionModal: React.FC<Props> = ({
     };
     console.log(payload);
 
-    /* if (sectionId) {
-      return handleMutation(() => updateBanner(payload), {
+    if (sectionId) {
+      return handleMutation(() => updateSection(payload), {
         resetForm,
       });
     } else {
-      return handleMutation(() => createBanner(payload), {
+      return handleMutation(() => createSection(payload), {
         resetForm,
       });
-    } */
+    }
   });
 
   const resetForm = () => {
@@ -156,6 +151,7 @@ const AddNewSectionModal: React.FC<Props> = ({
             options={sectionOptions}
             placeholder="انتخاب نوع بخش"
             isRequired
+            errorMessage={errors.section_type}
           />
           <SelectBox
             label="نوع نمایش"
@@ -164,6 +160,7 @@ const AddNewSectionModal: React.FC<Props> = ({
             options={displayOptions}
             placeholder="انتخاب نوع نمایش"
             isRequired
+            errorMessage={errors.display_style}
           />
         </div>
 
