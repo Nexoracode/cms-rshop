@@ -54,12 +54,6 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
         <FeaturedOffersSection featuredSection={featuredSection} />
       )}
 
-      <AddSectionCard
-        label="ویژگی ها و خدمات (مزایای سایت)"
-        onClick={() => console.log("اضافه شد!")}
-        className="!border-gray-600 !text-gray-600 !bg-gray-50"
-      />
-
       <CategoriesSliderContainer categories={categories} />
 
       <SectionsSliderContainer sections={otherSection} />
