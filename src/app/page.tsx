@@ -19,7 +19,7 @@ import {
 
 export default function Home() {
   const router = useRouter();
-  const handleSignIn = () => router.push("/signin");
+  const handleSignIn = () => router.push("/admin/dashboard");
 
   return (
     <div
