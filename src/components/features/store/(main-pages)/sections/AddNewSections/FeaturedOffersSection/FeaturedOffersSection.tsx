@@ -1,11 +1,13 @@
 "use client";
 
 import Slider from "@/components/shared/Slider";
-import ProductTemplate from "../ProductTemplate";
+import ProductTemplate from "../../../ProductTemplate";
 import AmazingOfferCard from "./AmazingOfferCard";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import AddFeaturedOfferSection from "./AddFeaturedOfferSection";
+import { useState } from "react";
+import FeaturedOffersSectionModal from "./FeaturedOffersSectionModal";
 
 type SectionIsFeaturedProps = {
   featuredSection?: any;
@@ -14,20 +16,24 @@ type SectionIsFeaturedProps = {
 const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
   featuredSection,
 }) => {
-
+  const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <div>
       {featuredSection ? (
         <div className="w-full hover-reveal-parent bg-[#E5344E] h-[294px] rounded-xl flex items-center justify-center p-4">
           <AmazingOfferCard />
-
+          <FeaturedOffersSectionModal
+            isOpen={isOpen}
+            onOpenChange={setIsOpen}
+            defaultValues={featuredSection}
+          />
           <div className="hover-reveal-child">
             <ActionButton
               icon={<TbEdit className="text-gray-700" size={18} />}
-              route="/admin/products"
+              onClick={() => setIsOpen(true)}
             />
           </div>
-
           <Slider
             items={featuredSection?.products || []}
             itemsPerView={6}

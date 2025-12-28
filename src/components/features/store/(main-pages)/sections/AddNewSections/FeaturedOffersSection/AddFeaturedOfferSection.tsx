@@ -1,5 +1,6 @@
 import OptionButton from "@/components/ui/buttons/OptionButton";
-import AddSectionCard from "../shared/AddSectionCard";
+import AddSectionCard from "../../../shared/AddSectionCard";
+import FeaturedOffersSectionModal from "./FeaturedOffersSectionModal";
 
 const AddFeaturedOfferSection = () => {
   return (
@@ -12,7 +13,7 @@ const AddFeaturedOfferSection = () => {
             alt="AmazingText"
             className="w-[120px]"
           />
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <OptionButton
               title="محصولات"
               href="/admin/store/promotions/flash-deal/products"
@@ -23,6 +24,9 @@ const AddFeaturedOfferSection = () => {
               href="/admin/store/promotions/flash-deal/categories"
               className="text-white"
             />
+          </div> */}
+          <div>
+            <FeaturedOffersSectionModal />
           </div>
         </div>
       }

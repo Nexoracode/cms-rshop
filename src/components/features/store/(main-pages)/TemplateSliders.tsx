@@ -7,7 +7,7 @@ import HeroSliderContainer from "./hero-slider/HeroSliderContainer";
 import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 import SectionsSliderContainer from "./sections/SectionsSliderContainer";
-import FeaturedOffersSection from "./FeaturedOffersSection/FeaturedOffersSection";
+import FeaturedOffersSection from "./sections/AddNewSections/FeaturedOffersSection/FeaturedOffersSection";
 import PromoBanner from "./PromoBanner";
 import AddSectionCard from "./shared/AddSectionCard";
 import SideBannerContainer from "./side-banner/SideBannerContainer";
