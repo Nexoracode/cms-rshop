@@ -1,6 +1,6 @@
+import { GiHeartBottle } from "react-icons/gi";
 import AddSectionCard from "../../shared/AddSectionCard";
 import AddNewSectionModal from "../AddNewSectionModal";
-import { TfiLayoutSliderAlt } from "react-icons/tfi";
 
 const AddNewPopularSection = () => {
   return (
@@ -8,10 +8,11 @@ const AddNewPopularSection = () => {
       className="h-[276px]"
       children={
         <div className="flex flex-col gap-4 items-center">
-          <TfiLayoutSliderAlt className="text-gray-600 text-[70px] -mb-3" />
+          <GiHeartBottle className="text-gray-600 text-[70px] -mb-3" />
           <p className="text-center leading-7">
-            وبسایت هیچ بخشی جهت نمایش ندارد!! <br />
-            حداقل یک بخش ایجاد کنید.
+            هنوز محصولی در بخش «محبوب‌ترین محصولات» اضافه نشده است.
+            <br />
+            برای نمایش این بخش، حداقل یک محصول اضافه کنید.
           </p>
           <AddNewSectionModal />
         </div>

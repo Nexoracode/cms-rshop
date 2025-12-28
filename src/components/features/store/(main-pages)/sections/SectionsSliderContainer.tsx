@@ -1,4 +1,6 @@
-import AddSection from "./AddNewSections/AddNewPopularSection";
+import AddNewPopularSection from "./AddNewSections/AddNewPopularSection";
+import AddNewProducsSection from "./AddNewSections/AddNewProducsSection";
+import AddNewCategorySection from "./AddNewSections/CategorySection/AddNewCategorySection";
 import SectionTemplate from "./SectionTemplate";
 
 type Props = {
@@ -16,7 +18,11 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
               <SectionTemplate key={section.id} section={section} />
             ))
         ) : (
-          <AddSection />
+          <div className="flex flex-col gap-6">
+            <AddNewPopularSection />
+            <AddNewCategorySection />
+            <AddNewProducsSection />
+          </div>
         )}
       </div>
     </div>
