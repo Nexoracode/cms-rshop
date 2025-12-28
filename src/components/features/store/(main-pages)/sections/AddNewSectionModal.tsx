@@ -201,8 +201,6 @@ const AddNewSectionModal: React.FC<Props> = ({
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
-          isRequired
-          errorMessage={errors.description}
         />
 
         <ToggleSection
