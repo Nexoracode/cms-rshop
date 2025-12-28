@@ -8,17 +8,25 @@ type Props = {
 };
 
 const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
-  
+  const groupedSections = sections.reduce((acc: any, section: any) => {
+    const type = section.section_type;
+
+    if (!acc[type]) {
+      acc[type] = [];
+    }
+
+    acc[type].push(section);
+    return acc;
+  }, {});
   console.log(sections);
   
-
   return (
     <div className="flex flex-col gap-10 justify-center items-center">
       <div className="w-full flex flex-col gap-8">
         {sections.length ? (
           <>
-            {sections?.most_popular ? (
-              sections?.most_popular
+            {groupedSections?.most_popular ? (
+              groupedSections?.most_popular
                 .sort((a: any, b: any) => a.sort_order - b.sort_order)
                 .map((section: any) => (
                   <SectionTemplate key={section.id} section={section} />
@@ -27,8 +35,8 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
               <AddNewPopularSection />
             )}
 
-            {sections?.category_based ? (
-              sections?.category_based
+            {groupedSections?.category_based ? (
+              groupedSections?.category_based
                 .sort((a: any, b: any) => a.sort_order - b.sort_order)
                 .map((section: any) => (
                   <SectionTemplate key={section.id} section={section} />
@@ -37,8 +45,8 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
               <AddNewCategorySection />
             )}
 
-            {sections?.special_products ? (
-              sections?.special_products
+            {groupedSections?.special_products ? (
+              groupedSections?.special_products
                 .sort((a: any, b: any) => a.sort_order - b.sort_order)
                 .map((section: any) => (
                   <SectionTemplate key={section.id} section={section} />

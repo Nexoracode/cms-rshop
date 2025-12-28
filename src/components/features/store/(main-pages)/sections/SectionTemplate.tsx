@@ -33,7 +33,7 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({ section }) => {
       {display_style === "carousel" && (
         <Slider
           items={products}
-          itemsPerView={5}
+          itemsPerView={4}
           rows={1}
           rowHeight={250}
           renderItem={(product: any) => (

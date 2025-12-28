@@ -12,7 +12,7 @@ import {
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { feauturedSectionValidation } from "../FeaturedOffersSection/feautured-section-validation";
-import { LuPercent } from "react-icons/lu";
+import { TbCategory } from "react-icons/tb";
 
 type Props = {
   sectionId?: number;
@@ -23,9 +23,9 @@ type Props = {
 
 const initialForm = {
   title: "",
-  slug: "featured-products",
+  slug: "product-categories",
   description: "",
-  section_type: "featured",
+  section_type: "category_based",
   display_style: "carousel",
   products_limit: 10,
   show_view_all_button: false,
@@ -107,10 +107,10 @@ const CtegorySectionModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary",
             }
       }
-      title={defaultValues?.id ? "ویرایش پیشنهاد" : "افزودن پیشنهاد"}
-      confirmText={defaultValues?.id ? "ویرایش پیشنهاد" : "ایجاد پیشنهاد"}
+      title={defaultValues?.id ? "ویرایش دسته بندی" : "افزودن دسته بندی"}
+      confirmText={defaultValues?.id ? "ویرایش" : "ایجاد"}
       onConfirm={handleSubmit}
-      icon={<LuPercent />}
+      icon={<TbCategory />}
       isConfirmDisabled={isCreating || isUpdating}
     >
       <div className="flex flex-col gap-4">
