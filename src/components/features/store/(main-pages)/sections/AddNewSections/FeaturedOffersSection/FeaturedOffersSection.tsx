@@ -36,7 +36,7 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
           </div>
           <Slider
             items={featuredSection?.products || []}
-            itemsPerView={6}
+            itemsPerView={3}
             className="w-fit !gap-1.5 mx-auto"
             renderItem={(product: any) => <ProductTemplate product={product} />}
           />
