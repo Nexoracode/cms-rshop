@@ -1,4 +1,4 @@
-import AddSection from "./AddSection";
+import AddSection from "./AddNewSections/AddNewPopularSection";
 import SectionTemplate from "./SectionTemplate";
 
 type Props = {

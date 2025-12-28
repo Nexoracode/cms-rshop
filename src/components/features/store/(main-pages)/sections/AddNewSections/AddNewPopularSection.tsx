@@ -1,8 +1,8 @@
-import AddSectionCard from "../shared/AddSectionCard";
-import AddNewSectionModal from "./AddNewSectionModal";
+import AddSectionCard from "../../shared/AddSectionCard";
+import AddNewSectionModal from "../AddNewSectionModal";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
 
-const AddSection = () => {
+const AddNewPopularSection = () => {
   return (
     <AddSectionCard
       className="h-[276px]"
@@ -20,4 +20,4 @@ const AddSection = () => {
   );
 };
 
-export default AddSection;
+export default AddNewPopularSection;
