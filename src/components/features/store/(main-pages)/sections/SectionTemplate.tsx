@@ -29,12 +29,12 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-lg">{title || titleCustom}</h3>
         {show_view_all_button && view_all_link && (
-          <div className="text-sm text-gray-600 flex items-center gap-1">
+          <div className="text-sm text-gray-600 !mx-2 flex items-center gap-1">
             <span>مشاهده همه</span>
             <MdArrowBack className="text-lg" />
           </div>
         )}
-        <div className="hover-reveal-child">{children}</div>
+        <div className="hover-reveal-child !top-0 bg-white w-24 flex items-center justify-end rounded-lg">{children}</div>
       </div>
 
       {display_style === "carousel" && (
