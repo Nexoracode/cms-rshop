@@ -4,56 +4,60 @@ import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
-  useCreateHeroSlider,
-  useUpdateHeroSlider,
-} from "@/core/hooks/api/adminHome/useHeroSlider";
+  useCreatePromoBanner,
+  useUpdatePromoBanner,
+} from "@/core/hooks/api/adminHome/usePromoBanner";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { TfiLayoutSlider } from "react-icons/tfi";
+import { TfiLayoutMediaOverlay } from "react-icons/tfi";
 import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
-import { promoBnannerValidation } from "./promo-bnanner-validation";
-import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
-import ColorPickerField from "@/components/shared/ColorPickerField";
-import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import Textarea from "@/components/ui/inputs/Textarea";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import ColorPickerField from "@/components/shared/ColorPickerField";
+import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
+import NumberInput from "@/components/ui/inputs/NumberInput"; // کامپوننت جدید عددی
 
-const initialSliderForm = {
+const initialPromoBannerForm = {
   title: "",
   description: "",
-  image_url: "",
+  imageUrl: "",
   mediaFile: null as File | null,
 
-  background_color: "",
-  use_background: false,
-  is_dark: false,
+  link: "",
+  linkText: "",
 
-  button_text: "",
-  button_link: "",
+  backgroundColor: "",
+  textColor: "#FFFFFF",
 
-  is_active: true,
+  isActive: true,
+  isClosable: true,
+
+  priority: 10,
+  displayDuration: 10,
+
+  startDate: null as string | null,
+  endDate: null as string | null,
 };
 
-type HeroSliderFormModalProps = {
-  sliderId?: number;
+type PromoBannerFormModalProps = {
+  bannerId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
-const PromoBannerFormModal: React.FC<HeroSliderFormModalProps> = ({
-  sliderId,
+const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
+  bannerId,
   defaultValues,
   isOpen,
   onOpenChange,
 }) => {
-  const { mutateAsync: createSlider, isPending: isCreating } =
-    useCreateHeroSlider();
-  const { mutateAsync: updateSlider, isPending: isUpdating } =
-    useUpdateHeroSlider();
-  const { mutateAsync: uploadImageSlider, isPending: isUploading } =
-    useUploadSliderImages();
-  const [showButtonFields, setShowButtonFields] = useState<boolean>(false);
+  const { mutateAsync: createBanner, isPending: isCreating } = useCreatePromoBanner();
+  const { mutateAsync: updateBanner, isPending: isUpdating } = useUpdatePromoBanner();
+  const { mutateAsync: uploadImageSlider, isPending: isUploading } = useUploadSliderImages();
+
+  const [showLinkFields, setShowLinkFields] = useState<boolean>(false);
 
   const {
     form,
@@ -63,111 +67,124 @@ const PromoBannerFormModal: React.FC<HeroSliderFormModalProps> = ({
     handleMultipleFieldsChange,
     reset,
     submit,
-  } = useForm(initialSliderForm, {
-    onValidate: (data) => promoBnannerValidation(data, showButtonFields),
+  } = useForm(initialPromoBannerForm, {
+    onValidate: (data) => {
+      const errs: any = {};
+
+      if (!data.title.trim()) errs.title = "عنوان الزامی است";
+      if (!data.imageUrl && !data.mediaFile) errs.imageUrl = "تصویر بنر الزامی است";
+
+      if (showLinkFields) {
+        if (!data.linkText?.trim()) errs.linkText = "متن دکمه الزامی است";
+        if (!data.link?.trim()) errs.link = "لینک دکمه الزامی است";
+      }
+
+      if (!data.startDate || !data.endDate) errs.startDate = "بازه زمانی اعتبار الزامی است";
+
+      return errs;
+    },
     runValidationOnChange: true,
   });
 
+  // پر کردن فرم در حالت ویرایش
   useEffect(() => {
     if (!defaultValues) return;
 
     setForm({
-      ...initialSliderForm,
+      ...initialPromoBannerForm,
       ...defaultValues,
+      startDate: defaultValues.startDate || null,
+      endDate: defaultValues.endDate || null,
+      imageUrl: defaultValues.imageUrl || "",
+      priority: defaultValues.priority ?? 10,
+      displayDuration: defaultValues.displayDuration ?? 10,
     });
+
+    if (defaultValues.linkText || defaultValues.link) {
+      setShowLinkFields(true);
+    }
   }, [defaultValues]);
 
+  // بررسی وضعیت دکمه لینک وقتی مودال باز میشه
   useEffect(() => {
-    if (form) {
-      if (form?.background_color?.length) {
-        handleFieldChange("use_background", true);
-      }
-      if (form?.button_text?.length) {
-        setShowButtonFields(true);
-      }
+    if (form.linkText || form.link) {
+      setShowLinkFields(true);
     }
   }, [isOpen]);
 
   const handleSubmit = submit(async () => {
-    let finalImageUrl = form.image_url;
+    let finalImageUrl = form.imageUrl;
 
     if (form.mediaFile) {
       const fd = new FormData();
       fd.append("files", form.mediaFile);
 
-      const uploadRes = (await handleMutation(() => uploadImageSlider(fd), {
+      const uploadRes = await handleMutation(() => uploadImageSlider(fd), {
         returnResponse: true,
-      })) as any;
+      });
 
       if (!uploadRes.ok) return false;
       finalImageUrl = uploadRes.data[0].url;
     }
 
-    const {
-      background_color,
-      button_link,
-      button_text,
-      description,
-      is_active,
-      is_dark,
-      title,
-      use_background,
-    } = form;
-
-    const payload = {
-      title,
-      description,
-      image_url: finalImageUrl,
-      ...(use_background ? { background_color } : {}),
-      ...(button_text ? { button_text } : {}),
-      ...(button_link ? { button_link } : {}),
-      is_dark: form.use_background ? Boolean(is_dark) : false,
-      is_active,
+    const payload: any = {
+      title: form.title.trim(),
+      description: form.description?.trim() || "",
+      imageUrl: finalImageUrl,
+      isActive: form.isActive,
+      isClosable: form.isClosable,
+      priority: Number(form.priority),
+      displayDuration: Number(form.displayDuration),
+      startDate: form.startDate,
+      endDate: form.endDate,
     };
 
-    console.log(payload);
+    if (form.backgroundColor) payload.backgroundColor = form.backgroundColor;
+    if (form.textColor) payload.textColor = form.textColor;
+    if (showLinkFields && form.linkText?.trim()) payload.linkText = form.linkText.trim();
+    if (showLinkFields && form.link?.trim()) payload.link = form.link.trim();
 
-    if (sliderId) {
-      return handleMutation(
-        () => updateSlider({ id: sliderId, data: payload }),
-        {
-          resetForm,
-        }
-      );
-    } else {
-      return handleMutation(() => createSlider(payload), {
+    if (bannerId) {
+      return handleMutation(() => updateBanner({ id: bannerId, data: payload }), {
         resetForm,
       });
+    } else {
+      return handleMutation(() => createBanner(payload), { resetForm });
     }
   });
 
   const resetForm = () => {
     reset();
+    setShowLinkFields(false);
   };
 
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={(val) => onOpenChange?.(val)}
+      onOpenChange={(val) => {
+        onOpenChange?.(val);
+        if (!val) resetForm();
+      }}
       triggerProps={
-        sliderId
+        bannerId
           ? null
           : {
-              title: "+ افزودن",
+              title: "+ افزودن بنر تبلیغاتی",
               className: "bg-secondary-light text-secondary",
             }
       }
-      title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
-      confirmText={sliderId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
+      title={bannerId ? "ویرایش بنر تبلیغاتی" : "افزودن بنر تبلیغاتی جدید"}
+      confirmText={bannerId ? "بروزرسانی" : "ایجاد بنر"}
       onConfirm={handleSubmit}
       size="xl"
-      icon={<TfiLayoutSlider />}
+      icon={<TfiLayoutMediaOverlay />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
+        {/* عنوان و توضیحات */}
         <TextInput
-          label="عنوان"
-          placeholder="عنوان اسلایدر را وارد کنید"
+          label="عنوان بنر"
+          placeholder="مثلاً: تخفیف ویژه عید نوروز"
           value={form.title}
           errorMessage={errors.title}
           isRequired
@@ -176,107 +193,135 @@ const PromoBannerFormModal: React.FC<HeroSliderFormModalProps> = ({
         />
 
         <Textarea
-          label="توضیحات"
+          label="توضیحات (اختیاری)"
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
-          placeholder="توضیحات را وارد کنید"
-          isRequired
-          errorMessage={errors.description}
+          placeholder="توضیح داخلی برای مدیریت بنر..."
         />
 
+        {/* وضعیت نمایش */}
         <ToggleSection
-          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
+          title={`وضعیت نمایش: ${form.isActive ? "فعال" : "غیرفعال"}`}
+          initialMode={form.isActive}
+          onChange={(val) => handleFieldChange("isActive", val)}
         />
 
+        {/* قابلیت بستن توسط کاربر */}
         <ToggleSection
-          title={"نمایش دکمه"}
-          initialMode={showButtonFields}
+          title={`قابل بستن توسط کاربر: ${form.isClosable ? "بله" : "خیر"}`}
+          initialMode={form.isClosable}
+          onChange={(val) => handleFieldChange("isClosable", val)}
+        />
+
+        {/* دکمه لینک */}
+        <ToggleSection
+          title="نمایش دکمه لینک"
+          initialMode={showLinkFields}
           onChange={(val) => {
-            setShowButtonFields(val);
+            setShowLinkFields(val);
             if (!val) {
-              form.button_link?.length && handleFieldChange("button_link", "");
-              form.button_text?.length && handleFieldChange("button_text", "");
+              handleMultipleFieldsChange({
+                linkText: "",
+                link: "",
+              });
             }
           }}
         >
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <TextInput
-              label="عنوان دکمه"
-              placeholder="عنوان دکمه را وارد کنید"
-              value={form.button_text || ""}
-              isRequired
-              errorMessage={errors.button_text}
-              onChange={(val) => handleFieldChange("button_text", val)}
+              label="متن دکمه"
+              placeholder="مشاهده محصولات"
+              value={form.linkText || ""}
+              isRequired={showLinkFields}
+              errorMessage={errors.linkText}
+              onChange={(val) => handleFieldChange("linkText", val)}
               allowEnglishOnly={false}
             />
             <TextInput
               label="لینک دکمه"
-              isRequired
-              placeholder="/page/path/1"
-              value={form.button_link || ""}
-              errorMessage={errors.button_link}
-              allowSpecialChars
-              allowedSpecialChars={["/", "-"]}
-              onChange={(val) => handleFieldChange("button_link", val)}
+              placeholder="/collections/sale"
+              value={form.link || ""}
+              isRequired={showLinkFields}
+              errorMessage={errors.link}
+              onChange={(val) => handleFieldChange("link", val)}
               inputAlign="left"
-              allowSpaces={false}
+              allowSpecialChars
+              allowedSpecialChars={["/", "-", "?", "=", "&", "_"]}
             />
           </div>
         </ToggleSection>
 
-        <DualToggleSection
-          mode2Title="پس‌زمینه بدون عکس"
-          title="پس‌زمینه عکس‌دار"
-          value={!form.use_background}
-          onChange={(isPhotoBackground: boolean) => {
-            if (isPhotoBackground) {
+        {/* تصویر بنر */}
+        <div>
+          <p className="text-sm font-medium mb-2">
+            تصویر بنر <span className="text-red-500">*</span>
+          </p>
+          <ImageBoxUploader
+            changeStatusFile={form.mediaFile}
+            defaultImg={form.imageUrl ?? null}
+            onFile={(file) =>
               handleMultipleFieldsChange({
-                use_background: false,
-                background_color: "",
-              });
-            } else {
-              handleMultipleFieldsChange({
-                use_background: true,
-                background_color: "#000",
-                image_url: "",
-                mediaFile: null
-              });
+                mediaFile: file,
+                imageUrl: "",
+              })
             }
+            errorMessage={errors.imageUrl}
+          />
+        </div>
+
+        {/* رنگ‌ها */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ColorPickerField
+            label="رنگ پس‌زمینه (اختیاری)"
+            value={form.backgroundColor}
+            onChange={(color) => handleFieldChange("backgroundColor", color)}
+          />
+          <ColorPickerField
+            label="رنگ متن (پیش‌فرض سفید)"
+            value={form.textColor}
+            onChange={(color) => handleFieldChange("textColor", color)}
+          />
+        </div>
+
+        {/* اولویت و مدت نمایش - با NumberInput حرفه‌ای */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <NumberInput
+            label="اولویت نمایش"
+            placeholder="10"
+            value={form.priority}
+            onChange={(val) => handleFieldChange("priority", val)}
+            min={1}
+            max={1000}
+            suffix="(عدد کمتر = اولویت بالاتر)"
+            isRequired
+          />
+          <NumberInput
+            label="مدت نمایش خودکار"
+            placeholder="10"
+            value={form.displayDuration}
+            onChange={(val) => handleFieldChange("displayDuration", val)}
+            min={5}
+            max={60}
+            suffix="ثانیه"
+            isRequired
+          />
+        </div>
+
+        {/* بازه زمانی اعتبار */}
+        <IsoDatePicker
+          label="بازه اعتبار بنر"
+          enableRange
+          valueIsoRange={{ start: form.startDate, end: form.endDate }}
+          onChangeIsoRange={(range) => {
+            handleMultipleFieldsChange({
+              startDate: range?.start || null,
+              endDate: range?.end || null,
+            });
           }}
-          children={
-            <ImageBoxUploader
-              changeStatusFile={form.mediaFile}
-              defaultImg={form?.image_url ?? null}
-              onFile={(file) =>
-                handleMultipleFieldsChange({
-                  mediaFile: file,
-                  use_background: false, // وقتی عکس انتخاب شد، background رنگی خاموش بشه
-                })
-              }
-              errorMessage={errors.image_url}
-            />
-          }
-          mode2Children={
-            <div className="flex gap-4">
-              <ColorPickerField
-                label=""
-                value={form.background_color}
-                onChange={(color) => {
-                  handleMultipleFieldsChange({
-                    background_color: color,
-                    use_background: true, // فقط رنگ روشن بشه، عکس پاک نشه
-                  });
-                }}
-              />
-              <ToggleSection
-                title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
-                initialMode={form.is_dark}
-                onChange={(val) => handleFieldChange("is_dark", val)}
-              />
-            </div>
-          }
+          showMonthAndYearPickers
+          className="w-full"
+          isRequired
+          errorMessage={errors.startDate}
         />
       </div>
     </BaseModal>
