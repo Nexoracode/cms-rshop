@@ -189,30 +189,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       icon={<TfiLayoutMediaOverlay />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
-      <div className="flex flex-col gap-4">
-        {/* عنوان و توضیحات */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <TextInput
-            label="عنوان بنر"
-            placeholder="مثلاً: تخفیف ویژه عید نوروز"
-            value={form.title}
-            errorMessage={errors.title}
-            isRequired
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
-          <NumberInput
-            label="اولویت نمایش"
-            placeholder="10"
-            value={form.priority}
-            onChange={(val) => handleFieldChange("priority", val)}
-            min={1}
-            max={1000}
-            suffix="(عدد کمتر = اولویت بالاتر)"
-            isRequired
-          />
-        </div>
-
+      <div className="flex flex-col gap-6">
         {/* بازه زمانی اعتبار */}
         <IsoDatePicker
           label="بازه اعتبار بنر"
@@ -230,28 +207,45 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           errorMessage={errors.startDate}
         />
 
-        <Textarea
-          label="توضیحات"
-          value={form.description}
-          onChange={(val) => handleFieldChange("description", val)}
-          placeholder="توضیحات خود را وارد کنید"
-          isRequired
-          errorMessage={errors.description}
-        />
+        {/* عنوان و توضیحات */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <NumberInput
+            label="اولویت نمایش"
+            placeholder="10"
+            value={form.priority}
+            onChange={(val) => handleFieldChange("priority", val)}
+            min={1}
+            max={1000}
+            suffix="(عدد کمتر = اولویت بالاتر)"
+            isRequired
+          />
+          <NumberInput
+            label="مدت نمایش خودکار"
+            placeholder="10"
+            value={form.displayDuration}
+            onChange={(val) => handleFieldChange("displayDuration", val)}
+            min={5}
+            max={60}
+            suffix="ثانیه"
+            isRequired
+          />
+        </div>
 
-        {/* وضعیت نمایش */}
-        <ToggleSection
-          title={`وضعیت نمایش: ${form.isActive ? "فعال" : "غیرفعال"}`}
-          initialMode={form.isActive}
-          onChange={(val) => handleFieldChange("isActive", val)}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* وضعیت نمایش */}
+          <ToggleSection
+            title={`وضعیت نمایش: ${form.isActive ? "فعال" : "غیرفعال"}`}
+            initialMode={form.isActive}
+            onChange={(val) => handleFieldChange("isActive", val)}
+          />
 
-        {/* قابلیت بستن توسط کاربر */}
-        <ToggleSection
-          title={`قابل بستن توسط کاربر: ${form.isClosable ? "بله" : "خیر"}`}
-          initialMode={form.isClosable}
-          onChange={(val) => handleFieldChange("isClosable", val)}
-        />
+          {/* قابلیت بستن توسط کاربر */}
+          <ToggleSection
+            title={`قابل بستن توسط کاربر: ${form.isClosable ? "بله" : "خیر"}`}
+            initialMode={form.isClosable}
+            onChange={(val) => handleFieldChange("isClosable", val)}
+          />
+        </div>
 
         {/* دکمه لینک */}
         <ToggleSection
@@ -309,32 +303,35 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           />
         </div>
 
-        <NumberInput
-          label="مدت نمایش خودکار"
-          placeholder="10"
-          value={form.displayDuration}
-          onChange={(val) => handleFieldChange("displayDuration", val)}
-          min={5}
-          max={60}
-          suffix="ثانیه"
-          isRequired
-        />
-
-        {/* رنگ‌ها */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <TextInput
+            label="عنوان بنر"
+            placeholder="مثلاً: تخفیف ویژه عید نوروز"
+            value={form.title}
+            errorMessage={errors.title}
+            isRequired
+            onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
+          />
           <ColorPickerField
-            label="رنگ پس‌زمینه (اختیاری)"
+            label="رنگ پس‌زمینه"
             value={form.backgroundColor}
             onChange={(color) => handleFieldChange("backgroundColor", color)}
             widthFull
           />
-          <ColorPickerField
-            label="رنگ متن (پیش‌فرض سفید)"
-            value={form.textColor}
-            onChange={(color) => handleFieldChange("textColor", color)}
-            widthFull
-          />
         </div>
+
+        <Textarea
+          label="توضیحات"
+          value={form.description}
+          onChange={(val) => handleFieldChange("description", val)}
+          placeholder="توضیحات خود را وارد کنید"
+          isRequired
+          errorMessage={errors.description}
+        />
+
+        {/* رنگ‌ها */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
     </BaseModal>
   );
