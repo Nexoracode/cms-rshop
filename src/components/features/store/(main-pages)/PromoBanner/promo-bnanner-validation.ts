@@ -1,33 +1,34 @@
 export function promoBannerValidation(data: any, showLinkFields: boolean) {
   const errors: Record<string, string> = {};
 
-  // عنوان همیشه الزامی (برای مدیریت بهتر)
-  if (!data.title || !data.title.trim()) {
-    errors.title = "عنوان الزامی است";
-  }
-
-  // اعتبارسنجی تصویر یا رنگ بر اساس حالت
   if (data.useBackground) {
-    // حالت پس‌زمینه رنگی
-    if (!data.backgroundColor || !data.backgroundColor.trim()) {
-      errors.backgroundColor = "رنگ پس‌زمینه الزامی است";
+    if (!data.title || !data.title.trim()) {
+      errors.title = "عنوان الزامی است";
     }
-
-    // توضیحات در حالت متنی بهتره الزامی باشه (اختیاری: می‌تونی حذف کنی)
+    
     if (!data.description || !data.description.trim()) {
       errors.description = "توضیحات بنر الزامی است";
     }
+
+    if (!data.background_color || !data.background_color.trim()) {
+      errors.background_color = "رنگ پس‌زمینه الزامی است";
+    }
+
+    if (!data.text_color || !data.text_color.trim()) {
+      errors.text_color = "رنگ پس‌زمینه الزامی است";
+    }
+
   } else {
     // حالت تصویری
-    if (!data.imageUrl && !data.mediaFile) {
-      errors.imageUrl = "تصویر بنر الزامی است";
+    if (!data.image_url && !data.mediaFile) {
+      errors.image_url = "تصویر بنر الزامی است";
     }
   }
 
   // دکمه لینک اگر فعال باشه
   if (showLinkFields) {
-    if (!data.linkText || !data.linkText.trim()) {
-      errors.linkText = "متن دکمه الزامی است";
+    if (!data.link_text || !data.link_text.trim()) {
+      errors.link_text = "متن دکمه الزامی است";
     }
     if (!data.link || !data.link.trim()) {
       errors.link = "لینک دکمه الزامی است";
@@ -35,8 +36,8 @@ export function promoBannerValidation(data: any, showLinkFields: boolean) {
   }
 
   // بازه زمانی همیشه الزامی
-  if (!data.startDate || !data.endDate) {
-    errors.startDate = "بازه زمانی اعتبار الزامی است";
+  if (!data.start_date || !data.end_date) {
+    errors.start_date = "بازه زمانی اعتبار الزامی است";
   }
 
   // اولویت و مدت نمایش
@@ -44,8 +45,8 @@ export function promoBannerValidation(data: any, showLinkFields: boolean) {
     errors.priority = "اولویت باید عدد مثبت باشد";
   }
 
-  if (isNaN(data.displayDuration) || data.displayDuration < 5) {
-    errors.displayDuration = "مدت نمایش باید حداقل ۵ ثانیه باشد";
+  if (isNaN(data.display_duration) || data.display_duration < 5) {
+    errors.display_duration = "مدت نمایش باید حداقل ۵ ثانیه باشد";
   }
 
   return errors;

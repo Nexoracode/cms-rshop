@@ -211,6 +211,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             max={1000}
             suffix="(عدد کمتر = اولویت بالاتر)"
             isRequired
+             errorMessage={errors.priority}
           />
           <NumberInput
             label="مدت نمایش خودکار"
@@ -221,6 +222,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             max={60}
             suffix="ثانیه"
             isRequired
+             errorMessage={errors.display_duration}
           />
         </div>
 
