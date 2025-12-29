@@ -324,7 +324,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             />
           }
           mode2Children={
-            <div>
+            <div className="flex flex-col gap-4">
               <TextInput
                 label="عنوان بنر"
                 placeholder="مثلاً: تخفیف ویژه عید نوروز"
