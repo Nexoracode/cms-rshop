@@ -14,7 +14,7 @@ const ColorPickerField: React.FC<Props> = ({
   return (
     <div className={`flex flex-col gap-2 ${widthFull ? "w-full" : "w-fit"}`}>
       {label && <label className="text-sm text-gray-600">{label}</label>}
-      <div className={`flex items-center justify-center overflow-hidden ${widthFull ? "w-full h-10" : "w-20 h-20"} cursor-pointer rounded-xl`}>
+      <div className={`flex items-center justify-center overflow-hidden border ${widthFull ? "w-full h-10" : "w-20 h-20"} cursor-pointer rounded-xl`}>
         <input
           type="color"
           className={`${widthFull ? "w-full" : "w-28"} h-24 scale-110`}

@@ -53,9 +53,12 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const { mutateAsync: createBanner, isPending: isCreating } = useCreatePromoBanner();
-  const { mutateAsync: updateBanner, isPending: isUpdating } = useUpdatePromoBanner();
-  const { mutateAsync: uploadImageSlider, isPending: isUploading } = useUploadSliderImages();
+  const { mutateAsync: createBanner, isPending: isCreating } =
+    useCreatePromoBanner();
+  const { mutateAsync: updateBanner, isPending: isUpdating } =
+    useUpdatePromoBanner();
+  const { mutateAsync: uploadImageSlider, isPending: isUploading } =
+    useUploadSliderImages();
 
   const [showLinkFields, setShowLinkFields] = useState<boolean>(false);
 
@@ -72,14 +75,16 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       const errs: any = {};
 
       if (!data.title.trim()) errs.title = "عنوان الزامی است";
-      if (!data.imageUrl && !data.mediaFile) errs.imageUrl = "تصویر بنر الزامی است";
+      if (!data.imageUrl && !data.mediaFile)
+        errs.imageUrl = "تصویر بنر الزامی است";
 
       if (showLinkFields) {
         if (!data.linkText?.trim()) errs.linkText = "متن دکمه الزامی است";
         if (!data.link?.trim()) errs.link = "لینک دکمه الزامی است";
       }
 
-      if (!data.startDate || !data.endDate) errs.startDate = "بازه زمانی اعتبار الزامی است";
+      if (!data.startDate || !data.endDate)
+        errs.startDate = "بازه زمانی اعتبار الزامی است";
 
       return errs;
     },
@@ -141,13 +146,17 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
 
     if (form.backgroundColor) payload.backgroundColor = form.backgroundColor;
     if (form.textColor) payload.textColor = form.textColor;
-    if (showLinkFields && form.linkText?.trim()) payload.linkText = form.linkText.trim();
+    if (showLinkFields && form.linkText?.trim())
+      payload.linkText = form.linkText.trim();
     if (showLinkFields && form.link?.trim()) payload.link = form.link.trim();
 
     if (bannerId) {
-      return handleMutation(() => updateBanner({ id: bannerId, data: payload }), {
-        resetForm,
-      });
+      return handleMutation(
+        () => updateBanner({ id: bannerId, data: payload }),
+        {
+          resetForm,
+        }
+      );
     } else {
       return handleMutation(() => createBanner(payload), { resetForm });
     }
@@ -182,21 +191,52 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     >
       <div className="flex flex-col gap-4">
         {/* عنوان و توضیحات */}
-        <TextInput
-          label="عنوان بنر"
-          placeholder="مثلاً: تخفیف ویژه عید نوروز"
-          value={form.title}
-          errorMessage={errors.title}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <TextInput
+            label="عنوان بنر"
+            placeholder="مثلاً: تخفیف ویژه عید نوروز"
+            value={form.title}
+            errorMessage={errors.title}
+            isRequired
+            onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
+          />
+          <NumberInput
+            label="اولویت نمایش"
+            placeholder="10"
+            value={form.priority}
+            onChange={(val) => handleFieldChange("priority", val)}
+            min={1}
+            max={1000}
+            suffix="(عدد کمتر = اولویت بالاتر)"
+            isRequired
+          />
+        </div>
+
+        {/* بازه زمانی اعتبار */}
+        <IsoDatePicker
+          label="بازه اعتبار بنر"
+          enableRange
+          valueIsoRange={{ start: form.startDate, end: form.endDate }}
+          onChangeIsoRange={(range) => {
+            handleMultipleFieldsChange({
+              startDate: range?.start || null,
+              endDate: range?.end || null,
+            });
+          }}
+          showMonthAndYearPickers
+          className="w-full"
           isRequired
-          onChange={(val) => handleFieldChange("title", val)}
-          allowEnglishOnly={false}
+          errorMessage={errors.startDate}
         />
 
         <Textarea
-          label="توضیحات (اختیاری)"
+          label="توضیحات"
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
-          placeholder="توضیح داخلی برای مدیریت بنر..."
+          placeholder="توضیحات خود را وارد کنید"
+          isRequired
+          errorMessage={errors.description}
         />
 
         {/* وضعیت نمایش */}
@@ -269,60 +309,32 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           />
         </div>
 
+        <NumberInput
+          label="مدت نمایش خودکار"
+          placeholder="10"
+          value={form.displayDuration}
+          onChange={(val) => handleFieldChange("displayDuration", val)}
+          min={5}
+          max={60}
+          suffix="ثانیه"
+          isRequired
+        />
+
         {/* رنگ‌ها */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ColorPickerField
             label="رنگ پس‌زمینه (اختیاری)"
             value={form.backgroundColor}
             onChange={(color) => handleFieldChange("backgroundColor", color)}
+            widthFull
           />
           <ColorPickerField
             label="رنگ متن (پیش‌فرض سفید)"
             value={form.textColor}
             onChange={(color) => handleFieldChange("textColor", color)}
+            widthFull
           />
         </div>
-
-        {/* اولویت و مدت نمایش - با NumberInput حرفه‌ای */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <NumberInput
-            label="اولویت نمایش"
-            placeholder="10"
-            value={form.priority}
-            onChange={(val) => handleFieldChange("priority", val)}
-            min={1}
-            max={1000}
-            suffix="(عدد کمتر = اولویت بالاتر)"
-            isRequired
-          />
-          <NumberInput
-            label="مدت نمایش خودکار"
-            placeholder="10"
-            value={form.displayDuration}
-            onChange={(val) => handleFieldChange("displayDuration", val)}
-            min={5}
-            max={60}
-            suffix="ثانیه"
-            isRequired
-          />
-        </div>
-
-        {/* بازه زمانی اعتبار */}
-        <IsoDatePicker
-          label="بازه اعتبار بنر"
-          enableRange
-          valueIsoRange={{ start: form.startDate, end: form.endDate }}
-          onChangeIsoRange={(range) => {
-            handleMultipleFieldsChange({
-              startDate: range?.start || null,
-              endDate: range?.end || null,
-            });
-          }}
-          showMonthAndYearPickers
-          className="w-full"
-          isRequired
-          errorMessage={errors.startDate}
-        />
       </div>
     </BaseModal>
   );

@@ -91,7 +91,7 @@ export default function NumberInput({
       endContent={
         suffix ? (
           <div className="pointer-events-none flex items-center">
-            <span className="text-default-400 text-small">{suffix}</span>
+            <span className="text-default-400 text-small truncate">{suffix}</span>
           </div>
         ) : null
       }
