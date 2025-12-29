@@ -30,7 +30,7 @@ const initialPromoBannerForm = {
   link_text: "",
 
   background_color: "",
-  text_color: "",
+  text_color: "#fff",
 
   is_active: true,
   is_closable: true,
@@ -180,21 +180,16 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             allowEnglishOnly={false}
           />
 
-          {/* بازه زمانی اعتبار */}
-          <IsoDatePicker
-            label="بازه اعتبار بنر"
-            enableRange
-            valueIsoRange={{ start: form.start_date, end: form.end_date }}
-            onChangeIsoRange={(range) => {
-              handleMultipleFieldsChange({
-                start_date: range?.start || null,
-                end_date: range?.end || null,
-              });
-            }}
-            showMonthAndYearPickers
-            className="w-full"
+          <TextInput
+            label="لینک بنر"
+            placeholder="/collections/sale"
+            value={form.link || ""}
             isRequired
-            errorMessage={errors.start_date}
+            errorMessage={errors.link}
+            onChange={(val) => handleFieldChange("link", val)}
+            inputAlign="left"
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
           />
         </div>
 
@@ -224,6 +219,23 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           />
         </div>
 
+        {/* بازه زمانی اعتبار */}
+        <IsoDatePicker
+          label="بازه اعتبار بنر"
+          enableRange
+          valueIsoRange={{ start: form.start_date, end: form.end_date }}
+          onChangeIsoRange={(range) => {
+            handleMultipleFieldsChange({
+              start_date: range?.start || null,
+              end_date: range?.end || null,
+            });
+          }}
+          showMonthAndYearPickers
+          className="w-full"
+          isRequired
+          errorMessage={errors.start_date}
+        />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* وضعیت نمایش */}
           <ToggleSection
@@ -239,18 +251,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             onChange={(val) => handleFieldChange("is_closable", val)}
           />
         </div>
-
-        <TextInput
-          label="لینک دکمه"
-          placeholder="/collections/sale"
-          value={form.link || ""}
-          isRequired
-          errorMessage={errors.link}
-          onChange={(val) => handleFieldChange("link", val)}
-          inputAlign="left"
-          allowSpecialChars
-          allowedSpecialChars={["/", "-"]}
-        />
 
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
