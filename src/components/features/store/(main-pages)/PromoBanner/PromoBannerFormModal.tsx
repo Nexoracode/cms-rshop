@@ -183,22 +183,34 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-6">
-        {/* بازه زمانی اعتبار */}
-        <IsoDatePicker
-          label="بازه اعتبار بنر"
-          enableRange
-          valueIsoRange={{ start: form.start_date, end: form.end_date }}
-          onChangeIsoRange={(range) => {
-            handleMultipleFieldsChange({
-              start_date: range?.start || null,
-              end_date: range?.end || null,
-            });
-          }}
-          showMonthAndYearPickers
-          className="w-full"
-          isRequired
-          errorMessage={errors.start_date}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <TextInput
+            label="عنوان بنر"
+            placeholder="مثلاً: تخفیف ویژه عید نوروز"
+            value={form.title}
+            errorMessage={errors.title}
+            isRequired
+            onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
+          />
+
+          {/* بازه زمانی اعتبار */}
+          <IsoDatePicker
+            label="بازه اعتبار بنر"
+            enableRange
+            valueIsoRange={{ start: form.start_date, end: form.end_date }}
+            onChangeIsoRange={(range) => {
+              handleMultipleFieldsChange({
+                start_date: range?.start || null,
+                end_date: range?.end || null,
+              });
+            }}
+            showMonthAndYearPickers
+            className="w-full"
+            isRequired
+            errorMessage={errors.start_date}
+          />
+        </div>
 
         {/* عنوان و توضیحات */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -211,7 +223,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             max={1000}
             suffix="(عدد کمتر = اولویت بالاتر)"
             isRequired
-             errorMessage={errors.priority}
+            errorMessage={errors.priority}
           />
           <NumberInput
             label="مدت نمایش خودکار"
@@ -222,7 +234,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             max={60}
             suffix="ثانیه"
             isRequired
-             errorMessage={errors.display_duration}
+            errorMessage={errors.display_duration}
           />
         </div>
 
@@ -318,16 +330,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           }
           mode2Children={
             <div className="flex flex-col gap-4">
-              <TextInput
-                label="عنوان بنر"
-                placeholder="مثلاً: تخفیف ویژه عید نوروز"
-                value={form.title}
-                errorMessage={errors.title}
-                isRequired
-                onChange={(val) => handleFieldChange("title", val)}
-                allowEnglishOnly={false}
-              />
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <ColorPickerField
                   label="رنگ پس‌زمینه"
