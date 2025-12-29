@@ -18,6 +18,7 @@ import ColorPickerField from "@/components/shared/ColorPickerField";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import NumberInput from "@/components/ui/inputs/NumberInput"; // کامپوننت جدید عددی
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
+import { promoBannerValidation } from "./promo-bnanner-validation";
 
 const initialPromoBannerForm = {
   title: "",
@@ -73,23 +74,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     reset,
     submit,
   } = useForm(initialPromoBannerForm, {
-    onValidate: (data) => {
-      const errs: any = {};
-
-      if (!data.title.trim()) errs.title = "عنوان الزامی است";
-      if (!data.image_url && !data.mediaFile)
-        errs.image_url = "تصویر بنر الزامی است";
-
-      if (showLinkFields) {
-        if (!data.link_text?.trim()) errs.link_text = "متن دکمه الزامی است";
-        if (!data.link?.trim()) errs.link = "لینک دکمه الزامی است";
-      }
-
-      if (!data.start_date || !data.end_date)
-        errs.start_date = "بازه زمانی اعتبار الزامی است";
-
-      return errs;
-    },
+    onValidate: (data) => promoBannerValidation(data, showLinkFields),
     runValidationOnChange: true,
   });
 
@@ -100,11 +85,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     setForm({
       ...initialPromoBannerForm,
       ...defaultValues,
-      start_date: defaultValues.start_date || null,
-      end_date: defaultValues.end_date || null,
-      image_url: defaultValues.image_url || "",
-      priority: defaultValues.priority ?? 10,
-      display_duration: defaultValues.display_duration ?? 10,
     });
 
     if (defaultValues.link_text || defaultValues.link) {
@@ -138,23 +118,30 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       finalImageUrl = uploadRes.data[0].url;
     }
 
+    const {
+      background_color,
+      description,
+      image_url,
+      link,
+      link_text,
+      mediaFile,
+      text_color,
+      title,
+      ...other
+    } = form;
+
     const payload: any = {
-      title: form.title.trim(),
-      description: form.description?.trim() || "",
+      ...(background_color ? { background_color } : {}),
+      ...(text_color ? { text_color } : {}),
+      ...(link_text ? { link_text } : {}),
+      ...(link ? { link } : {}),
+      ...(description ? { description } : {}),
+      ...(title ? { title } : {}),
       image_url: finalImageUrl,
-      is_active: form.is_active,
-      is_closable: form.is_closable,
-      priority: Number(form.priority),
-      display_duration: Number(form.display_duration),
-      start_date: form.start_date,
-      end_date: form.end_date,
+      ...other,
     };
 
-    if (form.background_color) payload.background_color = form.background_color;
-    if (form.text_color) payload.text_color = form.text_color;
-    if (showLinkFields && form.link_text?.trim())
-      payload.link_text = form.link_text.trim();
-    if (showLinkFields && form.link?.trim()) payload.link = form.link.trim();
+    console.log(payload);
 
     if (bannerId) {
       return handleMutation(
@@ -300,11 +287,15 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
               handleMultipleFieldsChange({
                 useBackground: false,
                 background_color: "",
+                text_color: "",
+                title: "",
+                description: "",
               });
             } else {
               handleMultipleFieldsChange({
                 useBackground: true,
                 background_color: "#000",
+                text_color: "#fff",
                 image_url: "",
                 mediaFile: null,
               });
