@@ -1,6 +1,6 @@
-import AddSectionCard from "./shared/AddSectionCard";
+import AddSectionCard from "../shared/AddSectionCard";
 
-const PromoBanner = () => {
+const AddNewPromoBanner = () => {
   return (
     <div>
       <AddSectionCard
@@ -12,4 +12,4 @@ const PromoBanner = () => {
   );
 };
 
-export default PromoBanner;
+export default AddNewPromoBanner;

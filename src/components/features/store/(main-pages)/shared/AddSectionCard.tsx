@@ -21,8 +21,8 @@ const AddSectionCard: React.FC<AddSectionCardProps> = ({
       className={`
         w-full h-28 border-2 border-dashed
         border-slate-600 text-slate-600 bg-slate-50
-        transition-all rounded-xl cursor-pointer
-        flex justify-center items-center ${className} hover:opacity-70
+        transition-all rounded-2xl
+        flex justify-center items-center ${className} hover:border-dotted
       `}
     >
       {label && (

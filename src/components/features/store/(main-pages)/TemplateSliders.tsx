@@ -8,9 +8,8 @@ import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
 import SectionsSliderContainer from "./sections/SectionsSliderContainer";
 import FeaturedOffersSection from "./sections/AddNewSections/FeaturedOffersSection/FeaturedOffersSection";
-import PromoBanner from "./PromoBanner";
-import AddSectionCard from "./shared/AddSectionCard";
 import SideBannerContainer from "./side-banner/SideBannerContainer";
+import PromoBannerContainer from "./PromoBanner/PromoBannerContainer";
 
 type TemplateSlidersProps = {
   allSections: {
@@ -43,7 +42,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
 
   return (
     <div className="flex flex-col gap-6 select-none">
-      <PromoBanner />
+      <PromoBannerContainer/>
 
       <div className="grid grid-cols-2 gap-4">
         <HeroSliderContainer sliders={hero_sliders} />
