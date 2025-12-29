@@ -17,27 +17,29 @@ import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import NumberInput from "@/components/ui/inputs/NumberInput"; // کامپوننت جدید عددی
+import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 
 const initialPromoBannerForm = {
   title: "",
   description: "",
-  imageUrl: "",
+  image_url: "",
   mediaFile: null as File | null,
 
   link: "",
-  linkText: "",
+  link_text: "",
 
-  backgroundColor: "",
-  textColor: "#FFFFFF",
+  background_color: "",
+  text_color: "",
 
-  isActive: true,
-  isClosable: true,
+  is_active: true,
+  is_closable: true,
 
   priority: 10,
-  displayDuration: 10,
+  display_duration: 10,
 
-  startDate: null as string | null,
-  endDate: null as string | null,
+  start_date: null as string | null,
+  end_date: null as string | null,
+  useBackground: false,
 };
 
 type PromoBannerFormModalProps = {
@@ -75,16 +77,16 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       const errs: any = {};
 
       if (!data.title.trim()) errs.title = "عنوان الزامی است";
-      if (!data.imageUrl && !data.mediaFile)
-        errs.imageUrl = "تصویر بنر الزامی است";
+      if (!data.image_url && !data.mediaFile)
+        errs.image_url = "تصویر بنر الزامی است";
 
       if (showLinkFields) {
-        if (!data.linkText?.trim()) errs.linkText = "متن دکمه الزامی است";
+        if (!data.link_text?.trim()) errs.link_text = "متن دکمه الزامی است";
         if (!data.link?.trim()) errs.link = "لینک دکمه الزامی است";
       }
 
-      if (!data.startDate || !data.endDate)
-        errs.startDate = "بازه زمانی اعتبار الزامی است";
+      if (!data.start_date || !data.end_date)
+        errs.start_date = "بازه زمانی اعتبار الزامی است";
 
       return errs;
     },
@@ -98,33 +100,37 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     setForm({
       ...initialPromoBannerForm,
       ...defaultValues,
-      startDate: defaultValues.startDate || null,
-      endDate: defaultValues.endDate || null,
-      imageUrl: defaultValues.imageUrl || "",
+      start_date: defaultValues.start_date || null,
+      end_date: defaultValues.end_date || null,
+      image_url: defaultValues.image_url || "",
       priority: defaultValues.priority ?? 10,
-      displayDuration: defaultValues.displayDuration ?? 10,
+      display_duration: defaultValues.display_duration ?? 10,
     });
 
-    if (defaultValues.linkText || defaultValues.link) {
+    if (defaultValues.link_text || defaultValues.link) {
       setShowLinkFields(true);
     }
   }, [defaultValues]);
 
-  // بررسی وضعیت دکمه لینک وقتی مودال باز میشه
   useEffect(() => {
-    if (form.linkText || form.link) {
-      setShowLinkFields(true);
+    if (form) {
+      if (form?.background_color?.length) {
+        handleFieldChange("useBackground", true);
+      }
+      if (form.link_text || form.link) {
+        setShowLinkFields(true);
+      }
     }
   }, [isOpen]);
 
   const handleSubmit = submit(async () => {
-    let finalImageUrl = form.imageUrl;
+    let finalImageUrl = form.image_url;
 
     if (form.mediaFile) {
       const fd = new FormData();
       fd.append("files", form.mediaFile);
 
-      const uploadRes = await handleMutation(() => uploadImageSlider(fd), {
+      const uploadRes: any = await handleMutation(() => uploadImageSlider(fd), {
         returnResponse: true,
       });
 
@@ -135,19 +141,19 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     const payload: any = {
       title: form.title.trim(),
       description: form.description?.trim() || "",
-      imageUrl: finalImageUrl,
-      isActive: form.isActive,
-      isClosable: form.isClosable,
+      image_url: finalImageUrl,
+      is_active: form.is_active,
+      is_closable: form.is_closable,
       priority: Number(form.priority),
-      displayDuration: Number(form.displayDuration),
-      startDate: form.startDate,
-      endDate: form.endDate,
+      display_duration: Number(form.display_duration),
+      start_date: form.start_date,
+      end_date: form.end_date,
     };
 
-    if (form.backgroundColor) payload.backgroundColor = form.backgroundColor;
-    if (form.textColor) payload.textColor = form.textColor;
-    if (showLinkFields && form.linkText?.trim())
-      payload.linkText = form.linkText.trim();
+    if (form.background_color) payload.background_color = form.background_color;
+    if (form.text_color) payload.text_color = form.text_color;
+    if (showLinkFields && form.link_text?.trim())
+      payload.link_text = form.link_text.trim();
     if (showLinkFields && form.link?.trim()) payload.link = form.link.trim();
 
     if (bannerId) {
@@ -194,17 +200,17 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
         <IsoDatePicker
           label="بازه اعتبار بنر"
           enableRange
-          valueIsoRange={{ start: form.startDate, end: form.endDate }}
+          valueIsoRange={{ start: form.start_date, end: form.end_date }}
           onChangeIsoRange={(range) => {
             handleMultipleFieldsChange({
-              startDate: range?.start || null,
-              endDate: range?.end || null,
+              start_date: range?.start || null,
+              end_date: range?.end || null,
             });
           }}
           showMonthAndYearPickers
           className="w-full"
           isRequired
-          errorMessage={errors.startDate}
+          errorMessage={errors.start_date}
         />
 
         {/* عنوان و توضیحات */}
@@ -222,8 +228,8 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           <NumberInput
             label="مدت نمایش خودکار"
             placeholder="10"
-            value={form.displayDuration}
-            onChange={(val) => handleFieldChange("displayDuration", val)}
+            value={form.display_duration}
+            onChange={(val) => handleFieldChange("display_duration", val)}
             min={5}
             max={60}
             suffix="ثانیه"
@@ -234,16 +240,16 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* وضعیت نمایش */}
           <ToggleSection
-            title={`وضعیت نمایش: ${form.isActive ? "فعال" : "غیرفعال"}`}
-            initialMode={form.isActive}
-            onChange={(val) => handleFieldChange("isActive", val)}
+            title={`وضعیت نمایش: ${form.is_active ? "فعال" : "غیرفعال"}`}
+            initialMode={form.is_active}
+            onChange={(val) => handleFieldChange("is_active", val)}
           />
 
           {/* قابلیت بستن توسط کاربر */}
           <ToggleSection
-            title={`قابل بستن توسط کاربر: ${form.isClosable ? "بله" : "خیر"}`}
-            initialMode={form.isClosable}
-            onChange={(val) => handleFieldChange("isClosable", val)}
+            title={`قابل بستن توسط کاربر: ${form.is_closable ? "بله" : "خیر"}`}
+            initialMode={form.is_closable}
+            onChange={(val) => handleFieldChange("is_closable", val)}
           />
         </div>
 
@@ -255,7 +261,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             setShowLinkFields(val);
             if (!val) {
               handleMultipleFieldsChange({
-                linkText: "",
+                link_text: "",
                 link: "",
               });
             }
@@ -265,10 +271,10 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             <TextInput
               label="متن دکمه"
               placeholder="مشاهده محصولات"
-              value={form.linkText || ""}
+              value={form.link_text || ""}
               isRequired={showLinkFields}
-              errorMessage={errors.linkText}
-              onChange={(val) => handleFieldChange("linkText", val)}
+              errorMessage={errors.link_text}
+              onChange={(val) => handleFieldChange("link_text", val)}
               allowEnglishOnly={false}
             />
             <TextInput
@@ -280,58 +286,85 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
               onChange={(val) => handleFieldChange("link", val)}
               inputAlign="left"
               allowSpecialChars
-              allowedSpecialChars={["/", "-", "?", "=", "&", "_"]}
+              allowedSpecialChars={["/", "-"]}
             />
           </div>
         </ToggleSection>
 
-        {/* تصویر بنر */}
-        <div>
-          <p className="text-sm font-medium mb-2">
-            تصویر بنر <span className="text-red-500">*</span>
-          </p>
-          <ImageBoxUploader
-            changeStatusFile={form.mediaFile}
-            defaultImg={form.imageUrl ?? null}
-            onFile={(file) =>
+        <DualToggleSection
+          mode2Title="پس‌زمینه بدون عکس"
+          title="پس‌زمینه عکس‌دار"
+          value={!form.useBackground}
+          onChange={(isPhotoBackground: boolean) => {
+            if (isPhotoBackground) {
               handleMultipleFieldsChange({
-                mediaFile: file,
-                imageUrl: "",
-              })
+                useBackground: false,
+                background_color: "",
+              });
+            } else {
+              handleMultipleFieldsChange({
+                useBackground: true,
+                background_color: "#000",
+                image_url: "",
+                mediaFile: null,
+              });
             }
-            errorMessage={errors.imageUrl}
-          />
-        </div>
+          }}
+          children={
+            <ImageBoxUploader
+              changeStatusFile={form.mediaFile}
+              defaultImg={form.image_url ?? null}
+              onFile={(file) =>
+                handleMultipleFieldsChange({
+                  mediaFile: file,
+                  image_url: "",
+                })
+              }
+              errorMessage={errors.image_url}
+            />
+          }
+          mode2Children={
+            <div>
+              <TextInput
+                label="عنوان بنر"
+                placeholder="مثلاً: تخفیف ویژه عید نوروز"
+                value={form.title}
+                errorMessage={errors.title}
+                isRequired
+                onChange={(val) => handleFieldChange("title", val)}
+                allowEnglishOnly={false}
+              />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <TextInput
-            label="عنوان بنر"
-            placeholder="مثلاً: تخفیف ویژه عید نوروز"
-            value={form.title}
-            errorMessage={errors.title}
-            isRequired
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
-          <ColorPickerField
-            label="رنگ پس‌زمینه"
-            value={form.backgroundColor}
-            onChange={(color) => handleFieldChange("backgroundColor", color)}
-            widthFull
-          />
-        </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ColorPickerField
+                  label="رنگ پس‌زمینه"
+                  value={form.background_color}
+                  onChange={(bgColor) =>
+                    handleFieldChange("background_color", bgColor)
+                  }
+                  widthFull
+                />
+                <ColorPickerField
+                  label="رنگ متن"
+                  value={form.text_color}
+                  onChange={(text_color) =>
+                    handleFieldChange("text_color", text_color)
+                  }
+                  widthFull
+                />
+              </div>
 
-        <Textarea
-          label="توضیحات"
-          value={form.description}
-          onChange={(val) => handleFieldChange("description", val)}
-          placeholder="توضیحات خود را وارد کنید"
-          isRequired
-          errorMessage={errors.description}
+              <Textarea
+                label="توضیحات"
+                value={form.description}
+                onChange={(val) => handleFieldChange("description", val)}
+                placeholder="توضیحات خود را وارد کنید"
+                isRequired
+                errorMessage={errors.description}
+              />
+            </div>
+          }
         />
-
-        {/* رنگ‌ها */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
     </BaseModal>
   );

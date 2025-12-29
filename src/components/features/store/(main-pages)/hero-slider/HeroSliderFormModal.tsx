@@ -25,7 +25,7 @@ const initialSliderForm = {
   mediaFile: null as File | null,
 
   background_color: "",
-  use_background: false,
+  useBackground: false,
   is_dark: false,
 
   button_text: "",
@@ -80,7 +80,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
   useEffect(() => {
     if (form) {
       if (form?.background_color?.length) {
-        handleFieldChange("use_background", true);
+        handleFieldChange("useBackground", true);
       }
       if (form?.button_text?.length) {
         setShowButtonFields(true);
@@ -111,17 +111,17 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       is_active,
       is_dark,
       title,
-      use_background,
+      useBackground,
     } = form;
 
     const payload = {
       title,
       description,
       image_url: finalImageUrl,
-      ...(use_background ? { background_color } : {}),
+      ...(useBackground ? { background_color } : {}),
       ...(button_text ? { button_text } : {}),
       ...(button_link ? { button_link } : {}),
-      is_dark: form.use_background ? Boolean(is_dark) : false,
+      is_dark: form.useBackground ? Boolean(is_dark) : false,
       is_active,
     };
 
@@ -229,16 +229,16 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
           title="پس‌زمینه عکس‌دار"
-          value={!form.use_background}
+          value={!form.useBackground}
           onChange={(isPhotoBackground: boolean) => {
             if (isPhotoBackground) {
               handleMultipleFieldsChange({
-                use_background: false,
+                useBackground: false,
                 background_color: "",
               });
             } else {
               handleMultipleFieldsChange({
-                use_background: true,
+                useBackground: true,
                 background_color: "#000",
                 image_url: "",
                 mediaFile: null
@@ -252,7 +252,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               onFile={(file) =>
                 handleMultipleFieldsChange({
                   mediaFile: file,
-                  use_background: false, // وقتی عکس انتخاب شد، background رنگی خاموش بشه
+                  useBackground: false, // وقتی عکس انتخاب شد، background رنگی خاموش بشه
                 })
               }
               errorMessage={errors.image_url}
@@ -266,7 +266,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                 onChange={(color) => {
                   handleMultipleFieldsChange({
                     background_color: color,
-                    use_background: true, // فقط رنگ روشن بشه، عکس پاک نشه
+                    useBackground: true, // فقط رنگ روشن بشه، عکس پاک نشه
                   });
                 }}
               />
