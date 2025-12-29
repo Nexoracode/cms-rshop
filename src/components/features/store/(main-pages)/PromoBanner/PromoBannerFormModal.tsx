@@ -63,8 +63,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
   const { mutateAsync: uploadImageSlider, isPending: isUploading } =
     useUploadSliderImages();
 
-  const [showLinkFields, setShowLinkFields] = useState<boolean>(false);
-
   const {
     form,
     errors,
@@ -74,7 +72,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     reset,
     submit,
   } = useForm(initialPromoBannerForm, {
-    onValidate: (data) => promoBannerValidation(data, showLinkFields),
+    onValidate: (data) => promoBannerValidation(data),
     runValidationOnChange: true,
   });
 
@@ -86,19 +84,12 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       ...initialPromoBannerForm,
       ...defaultValues,
     });
-
-    if (defaultValues.link_text || defaultValues.link) {
-      setShowLinkFields(true);
-    }
   }, [defaultValues]);
 
   useEffect(() => {
     if (form) {
       if (form?.background_color?.length) {
         handleFieldChange("useBackground", true);
-      }
-      if (form.link_text || form.link) {
-        setShowLinkFields(true);
       }
     }
   }, [isOpen]);
@@ -122,11 +113,9 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       background_color,
       description,
       image_url,
-      link,
       link_text,
       mediaFile,
       text_color,
-      title,
       ...other
     } = form;
 
@@ -134,9 +123,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       ...(background_color ? { background_color } : {}),
       ...(text_color ? { text_color } : {}),
       ...(link_text ? { link_text } : {}),
-      ...(link ? { link } : {}),
       ...(description ? { description } : {}),
-      ...(title ? { title } : {}),
       image_url: finalImageUrl,
       ...other,
     };
@@ -157,7 +144,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
 
   const resetForm = () => {
     reset();
-    setShowLinkFields(false);
   };
 
   return (
@@ -254,43 +240,17 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           />
         </div>
 
-        {/* دکمه لینک */}
-        <ToggleSection
-          title="نمایش دکمه لینک"
-          initialMode={showLinkFields}
-          onChange={(val) => {
-            setShowLinkFields(val);
-            if (!val) {
-              handleMultipleFieldsChange({
-                link_text: "",
-                link: "",
-              });
-            }
-          }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <TextInput
-              label="متن دکمه"
-              placeholder="مشاهده محصولات"
-              value={form.link_text || ""}
-              isRequired={showLinkFields}
-              errorMessage={errors.link_text}
-              onChange={(val) => handleFieldChange("link_text", val)}
-              allowEnglishOnly={false}
-            />
-            <TextInput
-              label="لینک دکمه"
-              placeholder="/collections/sale"
-              value={form.link || ""}
-              isRequired={showLinkFields}
-              errorMessage={errors.link}
-              onChange={(val) => handleFieldChange("link", val)}
-              inputAlign="left"
-              allowSpecialChars
-              allowedSpecialChars={["/", "-"]}
-            />
-          </div>
-        </ToggleSection>
+        <TextInput
+          label="لینک دکمه"
+          placeholder="/collections/sale"
+          value={form.link || ""}
+          isRequired
+          errorMessage={errors.link}
+          onChange={(val) => handleFieldChange("link", val)}
+          inputAlign="left"
+          allowSpecialChars
+          allowedSpecialChars={["/", "-"]}
+        />
 
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
@@ -330,6 +290,16 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           }
           mode2Children={
             <div className="flex flex-col gap-4">
+              <TextInput
+                label="متن لینک"
+                placeholder="مشاهده محصولات"
+                value={form.link_text || ""}
+                isRequired
+                errorMessage={errors.link_text}
+                onChange={(val) => handleFieldChange("link_text", val)}
+                allowEnglishOnly={false}
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <ColorPickerField
                   label="رنگ پس‌زمینه"

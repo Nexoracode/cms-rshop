@@ -5,7 +5,7 @@ import { TfiLayoutMediaOverlay } from "react-icons/tfi";
 const PromoBannerEmptyState = () => {
   return (
     <AddSectionCard
-      className="h-[70px]"
+      className="h-[64px]"
       children={
         <div className="w-full flex gap-4 items-center justify-between px-4">
           <PromoBannerFormModal />

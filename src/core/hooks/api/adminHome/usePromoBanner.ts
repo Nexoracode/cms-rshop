@@ -32,6 +32,7 @@ export const useCreatePromoBanner = () => {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["promo-banners"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };
@@ -54,6 +55,7 @@ export const useUpdatePromoBanner = () => {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["promo-banners"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };
@@ -75,6 +77,7 @@ export const useDeletePromoBanner = () => {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["promo-banners"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };

@@ -2,7 +2,7 @@
 
 import Slider from "@/components/shared/Slider";
 import PromoBannerTemplate from "./PromoBannerTemplate";
-import PromoBannerFormModal from "./PromoBannerFormModal";
+import PromoBannerEmptyState from "./PromoBannerEmptyState";
 
 type PromoBannerContainer = {
   promoBnners: any;
@@ -20,7 +20,7 @@ const PromoBannerContainer: React.FC<PromoBannerContainer> = ({
           renderItem={(banner: any) => <PromoBannerTemplate banner={banner} />}
         />
       ) : (
-        <PromoBannerFormModal />
+        <PromoBannerEmptyState />
       )}
     </div>
   );

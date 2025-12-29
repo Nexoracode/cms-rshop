@@ -1,8 +1,12 @@
-export function promoBannerValidation(data: any, showLinkFields: boolean) {
+export function promoBannerValidation(data: any) {
   const errors: Record<string, string> = {};
 
   if (!data.title || !data.title.trim()) {
     errors.title = "عنوان الزامی است";
+  }
+
+  if (!data.link || !data.link.trim()) {
+    errors.link = "لینک دکمه الزامی است";
   }
 
   if (data.useBackground) {
@@ -17,20 +21,14 @@ export function promoBannerValidation(data: any, showLinkFields: boolean) {
     if (!data.text_color || !data.text_color.trim()) {
       errors.text_color = "رنگ پس‌زمینه الزامی است";
     }
+
+    if (!data.link_text || !data.link_text.trim()) {
+      errors.link_text = "متن دکمه الزامی است";
+    }
   } else {
     // حالت تصویری
     if (!data.image_url && !data.mediaFile) {
       errors.image_url = "تصویر بنر الزامی است";
-    }
-  }
-
-  // دکمه لینک اگر فعال باشه
-  if (showLinkFields) {
-    if (!data.link_text || !data.link_text.trim()) {
-      errors.link_text = "متن دکمه الزامی است";
-    }
-    if (!data.link || !data.link.trim()) {
-      errors.link = "لینک دکمه الزامی است";
     }
   }
 
