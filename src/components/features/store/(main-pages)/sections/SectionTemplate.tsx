@@ -7,9 +7,15 @@ import { MdArrowBack } from "react-icons/md";
 
 type SectionTemplateProps = {
   section: any;
+  title?: string;
+  children?: React.ReactNode;
 };
 
-const SectionTemplate: React.FC<SectionTemplateProps> = ({ section }) => {
+const SectionTemplate: React.FC<SectionTemplateProps> = ({
+  section,
+  title: titleCustom,
+  children,
+}) => {
   const {
     title,
     display_style,
@@ -19,15 +25,16 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({ section }) => {
   } = section;
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="hover-reveal-parent w-full flex flex-col gap-4">
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg">{title}</h3>
+        <h3 className="text-lg">{title || titleCustom}</h3>
         {show_view_all_button && view_all_link && (
           <div className="text-sm text-gray-600 flex items-center gap-1">
             <span>مشاهده همه</span>
-            <MdArrowBack className="text-lg"/>
+            <MdArrowBack className="text-lg" />
           </div>
         )}
+        <div className="hover-reveal-child">{children}</div>
       </div>
 
       {display_style === "carousel" && (

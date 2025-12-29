@@ -2,6 +2,7 @@ import AddNewPopularSection from "./AddNewSections/PopularSection/AddNewPopularS
 import AddNewProducsSection from "./AddNewSections/AddNewProducsSection";
 import AddNewCategorySection from "./AddNewSections/CategorySection/AddNewCategorySection";
 import SectionTemplate from "./SectionTemplate";
+import PopularSectionContainer from "./AddNewSections/PopularSection/PopularSectionContainer";
 
 type Props = {
   sections?: any;
@@ -19,21 +20,15 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
     return acc;
   }, {});
   console.log(sections);
-  
+
   return (
     <div className="flex flex-col gap-10 justify-center items-center">
       <div className="w-full flex flex-col gap-8">
         {sections.length ? (
           <>
-            {groupedSections?.most_popular ? (
-              groupedSections?.most_popular
-                .sort((a: any, b: any) => a.sort_order - b.sort_order)
-                .map((section: any) => (
-                  <SectionTemplate key={section.id} section={section} />
-                ))
-            ) : (
-              <AddNewPopularSection />
-            )}
+            <PopularSectionContainer
+              mostPopular={groupedSections?.most_popular?.[0]}
+            />
 
             {groupedSections?.category_based ? (
               groupedSections?.category_based

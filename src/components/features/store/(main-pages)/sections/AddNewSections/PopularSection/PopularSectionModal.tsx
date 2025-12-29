@@ -16,7 +16,6 @@ import { popularValidation } from "./popular-section-validation";
 import { GiHeartBottle } from "react-icons/gi";
 
 type Props = {
-  sectionId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
@@ -63,7 +62,7 @@ const PopularSectionModal: React.FC<Props> = ({
       ...initialForm,
       show_view_all_button,
       view_all_link,
-      products_limit: products.length ?? 10,
+      products_limit: products?.length ?? 10,
     });
   }, [defaultValues]);
 
@@ -95,7 +94,7 @@ const PopularSectionModal: React.FC<Props> = ({
     reset();
     setShowLink(false);
   };
-
+  
   return (
     <BaseModal
       isOpen={isOpen}
