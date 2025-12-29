@@ -14,6 +14,7 @@ import PromoBannerContainer from "./PromoBanner/PromoBannerContainer";
 type TemplateSlidersProps = {
   allSections: {
     brands: any[];
+    promo_banners: any[];
     categories: any[];
     hero_sliders: HeroSlider[];
     sections: any[];
@@ -24,12 +25,18 @@ type TemplateSlidersProps = {
 const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
   const [featuredSection, setFeaturedSection] = React.useState(null);
   const [otherSection, setOtherSection] = React.useState<any[]>([]);
-  const { brands, categories, hero_sliders, sections, side_banners } =
-    allSections;
+  const {
+    brands,
+    categories,
+    hero_sliders,
+    sections,
+    side_banners,
+    promo_banners,
+  } = allSections;
 
   useEffect(() => {
     console.log(sections);
-    
+
     const findedFeatured = sections.find(
       (section) => section.section_type === "featured"
     );
@@ -42,7 +49,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
 
   return (
     <div className="flex flex-col gap-6 select-none">
-      <PromoBannerContainer/>
+      <PromoBannerContainer promoBnners={promo_banners} />
 
       <div className="grid grid-cols-2 gap-4">
         <HeroSliderContainer sliders={hero_sliders} />

@@ -1,9 +1,27 @@
-import PromoBannerEmptyState from "./PromoBannerEmptyState";
+"use client";
 
-const PromoBannerContainer = () => {
+import Slider from "@/components/shared/Slider";
+import PromoBannerTemplate from "./PromoBannerTemplate";
+import PromoBannerFormModal from "./PromoBannerFormModal";
+
+type PromoBannerContainer = {
+  promoBnners: any;
+};
+
+const PromoBannerContainer: React.FC<PromoBannerContainer> = ({
+  promoBnners,
+}) => {
   return (
-    <div className="w-full rounded-2xl overflow-hidden">
-      <PromoBannerEmptyState />
+    <div>
+      {promoBnners.length ? (
+        <Slider
+          items={promoBnners}
+          itemsPerView={1}
+          renderItem={(banner: any) => <PromoBannerTemplate banner={banner} />}
+        />
+      ) : (
+        <PromoBannerFormModal />
+      )}
     </div>
   );
 };
