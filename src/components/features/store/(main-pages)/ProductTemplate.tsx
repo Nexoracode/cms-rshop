@@ -26,7 +26,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
   return (
     <BaseCard
-      className={`w-[160px] h-[254px] ${className} rounded-md hover:scale-95`}
+      className={`w-[160px] h-[254px] ${className} rounded-xl hover:scale-95`}
       bodyClassName={`flex flex-col items-center gap-2 p-2`}
       /* redirect={`/admin/products/create?edit_id=${product.id}&type=infos`} */
     >

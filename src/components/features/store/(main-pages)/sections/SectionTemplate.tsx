@@ -3,7 +3,7 @@
 import React from "react";
 import Slider from "@/components/shared/Slider";
 import ProductTemplate from "../ProductTemplate";
-import { MdArrowBack } from "react-icons/md";
+import SectionTemplateHeader from "./SectionTemplateHeader";
 
 type SectionTemplateProps = {
   section: any;
@@ -26,16 +26,14 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
 
   return (
     <div className="hover-reveal-parent w-full flex flex-col gap-4">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg">{title || titleCustom}</h3>
-        {show_view_all_button && view_all_link && (
-          <div className="text-sm text-gray-600 !mx-2 flex items-center gap-1">
-            <span>مشاهده همه</span>
-            <MdArrowBack className="text-lg" />
-          </div>
-        )}
-        <div className="hover-reveal-child !top-0 bg-white w-24 flex items-center justify-end rounded-lg">{children}</div>
-      </div>
+      <SectionTemplateHeader
+        title={title}
+        titleCustom={titleCustom}
+        showViewAll={show_view_all_button}
+        viewAllLink={view_all_link}
+      >
+        {children}
+      </SectionTemplateHeader>
 
       {display_style === "carousel" && (
         <Slider
