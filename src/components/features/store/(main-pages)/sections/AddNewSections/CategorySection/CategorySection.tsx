@@ -17,7 +17,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
   const [activeSlider, setActiveSlider] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(categories[activeSlider]?.products);
+  console.log(categories[activeSlider]);
 
   return (
     <div className="hover-reveal-parent">
@@ -39,6 +39,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
               icon={<TbEdit className="text-gray-700" size={18} />}
               onClick={() => {
                 setIsOpen(true);
+                console.log("FFFFFFF", categories[activeSlider]);
+                
               }}
             />
           </div>

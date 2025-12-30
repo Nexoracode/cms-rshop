@@ -56,13 +56,14 @@ const CtegorySectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
-    const { show_view_all_button, view_all_link, products } = defaultValues;
-    
+    const { show_view_all_button, view_all_link, products_limit, is_active } = defaultValues;
+
     setForm({
       ...initialForm,
       show_view_all_button,
       view_all_link,
-      products_limit: products.length ?? 10,
+      products_limit,
+      is_active
     });
   }, [defaultValues]);
 
