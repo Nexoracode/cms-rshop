@@ -47,12 +47,11 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(sectionId ?? 0);
   //
-  const [showLink, setShowLink] = useState<boolean>(false);
 
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
     {
-      onValidate: (data: any) => validateHomeSection(data, showLink),
+      onValidate: (data: any) => validateHomeSection(data),
       runValidationOnChange: true,
     }
   );
@@ -65,14 +64,6 @@ const SpecialSectionModal: React.FC<Props> = ({
       ...defaultValues,
     });
   }, [defaultValues]);
-
-  useEffect(() => {
-    if (form) {
-      if (form.show_view_all_button) {
-        setShowLink(true);
-      }
-    }
-  }, [isOpen]);
 
   const handleSubmit = submit(async () => {
     const { section_type, ...other } = form;
@@ -95,7 +86,6 @@ const SpecialSectionModal: React.FC<Props> = ({
 
   const resetForm = () => {
     reset();
-    setShowLink(false);
   };
 
   const displayOptions: SelectOption[] = [
@@ -134,6 +124,30 @@ const SpecialSectionModal: React.FC<Props> = ({
             onChange={(val) => handleFieldChange("title", val)}
             allowEnglishOnly={false}
           />
+          <SlugInput
+            value={form.slug}
+            onChange={(val) => handleFieldChange("slug", val)}
+            isActiveError={true}
+            isRequired
+            errorMessage={errors.slug}
+          />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <TextInput
+            label="لینک"
+            placeholder="path/to/1"
+            value={form.view_all_link}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            isRequired
+            errorMessage={errors.view_all_link}
+            onChange={(val) => {
+              handleFieldChange("view_all_link", val);
+            }}
+            inputAlign="left"
+            allowSpaces={false}
+          />
           <SelectBox
             label="نوع نمایش"
             value={form.display_style}
@@ -145,24 +159,15 @@ const SpecialSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <SlugInput
-            value={form.slug}
-            onChange={(val) => handleFieldChange("slug", val)}
-            isActiveError={true}
-            isRequired
-            errorMessage={errors.slug}
-          />
-          <NumberInput
-            label="تعداد محدودیت نمایش"
-            placeholder="10"
-            suffix="عدد"
-            min={0}
-            max={30}
-            value={form.products_limit}
-            onChange={(limit) => handleFieldChange("products_limit", limit)}
-          />
-        </div>
+        <NumberInput
+          label="تعداد محدودیت نمایش"
+          placeholder="10"
+          suffix="عدد"
+          min={0}
+          max={30}
+          value={form.products_limit}
+          onChange={(limit) => handleFieldChange("products_limit", limit)}
+        />
 
         <Textarea
           label="توضیحات"
@@ -176,30 +181,6 @@ const SpecialSectionModal: React.FC<Props> = ({
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
         />
-
-        <ToggleSection
-          title={"نمایش لینک"}
-          initialMode={showLink}
-          onChange={(val) => {
-            handleFieldChange("show_view_all_button", val);
-            setShowLink(val);
-          }}
-        >
-          <TextInput
-            label=""
-            placeholder="path/to/1"
-            value={form.view_all_link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            isRequired
-            errorMessage={errors.view_all_link}
-            onChange={(val) => {
-              handleFieldChange("view_all_link", val);
-            }}
-            inputAlign="left"
-            allowSpaces={false}
-          />
-        </ToggleSection>
       </div>
     </BaseModal>
   );
