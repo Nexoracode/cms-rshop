@@ -149,10 +149,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
   return (
     <BaseModal
       isOpen={isOpen}
-      onOpenChange={(val) => {
-        onOpenChange?.(val);
-        if (!val) resetForm();
-      }}
+      onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
         bannerId
           ? null

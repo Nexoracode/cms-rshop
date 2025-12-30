@@ -17,8 +17,6 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
   const [activeSlider, setActiveSlider] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(categories[activeSlider]);
-
   return (
     <div className="hover-reveal-parent">
       <CtegorySectionModal
