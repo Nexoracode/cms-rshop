@@ -33,12 +33,15 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
           showViewAll={categories[activeSlider]?.show_view_all_button}
           viewAllLink={categories[activeSlider]?.view_all_link}
         >
-          <ActionButton
-            icon={<TbEdit className="text-gray-700" size={18} />}
-            onClick={() => {
-              setIsOpen(true);
-            }}
-          />
+          <div className="flex items-center gap-2">
+            <CtegorySectionModal />
+            <ActionButton
+              icon={<TbEdit className="text-gray-700" size={18} />}
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            />
+          </div>
         </SectionTemplateHeader>
 
         <div className="w-full flex items-center gap-8">
