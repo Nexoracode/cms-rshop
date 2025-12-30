@@ -36,7 +36,7 @@ const initialForm = {
   is_active: true,
 };
 
-const AddNewSectionModal: React.FC<Props> = ({
+const SpecialSectionModal: React.FC<Props> = ({
   sectionId,
   defaultValues,
   isOpen,
@@ -75,22 +75,12 @@ const AddNewSectionModal: React.FC<Props> = ({
   }, [isOpen]);
 
   const handleSubmit = submit(async () => {
-    const {
-      description,
-      display_style,
-      is_active,
-      products_limit,
-      section_type,
-      show_view_all_button,
-      slug,
-      title,
-      view_all_link,
-    } = form;
+    const { section_type, ...other } = form;
 
     const payload: Record<string, any> = {
-      ...form,
+      section_type: "special_products",
+      ...other,
     };
-    console.log(payload);
 
     if (sectionId) {
       return handleMutation(() => updateSection(payload), {
@@ -107,13 +97,6 @@ const AddNewSectionModal: React.FC<Props> = ({
     reset();
     setShowLink(false);
   };
-
-  const sectionOptions: SelectOption[] = [
-    { key: "featured", title: "محصولات ویژه" },
-    { key: "special_products", title: "محصولات دستی" },
-    { key: "most_popular", title: "محبوب ترین" },
-    { key: "category_based", title: "دسته بندی محور" },
-  ];
 
   const displayOptions: SelectOption[] = [
     { key: "carousel", title: "اسلایدر" },
@@ -142,14 +125,14 @@ const AddNewSectionModal: React.FC<Props> = ({
     >
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
-          <SelectBox
-            label="نوع بخش"
-            value={form.section_type}
-            onChange={(val) => handleFieldChange("section_type", val)}
-            options={sectionOptions}
-            placeholder="انتخاب نوع بخش"
+          <TextInput
+            label="عنوان"
+            placeholder="عنوان بنر را وارد کنید"
+            value={form.title}
+            errorMessage={errors.title}
             isRequired
-            errorMessage={errors.section_type}
+            onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
           />
           <SelectBox
             label="نوع نمایش"
@@ -163,15 +146,6 @@ const AddNewSectionModal: React.FC<Props> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <TextInput
-            label="عنوان"
-            placeholder="عنوان بنر را وارد کنید"
-            value={form.title}
-            errorMessage={errors.title}
-            isRequired
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
           <SlugInput
             value={form.slug}
             onChange={(val) => handleFieldChange("slug", val)}
@@ -179,17 +153,16 @@ const AddNewSectionModal: React.FC<Props> = ({
             isRequired
             errorMessage={errors.slug}
           />
+          <NumberInput
+            label="تعداد محدودیت نمایش"
+            placeholder="10"
+            suffix="عدد"
+            min={0}
+            max={30}
+            value={form.products_limit}
+            onChange={(limit) => handleFieldChange("products_limit", limit)}
+          />
         </div>
-
-        <NumberInput
-          label="تعداد محدودیت نمایش"
-          placeholder="10"
-          suffix="عدد"
-          min={0}
-          max={30}
-          value={form.products_limit}
-          onChange={(limit) => handleFieldChange("products_limit", limit)}
-        />
 
         <Textarea
           label="توضیحات"
@@ -232,4 +205,4 @@ const AddNewSectionModal: React.FC<Props> = ({
   );
 };
 
-export default AddNewSectionModal;
+export default SpecialSectionModal;

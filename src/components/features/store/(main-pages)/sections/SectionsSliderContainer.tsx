@@ -1,5 +1,5 @@
 import AddNewPopularSection from "./AddNewSections/PopularSection/AddNewPopularSection";
-import AddNewProducsSection from "./AddNewSections/AddNewProducsSection";
+import AddNewSpecialSection from "./AddNewSections/SpecialSection/AddNewSpecialSection";
 import AddNewCategorySection from "./AddNewSections/CategorySection/AddNewCategorySection";
 import SectionTemplate from "./SectionTemplate";
 import PopularSectionContainer from "./AddNewSections/PopularSection/PopularSectionContainer";
@@ -43,14 +43,14 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
                   <SectionTemplate key={section.id} section={section} />
                 ))
             ) : (
-              <AddNewProducsSection />
+              <AddNewSpecialSection />
             )}
           </>
         ) : (
           <div className="flex flex-col gap-6">
             <AddNewPopularSection />
             <AddNewCategorySection />
-            <AddNewProducsSection />
+            <AddNewSpecialSection />
           </div>
         )}
       </div>

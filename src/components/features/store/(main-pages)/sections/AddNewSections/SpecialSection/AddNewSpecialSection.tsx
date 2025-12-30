@@ -1,8 +1,8 @@
-import AddSectionCard from "../../shared/AddSectionCard";
-import AddNewSectionModal from "../AddNewSectionModal";
+import AddSectionCard from "../../../shared/AddSectionCard";
+import AddNewSectionModal from "./SpecialSectionModal";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
 
-const AddNewProducsSection = () => {
+const AddNewSpecialSection = () => {
   return (
     <AddSectionCard
       className="h-[276px]"
@@ -21,4 +21,4 @@ const AddNewProducsSection = () => {
   );
 };
 
-export default AddNewProducsSection;
+export default AddNewSpecialSection;
