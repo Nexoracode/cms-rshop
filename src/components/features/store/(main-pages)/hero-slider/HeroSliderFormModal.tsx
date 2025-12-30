@@ -269,6 +269,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                     useBackground: true, // فقط رنگ روشن بشه، عکس پاک نشه
                   });
                 }}
+                widthFull
               />
               <ToggleSection
                 title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
