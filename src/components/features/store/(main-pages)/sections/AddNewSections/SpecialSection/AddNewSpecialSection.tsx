@@ -1,6 +1,7 @@
 import AddSectionCard from "../../../shared/AddSectionCard";
-import AddNewSectionModal from "./SpecialSectionModal";
+import SpecialSectionModal from "./SpecialSectionModal";
 import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import { ProductsSelectionProvider } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
 const AddNewSpecialSection = () => {
   return (
@@ -14,7 +15,9 @@ const AddNewSpecialSection = () => {
             <br />
             مانند پرفروش‌ترین‌ها، تخفیف‌ها یا محصولات داغ.
           </p>
-          <AddNewSectionModal />
+          <ProductsSelectionProvider initialProducts={[]}>
+            <SpecialSectionModal />
+          </ProductsSelectionProvider>
         </div>
       }
     />

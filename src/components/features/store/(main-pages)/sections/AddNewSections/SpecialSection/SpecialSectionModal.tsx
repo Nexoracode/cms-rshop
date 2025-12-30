@@ -16,6 +16,7 @@ import {
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { validateHomeSection } from "./home-section-validation";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 
 type Props = {
   sectionId?: number;
@@ -33,6 +34,7 @@ const initialForm = {
   products_limit: 10,
   show_view_all_button: false,
   view_all_link: "",
+  products_ids: [] as number[],
   is_active: true,
 };
 
@@ -180,6 +182,14 @@ const SpecialSectionModal: React.FC<Props> = ({
           title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
+        />
+
+        <SelectableProductsBox
+          onChange={(items) => {
+            const productIds = items.map((item) => item.product_id);
+            handleFieldChange("products_ids", productIds);
+          }}
+          error={!!errors.product_ids}
         />
       </div>
     </BaseModal>

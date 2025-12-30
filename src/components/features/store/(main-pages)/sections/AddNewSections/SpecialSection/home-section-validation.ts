@@ -5,6 +5,10 @@ export function validateHomeSection(data: any) {
     errors.title = "لطفاً عنوان بخش را وارد کنید.";
   }
 
+  if (!data.product_ids || !data.product_ids.length) {
+    errors.product_ids = "انتخاب محصول الزامی است.";
+  }
+
   if (!data.slug || data.slug.trim() === "") {
     errors.slug = "لطفاً اسلاگ بخش را وارد کنید.";
   }
