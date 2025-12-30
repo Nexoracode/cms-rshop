@@ -36,7 +36,7 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
               <AddNewCategorySection />
             )}
 
-            {!groupedSections?.special_products ? (
+            {groupedSections?.special_products ? (
               groupedSections?.special_products
                 .sort((a: any, b: any) => a.sort_order - b.sort_order)
                 .map((section: any) => (

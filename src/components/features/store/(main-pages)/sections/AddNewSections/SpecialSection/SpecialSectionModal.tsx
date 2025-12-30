@@ -50,7 +50,6 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(sectionId ?? 0);
   //
-  const [showLink, setShowLink] = useState<boolean>(false);
   const { selectedProducts, setSelectedProducts, removeProduct, addProduct } =
     useProductsSelection();
 
@@ -70,14 +69,6 @@ const SpecialSectionModal: React.FC<Props> = ({
       ...defaultValues,
     });
   }, [defaultValues]);
-
-  useEffect(() => {
-    if (form) {
-      if (form.show_view_all_button) {
-        setShowLink(true);
-      }
-    }
-  }, [isOpen]);
 
   const handleSubmit = submit(async () => {
     const { section_type, ...other } = form;
@@ -198,30 +189,6 @@ const SpecialSectionModal: React.FC<Props> = ({
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
         />
-
-        <ToggleSection
-          title={"نمایش لینک"}
-          initialMode={showLink}
-          onChange={(val) => {
-            handleFieldChange("show_view_all_button", val);
-            setShowLink(val);
-          }}
-        >
-          <TextInput
-            label=""
-            placeholder="path/to/1"
-            value={form.view_all_link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            isRequired
-            errorMessage={errors.view_all_link}
-            onChange={(val) => {
-              handleFieldChange("view_all_link", val);
-            }}
-            inputAlign="left"
-            allowSpaces={false}
-          />
-        </ToggleSection>
 
         <SelectableProductsBox
           onChange={(items) => {
