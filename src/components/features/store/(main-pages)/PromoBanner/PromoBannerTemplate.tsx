@@ -31,7 +31,7 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
 
   return (
     <div
-      className="relative w-full rounded-xl shadow-md cursor-pointer border h-[64px]"
+      className="relative w-full rounded-xl overflow-hidden shadow-md cursor-pointer border h-[64px]"
       onClick={() => setIsEditOpen(true)}
     >
       <PromoBannerFormModal
@@ -41,10 +41,10 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
         onOpenChange={setIsEditOpen}
       />
 
-      <div className="hover-reveal-parent z-10 flex flex-col md:flex-row items-center justify-between p-6 md:p-10 h-full">
+      <div className="hover-reveal-parent flex flex-col md:flex-row items-center justify-between p-6 md:p-10 h-full">
         <div
           className={
-            "hover-reveal-child !left-14 z-50 flex items-center gap-2 rounded-lg px-2 py-1.5 bg-gray-700"
+            `hover-reveal-child !left-14 flex items-center gap-2 rounded-lg px-2 py-1.5 bg-gray-700`
           }
           onClick={(e) => e.stopPropagation()}
         >
@@ -53,7 +53,7 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
         </div>
 
         {/* محتوای متنی */}
-        {(title || description) && (
+        {!image_url && (title || description) && (
           <div>
             <h2 className={`text-lg`}>{title}</h2>
             <p className={`text-md truncate`}>{description}</p>
@@ -80,7 +80,7 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
             alt={"gif"}
             fill
             priority
-            className="object-cover absolute inset-0 z-10 opacity-40"
+            className="absolute inset-0 z-10 !h-[64px]"
           />
         ) : (
           ""

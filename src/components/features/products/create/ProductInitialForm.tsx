@@ -268,7 +268,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             handleMultipleFieldsChange({
               requires_preparation: isPreparation,
               preparation_days: isPreparation ? form.preparation_days || 1 : 0,
-              is_same_day_shipping: !isPreparation,
+              is_same_day_shipping: isPreparation,
             });
           }}
           mode2Children={

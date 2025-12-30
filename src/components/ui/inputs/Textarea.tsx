@@ -15,7 +15,7 @@ type TextareaProps = {
 };
 
 const Textarea: React.FC<TextareaProps> = ({
-  value,
+  value = "",
   onChange,
   label = "آدرس کامل",
   placeholder = "آدرس کامل را وارد کنید",
@@ -25,6 +25,7 @@ const Textarea: React.FC<TextareaProps> = ({
   errorMessage = "",
 }) => {
   const validate = (txt: string) => {
+    console.log("=>", txt);
     onChange(txt, true);
   };
 

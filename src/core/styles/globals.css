@@ -95,7 +95,7 @@
   .hover-reveal-child {
     @apply absolute top-2.5 left-2.5 z-50 opacity-0 pointer-events-none transition-all duration-200;
   }
-  
+
   /* حالت hover والد */
   .hover-reveal-parent:hover .hover-reveal-child {
     @apply opacity-100 pointer-events-auto;

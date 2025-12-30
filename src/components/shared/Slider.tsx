@@ -80,7 +80,7 @@ function Slider<T>({
         <>
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-20
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-10
             bg-black/40 text-white w-9 h-9 rounded-full
             flex items-center justify-center
             opacity-0 group-hover:opacity-100 transition"
@@ -90,7 +90,7 @@ function Slider<T>({
 
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-20
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-10
             bg-black/40 text-white w-9 h-9 rounded-full
             flex items-center justify-center
             opacity-0 group-hover:opacity-100 transition"

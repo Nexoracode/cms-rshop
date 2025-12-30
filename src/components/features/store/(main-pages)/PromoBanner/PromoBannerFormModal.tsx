@@ -322,7 +322,10 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
               <Textarea
                 label="توضیحات"
                 value={form.description}
-                onChange={(val) => handleFieldChange("description", val)}
+                onChange={(val) => {
+                  console.log(val);
+                  handleFieldChange("description", val)
+                }}
                 placeholder="توضیحات خود را وارد کنید"
                 isRequired
                 errorMessage={errors.description}
