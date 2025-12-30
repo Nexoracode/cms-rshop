@@ -17,6 +17,7 @@ import {
 import { validateHomeSection } from "./home-section-validation";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
+import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
 type Props = {
   sectionId?: number;
@@ -34,7 +35,7 @@ const initialForm = {
   products_limit: 10,
   show_view_all_button: false,
   view_all_link: "",
-  products_ids: [] as number[],
+  product_ids: [] as number[],
   is_active: true,
 };
 
@@ -49,6 +50,9 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(sectionId ?? 0);
   //
+  const [showLink, setShowLink] = useState<boolean>(false);
+  const { selectedProducts, setSelectedProducts, removeProduct, addProduct } =
+    useProductsSelection();
 
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
@@ -66,6 +70,14 @@ const SpecialSectionModal: React.FC<Props> = ({
       ...defaultValues,
     });
   }, [defaultValues]);
+
+  useEffect(() => {
+    if (form) {
+      if (form.show_view_all_button) {
+        setShowLink(true);
+      }
+    }
+  }, [isOpen]);
 
   const handleSubmit = submit(async () => {
     const { section_type, ...other } = form;
@@ -88,6 +100,7 @@ const SpecialSectionModal: React.FC<Props> = ({
 
   const resetForm = () => {
     reset();
+    setSelectedProducts([])
   };
 
   const displayOptions: SelectOption[] = [
@@ -169,6 +182,8 @@ const SpecialSectionModal: React.FC<Props> = ({
           max={30}
           value={form.products_limit}
           onChange={(limit) => handleFieldChange("products_limit", limit)}
+          isRequired
+          errorMessage={errors.products_limit}
         />
 
         <Textarea
@@ -184,10 +199,34 @@ const SpecialSectionModal: React.FC<Props> = ({
           onChange={(val) => handleFieldChange("is_active", val)}
         />
 
+        <ToggleSection
+          title={"نمایش لینک"}
+          initialMode={showLink}
+          onChange={(val) => {
+            handleFieldChange("show_view_all_button", val);
+            setShowLink(val);
+          }}
+        >
+          <TextInput
+            label=""
+            placeholder="path/to/1"
+            value={form.view_all_link}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            isRequired
+            errorMessage={errors.view_all_link}
+            onChange={(val) => {
+              handleFieldChange("view_all_link", val);
+            }}
+            inputAlign="left"
+            allowSpaces={false}
+          />
+        </ToggleSection>
+
         <SelectableProductsBox
           onChange={(items) => {
             const productIds = items.map((item) => item.product_id);
-            handleFieldChange("products_ids", productIds);
+            handleFieldChange("product_ids", productIds);
           }}
           error={!!errors.product_ids}
         />
