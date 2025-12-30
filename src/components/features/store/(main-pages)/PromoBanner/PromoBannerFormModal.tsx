@@ -120,10 +120,10 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     } = form;
 
     const payload: any = {
-      ...(background_color ? { background_color } : {}),
-      ...(text_color ? { text_color } : {}),
+      ...(background_color && !finalImageUrl ? { background_color } : {}),
+      ...(text_color && !finalImageUrl ? { text_color } : {}),
       ...(link_text ? { link_text } : {}),
-      ...(description ? { description } : {}),
+      ...(description && !finalImageUrl ? { description } : {}),
       image_url: finalImageUrl,
       ...other,
     };
@@ -262,15 +262,12 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
                 useBackground: false,
                 background_color: "",
                 text_color: "",
-                title: "",
-                description: "",
               });
             } else {
               handleMultipleFieldsChange({
                 useBackground: true,
                 background_color: "#000",
                 text_color: "#fff",
-                image_url: "",
                 mediaFile: null,
               });
             }
@@ -312,19 +309,19 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
                 <ColorPickerField
                   label="رنگ متن"
                   value={form.text_color}
-                  onChange={(text_color) =>
-                    handleFieldChange("text_color", text_color)
-                  }
+                  onChange={(text_color) => {
+                    console.log("text_color =>", text_color);
+                    handleFieldChange("text_color", text_color);
+                  }}
                   widthFull
                 />
               </div>
 
               <Textarea
                 label="توضیحات"
-                value={form.description}
+                value={form.description || ""}
                 onChange={(val) => {
-                  console.log(val);
-                  handleFieldChange("description", val)
+                  handleFieldChange("description", val);
                 }}
                 placeholder="توضیحات خود را وارد کنید"
                 isRequired

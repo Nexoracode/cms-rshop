@@ -5,7 +5,7 @@ import { Textarea as TextareaHero } from "@heroui/react";
 
 type TextareaProps = {
   value: string;
-  onChange: (val: string, isValid: boolean) => void;
+  onChange: (val: string) => void;
   label?: string;
   placeholder?: string;
   isRequired?: boolean;
@@ -24,17 +24,12 @@ const Textarea: React.FC<TextareaProps> = ({
   maxRows = 10,
   errorMessage = "",
 }) => {
-  const validate = (txt: string) => {
-    console.log("=>", txt);
-    onChange(txt, true);
-  };
-
   return (
     <TextareaHero
       label={label}
       placeholder={placeholder}
       value={value}
-      onValueChange={validate}
+      onValueChange={onChange}
       isRequired={isRequired}
       minRows={minRows}
       maxRows={maxRows}
