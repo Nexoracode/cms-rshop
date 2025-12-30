@@ -4,6 +4,7 @@ import React from "react";
 import Slider from "@/components/shared/Slider";
 import ProductTemplate from "../ProductTemplate";
 import SectionTemplateHeader from "./SectionTemplateHeader";
+import RankedProductCard from "../RankedProductCard";
 
 type SectionTemplateProps = {
   section: any;
@@ -60,9 +61,14 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
       )}
 
       {display_style === "list" && (
-        <div className="flex flex-col gap-4">
-          {products.map((product: any) => (
-            <ProductTemplate key={product.id} product={product} />
+        <div className="grid grid-cols-3 gap-4">
+          {products.map((product: any, index: number) => (
+            <RankedProductCard
+              key={product.id}
+              index={index}
+              image={product.image}
+              title={product.name}
+            />
           ))}
         </div>
       )}
