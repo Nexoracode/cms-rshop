@@ -17,7 +17,7 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <>
       <PopularSectionModal
         isOpen={isOpen}
         onOpenChange={setIsOpen}
@@ -39,7 +39,7 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
       ) : (
         <AddNewPopularSection />
       )}
-    </div>
+    </>
   );
 };
 

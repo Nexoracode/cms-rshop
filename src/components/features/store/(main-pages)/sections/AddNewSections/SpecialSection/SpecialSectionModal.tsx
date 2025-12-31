@@ -20,7 +20,6 @@ import SelectableProductsBox from "@/components/features/products/SelectableProd
 import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
 type Props = {
-  sectionId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
@@ -40,7 +39,6 @@ const initialForm = {
 };
 
 const SpecialSectionModal: React.FC<Props> = ({
-  sectionId,
   defaultValues,
   isOpen,
   onOpenChange,
@@ -48,7 +46,7 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: createSection, isPending: isCreating } =
     useCreateHomeSection();
   const { mutateAsync: updateSection, isPending: isUpdating } =
-    useUpdateHomeSection(sectionId ?? 0);
+    useUpdateHomeSection(defaultValues?.id ?? 0);
   //
   const { setSelectedProducts } = useProductsSelection();
 
@@ -77,7 +75,7 @@ const SpecialSectionModal: React.FC<Props> = ({
       ...other,
     };
 
-    if (sectionId) {
+    if (defaultValues?.id) {
       return handleMutation(() => updateSection(payload), {
         resetForm,
       });
@@ -104,15 +102,15 @@ const SpecialSectionModal: React.FC<Props> = ({
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
       triggerProps={
-        sectionId
+        defaultValues?.id
           ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary",
             }
       }
-      title={sectionId ? "ویرایش بخش" : "افزودن بخش جدید"}
-      confirmText={sectionId ? "ویرایش بخش" : "ایجاد بخش"}
+      title={defaultValues?.id ? "ویرایش بخش" : "افزودن بخش جدید"}
+      confirmText={defaultValues?.id ? "ویرایش بخش" : "ایجاد بخش"}
       onConfirm={handleSubmit}
       size="xl"
       icon={<TfiLayoutSliderAlt />}

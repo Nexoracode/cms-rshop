@@ -5,6 +5,10 @@ import SpecialSectionModal from "./SpecialSectionModal";
 import AddNewSpecialSection from "./AddNewSpecialSection";
 import SectionTemplate from "../../SectionTemplate";
 import { ProductsSelectionProvider } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { TbEdit } from "react-icons/tb";
+import DeleteButton from "@/components/shared/DeleteButton";
+import { useDeleteHomeSection } from "@/core/hooks/api/adminHome/useHomeSections";
 
 type PopularSectionContainerProps = {
   specialProducts: any;
@@ -14,26 +18,42 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
   specialProducts,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const {mutate: deleteHomeSection} = useDeleteHomeSection()
 
   return (
-    <div>
+    <>
       {specialProducts ? (
         specialProducts.map((section: any, index: number) => (
           <div key={index}>
-            <ProductsSelectionProvider initialProducts={[]}>
+            <ProductsSelectionProvider
+              initialProducts={section?.products || []}
+            >
               <SpecialSectionModal
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
-                defaultValues={specialProducts}
+                defaultValues={section}
               />
             </ProductsSelectionProvider>
-            <SectionTemplate key={section.id} section={section} />
+            <SectionTemplate
+              section={section}
+              children={
+                <div className="flex items-center gap-2">
+                  <ActionButton
+                    icon={<TbEdit className="text-gray-700" size={18} />}
+                    onClick={() => {
+                      setIsOpen(true);
+                    }}
+                  />
+                  <DeleteButton onDelete={() => deleteHomeSection(section.id)} />
+                </div>
+              }
+            />
           </div>
         ))
       ) : (
         <AddNewSpecialSection />
       )}
-    </div>
+    </>
   );
 };
 

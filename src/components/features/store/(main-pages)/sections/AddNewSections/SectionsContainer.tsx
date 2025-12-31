@@ -1,7 +1,6 @@
 import AddNewPopularSection from "./PopularSection/AddNewPopularSection";
 import AddNewSpecialSection from "./SpecialSection/AddNewSpecialSection";
 import AddNewCategorySection from "./CategorySection/AddNewCategorySection";
-import SectionTemplate from "../SectionTemplate";
 import PopularSectionContainer from "./PopularSection/PopularSectionContainer";
 import CategorySection from "./CategorySection/CategorySection";
 import SpecialSectionContainer from "./SpecialSection/SpecialSectionContainer";

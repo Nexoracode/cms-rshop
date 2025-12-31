@@ -22,7 +22,7 @@ const SectionTemplateHeader: React.FC<SectionTemplateHeaderProps> = ({
   const displayTitle = titleCustom ? titleCustom : title;
 
   return (
-    <div className="flex justify-between items-center mb-4 px-2">
+    <div className="flex justify-between items-center mb-2 px-2">
       <h3 className="text-lg font-medium text-gray-900">{displayTitle}</h3>
 
       <div className="flex items-center gap-6">
