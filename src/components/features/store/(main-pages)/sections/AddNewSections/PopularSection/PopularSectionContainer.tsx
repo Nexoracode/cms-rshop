@@ -20,7 +20,7 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
   return (
     <>
       <StaticSectionModal
-        title="محبوت ترین ها"
+        title="محبوب ترین ها"
         icon={<GiHeartBottle />}
         isOpen={isOpen}
         onOpenChange={setIsOpen}

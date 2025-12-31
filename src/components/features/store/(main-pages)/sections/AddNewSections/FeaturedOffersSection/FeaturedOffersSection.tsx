@@ -25,7 +25,7 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
         <div className="w-full hover-reveal-parent bg-[#E5344E] h-[294px] rounded-xl flex items-center justify-center p-4">
           <AmazingOfferCard />
           <StaticSectionModal
-            title="دسته بندی"
+            title="شگفت انگیز"
             icon={<LuPercent />}
             isOpen={isOpen}
             onOpenChange={setIsOpen}

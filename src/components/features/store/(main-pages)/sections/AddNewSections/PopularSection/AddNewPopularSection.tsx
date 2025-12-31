@@ -14,7 +14,7 @@ const AddNewPopularSection = () => {
             <br />
             برای نمایش این بخش، حداقل یک محصول اضافه کنید.
           </p>
-          <StaticSectionModal title="محبوت ترین ها" icon={<GiHeartBottle/>}/>
+          <StaticSectionModal title="محبوب ترین ها" icon={<GiHeartBottle/>}/>
         </div>
       }
     />
