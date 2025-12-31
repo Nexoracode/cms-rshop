@@ -71,7 +71,7 @@ const PopoverSelect: React.FC<PopoverSelectProps> = ({
             e.stopPropagation(); // جلوی ریدایرکت کارت
           }}
         >
-          <span className="truncate w-16">{selectedItem.title}</span>
+          <span className="truncate">{selectedItem.title}</span>
           <MdOutlineKeyboardArrowDown className="text-lg" />
         </Button>
       </PopoverTrigger>
