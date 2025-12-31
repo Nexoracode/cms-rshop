@@ -1,15 +1,15 @@
-import AddNewPopularSection from "./AddNewSections/PopularSection/AddNewPopularSection";
-import AddNewSpecialSection from "./AddNewSections/SpecialSection/AddNewSpecialSection";
-import AddNewCategorySection from "./AddNewSections/CategorySection/AddNewCategorySection";
-import SectionTemplate from "./SectionTemplate";
-import PopularSectionContainer from "./AddNewSections/PopularSection/PopularSectionContainer";
-import CategorySection from "./AddNewSections/CategorySection/CategorySection";
+import AddNewPopularSection from "../PopularSection/AddNewPopularSection";
+import AddNewSpecialSection from "./AddNewSpecialSection";
+import AddNewCategorySection from "../CategorySection/AddNewCategorySection";
+import SectionTemplate from "../../SectionTemplate";
+import PopularSectionContainer from "../PopularSection/PopularSectionContainer";
+import CategorySection from "../CategorySection/CategorySection";
 
 type Props = {
   sections?: any;
 };
 
-const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
+const SpecialSectionContainer: React.FC<Props> = ({ sections = [] }) => {
   const groupedSections = sections.reduce((acc: any, section: any) => {
     const type = section.section_type;
 
@@ -58,4 +58,4 @@ const SectionsSliderContainer: React.FC<Props> = ({ sections = [] }) => {
   );
 };
 
-export default SectionsSliderContainer;
+export default SpecialSectionContainer;

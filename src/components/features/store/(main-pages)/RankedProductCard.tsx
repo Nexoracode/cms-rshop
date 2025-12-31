@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import BaseCard from "@/components/ui/BaseCard";
 
 type RankedProductCardProps = {
@@ -24,7 +23,7 @@ const RankedProductCard: React.FC<RankedProductCardProps> = ({
         alt={"product image"}
         className="object-cover !w-[86px] !h-[86px] rounded-lg"
       />
-      <div className="w-full border-b pb-6 pt-5">
+      <div className={`w-full pb-6 pt-5 ${index % 3 !== 0 ? "border-b" : ""}`}>
         <div className="flex items-center gap-4">
           <div className="font-bold text-2xl text-sky-600">{index}</div>
           <p className="w-24 text-sm font-medium text-gray-800 truncate">

@@ -6,7 +6,7 @@ import { HeroSlider } from "./hero-slider/hero-slider.types";
 import HeroSliderContainer from "./hero-slider/HeroSliderContainer";
 import CategoriesSliderContainer from "./categories/CategoriesSliderContainer";
 import BrandsSliderContainer from "./brands/BrandsSliderContainer";
-import SectionsSliderContainer from "./sections/SectionsSliderContainer";
+import SpecialSectionContainer from "./sections/AddNewSections/SpecialSection/SpecialSectionContainer";
 import FeaturedOffersSection from "./sections/AddNewSections/FeaturedOffersSection/FeaturedOffersSection";
 import SideBannerContainer from "./side-banner/SideBannerContainer";
 import PromoBannerContainer from "./PromoBanner/PromoBannerContainer";
@@ -60,7 +60,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
 
       <CategoriesSliderContainer categories={categories} />
 
-      <SectionsSliderContainer sections={otherSection} />
+      <SpecialSectionContainer sections={otherSection} />
 
       <BrandsSliderContainer brands={brands} />
     </div>
