@@ -35,27 +35,30 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
         </ProductsSelectionProvider>
       )}
       {specialProducts ? (
-        specialProducts.map((section: any, index: number) => (
-          <div key={index}>
-            <SectionTemplate
-              section={section}
-              children={
-                <div className="flex items-center gap-2">
-                  <ActionButton
-                    icon={<TbEdit className="text-gray-700" size={18} />}
-                    onClick={() => {
-                      setEditSection(section);
-                      setIsOpen(true);
-                    }}
-                  />
-                  <DeleteButton
-                    onDelete={() => deleteHomeSection(section.id)}
-                  />
-                </div>
-              }
-            />
-          </div>
-        ))
+        <>
+          {specialProducts.map((section: any, index: number) => (
+            <div key={index}>
+              <SectionTemplate
+                section={section}
+                children={
+                  <div className="flex items-center gap-2">
+                    <ActionButton
+                      icon={<TbEdit className="text-gray-700" size={18} />}
+                      onClick={() => {
+                        setEditSection(section);
+                        setIsOpen(true);
+                      }}
+                    />
+                    <DeleteButton
+                      onDelete={() => deleteHomeSection(section.id)}
+                    />
+                  </div>
+                }
+              />
+            </div>
+          ))}
+          <AddNewSpecialSection />
+        </>
       ) : (
         <AddNewSpecialSection />
       )}

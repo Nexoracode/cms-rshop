@@ -38,6 +38,7 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
 
       {display_style === "carousel" && (
         <Slider
+          className={products.length >= 4 ? "!mx-auto" : "!mx-0"}
           items={products}
           itemsPerView={4}
           rows={1}
@@ -51,7 +52,11 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
       {display_style === "grid" && (
         <div className="w-fit mx-auto grid grid-cols-4">
           {products.map((product: any) => (
-            <ProductTemplate key={product.id} product={product} className={`shadow-none !rounded-none w-[190px]`}/>
+            <ProductTemplate
+              key={product.id}
+              product={product}
+              className={`shadow-none !rounded-none w-[190px]`}
+            />
           ))}
         </div>
       )}
@@ -66,7 +71,7 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
           renderItem={(product: any, index: number) => (
             <RankedProductCard
               key={product.id}
-              index={index+1}
+              index={index + 1}
               image={product.image}
               title={product.name}
             />
