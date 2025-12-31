@@ -108,7 +108,7 @@ const SpecialSectionModal: React.FC<Props> = ({
           ? null
           : {
               title: "+ افزودن",
-              className: "bg-secondary-light text-secondary mb-1",
+              className: "bg-secondary-light text-secondary",
             }
       }
       title={sectionId ? "ویرایش بخش" : "افزودن بخش جدید"}

@@ -4,6 +4,7 @@ import AddNewCategorySection from "./CategorySection/AddNewCategorySection";
 import SectionTemplate from "../SectionTemplate";
 import PopularSectionContainer from "./PopularSection/PopularSectionContainer";
 import CategorySection from "./CategorySection/CategorySection";
+import SpecialSectionContainer from "./SpecialSection/SpecialSectionContainer";
 
 type Props = {
   sections?: any;
@@ -29,18 +30,11 @@ const SectionsContainer: React.FC<Props> = ({ sections = [] }) => {
             <PopularSectionContainer
               mostPopular={groupedSections?.most_popular?.[0]}
             />
-
             <CategorySection categories={groupedSections?.category_based} />
 
-            {groupedSections?.special_products ? (
-              groupedSections?.special_products
-                .sort((a: any, b: any) => a.sort_order - b.sort_order)
-                .map((section: any) => (
-                  <SectionTemplate key={section.id} section={section} />
-                ))
-            ) : (
-              <AddNewSpecialSection />
-            )}
+            <SpecialSectionContainer
+              specialProducts={groupedSections?.special_products}
+            />
           </>
         ) : (
           <div className="flex flex-col gap-6">
