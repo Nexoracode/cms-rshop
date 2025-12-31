@@ -58,7 +58,7 @@ function Slider<T>({
   return (
     <div className="relative group w-full h-full">
       <div
-        className={`grid gap-4 h-full ${className}`}
+        className={`w-fit grid mx-auto gap-4 h-full ${className}`}
         style={{ gridTemplateColumns: `repeat(${itemsPerView}, 1fr)` }}
       >
         {visibleSlides.map((group, slideIndex) => (

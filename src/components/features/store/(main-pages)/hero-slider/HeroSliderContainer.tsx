@@ -17,6 +17,7 @@ const HeroSliderContainer: React.FC<Props> = ({ sliders = [] }) => {
       {sortedSliders.length ? (
         <Slider
           items={sortedSliders}
+          className="w-full"
           renderItem={(slider) => (
             <HeroTemplate key={slider.id} slider={slider} />
           )}

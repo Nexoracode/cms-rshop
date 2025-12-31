@@ -46,7 +46,6 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
             <ProductTemplate
               key={product.id}
               product={product}
-              className="!rounded-xl"
             />
           )}
         />

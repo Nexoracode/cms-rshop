@@ -45,7 +45,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
         </SectionTemplateHeader>
 
         <div className="w-full flex items-center gap-8">
-          <div className="!w-[300px] h-full flex flex-col justify-center shadow-md border border-gray-200 rounded-xl p-3 overflow-y-auto">
+          <div className="!w-[300px] h-[250px] flex flex-col shadow-md border border-gray-200 rounded-xl p-3 overflow-y-auto">
             {categories?.map((cat: any, index: number) => {
               const { name } = cat.category;
 

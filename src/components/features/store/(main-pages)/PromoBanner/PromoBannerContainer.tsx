@@ -17,6 +17,7 @@ const PromoBannerContainer: React.FC<PromoBannerContainer> = ({
         <Slider
           items={promoBnners}
           itemsPerView={1}
+          className="w-full"
           renderItem={(banner: any) => <PromoBannerTemplate banner={banner} />}
         />
       ) : (
