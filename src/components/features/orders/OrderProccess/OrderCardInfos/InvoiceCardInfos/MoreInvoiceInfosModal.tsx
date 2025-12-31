@@ -24,6 +24,7 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
     manual_discount_applied,
     discount_total,
     subtotal,
+    gift_wrapping_cost,
     total,
   } = order;
 
@@ -39,11 +40,18 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
       isActiveFooter={false}
     >
       <div className="!space-y-1">
-        <InfoRow label="هزینه ارسال" value={price(80000)} />
+        <InfoRow
+          label="هزینه ارسال"
+          value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
+        />
 
         <InfoRow
           label="هزینه بسته بندی"
-          value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
+          value={
+            gift_wrapping_cost === 0
+              ? "رایگان"
+              : String(price(gift_wrapping_cost))
+          }
           isActiveBg
         />
 
@@ -77,13 +85,16 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
           value={discount_total ? price(discount_total) : "—"}
           isActiveBg
         />
+        {discount_total ? (
+          <InfoRow
+            label="قیمت پس از کسر تخفیفات"
+            value={price(subtotal - discount_total)}
+          />
+        ) : (
+          ""
+        )}
 
-        {/* <InfoRow
-          label="قیمت پس از کسر تخفیف دستی"
-          value={manual_discount_applied ? price(manual_discount_applied) : "—"}
-          isActiveBg
-        />
-
+        {/*
         <InfoRow
           label="قیمت پس از کسر تخفیف پروموشن"
           value={

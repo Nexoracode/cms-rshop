@@ -21,10 +21,9 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
     discount_total,
     total,
     items,
+    gift_wrapping_cost,
     promotion_code,
   } = order;
-
-  console.log(order);
 
   const [products, setProducts] = useState<any[]>([]);
 
@@ -135,10 +134,10 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         ))}
       </div>
 
-      <InfoRow label="هزینه ارسال" value={price(80000)} />
+      <InfoRow label="هزینه ارسال" value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))} />
       <InfoRow
         label="هزینه بسته بندی"
-        value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
+        value={gift_wrapping_cost === 0 ? "رایگان" : String(price(gift_wrapping_cost))}
       />
 
       <InfoRow label="مجموع قیمت" value={price(subtotal)} />
