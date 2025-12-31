@@ -52,7 +52,8 @@ const StaticSectionModal: React.FC<Props> = ({
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
     {
-      onValidate: (data: any) => staticSectionValidation(data, showCategoryField),
+      onValidate: (data: any) =>
+        staticSectionValidation(data, showCategoryField),
       runValidationOnChange: true,
     }
   );
@@ -60,14 +61,15 @@ const StaticSectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
-    const { view_all_link, products_limit, is_active, category_id } = defaultValues;
+    const { view_all_link, products_limit, is_active, category } =
+      defaultValues;
 
     setForm({
       ...initialForm,
       view_all_link,
       products_limit,
       is_active,
-      ...(showCategoryField ? {category_id} : {})
+      ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   }, [defaultValues]);
 
@@ -79,7 +81,7 @@ const StaticSectionModal: React.FC<Props> = ({
       show_view_all_button: true,
       products_limit,
       view_all_link,
-      ...(showCategoryField ? {category_id} : {})
+      ...(showCategoryField ? { category_id } : {}),
     };
 
     if (defaultValues?.id) {
@@ -146,7 +148,9 @@ const StaticSectionModal: React.FC<Props> = ({
           <CategorySelect
             label="دسته بندی"
             value={form.category_id}
-            onChange={(val) => handleFieldChange("category_id", Number(val) || 0)}
+            onChange={(val) =>
+              handleFieldChange("category_id", Number(val) || 0)
+            }
             placeholder="انتخاب کنید"
             errorMessage={errors.category_id}
             withAddModal={false}
