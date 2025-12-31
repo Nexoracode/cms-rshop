@@ -4,6 +4,7 @@ import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import RejectReceiptImageModal from "./RejectReceiptImageModal";
 import Link from "next/link";
 import { Alert } from "@heroui/react";
+import PaymentInfoCard from "./PaymentInfoCard";
 
 const ConfirmingPaymentStep = ({ order }: { order: any }) => {
   const reviewCardToCardPayment = useReviewCardToCardPayment();
@@ -54,7 +55,7 @@ const ConfirmingPaymentStep = ({ order }: { order: any }) => {
         </div>
       </div>
     ) : (
-      ""
+      <PaymentInfoCard order={order}/>
     )
   ) : (
     <Alert

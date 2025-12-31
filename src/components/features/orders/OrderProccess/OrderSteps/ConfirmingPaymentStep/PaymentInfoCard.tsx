@@ -2,6 +2,7 @@ import InfoRow from "@/components/shared/InfoRow";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import { price } from "@/core/utils/helper";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
+import { toPersianUTC } from "@/core/utils/date";
 
 const PaymentInfoCard = ({ order }: { order: any }) => {
   const updateOrderStatus = useUpdateOrderStatus();
@@ -17,16 +18,34 @@ const PaymentInfoCard = ({ order }: { order: any }) => {
   return (
     <>
       <div className="my-6 space-y-1.5">
-        <InfoRow label="مبلغ پرداختی" value={price(order?.payment?.amount)} hoverable />
         <InfoRow
-          label="شماره همراه مشتری"
-          value={order?.user?.phone || order?.user?.email || "—"}
+          label="تاریخ پرداخت"
+          value={
+            order.payment?.created_at
+              ? toPersianUTC(order.payment.created_at)
+              : "—"
+          }
+        />
+        <InfoRow
+          label="مبلغ پرداختی"
+          value={price(order?.payment?.amount)}
           hoverable
           isActiveBg
         />
         <InfoRow
+          label="شماره همراه مشتری"
+          value={order?.user?.phone || order?.user?.email || "—"}
+          hoverable
+        />
+        <InfoRow
           label="شماره کارت مشتری"
-          value={order?.user?.card_number || "—"}
+          value={order?.payment?.sender_card_number || "—"}
+          hoverable
+          isActiveBg
+        />
+        <InfoRow
+          label="کد رهگیری"
+          value={`#${order?.payment?.tracking_code}` || "—"}
           hoverable
         />
       </div>
