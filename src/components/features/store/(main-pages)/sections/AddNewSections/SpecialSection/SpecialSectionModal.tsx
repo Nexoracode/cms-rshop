@@ -68,10 +68,11 @@ const SpecialSectionModal: React.FC<Props> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    const { section_type, ...other } = form;
+    const { section_type, show_view_all_button, ...other } = form;
 
     const payload: Record<string, any> = {
       section_type: "special_products",
+      show_view_all_button: true,
       ...other,
     };
 
