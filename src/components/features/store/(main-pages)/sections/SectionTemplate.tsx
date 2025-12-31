@@ -43,10 +43,7 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
           rows={1}
           rowHeight={250}
           renderItem={(product: any) => (
-            <ProductTemplate
-              key={product.id}
-              product={product}
-            />
+            <ProductTemplate key={product.id} product={product} />
           )}
         />
       )}
@@ -60,16 +57,20 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
       )}
 
       {display_style === "list" && (
-        <div className="grid grid-cols-3 gap-4">
-          {products.map((product: any, index: number) => (
+        <Slider
+          items={products}
+          itemsPerView={3}
+          rows={3}
+          rowHeight={120}
+          renderItem={(product: any, index: number) => (
             <RankedProductCard
               key={product.id}
               index={index}
               image={product.image}
               title={product.name}
             />
-          ))}
-        </div>
+          )}
+        />
       )}
     </div>
   );

@@ -28,7 +28,7 @@ const initialForm = {
   section_type: "category_based",
   display_style: "carousel",
   products_limit: 10,
-  show_view_all_button: false,
+  show_view_all_button: true,
   view_all_link: "",
   is_active: true,
 };
@@ -42,13 +42,11 @@ const CtegorySectionModal: React.FC<Props> = ({
     useCreateHomeSection();
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
-  //
-  const [showLink, setShowLink] = useState<boolean>(false);
 
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
     {
-      onValidate: (data: any) => feauturedSectionValidation(data, showLink),
+      onValidate: (data: any) => feauturedSectionValidation(data),
       runValidationOnChange: true,
     }
   );
@@ -56,29 +54,28 @@ const CtegorySectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
-    const { show_view_all_button, view_all_link, products_limit, is_active } = defaultValues;
+    const { view_all_link, products_limit, is_active } = defaultValues;
+    console.log(defaultValues);
 
     setForm({
       ...initialForm,
-      show_view_all_button,
       view_all_link,
       products_limit,
-      is_active
+      is_active,
     });
   }, [defaultValues]);
 
-  useEffect(() => {
-    if (form) {
-      if (form.show_view_all_button) {
-        setShowLink(true);
-      }
-    }
-  }, [isOpen]);
-
   const handleSubmit = submit(async () => {
+    const { is_active, products_limit, view_all_link } = form;
+
     const payload: Record<string, any> = {
-      ...form,
+      is_active,
+      show_view_all_button: true,
+      products_limit,
+      view_all_link,
     };
+
+    console.log(payload);
 
     if (defaultValues?.id) {
       return handleMutation(() => updateSection(payload), {
@@ -93,7 +90,6 @@ const CtegorySectionModal: React.FC<Props> = ({
 
   const resetForm = () => {
     reset();
-    setShowLink(false);
   };
 
   return (
@@ -115,32 +111,18 @@ const CtegorySectionModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating}
     >
       <div className="flex flex-col gap-4">
-        <NumberInput
-          label="تعداد محدودیت نمایش"
-          placeholder="10"
-          suffix="عدد"
-          min={0}
-          max={30}
-          value={form.products_limit}
-          onChange={(limit) => handleFieldChange("products_limit", limit)}
-        />
-
-        <ToggleSection
-          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
-        />
-
-        <ToggleSection
-          title={"نمایش لینک"}
-          initialMode={showLink}
-          onChange={(val) => {
-            handleFieldChange("show_view_all_button", val);
-            setShowLink(val);
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <NumberInput
+            label="تعداد محدودیت نمایش"
+            placeholder="10"
+            suffix="عدد"
+            min={0}
+            max={30}
+            value={form.products_limit}
+            onChange={(limit) => handleFieldChange("products_limit", limit)}
+          />
           <TextInput
-            label=""
+            label="لینک"
             placeholder="path/to/1"
             value={form.view_all_link}
             allowSpecialChars
@@ -153,7 +135,13 @@ const CtegorySectionModal: React.FC<Props> = ({
             inputAlign="left"
             allowSpaces={false}
           />
-        </ToggleSection>
+        </div>
+
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
+        />
       </div>
     </BaseModal>
   );
