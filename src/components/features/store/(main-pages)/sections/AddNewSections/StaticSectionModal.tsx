@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -11,14 +11,14 @@ import {
   useUpdateHomeSection,
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { feauturedSectionValidation } from "../FeaturedOffersSection/feautured-section-validation";
-import { TbCategory } from "react-icons/tb";
+import { feauturedSectionValidation } from "./FeaturedOffersSection/feautured-section-validation";
 
 type Props = {
-  sectionId?: number;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
+  title: string;
+  icon: React.ReactNode;
 };
 
 const initialForm = {
@@ -33,10 +33,12 @@ const initialForm = {
   is_active: true,
 };
 
-const CtegorySectionModal: React.FC<Props> = ({
+const StaticSectionModal: React.FC<Props> = ({
   defaultValues,
   isOpen,
   onOpenChange,
+  icon,
+  title,
 }) => {
   const { mutateAsync: createSection, isPending: isCreating } =
     useCreateHomeSection();
@@ -104,10 +106,10 @@ const CtegorySectionModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary",
             }
       }
-      title={defaultValues?.id ? "ویرایش دسته بندی" : "افزودن دسته بندی"}
+      title={defaultValues?.id ? `ویرایش ${title}` : `افزودن ${title}`}
       confirmText={defaultValues?.id ? "ویرایش" : "ایجاد"}
       onConfirm={handleSubmit}
-      icon={<TbCategory />}
+      icon={icon}
       isConfirmDisabled={isCreating || isUpdating}
     >
       <div className="flex flex-col gap-4">
@@ -147,4 +149,4 @@ const CtegorySectionModal: React.FC<Props> = ({
   );
 };
 
-export default CtegorySectionModal;
+export default StaticSectionModal;

@@ -6,8 +6,9 @@ import ProductTemplate from "../../../ProductTemplate";
 import SectionTemplateHeader from "../../SectionTemplateHeader";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
-import CtegorySectionModal from "./CtegorySectionModal";
+import StaticSectionModal from "../StaticSectionModal";
 import AddNewCategorySection from "./AddNewCategorySection";
+import { BiCategoryAlt } from "react-icons/bi";
 
 type CategorySectionProps = {
   categories: any[];
@@ -19,7 +20,9 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
 
   return categories ? (
     <div className="hover-reveal-parent">
-      <CtegorySectionModal
+      <StaticSectionModal
+        title="دسته بندی"
+        icon={<BiCategoryAlt />}
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         defaultValues={categories[activeSlider]}
@@ -32,14 +35,13 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
           viewAllLink={categories[activeSlider]?.view_all_link}
         >
           <div className="flex items-center gap-2">
-            <CtegorySectionModal />
             <ActionButton
               icon={<TbEdit className="text-gray-700" size={18} />}
               onClick={() => {
                 setIsOpen(true);
-                console.log("FFFFFFF", categories[activeSlider]);
               }}
             />
+            <StaticSectionModal title="دسته بندی" icon={<BiCategoryAlt />} />
           </div>
         </SectionTemplateHeader>
 

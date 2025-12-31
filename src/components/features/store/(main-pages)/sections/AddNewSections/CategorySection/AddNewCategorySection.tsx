@@ -1,5 +1,5 @@
 import AddSectionCard from "../../../shared/AddSectionCard";
-import CtegorySectionModal from "./CtegorySectionModal";
+import StaticSectionModal from "../StaticSectionModal";
 import { TbCategory } from "react-icons/tb";
 
 const AddNewCategorySection = () => {
@@ -14,7 +14,7 @@ const AddNewCategorySection = () => {
             <br />
             برای نمایش این بخش، حداقل یک محصول به دسته‌بندی‌ها اضافه کنید.
           </p>
-          <CtegorySectionModal />
+          <StaticSectionModal />
         </div>
       }
     />

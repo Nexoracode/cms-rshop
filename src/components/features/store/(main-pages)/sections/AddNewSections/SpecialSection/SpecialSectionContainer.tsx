@@ -23,13 +23,17 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
 
   return (
     <>
-      <ProductsSelectionProvider initialProducts={editSection?.products || []}>
-        <SpecialSectionModal
-          isOpen={isOpen}
-          onOpenChange={setIsOpen}
-          defaultValues={editSection}
-        />
-      </ProductsSelectionProvider>
+      {editSection && (
+        <ProductsSelectionProvider
+          initialProducts={editSection?.products || []}
+        >
+          <SpecialSectionModal
+            isOpen={isOpen}
+            onOpenChange={setIsOpen}
+            defaultValues={editSection}
+          />
+        </ProductsSelectionProvider>
+      )}
       {specialProducts ? (
         specialProducts.map((section: any, index: number) => (
           <div key={index}>
@@ -40,7 +44,7 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
                   <ActionButton
                     icon={<TbEdit className="text-gray-700" size={18} />}
                     onClick={() => {
-                      setEditSection(section)
+                      setEditSection(section);
                       setIsOpen(true);
                     }}
                   />
