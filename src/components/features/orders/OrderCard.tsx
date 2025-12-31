@@ -53,6 +53,8 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
 
   const isNotDelivered = order.status === "not_delivered";
 
+  console.log(order.items);
+
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-3 p-4 min-w-[320px] sm:w-[386px] md:w-full"
@@ -110,47 +112,11 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
       <CardRows items={rowItems} />
 
       <div className="flex items-center justify-between w-full py-4 px-2">
-        {order.status === "payment_confirmation_pending" ? (
-          <p className="text-yellow-600 animate-pulse">
-            درانتظار تایید پرداخت...
-          </p>
-        ) : (
-          ""
-        )}
-
-        {order.status === "pending_approval" ? (
-          <p className="text-yellow-600 animate-pulse">در انتظار تایید...</p>
-        ) : (
-          ""
-        )}
-
-        {isNotDelivered ? (
-          <p className="text-red-600 animate-pulse">مشتری تحویل نگرفته...</p>
-        ) : (
-          ""
-        )}
-
-        {!isNotDelivered && !isAccept ? (
-          <p className="text-slate-600">تعداد سفارش</p>
-        ) : (
-          ""
-        )}
-
-        {/* <AvatarGroup
-          isBordered
-          max={4}
-          total={order?.items?.length - 1}
-          size="sm"
-        >
-          {order.items.map((item: any) => (
-            <Image
-              src={item.product.image}
-              alt={item.product.name}
-              width={40}
-              height={40}
-            />
-          ))}
-        </AvatarGroup> */}
+        <p className="text-slate-600 flex items-center gap-2">
+          <span>تعداد سفارش</span>
+          <span>{order.items.length}</span>
+        </p>
+        
         <AvatarGroup
           isBordered
           max={4}
