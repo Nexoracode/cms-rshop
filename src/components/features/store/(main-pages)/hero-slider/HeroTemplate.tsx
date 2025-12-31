@@ -11,10 +11,12 @@ import { useState } from "react";
 
 type HeroSlidersTemplateProps = {
   slider: HeroSlider;
+  className?: string
 };
 
 const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   slider,
+  className
 }) => {
   const { mutate: deleteSlider } = useDeleteHeroSlider();
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -33,7 +35,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   return (
     <div
       key={slider.id}
-      className="absolute inset-0 cursor-pointer"
+      className={`absolute inset-0 cursor-pointer ${className}`}
       onClick={() => setIsEditOpen(true)}
     >
       <HeroSliderFormModal

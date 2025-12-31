@@ -5,13 +5,14 @@ import HeroSliderEmptyState from "./HeroSliderEmptyState";
 
 type Props = {
   sliders?: HeroSlider[];
+  layoutType?: string
 };
 
-const HeroSliderContainer: React.FC<Props> = ({ sliders = [] }) => {
+const HeroSliderContainer: React.FC<Props> = ({ sliders = [], layoutType }) => {
   const sortedSliders = [...sliders].sort(
     (a, b) => a.sort_order - b.sort_order
   );
-  
+
   return (
     <div className="w-full rounded-2xl overflow-hidden">
       {sortedSliders.length ? (
@@ -19,7 +20,7 @@ const HeroSliderContainer: React.FC<Props> = ({ sliders = [] }) => {
           items={sortedSliders}
           className="w-full"
           renderItem={(slider) => (
-            <HeroTemplate key={slider.id} slider={slider} />
+            <HeroTemplate key={slider.id} slider={slider} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
           )}
         />
       ) : (

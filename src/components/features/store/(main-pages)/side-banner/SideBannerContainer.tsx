@@ -4,15 +4,16 @@ import { SIDE_BANNER_POSITIONS, SideBanner } from "./side-banner.types";
 
 type Props = {
   banners?: SideBanner[];
+  className?: string
 };
 
-const SideBannerContainer: React.FC<Props> = ({ banners = [] }) => {
+const SideBannerContainer: React.FC<Props> = ({ banners = [], className }) => {
   const bannerMap = Object.fromEntries(
     banners.map((banner) => [banner.position, banner])
   ) as Record<string, SideBanner>;
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2 gap-2">
+    <div className={`grid grid-cols-2 grid-rows-2 gap-2 ${className}`}>
       {SIDE_BANNER_POSITIONS.map((position) => {
         const banner = bannerMap[position];
         

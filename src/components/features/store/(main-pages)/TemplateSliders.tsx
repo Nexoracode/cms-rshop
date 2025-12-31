@@ -47,6 +47,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     findedOther && setOtherSection(findedOther);
     findedFeatured && setFeaturedSection(findedFeatured);
   }, [sections]);
+  console.log("asd", hero_sliders);
 
   return (
     <div className="flex flex-col gap-6 select-none">
@@ -54,10 +55,20 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
 
       <div className="flex flex-col gap-4 relative">
         <HomePageLayout initialLayout={layout_type} />
-        <div className="grid grid-cols-2 gap-4">
-          <HeroSliderContainer sliders={hero_sliders} />
-          <SideBannerContainer banners={side_banners} />
-        </div>
+        {layout_type === "side_by_side" ? (
+          <div className="grid grid-cols-2 gap-4">
+            <HeroSliderContainer sliders={hero_sliders} />
+            <SideBannerContainer banners={side_banners} />
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <HeroSliderContainer sliders={hero_sliders} layoutType={layout_type}/>
+            <SideBannerContainer
+              banners={side_banners}
+              className="grid-cols-4 grid-rows-1"
+            />
+          </div>
+        )}
       </div>
 
       {featuredSection && (
