@@ -1,15 +1,15 @@
-import AddNewPopularSection from "../PopularSection/AddNewPopularSection";
-import AddNewSpecialSection from "./AddNewSpecialSection";
-import AddNewCategorySection from "../CategorySection/AddNewCategorySection";
-import SectionTemplate from "../../SectionTemplate";
-import PopularSectionContainer from "../PopularSection/PopularSectionContainer";
-import CategorySection from "../CategorySection/CategorySection";
+import AddNewPopularSection from "./PopularSection/AddNewPopularSection";
+import AddNewSpecialSection from "./SpecialSection/AddNewSpecialSection";
+import AddNewCategorySection from "./CategorySection/AddNewCategorySection";
+import SectionTemplate from "../SectionTemplate";
+import PopularSectionContainer from "./PopularSection/PopularSectionContainer";
+import CategorySection from "./CategorySection/CategorySection";
 
 type Props = {
   sections?: any;
 };
 
-const SpecialSectionContainer: React.FC<Props> = ({ sections = [] }) => {
+const SectionsContainer: React.FC<Props> = ({ sections = [] }) => {
   const groupedSections = sections.reduce((acc: any, section: any) => {
     const type = section.section_type;
 
@@ -30,11 +30,7 @@ const SpecialSectionContainer: React.FC<Props> = ({ sections = [] }) => {
               mostPopular={groupedSections?.most_popular?.[0]}
             />
 
-            {groupedSections?.category_based ? (
-              <CategorySection categories={groupedSections.category_based} />
-            ) : (
-              <AddNewCategorySection />
-            )}
+            <CategorySection categories={groupedSections?.category_based} />
 
             {groupedSections?.special_products ? (
               groupedSections?.special_products
@@ -58,4 +54,4 @@ const SpecialSectionContainer: React.FC<Props> = ({ sections = [] }) => {
   );
 };
 
-export default SpecialSectionContainer;
+export default SectionsContainer;

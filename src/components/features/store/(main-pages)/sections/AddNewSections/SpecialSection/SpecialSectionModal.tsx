@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import TextInput from "@/components/ui/inputs/TextInput";
@@ -14,7 +14,7 @@ import {
   useCreateHomeSection,
   useUpdateHomeSection,
 } from "@/core/hooks/api/adminHome/useHomeSections";
-import { validateHomeSection } from "./home-section-validation";
+import { validateSpecialSection } from "./special-section-validation";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
@@ -50,13 +50,12 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(sectionId ?? 0);
   //
-  const { selectedProducts, setSelectedProducts, removeProduct, addProduct } =
-    useProductsSelection();
+  const { setSelectedProducts } = useProductsSelection();
 
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
     {
-      onValidate: (data: any) => validateHomeSection(data),
+      onValidate: (data: any) => validateSpecialSection(data),
       runValidationOnChange: true,
     }
   );
@@ -91,7 +90,7 @@ const SpecialSectionModal: React.FC<Props> = ({
 
   const resetForm = () => {
     reset();
-    setSelectedProducts([])
+    setSelectedProducts([]);
   };
 
   const displayOptions: SelectOption[] = [

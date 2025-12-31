@@ -1,4 +1,4 @@
-export function validateHomeSection(data: any) {
+export function validateSpecialSection(data: any) {
   const errors: Record<string, string> = {};
 
   if (!data.title || data.title.trim() === "") {

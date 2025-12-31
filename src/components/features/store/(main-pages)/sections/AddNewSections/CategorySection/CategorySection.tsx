@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import SectionTemplate from "../../SectionTemplate";
+import { useState } from "react";
 import Slider from "@/components/shared/Slider";
 import ProductTemplate from "../../../ProductTemplate";
 import SectionTemplateHeader from "../../SectionTemplateHeader";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import CtegorySectionModal from "./CtegorySectionModal";
+import AddNewCategorySection from "./AddNewCategorySection";
 
 type CategorySectionProps = {
   categories: any[];
@@ -17,7 +17,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
   const [activeSlider, setActiveSlider] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
+  return categories ? (
     <div className="hover-reveal-parent">
       <CtegorySectionModal
         isOpen={isOpen}
@@ -38,7 +38,6 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
               onClick={() => {
                 setIsOpen(true);
                 console.log("FFFFFFF", categories[activeSlider]);
-                
               }}
             />
           </div>
@@ -81,6 +80,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
         </div>
       </div>
     </div>
+  ) : (
+    <AddNewCategorySection />
   );
 };
 
