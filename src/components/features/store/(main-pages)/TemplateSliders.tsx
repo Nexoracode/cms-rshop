@@ -52,7 +52,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     <div className="flex flex-col gap-6 select-none">
       <PromoBannerContainer promoBnners={promo_banners} />
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-4 relative">
         <HomePageLayout initialLayout={layout_type} />
         <div className="grid grid-cols-2 gap-4">
           <HeroSliderContainer sliders={hero_sliders} />

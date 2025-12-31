@@ -40,7 +40,7 @@ const HomePageLayout = ({ initialLayout }: { initialLayout: LayoutKey }) => {
           }
         );
       }}
-      buttonClassName="capitalize w-full xs:w-fit text-sm"
+      buttonClassName="capitalize w-full xs:w-fit text-sm absolute top-4 right-4 right-4 !top-4 bg-white"
       popoverClassName="w-[240px]"
     />
   );
