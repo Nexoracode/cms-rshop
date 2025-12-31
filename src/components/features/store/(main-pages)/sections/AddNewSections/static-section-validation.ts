@@ -1,4 +1,4 @@
-export function staticSectionValidation(data: any) {
+export function staticSectionValidation(data: any, showCategory?: boolean) {
   const errors: Record<string, string> = {};
 
   if (isNaN(data.products_limit) || data.products_limit <= 0) {
@@ -7,6 +7,12 @@ export function staticSectionValidation(data: any) {
 
   if (!data.view_all_link || data.view_all_link.trim() === "") {
     errors.view_all_link = "لطفاً لینک مشاهده همه را وارد کنید.";
+  }
+
+  if (showCategory) {
+    if (!data.category_id) {
+      errors.category_id = "انتخاب دسته بندی الزامی است.";
+    }
   }
 
   return errors;

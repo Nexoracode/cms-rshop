@@ -15,7 +15,7 @@ const AddNewCategorySection = () => {
             <br />
             برای نمایش این بخش، حداقل یک محصول به دسته‌بندی‌ها اضافه کنید.
           </p>
-          <StaticSectionModal title="دسته بندی" icon={<BiCategoryAlt />} />
+          <StaticSectionModal title="دسته بندی" icon={<BiCategoryAlt />} showCategoryField/>
         </div>
       }
     />

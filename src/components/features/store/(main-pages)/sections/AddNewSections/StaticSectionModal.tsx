@@ -12,6 +12,7 @@ import {
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { staticSectionValidation } from "./static-section-validation";
+import CategorySelect from "@/components/features/products/categories/CategorySelect";
 
 type Props = {
   defaultValues?: any;
@@ -19,6 +20,7 @@ type Props = {
   onOpenChange?: (isOpen: boolean) => void;
   title: string;
   icon: React.ReactNode;
+  showCategoryField?: boolean;
 };
 
 const initialForm = {
@@ -30,6 +32,7 @@ const initialForm = {
   products_limit: 10,
   show_view_all_button: true,
   view_all_link: "",
+  category_id: 0,
   is_active: true,
 };
 
@@ -39,6 +42,7 @@ const StaticSectionModal: React.FC<Props> = ({
   onOpenChange,
   icon,
   title,
+  showCategoryField = false,
 }) => {
   const { mutateAsync: createSection, isPending: isCreating } =
     useCreateHomeSection();
@@ -48,7 +52,7 @@ const StaticSectionModal: React.FC<Props> = ({
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
     {
-      onValidate: (data: any) => staticSectionValidation(data),
+      onValidate: (data: any) => staticSectionValidation(data, showCategoryField),
       runValidationOnChange: true,
     }
   );
@@ -56,28 +60,27 @@ const StaticSectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
-    const { view_all_link, products_limit, is_active } = defaultValues;
-    console.log(defaultValues);
+    const { view_all_link, products_limit, is_active, category_id } = defaultValues;
 
     setForm({
       ...initialForm,
       view_all_link,
       products_limit,
       is_active,
+      ...(showCategoryField ? {category_id} : {})
     });
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    const { is_active, products_limit, view_all_link } = form;
+    const { is_active, products_limit, view_all_link, category_id } = form;
 
     const payload: Record<string, any> = {
       is_active,
       show_view_all_button: true,
       products_limit,
       view_all_link,
+      ...(showCategoryField ? {category_id} : {})
     };
-
-    console.log(payload);
 
     if (defaultValues?.id) {
       return handleMutation(() => updateSection(payload), {
@@ -138,6 +141,19 @@ const StaticSectionModal: React.FC<Props> = ({
             allowSpaces={false}
           />
         </div>
+
+        {showCategoryField ? (
+          <CategorySelect
+            label="دسته بندی"
+            value={form.category_id}
+            onChange={(val) => handleFieldChange("category_id", Number(val) || 0)}
+            placeholder="انتخاب کنید"
+            errorMessage={errors.category_id}
+            withAddModal={false}
+          />
+        ) : (
+          ""
+        )}
 
         <ToggleSection
           title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}

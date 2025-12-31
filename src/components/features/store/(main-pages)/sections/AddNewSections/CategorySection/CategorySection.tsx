@@ -26,6 +26,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         defaultValues={categories[activeSlider]}
+        showCategoryField
       />
 
       <div className="flex flex-col gap-2">
@@ -41,7 +42,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
                 setIsOpen(true);
               }}
             />
-            <StaticSectionModal title="دسته بندی" icon={<BiCategoryAlt />} />
+            <StaticSectionModal title="دسته بندی" icon={<BiCategoryAlt />} showCategoryField/>
           </div>
         </SectionTemplateHeader>
 
