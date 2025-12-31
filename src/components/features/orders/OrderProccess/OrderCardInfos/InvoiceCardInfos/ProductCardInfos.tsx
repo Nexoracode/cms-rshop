@@ -39,7 +39,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
               ) : (
                 ""
               )}
-              <h3 className="text-gray-800 truncate">{product.name}</h3>
+              <h3 className="text-gray-800 truncate w-48">{product.name}</h3>
             </div>
             <div className="w-full flex items-center justify-between mt-2 gap-4">
               <span className="text-sm text-gray-500">
