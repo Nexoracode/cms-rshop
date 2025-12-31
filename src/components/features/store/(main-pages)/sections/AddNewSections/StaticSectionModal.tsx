@@ -11,7 +11,7 @@ import {
   useUpdateHomeSection,
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { feauturedSectionValidation } from "./FeaturedOffersSection/feautured-section-validation";
+import { staticSectionValidation } from "./static-section-validation";
 
 type Props = {
   defaultValues?: any;
@@ -48,7 +48,7 @@ const StaticSectionModal: React.FC<Props> = ({
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     initialForm,
     {
-      onValidate: (data: any) => feauturedSectionValidation(data),
+      onValidate: (data: any) => staticSectionValidation(data),
       runValidationOnChange: true,
     }
   );

@@ -5,7 +5,8 @@ import SectionTemplate from "../../SectionTemplate";
 import AddNewPopularSection from "./AddNewPopularSection";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
-import PopularSectionModal from "./PopularSectionModal";
+import StaticSectionModal from "../StaticSectionModal";
+import { GiHeartBottle } from "react-icons/gi";
 
 type PopularSectionContainer = {
   mostPopular: any;
@@ -18,7 +19,9 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
 
   return (
     <>
-      <PopularSectionModal
+      <StaticSectionModal
+        title="محبوت ترین ها"
+        icon={<GiHeartBottle />}
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         defaultValues={mostPopular}

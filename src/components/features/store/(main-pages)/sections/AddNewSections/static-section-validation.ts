@@ -1,4 +1,4 @@
-export function feauturedSectionValidation(data: any) {
+export function staticSectionValidation(data: any) {
   const errors: Record<string, string> = {};
 
   if (isNaN(data.products_limit) || data.products_limit <= 0) {

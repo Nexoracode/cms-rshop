@@ -1,6 +1,7 @@
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import AddSectionCard from "../../../shared/AddSectionCard";
-import FeaturedOffersSectionModal from "./FeaturedOffersSectionModal";
+import StaticSectionModal from "../StaticSectionModal";
+import { LuPercent } from "react-icons/lu";
 
 const AddFeaturedOfferSection = () => {
   return (
@@ -26,7 +27,7 @@ const AddFeaturedOfferSection = () => {
             />
           </div> */}
           <div>
-            <FeaturedOffersSectionModal />
+            <StaticSectionModal title="دسته بندی" icon={<LuPercent />} />
           </div>
         </div>
       }

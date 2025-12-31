@@ -1,6 +1,6 @@
 import { GiHeartBottle } from "react-icons/gi";
 import AddSectionCard from "../../../shared/AddSectionCard";
-import PopularSectionModal from "./PopularSectionModal";
+import StaticSectionModal from "../StaticSectionModal";
 
 const AddNewPopularSection = () => {
   return (
@@ -14,7 +14,7 @@ const AddNewPopularSection = () => {
             <br />
             برای نمایش این بخش، حداقل یک محصول اضافه کنید.
           </p>
-          <PopularSectionModal />
+          <StaticSectionModal title="محبوت ترین ها" icon={<GiHeartBottle/>}/>
         </div>
       }
     />
