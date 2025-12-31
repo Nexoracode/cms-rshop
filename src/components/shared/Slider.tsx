@@ -6,7 +6,7 @@ import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 type SliderProps<T> = {
   items: T[];
   itemsPerView?: number; // تعداد اسلاید کنار هم
-  rows?: number;         // تعداد آیتم عمودی داخل هر اسلاید
+  rows?: number; // تعداد آیتم عمودی داخل هر اسلاید
   rowHeight?: number | string; // ارتفاع هر row
   renderItem: (item: T, index: number) => ReactNode;
   className?: string;
@@ -67,11 +67,18 @@ function Slider<T>({
             className="grid gap-2"
             style={{ gridTemplateRows: rowTemplate }}
           >
-            {group.map((item, itemIndex) => (
-              <div key={itemIndex} className={`relative w-full h-full flex justify-center items-center ${childClassName}`}>
-                {renderItem(item, itemIndex)}
-              </div>
-            ))}
+            {group.map((item, itemIndex) => {
+              const realIndex = (currentIndex + slideIndex) * rows + itemIndex;
+
+              return (
+                <div
+                  key={realIndex}
+                  className={`relative w-full h-full flex justify-center items-center ${childClassName}`}
+                >
+                  {renderItem(item, realIndex)}
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>

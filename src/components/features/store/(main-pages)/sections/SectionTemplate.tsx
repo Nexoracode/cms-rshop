@@ -62,10 +62,11 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
           itemsPerView={3}
           rows={3}
           rowHeight={120}
+          className="border rounded-2xl p-1"
           renderItem={(product: any, index: number) => (
             <RankedProductCard
               key={product.id}
-              index={index}
+              index={index+1}
               image={product.image}
               title={product.name}
             />

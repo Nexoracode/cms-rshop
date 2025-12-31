@@ -11,7 +11,7 @@ const CategoriesSliderContainer: React.FC<Props> = ({ categories = [] }) => {
     <div className="w-full">
       {categories?.length ? (
         <div className="flex flex-col gap-10 justify-center items-center">
-          <p className="text-lg text-gray-700">خرید بر اساس دسته‌بندی</p>
+          <p className="text-lg text-gray-700">دسته بندی ها</p>
           <Slider
             items={categories}
             itemsPerView={6}
