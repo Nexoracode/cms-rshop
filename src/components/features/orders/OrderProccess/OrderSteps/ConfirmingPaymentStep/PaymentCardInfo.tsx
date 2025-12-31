@@ -4,7 +4,7 @@ import { price } from "@/core/utils/helper";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { toPersianUTC } from "@/core/utils/date";
 
-const PaymentInfoCard = ({ order }: { order: any }) => {
+const PaymentCardInfo = ({ order }: { order: any }) => {
   const updateOrderStatus = useUpdateOrderStatus();
 
   const submitHandler = () => {
@@ -61,4 +61,4 @@ const PaymentInfoCard = ({ order }: { order: any }) => {
   );
 };
 
-export default PaymentInfoCard;
+export default PaymentCardInfo;
