@@ -10,6 +10,7 @@ import SectionsContainer from "./sections/AddNewSections/SectionsContainer";
 import FeaturedOffersSection from "./sections/AddNewSections/FeaturedOffersSection/FeaturedOffersSection";
 import SideBannerContainer from "./side-banner/SideBannerContainer";
 import PromoBannerContainer from "./PromoBanner/PromoBannerContainer";
+import HomePageLayout from "./HomePageLayout";
 
 type TemplateSlidersProps = {
   allSections: {
@@ -19,6 +20,7 @@ type TemplateSlidersProps = {
     hero_sliders: HeroSlider[];
     sections: any[];
     side_banners: SideBanner[];
+    layout_type: any;
   };
 };
 
@@ -32,6 +34,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     sections,
     side_banners,
     promo_banners,
+    layout_type,
   } = allSections;
 
   useEffect(() => {
@@ -49,9 +52,12 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     <div className="flex flex-col gap-6 select-none">
       <PromoBannerContainer promoBnners={promo_banners} />
 
-      <div className="grid grid-cols-2 gap-4">
-        <HeroSliderContainer sliders={hero_sliders} />
-        <SideBannerContainer banners={side_banners} />
+      <div className="flex flex-col">
+        <HomePageLayout initialLayout={layout_type} />
+        <div className="grid grid-cols-2 gap-4">
+          <HeroSliderContainer sliders={hero_sliders} />
+          <SideBannerContainer banners={side_banners} />
+        </div>
       </div>
 
       {featuredSection && (

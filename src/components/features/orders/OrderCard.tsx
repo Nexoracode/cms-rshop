@@ -53,8 +53,6 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
 
   const isNotDelivered = order.status === "not_delivered";
 
-  console.log(order.items);
-
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-3 p-4 min-w-[320px] sm:w-[386px] md:w-full"

@@ -5,16 +5,13 @@ export const useUpdateHomePageLayout = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({
-      data,
       type,
     }: {
-      data: any;
       type: "side_by_side" | "stacked";
     }) =>
       fetcher({
         route: `/admin/settings/homepage-layout/${type}`,
         method: "PATCH",
-        body: data,
         isActiveToast: true,
         loadingText: "در حال بروزرسانی چیدمان...",
         successText: "چیدمان با موفقیت بروزرسانی شد",
