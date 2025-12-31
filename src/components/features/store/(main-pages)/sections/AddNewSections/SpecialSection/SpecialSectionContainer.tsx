@@ -18,22 +18,21 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
   specialProducts,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const {mutate: deleteHomeSection} = useDeleteHomeSection()
+  const [editSection, setEditSection] = useState<any>(null);
+  const { mutate: deleteHomeSection } = useDeleteHomeSection();
 
   return (
     <>
+      <ProductsSelectionProvider initialProducts={editSection?.products || []}>
+        <SpecialSectionModal
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          defaultValues={editSection}
+        />
+      </ProductsSelectionProvider>
       {specialProducts ? (
         specialProducts.map((section: any, index: number) => (
           <div key={index}>
-            <ProductsSelectionProvider
-              initialProducts={section?.products || []}
-            >
-              <SpecialSectionModal
-                isOpen={isOpen}
-                onOpenChange={setIsOpen}
-                defaultValues={section}
-              />
-            </ProductsSelectionProvider>
             <SectionTemplate
               section={section}
               children={
@@ -41,10 +40,13 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
                   <ActionButton
                     icon={<TbEdit className="text-gray-700" size={18} />}
                     onClick={() => {
+                      setEditSection(section)
                       setIsOpen(true);
                     }}
                   />
-                  <DeleteButton onDelete={() => deleteHomeSection(section.id)} />
+                  <DeleteButton
+                    onDelete={() => deleteHomeSection(section.id)}
+                  />
                 </div>
               }
             />
