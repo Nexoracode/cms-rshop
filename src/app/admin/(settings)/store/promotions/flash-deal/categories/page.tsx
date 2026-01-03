@@ -1,14 +1,14 @@
 "use client";
 
 import PromotionRouteWrapper from "@/components/features/store/promotions/PromotionRouteWrapper";
-import { CouponHooks } from "@/core/hooks/api/usePromotions";
+import { FlashDealHooks } from "@/core/hooks/api/usePromotions";
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 import { CategoriesSelectionProvider } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
 
 const CategoriesCoupon = () => {
   return (
     <PromotionRouteWrapper
-      Hooks={CouponHooks}
+      Hooks={FlashDealHooks}
       Provider={CategoriesSelectionProvider}
       providerProps={{ initialCategories: [] }}
       formType="flash_deal"

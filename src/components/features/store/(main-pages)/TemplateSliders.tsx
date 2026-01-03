@@ -65,7 +65,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
             <HeroSliderContainer sliders={hero_sliders} layoutType={layout_type}/>
             <SideBannerContainer
               banners={side_banners}
-              className="grid-cols-4 grid-rows-1"
+              className="grid-cols-4 !grid-rows-1"
             />
           </div>
         )}

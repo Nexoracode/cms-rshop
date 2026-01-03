@@ -2,14 +2,14 @@
 
 // CustomersCoupon.tsx
 import PromotionRouteWrapper from "@/components/features/store/promotions/PromotionRouteWrapper";
-import { CouponHooks } from "@/core/hooks/api/usePromotions";
+import { FirstOrderHooks } from "@/core/hooks/api/usePromotions";
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 import { CustomersSelectionProvider } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
 
 const CustomersCoupon = () => {
   return (
     <PromotionRouteWrapper
-      Hooks={CouponHooks}
+      Hooks={FirstOrderHooks}
       Provider={CustomersSelectionProvider}
       providerProps={{ initialCustomers: [] }}
       formType="first_order"

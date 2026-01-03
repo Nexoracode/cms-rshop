@@ -1,12 +1,12 @@
 "use client";
 
 import PromotionRouteWrapper from "@/components/features/store/promotions/PromotionRouteWrapper";
-import { CouponHooks } from "@/core/hooks/api/usePromotions";
+import { NextOrderRewardHooks } from "@/core/hooks/api/usePromotions";
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 
 const CreateCoupon = () => {
   return (
-    <PromotionRouteWrapper Hooks={CouponHooks} formType="next_order_reward">
+    <PromotionRouteWrapper Hooks={NextOrderRewardHooks} formType="next_order_reward">
       {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
         <BasePromotionForm
           formType="next_order_reward"

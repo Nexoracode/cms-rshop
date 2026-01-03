@@ -44,12 +44,9 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
 
   const handleSubmit = async (payload: any) => {
     if (id) {
-      console.log("Test Before");
       const resp = await updateHook.mutateAsync(payload);
-      console.log("Test After");
       resp.ok && router.push("/admin/store/promotions");
     } else {
-      console.log(payload);
       const resp = await createHook.mutateAsync(payload);
       if (resp.ok) {
         setCtxKey((p) => p + 1);
