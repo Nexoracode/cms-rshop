@@ -4,26 +4,42 @@ import PromotionRouteWrapper from "@/components/features/store/promotions/Promot
 import { FlashDealHooks } from "@/core/hooks/api/usePromotions";
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 import { CategoriesSelectionProvider } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
+import { useState } from "react";
 
 const CategoriesCoupon = () => {
+  const [categories, setCategories] = useState([]);
+
   return (
     <PromotionRouteWrapper
       Hooks={FlashDealHooks}
       Provider={CategoriesSelectionProvider}
-      providerProps={{ initialCategories: [] }}
+      providerProps={{ initialCategories: categories }}
       formType="flash_deal"
     >
-      {({ initialData, isLoading, resetSignal, setResetSignal, handleSubmit }) => (
-        <BasePromotionForm
-          formType="flash_deal"
-          scope="categories"
-          initialData={initialData}
-          isShowLoader={isLoading}
-          onHandleReset={() => setResetSignal((p) => p + 1)}
-          onHandleSubmit={(payload) => handleSubmit(payload)}
-          resetSignal={resetSignal}
-        />
-      )}
+      {({
+        initialData,
+        isLoading,
+        resetSignal,
+        setResetSignal,
+        handleSubmit,
+      }) => {
+        setCategories(
+          initialData?.conditions?.find((cond: any) => cond.type === "category")
+            ?.products
+        );
+
+        return (
+          <BasePromotionForm
+            formType="flash_deal"
+            scope="categories"
+            initialData={initialData}
+            isShowLoader={isLoading}
+            onHandleReset={() => setResetSignal((p) => p + 1)}
+            onHandleSubmit={(payload) => handleSubmit(payload)}
+            resetSignal={resetSignal}
+          />
+        );
+      }}
     </PromotionRouteWrapper>
   );
 };
