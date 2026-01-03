@@ -6,7 +6,13 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CardRows from "@/components/shared/CardRows";
 import { LuPackage, LuPercent, LuUser } from "react-icons/lu";
-import { CouponHooks } from "@/core/hooks/api/usePromotions";
+import {
+  CouponHooks,
+  FirstOrderHooks,
+  FlashDealHooks,
+  FreeShippingHooks,
+  NextOrderRewardHooks,
+} from "@/core/hooks/api/usePromotions";
 import { PromotionActionType, PromotionBase } from "./promotions-types";
 import { price } from "@/core/utils/helper";
 import { BiCategory } from "react-icons/bi";
@@ -17,13 +23,30 @@ type Props = {
 };
 
 const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
-  const deleteCoupon = CouponHooks.useDelete();
   const [promotionType, setPromotionType] = useState({
     name: "",
     value: "",
   });
 
-  console.log("items =>", item);
+  let deleteCoupon;
+
+  switch (item.type) {
+    case "coupon":
+      deleteCoupon = CouponHooks.useDelete();
+      break;
+    case "first_order":
+      deleteCoupon = FirstOrderHooks.useDelete();
+      break;
+    case "flash_deal":
+      deleteCoupon = FlashDealHooks.useDelete();
+      break;
+    case "free_shipping":
+      deleteCoupon = FreeShippingHooks.useDelete();
+      break;
+    case "next_order_reward":
+      deleteCoupon = NextOrderRewardHooks.useDelete();
+      break;
+  }
 
   const {
     actions,
@@ -87,13 +110,14 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
   const promotionsRedirects = () => {
     const urlBase = "/admin/store/promotions";
-    if (!conditions || conditions.length === 0) return `${urlBase}/coupon/create?edit_id=${id}`;
-    let mood = "create"
-    
+    if (!conditions || conditions.length === 0)
+      return `${urlBase}/coupon/create?edit_id=${id}`;
+    let mood = "create";
+
     const productCond = conditions.find((c) => c.type === "product");
     const categoryCond = conditions.find((c) => c.type === "category");
     const userCond = conditions.find((c) => c.type === "user");
-    
+
     if (productCond) mood = "products";
     if (categoryCond) mood = "categories";
     if (userCond) mood = "customers";
