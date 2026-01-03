@@ -48,14 +48,26 @@ export function mapAPIToLocalForm(
   const firstOrderCond = !!initialData?.conditions?.some(
     (c: any) => c.type === "first_order"
   );
-
+  
+  const minOrderAmount = initialData?.conditions?.find(
+    (c: any) => c.type === "min_order_amount"
+  );
+  
+  const percentDiscount = initialData?.actions?.find(
+    (c: any) => c.type === "percent_discount"
+  );
+  
+  const amountDiscount = initialData?.actions?.find(
+    (c: any) => c.type === "amount_discount"
+  );
+  
   return {
     name: initialData?.name || "",
     code: initialData?.code || "",
-    percent_discount: initialData?.percent_discount ?? 0,
-    amount_discount: initialData?.amount_discount ?? 0,
+    percent_discount: percentDiscount?.value ?? 0,
+    amount_discount: amountDiscount?.value ?? 0,
     usage_limit: initialData?.usage_limit,
-    min_order_amount: initialData?.min_order_amount,
+    min_order_amount: minOrderAmount?.min_amount || null,
     max_discount_amount: initialData?.max_discount_amount,
     starts_at: initialData?.starts_at,
     ends_at: initialData?.ends_at,
