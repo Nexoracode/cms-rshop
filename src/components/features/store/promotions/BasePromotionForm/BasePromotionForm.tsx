@@ -82,7 +82,6 @@ export function BasePromotionForm({
 
   useEffect(() => {
     if (initialData) {
-      console.log(initialData);
       setForm(mapAPIToLocalForm(initialData, formType));
     } else if (formType === "first_order") {
       setForm((prev) => ({ ...prev, first_order: true }));
@@ -90,9 +89,8 @@ export function BasePromotionForm({
   }, [initialData, formType]);
 
   useEffect(() => {
-    //console.log(initialPromotionForm);
-    setForm(initialPromotionForm);
-    reset();
+    //setForm(initialPromotionForm);
+    //reset();
   }, [resetSignal]);
 
   const handleSubmit = submit(async (changed) => {
