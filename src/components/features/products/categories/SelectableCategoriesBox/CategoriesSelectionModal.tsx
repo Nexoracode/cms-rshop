@@ -9,23 +9,24 @@ import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { useCategoriesSelection } from "./CategoriesSelectionContext";
 import { CategoryTree } from "../CategoryTree/CategoryTree";
 import { findItemById } from "@/core/utils/findItemById";
+import CategoriesFilter from "../Filter/CategoriesFilter";
 
 const CategoriesSelectionModal: React.FC = () => {
   const { selectedCategories, setCategories } = useCategoriesSelection();
 
   const { data: categories, isLoading } = useGetCategories();
-  const isExistItems = !!categories?.data?.length;
+  const isExistItems = !!categories?.data?.items?.length;
 
   const selectedIds = useMemo(
     () => selectedCategories.map((c) => c.id),
     [selectedCategories]
   );
 
+  console.log(categories?.data?.items);
+
   const handleTreeSelectionChange = (ids: number[]) => {
     const all = categories?.data || [];
-    const selected = ids
-      .map((id) => findItemById(all, id)!)
-      .filter(Boolean);
+    const selected = ids.map((id) => findItemById(all, id)!).filter(Boolean);
     setCategories(selected);
   };
 
@@ -38,18 +39,19 @@ const CategoriesSelectionModal: React.FC = () => {
     >
       <UnifiedCard
         headerProps={{
-          title: "انتخاب دسته‌بندی‌ها",
+          title: "مدیریت دسته‌بندی‌ها",
           icon: <TbCategory2 className="text-2xl" />,
           children: <AddNewCategoryModal />,
         }}
+        searchFilter={<CategoriesFilter />}
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={false}
         childrenClassName="space-y-4"
       >
-        {categories?.data && (
+        {categories?.data?.items && (
           <CategoryTree
-            categories={categories.data}
+            categories={categories.data.items}
             selectable
             selectedIds={selectedIds}
             onSelectionChange={handleTreeSelectionChange}

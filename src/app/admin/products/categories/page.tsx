@@ -10,7 +10,7 @@ import CategoriesFilter from "@/components/features/products/categories/Filter/C
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
-  const isExistItems = !categories?.data?.length;
+  const isExistItems = !!categories?.data?.items?.length;
 
   const [editCategory, setEditCategory] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -19,7 +19,7 @@ const Categories = () => {
     setEditCategory(category);
     setIsEditOpen(true);
   };
-  
+
   return (
     <>
       {/* Modal for Edit */}
@@ -32,7 +32,7 @@ const Categories = () => {
 
       {/* Main Card */}
       <UnifiedCard
-        searchFilter={<CategoriesFilter/>}
+        searchFilter={<CategoriesFilter />}
         headerProps={{
           title: "مدیریت دسته‌بندی‌ها",
           icon: <TbCategory2 className="text-2xl" />,

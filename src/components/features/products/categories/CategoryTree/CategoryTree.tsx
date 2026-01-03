@@ -128,7 +128,7 @@ export const CategoryNode: React.FC<CategoryNodeProps> = ({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-2.5 sm:mt-0">
-              {node.parent_id === 0 && (
+              {node.parent_id === 0 && node.level === 1 && (
                 <Chip
                   size="sm"
                   className="bg-primary-light text-primary"
