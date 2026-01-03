@@ -74,7 +74,7 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
     actions.forEach((act: PromotionActionType) => {
       if (act.type === "percent_discount" && act.value !== undefined) {
         names.push("درصد");
-        values.push(`%${act.value}`);
+        values.push(`${act.value}%`);
       }
       if (act.type === "amount_discount" && act.value !== undefined) {
         names.push("ثابت");

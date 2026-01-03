@@ -28,14 +28,14 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
   const [featuredSection, setFeaturedSection] = React.useState(null);
   const [otherSection, setOtherSection] = React.useState<any[]>([]);
   const {
-    brands,
-    categories,
-    hero_sliders,
-    sections,
-    side_banners,
-    promo_banners,
-    layout_type,
-  } = allSections;
+    brands = [],
+    categories = [],
+    hero_sliders = [],
+    sections = [],
+    side_banners = [],
+    promo_banners = [],
+    layout_type = null,
+  } = allSections ?? {};
 
   useEffect(() => {
     const findedFeatured = sections.find(
@@ -62,7 +62,10 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <HeroSliderContainer sliders={hero_sliders} layoutType={layout_type}/>
+            <HeroSliderContainer
+              sliders={hero_sliders}
+              layoutType={layout_type}
+            />
             <SideBannerContainer
               banners={side_banners}
               className="grid-cols-4 !grid-rows-1"

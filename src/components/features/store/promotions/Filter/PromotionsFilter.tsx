@@ -4,7 +4,7 @@ import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import PromotionsSortModal from "./PromotionsSortModal";
 import PromotionsFilterModal from "./PromotionsFilterModal";
 
-const CouponsFilter = () => {
+const PromotionsFilter = () => {
   return (
     <SearchFilterCard
       searchPlaceholder="جستجو براساس عنوان و کد..."
@@ -16,4 +16,4 @@ const CouponsFilter = () => {
   );
 };
 
-export default CouponsFilter;
+export default PromotionsFilter;
