@@ -13,7 +13,7 @@ const InnerSelectableProductsBox: React.FC<{
   onChange?: (data: ProductVariants) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
-  const { selectedProducts, removeProduct, addProduct } =
+  const { selectedProducts, removeProduct, addProduct, setSelectedProducts } =
     useProductsSelection();
   const isFirstRender = React.useRef(true);
 
@@ -33,17 +33,18 @@ const InnerSelectableProductsBox: React.FC<{
   }, [selectedProducts]);
 
   const removeVariantFromProduct = (productId: number, variantId: number) => {
-    const product = selectedProducts.find((p: any) => p.id === productId);
-    if (!product || !product.variants) return;
-
-    const newVariants = product.variants.filter((v: any) => v.id !== variantId);
-    if (newVariants.length === 0) {
-      removeProduct(productId);
-    } else {
-      addProduct({ ...product, variants: newVariants });
-    }
+    setSelectedProducts((prev: any[]) =>
+      prev.map((p: any) => {
+        if (p.id === productId && p.variants?.length > 0) {
+          const newVariants = p.variants.filter((v: any) => v.id !== variantId);
+          // محصول با واریانت‌های خالی باقی می‌ماند
+          return { ...p, variants: newVariants };
+        }
+        return p;
+      })
+    );
   };
-
+  
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده"
@@ -59,16 +60,16 @@ const InnerSelectableProductsBox: React.FC<{
             product={selectedProduct}
             showVariants={selectedProduct?.variants?.length ? true : false}
             contentProduct={
-              <div className="deselect-icon">
+              <div className="deselect-icon !-mt-8 !-left-4">
                 <AiOutlineCloseCircle
                   onClick={() => removeProduct(selectedProduct.id)}
                 />
               </div>
             }
             contentVariant={(variant: any) => (
-              <div className="deselect-icon">
+              <div className="deselect-icon !-left-6 !top-2">
                 <AiOutlineCloseCircle
-                  className="text-[16px]"
+                  className=""
                   onClick={() =>
                     removeVariantFromProduct(selectedProduct.id, variant.id)
                   }

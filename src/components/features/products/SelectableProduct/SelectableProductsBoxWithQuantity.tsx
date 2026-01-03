@@ -7,11 +7,7 @@ import { useProductsSelection } from "./ProductsSelectionContext";
 import ProductVariantsTemplate from "../ProductVariantsTemplate";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
-type Props = {
-  onChange?: (products: any[]) => void;
-  error?: boolean;
-};
+import { ProductVariants } from "./selectable-product";
 
 const InnerSelectableProductsBoxWithQuantity: React.FC<{
   onChange?: (products: any[]) => void;
@@ -163,7 +159,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
                       onClick={() => removeProduct(product.id)}
                     />
                   </div>
-                  
+
                   <div className="absolute top-3 left-2">
                     {/* تعداد برای محصول بدون واریانت */}
                     {!product.variants?.length && (
@@ -213,6 +209,11 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
       </div>
     </SelectionBox>
   );
+};
+
+type Props = {
+  onChange?: (data: ProductVariants) => void;
+  error?: boolean;
 };
 
 const SelectableProductsBoxWithQuantity: React.FC<Props> = ({
