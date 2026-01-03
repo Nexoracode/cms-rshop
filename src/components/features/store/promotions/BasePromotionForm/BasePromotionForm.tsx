@@ -82,6 +82,7 @@ export function BasePromotionForm({
 
   useEffect(() => {
     if (initialData) {
+      console.log(initialData);
       setForm(mapAPIToLocalForm(initialData, formType));
     } else if (formType === "first_order") {
       setForm((prev) => ({ ...prev, first_order: true }));

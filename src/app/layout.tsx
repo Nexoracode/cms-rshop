@@ -22,7 +22,7 @@ export default function RootLayout({
       </head>
       <body cz-shortcut-listen="false">
         <Toaster />
-        <GlobalLoader />
+        {/* <GlobalLoader /> */}
         <ClientProviders>
           <Suspense fallback={<></>}>{children}</Suspense>
         </ClientProviders>

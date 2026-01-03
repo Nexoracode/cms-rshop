@@ -47,7 +47,6 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     findedOther && setOtherSection(findedOther);
     findedFeatured && setFeaturedSection(findedFeatured);
   }, [sections]);
-  console.log("asd", hero_sliders);
 
   return (
     <div className="flex flex-col gap-6 select-none">
