@@ -8,22 +8,17 @@ import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
 import { useEffect, useState } from "react";
 import { InvoiceItemPayload } from "./invoice-card-infos-types";
-import MoreInvoiceInfosModal from "./MoreInvoiceInfosModal";
+import BaseModal from "@/components/ui/modals/BaseModal";
+import { GoArrowUpRight } from "react-icons/go";
+import OrderInvoiceInfos from "../OrderInvoiceInfos";
 
 type InvoiceCardInfosProps = {
   order: any;
 };
 
 const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
-  const {
-    shipping_cost,
-    subtotal,
-    discount_total,
-    total,
-    items,
-    gift_wrapping_cost,
-    promotion_code,
-  } = order;
+  const { shipping_cost, discount_total, total, items, gift_wrapping_cost } =
+    order;
 
   const [products, setProducts] = useState<any[]>([]);
 
@@ -125,7 +120,20 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
       CardHeaderProps={{
         title: "اطلاعات محصولات",
         icon: <LuScrollText className="text-gray-700" />,
-        children: <MoreInvoiceInfosModal order={order} />,
+        children: (
+          <BaseModal
+            triggerProps={{
+              icon: <GoArrowUpRight />,
+              title: "بیشتر",
+            }}
+            title={"اطلاعات کامل فاکتور"}
+            size="lg"
+            icon={<LuScrollText />}
+            isActiveFooter={false}
+          >
+            <OrderInvoiceInfos order={order} />
+          </BaseModal>
+        ),
       }}
     >
       <div className="mb-5 space-y-3">
@@ -134,10 +142,17 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         ))}
       </div>
 
-      <InfoRow label="هزینه ارسال" value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))} />
+      <InfoRow
+        label="هزینه ارسال"
+        value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
+      />
       <InfoRow
         label="هزینه بسته بندی"
-        value={gift_wrapping_cost === 0 ? "رایگان" : String(price(gift_wrapping_cost))}
+        value={
+          gift_wrapping_cost === 0
+            ? "رایگان"
+            : String(price(gift_wrapping_cost))
+        }
       />
 
       <InfoRow
@@ -146,7 +161,11 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
       />
 
       <Divider className="!mt-3 mb-1" />
-      <InfoRow label="مبلغ قابل پرداخت" value={price(total)} valueStyle="text-green-700 text-lg"/>
+      <InfoRow
+        label="مبلغ قابل پرداخت"
+        value={price(total)}
+        valueStyle="text-green-700 text-lg"
+      />
     </BaseCard>
   );
 };

@@ -12,6 +12,7 @@ import { RiShareCircleLine } from "react-icons/ri";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuUser } from "react-icons/lu";
 import GiftWrappingCardInfos from "../OrderProccess/OrderCardInfos/GiftWrappingCardInfos/GiftWrappingCardInfos";
+import OrderInvoiceInfos from "../OrderProccess/OrderCardInfos/OrderInvoiceInfos";
 
 type OrderFactorProps = {
   order: any;
@@ -139,7 +140,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             </div>
           </div>
         </div>
-
         {/* گیرنده و مشتری */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <BaseCard
@@ -215,7 +215,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             />
           </BaseCard>
         </div>
-
         {/* Items table / responsive */}
         <div className="mb-6">
           <div className="overflow-x-auto border rounded-lg">
@@ -326,59 +325,9 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             ))}
           </div>
         </div>
-
-        {/* Summary */}
-        <div className="flex flex-col md:flex-row md:justify-end gap-4">
-          <div className="w-full md:w-1/3 p-4 border rounded-lg">
-            <div className="flex justify-between text-xs text-gray-600">
-              <div>جمع جزء (Subtotal)</div>
-              <div className="font-medium">{fmt(subtotal)}</div>
-            </div>
-
-            <div className="flex justify-between text-xs text-gray-600 mt-2">
-              <div>تخفیف کالاها</div>
-              <div className="font-medium text-rose-600">
-                {fmt(productDiscounts)}
-              </div>
-            </div>
-
-            {promotionDiscounts ? (
-              <div className="flex justify-between text-xs text-gray-600 mt-2">
-                <div>کد/پروموشن</div>
-                <div className="font-medium text-rose-600">
-                  {fmt(promotionDiscounts)}
-                </div>
-              </div>
-            ) : null}
-
-            {manualDiscount ? (
-              <div className="flex justify-between text-xs text-gray-600 mt-2">
-                <div>تخفیف دستی</div>
-                <div className="font-medium text-rose-600">
-                  {fmt(manualDiscount)}
-                </div>
-              </div>
-            ) : null}
-
-            <div className="flex justify-between text-xs text-gray-600 mt-2">
-              <div>جمع تخفیفات</div>
-              <div className="font-medium text-rose-600">
-                {fmt(grandTotalDiscount)}
-              </div>
-            </div>
-
-            <div className="flex justify-between text-xs text-gray-600 mt-2">
-              <div>هزینه ارسال</div>
-              <div className="font-medium">{fmt(shipping_cost)}</div>
-            </div>
-
-            <div className="flex justify-between text-sm font-semibold mt-4">
-              <div>مبلغ قابل پرداخت</div>
-              <div className="font-bold text-lg">{fmt(total)}</div>
-            </div>
-          </div>
-        </div>
-
+        
+        <OrderInvoiceInfos order={order} />
+        
         {/* Payment & meta */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 border rounded-lg">
