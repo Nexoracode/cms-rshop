@@ -147,7 +147,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
       }}
     >
       <div
-        className={`space-y-6`}
+        className={`space-y-2 mb-3`}
       >
         {products?.map((item: any, index: number) => (
           <ProductBoxInfos key={index} item={item} />
