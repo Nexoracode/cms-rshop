@@ -13,6 +13,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { LuUser } from "react-icons/lu";
 import GiftWrappingCardInfos from "../OrderProccess/OrderCardInfos/GiftWrappingCardInfos/GiftWrappingCardInfos";
 import OrderInvoiceInfos from "../OrderProccess/OrderCardInfos/OrderInvoiceInfos";
+import PaymentCardInfos from "../OrderProccess/OrderCardInfos/PaymentCardInfos";
 
 type OrderFactorProps = {
   order: any;
@@ -330,44 +331,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
         
         {/* Payment & meta */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 border rounded-lg">
-            <div className="text-xs text-gray-500">روش پرداخت</div>
-            <div className="font-medium">{payment?.payment_method ?? "-"}</div>
-
-            <div className="text-xs text-gray-500 mt-2">وضعیت پرداخت</div>
-            <div className="font-medium">{payment?.status ?? "-"}</div>
-
-            <div>
-              <div className="text-xs text-gray-500 mt-2">
-                وضعیت کارت‌به‌کارت
-              </div>
-              <div className="font-medium">{payment.card_to_card_status}</div>
-            </div>
-
-            <div className="text-xs text-gray-500 mt-2">
-              کارت ارسال‌کننده:{" "}
-              <span className="font-medium">
-                {maskCard(payment.sender_card_number)}
-              </span>
-            </div>
-
-            <div className="text-xs text-gray-500 mt-2">
-              کد پیگیری:{" "}
-              <span className="font-medium">{payment.tracking_code}</span>
-            </div>
-
-            <div className="text-xs text-gray-500 mt-2">
-              تاریخ واریز:{" "}
-              <span className="font-medium">
-                {fmtDateTime(payment.deposit_date)}
-              </span>
-            </div>
-
-            <div className="text-xs text-gray-500 mt-2">
-              یادداشت ادمین:{" "}
-              <div className="font-medium">{payment.admin_note}</div>
-            </div>
-          </div>
+          <PaymentCardInfos order={order}/>
 
           <div className="p-4 border rounded-lg">
             {promotions?.length ? (

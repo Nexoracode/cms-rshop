@@ -6,6 +6,7 @@ import { toPersianUTC } from "@/core/utils/date";
 import { PiMoneyWavy } from "react-icons/pi";
 import { price } from "@/core/utils/helper";
 import React from "react";
+import { getPaymentStatusText } from "../const/order-constants";
 
 type PaymentCardProps = {
   order: any;
@@ -64,19 +65,24 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
         label="تاریخ واریز"
         value={payment?.deposit_date ? toPersianUTC(payment.deposit_date) : "—"}
       />
+      
+      <InfoRow
+        label="وضعیت پرداخت"
+        value={getPaymentStatusText(payment?.status)}
+        isActiveBg
+      />
 
       {/* شماره کارت فرستنده */}
       {payment?.payment_method === "card_to_card" && (
         <InfoRow
           label="شماره کارت فرستنده"
           value={payment?.sender_card_number || "—"}
-          isActiveBg
         />
       )}
 
       {/* یادداشت ادمین */}
       {payment?.admin_note && (
-        <InfoRow label="یادداشت ادمین" value={payment.admin_note} />
+        <InfoRow label="یادداشت ادمین" value={payment.admin_note} isActiveBg/>
       )}
     </BaseCard>
   );
