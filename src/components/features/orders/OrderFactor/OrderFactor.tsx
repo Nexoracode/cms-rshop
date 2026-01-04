@@ -14,6 +14,7 @@ import OrderInvoiceInfos from "../OrderProccess/OrderCardInfos/OrderInvoiceInfos
 import PaymentCardInfos from "../OrderProccess/OrderCardInfos/PaymentCardInfos";
 import { toPersianUTC } from "@/core/utils/date";
 import { getPaymentStatusText } from "../OrderProccess/const/order-constants";
+import OrderHeaderCards from "./OrderHeaderCards";
 
 type OrderFactorProps = {
   order: any;
@@ -69,40 +70,13 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-lg font-semibold">فروشگاه آرشاپ</h3>
+            <h3 className="text-xl mb-1">فروشگاه آرشاپ</h3>
             <div className="text-xs text-gray-500">
               فروش انواع محصولات فرهنگی و مذهبی
             </div>
           </div>
 
-          <div className="flex gap-6 text-xs">
-            <div>
-              <div className="text-gray-500">تاریخ ثبت</div>
-              <div className="font-medium">{toPersianUTC(created_at)}</div>
-            </div>
-            <div>
-              <div className="text-gray-500">شناسه سفارش</div>
-              <div className="font-medium">#{id}</div>
-            </div>
-            <div>
-              <div className="text-gray-500">شماره تماس</div>
-              <div className="font-medium">{user.phone}</div>
-            </div>
-            <div>
-              <div className="text-gray-500">مبلغ نهایی</div>
-              <div className="font-medium">{order.total}</div>
-            </div>
-            <div>
-              <div className="text-gray-500">وضعیت پرداخت</div>
-              <div className="font-medium">
-                {getPaymentStatusText(order.payment?.status)}
-              </div>
-            </div>
-            <div>
-              <div className="text-gray-500">وضعیت سفارش</div>
-              <div className="font-medium">{statusInfo.title}</div>
-            </div>
-          </div>
+         <OrderHeaderCards order={order}/>
         </div>
 
         <div className="mb-6">
