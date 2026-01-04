@@ -30,9 +30,9 @@ const OrderDetail = () => {
       isExistItems={!!orderData}
       searchInp={false}
       headerProps={{
-        title: orderData?.is_manual ? "مشخصات سفارش (دستی)" : "مشخصات سفارش",
+        title: "اطلاعات سفارش",
         icon: <IoReceiptOutline className="text-2xl" />,
-        children: <OrderFactor order={orderData}/>,
+        children: <OrderFactor order={orderData} />,
       }}
     >
       <OrderWizard order={orderData} />

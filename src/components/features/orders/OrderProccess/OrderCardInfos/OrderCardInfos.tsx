@@ -12,7 +12,7 @@ type OrderCardInfosProps = {
 };
 
 const OrderCardInfos: React.FC<OrderCardInfosProps> = ({ order }) => {
-  const { id, created_at, status, preparation_days } = order;
+  const { id, created_at, status, preparation_days, is_manual } = order;
 
   return (
     <BaseCard
@@ -24,6 +24,7 @@ const OrderCardInfos: React.FC<OrderCardInfosProps> = ({ order }) => {
     >
       <InfoRow label="شناسه سفارش" value={`#${id}`} hoverable />
       <InfoRow label="تاریخ ثبت" value={toPersianUTC(created_at)} />
+      <InfoRow label="نوع سفارش" value={is_manual ? "دستی" : "خودکار"} />
       <InfoRow label="وضعیت سفارش" value={(statusMap as any)[status].title} />
       <InfoRow label="آماده سازی" value={`${preparation_days} روز`} />
     </BaseCard>

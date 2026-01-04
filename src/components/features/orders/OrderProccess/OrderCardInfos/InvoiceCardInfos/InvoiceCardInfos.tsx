@@ -11,6 +11,8 @@ import { InvoiceItemPayload } from "./invoice-card-infos-types";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { GoArrowUpRight } from "react-icons/go";
 import OrderInvoiceInfos from "../OrderInvoiceInfos";
+import { TfiShoppingCartFull } from "react-icons/tfi";
+import { IoReceiptOutline } from "react-icons/io5";
 
 type InvoiceCardInfosProps = {
   order: any;
@@ -118,8 +120,8 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
   return (
     <BaseCard
       CardHeaderProps={{
-        title: "اطلاعات محصولات",
-        icon: <LuScrollText className="text-gray-700" />,
+        title: "سفارشات",
+        icon: <TfiShoppingCartFull className="text-gray-700" />,
         children: (
           <BaseModal
             triggerProps={{
@@ -128,7 +130,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
             }}
             title={"اطلاعات کامل فاکتور"}
             size="lg"
-            icon={<LuScrollText />}
+            icon={<IoReceiptOutline />}
             isActiveFooter={false}
           >
             <OrderInvoiceInfos order={order} />

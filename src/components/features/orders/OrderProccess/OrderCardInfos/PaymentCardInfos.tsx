@@ -33,13 +33,12 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
       <InfoRow
         label="تاریخ پرداخت"
         value={payment?.created_at ? toPersianUTC(payment.created_at) : "—"}
-        isActiveBg
+
       />
-      <InfoRow label="روش پرداخت" value={paymentMethod} />
+      <InfoRow label="روش پرداخت" value={paymentMethod} isActiveBg/>
       <InfoRow
         label="مبلغ"
         value={payment?.amount ? price(payment?.amount) : "—"}
-        isActiveBg
       />
     </BaseCard>
   );
