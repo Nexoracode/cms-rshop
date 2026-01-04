@@ -55,7 +55,7 @@ export default function EmailInput({
     }
 
     // فقط حروف مجاز انگلیسی، عدد، خط تیره و _
-    if (/[^a-zA-Z0-9-_@]/.test(raw)) {
+    if (/[^a-zA-Z0-9-_@.]/.test(raw)) {
       setError("فقط حروف انگلیسی، عدد، خط تیره و _ مجاز است");
       return;
     }

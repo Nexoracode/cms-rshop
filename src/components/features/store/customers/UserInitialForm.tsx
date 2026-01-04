@@ -13,7 +13,6 @@ import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
 import UserAddressCard from "./UserAddress/UserAddressCard";
 import { UserAddress } from "./customer.types";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 type Props = {
   user?: Record<string, any>;
@@ -21,7 +20,7 @@ type Props = {
 
 const UserInitialForm = ({ user }: Props) => {
   const router = useRouter();
-  const updateUser = useUpdateUser(user?.id);
+  const updateUser = useUpdateUser();
 
   const [data, setData] = useState<any>({
     first_name: "",
@@ -60,7 +59,7 @@ const UserInitialForm = ({ user }: Props) => {
       is_active,
     };
 
-    updateUser.mutate(dataToSend, {
+    updateUser.mutate({data:dataToSend, id: user?.id}, {
       onSuccess: (res) => {
         res.ok && router.push("/admin/store/customers");
       },

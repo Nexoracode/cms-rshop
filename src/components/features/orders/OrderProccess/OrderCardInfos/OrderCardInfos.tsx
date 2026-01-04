@@ -5,7 +5,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import { statusMap } from "@/core/constants/statusMap";
 import { toPersianUTC } from "@/core/utils/date";
 import React from "react";
-import { HiOutlineDocumentText } from "react-icons/hi";
+import { IoReceiptOutline } from "react-icons/io5";
 
 type OrderCardInfosProps = {
   order: any;
@@ -18,15 +18,15 @@ const OrderCardInfos: React.FC<OrderCardInfosProps> = ({ order }) => {
     <BaseCard
       CardHeaderProps={{
         title: "اطلاعات سفارش",
-        icon: <HiOutlineDocumentText className="text-gray-700" />,
+        icon: <IoReceiptOutline className="text-gray-700" />,
         showIconInActionSlot: true,
       }}
       bodyClassName="space-y-1"
     >
       <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
-      <InfoRow label="تاریخ ثبت" value={toPersianUTC(created_at)} isActiveBg />
+      <InfoRow label="تاریخ ثبت" value={toPersianUTC(created_at)} />
       <InfoRow label="وضعیت سفارش" value={(statusMap as any)[status].title} />
-      <InfoRow label="آماده سازی" value={`${preparation_days} روز`} isActiveBg />
+      <InfoRow label="آماده سازی" value={`${preparation_days} روز`} />
     </BaseCard>
   );
 };

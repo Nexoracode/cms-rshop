@@ -6,7 +6,7 @@ import { IoReceiptOutline } from "react-icons/io5";
 import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrderProccessFilter from "@/components/features/orders/OrderProccess/OrderProccessFilter";
-import OrderFactor from "@/components/features/orders/OrderFactor";
+import OrderFactor from "@/components/features/orders/OrderFactor/OrderFactor";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();

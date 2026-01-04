@@ -5,7 +5,13 @@ import BaseModal from "@/components/ui/modals/BaseModal";
 import { GoArrowUpRight } from "react-icons/go";
 import { IoReceiptOutline } from "react-icons/io5";
 import { statusMap } from "@/core/constants/statusMap";
-import { StatusOrder } from "./order-types";
+import { StatusOrder } from "../order-types";
+import InfoRow from "@/components/shared/InfoRow";
+import BaseCard from "@/components/ui/BaseCard";
+import { RiShareCircleLine } from "react-icons/ri";
+import { TbTruckDelivery } from "react-icons/tb";
+import { LuUser } from "react-icons/lu";
+import GiftWrappingCardInfos from "../OrderProccess/OrderCardInfos/GiftWrappingCardInfos/GiftWrappingCardInfos";
 
 type OrderFactorProps = {
   order: any;
@@ -71,6 +77,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
     address,
     items,
     payment,
+    customer_note,
   } = order;
 
   // اگر discount_breakdown خلاصه وجود دارد از آن استفاده می‌کنیم
@@ -91,6 +98,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
   //
   const status = order.status as StatusOrder;
   const statusInfo = statusMap[status];
+  console.log("Order =>", order);
 
   return (
     <BaseModal
@@ -100,10 +108,10 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
         icon: <GoArrowUpRight />,
         variant: "flat",
       }}
-      title={`فاکتور سفارش #${id}`}
+      title={`فاکتور سفارش ${id}#`}
       confirmText="چاپ فاکتور"
       onConfirm={handlePrint}
-      size="5xl"
+      size="full"
       icon={<IoReceiptOutline />}
     >
       <div ref={contentRef} className="px-6 py-4 text-sm text-slate-700">
@@ -134,26 +142,78 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
 
         {/* گیرنده و مشتری */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="p-4 border rounded-lg">
-            <div className="text-xs text-gray-500">مشتری</div>
-            <div className="font-medium">
-              {user?.first_name} {user?.last_name}
-            </div>
-            <div className="text-xs text-gray-500">{user?.phone}</div>
-            <div className="text-xs text-gray-500">{user?.email}</div>
-          </div>
+          <BaseCard
+            CardHeaderProps={{
+              title: "اطلاعات مشتری",
+              icon: <LuUser className="text-gray-700" />,
+              showIconInActionSlot: true,
+            }}
+            bodyClassName="space-y-1"
+          >
+            <InfoRow label="شناسه کاربر" value={`#${user.id}`} />
+            <InfoRow
+              label="نام"
+              value={user.first_name ?? "ثبت نشده"}
+              isActiveBg
+            />
+            <InfoRow
+              label="نام خوانوادگی"
+              value={user.last_name ?? "ثبت نشده"}
+            />
+            <InfoRow
+              label="شماره موبایل"
+              value={user.phone}
+              hoverable
+              isActiveBg
+            />
+            <InfoRow label="ایمیل" value={user.email || "ثبت نشده"} />
+          </BaseCard>
 
-          <div className="p-4 border rounded-lg md:col-span-2">
-            <div className="text-xs text-gray-500">آدرس ارسال</div>
-            <div className="font-medium">
-              {address?.city ? `${address.city}، ${address.province}` : "-"}
-            </div>
-            <div className="text-sm mt-2">{address?.address_line || "-"}</div>
-            <div className="text-xs text-gray-500 mt-2">
-              پلاک: {address?.plaque || "-"} — واحد: {address?.unit || "-"} —
-              کدپستی: {address?.postal_code || "-"}
-            </div>
-          </div>
+          <BaseCard
+            CardHeaderProps={{
+              title: "اطلاعات ارسال",
+              icon: <TbTruckDelivery className="text-gray-700" />,
+              showIconInActionSlot: true,
+            }}
+            bodyClassName="space-y-1"
+          >
+            <InfoRow
+              label="سفارش برای"
+              value={
+                address.is_self
+                  ? "خودم"
+                  : `${address.recipient_name} (${
+                      address.recipient_phone || "بدون شماره"
+                    })`
+              }
+              isActiveBg
+              hoverable
+            />
+            <InfoRow label="کد پستی" value={address.postal_code} hoverable />
+            <InfoRow
+              label="استان و شهر"
+              value={`${address.province}، ${address.city}`}
+              isActiveBg
+              hoverable
+            />
+            <InfoRow
+              label="آدرس"
+              value={`${address.address_line} ${
+                address.plaque && `، پلاک ${address.plaque}`
+              } ${address.unit && `، واحد ${address.unit}`}`}
+              hoverable
+              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
+            />
+            <InfoRow
+              label="توضیحات"
+              value={customer_note ?? "توضیحی وجود ندارد"}
+              hoverable
+              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
+              isActiveBg
+            />
+          </BaseCard>
+
+          <GiftWrappingCardInfos order={order}/>
         </div>
 
         {/* Items table / responsive */}
@@ -312,13 +372,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
               <div className="font-medium">{fmt(shipping_cost)}</div>
             </div>
 
-            {is_gift && (
-              <div className="flex justify-between text-xs text-gray-600 mt-2">
-                <div>هزینه بسته بندی هدیه</div>
-                <div className="font-medium">{fmt(gift_wrapping_cost)}</div>
-              </div>
-            )}
-
             <div className="flex justify-between text-sm font-semibold mt-4">
               <div>مبلغ قابل پرداخت</div>
               <div className="font-bold text-lg">{fmt(total)}</div>
@@ -380,13 +433,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
           <div className="p-4 border rounded-lg">
             <div className="text-xs text-gray-500">توضیحات سفارش</div>
             <div className="text-sm mt-2">{order.customer_note || "-"}</div>
-
-            {is_gift && (
-              <>
-                <div className="text-xs text-gray-500 mt-3">پیام هدیه</div>
-                <div className="text-sm mt-1">{gift_message || "-"}</div>
-              </>
-            )}
 
             {promotions?.length ? (
               <>

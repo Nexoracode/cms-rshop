@@ -6,6 +6,7 @@ import { price } from "@/core/utils/helper";
 import React from "react";
 import { FiPackage } from "react-icons/fi";
 import { PiGiftBold } from "react-icons/pi";
+import GiftWrappingImageModal from "./GiftWrappingImageModal";
 
 type GiftWrappingCardProps = {
   order: any;
@@ -14,7 +15,7 @@ type GiftWrappingCardProps = {
 const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
   const { gift_wrapping, is_gift, gift_message, gift_wrapping_cost } = order;
 
-  return is_gift ? (
+  return (
     <BaseCard
       CardHeaderProps={{
         title: is_gift ? "هدیه" : "بسته بندی",
@@ -23,15 +24,10 @@ const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
         ) : (
           <FiPackage className="text-gray-700" />
         ),
-        showIconInActionSlot: true,
+        children: <GiftWrappingImageModal image={gift_wrapping?.image?.url} />,
       }}
       bodyClassName="space-y-1"
     >
-      <img
-        src={gift_wrapping?.image?.url || "/images/placeholder.png"}
-        alt="عکس کاغذ کادو"
-        className="w-48 mx-auto mb-4 rounded-lg hover:scale-110 transition-all duration-300 shadow-lg"
-      />
       <InfoRow label="نام بسته بندی" value={gift_wrapping?.name ?? "—"} />
       <InfoRow
         label="توضیحات بسته بندی"
@@ -50,8 +46,6 @@ const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
         isActiveBg
       />
     </BaseCard>
-  ) : (
-    ""
   );
 };
 

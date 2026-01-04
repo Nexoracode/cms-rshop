@@ -23,7 +23,7 @@ const CustomerCardInfos: React.FC<CustomerInfosCardProps> = ({ order }) => {
     >
       <InfoRow
         label="نام و نام خانوادگی"
-        value={`${user.first_name} ${user.last_name}`}
+        value={`${user.first_name ?? " — "} ${user.last_name ?? " — "}`}
         hoverable
       />
       <InfoRow label="شماره موبایل" value={user.phone} isActiveBg hoverable />

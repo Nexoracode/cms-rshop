@@ -72,11 +72,11 @@ export const useDeleteUser = (id: number) => {
   });
 };
 
-export const useUpdateUser = (id: number) => {
+export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Record<string, any>) =>
+    mutationFn: ({ data, id }: { data: Record<string, any>; id: number }) =>
       fetcher({
         route: `/users/${id}`,
         method: "PATCH",
@@ -86,7 +86,7 @@ export const useUpdateUser = (id: number) => {
         body: data,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["one-user", id] });
+      queryClient.invalidateQueries({ queryKey: ["one-user"] });
       queryClient.invalidateQueries({ queryKey: ["all-users"] });
     },
   });

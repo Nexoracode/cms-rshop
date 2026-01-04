@@ -24,7 +24,7 @@ const ShippingCardInfos: React.FC<ShippingCardInfosProps> = ({ order }) => {
     >
       <InfoRow
         label="کد رهگیری"
-        value={`#${payment?.tracking_code}` || "ندارد"}
+        value={ payment?.tracking_code ? `#${payment?.tracking_code}` : "—"}
         hoverable
       />
       <InfoRow label="روش ارسال" value={"پیک فروشگاه"} isActiveBg />
