@@ -17,26 +17,6 @@ type OrderFactorProps = {
   order: any;
 };
 
-const fmt = (n?: number | string) => {
-  const v = Number(n) || 0;
-  // نمایش با ارقام فارسی و جداکننده هزارگان
-  return new Intl.NumberFormat("fa-IR").format(Math.round(v)) + " تومان";
-};
-
-const fmtPlainNumber = (n?: number | string) => {
-  const v = Number(n) || 0;
-  return new Intl.NumberFormat("fa-IR").format(Math.round(v));
-};
-
-const fmtDateTime = (iso?: string) => {
-  if (!iso) return "-";
-  try {
-    return new Date(iso).toLocaleString("fa-IR");
-  } catch {
-    return iso;
-  }
-};
-
 const renderAttributes = (variant: any) => {
   if (!variant?.attributes?.length) return null;
   return variant.attributes
@@ -51,7 +31,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
     window.print();
   };
 
-  if (!order) return null;
+  if (!order) return <></>;
 
   const {
     id,
@@ -96,7 +76,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
           <div className="flex gap-6 text-xs">
             <div>
               <div className="text-gray-500">تاریخ</div>
-              <div className="font-medium">{fmtDateTime(created_at)}</div>
+              <div className="font-medium">{created_at}</div>
             </div>
             <div>
               <div className="text-gray-500">شماره سفارش</div>
@@ -164,24 +144,22 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                       </td>
 
                       <td className="px-4 py-3 align-top">
-                        <div className="text-sm">
-                          {fmtPlainNumber(it.quantity)}
-                        </div>
+                        <div className="text-sm">{it.quantity}</div>
                       </td>
 
                       <td className="px-4 py-3 align-top hidden md:table-cell">
-                        <div className="text-sm">{fmt(unitPrice)}</div>
+                        <div className="text-sm">{unitPrice}</div>
                       </td>
 
                       <td className="px-4 py-3 align-top">
                         <div className="text-sm text-rose-600">
-                          {fmt(it.discount)}
+                          {it.discount}
                         </div>
                       </td>
 
                       <td className="px-4 py-3 align-top">
                         <div className="text-sm font-medium">
-                          {fmt(it.line_total)}
+                          {it.line_total}
                         </div>
                       </td>
                     </tr>
@@ -206,44 +184,30 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                     <div className="text-xs text-gray-500">
                       {renderAttributes(it.variant) || "-"}
                     </div>
-                    <div className="text-xs mt-2">
-                      تعداد: {fmtPlainNumber(it.quantity)}
-                    </div>
+                    <div className="text-xs mt-2">تعداد: {it.quantity}</div>
                   </div>
-                  <div className="text-sm font-medium">
-                    {fmt(it.line_total)}
-                  </div>
+                  <div className="text-sm font-medium">{it.line_total}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <BaseCard
             CardHeaderProps={{
               title: "اطلاعات مشتری",
               icon: <LuUser className="text-gray-700" />,
               showIconInActionSlot: true,
             }}
-            bodyClassName="space-y-1"
           >
             <InfoRow label="شناسه کاربر" value={`#${user.id}`} />
-            <InfoRow
-              label="نام"
-              value={user.first_name ?? "ثبت نشده"}
-              isActiveBg
-            />
+            <InfoRow label="نام" value={user.first_name ?? "ثبت نشده"} />
             <InfoRow
               label="نام خوانوادگی"
               value={user.last_name ?? "ثبت نشده"}
             />
-            <InfoRow
-              label="شماره موبایل"
-              value={user.phone}
-              hoverable
-              isActiveBg
-            />
+            <InfoRow label="شماره موبایل" value={user.phone} />
             <InfoRow label="ایمیل" value={user.email || "ثبت نشده"} />
           </BaseCard>
 
@@ -253,7 +217,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
               icon: <TbTruckDelivery className="text-gray-700" />,
               showIconInActionSlot: true,
             }}
-            bodyClassName="space-y-1"
           >
             <InfoRow
               label="سفارش برای"
@@ -265,35 +228,26 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                     })`
               }
             />
-            <InfoRow
-              label="کد پستی"
-              value={address.postal_code}
-              isActiveBg
-              hoverable
-            />
+            <InfoRow label="کد پستی" value={address.postal_code} />
             <InfoRow
               label="استان و شهر"
               value={`${address.province}، ${address.city}`}
-              hoverable
             />
             <InfoRow
               label="آدرس"
               value={`${address.address_line} ${
                 address.plaque && `، پلاک ${address.plaque}`
               } ${address.unit && `، واحد ${address.unit}`}`}
-              hoverable
-              isActiveBg
-              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
+              valueStyle="w-full"
             />
             <InfoRow
               label="توضیحات"
               value={customer_note ?? "توضیحی وجود ندارد"}
-              hoverable
-              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
+              valueStyle="w-full"
             />
           </BaseCard>
 
-          <PaymentCardInfos order={order} />
+          <PaymentCardInfos order={order} disableActiveBg />
 
           <BaseCard
             CardHeaderProps={{

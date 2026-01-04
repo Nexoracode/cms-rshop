@@ -10,9 +10,10 @@ import { getPaymentStatusText } from "../const/order-constants";
 
 type PaymentCardProps = {
   order: any;
+  disableActiveBg?: boolean
 };
 
-const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
+const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order, disableActiveBg=false }) => {
   const { payment } = order;
 
   const getGatewayName = (gateway: string) => {
@@ -24,6 +25,8 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
     };
     return gatewayNames[gateway] || gateway;
   };
+
+  const disabled = !disableActiveBg
 
   return (
     <BaseCard
@@ -37,14 +40,14 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
       <InfoRow
         label="کد رهگیری"
         value={payment?.tracking_code ? `#${payment.tracking_code}` : "—"}
-        hoverable
+        hoverable={disabled}
       />
 
       {/* مبلغ */}
       <InfoRow
         label="مبلغ پرداخت"
         value={payment?.amount ? price(payment.amount) : "—"}
-        isActiveBg
+        isActiveBg={disabled}
       />
 
       {/* روش پرداخت */}
@@ -57,7 +60,7 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
       <InfoRow
         label="درگاه پرداخت"
         value={payment?.gateway ? getGatewayName(payment.gateway) : "—"}
-        isActiveBg
+        isActiveBg={disabled}
       />
 
       {/* تاریخ واریز */}
@@ -69,7 +72,7 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
       <InfoRow
         label="وضعیت پرداخت"
         value={getPaymentStatusText(payment?.status)}
-        isActiveBg
+        isActiveBg={disabled}
       />
 
       {/* شماره کارت فرستنده */}
@@ -82,7 +85,7 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
 
       {/* یادداشت ادمین */}
       {payment?.admin_note && (
-        <InfoRow label="یادداشت ادمین" value={payment.admin_note} isActiveBg/>
+        <InfoRow label="یادداشت ادمین" value={payment.admin_note} isActiveBg={disabled}/>
       )}
     </BaseCard>
   );
