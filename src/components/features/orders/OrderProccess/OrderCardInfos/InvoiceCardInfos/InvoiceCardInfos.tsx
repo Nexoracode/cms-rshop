@@ -140,15 +140,13 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
         value={gift_wrapping_cost === 0 ? "رایگان" : String(price(gift_wrapping_cost))}
       />
 
-      <InfoRow label="مجموع قیمت" value={price(subtotal)} />
-
       <InfoRow
         label="مجموع تخفیفات"
         value={discount_total ? price(discount_total) : "—"}
       />
 
       <Divider className="!mt-3 mb-1" />
-      <InfoRow label="مبلغ قابل پرداخت" value={price(total)} hoverable />
+      <InfoRow label="مبلغ قابل پرداخت" value={price(total)} valueStyle="text-green-700 text-lg"/>
     </BaseCard>
   );
 };

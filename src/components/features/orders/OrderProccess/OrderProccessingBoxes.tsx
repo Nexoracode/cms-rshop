@@ -19,14 +19,14 @@ const OrderProcess: React.FC<OrderProcessProps> = ({ order, actionBox }) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="space-y-6">
         <DynamicBoxInfos order={order} actionBox={actionBox} />
-        <InvoiceBoxInfos order={order} />
         <OrderBoxInfos order={order} />
+        <InvoiceBoxInfos order={order} />
       </div>
 
       <div className="space-y-6">
         <CustomerBoxInfos order={order} />
-        <PaymentBoxInfos order={order} />
         <ShippingBoxInfos order={order} />
+        <PaymentBoxInfos order={order} />
         <GiftWrappingBoxInfos order={order} />
       </div>
     </div>

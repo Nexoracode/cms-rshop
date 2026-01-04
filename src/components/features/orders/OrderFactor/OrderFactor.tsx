@@ -111,7 +111,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
       title={`فاکتور سفارش ${id}#`}
       confirmText="چاپ فاکتور"
       onConfirm={handlePrint}
-      size="full"
+      size="5xl"
       icon={<IoReceiptOutline />}
     >
       <div ref={contentRef} className="px-6 py-4 text-sm text-slate-700">
@@ -141,7 +141,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
         </div>
 
         {/* گیرنده و مشتری */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <BaseCard
             CardHeaderProps={{
               title: "اطلاعات مشتری",
@@ -186,14 +186,16 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                       address.recipient_phone || "بدون شماره"
                     })`
               }
+            />
+            <InfoRow
+              label="کد پستی"
+              value={address.postal_code}
               isActiveBg
               hoverable
             />
-            <InfoRow label="کد پستی" value={address.postal_code} hoverable />
             <InfoRow
               label="استان و شهر"
               value={`${address.province}، ${address.city}`}
-              isActiveBg
               hoverable
             />
             <InfoRow
@@ -202,6 +204,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                 address.plaque && `، پلاک ${address.plaque}`
               } ${address.unit && `، واحد ${address.unit}`}`}
               hoverable
+              isActiveBg
               valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
             />
             <InfoRow
@@ -209,11 +212,8 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
               value={customer_note ?? "توضیحی وجود ندارد"}
               hoverable
               valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
-              isActiveBg
             />
           </BaseCard>
-
-          <GiftWrappingCardInfos order={order}/>
         </div>
 
         {/* Items table / responsive */}
@@ -388,52 +388,39 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             <div className="text-xs text-gray-500 mt-2">وضعیت پرداخت</div>
             <div className="font-medium">{payment?.status ?? "-"}</div>
 
-            {payment?.card_to_card_status && (
-              <>
-                <div className="text-xs text-gray-500 mt-2">
-                  وضعیت کارت‌به‌کارت
-                </div>
-                <div className="font-medium">{payment.card_to_card_status}</div>
-              </>
-            )}
-
-            {payment?.sender_card_number && (
+            <div>
               <div className="text-xs text-gray-500 mt-2">
-                کارت ارسال‌کننده:{" "}
-                <span className="font-medium">
-                  {maskCard(payment.sender_card_number)}
-                </span>
+                وضعیت کارت‌به‌کارت
               </div>
-            )}
+              <div className="font-medium">{payment.card_to_card_status}</div>
+            </div>
 
-            {payment?.tracking_code && (
-              <div className="text-xs text-gray-500 mt-2">
-                کد پیگیری:{" "}
-                <span className="font-medium">{payment.tracking_code}</span>
-              </div>
-            )}
+            <div className="text-xs text-gray-500 mt-2">
+              کارت ارسال‌کننده:{" "}
+              <span className="font-medium">
+                {maskCard(payment.sender_card_number)}
+              </span>
+            </div>
 
-            {payment?.deposit_date && (
-              <div className="text-xs text-gray-500 mt-2">
-                تاریخ واریز:{" "}
-                <span className="font-medium">
-                  {fmtDateTime(payment.deposit_date)}
-                </span>
-              </div>
-            )}
+            <div className="text-xs text-gray-500 mt-2">
+              کد پیگیری:{" "}
+              <span className="font-medium">{payment.tracking_code}</span>
+            </div>
 
-            {payment?.admin_note && (
-              <div className="text-xs text-gray-500 mt-2">
-                یادداشت ادمین:{" "}
-                <div className="font-medium">{payment.admin_note}</div>
-              </div>
-            )}
+            <div className="text-xs text-gray-500 mt-2">
+              تاریخ واریز:{" "}
+              <span className="font-medium">
+                {fmtDateTime(payment.deposit_date)}
+              </span>
+            </div>
+
+            <div className="text-xs text-gray-500 mt-2">
+              یادداشت ادمین:{" "}
+              <div className="font-medium">{payment.admin_note}</div>
+            </div>
           </div>
 
           <div className="p-4 border rounded-lg">
-            <div className="text-xs text-gray-500">توضیحات سفارش</div>
-            <div className="text-sm mt-2">{order.customer_note || "-"}</div>
-
             {promotions?.length ? (
               <>
                 <div className="text-xs text-gray-500 mt-3">پروموشن‌ها</div>
@@ -446,13 +433,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
                 </ul>
               </>
             ) : null}
-          </div>
-        </div>
-
-        <div className="mt-6 text-xs text-gray-500">
-          <div>
-            تذکر: اعداد نمایش داده شده به تومان هستند و با گرد کردن نمایش داده
-            می‌شوند.
           </div>
         </div>
       </div>

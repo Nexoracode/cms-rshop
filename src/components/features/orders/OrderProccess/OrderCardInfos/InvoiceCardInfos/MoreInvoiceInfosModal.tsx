@@ -39,7 +39,7 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
       icon={<LuScrollText />}
       isActiveFooter={false}
     >
-      <div className="!space-y-1">
+      <div>
         <InfoRow
           label="هزینه ارسال"
           value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
@@ -85,27 +85,14 @@ const MoreInvoiceInfosModal: React.FC<MoreInvoiceInfosModalProps> = ({
           value={discount_total ? price(discount_total) : "—"}
           isActiveBg
         />
-        {discount_total ? (
-          <InfoRow
-            label="قیمت پس از کسر تخفیفات"
-            value={price(subtotal - discount_total)}
-          />
-        ) : (
-          ""
-        )}
 
-        {/*
         <InfoRow
-          label="قیمت پس از کسر تخفیف پروموشن"
-          value={
-            promotions_discount_applied
-              ? price(promotions_discount_applied)
-              : "—"
-          }
-        /> */}
+          label="قیمت پس از کسر تخفیفات"
+          value={discount_total ? price(subtotal - discount_total) : "—"}
+        />
       </div>
       <Divider className="-mb-2" />
-      <InfoRow label="مبلغ قابل پرداخت" value={price(total)} hoverable />
+      <InfoRow label="مبلغ قابل پرداخت" value={price(total)} valueStyle="!text-green-700 !text-lg"/>
     </BaseModal>
   );
 };

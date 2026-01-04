@@ -17,13 +17,12 @@ const OrderCardInfos: React.FC<OrderCardInfosProps> = ({ order }) => {
   return (
     <BaseCard
       CardHeaderProps={{
-        title: "اطلاعات سفارش",
+        title: "اطلاعات کلی سفارش",
         icon: <IoReceiptOutline className="text-gray-700" />,
         showIconInActionSlot: true,
       }}
-      bodyClassName="space-y-1"
     >
-      <InfoRow label="کد سفارش" value={`#${id}`} hoverable />
+      <InfoRow label="شناسه سفارش" value={`#${id}`} hoverable />
       <InfoRow label="تاریخ ثبت" value={toPersianUTC(created_at)} />
       <InfoRow label="وضعیت سفارش" value={(statusMap as any)[status].title} />
       <InfoRow label="آماده سازی" value={`${preparation_days} روز`} />

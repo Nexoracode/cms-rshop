@@ -28,22 +28,17 @@ const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
       }}
       bodyClassName="space-y-1"
     >
-      <InfoRow label="نام بسته بندی" value={gift_wrapping?.name ?? "—"} />
+      <InfoRow label="نام" value={gift_wrapping?.name ?? "—"} />
       <InfoRow
-        label="توضیحات بسته بندی"
+        label="توضیحات"
         value={gift_wrapping?.description ?? "—"}
         hoverable
         isActiveBg
       />
       <InfoRow
-        label="هزینه بسته‌بندی"
-        value={gift_wrapping_cost ? price(gift_wrapping_cost) : "رایگان"}
-      />
-      <InfoRow
-        label="پیام کاربر"
+        label="توضیحات مشتری"
         value={gift_message ?? "—"}
         hoverable
-        isActiveBg
       />
     </BaseCard>
   );
