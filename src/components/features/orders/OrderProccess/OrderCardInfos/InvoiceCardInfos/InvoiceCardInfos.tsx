@@ -1,7 +1,6 @@
 "use client";
 
 import BaseCard from "@/components/ui/BaseCard";
-import { LuScrollText } from "react-icons/lu";
 import ProductBoxInfos from "./ProductCardInfos";
 import InfoRow from "@/components/shared/InfoRow";
 import { Divider } from "@heroui/react";
@@ -16,9 +15,13 @@ import { IoReceiptOutline } from "react-icons/io5";
 
 type InvoiceCardInfosProps = {
   order: any;
+  factorOnly?: boolean;
 };
 
-const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
+const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
+  order,
+  factorOnly = false,
+}) => {
   const { shipping_cost, discount_total, total, items, gift_wrapping_cost } =
     order;
 
@@ -122,52 +125,68 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({ order }) => {
       CardHeaderProps={{
         title: "سفارشات",
         icon: <TfiShoppingCartFull className="text-gray-700" />,
-        children: (
-          <BaseModal
-            triggerProps={{
-              icon: <GoArrowUpRight />,
-              title: "بیشتر",
-            }}
-            title={"اطلاعات کامل فاکتور"}
-            size="lg"
-            icon={<IoReceiptOutline />}
-            isActiveFooter={false}
-          >
-            <OrderInvoiceInfos order={order} />
-          </BaseModal>
-        ),
+        showIconInActionSlot: factorOnly,
+        ...(factorOnly
+          ? {}
+          : {
+              children: (
+                <BaseModal
+                  triggerProps={{
+                    icon: <GoArrowUpRight />,
+                    title: "بیشتر",
+                  }}
+                  title={"اطلاعات کامل فاکتور"}
+                  size="lg"
+                  icon={<IoReceiptOutline />}
+                  isActiveFooter={false}
+                >
+                  <OrderInvoiceInfos order={order} />
+                </BaseModal>
+              ),
+            }),
       }}
     >
-      <div className="mb-5 space-y-3">
+      <div
+        className={`${
+          factorOnly ? "grid grid-cols-2 gap-6" : "mb-5 space-y-3"
+        }`}
+      >
         {products?.map((item: any, index: number) => (
           <ProductBoxInfos key={index} item={item} />
         ))}
       </div>
+      {!factorOnly ? (
+        <>
+          <InfoRow
+            label="هزینه ارسال"
+            value={
+              shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))
+            }
+          />
+          <InfoRow
+            label="هزینه بسته بندی"
+            value={
+              gift_wrapping_cost === 0
+                ? "رایگان"
+                : String(price(gift_wrapping_cost))
+            }
+          />
 
-      <InfoRow
-        label="هزینه ارسال"
-        value={shipping_cost === 0 ? "رایگان" : String(price(shipping_cost))}
-      />
-      <InfoRow
-        label="هزینه بسته بندی"
-        value={
-          gift_wrapping_cost === 0
-            ? "رایگان"
-            : String(price(gift_wrapping_cost))
-        }
-      />
+          <InfoRow
+            label="مجموع تخفیفات"
+            value={discount_total ? price(discount_total) : "—"}
+          />
 
-      <InfoRow
-        label="مجموع تخفیفات"
-        value={discount_total ? price(discount_total) : "—"}
-      />
-
-      <Divider className="!mt-3 mb-1" />
-      <InfoRow
-        label="مبلغ قابل پرداخت"
-        value={price(total)}
-        valueStyle="text-green-700 text-lg"
-      />
+          <Divider className="!mt-3 mb-1" />
+          <InfoRow
+            label="مبلغ قابل پرداخت"
+            value={price(total)}
+            valueStyle="text-green-700 text-lg"
+          />
+        </>
+      ) : (
+        ""
+      )}
     </BaseCard>
   );
 };

@@ -4,27 +4,17 @@ import React, { useRef } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { GoArrowUpRight } from "react-icons/go";
 import { IoReceiptOutline } from "react-icons/io5";
-import { statusMap } from "@/core/constants/statusMap";
-import { StatusOrder } from "../order-types";
 import InfoRow from "@/components/shared/InfoRow";
 import BaseCard from "@/components/ui/BaseCard";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuUser } from "react-icons/lu";
 import OrderInvoiceInfos from "../OrderProccess/OrderCardInfos/OrderInvoiceInfos";
 import PaymentCardInfos from "../OrderProccess/OrderCardInfos/PaymentCardInfos";
-import { toPersianUTC } from "@/core/utils/date";
-import { getPaymentStatusText } from "../OrderProccess/const/order-constants";
 import OrderHeaderCards from "./OrderHeaderCards";
+import InvoiceCardInfos from "../OrderProccess/OrderCardInfos/InvoiceCardInfos/InvoiceCardInfos";
 
 type OrderFactorProps = {
   order: any;
-};
-
-const renderAttributes = (variant: any) => {
-  if (!variant?.attributes?.length) return null;
-  return variant.attributes
-    .map((a: any) => `${a.name}: ${a.value}`)
-    .join(" • ");
 };
 
 const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
@@ -38,19 +28,13 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
 
   const {
     id,
-    created_at,
     gift_wrapping_cost,
     is_gift,
     gift_message,
     user,
     address,
-    items,
     customer_note,
   } = order;
-  //
-  const status = order.status as StatusOrder;
-  const statusInfo = statusMap[status];
-  console.log("Order =>", order);
 
   return (
     <BaseModal
@@ -66,9 +50,9 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
       size="5xl"
       icon={<IoReceiptOutline />}
     >
-      <div ref={contentRef} className="px-6 py-4 text-sm text-slate-700">
+      <div ref={contentRef} className="flex flex-col gap-6 px-6 py-2 text-sm text-slate-700">
         {/* Header */}
-        <div className="flex flex-col gap-6 mb-6">
+        <div className="flex flex-col gap-6">
           <div>
             <h3 className="text-xl mb-1">فروشگاه آرشاپ</h3>
             <div className="text-xs text-gray-500">
@@ -76,114 +60,10 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             </div>
           </div>
 
-         <OrderHeaderCards order={order}/>
+          <OrderHeaderCards order={order} />
         </div>
 
-        <div className="mb-6">
-          <div className="overflow-x-auto border rounded-lg">
-            <table className="min-w-full divide-y">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">
-                    محصول
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500 hidden sm:table-cell">
-                    ویژگی
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">
-                    تعداد
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500 hidden md:table-cell">
-                    قیمت واحد
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">
-                    تخفیف
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs text-gray-500">
-                    مبلغ
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y">
-                {(items || []).map((it: any) => {
-                  const unitPrice = it.variant?.price ?? it.product?.price ?? 0;
-                  return (
-                    <tr key={it.id}>
-                      <td className="px-4 py-3 align-top">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={it.product?.image}
-                            alt={it.product?.name}
-                            className="w-12 h-12 object-cover rounded"
-                          />
-                          <div className="text-sm">
-                            <div className="font-medium">
-                              {it.product?.name}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              SKU: {it.variant?.sku ?? "-"}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-
-                      <td className="px-4 py-3 align-top hidden sm:table-cell">
-                        <div className="text-xs text-gray-600">
-                          {renderAttributes(it.variant) || "-"}
-                        </div>
-                      </td>
-
-                      <td className="px-4 py-3 align-top">
-                        <div className="text-sm">{it.quantity}</div>
-                      </td>
-
-                      <td className="px-4 py-3 align-top hidden md:table-cell">
-                        <div className="text-sm">{unitPrice}</div>
-                      </td>
-
-                      <td className="px-4 py-3 align-top">
-                        <div className="text-sm text-rose-600">
-                          {it.discount}
-                        </div>
-                      </td>
-
-                      <td className="px-4 py-3 align-top">
-                        <div className="text-sm font-medium">
-                          {it.line_total}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {/* موبایل: هر آیتم بصورت کارت (نمایش جایگزین برای زمانی که جدول سخت می‌شود) */}
-          <div className="sm:hidden mt-4 space-y-3">
-            {(items || []).map((it: any) => (
-              <div key={it.id} className="border rounded-lg p-3">
-                <div className="flex items-start gap-3">
-                  <img
-                    src={it.product?.image}
-                    alt={it.product?.name}
-                    className="w-14 h-14 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <div className="font-medium">{it.product?.name}</div>
-                    <div className="text-xs text-gray-500">
-                      {renderAttributes(it.variant) || "-"}
-                    </div>
-                    <div className="text-xs mt-2">تعداد: {it.quantity}</div>
-                  </div>
-                  <div className="text-sm font-medium">{it.line_total}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <BaseCard
             CardHeaderProps={{
               title: "اطلاعات مشتری",
@@ -236,7 +116,11 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
               valueStyle="w-full"
             />
           </BaseCard>
+        </div>
 
+        <InvoiceCardInfos order={order} factorOnly/>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <PaymentCardInfos order={order} disableActiveBg />
 
           <BaseCard
