@@ -8,10 +8,8 @@ import { statusMap } from "@/core/constants/statusMap";
 import { StatusOrder } from "../order-types";
 import InfoRow from "@/components/shared/InfoRow";
 import BaseCard from "@/components/ui/BaseCard";
-import { RiShareCircleLine } from "react-icons/ri";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuUser } from "react-icons/lu";
-import GiftWrappingCardInfos from "../OrderProccess/OrderCardInfos/GiftWrappingCardInfos/GiftWrappingCardInfos";
 import OrderInvoiceInfos from "../OrderProccess/OrderCardInfos/OrderInvoiceInfos";
 import PaymentCardInfos from "../OrderProccess/OrderCardInfos/PaymentCardInfos";
 
@@ -39,13 +37,6 @@ const fmtDateTime = (iso?: string) => {
   }
 };
 
-const maskCard = (card?: string | null) => {
-  if (!card) return "-";
-  const clean = String(card).replace(/\s+/g, "");
-  const last4 = clean.slice(-4);
-  return "**** **** **** " + last4;
-};
-
 const renderAttributes = (variant: any) => {
   if (!variant?.attributes?.length) return null;
   return variant.attributes
@@ -57,7 +48,6 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   const handlePrint = () => {
-    // ساده و قابل‌اعتماد: چاپ کل صفحه — پروژه‌های بزرگ‌تر می‌توانند iframe یا window.print برای بخشی از صفحه پیاده کنند
     window.print();
   };
 
@@ -66,37 +56,14 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
   const {
     id,
     created_at,
-    subtotal,
-    discount_total,
-    total,
-    shipping_cost,
     gift_wrapping_cost,
-    discount_breakdown,
-    promotions,
     is_gift,
     gift_message,
     user,
     address,
     items,
-    payment,
     customer_note,
   } = order;
-
-  // اگر discount_breakdown خلاصه وجود دارد از آن استفاده می‌کنیم
-  const manualDiscount =
-    order.manual_discount_applied ||
-    discount_breakdown?.manual_discount?.total ||
-    0;
-  const productDiscounts =
-    discount_breakdown?.product_discounts?.total ||
-    discount_breakdown?.summary?.total_product_discounts ||
-    0;
-  const promotionDiscounts =
-    discount_breakdown?.promotion_discounts?.total ||
-    discount_breakdown?.summary?.total_promotion_discounts ||
-    0;
-  const grandTotalDiscount =
-    discount_total || discount_breakdown?.summary?.grand_total_discount || 0;
   //
   const status = order.status as StatusOrder;
   const statusInfo = statusMap[status];
@@ -113,7 +80,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
       title={`فاکتور سفارش ${id}#`}
       confirmText="چاپ فاکتور"
       onConfirm={handlePrint}
-      size="5xl"
+      size="full"
       icon={<IoReceiptOutline />}
     >
       <div ref={contentRef} className="px-6 py-4 text-sm text-slate-700">
@@ -141,82 +108,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             </div>
           </div>
         </div>
-        {/* گیرنده و مشتری */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <BaseCard
-            CardHeaderProps={{
-              title: "اطلاعات مشتری",
-              icon: <LuUser className="text-gray-700" />,
-              showIconInActionSlot: true,
-            }}
-            bodyClassName="space-y-1"
-          >
-            <InfoRow label="شناسه کاربر" value={`#${user.id}`} />
-            <InfoRow
-              label="نام"
-              value={user.first_name ?? "ثبت نشده"}
-              isActiveBg
-            />
-            <InfoRow
-              label="نام خوانوادگی"
-              value={user.last_name ?? "ثبت نشده"}
-            />
-            <InfoRow
-              label="شماره موبایل"
-              value={user.phone}
-              hoverable
-              isActiveBg
-            />
-            <InfoRow label="ایمیل" value={user.email || "ثبت نشده"} />
-          </BaseCard>
 
-          <BaseCard
-            CardHeaderProps={{
-              title: "اطلاعات ارسال",
-              icon: <TbTruckDelivery className="text-gray-700" />,
-              showIconInActionSlot: true,
-            }}
-            bodyClassName="space-y-1"
-          >
-            <InfoRow
-              label="سفارش برای"
-              value={
-                address.is_self
-                  ? "خودم"
-                  : `${address.recipient_name} (${
-                      address.recipient_phone || "بدون شماره"
-                    })`
-              }
-            />
-            <InfoRow
-              label="کد پستی"
-              value={address.postal_code}
-              isActiveBg
-              hoverable
-            />
-            <InfoRow
-              label="استان و شهر"
-              value={`${address.province}، ${address.city}`}
-              hoverable
-            />
-            <InfoRow
-              label="آدرس"
-              value={`${address.address_line} ${
-                address.plaque && `، پلاک ${address.plaque}`
-              } ${address.unit && `، واحد ${address.unit}`}`}
-              hoverable
-              isActiveBg
-              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
-            />
-            <InfoRow
-              label="توضیحات"
-              value={customer_note ?? "توضیحی وجود ندارد"}
-              hoverable
-              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
-            />
-          </BaseCard>
-        </div>
-        {/* Items table / responsive */}
         <div className="mb-6">
           <div className="overflow-x-auto border rounded-lg">
             <table className="min-w-full divide-y">
@@ -326,27 +218,92 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
             ))}
           </div>
         </div>
-        
-        <OrderInvoiceInfos order={order} />
-        
-        {/* Payment & meta */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <PaymentCardInfos order={order}/>
 
-          <div className="p-4 border rounded-lg">
-            {promotions?.length ? (
-              <>
-                <div className="text-xs text-gray-500 mt-3">پروموشن‌ها</div>
-                <ul className="text-sm list-disc list-inside mt-1">
-                  {promotions.map((p: any, i: number) => (
-                    <li key={i}>
-                      {p.name} — {fmt(p.amount)}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : null}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <BaseCard
+            CardHeaderProps={{
+              title: "اطلاعات مشتری",
+              icon: <LuUser className="text-gray-700" />,
+              showIconInActionSlot: true,
+            }}
+            bodyClassName="space-y-1"
+          >
+            <InfoRow label="شناسه کاربر" value={`#${user.id}`} />
+            <InfoRow
+              label="نام"
+              value={user.first_name ?? "ثبت نشده"}
+              isActiveBg
+            />
+            <InfoRow
+              label="نام خوانوادگی"
+              value={user.last_name ?? "ثبت نشده"}
+            />
+            <InfoRow
+              label="شماره موبایل"
+              value={user.phone}
+              hoverable
+              isActiveBg
+            />
+            <InfoRow label="ایمیل" value={user.email || "ثبت نشده"} />
+          </BaseCard>
+
+          <BaseCard
+            CardHeaderProps={{
+              title: "اطلاعات ارسال",
+              icon: <TbTruckDelivery className="text-gray-700" />,
+              showIconInActionSlot: true,
+            }}
+            bodyClassName="space-y-1"
+          >
+            <InfoRow
+              label="سفارش برای"
+              value={
+                address.is_self
+                  ? "مشتری"
+                  : `${address.recipient_name} (${
+                      address.recipient_phone || "بدون شماره"
+                    })`
+              }
+            />
+            <InfoRow
+              label="کد پستی"
+              value={address.postal_code}
+              isActiveBg
+              hoverable
+            />
+            <InfoRow
+              label="استان و شهر"
+              value={`${address.province}، ${address.city}`}
+              hoverable
+            />
+            <InfoRow
+              label="آدرس"
+              value={`${address.address_line} ${
+                address.plaque && `، پلاک ${address.plaque}`
+              } ${address.unit && `، واحد ${address.unit}`}`}
+              hoverable
+              isActiveBg
+              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
+            />
+            <InfoRow
+              label="توضیحات"
+              value={customer_note ?? "توضیحی وجود ندارد"}
+              hoverable
+              valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
+            />
+          </BaseCard>
+
+          <PaymentCardInfos order={order} />
+
+          <BaseCard
+            CardHeaderProps={{
+              title: "اطلاعات فاکتور",
+              icon: <IoReceiptOutline className="text-gray-700" />,
+              showIconInActionSlot: true,
+            }}
+          >
+            <OrderInvoiceInfos order={order} />
+          </BaseCard>
         </div>
       </div>
     </BaseModal>
