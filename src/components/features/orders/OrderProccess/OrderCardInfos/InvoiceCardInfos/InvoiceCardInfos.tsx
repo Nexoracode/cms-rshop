@@ -147,9 +147,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
       }}
     >
       <div
-        className={`${
-          factorOnly ? "grid grid-cols-2 gap-6" : "mb-5 space-y-3"
-        }`}
+        className={`space-y-6`}
       >
         {products?.map((item: any, index: number) => (
           <ProductBoxInfos key={index} item={item} />
