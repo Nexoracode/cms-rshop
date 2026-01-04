@@ -63,12 +63,12 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
       title={`فاکتور سفارش ${id}#`}
       confirmText="چاپ فاکتور"
       onConfirm={handlePrint}
-      size="full"
+      size="5xl"
       icon={<IoReceiptOutline />}
     >
       <div ref={contentRef} className="px-6 py-4 text-sm text-slate-700">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div className="flex flex-col gap-6 mb-6">
           <div>
             <h3 className="text-xl mb-1">فروشگاه آرشاپ</h3>
             <div className="text-xs text-gray-500">
@@ -183,7 +183,7 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <BaseCard
             CardHeaderProps={{
               title: "اطلاعات مشتری",
