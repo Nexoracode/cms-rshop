@@ -70,6 +70,7 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
         <InfoRow
           label="شماره کارت فرستنده"
           value={payment?.sender_card_number || "—"}
+          isActiveBg
         />
       )}
 
