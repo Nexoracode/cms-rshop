@@ -6,20 +6,23 @@ import { toPersianUTC } from "@/core/utils/date";
 import { PiMoneyWavy } from "react-icons/pi";
 import { price } from "@/core/utils/helper";
 import React from "react";
-import { statusMap } from "@/core/constants/statusMap";
 
 type PaymentCardProps = {
   order: any;
 };
 
 const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
-  const { payment, status } = order;
+  const { payment } = order;
 
-  const paymentMethod = payment
-    ? payment.payment_method === "online"
-      ? "پرداخت آنلاین (زرین‌پال)"
-      : "کارت به کارت"
-    : "—";
+  const getGatewayName = (gateway: string) => {
+    const gatewayNames: Record<string, string> = {
+      zarinpal: "زرین‌پال",
+      sadad: "بانک سامان",
+      mellat: "بانک ملت",
+      parshee: "پارشی",
+    };
+    return gatewayNames[gateway] || gateway;
+  };
 
   return (
     <BaseCard
@@ -28,18 +31,52 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order }) => {
         icon: <PiMoneyWavy className="text-gray-700" />,
         showIconInActionSlot: true,
       }}
-      bodyClassName="space-y-1"
     >
+      {/* کد رهگیری */}
       <InfoRow
-        label="تاریخ پرداخت"
-        value={payment?.created_at ? toPersianUTC(payment.created_at) : "—"}
+        label="کد رهگیری"
+        value={payment?.tracking_code ? `#${payment.tracking_code}` : "—"}
+        hoverable
+      />
 
-      />
-      <InfoRow label="روش پرداخت" value={paymentMethod} isActiveBg/>
+      {/* مبلغ */}
       <InfoRow
-        label="مبلغ"
-        value={payment?.amount ? price(payment?.amount) : "—"}
+        label="مبلغ پرداخت"
+        value={payment?.amount ? price(payment.amount) : "—"}
+        isActiveBg
       />
+
+      {/* روش پرداخت */}
+      <InfoRow
+        label="روش پرداخت"
+        value={payment?.payment_method === "online" ? "آنلاین" : "کارت به کارت"}
+      />
+
+      {/* درگاه پرداخت */}
+      <InfoRow
+        label="درگاه پرداخت"
+        value={payment?.gateway ? getGatewayName(payment.gateway) : "—"}
+        isActiveBg
+      />
+
+      {/* تاریخ واریز */}
+      <InfoRow
+        label="تاریخ واریز"
+        value={payment?.deposit_date ? toPersianUTC(payment.deposit_date) : "—"}
+      />
+
+      {/* شماره کارت فرستنده */}
+      {payment?.payment_method === "card_to_card" && (
+        <InfoRow
+          label="شماره کارت فرستنده"
+          value={payment?.sender_card_number || "—"}
+        />
+      )}
+
+      {/* یادداشت ادمین */}
+      {payment?.admin_note && (
+        <InfoRow label="یادداشت ادمین" value={payment.admin_note} />
+      )}
     </BaseCard>
   );
 };
