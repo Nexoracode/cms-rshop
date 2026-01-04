@@ -12,6 +12,8 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { LuUser } from "react-icons/lu";
 import OrderInvoiceInfos from "../OrderProccess/OrderCardInfos/OrderInvoiceInfos";
 import PaymentCardInfos from "../OrderProccess/OrderCardInfos/PaymentCardInfos";
+import { toPersianUTC } from "@/core/utils/date";
+import { getPaymentStatusText } from "../OrderProccess/const/order-constants";
 
 type OrderFactorProps = {
   order: any;
@@ -75,15 +77,29 @@ const OrderFactor: React.FC<OrderFactorProps> = ({ order }) => {
 
           <div className="flex gap-6 text-xs">
             <div>
-              <div className="text-gray-500">تاریخ</div>
-              <div className="font-medium">{created_at}</div>
+              <div className="text-gray-500">تاریخ ثبت</div>
+              <div className="font-medium">{toPersianUTC(created_at)}</div>
             </div>
             <div>
-              <div className="text-gray-500">شماره سفارش</div>
+              <div className="text-gray-500">شناسه سفارش</div>
               <div className="font-medium">#{id}</div>
             </div>
             <div>
-              <div className="text-gray-500">وضعیت</div>
+              <div className="text-gray-500">شماره تماس</div>
+              <div className="font-medium">{user.phone}</div>
+            </div>
+            <div>
+              <div className="text-gray-500">مبلغ نهایی</div>
+              <div className="font-medium">{order.total}</div>
+            </div>
+            <div>
+              <div className="text-gray-500">وضعیت پرداخت</div>
+              <div className="font-medium">
+                {getPaymentStatusText(order.payment?.status)}
+              </div>
+            </div>
+            <div>
+              <div className="text-gray-500">وضعیت سفارش</div>
               <div className="font-medium">{statusInfo.title}</div>
             </div>
           </div>
