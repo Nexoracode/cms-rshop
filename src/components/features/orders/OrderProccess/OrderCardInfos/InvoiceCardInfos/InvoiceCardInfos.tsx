@@ -28,7 +28,8 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
 
   useEffect(() => {
     if (!items) return;
-
+    console.log("YYYYY", items);
+    
     const equalItems: InvoiceItemPayload[] = [];
     const notEqualItems: InvoiceItemPayload[] = [];
 
