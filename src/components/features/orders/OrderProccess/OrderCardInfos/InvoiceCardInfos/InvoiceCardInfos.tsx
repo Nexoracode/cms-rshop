@@ -21,15 +21,20 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
   order,
   factorOnly = false,
 }) => {
-  const { shipping_cost, discount_total, total, items, gift_wrapping_cost, subtotal } =
-    order;
+  const {
+    shipping_cost,
+    discount_total,
+    total,
+    items,
+    gift_wrapping_cost,
+    subtotal,
+  } = order;
 
   const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     if (!items) return;
-    console.log("YYYYY", items);
-    
+
     const equalItems: InvoiceItemPayload[] = [];
     const notEqualItems: InvoiceItemPayload[] = [];
 
@@ -69,6 +74,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
     //
     let productNotEqual = null;
     let productEqual = null;
+    let simpleItems = items.filter((item: InvoiceItemPayload) => !item.variant);
 
     if (equalItems.length) {
       const { discount, line_total, quantity, product } = equalItems[0];
@@ -114,10 +120,23 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
       });
     }
 
+    const products = simpleItems.map((p: InvoiceItemPayload) => {
+      const { discount, quantity, line_total, product } = p;
+      return {
+        line_total,
+        quantity,
+        discount,
+        product,
+        variants: [],
+      };
+    });
+
     if (productEqual && productEqual.length && productEqual[0].product)
       setProducts(productEqual);
 
     if (productNotEqual) setProducts((prev) => [...prev, ...productNotEqual]);
+
+    setProducts((prev) => [...prev, ...products]);
   }, [items]);
 
   return (
@@ -154,7 +173,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
       {!factorOnly ? (
         <>
           <InfoRow label="جمع کل" value={price(subtotal)} />
-          
+
           <InfoRow
             label="تخفیف محصولات"
             value={discount_total ? price(discount_total) : "—"}
