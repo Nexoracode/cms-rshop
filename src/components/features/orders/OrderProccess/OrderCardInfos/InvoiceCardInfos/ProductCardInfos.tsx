@@ -19,8 +19,6 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
     ? variants.reduce((sum, v) => sum + v.line_total, 0)
     : product.price;
 
-/*   console.log("item =>", item); */
-
   return (
     <BaseCard bodyClassName="cursor-auto" className={`shadow-none !border-x-0 border-t-0 rounded-none`}>
       {!variants.length ? (
