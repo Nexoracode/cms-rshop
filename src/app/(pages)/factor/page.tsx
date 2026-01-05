@@ -1,6 +1,5 @@
 "use client";
 
-import OrderFactor from "@/components/features/orders/OrderFactor/OrderFactor";
 import SimpleFactor from "@/components/features/orders/OrderFactor/SimpleFactor";
 import LoadingApiCall from "@/components/feedback/LoadingApiCall";
 import { useGetOneOrder } from "@/core/hooks/api/orders/useOrder";
@@ -18,12 +17,7 @@ const Factor = () => {
     return <LoadingApiCall />;
   }
 
-  return (
-    <>
-      <OrderFactor order={order?.data} />
-      <SimpleFactor order={order?.data} />
-    </>
-  );
+  return <SimpleFactor order={order?.data} />;
 };
 
 export default Factor;
