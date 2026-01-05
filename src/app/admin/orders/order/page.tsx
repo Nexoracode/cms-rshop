@@ -6,7 +6,7 @@ import { IoReceiptOutline } from "react-icons/io5";
 import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrderProccessFilter from "@/components/features/orders/OrderProccess/OrderProccessFilter";
-import OrderFactor from "@/components/features/orders/OrderFactor/OrderFactor";
+import { GoArrowUpRight } from "react-icons/go";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();
@@ -32,7 +32,9 @@ const OrderDetail = () => {
       headerProps={{
         title: "اطلاعات سفارش",
         icon: <IoReceiptOutline className="text-2xl" />,
-        children: <OrderFactor order={orderData} />,
+        redirect: `/factor?id=${order?.data?.id}`,
+        textBtn: "فاکتور",
+        btnIcon: <GoArrowUpRight/>
       }}
     >
       <OrderWizard order={orderData} />
