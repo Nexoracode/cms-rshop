@@ -23,7 +23,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
   console.log("item =>", item);
 
   return (
-    <BaseCard bodyClassName="cursor-auto" className="shadow-none !border-x-0 border-t-0 rounded-none">
+    <BaseCard bodyClassName="cursor-auto" className="shadow-none !border-0 rounded-none">
       {!variants.length ? (
         <div className="flex flex-col">
           <div className="w-full flex items-center gap-3">

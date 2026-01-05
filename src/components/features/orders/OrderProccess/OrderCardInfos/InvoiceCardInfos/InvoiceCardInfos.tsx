@@ -1,7 +1,7 @@
 "use client";
 
 import BaseCard from "@/components/ui/BaseCard";
-import ProductBoxInfos from "./ProductCardInfos";
+import ProductCardInfos from "./ProductCardInfos";
 import InfoRow from "@/components/shared/InfoRow";
 import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
@@ -147,10 +147,10 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
       }}
     >
       <div
-        className={`space-y-2 mb-3`}
+        className={``}
       >
         {products?.map((item: any, index: number) => (
-          <ProductBoxInfos key={index} item={item} />
+          <ProductCardInfos key={index} item={item} />
         ))}
       </div>
       {!factorOnly ? (
