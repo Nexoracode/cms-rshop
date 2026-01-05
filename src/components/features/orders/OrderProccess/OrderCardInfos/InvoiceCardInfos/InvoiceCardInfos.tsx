@@ -3,7 +3,6 @@
 import BaseCard from "@/components/ui/BaseCard";
 import ProductCardInfos from "./ProductCardInfos";
 import InfoRow from "@/components/shared/InfoRow";
-import { Divider } from "@heroui/react";
 import { price } from "@/core/utils/helper";
 import { useEffect, useState } from "react";
 import { InvoiceItemPayload } from "./invoice-card-infos-types";
@@ -22,7 +21,7 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
   order,
   factorOnly = false,
 }) => {
-  const { shipping_cost, discount_total, total, items, gift_wrapping_cost } =
+  const { shipping_cost, discount_total, total, items, gift_wrapping_cost, subtotal } =
     order;
 
   const [products, setProducts] = useState<any[]>([]);
@@ -146,15 +145,20 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
             }),
       }}
     >
-      <div
-        className={``}
-      >
+      <div className="mb-4">
         {products?.map((item: any, index: number) => (
           <ProductCardInfos key={index} item={item} />
         ))}
       </div>
       {!factorOnly ? (
         <>
+          <InfoRow label="جمع کل" value={price(subtotal)} />
+          
+          <InfoRow
+            label="تخفیف محصولات"
+            value={discount_total ? price(discount_total) : "—"}
+          />
+
           <InfoRow
             label="هزینه ارسال"
             value={
@@ -169,13 +173,6 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
                 : String(price(gift_wrapping_cost))
             }
           />
-
-          <InfoRow
-            label="مجموع تخفیفات"
-            value={discount_total ? price(discount_total) : "—"}
-          />
-
-          <Divider className="!mt-3 mb-1" />
           <InfoRow
             label="مبلغ قابل پرداخت"
             value={price(total)}

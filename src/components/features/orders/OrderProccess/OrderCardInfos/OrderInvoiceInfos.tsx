@@ -74,7 +74,7 @@ const OrderInvoiceInfos: React.FC<OrderInvoiceInfosProps> = ({ order }) => {
           ""
         )}
 
-        <InfoRow label="قیمت کل" value={price(subtotal)} />
+        <InfoRow label="جمع کل" value={price(subtotal)} />
 
         {discount_total ? (
           <InfoRow

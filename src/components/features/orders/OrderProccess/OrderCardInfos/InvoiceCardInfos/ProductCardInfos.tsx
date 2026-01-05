@@ -2,7 +2,6 @@
 
 import BaseCard from "@/components/ui/BaseCard";
 import { price } from "@/core/utils/helper";
-import { Divider } from "@heroui/react";
 import { InvoiceItem } from "./invoice-card-infos-types";
 
 type ProductCardDetailProps = {
@@ -23,7 +22,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
   console.log("item =>", item);
 
   return (
-    <BaseCard bodyClassName="cursor-auto" className="shadow-none !border-0 rounded-none">
+    <BaseCard bodyClassName="cursor-auto" className={`shadow-none !border-x-0 border-t-0 rounded-none`}>
       {!variants.length ? (
         <div className="flex flex-col">
           <div className="w-full flex items-center gap-3">
@@ -120,7 +119,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
         ""
       )}
 
-      <div className="mt-4 mb-2 px-4 shadow-md py-3 rounded-2xl">
+     {/*  <div className="mt-4 mb-2 px-4 shadow-md py-3 rounded-2xl">
         {variants.length ? (
           <div className="mt-2 flex items-center justify-between">
             <p className="text-sm text-gray-500">{totalQuantity} عدد (مجموع)</p>
@@ -137,7 +136,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
             {totalPrice.toLocaleString("fa-IR")} تومان
           </span>
         </div>
-      </div>
+      </div> */}
     </BaseCard>
   );
 };
