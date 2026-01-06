@@ -227,7 +227,9 @@ export function BasePromotionForm({
 
       {scope === "categories" && config.scope.includes("category") && (
         <SelectableCategoriesBox
-          onChange={(ids) => handleFieldChange("allowed_categories", ids)}
+          onChange={(ids) => {
+            handleFieldChange("allowed_categories", ids);
+          }}
           error={!!errors.allowed_categories?.length}
         />
       )}

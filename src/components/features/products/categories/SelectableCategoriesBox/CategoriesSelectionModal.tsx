@@ -25,7 +25,7 @@ const CategoriesSelectionModal: React.FC = () => {
   console.log(categories?.data?.items);
 
   const handleTreeSelectionChange = (ids: number[]) => {
-    const all = categories?.data || [];
+    const all = categories?.data?.items || [];
     const selected = ids.map((id) => findItemById(all, id)!).filter(Boolean);
     setCategories(selected);
   };

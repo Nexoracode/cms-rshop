@@ -11,7 +11,8 @@ import CategoriesFilter from "@/components/features/products/categories/Filter/C
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
   const isExistItems = !!categories?.data?.items?.length;
-
+  console.log(categories?.data?.items);
+  
   const [editCategory, setEditCategory] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -41,7 +42,7 @@ const Categories = () => {
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={false}
-        meta={undefined}
+        meta={categories?.data?.meta}
       >
         <CategoryTree
           categories={categories?.data?.items}

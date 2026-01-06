@@ -7,7 +7,7 @@ export const useGetCategories = (page = 1) => {
   return useQuery({
     queryKey: ["categories", { page }],
     queryFn: () => {
-      return fetcher({ route: `/category?page=${page}`, isActiveToast: false });
+      return fetcher({ route: `/category?page=${page}&limit=10`, isActiveToast: false });
     },
   });
 };

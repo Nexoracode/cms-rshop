@@ -24,7 +24,6 @@ const ProductsCoupon = () => {
         handleSubmit,
       }) => {
         useEffect(() => {
-          console.log("ok");
           setProducts(
             initialData?.conditions?.find(
               (cond: any) => cond.type === "product"
