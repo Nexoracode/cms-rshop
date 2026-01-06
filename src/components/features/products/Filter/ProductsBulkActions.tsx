@@ -2,7 +2,7 @@
 
 import { Button } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import BulkUpdateProductsModal from "@/components/features/products/modals/BulkUpdateProductsModal/BulkUpdateProductsModal";
+import BulkUpdateProductsModal from "@/components/features/products/Filter/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import {
   useBulkUpdateProducts,
   useDeleteGroupProduct,

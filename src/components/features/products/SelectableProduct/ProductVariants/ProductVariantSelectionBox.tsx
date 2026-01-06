@@ -2,14 +2,14 @@
 
 import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import ProductsSelectionModal from "./ProductsSelectionModal";
-import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariantsCard from "../ProductVariantsCard";
+import ProductVariantSelectionModal from "./ProductVariantSelectionModal";
+import { useProductsSelection } from "../ProductsSelectionContext";
+import ProductVariantsCard from "../../ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ProductVariants } from "./selectable-product";
+import { ProductVariants } from "../selectable-product";
 
-const InnerSelectableProductsBox: React.FC<{
+const InnerProductVariantSelectionBox: React.FC<{
   onChange?: (data: ProductVariants) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
@@ -50,7 +50,7 @@ const InnerSelectableProductsBox: React.FC<{
       title="محصولات انتخاب‌شده"
       icon={<TbPackages className="text-5xl" />}
       initial={selectedProducts}
-      modal={<ProductsSelectionModal />}
+      modal={<ProductVariantSelectionModal />}
       error={error}
     >
       <div className="flex flex-col gap-4">
@@ -83,13 +83,13 @@ const InnerSelectableProductsBox: React.FC<{
   );
 };
 
-type Props = {
+type ProductVariantSelectionBoxProps = {
   onChange?: (data: ProductVariants) => void;
   error?: boolean;
 };
 
-const SelectableProductsBox: React.FC<Props> = ({ onChange, error }) => {
-  return <InnerSelectableProductsBox onChange={onChange} error={error} />;
+const ProductVariantSelectionBox: React.FC<ProductVariantSelectionBoxProps> = ({ onChange, error }) => {
+  return <InnerProductVariantSelectionBox onChange={onChange} error={error} />;
 };
 
-export default SelectableProductsBox;
+export default ProductVariantSelectionBox;

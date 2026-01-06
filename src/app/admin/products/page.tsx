@@ -3,8 +3,8 @@
 import { useState } from "react";
 // Components
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import ProductsFilter from "@/components/features/products/ProductsFilter";
-import ProductsBulkActions from "@/components/features/products/ProductsBulkActions";
+import ProductsFilter from "@/components/features/products/Filter/ProductsFilter";
+import ProductsBulkActions from "@/components/features/products/Filter/ProductsBulkActions";
 import ProductCard from "@/components/features/products/ProductCard";
 import SelectableCard from "@/components/ui/SelectableCard";
 import { ProductSortBy, useGetProducts } from "@/core/hooks/api/products/useProduct";

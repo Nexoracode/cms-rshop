@@ -16,7 +16,7 @@ import {
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { validateSpecialSection } from "./special-section-validation";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
+import ProductVariantSelectionBox from "@/components/features/products/SelectableProduct/ProductVariants/ProductVariantSelectionBox";
 import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
 type Props = {
@@ -188,7 +188,7 @@ const SpecialSectionModal: React.FC<Props> = ({
           onChange={(val) => handleFieldChange("is_active", val)}
         />
 
-        <SelectableProductsBox
+        <ProductVariantSelectionBox
           onChange={(items) => {
             const productIds = items.map((item) => item.product_id);
             handleFieldChange("product_ids", productIds);

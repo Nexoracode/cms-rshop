@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import ProductsSelectionModal from "./SelectableProduct/ProductsSelectionModal";
+import ProductVariantSelectionModal from "./SelectableProduct/ProductVariants/ProductVariantSelectionModal";
 import { useProductsSelection } from "./SelectableProduct/ProductsSelectionContext";
 import ProductVariantsCard from "./ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ProductVariants } from "./SelectableProduct/selectable-product";
 
-const InnerSelectableProductVariantsQuantityCard: React.FC<{
+const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
   onChange?: (products: any[]) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
@@ -138,7 +138,7 @@ const InnerSelectableProductVariantsQuantityCard: React.FC<{
       title="محصولات انتخاب‌شده با تعداد"
       icon={<TbPackages className="text-5xl" />}
       initial={selectedProducts}
-      modal={<ProductsSelectionModal />}
+      modal={<ProductVariantSelectionModal />}
       error={error}
     >
       <div className="flex flex-col gap-6 py-4">
@@ -221,7 +221,7 @@ const ProductVariantsQuantityCard: React.FC<Props> = ({
   error,
 }) => {
   return (
-    <InnerSelectableProductVariantsQuantityCard onChange={onChange} error={error} />
+    <InnerMultiProductVariantsSelectorQuantityCard onChange={onChange} error={error} />
   );
 };
 

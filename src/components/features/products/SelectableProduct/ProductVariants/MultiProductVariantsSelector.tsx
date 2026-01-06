@@ -2,8 +2,8 @@
 
 import React, { useMemo } from "react";
 import SelectableCard from "@/components/ui/SelectableCard";
-import ProductVariantsCard from "../ProductVariantsCard";
-import { useProductsSelection } from "./ProductsSelectionContext";
+import ProductVariantsCard from "../../ProductVariantsCard";
+import { useProductsSelection } from "../ProductsSelectionContext";
 
 type Product = Record<string, any>;
 
@@ -12,7 +12,7 @@ type Props = {
   disableSelect?: boolean;
 };
 
-const SelectableProductVariants: React.FC<Props> = ({
+const MultiProductVariantsSelector: React.FC<Props> = ({
   product,
   disableSelect,
 }) => {
@@ -93,4 +93,4 @@ const SelectableProductVariants: React.FC<Props> = ({
   );
 };
 
-export default SelectableProductVariants;
+export default MultiProductVariantsSelector;

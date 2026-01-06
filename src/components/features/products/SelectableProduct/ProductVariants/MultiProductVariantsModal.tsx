@@ -5,14 +5,14 @@ import {
   useGetProducts,
 } from "@/core/hooks/api/products/useProduct";
 import { BsShop } from "react-icons/bs";
-import ProductsFilter from "@/components/features/products/ProductsFilter";
+import ProductsFilter from "@/components/features/products/Filter/ProductsFilter";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuPlus } from "react-icons/lu";
-import SelectableProductVariants from "./SelectableProductVariants";
+import MultiProductVariantsSelector from "./MultiProductVariantsSelector";
 import BaseModal from "@/components/ui/modals/BaseModal";
 
-const ProductsSelectionModal = () => {
+const MultiProductVariantsModal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<ProductSortBy[number]>();
 
@@ -46,11 +46,11 @@ const ProductsSelectionModal = () => {
         meta={products?.data?.meta}
       >
         {products?.data?.items?.map((product: any) => (
-          <SelectableProductVariants key={product.id} product={product} />
+          <MultiProductVariantsSelector key={product.id} product={product} />
         ))}
       </UnifiedCard>
     </BaseModal>
   );
 };
 
-export default ProductsSelectionModal;
+export default MultiProductVariantsModal;

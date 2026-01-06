@@ -10,7 +10,6 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 //? Selectable
 import SelectableCategoriesBox from "@/components/features/products/categories/SelectableCategoriesBox/SelectableCategoriesBox";
-import SelectableProductsBox from "@/components/features/products/SelectableProduct/SelectableProductsBox";
 //? Icon
 import { TbRosetteDiscount } from "react-icons/tb";
 import { MdOutlineCleaningServices } from "react-icons/md";
@@ -25,6 +24,7 @@ import {
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { validatePromotionForm } from "./promotions-validation";
 import SelectableCustomersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
+import ProductVariantSelectionBox from "@/components/features/products/SelectableProduct/ProductVariants/ProductVariantSelectionBox";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;
@@ -219,7 +219,7 @@ export function BasePromotionForm({
       </div>
 
       {scope === "products" && config.scope.includes("product") && (
-        <SelectableProductsBox
+        <ProductVariantSelectionBox
           onChange={(items) => handleFieldChange("allowed_products", items)}
           error={!!errors.allowed_products}
         />
