@@ -11,7 +11,6 @@ import CategoriesFilter from "@/components/features/products/categories/Filter/C
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
   const isExistItems = !!categories?.data?.items?.length;
-  console.log(categories?.data?.items);
   
   const [editCategory, setEditCategory] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
