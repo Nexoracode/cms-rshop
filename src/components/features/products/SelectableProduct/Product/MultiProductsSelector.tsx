@@ -25,11 +25,6 @@ const MultiProductsSelector: React.FC<Props> = ({
     );
   }, [selectedProducts, product.id]);
 
-  const selectedVariantIds = useMemo(() => {
-    const found = selectedProducts.find((p: any) => p.id === product.id);
-    return found?.variants?.map((v: any) => v.id) || [];
-  }, [selectedProducts, product.id]);
-
   const handleProductSelect = (selected: boolean) => {
     if (selected) {
       removeProduct(product.id);
@@ -39,33 +34,7 @@ const MultiProductsSelector: React.FC<Props> = ({
     }
   };
 
-  const handleVariantSelect = (variantId: number, selected: boolean) => {
-    if (isProductSelected) {
-      removeProduct(product.id);
-    }
-
-    const found = selectedProducts.find((p: any) => p.id === product.id);
-    let newVariants: any[] = [];
-
-    if (found?.variants) {
-      if (selected) {
-        if (!found.variants.some((v: any) => v.id === variantId)) {
-          newVariants = [
-            ...found.variants,
-            product.variants?.find((v: any) => v.id === variantId),
-          ];
-        } else newVariants = found.variants;
-      } else
-        newVariants = found.variants.filter((v: any) => v.id !== variantId);
-    } else if (selected)
-      newVariants = [product.variants?.find((v: any) => v.id === variantId)];
-
-    if (newVariants.length === 0) removeProduct(product.id);
-    else addProduct({ ...product, variants: newVariants });
-  };
-
   const getSelectedProductIds = () => (isProductSelected ? [product.id] : []);
-  const getSelectedVariantIds = () => selectedVariantIds;
 
   const productWrapper = (
     <SelectableCard
@@ -76,19 +45,11 @@ const MultiProductsSelector: React.FC<Props> = ({
     />
   );
 
-  const variantWrapper = (
-    <SelectableCard
-      selectedIds={getSelectedVariantIds()}
-      onSelectionChange={(idVal, sel) => handleVariantSelect(+idVal, sel)}
-      disabled={disableSelect}
-    />
-  );
-
   return (
     <ProductVariantsCard
       product={product}
       children={productWrapper}
-      variantChildren={variantWrapper}
+      showVariants={false}
     />
   );
 };

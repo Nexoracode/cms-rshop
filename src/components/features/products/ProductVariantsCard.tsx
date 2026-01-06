@@ -26,7 +26,7 @@ const ProductVariantsCard: React.FC<ProductVariantsCardProps> = ({
 }) => {
   const productContent = (
     <BaseCard
-      className={`shadow-none border-none hover-reveal-parent`}
+      className={`${showVariants ? "shadow-none border-none" : "" } hover-reveal-parent`}
       bodyClassName={`flex flex-col items-center sm:flex-row gap-4 text-start p-1`}
     >
       {contentProduct}
@@ -171,7 +171,7 @@ const ProductVariantsCard: React.FC<ProductVariantsCardProps> = ({
     );
 
   return (
-    <BaseCard>
+    <BaseCard className={`${!showVariants ? "shadow-none border-none" : "" }`}>
       {children
         ? React.cloneElement(children as React.ReactElement, {
             children: productContent,

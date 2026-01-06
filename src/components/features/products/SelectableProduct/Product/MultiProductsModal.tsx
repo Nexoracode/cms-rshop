@@ -44,6 +44,7 @@ const MultiProductsModal = () => {
         isExistItems={isExistItems}
         searchInp={isFilteredView}
         meta={products?.data?.meta}
+        childrenClassName="!gap-0"
       >
         {products?.data?.items?.map((product: any) => (
           <MultiProductsSelector key={product.id} product={product} />

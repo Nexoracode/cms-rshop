@@ -13,8 +13,7 @@ const InnerProductVariantSelectionBox: React.FC<{
   onChange?: (data: ProductVariants) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
-  const { selectedProducts, removeProduct, addProduct, setSelectedProducts } =
-    useProductsSelection();
+  const { selectedProducts, removeProduct } = useProductsSelection();
   const isFirstRender = React.useRef(true);
 
   useEffect(() => {
@@ -32,19 +31,6 @@ const InnerProductVariantSelectionBox: React.FC<{
     onChange?.(products);
   }, [selectedProducts]);
 
-  const removeVariantFromProduct = (productId: number, variantId: number) => {
-    setSelectedProducts((prev: any[]) =>
-      prev.map((p: any) => {
-        if (p.id === productId && p.variants?.length > 0) {
-          const newVariants = p.variants.filter((v: any) => v.id !== variantId);
-          // محصول با واریانت‌های خالی باقی می‌ماند
-          return { ...p, variants: newVariants };
-        }
-        return p;
-      })
-    );
-  };
-  
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده"
@@ -66,16 +52,6 @@ const InnerProductVariantSelectionBox: React.FC<{
                 />
               </div>
             }
-            contentVariant={(variant: any) => (
-              <div className="deselect-icon !-left-6 !top-2">
-                <AiOutlineCloseCircle
-                  className=""
-                  onClick={() =>
-                    removeVariantFromProduct(selectedProduct.id, variant.id)
-                  }
-                />
-              </div>
-            )}
           />
         ))}
       </div>
@@ -88,7 +64,10 @@ type ProductSelectionBoxProps = {
   error?: boolean;
 };
 
-const ProductSelectionBox: React.FC<ProductSelectionBoxProps> = ({ onChange, error }) => {
+const ProductSelectionBox: React.FC<ProductSelectionBoxProps> = ({
+  onChange,
+  error,
+}) => {
   return <InnerProductVariantSelectionBox onChange={onChange} error={error} />;
 };
 
