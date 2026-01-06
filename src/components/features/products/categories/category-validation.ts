@@ -1,9 +1,6 @@
 export const validateCategory = (data: any) => {
   const errors: any = {};
-
-  console.log("Category Validation =>", data);
   
-
   const hasLogo = !data.mediaFile && !data?.media?.url;
 
   if (!data.title.trim()) errors.title = "عنوان الزامی است";

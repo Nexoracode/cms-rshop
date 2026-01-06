@@ -8,7 +8,6 @@ import BaseCard from "@/components/ui/BaseCard";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import SelectableUsersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
-import SelectableProductsBoxWithQuantity from "../../products/SelectableProduct/SelectableProductsBoxWithQuantity";
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
 import { toast } from "react-hot-toast";
@@ -21,6 +20,7 @@ import SelectableUserAddressCard from "../../store/customers/UserAddress/Selecta
 // Hook و validation
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateManualOrder } from "./manual-order-validation";
+import ProductVariantsQuantityCard from "../../products/ProductVariantsQuantityCard";
 
 const initialFormData = {
   userId: null as number | null,
@@ -135,8 +135,7 @@ const ManualOrderForm = () => {
         </div>
       ) : null}
 
-      {/* انتخاب محصولات */}
-      <SelectableProductsBoxWithQuantity
+      <ProductVariantsQuantityCard
         onChange={(selectedProducts) => {
           handleFieldChange("products", selectedProducts);
         }}

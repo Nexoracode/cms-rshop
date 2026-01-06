@@ -7,7 +7,7 @@ import BaseCard from "@/components/ui/BaseCard";
 
 type Product = Record<string, any>;
 
-interface ProductVariantsTemplateProps {
+interface ProductVariantsCardProps {
   product: Product;
   children?: React.ReactNode;
   variantChildren?: React.ReactNode;
@@ -16,7 +16,7 @@ interface ProductVariantsTemplateProps {
   contentVariant?: ((variant: any) => React.ReactNode) | React.ReactNode;
 }
 
-const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
+const ProductVariantsCard: React.FC<ProductVariantsCardProps> = ({
   product,
   children,
   variantChildren,
@@ -183,4 +183,4 @@ const ProductVariantsTemplate: React.FC<ProductVariantsTemplateProps> = ({
   );
 };
 
-export default ProductVariantsTemplate;
+export default ProductVariantsCard;

@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import SelectableCard from "@/components/ui/SelectableCard";
-import ProductVariantsTemplate from "../ProductVariantsTemplate";
+import ProductVariantsCard from "../ProductVariantsCard";
 import { useProductsSelection } from "./ProductsSelectionContext";
 
 type Product = Record<string, any>;
@@ -85,7 +85,7 @@ const SelectableProductVariants: React.FC<Props> = ({
   );
 
   return (
-    <ProductVariantsTemplate
+    <ProductVariantsCard
       product={product}
       children={productWrapper}
       variantChildren={variantWrapper}

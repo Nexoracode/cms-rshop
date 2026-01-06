@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import ProductsSelectionModal from "./ProductsSelectionModal";
-import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariantsTemplate from "../ProductVariantsTemplate";
+import ProductsSelectionModal from "./SelectableProduct/ProductsSelectionModal";
+import { useProductsSelection } from "./SelectableProduct/ProductsSelectionContext";
+import ProductVariantsCard from "./ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ProductVariants } from "./selectable-product";
+import { ProductVariants } from "./SelectableProduct/selectable-product";
 
-const InnerSelectableProductsBoxWithQuantity: React.FC<{
+const InnerSelectableProductVariantsQuantityCard: React.FC<{
   onChange?: (products: any[]) => void;
   error?: boolean;
 }> = ({ onChange, error }) => {
@@ -148,7 +148,7 @@ const InnerSelectableProductsBoxWithQuantity: React.FC<{
           </p>
         ) : (
           selectedProducts.map((product) => (
-            <ProductVariantsTemplate
+            <ProductVariantsCard
               key={product.id}
               product={product}
               showVariants={!!product.variants?.length}
@@ -216,13 +216,13 @@ type Props = {
   error?: boolean;
 };
 
-const SelectableProductsBoxWithQuantity: React.FC<Props> = ({
+const ProductVariantsQuantityCard: React.FC<Props> = ({
   onChange,
   error,
 }) => {
   return (
-    <InnerSelectableProductsBoxWithQuantity onChange={onChange} error={error} />
+    <InnerSelectableProductVariantsQuantityCard onChange={onChange} error={error} />
   );
 };
 
-export default SelectableProductsBoxWithQuantity;
+export default ProductVariantsQuantityCard;

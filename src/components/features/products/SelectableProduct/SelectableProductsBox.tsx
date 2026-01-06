@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import ProductsSelectionModal from "./ProductsSelectionModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
-import ProductVariantsTemplate from "../ProductVariantsTemplate";
+import ProductVariantsCard from "../ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ProductVariants } from "./selectable-product";
@@ -55,7 +55,7 @@ const InnerSelectableProductsBox: React.FC<{
     >
       <div className="flex flex-col gap-4">
         {selectedProducts.map((selectedProduct) => (
-          <ProductVariantsTemplate
+          <ProductVariantsCard
             key={selectedProduct.id}
             product={selectedProduct}
             showVariants={selectedProduct?.variants?.length ? true : false}
