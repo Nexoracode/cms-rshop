@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import ProductVariantSelectionModal from "./SelectableProduct/ProductVariants/ProductVariantSelectionModal";
-import { useProductsSelection } from "./SelectableProduct/ProductsSelectionContext";
-import ProductVariantsCard from "./ProductVariantsCard";
+import ProductVariantSelectionModal from "./ProductVariants/ProductVariantSelectionModal";
+import { useProductsSelection } from "./ProductsSelectionContext";
+import ProductVariantsCard from "../ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ProductVariants } from "./SelectableProduct/selectable-product";
+import { ProductVariants } from "./selectable-product";
 
 const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
   onChange?: (products: any[]) => void;
@@ -216,7 +216,7 @@ type Props = {
   error?: boolean;
 };
 
-const ProductVariantsQuantityCard: React.FC<Props> = ({
+const ProductVariantQuantitySelectionBox: React.FC<Props> = ({
   onChange,
   error,
 }) => {
@@ -225,4 +225,4 @@ const ProductVariantsQuantityCard: React.FC<Props> = ({
   );
 };
 
-export default ProductVariantsQuantityCard;
+export default ProductVariantQuantitySelectionBox;

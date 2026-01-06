@@ -20,7 +20,7 @@ import SelectableUserAddressCard from "../../store/customers/UserAddress/Selecta
 // Hook و validation
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateManualOrder } from "./manual-order-validation";
-import ProductVariantsQuantityCard from "../../products/ProductVariantsQuantityCard";
+import ProductVariantQuantitySelectionBox from "../../products/SelectableProduct/ProductVariantQuantitySelectionBox";
 
 const initialFormData = {
   userId: null as number | null,
@@ -135,7 +135,7 @@ const ManualOrderForm = () => {
         </div>
       ) : null}
 
-      <ProductVariantsQuantityCard
+      <ProductVariantQuantitySelectionBox
         onChange={(selectedProducts) => {
           handleFieldChange("products", selectedProducts);
         }}
