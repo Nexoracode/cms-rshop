@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import ProductVariantSelectionModal from "./ProductVariantSelectionModal";
+import MultiProductVariantsModal from "./MultiProductVariantsModal";
 import { useProductsSelection } from "../ProductsSelectionContext";
 import ProductVariantsCard from "../../ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
@@ -50,7 +50,7 @@ const InnerProductVariantSelectionBox: React.FC<{
       title="محصولات انتخاب‌شده"
       icon={<TbPackages className="text-5xl" />}
       initial={selectedProducts}
-      modal={<ProductVariantSelectionModal />}
+      modal={<MultiProductVariantsModal />}
       error={error}
     >
       <div className="flex flex-col gap-4">

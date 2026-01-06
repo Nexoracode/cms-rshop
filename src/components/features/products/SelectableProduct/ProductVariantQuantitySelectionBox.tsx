@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
-import ProductVariantSelectionModal from "./ProductVariants/ProductVariantSelectionModal";
+import MultiProductVariantsModal from "./ProductVariants/MultiProductVariantsModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
 import ProductVariantsCard from "../ProductVariantsCard";
 import { TbPackages } from "react-icons/tb";
@@ -138,7 +138,7 @@ const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
       title="محصولات انتخاب‌شده با تعداد"
       icon={<TbPackages className="text-5xl" />}
       initial={selectedProducts}
-      modal={<ProductVariantSelectionModal />}
+      modal={<MultiProductVariantsModal />}
       error={error}
     >
       <div className="flex flex-col gap-6 py-4">
