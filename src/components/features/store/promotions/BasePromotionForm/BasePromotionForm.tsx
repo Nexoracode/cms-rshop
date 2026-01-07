@@ -25,6 +25,9 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { validatePromotionForm } from "./promotions-validation";
 import SelectableCustomersBox from "@/components/features/store/customers/SelectableCustomersBox/SelectableCustomersBox";
 import ProductVariantSelectionBox from "@/components/features/products/SelectableProduct/ProductVariants/ProductVariantSelectionBox";
+import { CustomersSelectionProvider, useCustomersSelection } from "../../customers/SelectableCustomersBox/CustomersSelectionContext";
+import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
+import { useCategoriesSelection } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
 
 interface BasePromotionFormProps {
   formType: keyof typeof FORM_CONFIGS;
@@ -66,6 +69,10 @@ export function BasePromotionForm({
   loading = false,
   resetSignal,
 }: BasePromotionFormProps) {
+  // Contexts
+  //const { selectedCustomers } = useCustomersSelection();
+  //const { setSelectedProducts } = useProductsSelection();
+  //const { setSelectedCategories } = useCategoriesSelection();
   const config: PromotionFormConfig = FORM_CONFIGS[formType];
   const {
     form,

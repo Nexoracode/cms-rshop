@@ -8,13 +8,18 @@ type CategoriesSelectionContextType = {
   addCategory: (category: Category) => void;
   removeCategory: (id: number) => void;
   setCategories: (categories: Category[]) => void;
+  setSelectedCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 };
 
-const CategoriesSelectionContext = createContext<CategoriesSelectionContextType | null>(null);
+const CategoriesSelectionContext =
+  createContext<CategoriesSelectionContextType | null>(null);
 
 export const useCategoriesSelection = () => {
   const ctx = useContext(CategoriesSelectionContext);
-  if (!ctx) throw new Error("useCategoriesSelection must be used within CategoriesSelectionProvider");
+  if (!ctx)
+    throw new Error(
+      "useCategoriesSelection must be used within CategoriesSelectionProvider"
+    );
   return ctx;
 };
 
@@ -29,18 +34,28 @@ export const CategoriesSelectionProvider: React.FC<{
   }, [initialCategories]);
 
   const addCategory = (category: Category) => {
-    setSelectedCategories((prev) => [...prev.filter((c) => c.id !== category.id), category]);
+    setSelectedCategories((prev) => [
+      ...prev.filter((c) => c.id !== category.id),
+      category,
+    ]);
   };
 
   const removeCategory = (id: number) => {
     setSelectedCategories((prev) => prev.filter((c) => c.id !== id));
   };
 
-  const setCategories = (categories: Category[]) => setSelectedCategories(categories);
+  const setCategories = (categories: Category[]) =>
+    setSelectedCategories(categories);
 
   return (
     <CategoriesSelectionContext.Provider
-      value={{ selectedCategories, addCategory, removeCategory, setCategories }}
+      value={{
+        selectedCategories,
+        addCategory,
+        removeCategory,
+        setCategories,
+        setSelectedCategories,
+      }}
     >
       {children}
     </CategoriesSelectionContext.Provider>
