@@ -5,6 +5,7 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteBrand } from "@/core/hooks/api/useBrand";
 import { Image } from "@heroui/react";
 import BaseCard from "@/components/ui/BaseCard";
+import StatusBadge from "@/components/shared/StatusBadge";
 
 type CollectionCardProps = {
   collection: any;
@@ -19,29 +20,34 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
 
   return (
     <BaseCard
-      bodyClassName="p-2 hover-reveal-parent group"
+      bodyClassName="p-0 rounded-xl hover-reveal-parent group overflow-hidden"
       onClick={() => onEdit?.(collection)}
     >
       <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteBrand(collection.id)} />
       </div>
 
-      {/* تصویر برند */}
-      <div className="w-full h-full bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
-        <Image
-          alt={collection.name}
-          className="w-full group-hover:scale-150 min-h-[160px] md:min-h-[120px] object-cover rounded-2xl"
-          radius="lg"
-          width={"100%"}
-          src={collection.logo}
-        />
+      <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-3">
+        <StatusBadge isActive={collection.is_active}/>
+        <p className="text-white bg-slate-600 p-0.5 px-2 rounded-md">محصولات: {collection.products_count}</p>
       </div>
 
+      <Image
+        alt={collection.slug}
+        className="w-full group-hover:scale-105 h-[200px] object-cover rounded-xl select-none"
+        draggable={false}
+        radius="lg"
+        width={"100%"}
+        src={collection.image}
+      />
+
       {/* نام و اسلاگ */}
-      <div className="flex flex-col justify-center items-center gap-2 mt-2">
-        <div className="flex flex-col items-center leading-7 w-full rounded-2xl">
-          <p className="text-[15px]">{collection.name}</p>
-          <p className="text-default-500 text-sm">{collection.slug}</p>
+      <div className="absolute text-white inset-0 bg-black/50 z-10 flex flex-col justify-center gap-2">
+        <div className="leading-9 pr-10">
+          <p className="text-2xl truncate">{collection.title}</p>
+          <p className="text-md truncate text-gray-300">
+            {collection.description}
+          </p>
         </div>
       </div>
     </BaseCard>

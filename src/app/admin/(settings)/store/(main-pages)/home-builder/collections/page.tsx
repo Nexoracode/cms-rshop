@@ -5,22 +5,25 @@ import CollectionCard from "@/components/features/store/(main-pages)/collections
 import { useGetCollections } from "@/core/hooks/api/adminHome/useCollections";
 import { HiOutlineCollection } from "react-icons/hi";
 
-const HomeBuilder = () => {
+const Collections = () => {
   const { data: collections, isLoading: isLoading } = useGetCollections();
 
   const isExistItems = collections?.data?.length;
+
+  console.log(collections);
+  
 
   return (
     <UnifiedCard
       headerProps={{
         title: "مدیریت مجموعه ها",
         icon: <HiOutlineCollection className="text-2xl" />,
-        textBtn: "+ افزودن",
+        onAdd: () => {}
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
       searchInp={false}
-      childrenClassName="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3"
+      childrenClassName="grid grid-cols-1 sm:grid-cols-2"
     >
       {collections?.data?.map((coll: any) => (
         <CollectionCard collection={coll} onEdit={() => {}} />
@@ -29,4 +32,4 @@ const HomeBuilder = () => {
   );
 };
 
-export default HomeBuilder;
+export default Collections;
