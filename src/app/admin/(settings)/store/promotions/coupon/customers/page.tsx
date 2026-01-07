@@ -22,6 +22,7 @@ const CustomersCoupon = () => {
         resetSignal,
         setResetSignal,
         handleSubmit,
+        setCtxKey
       }) => {
         useEffect(() => {
           console.log(initialData);          
@@ -37,7 +38,7 @@ const CustomersCoupon = () => {
             scope="customers"
             initialData={initialData}
             isShowLoader={isLoading}
-            onHandleReset={() => setResetSignal((p) => p + 1)}
+            onHandleReset={() => { setResetSignal((p) => p + 1);  setCtxKey((p) => p + 1)}}
             onHandleSubmit={(payload) => handleSubmit(payload)}
             resetSignal={resetSignal}
           />

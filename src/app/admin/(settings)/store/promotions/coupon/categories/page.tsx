@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 const CategoriesCoupon = () => {
   const [categories, setCategories] = useState([]);
+
   return (
     <PromotionRouteWrapper
       Hooks={CouponHooks}
@@ -21,6 +22,7 @@ const CategoriesCoupon = () => {
         resetSignal,
         setResetSignal,
         handleSubmit,
+        setCtxKey,
       }) => {
         useEffect(() => {
           setCategories(
@@ -36,7 +38,10 @@ const CategoriesCoupon = () => {
             scope="categories"
             initialData={initialData}
             isShowLoader={isLoading}
-            onHandleReset={() => setResetSignal((p) => p + 1)}
+            onHandleReset={() => {
+              setResetSignal((p) => p + 1);
+              setCtxKey((p) => p + 1);
+            }}
             onHandleSubmit={(payload) => handleSubmit(payload)}
             resetSignal={resetSignal}
           />

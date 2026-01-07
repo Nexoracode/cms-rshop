@@ -21,6 +21,7 @@ type PromotionRouteWrapperProps = {
     resetSignal: number;
     handleSubmit: (payload: any) => void;
     setResetSignal: (n: number | ((p: number) => number)) => void;
+    setCtxKey: (n: number | ((p: number) => number)) => void
   }) => React.ReactNode;
 };
 
@@ -60,7 +61,8 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
     isLoading,
     resetSignal,
     handleSubmit,
-    setResetSignal
+    setResetSignal,
+    setCtxKey
   });
 
   if (Provider) {
