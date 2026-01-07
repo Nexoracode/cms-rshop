@@ -5,7 +5,7 @@ import PromotionRouteWrapper from "@/components/features/store/promotions/Promot
 import { FreeShippingHooks } from "@/core/hooks/api/usePromotions";
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 import { CustomersSelectionProvider } from "@/components/features/store/customers/SelectableCustomersBox/CustomersSelectionContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CustomersCoupon = () => {
   const [users, setUsers] = useState([]);
@@ -23,10 +23,13 @@ const CustomersCoupon = () => {
         setResetSignal,
         handleSubmit,
       }) => {
-        setUsers(
-          initialData?.conditions?.find((cond: any) => cond.type === "user")
-            ?.users
-        );
+        useEffect(() => {
+          console.log(initialData);
+          setUsers(
+            initialData?.conditions?.find((cond: any) => cond.type === "user")
+              ?.users
+          );
+        }, [initialData]);
         return (
           <BasePromotionForm
             formType="free_shipping"
