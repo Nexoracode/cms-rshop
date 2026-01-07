@@ -4,7 +4,7 @@ import PromotionRouteWrapper from "@/components/features/store/promotions/Promot
 import { FlashDealHooks } from "@/core/hooks/api/usePromotions";
 import BasePromotionForm from "@/components/features/store/promotions/BasePromotionForm/BasePromotionForm";
 import { CategoriesSelectionProvider } from "@/components/features/products/categories/SelectableCategoriesBox/CategoriesSelectionContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CategoriesCoupon = () => {
   const [categories, setCategories] = useState([]);
@@ -23,10 +23,13 @@ const CategoriesCoupon = () => {
         setResetSignal,
         handleSubmit,
       }) => {
-        setCategories(
-          initialData?.conditions?.find((cond: any) => cond.type === "category")
-            ?.products
-        );
+        useEffect(() => {
+          setCategories(
+            initialData?.conditions?.find(
+              (cond: any) => cond.type === "category"
+            )?.categories
+          );
+        }, [initialData]);
 
         return (
           <BasePromotionForm
