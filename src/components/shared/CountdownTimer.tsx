@@ -81,7 +81,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   const formatNumber = (num: number) => num.toString().padStart(2, "۰");
 
   return (
-    <div className={`inline-flex items-center gap-2 ${className}`}>      
+    <div className={`inline-flex items-center gap-2 bg-white/20 p-2 px-4 rounded-2xl ${className}`}>      
       <div className="flex flex-row-reverse items-center gap-1">
         {/* روز */}
         {timeLeft.days > 0 && (
