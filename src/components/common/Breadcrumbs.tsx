@@ -22,6 +22,7 @@ const breadcrumbMap: Record<string, string> = {
   "about-store": "درباره فروشگاه",
   faq: "سؤالات متداول",
   "home-builder": "صفحه اصلی",
+  collections: "مجموعه ها",
   help: "راهنما",
   refund: "بازپرداخت",
   finance: "گزارشات مالی",
