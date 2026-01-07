@@ -26,7 +26,7 @@ const CategoriesCoupon = () => {
           setCategories(
             initialData?.conditions?.find(
               (cond: any) => cond.type === "category"
-            )?.category
+            )?.categories
           );
         }, [initialData]);
 
