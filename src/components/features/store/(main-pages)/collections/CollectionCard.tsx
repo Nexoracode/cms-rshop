@@ -2,10 +2,11 @@
 
 import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { useDeleteBrand } from "@/core/hooks/api/useBrand";
+import { useDeleteCollection } from "@/core/hooks/api/adminHome/useCollections"; // فرض بر این که این hook را ایجاد کرده‌اید
 import { Image } from "@heroui/react";
 import BaseCard from "@/components/ui/BaseCard";
 import StatusBadge from "@/components/shared/StatusBadge";
+import CountdownTimer from "@/components/shared/CountdownTimer";
 
 type CollectionCardProps = {
   collection: any;
@@ -16,7 +17,11 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   collection,
   onEdit,
 }) => {
-  const { mutate: deleteBrand } = useDeleteBrand();
+  const { mutate: deleteCollection } = useDeleteCollection();
+
+  // بررسی آیا تاریخ پایان در آینده است یا خیر
+  const isActive = collection.is_active;
+  const isEndDateFuture = new Date(collection.end_date) > new Date();
 
   return (
     <BaseCard
@@ -24,12 +29,14 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
       onClick={() => onEdit?.(collection)}
     >
       <div className="hover-reveal-child">
-        <DeleteButton onDelete={() => deleteBrand(collection.id)} />
+        <DeleteButton onDelete={() => deleteCollection(collection.id)} />
       </div>
 
-      <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-3">
-        <StatusBadge isActive={collection.is_active}/>
-        <p className="text-white bg-slate-600 p-0.5 px-2 rounded-md">محصولات: {collection.products_count}</p>
+      <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-2 flex-wrap">
+        <StatusBadge isActive={isActive && isEndDateFuture} />
+        <p className="text-white bg-slate-600 p-0.5 px-2 rounded-md text-xs">
+          محصولات: {collection.products_count}
+        </p>
       </div>
 
       <Image
@@ -50,6 +57,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           </p>
         </div>
       </div>
+      <CountdownTimer endDate={collection.end_date} className="absolute z-10 bottom-2.5 left-2.5" />
     </BaseCard>
   );
 };
