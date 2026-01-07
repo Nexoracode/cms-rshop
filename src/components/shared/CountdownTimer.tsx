@@ -70,7 +70,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   // اگر تاریخ گذشته باشد
   if (timeLeft.isExpired) {
     return (
-      <div className={`inline-flex items-center bg-red-50 text-red-700 px-3 py-1 rounded-full ${className}`}>
+      <div
+        className={`inline-flex items-center bg-red-50 text-red-700 px-3 py-1 rounded-full ${className}`}
+      >
         <span className="text-lg mr-1">⏰</span>
         <span className="text-sm font-medium">منقضی شده</span>
       </div>
@@ -79,47 +81,51 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   // فرمت نمایش اعداد (دو رقمی)
   const formatNumber = (num: number) => num.toString().padStart(2, "۰");
+  const count = "bg-white/25 p-1 px-2 rounded-lg w-10"
 
   return (
-    <div className={`inline-flex items-center gap-2 bg-white/20 p-2 px-4 rounded-2xl ${className}`}>      
+    <div className={`inline-flex items-center gap-2 ${className}`}>
       <div className="flex flex-row-reverse items-center gap-1">
         {/* روز */}
         {timeLeft.days > 0 && (
-          <>
-            <div className="flex flex-col items-center">
-              <span className="text-white font-bold text-sm">
-                {formatNumber(timeLeft.days)}
-              </span>
-              {showLabels && <span className="text-gray-300 text-[10px]">روز</span>}
-            </div>
-            <span className="text-gray-400 mx-1">:</span>
-          </>
+          <div className={`flex flex-col items-center ${count}`}>
+            <span className="text-white font-bold text-sm">
+              {formatNumber(timeLeft.days)}
+            </span>
+            {showLabels && (
+              <span className="text-gray-300 text-[10px]">روز</span>
+            )}
+          </div>
         )}
 
         {/* ساعت */}
-        <div className="flex flex-col items-center">
+        <div className={`flex flex-col items-center ${count}`}>
           <span className="text-white font-bold text-sm">
             {formatNumber(timeLeft.hours)}
           </span>
-          {showLabels && <span className="text-gray-300 text-[10px]">ساعت</span>}
+          {showLabels && (
+            <span className="text-gray-300 text-[10px]">ساعت</span>
+          )}
         </div>
-        <span className="text-gray-400 mx-1">:</span>
 
         {/* دقیقه */}
-        <div className="flex flex-col items-center">
+        <div className={`flex flex-col items-center ${count}`}>
           <span className="text-white font-bold text-sm">
             {formatNumber(timeLeft.minutes)}
           </span>
-          {showLabels && <span className="text-gray-300 text-[10px]">دقیقه</span>}
+          {showLabels && (
+            <span className="text-gray-300 text-[10px]">دقیقه</span>
+          )}
         </div>
-        <span className="text-gray-400 mx-1">:</span>
 
         {/* ثانیه */}
-        <div className="flex flex-col items-center">
+        <div className={`flex flex-col items-center ${count}`}>
           <span className="text-white font-bold text-sm">
             {formatNumber(timeLeft.seconds)}
           </span>
-          {showLabels && <span className="text-gray-300 text-[10px]">ثانیه</span>}
+          {showLabels && (
+            <span className="text-gray-300 text-[10px]">ثانیه</span>
+          )}
         </div>
       </div>
     </div>
