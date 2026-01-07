@@ -50,7 +50,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
 
       {/* نام و اسلاگ */}
       <div className="absolute text-white inset-0 bg-black/50 z-10 flex flex-col justify-center gap-2">
-        <div className="leading-9 pr-10">
+        <div className="leading-9 pr-6">
           <p className="text-2xl truncate">{collection.title}</p>
           <p className="text-md truncate text-gray-300">
             {collection.description}

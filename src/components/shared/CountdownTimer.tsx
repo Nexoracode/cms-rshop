@@ -87,39 +87,39 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         {timeLeft.days > 0 && (
           <>
             <div className="flex flex-col items-center">
-              <span className="text-blue-800 font-bold text-sm">
+              <span className="text-white font-bold text-sm">
                 {formatNumber(timeLeft.days)}
               </span>
-              {showLabels && <span className="text-blue-600 text-[10px]">روز</span>}
+              {showLabels && <span className="text-gray-300 text-[10px]">روز</span>}
             </div>
-            <span className="text-blue-400 mx-1">:</span>
+            <span className="text-gray-400 mx-1">:</span>
           </>
         )}
 
         {/* ساعت */}
         <div className="flex flex-col items-center">
-          <span className="text-blue-800 font-bold text-sm">
+          <span className="text-white font-bold text-sm">
             {formatNumber(timeLeft.hours)}
           </span>
-          {showLabels && <span className="text-blue-600 text-[10px]">ساعت</span>}
+          {showLabels && <span className="text-gray-300 text-[10px]">ساعت</span>}
         </div>
-        <span className="text-blue-400 mx-1">:</span>
+        <span className="text-gray-400 mx-1">:</span>
 
         {/* دقیقه */}
         <div className="flex flex-col items-center">
-          <span className="text-blue-800 font-bold text-sm">
+          <span className="text-white font-bold text-sm">
             {formatNumber(timeLeft.minutes)}
           </span>
-          {showLabels && <span className="text-blue-600 text-[10px]">دقیقه</span>}
+          {showLabels && <span className="text-gray-300 text-[10px]">دقیقه</span>}
         </div>
-        <span className="text-blue-400 mx-1">:</span>
+        <span className="text-gray-400 mx-1">:</span>
 
         {/* ثانیه */}
         <div className="flex flex-col items-center">
-          <span className="text-blue-800 font-bold text-sm">
+          <span className="text-white font-bold text-sm">
             {formatNumber(timeLeft.seconds)}
           </span>
-          {showLabels && <span className="text-blue-600 text-[10px]">ثانیه</span>}
+          {showLabels && <span className="text-gray-300 text-[10px]">ثانیه</span>}
         </div>
       </div>
     </div>
