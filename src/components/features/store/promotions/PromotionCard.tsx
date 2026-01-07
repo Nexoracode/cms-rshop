@@ -90,8 +90,8 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
   const rowItems = [
     { label: "عنوان", value: name },
-    { label: "نوع", value: promotionType.name },
-    { label: "مقدار", value: promotionType.value },
+    ...(promotionType.name ? [{ label: "نوع", value: promotionType.name }] : [] ),
+    ...(promotionType.value ? [{ label: "مقدار", value: promotionType.value }] : [] ),
     {
       label: "اعتبار",
       value: `از   ${
