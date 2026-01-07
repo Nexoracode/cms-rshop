@@ -10,10 +10,13 @@ import { getPaymentStatusText } from "../const/order-constants";
 
 type PaymentCardProps = {
   order: any;
-  disableActiveBg?: boolean
+  disableActiveBg?: boolean;
 };
 
-const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order, disableActiveBg=false }) => {
+const PaymentCardInfos: React.FC<PaymentCardProps> = ({
+  order,
+  disableActiveBg = false,
+}) => {
   const { payment } = order;
 
   const getGatewayName = (gateway: string) => {
@@ -26,9 +29,9 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order, disableActiveBg=f
     return gatewayNames[gateway] || gateway;
   };
 
-  const disabled = !disableActiveBg
+  const disabled = !disableActiveBg;
 
-  return (
+  return payment ? (
     <BaseCard
       CardHeaderProps={{
         title: "اطلاعات پرداخت",
@@ -53,7 +56,13 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order, disableActiveBg=f
       {/* روش پرداخت */}
       <InfoRow
         label="روش پرداخت"
-        value={payment?.payment_method === "online" ? "آنلاین" : "کارت به کارت"}
+        value={
+          payment
+            ? payment?.payment_method === "online"
+              ? "آنلاین"
+              : "کارت به کارت"
+            : "—"
+        }
       />
 
       {/* درگاه پرداخت */}
@@ -68,10 +77,10 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order, disableActiveBg=f
         label="تاریخ واریز"
         value={payment?.deposit_date ? toPersianUTC(payment.deposit_date) : "—"}
       />
-      
+
       <InfoRow
         label="وضعیت پرداخت"
-        value={getPaymentStatusText(payment?.status)}
+        value={payment ? getPaymentStatusText(payment?.status) : "—"}
         isActiveBg={disabled}
       />
 
@@ -85,9 +94,15 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({ order, disableActiveBg=f
 
       {/* یادداشت ادمین */}
       {payment?.admin_note && (
-        <InfoRow label="یادداشت ادمین" value={payment.admin_note} isActiveBg={disabled}/>
+        <InfoRow
+          label="یادداشت ادمین"
+          value={payment.admin_note}
+          isActiveBg={disabled}
+        />
       )}
     </BaseCard>
+  ) : (
+    ""
   );
 };
 
