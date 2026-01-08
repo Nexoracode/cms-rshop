@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 export const handleMutation = async <T>(
   mutationFn: () => Promise<T>,
   options?: {
@@ -8,7 +6,6 @@ export const handleMutation = async <T>(
     redirect?: string;
   }
 ): Promise<boolean | T> => {
-  const router = useRouter();
   const { resetForm, returnResponse = false } = options ?? {};
 
   try {
@@ -16,7 +13,6 @@ export const handleMutation = async <T>(
 
     if (res && (res as any)?.ok) {
       resetForm?.();
-      options?.redirect?.length && router.push(options.redirect);
       return returnResponse ? res : true;
     }
 

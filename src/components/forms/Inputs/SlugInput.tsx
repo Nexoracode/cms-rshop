@@ -12,7 +12,7 @@ type Props = {
   isRequired?: boolean;
   isActiveError?: boolean;
   errorMessage?: string;
-  size?: "sm" | "md" | "lg"
+  size?: "sm" | "md" | "lg";
 };
 
 export default function SlugInput({
@@ -23,7 +23,7 @@ export default function SlugInput({
   isRequired = true,
   isActiveError = true,
   errorMessage,
-  size= "md"
+  size = "md",
 }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
@@ -73,8 +73,8 @@ export default function SlugInput({
 
   const showError =
     touched &&
-    (error ||
-      (isActiveError && isRequired && value.trim().length === 0));
+    errorMessage?.length &&
+    (error || (isActiveError && isRequired && value.trim().length === 0));
 
   return (
     <Input

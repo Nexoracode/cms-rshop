@@ -18,7 +18,7 @@ const Collections = () => {
       headerProps={{
         title: "مدیریت مجموعه ها",
         icon: <HiOutlineCollection className="text-2xl" />,
-        onAdd: () => {}
+        redirect: "/admin/store/home-builder/collections/create"
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}

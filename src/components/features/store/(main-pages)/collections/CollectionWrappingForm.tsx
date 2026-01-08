@@ -12,7 +12,6 @@ import Textarea from "@/components/ui/inputs/Textarea";
 
 import { useForm } from "@/core/hooks/common/form/useForm";
 
-import toast from "react-hot-toast";
 import {
   useCreateCollection,
   useUpdateCollection,
@@ -27,13 +26,15 @@ import { handleMutation } from "@/core/utils/mutationHelper";
 import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
 export const initialCollectionWrappingForm = {
-  name: "",
+  title: "",
+  slug: "",
   description: "",
-  price: 0,
-  image_id: null,
+  file: null as File | null,
   image: null,
   is_active: false,
-  is_for_gift: true,
+  start_date: "",
+  end_date: "",
+  product_ids: [] as number[],
 };
 
 type GiftWrappingFormProps = {
@@ -49,7 +50,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
 }) => {
   const router = useRouter();
 
-  const {setSelectedProducts} = useProductsSelection()
+  const { setSelectedProducts } = useProductsSelection();
   const { mutateAsync: createCollection } = useCreateCollection();
   const { mutateAsync: updateCollection } = useUpdateCollection();
   const { mutateAsync: uploadImage } = useUploadSliderImages();
@@ -60,6 +61,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
     handleFieldChange,
     handleMultipleFieldsChange,
     setForm,
+    reset,
     submit,
   } = useForm(initialCollectionWrappingForm, {
     onValidate: collectionWrappingValidation,
@@ -70,22 +72,51 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
     data && setForm(data);
   }, [data]);
 
+  useEffect(() => {
+    console.log("Form =>", form);
+  }, [form]);
+
   const handleSubmit = submit(async (changed) => {
+    let finalImageUrl = form.image;
+
+    if (form.file) {
+      const fd = new FormData();
+      fd.append("files", form.file);
+
+      const uploadRes = (await handleMutation(() => uploadImage(fd), {
+        returnResponse: true,
+      })) as any;
+
+      if (!uploadRes.ok) return false;
+      finalImageUrl = uploadRes.data[0].url;
+    }
+
+    const {
+      description,
+      is_active,
+      slug,
+      title,
+      end_date,
+      product_ids,
+      start_date,
+    } = form;
+
     const payload = {
-      name: form.name.trim(),
-      description: form.description.trim(),
-      price: +form.price,
-      image_id: form.image_id,
-      is_active: form.is_active,
-      is_for_gift: form.is_for_gift,
+      title,
+      slug,
+      description,
+      image: finalImageUrl,
+      is_active,
+      product_ids,
+      start_date,
+      end_date,
     };
-    console.log(payload);
 
     if (id) {
-      return handleMutation(() => updateCollection(payload), {
-        resetForm,
-        redirect: "/admin/store/home-builder/collections" 
-      });
+      const res = await handleMutation(() =>
+        updateCollection({ data: payload, id })
+      );
+      res && router.push("/admin/store/home-builder/collections");
     } else {
       return handleMutation(() => createCollection(payload), {
         resetForm,
@@ -94,8 +125,9 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
   });
 
   const resetForm = () => {
-    setForm(initialCollectionWrappingForm)
-    setSelectedProducts([])
+    setForm(initialCollectionWrappingForm);
+    setSelectedProducts([]);
+    reset();
   };
 
   return (
@@ -112,32 +144,25 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         title="تصویر مجموعه"
         textBtn={"+ افزودن تصویر"}
         defaultImg={form?.image}
-        onFile={async (file) => {
-          const formData = new FormData();
-          formData.append("files", file);
-          const uploadRes = await uploadImage(formData);
-          if (!uploadRes.ok) return;
-          handleMultipleFieldsChange({
-            image_id: uploadRes.data.id,
-            image: uploadRes.data,
-          });
-        }}
-        errorMessage={errors.image_id}
+        onFile={async (file) => handleFieldChange("file", file)}
+        errorMessage={errors.image}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           label="نام مجموعه"
           placeholder="مثلاً: جعبه کادو لوکس"
-          value={form.name}
-          onChange={(val) => handleFieldChange("name", val)}
+          value={form.title}
+          onChange={(val) => handleFieldChange("title", val)}
           isRequired
-          errorMessage={errors.name}
+          errorMessage={errors.title}
           allowEnglishOnly={false}
         />
 
         <SlugInput
           value={form.slug}
-          onChange={(val) => handleFieldChange("slug", val)}
+          onChange={(val) => {
+            handleFieldChange("slug", val);
+          }}
           isActiveError={true}
           errorMessage={errors.slug}
         />
@@ -145,11 +170,11 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
       <IsoDatePicker
         label="بازه اعتبار"
         enableRange
-        valueIsoRange={{ start: form.starts_at, end: form.ends_at }}
+        valueIsoRange={{ start: form.start_date, end: form.end_date }}
         onChangeIsoRange={(range) => {
           handleMultipleFieldsChange({
-            starts_at: range?.start,
-            ends_at: range?.end,
+            start_date: range?.start ?? "",
+            end_date: range?.end ?? "",
           });
         }}
         showMonthAndYearPickers
@@ -166,6 +191,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         minRows={5}
         errorMessage={errors.description}
       />
+
       <ToggleSection
         title="وضعیت نمایش"
         initialMode={form.is_active}
