@@ -10,12 +10,10 @@ import CountdownTimer from "@/components/shared/CountdownTimer";
 
 type CollectionCardProps = {
   collection: any;
-  onEdit?: (collection: Record<string, any>) => void;
 };
 
 const CollectionCard: React.FC<CollectionCardProps> = ({
   collection,
-  onEdit,
 }) => {
   const { mutate: deleteCollection } = useDeleteCollection();
 
@@ -26,7 +24,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   return (
     <BaseCard
       bodyClassName="p-0 rounded-xl hover-reveal-parent group overflow-hidden"
-      onClick={() => onEdit?.(collection)}
+      redirect={`/admin/store/home-builder/collections/create?edit_id=${collection.id}`}
     >
       <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteCollection(collection.id)} />

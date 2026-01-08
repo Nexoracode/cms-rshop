@@ -25,8 +25,8 @@ const Collections = () => {
       searchInp={false}
       childrenClassName="grid grid-cols-1 sm:grid-cols-2"
     >
-      {collections?.data?.map((coll: any) => (
-        <CollectionCard collection={coll} onEdit={() => {}} />
+      {collections?.data?.map((coll: any, index: number) => (
+        <CollectionCard key={index} collection={coll}/>
       ))}
     </UnifiedCard>
   );
