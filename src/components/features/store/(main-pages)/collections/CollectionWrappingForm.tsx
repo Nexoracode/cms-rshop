@@ -146,6 +146,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         defaultImg={form?.image}
         onFile={async (file) => handleFieldChange("file", file)}
         errorMessage={errors.image}
+        changeStatusFile={form.file}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput

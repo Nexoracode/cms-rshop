@@ -71,9 +71,8 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   if (timeLeft.isExpired) {
     return (
       <div
-        className={`inline-flex items-center bg-red-50 text-red-700 px-3 py-1 rounded-full ${className}`}
+        className={`inline-flex items-center bg-black/50 border border-gray-400 text-white px-3 py-1 rounded-lg ${className}`}
       >
-        <span className="text-lg mr-1">⏰</span>
         <span className="text-sm font-medium">منقضی شده</span>
       </div>
     );
