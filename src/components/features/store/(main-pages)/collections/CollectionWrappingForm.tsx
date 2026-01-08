@@ -51,9 +51,12 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
   const router = useRouter();
 
   const { setSelectedProducts } = useProductsSelection();
-  const { mutateAsync: createCollection } = useCreateCollection();
-  const { mutateAsync: updateCollection } = useUpdateCollection();
-  const { mutateAsync: uploadImage } = useUploadSliderImages();
+  const { mutateAsync: createCollection, isPending: isPendingCreate } =
+    useCreateCollection();
+  const { mutateAsync: updateCollection, isPending: isPendingUpdate } =
+    useUpdateCollection();
+  const { mutateAsync: uploadImage, isPending: isPendingImage } =
+    useUploadSliderImages();
 
   const {
     form,
@@ -211,6 +214,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         cancelHref="/admin/gift-wrappings"
         onSubmit={handleSubmit}
         isLoading={isLoading}
+        isSubmitting={isPendingCreate || isPendingUpdate || isPendingImage}
       />
     </BaseCard>
   );
