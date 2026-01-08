@@ -13,11 +13,15 @@ import Textarea from "@/components/ui/inputs/Textarea";
 import { useForm } from "@/core/hooks/common/form/useForm";
 
 import toast from "react-hot-toast";
-import { FiGift } from "react-icons/fi";
-import NumberInput from "@/components/ui/inputs/NumberInput";
-import { useCreateCollection, useUpdateCollection } from "@/core/hooks/api/adminHome/useCollections";
+import {
+  useCreateCollection,
+  useUpdateCollection,
+} from "@/core/hooks/api/adminHome/useCollections";
 import { collectionWrappingValidation } from "./collection-wrapping-validation";
 import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
+import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
+import { HiOutlineCollection } from "react-icons/hi";
 
 export const initialGiftWrappingForm = {
   name: "",
@@ -63,9 +67,9 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
   }, [data]);
 
   const handleSubmit = submit(async (changed) => {
-   console.log(changed);
-   
-     try {
+    console.log(changed);
+
+    try {
       const payload = {
         name: form.name.trim(),
         description: form.description.trim(),
@@ -75,9 +79,11 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         is_for_gift: form.is_for_gift,
       };
       console.log(payload);
-      
-      const result = id ? await updateCollection(payload) : await createCollection(payload);
-      result.ok && router.push("/admin/store/gift-wrapping");
+
+      const result = id
+        ? await updateCollection(payload)
+        : await createCollection(payload);
+      result.ok && router.push("/admin/store/home-builder/collections");
     } catch (err) {
       toast.error("خطایی رخ داد");
     }
@@ -86,17 +92,17 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
   return (
     <BaseCard
       CardHeaderProps={{
-        title: id ? "ویرایش بسته‌بندی" : "ایجاد بسته‌بندی",
-        icon: <FiGift className="w-6 h-6" />,
+        title: id ? "ویرایش مجموعه" : "ایجاد مجموعه",
+        icon: <HiOutlineCollection className="w-6 h-6" />,
         showIconInActionSlot: true,
       }}
       wrapperContents
       isLoading={isLoading}
     >
       <ImageBoxUploader
-        title="تصویر بسته‌بندی"
+        title="تصویر مجموعه"
         textBtn={"+ افزودن تصویر"}
-        defaultImg={form?.image?.url}
+        defaultImg={form?.image}
         onFile={async (file) => {
           const formData = new FormData();
           formData.append("files", file);
@@ -111,7 +117,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
       />
       <div className="flex items-center gap-4">
         <TextInput
-          label="نام بسته‌بندی"
+          label="نام مجموعه"
           placeholder="مثلاً: جعبه کادو لوکس"
           value={form.name}
           onChange={(val) => handleFieldChange("name", val)}
@@ -120,36 +126,29 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
           allowEnglishOnly={false}
         />
 
-        <NumberInput
-          label="قیمت"
-          placeholder="مثلاً: 10,000"
-          suffix="تومان"
-          min={0}
-          value={form.price}
-          onChange={(price) => handleFieldChange("price", price)}
-          errorMessage={errors.price}
+        <SlugInput
+          value={form.slug}
+          onChange={(val) => handleFieldChange("slug", val)}
+          isActiveError={true}
+          errorMessage={errors.slug}
         />
       </div>
 
-      <div className="w-full flex items-center gap-4">
-        <ToggleSection
-          title="وضعیت نمایش"
-          subtitle="فعال یا غیرفعال"
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
-        />
-
-        <ToggleSection
-          title="مخصوص هدیه"
-          subtitle="بسته بندی مخصوص هدیه است؟"
-          initialMode={form.is_for_gift}
-          onChange={(val) => {
-            console.log(val);
-
-            handleFieldChange("is_for_gift", val);
-          }}
-        />
-      </div>
+      <IsoDatePicker
+        label="بازه اعتبار"
+        enableRange
+        valueIsoRange={{ start: form.starts_at, end: form.ends_at }}
+        onChangeIsoRange={(range) => {
+          handleMultipleFieldsChange({
+            starts_at: range?.start,
+            ends_at: range?.end,
+          });
+        }}
+        showMonthAndYearPickers
+        className="w-full"
+        isRequired
+        errorMessage={errors.starts_at}
+      />
 
       <Textarea
         label="توضیحات"
@@ -159,6 +158,13 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         isRequired
         minRows={5}
         errorMessage={errors.description}
+      />
+
+      <ToggleSection
+        title="وضعیت نمایش"
+        subtitle="فعال یا غیرفعال"
+        initialMode={form.is_active}
+        onChange={(val) => handleFieldChange("is_active", val)}
       />
 
       <FormActionButtons
