@@ -22,8 +22,11 @@ import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSlide
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import { HiOutlineCollection } from "react-icons/hi";
+import ProductSelectionBox from "@/components/features/products/SelectableProduct/Product/ProductSelectionBox";
+import { handleMutation } from "@/core/utils/mutationHelper";
+import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
-export const initialGiftWrappingForm = {
+export const initialCollectionWrappingForm = {
   name: "",
   description: "",
   price: 0,
@@ -46,6 +49,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
 }) => {
   const router = useRouter();
 
+  const {setSelectedProducts} = useProductsSelection()
   const { mutateAsync: createCollection } = useCreateCollection();
   const { mutateAsync: updateCollection } = useUpdateCollection();
   const { mutateAsync: uploadImage } = useUploadSliderImages();
@@ -57,7 +61,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
     handleMultipleFieldsChange,
     setForm,
     submit,
-  } = useForm(initialGiftWrappingForm, {
+  } = useForm(initialCollectionWrappingForm, {
     onValidate: collectionWrappingValidation,
     runValidationOnChange: true,
   });
@@ -67,27 +71,32 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
   }, [data]);
 
   const handleSubmit = submit(async (changed) => {
-    console.log(changed);
+    const payload = {
+      name: form.name.trim(),
+      description: form.description.trim(),
+      price: +form.price,
+      image_id: form.image_id,
+      is_active: form.is_active,
+      is_for_gift: form.is_for_gift,
+    };
+    console.log(payload);
 
-    try {
-      const payload = {
-        name: form.name.trim(),
-        description: form.description.trim(),
-        price: +form.price,
-        image_id: form.image_id,
-        is_active: form.is_active,
-        is_for_gift: form.is_for_gift,
-      };
-      console.log(payload);
-
-      const result = id
-        ? await updateCollection(payload)
-        : await createCollection(payload);
-      result.ok && router.push("/admin/store/home-builder/collections");
-    } catch (err) {
-      toast.error("خطایی رخ داد");
+    if (id) {
+      return handleMutation(() => updateCollection(payload), {
+        resetForm,
+        redirect: "/admin/store/home-builder/collections" 
+      });
+    } else {
+      return handleMutation(() => createCollection(payload), {
+        resetForm,
+      });
     }
   });
+
+  const resetForm = () => {
+    setForm(initialCollectionWrappingForm)
+    setSelectedProducts([])
+  };
 
   return (
     <BaseCard
@@ -115,7 +124,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         }}
         errorMessage={errors.image_id}
       />
-      <div className="flex items-center gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           label="نام مجموعه"
           placeholder="مثلاً: جعبه کادو لوکس"
@@ -133,7 +142,6 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
           errorMessage={errors.slug}
         />
       </div>
-
       <IsoDatePicker
         label="بازه اعتبار"
         enableRange
@@ -149,7 +157,6 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         isRequired
         errorMessage={errors.starts_at}
       />
-
       <Textarea
         label="توضیحات"
         placeholder="جنس، ابعاد، مناسب برای چه محصولاتی..."
@@ -159,12 +166,18 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         minRows={5}
         errorMessage={errors.description}
       />
-
       <ToggleSection
         title="وضعیت نمایش"
-        subtitle="فعال یا غیرفعال"
         initialMode={form.is_active}
         onChange={(val) => handleFieldChange("is_active", val)}
+      />
+
+      <ProductSelectionBox
+        onChange={(items) => {
+          const productIds = items.map((item) => item.product_id);
+          handleFieldChange("product_ids", productIds);
+        }}
+        error={!!errors.product_ids}
       />
 
       <FormActionButtons
