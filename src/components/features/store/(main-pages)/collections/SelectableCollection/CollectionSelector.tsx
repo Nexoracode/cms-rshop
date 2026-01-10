@@ -48,8 +48,7 @@ const CollectionSelector: React.FC<Props> = ({
   return (
     <CollectionCard
       collection={collection}
-      children={collectionWrapper}
-      showVariants={false}
+      wrapper={collectionWrapper}
     />
   );
 };

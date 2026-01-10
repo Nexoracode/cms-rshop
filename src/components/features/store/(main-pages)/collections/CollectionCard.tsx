@@ -10,10 +10,14 @@ import CountdownTimer from "@/components/shared/CountdownTimer";
 
 type CollectionCardProps = {
   collection: any;
+  wrapper?: React.ReactNode;
+  contentCollection?: React.ReactNode;
 };
 
 const CollectionCard: React.FC<CollectionCardProps> = ({
   collection,
+  wrapper,
+  contentCollection
 }) => {
   const { mutate: deleteCollection } = useDeleteCollection();
 
@@ -21,11 +25,13 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   const isActive = collection.is_active;
   const isEndDateFuture = new Date(collection.end_date) > new Date();
 
-  return (
+  const content = (
     <BaseCard
       bodyClassName="p-0 rounded-xl hover-reveal-parent group overflow-hidden"
       redirect={`/admin/store/home-builder/collections/create?edit_id=${collection.id}`}
     >
+      {contentCollection}
+
       <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteCollection(collection.id)} />
       </div>
@@ -55,9 +61,18 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           </p>
         </div>
       </div>
-      <CountdownTimer endDate={collection.end_date} className="absolute z-10 bottom-2.5 left-2.5" />
+      <CountdownTimer
+        endDate={collection.end_date}
+        className="absolute z-10 bottom-2.5 left-2.5"
+      />
     </BaseCard>
   );
+
+  return wrapper
+    ? React.cloneElement(wrapper as React.ReactElement, {
+        children: content,
+      })
+    : content;
 };
 
 export default CollectionCard;
