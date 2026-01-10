@@ -18,7 +18,7 @@ import BaseCard from "@/components/ui/BaseCard";
 
 const storeSettingsLinks = [
   {
-    title: "مدیریت صفحه اصلی",
+    title: "صفحه اصلی",
     icon: <SiMaterialformkdocs className="text-2xl" />,
     route: "store/home-builder",
   },

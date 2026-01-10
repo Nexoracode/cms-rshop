@@ -1,14 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
 
+export const useGetSettings = () => {
+  return useMutation({
+    mutationFn: () =>
+      fetcher({
+        route: "/admin/settings",
+        method: "GET",
+        isActiveToast: false,
+      }),
+  });
+};
+
 export const useUpdateHomePageLayout = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      type,
-    }: {
-      type: "side_by_side" | "stacked";
-    }) =>
+    mutationFn: ({ type }: { type: "side_by_side" | "stacked" }) =>
       fetcher({
         route: `/admin/settings/homepage-layout/${type}`,
         method: "PATCH",
