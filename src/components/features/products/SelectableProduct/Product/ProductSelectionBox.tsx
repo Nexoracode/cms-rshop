@@ -39,7 +39,7 @@ const InnerProductVariantSelectionBox: React.FC<{
       modal={<MultiProductsModal />}
       error={error}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {selectedProducts.map((selectedProduct) => (
           <ProductVariantsCard
             key={selectedProduct.id}

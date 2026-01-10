@@ -92,9 +92,11 @@ const BaseModal: React.FC<BaseModalProps> = ({
         size={size}
         isDismissable={false}
       >
-        <ModalContent onClick={(e) => {
-          e.stopPropagation()
-        }}>
+        <ModalContent
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {(onClose) => (
             <>
               {title && (
@@ -108,24 +110,28 @@ const BaseModal: React.FC<BaseModalProps> = ({
 
               <ModalBody className="leading-7 max-h-[80vh] overflow-y-auto pl-4">
                 {content || children}
-                <div></div>
+                <div className="mb-12"></div>
                 {isActiveFooter && (
-                  <FormActionButtons
-                    cancelText={cancelText}
-                    submitText={confirmText}
-                    onCancel={() => {
-                      onCancel?.();
-                      onClose();
-                    }}
-                    onSubmit={async () => {
-                      const result = await onConfirm?.();
+                  <div className="absolute bg-white pt-2 bottom-0 right-0 left-0 w-full z-50">
+                    <div className="mx-6">
+                      <FormActionButtons
+                        cancelText={cancelText}
+                        submitText={confirmText}
+                        onCancel={() => {
+                          onCancel?.();
+                          onClose();
+                        }}
+                        onSubmit={async () => {
+                          const result = await onConfirm?.();
 
-                      if (result === true) {
-                        handleOpenChange(false);
-                      }
-                    }}
-                    isLoading={isConfirmDisabled}
-                  />
+                          if (result === true) {
+                            handleOpenChange(false);
+                          }
+                        }}
+                        isLoading={isConfirmDisabled}
+                      />
+                    </div>
+                  </div>
                 )}
               </ModalBody>
             </>

@@ -81,10 +81,6 @@ const SpecialSectionModal: React.FC<Props> = ({
     });
   }, [defaultValues]);
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
-
   const handleSubmit = submit(async () => {
     let finalMediaId = form.file || form.image;
 
@@ -147,7 +143,7 @@ const SpecialSectionModal: React.FC<Props> = ({
       title={defaultValues?.id ? "ویرایش بخش" : "افزودن بخش جدید"}
       confirmText={defaultValues?.id ? "ویرایش بخش" : "ایجاد بخش"}
       onConfirm={handleSubmit}
-      size="xl"
+      size="2xl"
       icon={<TfiLayoutSliderAlt />}
       isConfirmDisabled={isCreating || isUpdating}
     >
