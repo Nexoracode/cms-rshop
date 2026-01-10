@@ -17,7 +17,7 @@ type CollectionCardProps = {
 const CollectionCard: React.FC<CollectionCardProps> = ({
   collection,
   wrapper,
-  contentCollection
+  contentCollection,
 }) => {
   const { mutate: deleteCollection } = useDeleteCollection();
 
@@ -28,13 +28,21 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   const content = (
     <BaseCard
       bodyClassName="p-0 rounded-xl hover-reveal-parent group overflow-hidden"
-      redirect={`/admin/store/home-builder/collections/create?edit_id=${collection.id}`}
+      redirect={
+        !contentCollection
+          ? `/admin/store/home-builder/collections/create?edit_id=${collection.id}`
+          : ""
+      }
     >
       {contentCollection}
 
-      <div className="hover-reveal-child">
-        <DeleteButton onDelete={() => deleteCollection(collection.id)} />
-      </div>
+      {!contentCollection ? (
+        <div className="hover-reveal-child">
+          <DeleteButton onDelete={() => deleteCollection(collection.id)} />
+        </div>
+      ) : (
+        ""
+      )}
 
       <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-2 flex-wrap">
         <StatusBadge isActive={isActive && isEndDateFuture} />
