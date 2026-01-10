@@ -10,8 +10,11 @@ const Collections = () => {
 
   const isExistItems = collections?.data?.length;
 
-  console.log(collections);
+  const specialProducts  = collections?.data?.filter((coll:any) => coll.section_type === "special_products")
   
+  console.log(specialProducts);
+  
+
   return (
     <UnifiedCard
       headerProps={{
@@ -24,7 +27,7 @@ const Collections = () => {
       searchInp={false}
       childrenClassName="grid grid-cols-1 sm:grid-cols-2"
     >
-      {collections?.data?.map((coll: any, index: number) => (
+      {specialProducts?.map((coll: any, index: number) => (
         <CollectionCard key={index} collection={coll}/>
       ))}
     </UnifiedCard>

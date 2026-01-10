@@ -2,11 +2,11 @@
 
 import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { useDeleteCollection } from "@/core/hooks/api/adminHome/useCollections"; // فرض بر این که این hook را ایجاد کرده‌اید
 import { Image } from "@heroui/react";
 import BaseCard from "@/components/ui/BaseCard";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CountdownTimer from "@/components/shared/CountdownTimer";
+import { useDeleteHomeSection } from "@/core/hooks/api/adminHome/useHomeSections";
 
 type CollectionCardProps = {
   collection: any;
@@ -19,7 +19,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   wrapper,
   contentCollection,
 }) => {
-  const { mutate: deleteCollection } = useDeleteCollection();
+  const { mutate: deleteCollection } = useDeleteHomeSection();
 
   // بررسی آیا تاریخ پایان در آینده است یا خیر
   const isActive = collection.is_active;
