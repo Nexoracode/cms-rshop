@@ -47,7 +47,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
       <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-2 flex-wrap">
         <StatusBadge isActive={isActive && isEndDateFuture} />
         <p className="text-white bg-slate-600 p-0.5 px-2 rounded-md text-xs">
-          محصولات: {collection.products_count}
+          محصولات: {collection?.product_ids?.length || "ندارد"}
         </p>
       </div>
 

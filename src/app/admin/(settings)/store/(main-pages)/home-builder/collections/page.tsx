@@ -2,17 +2,16 @@
 
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import CollectionCard from "@/components/features/store/(main-pages)/collections/CollectionCard";
-import { useGetCollections } from "@/core/hooks/api/adminHome/useCollections";
+import { useGetHomeSections } from "@/core/hooks/api/adminHome/useHomeSections";
 import { HiOutlineCollection } from "react-icons/hi";
 
 const Collections = () => {
-  const { data: collections, isLoading: isLoading } = useGetCollections();
+  const { data: collections, isLoading: isLoading } = useGetHomeSections();
 
   const isExistItems = collections?.data?.length;
 
   console.log(collections);
   
-
   return (
     <UnifiedCard
       headerProps={{

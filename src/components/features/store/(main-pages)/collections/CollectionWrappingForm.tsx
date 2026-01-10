@@ -24,6 +24,8 @@ import { HiOutlineCollection } from "react-icons/hi";
 import ProductSelectionBox from "@/components/features/products/SelectableProduct/Product/ProductSelectionBox";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
+import NumberInput from "@/components/ui/inputs/NumberInput";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 
 export const initialCollectionWrappingForm = {
   title: "",
@@ -35,6 +37,8 @@ export const initialCollectionWrappingForm = {
   start_date: "",
   end_date: "",
   product_ids: [] as number[],
+  display_style: "",
+  products_limit: 0,
 };
 
 type GiftWrappingFormProps = {
@@ -133,6 +137,12 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
     reset();
   };
 
+  const displayOptions: SelectOption[] = [
+    { key: "carousel", title: "اسلایدر" },
+    { key: "grid", title: "شبکه ای" },
+    { key: "list", title: "لیستی" },
+  ];
+
   return (
     <BaseCard
       CardHeaderProps={{
@@ -142,6 +152,7 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
       }}
       wrapperContents
       isLoading={isLoading}
+      bodyClassName="pointer-events-none select-none opacity-90"
     >
       <ImageBoxUploader
         title="تصویر مجموعه"
@@ -151,53 +162,89 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
         errorMessage={errors.image}
         changeStatusFile={form.file}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <div className="flex items-center gap-2">
         <TextInput
-          label="نام مجموعه"
-          placeholder="مثلاً: جعبه کادو لوکس"
+          label="عنوان"
+          placeholder="عنوان بخش را وارد کنید"
           value={form.title}
-          onChange={(val) => handleFieldChange("title", val)}
-          isRequired
           errorMessage={errors.title}
+          isRequired
+          onChange={(val) => handleFieldChange("title", val)}
           allowEnglishOnly={false}
         />
+        <SelectBox
+          label="نوع نمایش محصولات"
+          value={form.display_style}
+          onChange={(val) => handleFieldChange("display_style", val)}
+          options={displayOptions}
+          placeholder="انتخاب نوع نمایش"
+          isRequired
+          errorMessage={errors.display_style}
+        />
+      </div>
 
+      <div className="flex items-center gap-2">
         <SlugInput
           value={form.slug}
-          onChange={(val) => {
-            handleFieldChange("slug", val);
-          }}
+          onChange={(val) => handleFieldChange("slug", val)}
           isActiveError={true}
+          isRequired
+          errorMessage={errors.slug}
+        />
+        <TextInput
+          label="نمایش لینک"
+          value={`collections/${form.slug}`}
+          allowSpecialChars
+          allowedSpecialChars={["/", "-"]}
+          onChange={() => {}}
+          inputAlign="left"
+          readOnly
           errorMessage={errors.slug}
         />
       </div>
-      <IsoDatePicker
-        label="بازه اعتبار"
-        enableRange
-        valueIsoRange={{ start: form.start_date, end: form.end_date }}
-        onChangeIsoRange={(range) => {
-          handleMultipleFieldsChange({
-            start_date: range?.start ?? "",
-            end_date: range?.end ?? "",
-          });
-        }}
-        showMonthAndYearPickers
-        className="w-full"
-        isRequired
-        errorMessage={errors.starts_at}
-      />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <NumberInput
+          label="تعداد محدودیت نمایش"
+          placeholder="10"
+          suffix="عدد"
+          min={0}
+          max={30}
+          value={form.products_limit}
+          onChange={(limit) => handleFieldChange("products_limit", limit)}
+          isRequired
+          errorMessage={errors.products_limit}
+        />
+
+        <IsoDatePicker
+          label="بازه اعتبار"
+          enableRange
+          valueIsoRange={{ start: form.start_date, end: form.end_date }}
+          onChangeIsoRange={(range) => {
+            handleMultipleFieldsChange({
+              start_date: range?.start ?? "",
+              end_date: range?.end ?? "",
+            });
+          }}
+          showMonthAndYearPickers
+          className="w-full"
+          isRequired
+          errorMessage={errors.date}
+        />
+      </div>
+
       <Textarea
         label="توضیحات"
-        placeholder="جنس، ابعاد، مناسب برای چه محصولاتی..."
+        isRequired
         value={form.description}
         onChange={(val) => handleFieldChange("description", val)}
-        isRequired
-        minRows={5}
+        placeholder="توضیحات را وارد کنید"
         errorMessage={errors.description}
       />
 
       <ToggleSection
-        title="وضعیت نمایش"
+        title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
         initialMode={form.is_active}
         onChange={(val) => handleFieldChange("is_active", val)}
       />
