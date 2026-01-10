@@ -69,6 +69,7 @@ export const useDeleteHomeSection = () => {
     onSuccess: (_data, id) => {
       qc.invalidateQueries({ queryKey: ["home-sections"] });
       qc.invalidateQueries({ queryKey: ["home-section", id] });
+      qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };

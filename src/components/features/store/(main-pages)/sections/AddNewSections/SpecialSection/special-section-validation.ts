@@ -1,8 +1,14 @@
 export function validateSpecialSection(data: any) {
   const errors: Record<string, string> = {};
 
+  const hasLogo = !data.file && !data?.image;
+
   if (!data.title || data.title.trim() === "") {
     errors.title = "لطفاً عنوان بخش را وارد کنید.";
+  }
+
+  if (!data.description || data.description.trim() === "") {
+    errors.description = "لطفاً توضیحات بخش را وارد کنید.";
   }
 
   if (!data.product_ids || !data.product_ids.length) {
@@ -21,9 +27,11 @@ export function validateSpecialSection(data: any) {
     errors.products_limit = "تعداد نمایش باید یک عدد معتبر باشد.";
   }
 
-  if (!data.view_all_link || data.view_all_link.trim() === "") {
-    errors.view_all_link = "لطفاً لینک مشاهده همه را وارد کنید.";
+  if (!data.start_date.trim().length || !data.end_date.trim().length) {
+    errors.date = "لطفاً لینک مشاهده همه را وارد کنید.";
   }
+
+  if (hasLogo) errors.image = "تصویر الزامی است";
 
   return errors;
 }

@@ -9,6 +9,7 @@ type Props = {
   label: string;
   value: string;
   onChange: (val: string) => void;
+  readOnly?: boolean;
 
   placeholder?: string;
   description?: string | ReactNode;
@@ -50,6 +51,7 @@ export default function TextInput({
   type = "text",
   startContent,
   endContent,
+  readOnly= false,
   className,
   isRequired = false,
   errorMessage,
@@ -99,6 +101,7 @@ export default function TextInput({
 
   return (
     <Input
+      readOnly={readOnly}
       label={label}
       labelPlacement="outside"
       type={type}

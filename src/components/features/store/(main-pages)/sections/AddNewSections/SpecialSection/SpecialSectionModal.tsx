@@ -18,6 +18,9 @@ import { validateSpecialSection } from "./special-section-validation";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 import ProductSelectionBox from "@/components/features/products/SelectableProduct/Product/ProductSelectionBox";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
+import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
+import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
 
 type Props = {
   defaultValues?: any;
@@ -34,6 +37,10 @@ const initialForm = {
   products_limit: 10,
   show_view_all_button: false,
   view_all_link: "",
+  image: "",
+  start_date: "",
+  end_date: "",
+  file: null as File | null,
   product_ids: [] as number[],
   is_active: true,
 };
@@ -47,16 +54,23 @@ const SpecialSectionModal: React.FC<Props> = ({
     useCreateHomeSection();
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
+  const { mutateAsync: uploadSliderImages, isPending: isUploading } =
+    useUploadSliderImages();
   //
   const { setSelectedProducts } = useProductsSelection();
 
-  const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
-    initialForm,
-    {
-      onValidate: (data: any) => validateSpecialSection(data),
-      runValidationOnChange: true,
-    }
-  );
+  const {
+    form,
+    errors,
+    setForm,
+    handleFieldChange,
+    reset,
+    submit,
+    handleMultipleFieldsChange,
+  } = useForm(initialForm, {
+    onValidate: (data: any) => validateSpecialSection(data),
+    runValidationOnChange: true,
+  });
 
   useEffect(() => {
     if (!defaultValues) return;
@@ -67,30 +81,50 @@ const SpecialSectionModal: React.FC<Props> = ({
     });
   }, [defaultValues]);
 
+  useEffect(() => {
+    console.log(form);
+  }, [form]);
+
   const handleSubmit = submit(async () => {
-    const { section_type, show_view_all_button, ...other } = form;
+    let finalMediaId = form.file || form.image;
+
+    if (form.file) {
+      const fd = new FormData();
+      fd.append("files", form.file);
+
+      const uploadRes = (await handleMutation(() => uploadSliderImages(fd), {
+        returnResponse: true,
+      })) as any;
+
+      if (!uploadRes.ok) return false;
+      finalMediaId = uploadRes.data[0].url;
+    }
+
+    const {
+      section_type,
+      show_view_all_button,
+      image,
+      file,
+      products,
+      category,
+      id,
+      sort_order,
+      ...other
+    } = form as any;
 
     const payload: Record<string, any> = {
       section_type: "special_products",
       show_view_all_button: true,
+      image: finalMediaId,
       ...other,
     };
 
     if (defaultValues?.id) {
-      return handleMutation(() => updateSection(payload), {
-        resetForm,
-      });
+      return handleMutation(() => updateSection(payload));
     } else {
-      return handleMutation(() => createSection(payload), {
-        resetForm,
-      });
+      return handleMutation(() => createSection(payload));
     }
   });
-
-  const resetForm = () => {
-    reset();
-    setSelectedProducts([]);
-  };
 
   const displayOptions: SelectOption[] = [
     { key: "carousel", title: "اسلایدر" },
@@ -118,42 +152,27 @@ const SpecialSectionModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating}
     >
       <div className="flex flex-col gap-6">
+        <ImageBoxUploader
+          title="تصویر مجموعه"
+          textBtn={"+ افزودن تصویر"}
+          defaultImg={form?.image}
+          onFile={async (file) => handleFieldChange("file", file)}
+          errorMessage={errors.image}
+          changeStatusFile={form.file}
+        />
+
         <div className="flex items-center gap-2">
           <TextInput
             label="عنوان"
-            placeholder="عنوان بنر را وارد کنید"
+            placeholder="عنوان بخش را وارد کنید"
             value={form.title}
             errorMessage={errors.title}
             isRequired
             onChange={(val) => handleFieldChange("title", val)}
             allowEnglishOnly={false}
           />
-          <SlugInput
-            value={form.slug}
-            onChange={(val) => handleFieldChange("slug", val)}
-            isActiveError={true}
-            isRequired
-            errorMessage={errors.slug}
-          />
-        </div>
-
-        <div className="flex items-center gap-2">
-          <TextInput
-            label="لینک"
-            placeholder="path/to/1"
-            value={form.view_all_link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            isRequired
-            errorMessage={errors.view_all_link}
-            onChange={(val) => {
-              handleFieldChange("view_all_link", val);
-            }}
-            inputAlign="left"
-            allowSpaces={false}
-          />
           <SelectBox
-            label="نوع نمایش"
+            label="نوع نمایش محصولات"
             value={form.display_style}
             onChange={(val) => handleFieldChange("display_style", val)}
             options={displayOptions}
@@ -163,23 +182,63 @@ const SpecialSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        <NumberInput
-          label="تعداد محدودیت نمایش"
-          placeholder="10"
-          suffix="عدد"
-          min={0}
-          max={30}
-          value={form.products_limit}
-          onChange={(limit) => handleFieldChange("products_limit", limit)}
-          isRequired
-          errorMessage={errors.products_limit}
-        />
+        <div className="flex items-center gap-2">
+          <SlugInput
+            value={form.slug}
+            onChange={(val) => handleFieldChange("slug", val)}
+            isActiveError={true}
+            isRequired
+            errorMessage={errors.slug}
+          />
+          <TextInput
+            label="نمایش لینک"
+            value={`collections/${form.slug}`}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            onChange={() => {}}
+            inputAlign="left"
+            readOnly
+            errorMessage={errors.slug}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <NumberInput
+            label="تعداد محدودیت نمایش"
+            placeholder="10"
+            suffix="عدد"
+            min={0}
+            max={30}
+            value={form.products_limit}
+            onChange={(limit) => handleFieldChange("products_limit", limit)}
+            isRequired
+            errorMessage={errors.products_limit}
+          />
+
+          <IsoDatePicker
+            label="بازه اعتبار"
+            enableRange
+            valueIsoRange={{ start: form.start_date, end: form.end_date }}
+            onChangeIsoRange={(range) => {
+              handleMultipleFieldsChange({
+                start_date: range?.start ?? "",
+                end_date: range?.end ?? "",
+              });
+            }}
+            showMonthAndYearPickers
+            className="w-full"
+            isRequired
+            errorMessage={errors.date}
+          />
+        </div>
 
         <Textarea
           label="توضیحات"
+          isRequired
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
+          errorMessage={errors.description}
         />
 
         <ToggleSection
