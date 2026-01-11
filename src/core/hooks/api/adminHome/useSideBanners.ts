@@ -59,6 +59,26 @@ export const useUpdateSideBanner = (id: number) => {
   });
 };
 
+export const useUpdateSectionOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, position }: { id: number; position: any }) => {
+      return fetcher({
+        route: `/admin/side-banners/${id}/order`,
+        method: "PATCH",
+        body: { position },
+        isActiveToast: true,
+        successText: "با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["home"] });
+    },
+  });
+};
+
 export const useDeleteSideBanner = () => {
   const qc = useQueryClient();
   return useMutation({
