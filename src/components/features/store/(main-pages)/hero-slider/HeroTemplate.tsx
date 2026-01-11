@@ -8,15 +8,18 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteHeroSlider } from "@/core/hooks/api/adminHome/useHeroSlider";
 import HeroSliderFormModal from "./HeroSliderFormModal";
 import { useState } from "react";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { BiLayout } from "react-icons/bi";
+import HeroSliderLayoutModal from "./HeroSliderLayoutModal";
 
 type HeroSlidersTemplateProps = {
   slider: HeroSlider;
-  className?: string
+  className?: string;
 };
 
 const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   slider,
-  className
+  className,
 }) => {
   const { mutate: deleteSlider } = useDeleteHeroSlider();
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -59,6 +62,7 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
           className={`hover-reveal-child flex items-center gap-2 rounded-lg px-2 py-1.5 ${bgColor}`}
           onClick={(e) => e.stopPropagation()}
         >
+          <HeroSliderLayoutModal />
           <HeroSliderFormModal />
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />
         </div>

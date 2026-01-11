@@ -17,6 +17,8 @@ import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import Textarea from "@/components/ui/inputs/Textarea";
+import { LuPlus } from "react-icons/lu";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
 
 const initialSliderForm = {
   title: "",
@@ -149,14 +151,12 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
-      triggerProps={
-        sliderId
-          ? null
-          : {
-              title: "+ افزودن",
-              className: "bg-secondary-light text-secondary",
-            }
+      trigger={
+        sliderId ? null : (
+          <ActionButton icon={<LuPlus size={18} />} />
+        )
       }
+      triggerProps={null}
       title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
       confirmText={sliderId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
       onConfirm={handleSubmit}

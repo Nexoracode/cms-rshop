@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Attribute } from "../AttributesProduct/attribute.types";
 import { useUpdateAttributeOrderValue } from "@/core/hooks/api/attributes/useAttributeValue";
-import { handleDropHelper } from "./handleDropHelper";
+import { handleDropHelper } from "../../../../../core/utils/handleDropHelper";
 import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/core/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
 import { TiDeleteOutline } from "react-icons/ti";

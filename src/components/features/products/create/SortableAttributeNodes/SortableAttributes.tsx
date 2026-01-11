@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Attribute } from "../AttributesProduct/attribute.types";
 import SortableAttributeValues from "./SortableAttributeValues";
 import { useUpdateAttributeOrder } from "@/core/hooks/api/attributes/useAttribute";
-import { handleDropHelper } from "./handleDropHelper";
+import { handleDropHelper } from "../../../../../core/utils/handleDropHelper";
 import { Button, Tooltip } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -27,11 +27,6 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
 
   useEffect(() => {
     const tab = searchParams.get("tab");
-    if (!tab) {
-      toast.error("تب فعالی وجود ندارد");
-      return;
-    }
-
     if (tab === "sort-variants") setActiveTab("sort-variants");
     else if (tab === "sort-attributes") setActiveTab("sort-attributes");
   }, [searchParams]);
@@ -72,7 +67,9 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
     <div className="mx-4 mt-6">
       {items
         .slice()
-        .sort((a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .sort(
+          (a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0)
+        )
         .map((attr: any) => (
           <div
             key={attr.id}
