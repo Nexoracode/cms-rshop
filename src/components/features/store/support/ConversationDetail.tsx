@@ -10,6 +10,7 @@ import { useState, useRef, useEffect } from "react";
 import { HiOutlineChatBubbleLeftRight, HiOutlinePaperAirplane } from "react-icons/hi2";
 import { BsEmojiSmile } from "react-icons/bs";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
+import Link from "next/link";
 
 // ایموجی‌های کاملاً بدون تکرار
 const EMOJI_CATEGORIES: Record<string, string[]> = {
@@ -258,14 +259,16 @@ const ConversationDetail: React.FC = () => {
         {
           conv?.product
           ?
-          <img
-          src={conv.product.image}
-          alt={conv.product.title}
-          className="w-9 h-9 object-cover rounded-lg"
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = "/images/logo.png";
-          }}
-        />
+          <Link href={`/admin/products/create?edit_id=${conv.product.id}&type=infos`}>
+            <img
+              src={conv.product.image}
+              alt={conv.product.title}
+              className="w-10 h-10 object-cover rounded-md"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = "/images/logo.png";
+              }}
+            />
+          </Link>
           :""
         }
       </div>
