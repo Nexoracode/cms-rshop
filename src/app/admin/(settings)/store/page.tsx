@@ -20,7 +20,7 @@ const storeSettingsLinks = [
   {
     title: "اطلاعات فروشگاه",
     icon: <BsShop className="text-2xl" />,
-    route: "settings/infos",
+    route: "store/infos",
   },
   {
     title: "صفحه اصلی",
@@ -35,7 +35,7 @@ const storeSettingsLinks = [
   {
     title: "درباره فروشگاه",
     icon: <HiOutlineInformationCircle className="text-2xl" />,
-    route: "settings/about-store",
+    route: "store/about-store",
   },
   {
     title: "بلاگ‌ها",
