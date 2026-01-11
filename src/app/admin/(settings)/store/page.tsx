@@ -38,11 +38,6 @@ const storeSettingsLinks = [
     route: "settings/about-store",
   },
   {
-    title: "شبکه‌های اجتماعی",
-    icon: <IoShareSocialOutline className="text-2xl" />,
-    route: "settings/social",
-  },
-  {
     title: "بلاگ‌ها",
     icon: <HiOutlineDocumentText className="text-2xl" />,
     route: "store/blog",

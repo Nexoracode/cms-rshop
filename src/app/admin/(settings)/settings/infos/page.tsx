@@ -1,22 +1,68 @@
 "use client";
 
-import { Button, Input } from "@heroui/react";
+import BaseCard from "@/components/ui/BaseCard";
+import TextInput from "@/components/ui/inputs/TextInput";
+import { Input } from "@heroui/react";
 import { FaTelegram } from "react-icons/fa";
 import { LuInstagram } from "react-icons/lu";
+import { TiSocialLinkedin } from "react-icons/ti";
 
 const AboutStore = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="bg-white rounded-2xl p-4 flex flex-col gap-6">
-        <div className="text-gray-700 text-sm leading-relaxed">
-          لینک شبکه‌های اجتماعی
-          <br />
-          <span className="text-gray-500">
-            فقط نام کاربری یا ID خود را وارد کنید. پیشوند لینک به‌صورت خودکار
-            نمایش داده شده است.
-          </span>
-        </div>
+    <BaseCard wrapperContents>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <TextInput
+          label="نام و نام خوانوادگی مدیر"
+          placeholder="وارد کنید..."
+          value={""}
+          onChange={() => {}}
+          isRequired
+          inputAlign="right"
+          allowEnglishOnly={false}
+        />
+        <Input
+          style={{ direction: "ltr" }}
+          labelPlacement="outside"
+          label="شماره تلفن مدیر"
+          placeholder="09XX-XXX-XXXX"
+          type="tel"
+          inputMode="tel"
+          variant="flat"
+          isRequired
+          maxLength={11}
+          value={""}
+          onChange={() => {}}
+        />
+      </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <TextInput
+          label="شماره کارت فروشگاه"
+          placeholder="0000_0000_0000_0000"
+          maxLength={11}
+          value={""}
+          inputAlign="left"
+          onChange={() => {}}
+          isRequired
+          allowEnglishOnly={false}
+        />
+        <TextInput
+          label="شماره شبا فروشگاه"
+          placeholder="0000_0000_0000_0000_0000_0000"
+          maxLength={30}
+          value={""}
+          inputAlign="left"
+          onChange={() => {}}
+          endContent="IR"
+          isRequired
+          allowEnglishOnly={false}
+        />
+      </div>
+      <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-t border-b py-3 my-2">
+        <p>شبکه های اجتماعی فروشگاه</p>
+        <TiSocialLinkedin className="text-2xl" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label={
             <div className="flex items-center gap-2">
@@ -27,7 +73,6 @@ const AboutStore = () => {
           labelPlacement="outside"
           placeholder="username"
           type="text"
-          style={{ direction: "ltr" }}
           endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
@@ -47,14 +92,15 @@ const AboutStore = () => {
           labelPlacement="outside"
           placeholder="username"
           type="text"
-          style={{ direction: "ltr" }}
           endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">https://t.me</span>
             </div>
           }
         />
+      </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label={
             <div className="flex items-center gap-2">
@@ -65,7 +111,6 @@ const AboutStore = () => {
           labelPlacement="outside"
           placeholder="username"
           type="text"
-          style={{ direction: "ltr" }}
           endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
@@ -85,7 +130,6 @@ const AboutStore = () => {
           labelPlacement="outside"
           placeholder="username"
           type="text"
-          style={{ direction: "ltr" }}
           endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
@@ -94,14 +138,46 @@ const AboutStore = () => {
             </div>
           }
         />
-
-        <div className="w-full pt-2">
-          <Button className="w-full" color="secondary" variant="flat">
-            ثبت اطلاعات
-          </Button>
-        </div>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Input
+          label={
+            <div className="flex items-center gap-2">
+              <img src="/images/whatsapp.png" className="w-5" alt="whatsap" />
+              <span>واتساپ</span>
+            </div>
+          }
+          labelPlacement="outside"
+          placeholder="username"
+          type="text"
+          endContent={
+            <div className="pointer-events-none flex items-center pr-4">
+              <span className="text-default-400 text-sm">
+                https://whatsapp.com
+              </span>
+            </div>
+          }
+        />
+
+        <Input
+          label={
+            <div className="flex items-center gap-2">
+              <img src="/images/balle.jpg" className="w-5" alt="balle" />
+              <span>بله</span>
+            </div>
+          }
+          labelPlacement="outside"
+          placeholder="username"
+          type="text"
+          endContent={
+            <div className="pointer-events-none flex items-center pr-4">
+              <span className="text-default-400 text-sm">https://ble.ir</span>
+            </div>
+          }
+        />
+      </div>
+    </BaseCard>
   );
 };
 
