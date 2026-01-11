@@ -8,16 +8,14 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteHeroSlider } from "@/core/hooks/api/adminHome/useHeroSlider";
 import HeroSliderFormModal from "./HeroSliderFormModal";
 import { useState } from "react";
-import { ActionButton } from "@/components/ui/buttons/ActionButton";
-import { BiLayout } from "react-icons/bi";
 import HeroSliderLayoutModal from "./HeroSliderLayoutModal";
 
-type HeroSlidersTemplateProps = {
+type HeroTemplateProps = {
   slider: HeroSlider;
   className?: string;
 };
 
-const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
+const HeroTemplate: React.FC<HeroTemplateProps> = ({
   slider,
   className,
 }) => {
@@ -122,4 +120,4 @@ const HeroSlidersTemplate: React.FC<HeroSlidersTemplateProps> = ({
   );
 };
 
-export default HeroSlidersTemplate;
+export default HeroTemplate;

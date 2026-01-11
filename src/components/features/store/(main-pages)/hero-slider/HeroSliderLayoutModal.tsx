@@ -23,7 +23,7 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
         <ActionButton icon={<BiLayout size={18} />} className="text-purple-700 bg-purple-200"/>
       }
       triggerProps={null}
-      title={"مرتب سازی اسلایدرها"}
+      title={"ترتیب اسلایدرها"}
       confirmText={"ثبت تغیرات"}
       size="3xl"
       icon={<TfiLayoutSlider />}
