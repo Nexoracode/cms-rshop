@@ -119,7 +119,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       description,
       image_url: finalImageUrl,
       ...(useBackground ? { background_color } : {}),
-      ...(button_text ? { button_text } : {}),
+      button_text,
       button_link,
       is_dark: form.useBackground ? Boolean(is_dark) : false,
       is_active,
@@ -210,8 +210,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           onChange={(val) => {
             setShowButtonFields(val);
             if (!val) {
-              form.button_link?.length && handleFieldChange("button_link", "");
-              form.button_text?.length && handleFieldChange("button_text", "");
+              handleFieldChange("button_text", "");
             }
           }}
         >
