@@ -12,6 +12,9 @@ const SideBannerContainer: React.FC<Props> = ({ banners = [], className }) => {
     banners.map((banner) => [banner.position, banner])
   ) as Record<string, SideBanner>;
 
+  console.log("Positions =>", SIDE_BANNER_POSITIONS);
+  console.log("Banners =>", banners);
+
   return (
     <div className={`grid grid-cols-2 grid-rows-2 gap-2 ${className}`}>
       {SIDE_BANNER_POSITIONS.map((position) => {

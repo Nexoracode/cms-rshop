@@ -27,8 +27,6 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
     display_duration = 10,
   } = banner;
 
-  console.log("banner =>", banner);
-
   return (
     <div
       className="relative w-full rounded-xl overflow-hidden shadow-md cursor-pointer border h-[64px]"
