@@ -1,15 +1,24 @@
 "use client";
 
+import FormActionButtons from "@/components/common/FormActionButtons";
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { Input } from "@heroui/react";
+import { BsShop } from "react-icons/bs";
 import { FaTelegram } from "react-icons/fa";
 import { LuInstagram } from "react-icons/lu";
 import { TiSocialLinkedin } from "react-icons/ti";
 
 const AboutStore = () => {
   return (
-    <BaseCard wrapperContents>
+    <BaseCard
+      CardHeaderProps={{
+        title: "اطلاعات کلی فروشگاه",
+        icon: <BsShop className="w-6 h-6" />,
+        showIconInActionSlot: true,
+      }}
+      wrapperContents
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           label="نام و نام خوانوادگی مدیر"
@@ -177,6 +186,12 @@ const AboutStore = () => {
           }
         />
       </div>
+
+      <FormActionButtons
+        cancelHref="/admin/orders"
+        onSubmit={() => {}}
+        submitText="ثبت تغیرات"
+      />
     </BaseCard>
   );
 };

@@ -18,6 +18,11 @@ import BaseCard from "@/components/ui/BaseCard";
 
 const storeSettingsLinks = [
   {
+    title: "اطلاعات فروشگاه",
+    icon: <BsShop className="text-2xl" />,
+    route: "settings/infos",
+  },
+  {
     title: "صفحه اصلی",
     icon: <SiMaterialformkdocs className="text-2xl" />,
     route: "store/home-builder",
@@ -26,11 +31,6 @@ const storeSettingsLinks = [
     title: "گزارش عملکرد",
     icon: <TbChartDots className="text-2xl" />,
     route: "store/analytics",
-  },
-  {
-    title: "اطلاعات فروشگاه",
-    icon: <BsShop className="text-2xl" />,
-    route: "settings/infos",
   },
   {
     title: "درباره فروشگاه",
