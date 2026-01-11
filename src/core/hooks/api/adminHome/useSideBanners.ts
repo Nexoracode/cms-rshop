@@ -59,7 +59,7 @@ export const useUpdateSideBanner = (id: number) => {
   });
 };
 
-export const useUpdateSectionOrder = () => {
+export const useUpdateSideBannerOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
