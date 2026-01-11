@@ -12,11 +12,13 @@ import HeroSliderLayoutModal from "./HeroSliderLayoutModal";
 
 type HeroTemplateProps = {
   slider: HeroSlider;
+  sliders: HeroSlider[];
   className?: string;
 };
 
 const HeroTemplate: React.FC<HeroTemplateProps> = ({
   slider,
+  sliders,
   className,
 }) => {
   const { mutate: deleteSlider } = useDeleteHeroSlider();
@@ -60,7 +62,7 @@ const HeroTemplate: React.FC<HeroTemplateProps> = ({
           className={`hover-reveal-child flex items-center gap-2 rounded-lg px-2 py-1.5 ${bgColor}`}
           onClick={(e) => e.stopPropagation()}
         >
-          <HeroSliderLayoutModal />
+          <HeroSliderLayoutModal sliders={sliders}/>
           <HeroSliderFormModal />
           <DeleteButton onDelete={() => deleteSlider(slider.id)} />
         </div>

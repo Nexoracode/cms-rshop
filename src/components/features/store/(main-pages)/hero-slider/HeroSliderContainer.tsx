@@ -20,7 +20,7 @@ const HeroSliderContainer: React.FC<Props> = ({ sliders = [], layoutType }) => {
           items={sortedSliders}
           className="w-full"
           renderItem={(slider) => (
-            <HeroTemplate key={slider.id} slider={slider} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
+            <HeroTemplate key={slider.id} slider={slider} sliders={sortedSliders} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
           )}
         />
       ) : (
