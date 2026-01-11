@@ -51,6 +51,32 @@ export const useUpdateHeroSlider = () => {
   });
 };
 
+export const useUpdateHeroOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      display_order,
+    }: {
+      id: number;
+      display_order: any;
+    }) => {
+      return fetcher({
+        route: `/admin/hero-sliders/${id}/order`,
+        method: "PATCH",
+        body: { display_order },
+        isActiveToast: true,
+        successText: "با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["home"] });
+    },
+  });
+};
+
 export const useDeleteHeroSlider = () => {
   const qc = useQueryClient();
   return useMutation({

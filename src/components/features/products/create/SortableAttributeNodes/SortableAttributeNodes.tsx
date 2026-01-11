@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { AttributeGroup } from "../AttributesProduct/attribute.types";
 import SortableAttributes from "./SortableAttributes";
 import { useUpdateAttributeOrderGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
-import { handleDropHelper } from "../../../../../core/utils/handleDropHelper";
+import { handleDropHelper } from "@/core/utils/handleDropHelper";
 
 type Props = {
   attributeNodes: AttributeGroup[];
@@ -16,8 +16,6 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
   const reorderGroup = useUpdateAttributeOrderGroup();
 
   useEffect(() => {
-    console.log(attributeNodes);
-    
     setItems(attributeNodes);
   }, [attributeNodes]);
 
