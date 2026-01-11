@@ -243,14 +243,31 @@ const ConversationDetail: React.FC = () => {
   }
 
   const conv = data.data
-
+  console.log(conv);
+  
   return (
     <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
-      <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
-        <p className="text-lg text-gray-800 truncate">
-         {conv.subject}
-        </p>
-        <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت #{chatId}</p>
+
+      <div className="flex items-center justify-between p-4 pt-0 bg border-b border-gray-100 bg-white">
+        <div>
+          <p className="text-xs text-gray-500 mb-1">پشتیبانی • تیکت #{chatId}</p>
+          <p className="text-[16px] text-gray-700 truncate">
+            {conv.subject}
+          </p>
+        </div>
+        {
+          conv?.product
+          ?
+          <img
+          src={conv.product.image}
+          alt={conv.product.title}
+          className="w-9 h-9 object-cover rounded-lg"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = "/images/logo.png";
+          }}
+        />
+          :""
+        }
       </div>
 
       {/* پیام‌ها */}
