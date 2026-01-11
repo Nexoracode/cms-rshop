@@ -22,9 +22,11 @@ const ConversationList: React.FC<ConversationListProps> = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
+  console.log(conversations);
+
   return (
-    <aside className="min-w-64 max-w-64 max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5">
-      {conversations.map((conv) => {
+    <aside className="min-w-64 max-w-64 border-l max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5">
+      {conversations.map((conv, index) => {
         const selectedId = Number(searchParams.get("chat-id"));
         const isSelected = selectedId === conv.id;
 
@@ -32,7 +34,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
           <div
             key={conv.id}
             onClick={() => handleSelect(conv)}
-            className={`flex flex-col shadow-[0_0_3px_lightgray] rounded-lg !min-h-[100px] h-full max-h-[100px] cursor-pointer py-2 px-2.5 hover:shadow-lg transition 
+            className={`flex flex-col shadow-none !h-[90px] ${index !== conversations.length - 1 ? "border-b" : ""} cursor-pointer py-2 px-2.5 hover:scale-95 transition 
               ${isSelected ? "bg-white shadow-md" : ""}`}
           >
             <div>
@@ -49,16 +51,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
             </div>
 
             {conv.product && (
-              <div className="flex flex-row-reverse items-center justify-between mt-1.5">
-                <img
-                  src={conv.product.image}
-                  alt={conv.product.title}
-                  className="w-9 h-9 object-cover rounded"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src =
-                      "/images/logo.png";
-                  }}
-                />
+              <div className="mt-1.5">
                 <p className="text-xs text-gray-500 truncate">
                   {conv.product.title}
                 </p>

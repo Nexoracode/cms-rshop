@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { Chip } from "@heroui/react";
 import StatusBadge from "@/components/shared/StatusBadge";
 import SideBannerFormModal from "./SideBannerFormModal";
 import { useState } from "react";
