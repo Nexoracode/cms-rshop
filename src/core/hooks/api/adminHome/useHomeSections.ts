@@ -74,6 +74,32 @@ export const useDeleteHomeSection = () => {
   });
 };
 
+export const useUpdateSectionOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      display_order,
+    }: {
+      id: number;
+      display_order: any;
+    }) => {
+      return fetcher({
+        route: `/admin/home-sections/${id}/order`,
+        method: "PATCH",
+        body: { display_order },
+        isActiveToast: true,
+        successText: "با موفقیت بروزرسانی شد",
+        loadingText: "درحال بروزرسانی...",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["home"] });
+    },
+  });
+};
+
 export const useGetHomeSectionProducts = (id: number) => {
   return useQuery({
     queryKey: ["home-section-products", id],
