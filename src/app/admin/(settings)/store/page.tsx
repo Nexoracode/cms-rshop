@@ -3,7 +3,7 @@
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
 import { BsShop } from "react-icons/bs";
-import { IoReceiptOutline, IoShareSocialOutline } from "react-icons/io5";
+import { IoReceiptOutline } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import {

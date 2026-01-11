@@ -9,6 +9,7 @@ import { TbLogout2, TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
 import { GrAnnounce } from "react-icons/gr";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { RiAdminFill, RiAdminLine } from "react-icons/ri";
 
 const ShopInfosCard = () => {
   return (
@@ -47,39 +48,21 @@ const ShopInfosCard = () => {
 
       <div className="grid grid-cols-3 sm:flex justify-center items-center gap-3 md:gap-6 mt-4 mb-16">
         <BoxLink
-          key="store/customers"
-          title="مشتریان"
-          icon={<FiUsers className="text-2xl" />}
-          routeName="store/customers"
+          key="store/me"
+          title="اطلاعات من"
+          icon={<RiAdminLine className="text-2xl" />}
+          routeName="store/me"
           parentStyle="bg-white shadow-md"
-          color="text-sky-700"
+          color="text-green-700"
         />
 
         <BoxLink
-          key="settings/finance"
+          key="store/finance"
           title="گزارشات مالی"
           icon={<TbReportAnalytics className="text-2xl" />}
-          routeName="settings/finance"
+          routeName="store/finance"
           parentStyle="bg-white shadow-md"
           color="text-purple-700"
-        />
-
-        <BoxLink
-          key="store/support"
-          title="پشتیبانی"
-          icon={<MdOutlineSupportAgent className="text-2xl" />}
-          routeName="store/support"
-          parentStyle="bg-white shadow-md"
-          color="text-yellow-700"
-        />
-
-        <BoxLink
-          key="store/comments"
-          title="دیدگاه‌ها"
-          icon={<GoCommentDiscussion className="text-2xl" />}
-          routeName="store/comments"
-          parentStyle="bg-white shadow-md"
-          color="text-blue-800"
         />
 
         <BoxLink
@@ -89,6 +72,33 @@ const ShopInfosCard = () => {
           routeName="store/promotions"
           parentStyle="bg-white shadow-md"
           color="text-orange-700"
+        />
+
+        <BoxLink
+          key="store/customers"
+          title="مشتریان"
+          icon={<FiUsers className="text-2xl" />}
+          routeName="store/customers"
+          parentStyle="bg-white shadow-md"
+          color="text-sky-700"
+        />
+
+        <BoxLink
+          key="store/comments"
+          title="دیدگاه‌ها"
+          icon={<GoCommentDiscussion className="text-2xl" />}
+          routeName="store/comments"
+          parentStyle="bg-white shadow-md"
+          color="text-sky-700"
+        />
+
+        <BoxLink
+          key="store/support"
+          title="پشتیبانی"
+          icon={<MdOutlineSupportAgent className="text-2xl" />}
+          routeName="store/support"
+          parentStyle="bg-white shadow-md"
+          color="text-sky-700"
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import Collections from "@/app/admin/(settings)/store/(main-pages)/home-builder/collections/page";
+import Collections from "@/app/admin/(settings)/store/(settings-shop)/home-builder/collections/page";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { HiOutlineCollection } from "react-icons/hi";
 
