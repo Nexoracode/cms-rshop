@@ -9,13 +9,15 @@ export function validateHeroSlider(data: any, showButtonFields: boolean) {
     errors.description = "لطفاً توضیحات اسلایدر را وارد کنید.";
   }
 
-  if (showButtonFields) {
-    if (!data.button_text || data.button_text.trim() === "") {
-      errors.button_text = "لطفاً عنوان دکمه را وارد کنید.";
-    }
-    if (!data.button_link || data.button_link.trim() === "") {
-      errors.button_link = "لطفاً لینک دکمه را وارد کنید.";
-    }
+  if (!data.button_link || data.button_link.trim() === "") {
+    errors.button_link = "لطفاً لینک را وارد کنید.";
+  }
+
+  if (
+    showButtonFields &&
+    (!data.button_text || data.button_text.trim() === "")
+  ) {
+    errors.button_text = "لطفاً عنوان دکمه را وارد کنید.";
   }
 
   if (

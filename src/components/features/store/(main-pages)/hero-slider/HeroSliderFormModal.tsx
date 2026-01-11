@@ -120,7 +120,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       image_url: finalImageUrl,
       ...(useBackground ? { background_color } : {}),
       ...(button_text ? { button_text } : {}),
-      ...(button_link ? { button_link } : {}),
+      button_link,
       is_dark: form.useBackground ? Boolean(is_dark) : false,
       is_active,
     };
@@ -165,15 +165,29 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
-        <TextInput
-          label="عنوان"
-          placeholder="عنوان اسلایدر را وارد کنید"
-          value={form.title}
-          errorMessage={errors.title}
-          isRequired
-          onChange={(val) => handleFieldChange("title", val)}
-          allowEnglishOnly={false}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <TextInput
+            label="عنوان"
+            placeholder="عنوان اسلایدر را وارد کنید"
+            value={form.title}
+            errorMessage={errors.title}
+            isRequired
+            onChange={(val) => handleFieldChange("title", val)}
+            allowEnglishOnly={false}
+          />
+          <TextInput
+            label="لینک"
+            isRequired
+            placeholder="/page/path/1"
+            value={form.button_link || ""}
+            errorMessage={errors.button_link}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            onChange={(val) => handleFieldChange("button_link", val)}
+            inputAlign="left"
+            allowSpaces={false}
+          />
+        </div>
 
         <Textarea
           label="توضیحات"
@@ -201,29 +215,15 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             }
           }}
         >
-          <div className="flex items-center gap-2">
-            <TextInput
-              label="عنوان دکمه"
-              placeholder="عنوان دکمه را وارد کنید"
-              value={form.button_text || ""}
-              isRequired
-              errorMessage={errors.button_text}
-              onChange={(val) => handleFieldChange("button_text", val)}
-              allowEnglishOnly={false}
-            />
-            <TextInput
-              label="لینک دکمه"
-              isRequired
-              placeholder="/page/path/1"
-              value={form.button_link || ""}
-              errorMessage={errors.button_link}
-              allowSpecialChars
-              allowedSpecialChars={["/", "-"]}
-              onChange={(val) => handleFieldChange("button_link", val)}
-              inputAlign="left"
-              allowSpaces={false}
-            />
-          </div>
+          <TextInput
+            label=""
+            placeholder="عنوان دکمه را وارد کنید"
+            value={form.button_text || ""}
+            isRequired
+            errorMessage={errors.button_text}
+            onChange={(val) => handleFieldChange("button_text", val)}
+            allowEnglishOnly={false}
+          />
         </ToggleSection>
 
         <DualToggleSection
@@ -241,7 +241,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                 useBackground: true,
                 background_color: "#000",
                 image_url: "",
-                mediaFile: null
+                mediaFile: null,
               });
             }
           }}
