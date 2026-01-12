@@ -29,12 +29,18 @@ const SideBannerContainer: React.FC<Props> = ({ banners = [], className }) => {
       items,
       draggingId,
       overId,
-      (payload) =>
-        arrPayload.push(banners.find((banner) => banner.id === payload.id)),
+      (payload) => {
+        if (payload)
+          return arrPayload.push(
+            banners.find((banner) => banner.id === payload?.id)
+          );
+      },
       setItems,
       setDraggingId
     );
     //
+    if (!arrPayload?.length) return;
+
     const swapPayload = arrPayload.map((pay: any, index: any) => ({
       id: pay.id,
       position: index === 0 ? arrPayload[1].position : arrPayload[0].position,
