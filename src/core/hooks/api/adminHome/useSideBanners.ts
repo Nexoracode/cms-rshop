@@ -39,10 +39,10 @@ export const useCreateSideBanner = () => {
   });
 };
 
-export const useUpdateSideBanner = (id: number) => {
+export const useUpdateSideBanner = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: ({data, id}:{data: any, id: number}) =>
       fetcher({
         route: `/admin/side-banners/${id}`,
         method: "PATCH",
@@ -53,28 +53,8 @@ export const useUpdateSideBanner = (id: number) => {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["side-banners"] });
-      qc.invalidateQueries({ queryKey: ["side-banner", id] });
+      qc.invalidateQueries({ queryKey: ["side-banner"] });
       qc.invalidateQueries({ queryKey: ["home"] });
-    },
-  });
-};
-
-export const useUpdateSideBannerOrder = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ id, position }: { id: number; position: any }) => {
-      return fetcher({
-        route: `/admin/side-banners/${id}/order`,
-        method: "PATCH",
-        body: { position },
-        isActiveToast: true,
-        successText: "با موفقیت بروزرسانی شد",
-        loadingText: "درحال بروزرسانی...",
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["home"] });
     },
   });
 };

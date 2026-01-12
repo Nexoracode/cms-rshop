@@ -8,5 +8,5 @@ export type HeroSlider = {
   button_link?: string | null;
   is_active: boolean;
   is_dark: boolean;
-  sort_order: number;
+  display_order: number;
 };

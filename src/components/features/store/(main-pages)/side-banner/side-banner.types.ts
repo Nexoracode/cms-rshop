@@ -1,7 +1,7 @@
 export type SideBanner = {
   id: number;
   position: SideBannerPosition;
-  sort_order: number;
+  display_order: number;
   title: string;
   subtitle?: string;
   image_url: string;
