@@ -52,7 +52,7 @@ const SideBannerFormModal: React.FC<Props> = ({
     useCreateSideBanner();
   // useUpdateSideBanner takes id as argument when creating the hook instance
   const { mutateAsync: updateBanner, isPending: isUpdating } =
-    useUpdateSideBanner(bannerId ?? 0);
+    useUpdateSideBanner();
   const { mutateAsync: uploadImage, isPending: isUploading } =
     useUploadSliderImages();
 
@@ -131,9 +131,12 @@ const SideBannerFormModal: React.FC<Props> = ({
     console.log(payload);
 
     if (bannerId) {
-      return handleMutation(() => updateBanner(payload), {
-        resetForm,
-      });
+      return handleMutation(
+        () => updateBanner({ data: payload, id: bannerId ?? 0 }),
+        {
+          resetForm,
+        }
+      );
     } else {
       return handleMutation(() => createBanner(payload), {
         resetForm,
