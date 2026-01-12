@@ -1,14 +1,27 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
 
 export const useGetSettings = () => {
+  return useQuery({
+    queryKey: ["settings"],
+    queryFn: () => {
+      return fetcher({ route: "/admin/settings", isActiveToast: false });
+    },
+  });
+};
+
+export const useInfosCreate = () => {
   return useMutation({
-    mutationFn: () =>
-      fetcher({
-        route: "/admin/settings",
-        method: "GET",
-        isActiveToast: false,
-      }),
+    mutationFn: (data: any) => {
+      return fetcher({
+        route: "/admin/settings/upsert",
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+        successText: "عملیات با موفقیت انجام شد",
+        loadingText: "در حال ثبت تغیرات",
+      });
+    },
   });
 };
 
