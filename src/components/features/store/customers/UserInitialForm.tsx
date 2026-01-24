@@ -59,114 +59,113 @@ const UserInitialForm = ({ user }: Props) => {
       is_active,
     };
 
-    updateUser.mutate({data:dataToSend, id: user?.id}, {
-      onSuccess: (res) => {
-        res.ok && router.push("/admin/store/customers");
-      },
-    });
+    updateUser.mutate(
+      { data: dataToSend, id: user?.id },
+      {
+        onSuccess: (res) => {
+          res.ok && router.push("/admin/store/customers");
+        },
+      }
+    );
   };
 
   return (
-    <>
-      <BaseCard
-        CardHeaderProps={{
-          title: "اطلاعات تکمیلی کاربر",
-          icon: <LuUserRoundPen />,
-          showIconInActionSlot: true,
-        }}
-        wrapperContents
-      >
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <TextInput
-            label="نام"
-            placeholder="نام را وارد کنید"
-            value={data.first_name}
-            onChange={(val) =>
-              setData((prev: any) => ({ ...prev, first_name: val }))
-            }
-            allowEnglishOnly={false}
-            inputAlign="right"
-          />
+    <BaseCard
+      CardHeaderProps={{
+        title: "اطلاعات تکمیلی کاربر",
+        icon: <LuUserRoundPen />,
+        showIconInActionSlot: true,
+      }}
+      wrapperContents
+    >
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <TextInput
+          label="نام"
+          placeholder="نام را وارد کنید"
+          value={data.first_name}
+          onChange={(val) =>
+            setData((prev: any) => ({ ...prev, first_name: val }))
+          }
+          allowEnglishOnly={false}
+          inputAlign="right"
+        />
 
-          <TextInput
-            label="نام خانوادگی"
-            placeholder="نام خانوادگی را وارد کنید"
-            value={data.last_name}
-            onChange={(val) =>
-              setData((prev: any) => ({ ...prev, last_name: val }))
-            }
-            allowEnglishOnly={false}
-            inputAlign="right"
-          />
-        </div>
+        <TextInput
+          label="نام خانوادگی"
+          placeholder="نام خانوادگی را وارد کنید"
+          value={data.last_name}
+          onChange={(val) =>
+            setData((prev: any) => ({ ...prev, last_name: val }))
+          }
+          allowEnglishOnly={false}
+          inputAlign="right"
+        />
+      </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <PhoneInput
-            value={data.phone}
-            onChange={(phone, isValid) => {
-              setData((prev: any) => ({
-                ...prev,
-                phone: phone,
-              }));
-            }}
-            label="شماره تماس"
-            placeholder="09XXXXXXXXXX"
-            isRequired
-          />
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <PhoneInput
+          value={data.phone}
+          onChange={(phone, isValid) => {
+            setData((prev: any) => ({
+              ...prev,
+              phone: phone,
+            }));
+          }}
+          label="شماره تماس"
+          placeholder="09XXXXXXXXXX"
+          isRequired
+        />
 
-          <EmailInput
-            value={data.email}
-            onChange={(email) => setData((prev: any) => ({ ...prev, email }))}
-            isActiveError={true}
-            isRequired
-          />
-        </div>
+        <EmailInput
+          value={data.email}
+          onChange={(email) => setData((prev: any) => ({ ...prev, email }))}
+          isActiveError={true}
+          isRequired
+        />
+      </div>
 
-        {/* <ImageBoxUploader
+      {/* <ImageBoxUploader
           title="تصویر مشتری"
           defaultImg={data.avatar_url}
           onFile={() => {}}
         /> */}
 
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Checkbox
-            isSelected={data.is_active}
-            onValueChange={(value) =>
-              setData((prev: any) => ({ ...prev, is_active: value }))
-            }
-          >
-            <span className="text-sm">
-              وضعیت حساب {data.is_active ? "فعال" : "غیرفعال"}
-            </span>
-          </Checkbox>
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <Checkbox
+          isSelected={data.is_active}
+          onValueChange={(value) =>
+            setData((prev: any) => ({ ...prev, is_active: value }))
+          }
+        >
+          <span className="text-sm">
+            وضعیت حساب {data.is_active ? "فعال" : "غیرفعال"}
+          </span>
+        </Checkbox>
+      </div>
+      <div className="-mb-4">
+        {data?.addresses ? <UserAddressModal userId={user?.id} /> : ""}
+        <div
+          className={`grid grid-cols-1 ${
+            data?.addresses?.length ? "sm:grid-cols-2" : ""
+          } gap-4 px-4 pb-4`}
+        >
+          {data?.addresses?.map((addr: UserAddress, index: number) => (
+            <UserAddressCard key={index} address={addr} userId={user?.id} />
+          )) || (
+            <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl border-3 border-dashed px-4 py-6">
+              <LuMapPinHouse className="text-5xl text-gray-600" />
+              <p> آدرسی از سمت کاربر هنوز ثبت نشده!!</p>
+              <UserAddressModal userId={user?.id} />
+            </div>
+          )}
         </div>
-      </BaseCard>
-
-      <BaseCard
-        CardHeaderProps={{
-          title: "آدرس های کاربر",
-          icon: <LuMapPinHouse />,
-          children: <UserAddressModal userId={user?.id} />,
-        }}
-        bodyClassName={`grid grid-cols-1 ${
-          data?.addresses?.length ? "sm:grid-cols-2" : ""
-        } gap-4 px-4 pb-4`}
-      >
-        {data?.addresses?.map((addr: UserAddress, index: number) => (
-          <UserAddressCard key={index} address={addr} userId={user?.id} />
-        )) || (
-          <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl px-4 py-20">
-            <LuMapPinHouse className="text-5xl text-gray-600" />
-            آدرسی از سمت کاربر هنوز ثبت نشده!!
-          </div>
-        )}
-      </BaseCard>
+      </div>
 
       <FormActionButtons
         cancelHref="/admin/store/customers"
         onSubmit={handleUpdate}
       />
-    </>
+    </BaseCard>
   );
 };
 

@@ -23,6 +23,8 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const initialStatus =
     statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
+  
+  console.log(order);
 
   const rowItems = [
     {
@@ -69,7 +71,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <div
-            className={`text-2xl rounded-full border p-4 ${statusInfo.color} ${statusInfo.bgColor} ${statusInfo.borderColor}`}
+            className={`text-2xl rounded-full border p-4 ${statusInfo?.color} ${statusInfo.bgColor} ${statusInfo.borderColor}`}
           >
             <span className="text-2xl">{statusInfo.icon}</span>
           </div>

@@ -5,6 +5,7 @@ import { PiHandArrowDownFill, PiMoneyWavy } from "react-icons/pi";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineCheckCircle, MdOutlineCancel } from "react-icons/md";
 import { FaUndo } from "react-icons/fa";
+import { BiLoader } from "react-icons/bi";
 
 export const statusMap: Record<
   StatusOrder,
@@ -16,6 +17,13 @@ export const statusMap: Record<
     borderColor: string;
   }
 > = {
+  start_order: {
+    title: "ثبت اولیه",
+    icon: <BiLoader />,
+    color: "text-sky-600",
+    bgColor: "bg-sky-50",
+    borderColor: "border-sky-200",
+  },
   pending_approval: {
     title: "در انتظار تایید",
     icon: <LuClock />,

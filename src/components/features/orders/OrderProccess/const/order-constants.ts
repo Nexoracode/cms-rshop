@@ -1,6 +1,7 @@
 import { StatusOrder } from "../../order-types";
 
 export const statusOptions: { key: StatusOrder; title: string }[] = [
+  { key: "start_order", title: "ثبت اولیه" },
   { key: "pending_approval", title: "در انتظار تایید" },
   { key: "awaiting_payment", title: "در انتظار پرداخت" },
   { key: "payment_confirmation_pending", title: "در انتظار تایید پرداخت" },

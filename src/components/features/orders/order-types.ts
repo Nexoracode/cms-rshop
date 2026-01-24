@@ -24,6 +24,7 @@ export type Order = {
 };
 
 export type StatusOrder =
+  | "start_order"
   | "pending_approval"
   | "awaiting_payment"
   | "payment_confirmation_pending"
