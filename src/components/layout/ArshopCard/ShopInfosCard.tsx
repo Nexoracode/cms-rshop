@@ -8,10 +8,24 @@ import { FiUsers } from "react-icons/fi";
 import { TbLogout2, TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
 import { GrAnnounce } from "react-icons/gr";
-import { ActionButton } from "@/components/ui/buttons/ActionButton";
-import { RiAdminFill, RiAdminLine } from "react-icons/ri";
+import BaseModal from "@/components/ui/modals/BaseModal";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const ShopInfosCard = () => {
+  const router = useRouter();
+
+  const logoutHandler = async () => {
+    const res = await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    if (res.status === 200) {
+      toast.success("با موفقیت از حساب خود خارج شدید.")
+      router.push("/signin");
+    }
+  };
+
   return (
     <div className="flex items-center flex-col">
       <Card className="shadow-md bg-white rounded-2xl w-full">
@@ -36,18 +50,28 @@ const ShopInfosCard = () => {
               </div>
             </div>
             <div className="flex items-center">
-              <ActionButton
-                className="bg-orange-50 text-orange-600"
-                icon={<TbLogout2 size={20} />}
-                route="/signin"
-              />
+              <BaseModal
+                triggerProps={{
+                  icon: <TbLogout2 size={20} />,
+                  title: "خروج",
+                  className: "bg-red-100 text-red-600",
+                }}
+                title={"خروج از حساب کاربری"}
+                size="xs"
+                icon={<TbLogout2 />}
+                onConfirm={logoutHandler}
+              >
+                <p className="text-center py-4">
+                  آیا از خروج حساب کاربری خود اطمینان دارید؟
+                </p>
+              </BaseModal>
             </div>
           </div>
         </CardBody>
       </Card>
 
       <div className="grid grid-cols-3 sm:flex justify-center items-center gap-3 md:gap-6 mt-4 mb-16">
-       {/*  <BoxLink
+        {/*  <BoxLink
           key="store/me"
           title="اطلاعات من"
           icon={<RiAdminLine className="text-2xl" />}

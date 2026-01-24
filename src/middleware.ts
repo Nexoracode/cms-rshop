@@ -1,15 +1,15 @@
 import { NextResponse, NextRequest } from "next/server";
 
 const protectedRoutes = ["/admin", "/factor"];
-const adminRoutes = ["/admin"];
-const authRoutes = ["/signin", "/"];
+const adminRoutes = ["/admin", "/factor"];
+const authRoutes = ["/signin"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = request.cookies.get("access_token")?.value;
   const refresh = request.cookies.get("refresh_token")?.value;
-  const role = request.cookies.get("role")?.value || "admin";
+  const role = "admin";
 
   if (!token) {
     if (
@@ -26,14 +26,14 @@ export function middleware(request: NextRequest) {
 
   if (adminRoutes.some((route) => pathname.startsWith(route))) {
     if (role !== "admin") {
-        return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
   }
 }
 
 export const config = {
-    matcher: [
-        "/admin/:path",
-        "/signin",
-    ]
-}
+  matcher: [
+    "/admin/:path*",
+    "/signin",
+  ],
+};
