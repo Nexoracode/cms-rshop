@@ -81,7 +81,7 @@ const CustomerCard: React.FC<Props> = ({
             <UserAddressModal
               userId={id}
               btnAdd={
-                <ActionButton icon={<MdOutlineAddLocationAlt size={18} />} />
+                <ActionButton icon={<MdOutlineAddLocationAlt size={19} />} />
               }
             />
             {!disableAction && (
