@@ -1,11 +1,9 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { FaUserShield } from "react-icons/fa";
 
-// ⭐ همه‌ی انیمیشن‌ها از فایل جدا
 import {
   containerVariants,
   itemUpVariants,
@@ -16,15 +14,13 @@ import {
   iconEnter,
   hoverTapCTA,
 } from "@/core/motions/homePageVariants";
+import Link from "next/link";
 
 export default function Home() {
-  const router = useRouter();
-  const handleSignIn = () => router.push("/admin/dashboard");
-
   return (
     <div
       dir="rtl"
-      className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-indigo-100 via-white to-blue-100 dark:from-[#0b1020] dark:via-[#0a0f1b] dark:to-[#0f1730]"
+      className="relative h-screen w-full overflow-hidden bg-gradient-to-tr from-indigo-100 via-white to-blue-100 dark:from-[#0b1020] dark:via-[#0a0f1b] dark:to-[#0f1730]"
     >
       {/* بلاب‌های پس‌زمینه با فرمرموشن */}
       <motion.div
@@ -107,7 +103,8 @@ export default function Home() {
               <motion.div variants={itemUpVariants} className="space-y-3">
                 <motion.div {...hoverTapCTA}>
                   <Button
-                    onPress={handleSignIn}
+                    as={Link}
+                    href="/signin"
                     className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 py-6 text-lg font-bold text-white 
                                transition-all hover:from-indigo-500 hover:to-blue-500 focus-visible:outline-none focus-visible:ring-2 
                                focus-visible:ring-indigo-400 dark:from-indigo-500 dark:to-blue-500"
@@ -115,16 +112,6 @@ export default function Home() {
                   >
                     ورود به پنل
                   </Button>
-                </motion.div>
-
-                <motion.div variants={itemUpVariants} className="text-center">
-                  <a
-                    href="/"
-                    className="inline-flex items-center justify-center text-sm font-medium text-indigo-700 hover:text-indigo-800 
-                               dark:text-indigo-300 dark:hover:text-indigo-200 underline underline-offset-4"
-                  >
-                    مشاهدهٔ فروشگاه
-                  </a>
                 </motion.div>
               </motion.div>
             </motion.section>

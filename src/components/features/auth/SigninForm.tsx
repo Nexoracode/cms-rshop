@@ -52,7 +52,10 @@ const SigninForm = () => {
     false;
 
   useEffect(() => {
-    if (phoneValue.length === 11) sendPhoneApiCall();
+    if (phoneValue.length === 11) {
+      sendPhoneApiCall();
+      setCode("")
+    }
   }, [phoneValue]);
 
   useEffect(() => {
@@ -83,7 +86,7 @@ const SigninForm = () => {
       onSuccess: (res) => {
         if (res.ok) {
           setSelected("otp");
-          otpTimer.start()
+          otpTimer.start();
         }
       },
     });
@@ -115,148 +118,160 @@ const SigninForm = () => {
 
       <LoginSuccessfully success={success} />
 
-      <motion.div
-        className="relative p-[1px] rounded-3xl bg-gradient-to-br from-blue-200/70 via-white/50 to-purple-200/70 shadow-[0_20px_80px_-20px_rgba(99,102,241,0.35)]"
-        {...mainCardMotion}
-      >
+      <div className="flex flex-col">
         <motion.div
-          className="max-w-[380px] w-[92vw] sm:w-[380px] rounded-3xl bg-white/70 backdrop-blur-xl"
-          variants={containerVariants}
-          initial="hidden"
+          variants={itemVariants}
+          className="flex flex-col items-center text-center"
           animate="show"
+          initial="hidden"
         >
-          <Card
-            shadow="md"
-            className="rounded-3xl bg-transparent border border-white/40"
+          <img
+            src="/images/logo.png"
+            alt="logo"
+            className="w-48 mb-3 drop-shadow-md"
+          />
+        </motion.div>
+
+        <motion.div
+          className="relative p-[1px] rounded-3xl bg-gradient-to-br from-blue-200/70 via-white/50 to-purple-200/70 shadow-[0_20px_80px_-20px_rgba(99,102,241,0.35)]"
+          {...mainCardMotion}
+        >
+          <motion.div
+            className="max-w-[380px] w-[92vw] sm:w-[380px] rounded-3xl bg-white/70 backdrop-blur-xl"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
           >
-            <CardBody className="space-y-7 p-8">
-              {/* header */}
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col items-center text-center"
-              >
-                <img
-                  src="/images/logo.png"
-                  alt="logo"
-                  className="w-40 mb-3 drop-shadow"
-                />
-                <h1 className="font-extrabold tracking-tight text-[20px] text-slate-800">
-                  پنل ادمین آرشاپ
-                </h1>
-                <p className="text-slate-500 text-sm mt-2.5">
-                  {selected === "phone"
-                    ? "شماره تماس خود را وارد نمایید"
-                    : "کد ارسال شده به تلفن خود را وارد نمایید"}
-                </p>
-              </motion.div>
+            <Card
+              shadow="md"
+              className="rounded-3xl bg-transparent border border-white/40"
+            >
+              <CardBody className="space-y-7 p-8">
+                {/* header */}
 
-              {/* ✅ Tabs */}
-              <motion.div variants={itemVariants}>
-                <Tabs
-                  selectedKey={selected}
-                  onSelectionChange={(key) => handleTabChange(key as string)}
-                  variant="underlined"
-                  color="primary"
-                  className="flex items-center justify-center"
-                  classNames={{
-                    tabList: "w-full flex justify-center",
-                    tabContent: "font-semibold",
-                  }}
+                <motion.div
+                  variants={itemVariants}
+                  className="flex flex-col items-center text-center"
                 >
-                  <Tab key="phone" title="شماره تلفن">
-                    <AnimatePresence mode="wait">
-                      {selected === "phone" && (
-                        <motion.div key="phone" {...tabContentVariants}>
-                          <Input
-                            style={{ direction: "ltr" }}
-                            autoFocus
-                            label="شماره تلفن خود را وارد کنید"
-                            type="tel"
-                            inputMode="tel"
-                            variant="flat"
-                            size="sm"
-                            maxLength={11}
-                            value={phoneValue}
-                            onChange={handlePhoneChange}
-                            isDisabled={requesting}
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </Tab>
+                  <h1 className="font-extrabold tracking-tight text-[20px] text-slate-800">
+                    ورود به پنل
+                  </h1>
+                  <p className="text-slate-500 text-sm mt-2.5">
+                    {selected === "phone"
+                      ? "شماره تماس خود را وارد نمایید"
+                      : "کد ارسال شده به تلفن خود را وارد نمایید"}
+                  </p>
+                </motion.div>
 
-                  <Tab key="otp" title="کد یک بار مصرف">
-                    <AnimatePresence mode="wait">
-                      {selected === "otp" && (
-                        <motion.div key="otp" {...tabContentVariants}>
-                          <div
-                            style={{ direction: "ltr" }}
-                            className="ltr flex items-center justify-center"
-                          >
-                            <InputOtp
-                              length={6}
-                              size="md"
+                {/* ✅ Tabs */}
+                <motion.div variants={itemVariants}>
+                  <Tabs
+                    selectedKey={selected}
+                    onSelectionChange={(key) => handleTabChange(key as string)}
+                    variant="solid"
+                    color="secondary"
+                    className="flex items-center justify-center"
+                    classNames={{
+                      tabList: "w-full flex justify-center",
+                    }}
+                  >
+                    <Tab key="phone" title="شماره تلفن">
+                      <AnimatePresence mode="wait">
+                        {selected === "phone" && (
+                          <motion.div key="phone" {...tabContentVariants}>
+                            <Input
+                              style={{ direction: "ltr" }}
                               autoFocus
-                              value={code}
-                              onValueChange={setCode}
-                              isDisabled={verifying || !online}
+                              label="شماره تلفن خود را وارد کنید"
+                              type="tel"
+                              inputMode="tel"
+                              variant="flat"
+                              size="sm"
+                              maxLength={11}
+                              value={phoneValue}
+                              onChange={handlePhoneChange}
+                              isDisabled={requesting}
                             />
-                          </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </Tab>
 
-                          {/* resend timer + progress */}
-                          <div className="mt-4 flex flex-col items-center gap-2">
-                            <div className="flex items-center justify-center gap-3 text-sm">
-                              <Button
-                                size="sm"
-                                variant="flat"
-                                color="primary"
-                                isDisabled={
-                                  !otpTimer.isFinished || !online || requesting
-                                }
-                                onPress={() => sendPhoneApiCall()}
-                                className="rounded-full"
-                              >
-                                {otpTimer.isFinished
-                                  ? "ارسال مجدد کد"
-                                  : `ارسال مجدد تا ${otpTimer.mm}:${otpTimer.ss}`}
-                              </Button>
+                    <Tab key="otp" title="کد یک بار مصرف">
+                      <AnimatePresence mode="wait">
+                        {selected === "otp" && (
+                          <motion.div key="otp" {...tabContentVariants}>
+                            <div
+                              style={{ direction: "ltr" }}
+                              className="ltr flex items-center justify-center"
+                            >
+                              <InputOtp
+                                length={6}
+                                size="md"
+                                autoFocus
+                                value={code}
+                                onValueChange={setCode}
+                                isDisabled={verifying || !online}
+                              />
                             </div>
 
-                            <motion.div className="h-1 w-48 bg-gray-200 rounded-full overflow-hidden">
-                              <motion.div
-                                className="h-full bg-gradient-to-r from-sky-400 to-fuchsia-400"
-                                initial={{ width: "100%" }}
-                                animate={{
-                                  width: otpTimer.isFinished
-                                    ? "0%"
-                                    : `${(otpTimer.seconds / 30) * 100}%`,
-                                }}
-                                transition={{ duration: 0.9, ease: "linear" }}
-                              />
-                            </motion.div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </Tab>
-                </Tabs>
-              </motion.div>
+                            {/* resend timer + progress */}
+                            <div className="mt-4 flex flex-col items-center gap-2">
+                              <div className="flex items-center justify-center gap-3 text-sm">
+                                <Button
+                                  size="sm"
+                                  variant="flat"
+                                  color="primary"
+                                  isDisabled={
+                                    !otpTimer.isFinished ||
+                                    !online ||
+                                    requesting
+                                  }
+                                  onPress={() => sendPhoneApiCall()}
+                                  className="rounded-full"
+                                >
+                                  {otpTimer.isFinished
+                                    ? "ارسال مجدد کد"
+                                    : `ارسال مجدد تا ${otpTimer.mm}:${otpTimer.ss}`}
+                                </Button>
+                              </div>
 
-              {/* footer */}
-              <motion.div
-                variants={itemVariants}
-                className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent"
-              />
-              <motion.p
-                variants={itemVariants}
-                className="text-[11px] leading-5 text-slate-500 text-center"
-              >
-                با ورود، شرایط استفاده و حریم خصوصی آرشاپ را می‌پذیرید.
-              </motion.p>
-            </CardBody>
-          </Card>
+                              <motion.div className="h-1 w-48 bg-gray-200 rounded-full overflow-hidden">
+                                <motion.div
+                                  className="h-full bg-gradient-to-r from-sky-400 to-fuchsia-400"
+                                  initial={{ width: "100%" }}
+                                  animate={{
+                                    width: otpTimer.isFinished
+                                      ? "0%"
+                                      : `${(otpTimer.seconds / 30) * 100}%`,
+                                  }}
+                                  transition={{ duration: 0.9, ease: "linear" }}
+                                />
+                              </motion.div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </Tab>
+                  </Tabs>
+                </motion.div>
+
+                {/* footer */}
+                <motion.div
+                  variants={itemVariants}
+                  className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent"
+                />
+                <motion.p
+                  variants={itemVariants}
+                  className="text-[11px] leading-5 text-slate-500 text-center"
+                >
+                  با ورود، شرایط استفاده و حریم خصوصی آرشاپ را می‌پذیرید.
+                </motion.p>
+              </CardBody>
+            </Card>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 };
