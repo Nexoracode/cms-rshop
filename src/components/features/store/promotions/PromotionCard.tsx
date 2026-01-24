@@ -90,8 +90,12 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
   const rowItems = [
     { label: "عنوان", value: name },
-    ...(promotionType.name ? [{ label: "نوع", value: promotionType.name }] : [] ),
-    ...(promotionType.value ? [{ label: "مقدار", value: promotionType.value }] : [] ),
+    ...(promotionType.name
+      ? [{ label: "نوع", value: promotionType.name }]
+      : []),
+    ...(promotionType.value
+      ? [{ label: "مقدار", value: promotionType.value }]
+      : []),
     {
       label: "اعتبار",
       value: `از   ${
@@ -110,13 +114,15 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
   const promotionsRedirects = () => {
     const urlBase = "/admin/store/promotions";
-    if (!conditions || conditions.length === 0)
+    console.log(item);
+    
+    if ((!conditions || conditions.length === 0) && type === "coupon")
       return `${urlBase}/coupon/create?edit_id=${id}`;
     let mood = "create";
 
-    const productCond = conditions.find((c) => c.type === "product");
-    const categoryCond = conditions.find((c) => c.type === "category");
-    const userCond = conditions.find((c) => c.type === "user");
+    const productCond = conditions?.find((c) => c.type === "product");
+    const categoryCond = conditions?.find((c) => c.type === "category");
+    const userCond = conditions?.find((c) => c.type === "user");
 
     if (productCond) mood = "products";
     if (categoryCond) mood = "categories";
