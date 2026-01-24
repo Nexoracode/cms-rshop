@@ -8,9 +8,6 @@ type SimpleFactorProps = {
 
 const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
   const componentRef = useRef<HTMLDivElement>(null);
-  /*   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  }); */
 
   if (!order) return <div>فاکتور یافت نشد</div>;
 
@@ -37,8 +34,8 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
 
     return items.map((item: any) => {
       const { product, variant, quantity, line_total, discount } = item;
-        //console.log(item);
-        
+      //console.log(item);
+
       // محاسبه مبلغ واحد واقعی
       const unitPrice =
         item.price ||
@@ -69,11 +66,11 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
 
   // اطلاعات ثابت فروشگاه
   const sellerInfo = {
-    name: "آنلاین شاپ",
-    phone: "09031335939",
+    name: "آرشاپ",
+    phone: "09126510603",
     postalCode: "۰۹۳۳۳۳۵۷۴۹۱",
     address: "خراسان رضوی، مشهد، بلوار وحدت",
-    logo: "https://digifycdn.com/media/item_images/85c83d242b73d3c52b8c4c2e7df27db7.jpg",
+    logo: "/images/logo.png",
   };
 
   // قالب‌بندی تاریخ
@@ -97,7 +94,7 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
     <div className="min-h-screen bg-gray-50 p-4">
       {/* دکمه پرینت */}
       <div className="mb-4 print:hidden">
-        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={() => window.print()}>
           چاپ فاکتور
         </button>
       </div>
