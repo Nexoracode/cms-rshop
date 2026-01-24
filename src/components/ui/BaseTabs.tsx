@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs, Tab } from "@heroui/react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import EmptyStateCard from "../feedback/EmptyStateCard";
@@ -41,6 +41,11 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  useEffect(() => {
+    if (!searchParams) return
+    handleTabChange(searchParams.get(queryKey) ?? "coupon");
+  }, [searchParams])
+
   const handleTabChange = (key: string | number) => {
     if (disableTabs) return;
 
@@ -63,7 +68,9 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
       fullWidth={fullWidth}
       classNames={{ tabList: tabListClassName }}
       selectedKey={activeKey}
-      onSelectionChange={(key) => handleTabChange(key)}
+      onSelectionChange={(key) => 
+        handleTabChange(key)
+      }
       className={className}
     >
       {items.map((tab) => (

@@ -17,7 +17,6 @@ import FreeShipping from "./free-shipping/page";
 const Promotions = () => {
   // active tab (controlled)
   const [activeTab, setActiveTab] = useState<string>();
-
   // track which tabs have been mounted at least once
   const [mounted, setMounted] = useState<Record<string, boolean>>({
     coupons: true, // optionally mount default tab immediately
@@ -101,6 +100,7 @@ const Promotions = () => {
       fullWidth
       activeKey={activeTab}
       onTabChange={(k) => handleTabChange(String(k))}
+      syncWithQuery
     />
   );
 };
