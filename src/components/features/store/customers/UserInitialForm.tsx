@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkbox } from "@heroui/react";
+import { Checkbox, Divider } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
 import BaseCard from "@/components/ui/BaseCard";
@@ -143,7 +143,19 @@ const UserInitialForm = ({ user }: Props) => {
         </Checkbox>
       </div>
       <div className="-mb-4">
-        {data?.addresses ? <UserAddressModal userId={user?.id} /> : ""}
+        {data?.addresses ? (
+          <div>
+            <div className="pb-4">
+              <Divider />
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <p>آدرس های کاربر</p>
+              <UserAddressModal userId={user?.id} />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div
           className={`grid grid-cols-1 ${
             data?.addresses?.length ? "sm:grid-cols-2" : ""
@@ -152,7 +164,7 @@ const UserInitialForm = ({ user }: Props) => {
           {data?.addresses?.map((addr: UserAddress, index: number) => (
             <UserAddressCard key={index} address={addr} userId={user?.id} />
           )) || (
-            <div className="w-full flex flex-col items-center gap-4 bg-slate-50 rounded-xl border-3 border-dashed px-4 py-6">
+            <div className="w-full flex flex-col items-center gap-4  rounded-xl border-3 border-dashed px-4 py-6">
               <LuMapPinHouse className="text-5xl text-gray-600" />
               <p> آدرسی از سمت کاربر هنوز ثبت نشده!!</p>
               <UserAddressModal userId={user?.id} />
