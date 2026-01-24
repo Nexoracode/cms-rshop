@@ -47,14 +47,14 @@ const ShopInfosCard = () => {
       </Card>
 
       <div className="grid grid-cols-3 sm:flex justify-center items-center gap-3 md:gap-6 mt-4 mb-16">
-        <BoxLink
+       {/*  <BoxLink
           key="store/me"
           title="اطلاعات من"
           icon={<RiAdminLine className="text-2xl" />}
           routeName="store/me"
           parentStyle="bg-white shadow-md"
           color="text-green-700"
-        />
+        /> */}
 
         <BoxLink
           key="store/finance"

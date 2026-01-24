@@ -75,7 +75,7 @@ const orderSettingsLinks = [
 
 const Settings: React.FC = () => {
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
       <BaseCard
         className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
         CardHeaderProps={{
@@ -83,7 +83,7 @@ const Settings: React.FC = () => {
           icon: <LuSettings2 className="text-[24px]" />,
           showIconInActionSlot: true,
         }}
-        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4 mb-3"
+        bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
       >
         {storeSettingsLinks.map(({ title, icon, route }) => (
           <BoxLink
@@ -104,7 +104,7 @@ const Settings: React.FC = () => {
           icon: <IoReceiptOutline className="text-[26px]" />,
           showIconInActionSlot: true,
         }}
-        bodyClassName="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-2 items-center md:grid-cols-3 gap-4 mb-3"
+        bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
       >
         {orderSettingsLinks.map(({ title, icon, route }) => (
           <BoxLink

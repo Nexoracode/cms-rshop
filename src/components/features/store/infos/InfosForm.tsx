@@ -69,7 +69,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           label="نام و نام خوانوادگی مدیر"
           placeholder="وارد کنید..."
           value={""}
-          onChange={() => handleFieldChange("")}
+          onChange={() => {}}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
@@ -86,7 +86,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           isRequired
           maxLength={11}
           value={""}
-          onChange={() => handleFieldChange("")}
+          onChange={() => {}}
           errorMessage={errors.phone}
         />
       </div>
@@ -98,7 +98,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           maxLength={11}
           value={""}
           inputAlign="left"
-          onChange={() => handleFieldChange("")}
+          onChange={() => {}}
           isRequired
           allowEnglishOnly={false}
           errorMessage={errors.card_number}
@@ -109,7 +109,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           maxLength={30}
           value={""}
           inputAlign="left"
-          onChange={() => handleFieldChange("")}
+          onChange={() => {}}
           endContent="IR"
           isRequired
           allowEnglishOnly={false}
