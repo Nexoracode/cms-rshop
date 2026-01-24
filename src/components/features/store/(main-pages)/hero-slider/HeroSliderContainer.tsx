@@ -10,7 +10,7 @@ type Props = {
 
 const HeroSliderContainer: React.FC<Props> = ({ sliders = [], layoutType }) => {
   const sortedSliders = [...sliders].sort(
-    (a, b) => a.sort_order - b.sort_order
+    (a, b) => a.display_order - b.display_order
   );
 
   return (
