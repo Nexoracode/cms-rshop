@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PromotionType } from "@/core/hooks/api/usePromotions";
 
 type HooksShape = {
@@ -21,7 +21,7 @@ type PromotionRouteWrapperProps = {
     resetSignal: number;
     handleSubmit: (payload: any) => void;
     setResetSignal: (n: number | ((p: number) => number)) => void;
-    setCtxKey: (n: number | ((p: number) => number)) => void
+    setCtxKey: (n: number | ((p: number) => number)) => void;
   }) => React.ReactNode;
 };
 
@@ -30,9 +30,10 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
   providerProps,
   children,
   Hooks,
-  formType
+  formType,
 }) => {
   const router = useRouter();
+  const searchParams = usePathname();
   const params = useSearchParams();
   const id = params?.get("edit_id") ? Number(params.get("edit_id")) : undefined;
 
@@ -46,7 +47,13 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
   const handleSubmit = async (payload: any) => {
     if (id) {
       const resp = await updateHook.mutateAsync(payload);
-      resp.ok && router.push("/admin/store/promotions");
+      resp.ok &&
+        router.push(
+          `/admin/store/promotions/${searchParams.slice(
+            24,
+            searchParams.lastIndexOf("/")
+          )}`
+        );
     } else {
       const resp = await createHook.mutateAsync(payload);
       if (resp.ok) {
@@ -62,7 +69,7 @@ const PromotionRouteWrapper: React.FC<PromotionRouteWrapperProps> = ({
     resetSignal,
     handleSubmit,
     setResetSignal,
-    setCtxKey
+    setCtxKey,
   });
 
   if (Provider) {
