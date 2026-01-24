@@ -108,9 +108,9 @@ const BaseModal: React.FC<BaseModalProps> = ({
                 </ModalHeader>
               )}
 
-              <ModalBody className="leading-7 max-h-[80vh] overflow-y-auto pl-4">
+              <ModalBody className="leading-7 max-h-[80vh] overflow-y-auto">
                 {content || children}
-                <div className="mb-12"></div>
+                {isActiveFooter ? <div className="mb-12"></div> : ""}
                 {isActiveFooter && (
                   <div className="absolute bg-white pt-2 bottom-0 right-0 left-0 w-full z-50">
                     <div className="mx-6">
