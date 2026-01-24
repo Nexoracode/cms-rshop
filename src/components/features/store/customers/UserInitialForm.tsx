@@ -13,6 +13,8 @@ import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
 import UserAddressCard from "./UserAddress/UserAddressCard";
 import { UserAddress } from "./customer.types";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 
 type Props = {
   user?: Record<string, any>;
@@ -78,6 +80,14 @@ const UserInitialForm = ({ user }: Props) => {
       }}
       wrapperContents
     >
+      <div className="pointer-events-none opacity-75 select-none !cursor-auto">
+        <ImageBoxUploader
+          title="تصویر مشتری"
+          defaultImg={data.avatar_url}
+          onFile={() => {}}
+        />
+      </div>
+
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <TextInput
           label="نام"
@@ -124,30 +134,17 @@ const UserInitialForm = ({ user }: Props) => {
         />
       </div>
 
-      {/* <ImageBoxUploader
-          title="تصویر مشتری"
-          defaultImg={data.avatar_url}
-          onFile={() => {}}
-        /> */}
+      <ToggleSection
+        title={` وضعیت حساب ${data.is_active ? "فعال" : "غیرفعال"}`}
+        initialMode={data.is_active}
+        onChange={(val) =>
+          setData((prev: any) => ({ ...prev, is_active: val }))
+        }
+      />
 
-      <div className="flex flex-col sm:flex-row items-center gap-4">
-        <Checkbox
-          isSelected={data.is_active}
-          onValueChange={(value) =>
-            setData((prev: any) => ({ ...prev, is_active: value }))
-          }
-        >
-          <span className="text-sm">
-            وضعیت حساب {data.is_active ? "فعال" : "غیرفعال"}
-          </span>
-        </Checkbox>
-      </div>
       <div className="-mb-4">
         {data?.addresses ? (
           <div>
-            <div className="pb-4">
-              <Divider />
-            </div>
             <div className="flex items-center justify-between mb-4">
               <p>آدرس های کاربر</p>
               <UserAddressModal userId={user?.id} />
@@ -159,7 +156,7 @@ const UserInitialForm = ({ user }: Props) => {
         <div
           className={`grid grid-cols-1 ${
             data?.addresses?.length ? "sm:grid-cols-2" : ""
-          } gap-4 px-4 pb-4`}
+          } gap-4 pb-4`}
         >
           {data?.addresses?.map((addr: UserAddress, index: number) => (
             <UserAddressCard key={index} address={addr} userId={user?.id} />
