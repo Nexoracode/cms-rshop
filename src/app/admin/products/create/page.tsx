@@ -21,7 +21,7 @@ const CreateNewProduct = () => {
   const { data, isLoading, editId } = useFetchOnEdit(useGetOneProduct);
 
   return type === "infos" ? (
-    <ProductInitialForm data={data} id={editId} isLoading={isLoading}/>
+    <ProductInitialForm data={data} id={editId} isLoading={isLoading} />
   ) : (
     <AttributesProducts />
   );

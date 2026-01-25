@@ -49,10 +49,6 @@ export const AttributesContent = ({
   const addNewVariantProductMutation = useAddNewVariantProduct();
   const addNewSimapleAttribute = useCreateAttributeProduct();
 
-  console.log("attributeGroup => ", attributeGroup);
-  console.log("attributes => ", attributes);
-  console.log("attributeValues => ", attributeValues);
-
   const isSubmitting =
     addNewVariantProductMutation.isPending || addNewSimapleAttribute.isPending;
 

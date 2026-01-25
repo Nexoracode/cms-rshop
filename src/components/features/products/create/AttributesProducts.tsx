@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetOneProduct } from "@/core/hooks/api/products/useProduct";
 import { useAttributeContext } from "./context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import SpecTree from "./helpers/SpecTree";
 import { BiCategoryAlt } from "react-icons/bi";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
@@ -21,11 +21,22 @@ const AttributesProducts = () => {
   const page = +(sp.get("edit_id") ?? 1);
   const { setAttrInfos } = useAttributeContext();
 
-  const [activeTab, setActiveTab] = useState<string>(
-    searchParams.get("tab") ?? "variants"
-  );
-
   const { data: productData } = useGetOneProduct(page);
+
+  // active tab + mounted for lazy render
+  const [activeTab, setActiveTab] = useState<string | undefined>("variants");
+  const [mounted, setMounted] = useState<Record<string, boolean>>({
+    variants: true, // default
+    "sort-variants": false,
+    attributes: false,
+    "sort-attributes": false,
+  });
+
+  useEffect(() => {
+    const t = searchParams.get("tab") ?? "variants";
+    setActiveTab(t);
+    setMounted((m) => ({ ...m, [t]: true }));
+  }, [searchParams]);
 
   useEffect(() => {
     if (!productData?.data?.category_id) return;
@@ -55,40 +66,57 @@ const AttributesProducts = () => {
     setAttrInfos(attrValues);
   }, [productData?.data, setAttrInfos]);
 
-  const tabItems: BaseTabItem[] = [
-    {
-      key: "variants",
-      title: "تنوع ها محصول",
-      showEmpty: !productData?.data?.variants?.length,
-      content: <VaraintsForm initialVariants={productData?.data?.variants} />,
-    },
-    {
-      key: "sort-variants",
-      title: "مرتب سازی تنوع ها محصول",
-      showEmpty: !productData?.data?.variants?.length,
-      content: productData?.data?.attribute_nodes?.length && (
-        <SortableAttributeNodes
-          attributeNodes={productData.data.attribute_nodes}
-        />
-      ),
-    },
-    {
-      key: "attributes",
-      title: "لیست ویژگی ها",
-      showEmpty: !productData?.data?.specifications.length,
-      content: <SpecTree specs={productData?.data?.specifications} />,
-    },
-    {
-      key: "sort-attributes",
-      title: "مرتب سازی ویژگی ها",
-      showEmpty: !productData?.data?.specifications.length,
-      content: productData?.data?.specifications?.length && (
-        <SortableAttributeNodes
-          attributeNodes={productData.data.specifications}
-        />
-      ),
-    },
-  ];
+  const handleTabChange = (key: string | number) => {
+    const k = String(key);
+    setActiveTab(k);
+    setMounted((m) => ({ ...m, [k]: true }));
+  };
+
+  const tabItems: BaseTabItem[] = useMemo(
+    () => [
+      {
+        key: "variants",
+        title: "تنوع ها محصول",
+        showEmpty: !productData?.data?.variants?.length,
+        content: mounted["variants"] ? (
+          <VaraintsForm initialVariants={productData?.data?.variants} />
+        ) : null,
+      },
+      {
+        key: "sort-variants",
+        title: "مرتب سازی تنوع ها محصول",
+        showEmpty: !productData?.data?.variants?.length,
+        content:
+          mounted["sort-variants"] &&
+          productData?.data?.attribute_nodes?.length ? (
+            <SortableAttributeNodes
+              attributeNodes={productData.data.attribute_nodes}
+            />
+          ) : null,
+      },
+      {
+        key: "attributes",
+        title: "لیست ویژگی ها",
+        showEmpty: !productData?.data?.specifications?.length,
+        content: mounted["attributes"] ? (
+          <SpecTree specs={productData?.data?.specifications} />
+        ) : null,
+      },
+      {
+        key: "sort-attributes",
+        title: "مرتب سازی ویژگی ها",
+        showEmpty: !productData?.data?.specifications?.length,
+        content:
+          mounted["sort-attributes"] &&
+          productData?.data?.specifications?.length ? (
+            <SortableAttributeNodes
+              attributeNodes={productData.data.specifications}
+            />
+          ) : null,
+      },
+    ],
+    [mounted, productData]
+  );
 
   return (
     <UnifiedCard
@@ -96,8 +124,8 @@ const AttributesProducts = () => {
         <SearchFilterCard
           relatedPages={[
             {
-              title: "مدیریت ویژگی ها",
-              href: "/admin/products/variants",
+              title: "اطلاعات محصول",
+              href: `/admin/products/create?edit_id=${28}&type=infos`,
             },
             {
               title: "مدیریت تنوع محصولات",
@@ -116,16 +144,9 @@ const AttributesProducts = () => {
           items={tabItems}
           activeKey={activeTab}
           variant="light"
-          onTabChange={(key) => {
-            const k = String(key);
-            setActiveTab(k);
-            const params = new URLSearchParams(searchParams.toString());
-            params.set("tab", k);
-            router.replace(`${pathname}?${params.toString()}`, {
-              scroll: false,
-            });
-          }}
+          onTabChange={(key) => handleTabChange(String(key))}
           tabListClassName="flex-wrap md:flex-nowrap mb-4"
+          syncWithQuery
         />
       }
     />

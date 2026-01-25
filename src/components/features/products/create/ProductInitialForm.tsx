@@ -32,6 +32,7 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateProduct } from "./product-validation";
 import { CreateProductRequest, ProductResponse } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -139,6 +140,19 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
 
   return (
     <>
+      {id ? (
+        <SearchFilterCard
+          relatedPages={[
+            {
+              title: "تنوع‌های محصول",
+              href: `/admin/products/create?edit_id=${id}&type=variant`,
+            },
+          ]}
+        />
+      ) : (
+        ""
+      )}
+
       <BaseCard
         CardHeaderProps={{
           title: "اطلاعات کلیدی محصول",
