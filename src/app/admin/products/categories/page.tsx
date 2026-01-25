@@ -7,11 +7,12 @@ import AddNewCategoryModal from "@/components/features/products/categories/AddNe
 import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
 import { CategoryTree } from "@/components/features/products/categories/CategoryTree/CategoryTree";
 import CategoriesFilter from "@/components/features/products/categories/Filter/CategoriesFilter";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 const Categories = () => {
   const { data: categories, isLoading } = useGetCategories();
   const isExistItems = !!categories?.data?.items?.length;
-  
+
   const [editCategory, setEditCategory] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -29,25 +30,28 @@ const Categories = () => {
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
       />
-
-      {/* Main Card */}
-      <UnifiedCard
-        searchFilter={<CategoriesFilter />}
-        headerProps={{
-          title: "مدیریت دسته‌بندی‌ها",
-          icon: <TbCategory2 className="text-2xl" />,
-          children: <AddNewCategoryModal />,
-        }}
-        isLoading={isLoading}
-        isExistItems={isExistItems}
-        searchInp={false}
-        meta={categories?.data?.meta}
-      >
-        <CategoryTree
-          categories={categories?.data?.items}
-          onEdit={handleEditCategory}
-        />
-      </UnifiedCard>
+      
+      <div className="flex flex-col gap-4">
+        <Breadcrumbs />
+        {/* Main Card */}
+        <UnifiedCard
+          searchFilter={<CategoriesFilter />}
+          headerProps={{
+            title: "مدیریت دسته‌بندی‌ها",
+            icon: <TbCategory2 className="text-2xl" />,
+            children: <AddNewCategoryModal />,
+          }}
+          isLoading={isLoading}
+          isExistItems={isExistItems}
+          searchInp={false}
+          meta={categories?.data?.meta}
+        >
+          <CategoryTree
+            categories={categories?.data?.items}
+            onEdit={handleEditCategory}
+          />
+        </UnifiedCard>
+      </div>
     </>
   );
 };

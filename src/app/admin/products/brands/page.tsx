@@ -8,6 +8,7 @@ import { BrandSortBy, useGetBrands } from "@/core/hooks/api/useBrand";
 import { TbBrandArc } from "react-icons/tb";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 const BrandsProduct = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -38,23 +39,26 @@ const BrandsProduct = () => {
         onOpenChange={setIsEditOpen}
       />
 
-      <UnifiedCard
-        searchFilter={<BrandFilters />}
-        headerProps={{
-          title: "مدیریت برندها",
-          icon: <TbBrandArc className="text-2xl" />,
-          children: <AddNewBrandModal />,
-        }}
-        isLoading={isLoading}
-        isExistItems={isExistItems}
-        searchInp={isFilteredView}
-        meta={brands?.data?.meta}
-        childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
-      >
-        {brands?.data?.items?.map((b: any) => (
-          <BrandCard key={b.id} brand={b} onEdit={handleEditBrand} />
-        ))}
-      </UnifiedCard>
+      <div className="flex flex-col gap-4">
+        <Breadcrumbs />
+        <UnifiedCard
+          searchFilter={<BrandFilters />}
+          headerProps={{
+            title: "مدیریت برندها",
+            icon: <TbBrandArc className="text-2xl" />,
+            children: <AddNewBrandModal />,
+          }}
+          isLoading={isLoading}
+          isExistItems={isExistItems}
+          searchInp={isFilteredView}
+          meta={brands?.data?.meta}
+          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+        >
+          {brands?.data?.items?.map((b: any) => (
+            <BrandCard key={b.id} brand={b} onEdit={handleEditBrand} />
+          ))}
+        </UnifiedCard>
+      </div>
     </>
   );
 };

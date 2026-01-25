@@ -7,6 +7,7 @@ import OrderWizard from "@/components/features/orders/OrderProccess/OrderWizard"
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrderProccessFilter from "@/components/features/orders/OrderProccess/OrderProccessFilter";
 import { GoArrowUpRight } from "react-icons/go";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();
@@ -19,26 +20,29 @@ const OrderDetail = () => {
   const orderData = order?.data;
 
   return (
-    <UnifiedCard
-      searchFilter={
-        <OrderProccessFilter
-          customerId={orderData?.user?.id}
-          customerName={`${orderData?.user?.last_name}`}
-        />
-      }
-      isLoading={isLoading}
-      isExistItems={!!orderData}
-      searchInp={false}
-      headerProps={{
-        title: "اطلاعات سفارش",
-        icon: <IoReceiptOutline className="text-2xl" />,
-        redirect: `/factor?id=${order?.data?.id}`,
-        textBtn: "فاکتور",
-        btnIcon: <GoArrowUpRight/>
-      }}
-    >
-      <OrderWizard order={orderData} />
-    </UnifiedCard>
+    <div className="flex flex-col gap-4">
+      <Breadcrumbs />
+      <UnifiedCard
+        searchFilter={
+          <OrderProccessFilter
+            customerId={orderData?.user?.id}
+            customerName={`${orderData?.user?.last_name}`}
+          />
+        }
+        isLoading={isLoading}
+        isExistItems={!!orderData}
+        searchInp={false}
+        headerProps={{
+          title: "اطلاعات سفارش",
+          icon: <IoReceiptOutline className="text-2xl" />,
+          redirect: `/factor?id=${order?.data?.id}`,
+          textBtn: "فاکتور",
+          btnIcon: <GoArrowUpRight />,
+        }}
+      >
+        <OrderWizard order={orderData} />
+      </UnifiedCard>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import ProductInitialForm from "@/components/features/products/create/ProductIni
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetOneProduct } from "@/core/hooks/api/products/useProduct";
 import { useFetchOnEdit } from "@/core/hooks/common/useFetchOnEdit";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 
 const CreateNewProduct = () => {
   const router = useRouter();
@@ -20,10 +21,15 @@ const CreateNewProduct = () => {
 
   const { data, isLoading, editId } = useFetchOnEdit(useGetOneProduct);
 
-  return type === "infos" ? (
-    <ProductInitialForm data={data} id={editId} isLoading={isLoading} />
-  ) : (
-    <AttributesProducts />
+  return (
+    <div className="flex flex-col gap-4">
+      <Breadcrumbs />
+      {type === "infos" ? (
+        <ProductInitialForm data={data} id={editId} isLoading={isLoading} />
+      ) : (
+        <AttributesProducts />
+      )}
+    </div>
   );
 };
 
