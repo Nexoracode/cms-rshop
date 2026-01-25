@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormCore } from "./useFormCore";
 import toast from "react-hot-toast";
 
@@ -17,6 +17,10 @@ export const useListForm = <T extends Record<string, any>>(
 
   const initialItemsRef = useRef(initialItems);
   const [changedMap, setChangedMap] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    initialItemsRef.current = initialItems;
+  }, [initialItems]);
 
   const updateItem = useCallback(
     (index: number, patch: Partial<any>) => {
@@ -48,18 +52,22 @@ export const useListForm = <T extends Record<string, any>>(
 
   const reset = useCallback(
     (items?: any[]) => {
-      core.setData(items ?? initialItemsRef.current);
+      if (items) {
+        core.resetWith(items);
+        initialItemsRef.current = items;
+      } else {
+        core.resetWith(initialItemsRef.current);
+      }
       setChangedMap({});
-      core.resetForm();
     },
     [core]
   );
 
   const setList = useCallback(
     (nextItems: any[]) => {
-      core.setData(nextItems);
+      core.resetWith(nextItems);
+      initialItemsRef.current = nextItems;
       setChangedMap({});
-      core.resetForm();
     },
     [core]
   );
