@@ -14,6 +14,7 @@ import {
   SiTicktick,
 } from "react-icons/si";
 import { IoCloseCircle } from "react-icons/io5";
+import { BsArrow90DegDown, BsArrow90DegLeft, BsArrow90DegRight } from "react-icons/bs";
 
 type ConversationListProps = {
   conversations: Record<string, any>[];
@@ -50,7 +51,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
               ${isSelected ? "bg-white shadow-md" : ""}`}
           >
             <div className="flex items-center gap-4 justify-between">
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-gray-700">
                 {conv?.messages[0]?.sender?.name}
               </p>
               <p className="text-xs text-gray-500">
@@ -58,15 +59,21 @@ const ConversationList: React.FC<ConversationListProps> = ({
                   showTime: false,
                 })}
               </p>
-              {/* <p className="text-gray-700 text-xs truncate mt-2">
+            </div>
+
+            <div className="mt-2 mr-2 flex items-center gap-2">
+              <div className="scale-[-1]">
+                <BsArrow90DegRight className="rotate-180 scale-[-1] text-gray-500" size={12} />
+              </div>
+              <p className="text-gray-500 text-xs truncate">
                 {conv.messages[0].content}
-              </p> */}
+              </p>
             </div>
 
             <div className="flex items-center gap-6 justify-between mt-2.5">
               <div>
                 {conv.product && (
-                  <div className="text-xs text-orange-500 border border-orange-200 bg-orange-50 rounded-lg border-l-0 pl-2 pr-1 py-0.5 flex items-center gap-2 truncate">
+                  <div className="text-xs text-orange-500 border border-orange-200 bg-orange-50 rounded-lg border-l-0 pl-2 pr-1 py-0.5 flex items-center gap-1.5 truncate">
                     <LuPackage size={17} />
                     <span>{conv.product.title}</span>
                   </div>
