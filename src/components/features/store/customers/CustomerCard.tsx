@@ -52,7 +52,7 @@ const CustomerCard: React.FC<Props> = ({
 
   return (
     <BaseCard
-      bodyClassName="w-full min-w-[341px] hover-reveal-parent"
+      bodyClassName="w-full hover-reveal-parent"
       redirect={`/admin/store/customers/create?edit_id=${id}`}
     >
       <div className="flex items-center gap-2 mb-2">
@@ -61,10 +61,10 @@ const CustomerCard: React.FC<Props> = ({
             <img
               src={avatar_url}
               alt={`${first_name || "-"} ${last_name || "-"}`}
-              className="w-16 h-16 rounded-full object-cover"
+              className="w-14 h-14 rounded-full object-cover"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
               <FiUser className="text-gray-400 text-2xl" />
             </div>
           )}

@@ -8,11 +8,12 @@ const UserDetailPage = () => {
   const params = useSearchParams();
   const userId = params ? Number(params.get("edit_id")) : 0;
 
-  const { data: oneUser } = useGetOneUser(userId);
+  const { data: oneUser, isLoading } = useGetOneUser(userId);
 
   return (
     <UserInitialForm
       user={oneUser?.data ?? []}
+      isLoading={isLoading}
     />
   );
 };

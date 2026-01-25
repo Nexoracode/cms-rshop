@@ -1,7 +1,6 @@
 "use client";
 
-import { Checkbox, Divider } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
 import BaseCard from "@/components/ui/BaseCard";
 import { LuMapPinHouse, LuUserRoundPen } from "react-icons/lu";
@@ -13,32 +12,45 @@ import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
 import UserAddressCard from "./UserAddress/UserAddressCard";
 import { UserAddress } from "./customer.types";
-import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import { useForm } from "@/core/hooks/common/form/useForm";
+import { userInitialValidate } from "./user-initial-validate";
+
+const initialUserForm = {
+  first_name: "",
+  last_name: "",
+  phone: "",
+  email: "",
+  is_active: false,
+  is_phone_verified: false,
+  avatar_url: "",
+  addresses: [],
+};
 
 type Props = {
   user?: Record<string, any>;
+  isLoading: boolean;
 };
 
-const UserInitialForm = ({ user }: Props) => {
+const UserInitialForm = ({ user, isLoading }: Props) => {
   const router = useRouter();
-  const updateUser = useUpdateUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
 
-  const [data, setData] = useState<any>({
-    first_name: "",
-    last_name: "",
-    phone: "",
-    email: "",
-    is_active: false,
-    is_phone_verified: false,
-    avatar_url: "",
-    addresses: [],
+  const {
+    form,
+    errors,
+    handleFieldChange,
+    setForm,
+    submit,
+  } = useForm(initialUserForm, {
+    onValidate: userInitialValidate,
+    runValidationOnChange: true,
   });
 
   useEffect(() => {
     if (!user) return;
 
-    setData({
+    setForm({
       first_name: user.first_name ?? "",
       last_name: user.last_name ?? "",
       phone: user.phone ?? "",
@@ -50,26 +62,25 @@ const UserInitialForm = ({ user }: Props) => {
     });
   }, [user]);
 
-  const handleUpdate = () => {
-    const { email, first_name, is_active, last_name, phone } = data;
+  const handleSubmit = submit(async (changed) => {
+    const { email, first_name, is_active, last_name, phone } = form;
 
     const dataToSend = {
       first_name,
       last_name,
       phone,
-      email,
+      ...(email ? { email } : {}),
       is_active,
     };
-
-    updateUser.mutate(
+    updateUser(
       { data: dataToSend, id: user?.id },
       {
         onSuccess: (res) => {
-          res.ok && router.push("/admin/store/customers");
+          res.ok && router.push("/admin/products");
         },
       }
     );
-  };
+  });
 
   return (
     <BaseCard
@@ -79,47 +90,45 @@ const UserInitialForm = ({ user }: Props) => {
         showIconInActionSlot: true,
       }}
       wrapperContents
+      isLoading={isLoading}
     >
-      <div className="pointer-events-none opacity-75 select-none !cursor-auto">
+      {/* <div className="pointer-events-none opacity-75 select-none !cursor-auto">
         <ImageBoxUploader
           title="تصویر مشتری"
-          defaultImg={data.avatar_url}
+          defaultImg={""}
           onFile={() => {}}
         />
-      </div>
+      </div> */}
 
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <TextInput
           label="نام"
           placeholder="نام را وارد کنید"
-          value={data.first_name}
-          onChange={(val) =>
-            setData((prev: any) => ({ ...prev, first_name: val }))
-          }
+          value={form.first_name}
+          onChange={(val) => handleFieldChange("first_name", val)}
           allowEnglishOnly={false}
           inputAlign="right"
+          isRequired
+          errorMessage={errors.first_name}
         />
 
         <TextInput
           label="نام خانوادگی"
           placeholder="نام خانوادگی را وارد کنید"
-          value={data.last_name}
-          onChange={(val) =>
-            setData((prev: any) => ({ ...prev, last_name: val }))
-          }
+          value={form.last_name}
+          onChange={(val) => handleFieldChange("last_name", val)}
           allowEnglishOnly={false}
           inputAlign="right"
+          isRequired
+          errorMessage={errors.last_name}
         />
       </div>
 
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <PhoneInput
-          value={data.phone}
-          onChange={(phone, isValid) => {
-            setData((prev: any) => ({
-              ...prev,
-              phone: phone,
-            }));
+          value={form.phone}
+          onChange={(phone) => {
+            handleFieldChange("phone", phone);
           }}
           label="شماره تماس"
           placeholder="09XXXXXXXXXX"
@@ -127,23 +136,20 @@ const UserInitialForm = ({ user }: Props) => {
         />
 
         <EmailInput
-          value={data.email}
-          onChange={(email) => setData((prev: any) => ({ ...prev, email }))}
+          value={form.email}
+          onChange={(email) => handleFieldChange("email", email)}
           isActiveError={true}
-          isRequired
         />
       </div>
 
       <ToggleSection
-        title={` وضعیت حساب ${data.is_active ? "فعال" : "غیرفعال"}`}
-        initialMode={data.is_active}
-        onChange={(val) =>
-          setData((prev: any) => ({ ...prev, is_active: val }))
-        }
+        title={` وضعیت حساب ${form.is_active ? "فعال" : "غیرفعال"}`}
+        initialMode={form.is_active}
+        onChange={(val) => handleFieldChange("is_active", val)}
       />
 
       <div className="-mb-4">
-        {data?.addresses ? (
+        {form?.addresses ? (
           <div>
             <div className="flex items-center justify-between mb-4">
               <p>آدرس های کاربر</p>
@@ -155,10 +161,10 @@ const UserInitialForm = ({ user }: Props) => {
         )}
         <div
           className={`grid grid-cols-1 ${
-            data?.addresses?.length ? "sm:grid-cols-2" : ""
+            form?.addresses?.length ? "sm:grid-cols-2" : ""
           } gap-4 pb-4`}
         >
-          {data?.addresses?.map((addr: UserAddress, index: number) => (
+          {form?.addresses?.map((addr: UserAddress, index: number) => (
             <UserAddressCard key={index} address={addr} userId={user?.id} />
           )) || (
             <div className="w-full flex flex-col items-center gap-4  rounded-xl border-3 border-dashed px-4 py-6">
@@ -172,7 +178,8 @@ const UserInitialForm = ({ user }: Props) => {
 
       <FormActionButtons
         cancelHref="/admin/store/customers"
-        onSubmit={handleUpdate}
+        onSubmit={handleSubmit}
+        isLoading={isLoading || isPending}
       />
     </BaseCard>
   );
