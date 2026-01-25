@@ -2,8 +2,18 @@
 
 import React from "react";
 import { toPersianUTC } from "@/core/utils/date";
-import { LuUser } from "react-icons/lu";
+import { LuPackage, LuUser } from "react-icons/lu";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FaOpencart } from "react-icons/fa";
+import { FaEnvelopeOpen } from "react-icons/fa6";
+import {
+  SiClockify,
+  SiOpenaigym,
+  SiOpenbsd,
+  SiOpencollective,
+  SiTicktick,
+} from "react-icons/si";
+import { IoCloseCircle } from "react-icons/io5";
 
 type ConversationListProps = {
   conversations: Record<string, any>[];
@@ -22,10 +32,10 @@ const ConversationList: React.FC<ConversationListProps> = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  console.log(conversations);
+  console.log("conversations =>", conversations);
 
   return (
-    <aside className="min-w-64 max-w-64 border-l max-h-[60vh] overflow-y-auto rounded-md py-1 px-2 flex flex-col gap-2.5">
+    <aside className="min-w-64 max-w-64 border-l max-h-[60vh] overflow-y-auto rounded-md p-1 flex flex-col">
       {conversations.map((conv, index) => {
         const selectedId = Number(searchParams.get("chat-id"));
         const isSelected = selectedId === conv.id;
@@ -34,34 +44,51 @@ const ConversationList: React.FC<ConversationListProps> = ({
           <div
             key={conv.id}
             onClick={() => handleSelect(conv)}
-            className={`flex flex-col shadow-none !h-[90px] ${index !== conversations.length - 1 ? "border-b" : ""} cursor-pointer py-2 px-2.5 hover:scale-95 transition 
+            className={`flex flex-col shadow-none  py-3.5 ${
+              index !== conversations.length - 1 ? "border-b" : ""
+            } cursor-pointer py-2 px-2.5 hover:scale-95 transition 
               ${isSelected ? "bg-white shadow-md" : ""}`}
           >
-            <div>
-              <div className="flex items-center gap-2">
-                <LuUser className="bg-white p-1 text-gray-600 border border-gray-300 rounded-full text-2xl" />
-                {/*  {/* تاریخ آخرین پیام */}
-                <p className="text-xs text-gray-400 mt-0.5 text-left">
-                  {toPersianUTC(conv.messages[0].created_at)}
-                </p>
-              </div>
-              <p className="text-gray-700 text-xs truncate mt-2">
-                {conv.messages[0].content}
+            <div className="flex items-center gap-4 justify-between">
+              <p className="text-xs text-gray-600">
+                {conv?.messages[0]?.sender?.name}
               </p>
+              <p className="text-xs text-gray-500">
+                {toPersianUTC(conv.messages[0].created_at, {
+                  showTime: false,
+                })}
+              </p>
+              {/* <p className="text-gray-700 text-xs truncate mt-2">
+                {conv.messages[0].content}
+              </p> */}
             </div>
 
-            {conv.product && (
-              <div className="mt-1.5">
-                <p className="text-xs text-gray-500 truncate">
-                  {conv.product.title}
-                </p>
+            <div className="flex items-center gap-6 justify-between mt-2.5">
+              <div>
+                {conv.product && (
+                  <div className="text-xs text-orange-500 border border-orange-200 bg-orange-50 rounded-lg border-l-0 pl-2 pr-1 py-0.5 flex items-center gap-2 truncate">
+                    <LuPackage size={17} />
+                    <span>{conv.product.title}</span>
+                  </div>
+                )}
+                {!conv.product && (
+                  <p className="text-xs text-gray-500 w-fit truncate">
+                    {conv.subject}
+                  </p>
+                )}
               </div>
-            )}
-            {!conv.product && (
-              <p className="text-xs text-orange-400 w-fit truncate mt-2">
-                {conv.subject}
-              </p>
-            )}
+              <div className="bg-white text-gray-600 rounded-full text-2xl">
+                {conv.status === "open" && (
+                  <SiOpencollective size={16} className="text-orange-400" />
+                )}
+                {conv.status === "answered" && (
+                  <SiTicktick size={16} className="text-green-500" />
+                )}
+                {conv.status === "closed" && (
+                  <IoCloseCircle size={17} className="text-red-500" />
+                )}
+              </div>
+            </div>
           </div>
         );
       })}

@@ -30,7 +30,7 @@ const Products = () => {
     <UnifiedCard
       searchFilter={<SupportFilter />}
       headerProps={{
-        title: "گفت و گوها",
+        title: "پشتیبانی",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
         showIconInActionSlot: true,
         className: "p-2 mb-4",
