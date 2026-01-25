@@ -59,7 +59,7 @@ export default function AddNewSizeGuideModal({
     } else {
       setForm(initialForm);
     }
-  }, [defaultValues, setForm]);
+  }, [defaultValues]);
 
   // handler نهایی ثبت
   const handleUpload = async () => {
@@ -155,7 +155,11 @@ export default function AddNewSizeGuideModal({
         <Textarea
           value={form.description}
           onChange={(e: any) =>
-            handleFieldChange("description", e.target.value)
+          {
+            console.log(e);
+            
+            //handleFieldChange("description", e.target.value)
+          }
           }
           label="توضیحات"
           placeholder="توضیحات را وارد کنید"

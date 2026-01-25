@@ -22,7 +22,7 @@ const AttributesProducts = () => {
   const { setAttrInfos } = useAttributeContext();
 
   const { data: productData } = useGetOneProduct(page);
-
+  
   // active tab + mounted for lazy render
   const [activeTab, setActiveTab] = useState<string | undefined>("variants");
   const [mounted, setMounted] = useState<Record<string, boolean>>({
@@ -76,7 +76,7 @@ const AttributesProducts = () => {
     () => [
       {
         key: "variants",
-        title: "تنوع ها محصول",
+        title: "تنوع محصول‌",
         showEmpty: !productData?.data?.variants?.length,
         content: mounted["variants"] ? (
           <VaraintsForm initialVariants={productData?.data?.variants} />
@@ -84,7 +84,7 @@ const AttributesProducts = () => {
       },
       {
         key: "sort-variants",
-        title: "مرتب سازی تنوع ها محصول",
+        title: "مرتب سازی تنوع محصول‌",
         showEmpty: !productData?.data?.variants?.length,
         content:
           mounted["sort-variants"] &&
