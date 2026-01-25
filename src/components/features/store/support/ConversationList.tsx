@@ -54,7 +54,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
               <p className="text-xs text-gray-700">
                 {conv?.messages[0]?.sender?.name}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-400">
                 {toPersianUTC(conv.messages[0].created_at, {
                   showTime: false,
                 })}
@@ -84,7 +84,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
                   </p>
                 )}
               </div>
-              <div className="bg-white text-gray-600 rounded-full text-2xl">
+              <div>
                 {conv.status === "open" && (
                   <SiOpencollective size={16} className="text-orange-400" />
                 )}

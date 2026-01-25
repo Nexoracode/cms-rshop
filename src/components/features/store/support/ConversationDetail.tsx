@@ -11,6 +11,8 @@ import { HiOutlineChatBubbleLeftRight, HiOutlinePaperAirplane } from "react-icon
 import { BsEmojiSmile } from "react-icons/bs";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 import Link from "next/link";
+import { SiOpencollective, SiTicktick } from "react-icons/si";
+import { IoCloseCircle } from "react-icons/io5";
 
 // ایموجی‌های کاملاً بدون تکرار
 const EMOJI_CATEGORIES: Record<string, string[]> = {
@@ -249,12 +251,25 @@ const ConversationDetail: React.FC = () => {
   return (
     <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
 
-      <div className="flex items-center justify-between p-4 pt-0 bg border-b border-gray-100 bg-white">
+      <div className="flex items-center justify-between p-4 pb-3 bg border-b border-gray-100 bg-white">
         <div>
-          <p className="text-xs text-gray-500 mb-1">پشتیبانی • تیکت #{chatId}</p>
-          <p className="text-[16px] text-gray-700 truncate">
+          <p className="text-[14px] text-gray-700 truncate">
             {conv.subject}
           </p>
+          <div className="flex items-center gap-2 mt-2.5">
+            <div>
+              {conv.status === "open" && (
+                <SiOpencollective size={16} className="text-orange-400" />
+              )}
+              {conv.status === "answered" && (
+                <SiTicktick size={16} className="text-green-500" />
+              )}
+              {conv.status === "closed" && (
+                <IoCloseCircle size={17} className="text-red-500" />
+              )}
+            </div>
+            <p className="text-xs text-gray-500">تیکت #{chatId}</p>
+          </div>
         </div>
         {
           conv?.product
@@ -276,7 +291,7 @@ const ConversationDetail: React.FC = () => {
       {/* پیام‌ها */}
       <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {conv.messages.map((msg: any) => {
-          const isAdmin = msg.sender?.role === "admin";
+          const isAdmin = msg.sender?.role === "admin" || msg.sender?.role === "super_admin";
 
           return (
             <div
@@ -287,7 +302,7 @@ const ConversationDetail: React.FC = () => {
                 className={`flex flex-col items-start max-w-52`}
               >
                 <span className="text-xs font-medium text-gray-500 mb-1.5 px-1">
-                  {msg.sender?.name || (isAdmin ? "پشتیبانی" : "شما")}
+                  {isAdmin ? `${msg.sender?.name} (ادمین)` : msg.sender?.name}
                 </span>
 
                 <div
