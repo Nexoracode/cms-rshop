@@ -94,7 +94,10 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
     <div className="min-h-screen bg-gray-50 p-4">
       {/* دکمه پرینت */}
       <div className="mb-4 print:hidden">
-        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={() => window.print()}>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={() => window.print()}
+        >
           چاپ فاکتور
         </button>
       </div>
@@ -106,19 +109,25 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
       >
         {/* هدر فاکتور */}
         <div className="border-b border-black pb-4 mb-6">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold">فاکتور فروش</h1>
-              <div className="mt-2 text-sm">
+              <h1 className="text-2xl font-bold mb-4">فاکتور فروش</h1>
+              <div className="mt-2 text-sm flex flex-col gap-3">
                 <div>
                   <strong>فروشنده:</strong> {sellerInfo.name}
                 </div>
                 <div>
                   <strong>آدرس:</strong> {sellerInfo.address}
                 </div>
-                <div>
-                  <strong>کد پستی:</strong> {sellerInfo.postalCode}{" "}
-                  <strong>موبایل:</strong> {sellerInfo.phone}
+                <div className="flex items-center gap-6">
+                  <div>
+                    <strong>کد پستی:</strong>
+                    <span>{sellerInfo.postalCode}</span>
+                  </div>
+                  <div>
+                    <strong>موبایل:</strong>
+                    <span>{sellerInfo.phone}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -126,7 +135,7 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
               <img
                 src={sellerInfo.logo}
                 alt="لوگو"
-                className="w-24 h-24 object-contain border"
+                className="w-24 h-24 rounded-lg object-contain border"
               />
             </div>
           </div>
@@ -137,16 +146,22 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
           <h3 className="font-bold mb-2">
             <strong>خریدار:</strong> {user?.first_name} {user?.last_name}
           </h3>
-          <div className="text-sm">
+          <div className="text-sm flex flex-col gap-3">
             <div>
               <strong>آدرس:</strong> {address?.province}، {address?.city}،{" "}
               {address?.address_line}
               {address?.plaque && `، پلاک ${address.plaque}`}
               {address?.unit && `، واحد ${address.unit}`}
             </div>
-            <div>
-              <strong>کد پستی:</strong> {address?.postal_code || "9952365214"}
-              <strong> موبایل:</strong> {user?.phone || "09150553208"}
+            <div className="flex items-center gap-6">
+              <div>
+                <strong>کد پستی:</strong>
+                <span>{address?.postal_code || "9952365214"}</span>
+              </div>
+              <div>
+                <strong> موبایل:</strong>
+                <span>{user?.phone || "09150553208"}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -210,10 +225,10 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
               <tr>
                 <td className="border border-black p-2" colSpan={3}></td>
                 <td className="border border-black p-2" colSpan={2}>
-                  <div className="font-bold">جمع کل</div>
+                  <div className=""></div>
                 </td>
-                <td className="border border-black p-2"></td>
-                <td className="border border-black p-2 font-bold">
+                <td className="border border-black p-2 font-bold">جمع کل</td>
+                <td className="border text-left border-black p-2 font-bold">
                   {subtotal.toLocaleString("fa-IR")}
                 </td>
               </tr>
@@ -225,7 +240,7 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
                   <td className="border border-black p-2 font-bold">
                     کد تخفیف
                   </td>
-                  <td className="border border-black p-2 text-red-600">
+                  <td className="text-left border border-black p-2 text-red-600">
                     - {discount_total.toLocaleString("fa-IR")}
                   </td>
                 </tr>
@@ -255,25 +270,25 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
         {/* اطلاعات پایین فاکتور */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-sm">
           <div>
-            <div className="font-bold">روش ارسال:</div>
+            <div className="font-bold mb-2">روش ارسال:</div>
             <div>پیک فروشگاه</div>
           </div>
           <div>
-            <div className="font-bold">زمان ثبت:</div>
+            <div className="font-bold mb-2">زمان ثبت:</div>
             <div>{formatDate(created_at)}</div>
           </div>
           <div>
-            <div className="font-bold">روش پرداخت:</div>
+            <div className="font-bold mb-2">روش پرداخت:</div>
             <div>
               {payment?.payment_method === "online" ? "آنلاین" : "کارت به کارت"}
             </div>
           </div>
           <div>
-            <div className="font-bold">شناسه سفارش:</div>
+            <div className="font-bold mb-2">شناسه سفارش:</div>
             <div>#{id || 49}</div>
           </div>
           <div>
-            <div className="font-bold">کد پیگیری:</div>
+            <div className="font-bold mb-2">کد پیگیری:</div>
             <div>{payment?.tracking_code || "DF-696620"}</div>
           </div>
         </div>
