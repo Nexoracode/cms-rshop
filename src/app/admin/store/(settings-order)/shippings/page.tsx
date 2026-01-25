@@ -14,7 +14,7 @@ export default function Shippings() {
     const [isActiveShipping, setIsActiveShipping] = useState(false)
 
     const handleSubmit = () => {
-        console.log("Submitted:")
+   
     }
 
     return (

@@ -22,7 +22,6 @@ const InnerProductVariantSelectionBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    console.log(selectedProducts);
 
     const products = selectedProducts.map((p: any) => ({
       product_id: p.id,

@@ -24,7 +24,6 @@ const CustomersCoupon = () => {
         setCtxKey
       }) => {
         useEffect(() => {
-          console.log(initialData);
           setUsers(
             initialData?.conditions?.find((cond: any) => cond.type === "user")
               ?.users

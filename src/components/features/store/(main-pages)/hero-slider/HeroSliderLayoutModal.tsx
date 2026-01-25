@@ -25,7 +25,6 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
   const reorder = useUpdateHeroOrder();
 
   useEffect(() => {
-    console.log("sliders =>", sliders);
     setItems(sliders);
   }, [sliders]);
 

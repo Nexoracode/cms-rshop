@@ -26,7 +26,6 @@ const InnerSelectableUsersBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    console.log("Customer Ok");
     
     onChange?.(selectedCustomers.map((u) => u.id));
   }, [selectedCustomers]);

@@ -32,7 +32,6 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
   });
 
   useEffect(() => {
-    console.log("######################",initialVariants);
     reset(initialVariants)
   }, [initialVariants]);
 

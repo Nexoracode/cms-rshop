@@ -50,7 +50,6 @@ const AddNewBrandModal: React.FC<Props> = ({
     useUpdateBrand();
 
   useEffect(() => {
-    console.log(defaultValues);
     if (defaultValues) {
       setForm({
         name: defaultValues.name ?? "",

@@ -20,7 +20,6 @@ const giftWrapping = () => {
     search,
     sortBy,
   });
-  console.log(gifts);
 
   const isExistItems = !!gifts?.data?.items?.length;
 

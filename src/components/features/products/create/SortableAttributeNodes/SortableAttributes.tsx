@@ -50,7 +50,6 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
 
   const handleImportantAttributeProduct = (status: boolean, attrId: number) => {
     const productId = searchParams.get("edit_id");
-    console.log(productId);
 
     if (!productId) {
       toast.error("محصولی انتخاب نشده در تب");

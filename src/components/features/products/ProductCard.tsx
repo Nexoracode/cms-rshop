@@ -22,8 +22,6 @@ const ProductCard: React.FC<Props> = ({
   forceMobileLayout = true,
 }) => {
   const id = product.id;
-  console.log(forceMobileLayout);
-  
   const { mutate: deleteProduct } = useDeleteProduct(product.id);
 
   return (

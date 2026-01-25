@@ -246,7 +246,6 @@ const ConversationDetail: React.FC = () => {
   }
 
   const conv = data.data
-  console.log(conv);
   
   return (
     <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">

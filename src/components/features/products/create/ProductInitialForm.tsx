@@ -180,7 +180,6 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             placeholder="نام محصول را وارد کنید"
             value={form.name}
             onChange={(name) => {
-              console.log("Name =>", name);
               handleFieldChange("name", name);
             }}
             isRequired

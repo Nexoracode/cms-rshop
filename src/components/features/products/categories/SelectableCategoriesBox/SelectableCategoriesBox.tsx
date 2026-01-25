@@ -22,7 +22,6 @@ const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
       isFirstRender.current = false;
       return;
     }
-    console.log("Category Ok");
     onChange?.(selectedCategories.map((c) => c.id));
   }, [selectedCategories]);
 

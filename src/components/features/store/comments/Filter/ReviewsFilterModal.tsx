@@ -24,9 +24,6 @@ const ReviewsFilterModal: React.FC = () => {
     search: SearchInProducts,
   });
 
-  console.log("Product Data =>", productsData);
-  console.log("Users Data =>", usersData);
-
   const users = useMemo(
     () =>
       usersData?.data?.items?.map((b: any) => ({

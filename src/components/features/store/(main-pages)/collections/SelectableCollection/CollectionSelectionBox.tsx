@@ -20,8 +20,7 @@ const InnerCollectionVariantSelectionBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    console.log(selectedCollections);
-
+    
     const collections = selectedCollections.map((p: any) => ({
       collection_id: p.id,
       variant_ids: p.variants?.map((v: any) => v.id) ?? [],

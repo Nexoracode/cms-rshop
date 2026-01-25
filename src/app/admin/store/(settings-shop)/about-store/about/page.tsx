@@ -35,7 +35,7 @@ const About = () => {
                             label="درباره ما"
                             placeholder="وارد کنید"
                             variant="flat"
-                            onClear={() => console.log("textarea cleared")}
+                            onClear={() => {}}
                         />
                     </div>
                 </CardBody>

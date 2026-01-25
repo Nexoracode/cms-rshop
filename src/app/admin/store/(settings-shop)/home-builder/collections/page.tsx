@@ -11,9 +11,6 @@ const Collections = () => {
   const isExistItems = collections?.data?.length;
 
   const specialProducts  = collections?.data?.filter((coll:any) => coll.section_type === "special_products")
-  
-  console.log(specialProducts);
-  
 
   return (
     <UnifiedCard

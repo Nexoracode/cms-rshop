@@ -23,8 +23,6 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const initialStatus =
     statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
-  
-  console.log(order);
 
   const rowItems = [
     {

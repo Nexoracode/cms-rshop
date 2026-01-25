@@ -34,7 +34,6 @@ const SimpleFactor: React.FC<SimpleFactorProps> = ({ order }) => {
 
     return items.map((item: any) => {
       const { product, variant, quantity, line_total, discount } = item;
-      //console.log(item);
 
       // محاسبه مبلغ واحد واقعی
       const unitPrice =

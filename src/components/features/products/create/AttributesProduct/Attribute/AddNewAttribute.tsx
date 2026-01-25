@@ -25,8 +25,6 @@ const AddNewAttribute: React.FC<Props> = ({
     number | undefined
   >(undefined);
 
-  console.log(attr);
-
   const selectedAttrId = isDisabledEdit
     ? propSelectedAttrId
     : internalSelectedId;

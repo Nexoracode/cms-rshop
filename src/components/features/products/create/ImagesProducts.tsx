@@ -28,10 +28,6 @@ const ImagesProducts = ({
   const { mutate: uploadMedias, isPending } = useProductUpload();
 
   useEffect(() => {
-    console.log("mediasUrl =>", mediasUrl);
-  }, [mediasUrl]);
-
-  useEffect(() => {
     setPinnedId(initialPinnedId);
   }, [initialPinnedId]);
 

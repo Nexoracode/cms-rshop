@@ -127,8 +127,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       is_active,
     };
 
-    console.log(payload);
-
     if (sliderId) {
       return handleMutation(
         () => updateSlider({ id: sliderId, data: payload }),

@@ -254,8 +254,6 @@ const InvoiceCardInfos: React.FC<InvoiceCardInfosProps> = ({
       }
     });
 
-    // مرحله ۴: یکبار setProducts
-    console.log("finalProducts =>", finalProducts);
     setProducts(finalProducts);
   }, [items]);
 

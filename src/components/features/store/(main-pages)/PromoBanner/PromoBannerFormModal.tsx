@@ -128,8 +128,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       ...other,
     };
 
-    console.log(payload);
-
     if (bannerId) {
       return handleMutation(
         () => updateBanner({ id: bannerId, data: payload }),
@@ -307,7 +305,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
                   label="رنگ متن"
                   value={form.text_color}
                   onChange={(text_color) => {
-                    console.log("text_color =>", text_color);
                     handleFieldChange("text_color", text_color);
                   }}
                   widthFull

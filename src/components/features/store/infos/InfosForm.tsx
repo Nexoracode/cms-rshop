@@ -25,14 +25,10 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   const router = useRouter();
   const { mutate: createInfos } = useInfosCreate();
 
-  console.log("data =>", data);
-
   const {
     form,
     errors,
-    handleFieldChange,
     setForm,
-    handleMultipleFieldsChange,
     submit,
   } = useForm(initialInfos, {
     onValidate: validateInfos,
@@ -40,7 +36,6 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   });
 
   useEffect(() => {
-    console.log(data);
     data && setForm(data);
   }, [data]);
 

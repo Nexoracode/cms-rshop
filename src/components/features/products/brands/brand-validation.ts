@@ -1,8 +1,6 @@
 export function validateBrand(brand: any) {
   const errs: Record<string, string> = {};
 
-  console.log("Brand Validation =>", brand);
-
   const hasName = !!brand.name?.trim();
   const hasSlug = !!brand.slug?.trim();
   const hasLogo = typeof brand.logo === "string" || brand.logo instanceof File;

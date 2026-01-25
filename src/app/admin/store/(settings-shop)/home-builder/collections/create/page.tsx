@@ -8,8 +8,6 @@ import { useFetchOnEdit } from "@/core/hooks/common/useFetchOnEdit";
 const GiftWrappingCreate = () => {
   const { data, isLoading, editId } = useFetchOnEdit(useGetOneHomeSection);
 
-  console.log("data =>",data);
-
   return (
     <ProductsSelectionProvider initialProducts={data?.products ?? []}>
       <CollectionWrappingForm data={data} isLoading={isLoading} id={editId} />

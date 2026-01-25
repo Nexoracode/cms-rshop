@@ -79,10 +79,6 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
     data && setForm(data);
   }, [data]);
 
-  useEffect(() => {
-    console.log("Form =>", form);
-  }, [form]);
-
   const handleSubmit = submit(async (changed) => {
     let finalImageUrl = form.image;
 

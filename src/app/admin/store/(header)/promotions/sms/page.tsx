@@ -65,7 +65,7 @@ const Sms = () => {
               label="متن پیامک را می‌توانید از اینجا تغییر دهید."
               placeholder="توضیحات"
               variant="flat"
-              onClear={() => console.log("textarea cleared")}
+              onClear={() => {}}
             />
             <div className="w-full flex flex-col gap-6 mt-6">
               <Divider />

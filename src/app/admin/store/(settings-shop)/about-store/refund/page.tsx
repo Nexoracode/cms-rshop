@@ -19,7 +19,7 @@ const Refund = () => {
                         isClearable
                         placeholder="وارد کنید"
                         variant="flat"
-                        onClear={() => console.log("textarea cleared")}
+                        onClear={() => {}}
                     />
                 </CardBody>
                 <CardFooter className="w-full">

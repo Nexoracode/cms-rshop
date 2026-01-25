@@ -45,7 +45,6 @@ const SideBannerContainer: React.FC<Props> = ({ banners = [], className }) => {
       id: pay.id,
       position: index === 0 ? arrPayload[1].position : arrPayload[0].position,
     }));
-    console.log();
 
     const call1 = await reorder({
       data: { position: swapPayload[0].position },

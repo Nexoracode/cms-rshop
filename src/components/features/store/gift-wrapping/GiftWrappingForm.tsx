@@ -67,8 +67,6 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
   }, [data]);
 
   const handleSubmit = submit(async (changed) => {
-   console.log(changed);
-   
      try {
       const payload = {
         name: form.name.trim(),
@@ -78,7 +76,6 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
         is_active: form.is_active,
         is_for_gift: form.is_for_gift,
       };
-      console.log(payload);
       
       const result = id ? await updateGift(payload) : await createGift(payload);
       result.ok && router.push("/admin/store/gift-wrapping");
@@ -148,8 +145,6 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
           subtitle="بسته بندی مخصوص هدیه است؟"
           initialMode={form.is_for_gift}
           onChange={(val) => {
-            console.log(val);
-
             handleFieldChange("is_for_gift", val);
           }}
         />

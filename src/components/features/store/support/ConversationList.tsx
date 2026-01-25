@@ -33,8 +33,6 @@ const ConversationList: React.FC<ConversationListProps> = ({
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  console.log("conversations =>", conversations);
-
   return (
     <aside className="min-w-64 max-w-64 border-l max-h-[60vh] overflow-y-auto rounded-md p-1 flex flex-col">
       {conversations.map((conv, index) => {
