@@ -50,8 +50,8 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
           </div>
         </div>
         {/* isRequired={isDisabledEdit} */}
-        <div className="p-2 rounded-xl mt-3 border border-slate-300 max-h-[230px] h-full">
-          <ul className="flex flex-col overflow-y-auto overflow-hidden max-h-[210px]">
+        <div className="p-2 rounded-xl mt-3 border border-slate-300 max-h-[200px] h-full">
+          <ul className="flex flex-col overflow-y-auto overflow-hidden max-h-[180px]">
             {attr?.length
               ? attr.map((item: any, index) => (
                   <li
@@ -59,7 +59,7 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                     className={`border-slate-200 text-gray-700 flex items-center justify-between mx-2 p-2 py-1 group ${
                       selectedAttrGroupId === item.id && !hover
                         ? "bg-slate-100"
-                        : "hover:bg-slate-50"
+                        : ""
                     } ${attr?.length - 1 !== index ? "border-b" : ""}`}
                     onClick={() => {
                       setSelectedAttrGroupId(+item.id);

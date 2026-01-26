@@ -27,9 +27,7 @@ const AddNewAttrGroup: React.FC<Props> = ({
     if (!selectedAttrGroupId && !id) return;
     
     deleteAttributeGroup(selectedAttrGroupId ? selectedAttrGroupId : +id, {
-      onSuccess: (res) => {
-        console.log(res);
-
+      onSuccess: () => {
         setSelectedAttrGroupId(undefined);
         onChange(undefined);
       },
