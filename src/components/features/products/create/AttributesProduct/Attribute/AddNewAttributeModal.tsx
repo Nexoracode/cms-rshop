@@ -115,7 +115,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
       }
       trigger={
         type === "edit" ? (
-          <ActionButton icon={<TbEdit size={20} />} />
+          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false}/>
         ) : undefined
       }
       title={type === "edit" ? "ویرایش ویژگی" : "افزودن ویژگی جدید"}

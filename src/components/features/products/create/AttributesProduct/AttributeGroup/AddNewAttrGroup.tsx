@@ -17,20 +17,14 @@ const AddNewAttrGroup: React.FC<Props> = ({
   attrGroup,
   isDisabledEdit,
 }) => {
-  const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
-    number | undefined
-  >(undefined);
+  const [selectedAttrEdit, setSelectedAttrEdit] = useState<number | undefined>(
+    undefined
+  );
   const { mutate: deleteAttributeGroup } = useDeleteAttributeGroup();
 
   const handleDeleteAttrGroup = (id: number) => {
-    console.log(selectedAttrGroupId);
-    if (!selectedAttrGroupId && !id) return;
-    
-    deleteAttributeGroup(selectedAttrGroupId ? selectedAttrGroupId : +id, {
-      onSuccess: () => {
-        setSelectedAttrGroupId(undefined);
-        onChange(undefined);
-      },
+    deleteAttributeGroup(+id, {
+      onSuccess: () => onChange(undefined),
     });
   };
 
@@ -38,18 +32,16 @@ const AddNewAttrGroup: React.FC<Props> = ({
     <AttributeBox
       attr={attrGroup}
       addBtn={<AddNewAttributeGroupModal />}
-      onClick={(id) => {
-        setSelectedAttrGroupId(id);
-        onChange(id);
-      }}
+      onChoose={(id) => onChange(id)}
+      onEdit={setSelectedAttrEdit}
       deleteAttr={handleDeleteAttrGroup}
     >
       <AddNewAttributeGroupModal
         type="edit"
         defaultDatas={
           attrGroup?.length
-            ? (attrGroup.find(
-                (g: any) => g.id === selectedAttrGroupId
+            ? (attrGroup?.find(
+                (g: any) => g.id === selectedAttrEdit
               ) as AttributeGroup)
             : undefined
         }
