@@ -9,7 +9,6 @@ import AttributeBox from "../AttributeBox";
 type Props = {
   onChange: (value: number | undefined) => void;
   attr: Attribute[];
-  selectedAttrId: number | undefined;
   isDisabledEdit: boolean;
 };
 

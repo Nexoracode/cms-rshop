@@ -124,7 +124,6 @@ export const AttributesContent = ({
           setSelecteds((prev) => ({ ...prev, attrId: value }))
         }
         attr={attributes?.data}
-        selectedAttrId={selecteds.attrId}
         isDisabledEdit={isDisabledEdit}
       />
 
