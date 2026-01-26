@@ -62,7 +62,7 @@ const breadcrumbMap: Record<string, string> = {
   // products
   products: "محصولات",
   brands: "برندها",
-  variants: "ویرایش‌ها",
+  variants: "تنوع محصولات",
   create: "ایجاد",
   edit: "ویرایش",
 

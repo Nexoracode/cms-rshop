@@ -11,7 +11,7 @@ const Variants = () => {
       <Breadcrumbs />
       <BaseCard
         CardHeaderProps={{
-          title: "مدیریت ویژگی ها",
+          title: "مدیریت تنوع محصولات",
           icon: <MdOutlineCategory />,
           showIconInActionSlot: true,
         }}

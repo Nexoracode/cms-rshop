@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
   const refresh = request.cookies.get("refresh_token")?.value;
   const role = "admin";
 
-  if (!refresh) {
+  if (!token) {
     if (
       protectedRoutes.some((route) => pathname.startsWith(route)) ||
       adminRoutes.some((route) => pathname.startsWith(route))
