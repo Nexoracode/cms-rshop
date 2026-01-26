@@ -27,7 +27,6 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
   >(undefined);
 
   console.log(attr);
-  
 
   return (
     <div className="p-2">
@@ -51,14 +50,18 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                   <li
                     key={item.id}
                     className={`border-slate-200 text-gray-700 flex items-center justify-between mx-2 p-2 py-1 group ${
+                      item.name ? "cursor-pointer" : "cursor-auto"
+                    } ${
                       selectedAttrGroupId === item.id ? "bg-slate-100" : ""
                     } ${attr?.length - 1 !== index ? "border-b" : ""}`}
                     onClick={() => {
-                      setSelectedAttrGroupId(+item.id);
-                      onChoose(+item.id);
+                      if (item.name) {
+                        setSelectedAttrGroupId(+item.id);
+                        onChoose(+item.id);
+                      }
                     }}
                   >
-                    <span>{item.name}</span>
+                    <span>{item.name || item.value}</span>
                     <div className={`opacity-0 group-hover:opacity-100`}>
                       <div className="flex items-center gap-2">
                         <DeleteButton
