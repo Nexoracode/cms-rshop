@@ -8,6 +8,7 @@ export type ActionButtonProps = {
   route?: string;
   onClick?: () => void;
   className?: string;
+  stopPropagation?: boolean
 };
 
 export const ActionButton: React.FC<ActionButtonProps> = ({
@@ -15,17 +16,18 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   route,
   onClick,
   className,
+  stopPropagation=true
 }) => {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     if (route) {
       e.preventDefault();
-      e.stopPropagation();
+      stopPropagation && e.stopPropagation();
       router.push(route);
     } else if (onClick) {
       e.preventDefault();
-      e.stopPropagation();
+      stopPropagation && e.stopPropagation();
       onClick();
     }
   };
