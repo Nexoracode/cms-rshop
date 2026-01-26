@@ -9,7 +9,7 @@ const ProductsFilter = () => {
     <SearchFilterCard
       searchPlaceholder="جستجو در محصولات..."
       relatedPages={[
-        { title: "ویژگی‌ها", href: "/admin/products/variants" },
+        { title: "تنوع محصولات", href: "/admin/products/variants" },
         { title: "دسته‌بندی‌ها", href: "/admin/products/categories" },
         { title: "برندها", href: "/admin/products/brands" },
       ]}

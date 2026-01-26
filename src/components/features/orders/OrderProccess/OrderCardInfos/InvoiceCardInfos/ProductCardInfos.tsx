@@ -9,18 +9,15 @@ type ProductCardDetailProps = {
 };
 
 const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
-  const { product, variants, discount, quantity } = item;
+  const { product, variants, discount, quantity, line_total } = item;
 
-  // محاسبه مجموع تعداد و قیمت کل برای این محصول
-  const totalQuantity = variants?.length
-    ? variants.reduce((sum, v) => sum + v.quantity, 0)
-    : quantity;
-  const totalPrice = variants?.length
-    ? variants.reduce((sum, v) => sum + v.line_total, 0)
-    : product.price;
+  console.log("item =>", item);
 
   return (
-    <BaseCard bodyClassName="cursor-auto" className={`shadow-none !border-x-0 border-t-0 rounded-none`}>
+    <BaseCard
+      bodyClassName="cursor-auto"
+      className={`shadow-none relative !border-x-0 border-t-0 rounded-none`}
+    >
       {!variants.length ? (
         <div className="flex flex-col">
           <div className="w-full flex items-center gap-3">
@@ -32,7 +29,7 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
             <div className="w-full flex flex-col justify-between text-right h-14">
               <div className="flex items-center gap-2">
                 {!variants.length ? (
-                  <span className="text-gray-600 bg-gray-100 px-2 rounded-lg">
+                  <span className="text-gray-600 bg-gray-100 px-2 rounded-lg truncate">
                     {quantity} عدد
                   </span>
                 ) : (
@@ -45,16 +42,22 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
                   {price(product.price)}
                 </span>
 
-                {product.product_discount.amount ||
-                product.product_discount.percent ? (
-                  <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
-                    {product.product_discount.amount
-                      ? `${price(product.product_discount.amount)} تخفیف`
-                      : `${product.product_discount.percent}%`}
-                  </p>
-                ) : (
-                  ""
-                )}
+                <span className="text-green-600 font-semibold">
+                  {price(line_total)}
+                </span>
+
+                <span className="absolute bottom-3 right-3">
+                  {product.product_discount.amount ||
+                  product.product_discount.percent ? (
+                    <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
+                      {product.product_discount.amount
+                        ? `${price(product.product_discount.amount)} تخفیف`
+                        : `${product.product_discount.percent}%`}
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </span>
               </div>
             </div>
           </div>
@@ -69,7 +72,9 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
           {variants?.map((v, index) => (
             <div
               key={index}
-              className={`flex items-center gap-2 ${variants.length - 1 !== index ? "border-b border-slate-200" : ""} p-3`}
+              className={`flex items-center gap-2 ${
+                variants.length - 1 !== index ? "border-b border-slate-200" : ""
+              } p-3`}
             >
               <img
                 src={product.image || "/placeholder.jpg"}
@@ -91,16 +96,18 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
                       ))}
                     </div>
                   </div>
-                  {v?.variant?.variant_discount?.amount ||
-                  v?.variant?.variant_discount?.percent ? (
-                    <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
-                      {v?.variant?.variant_discount?.amount
-                        ? price(v?.variant?.variant_discount?.amount)
-                        : `${v?.variant?.variant_discount?.percent}%`}
-                    </p>
-                  ) : (
-                    ""
-                  )}
+                  <span className="absolute bottom-6 right-6">
+                    {v?.variant?.variant_discount?.amount ||
+                    v?.variant?.variant_discount?.percent ? (
+                      <p className="text-orange-600 bg-orange-50 px-2 rounded-lg">
+                        {v?.variant?.variant_discount?.amount
+                          ? price(v?.variant?.variant_discount?.amount)
+                          : `${v?.variant?.variant_discount?.percent}%`}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                  </span>
                 </div>
 
                 <div className="w-full mt-2 flex items-center justify-between gap-4 text-xs text-gray-600">
@@ -116,25 +123,6 @@ const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
       ) : (
         ""
       )}
-
-     {/*  <div className="mt-4 mb-2 px-4 shadow-md py-3 rounded-2xl">
-        {variants.length ? (
-          <div className="mt-2 flex items-center justify-between">
-            <p className="text-sm text-gray-500">{totalQuantity} عدد (مجموع)</p>
-            <p className="text-sm text-orange-600 w-fit bg-orange-50 px-2 py-0.5 rounded-lg">
-              {discount ? `${price(discount)} تخفیف` : "بدون تخفیف"}
-            </p>
-          </div>
-        ) : (
-          ""
-        )}
-        <div className="mt-2 flex items-center justify-between">
-          <p className="text-sm text-gray-500">مبلغ نهایی</p>
-          <span className="text-green-600 bg-green-50 px-2 py-0.5 w-fit rounded-lg">
-            {totalPrice.toLocaleString("fa-IR")} تومان
-          </span>
-        </div>
-      </div> */}
     </BaseCard>
   );
 };

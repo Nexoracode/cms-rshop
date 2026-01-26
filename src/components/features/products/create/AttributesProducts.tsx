@@ -128,7 +128,7 @@ const AttributesProducts = () => {
               href: `/admin/products/create?edit_id=${28}&type=infos`,
             },
             {
-              title: "مدیریت تنوع محصولات",
+              title: "تنوع محصولات",
               href: "/admin/products/variants/",
             },
           ]}
