@@ -15,18 +15,21 @@ import { handleMutation } from "@/core/utils/mutationHelper";
 import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
+import { useAttributesByGroup } from "@/core/hooks/api/attributes/useAttribute";
 
 type Props = {
   defaultDatas?: AttributeValue;
   type?: "edit" | "add";
-  attributeId?: number;
+  groupId?: number | null;
+  attributeId?: number | null;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: CreateAttributeValue = {
+const initialState: any = {
   value: "",
-  attribute_id: 0,
+  attribute_id: null,
+  group_id: null,
   display_color: "",
   display_order: null,
   is_active: true,
@@ -39,11 +42,10 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<CreateAttributeValue | AttributeValue>(
-    initialState
-  );
+  const [datas, setDatas] = useState<any>(initialState);
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
+  const { data: getAllAttribute } = useAttributesByGroup(datas.group_id || 0);
 
   const { mutateAsync: createAttributeValue, isPending: isPendingCreate } =
     useCreateAttributeValue();
@@ -54,12 +56,12 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (isActiveColorPicker) {
-      setDatas((prev) => ({
+      setDatas((prev:any) => ({
         ...prev,
         display_color: "#000",
       }));
     } else {
-      setDatas((prev) => ({
+      setDatas((prev:any) => ({
         ...prev,
         display_color: null,
       }));
@@ -121,29 +123,15 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       icon={<FiCheckSquare />}
     >
       <div className="flex flex-col gap-5 px-2">
-        {/* عنوان مقدار */}
-        <Input
-          labelPlacement="outside"
-          isRequired
-          label="عنوان مقدار"
-          placeholder="عنوان مقدار را وارد کنید"
-          value={datas.value}
-          onChange={(e) =>
-            setDatas((prev) => ({ ...prev, value: e.target.value }))
-          }
-        />
-
         {/* گروه ویژگی */}
         <Select
           isRequired
           label="گروه ویژگی"
           placeholder="گروه ویژگی را انتخاب کنید"
           labelPlacement="outside"
-          selectedKeys={
-            datas.attribute_id ? [datas.attribute_id.toString()] : []
-          }
+          selectedKeys={datas.group_id ? [datas.group_id.toString()] : []}
           onChange={(e) =>
-            setDatas((prev) => ({ ...prev, attribute_id: +e.target.value }))
+            setDatas((prev:any) => ({ ...prev, group_id: +e.target.value }))
           }
         >
           {getAllAttributeGroup?.data?.length ? (
@@ -154,6 +142,44 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
             <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
           )}
         </Select>
+
+        {/* ویژگی */}
+        {datas.group_id ? (
+          <Select
+            isRequired
+            label="ویژگی"
+            placeholder="ویژگی را انتخاب کنید"
+            labelPlacement="outside"
+            selectedKeys={
+              datas.attribute_id ? [datas.attribute_id.toString()] : []
+            }
+            onChange={(e) =>
+              setDatas((prev:any) => ({ ...prev, attribute_id: +e.target.value }))
+            }
+          >
+            {getAllAttribute?.data?.length ? (
+              getAllAttribute.data.map((item: any) => (
+                <SelectItem key={item.id}>{item.name}</SelectItem>
+              ))
+            ) : (
+              <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
+            )}
+          </Select>
+        ) : (
+          ""
+        )}
+
+        {/* عنوان مقدار */}
+        <Input
+          labelPlacement="outside"
+          isRequired
+          label="عنوان مقدار"
+          placeholder="عنوان مقدار را وارد کنید"
+          value={datas.value}
+          onChange={(e) =>
+            setDatas((prev:any) => ({ ...prev, value: e.target.value }))
+          }
+        />
 
         <div className="flex items-center gap-2">
           <ToggleSection
@@ -167,7 +193,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
               label=""
               value={datas.display_color || "#000000"}
               onChange={(color) => {
-                setDatas((prev) => ({
+                setDatas((prev:any) => ({
                   ...prev,
                   display_color: color,
                 }));
@@ -181,7 +207,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
           title={`وضعیت نمایش ${datas.is_active ? "فعال" : "غیرفعال"}`}
           initialMode={datas.is_active}
           onChange={(status) =>
-            setDatas((prev) => ({ ...prev, is_active: status }))
+            setDatas((prev:any) => ({ ...prev, is_active: status }))
           }
         />
       </div>
