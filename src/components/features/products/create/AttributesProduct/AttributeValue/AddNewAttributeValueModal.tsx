@@ -147,6 +147,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       }
       title={isEdit ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
       confirmText="ثبت تغییرات"
+      onCancel={() => reset()}
       onConfirm={handleConfirm}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
       icon={<FiCheckSquare />}
