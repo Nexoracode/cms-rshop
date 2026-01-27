@@ -1,9 +1,11 @@
 "use client";
 
+import IconBadge from "@/components/common/IconBadge";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { Input } from "@heroui/react";
 import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
+import { LiaListOlSolid } from "react-icons/lia";
 
 type AttributeBoxProps = {
   addBtn: React.ReactNode;
@@ -82,8 +84,13 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                 </li>
               ))
             ) : (
-              <div>
-                <p>
+              <div className="flex flex-col items-center gap-4 py-4">
+                <IconBadge
+                  icon={LiaListOlSolid}
+                  circleClassName="bg-sky-100"
+                  iconClassName="text-sky-600"
+                />
+                <p className="text-gray-700">
                   برای نشان دادن لیست ابتدا مقدار مورد نظر را از لیست بالا
                   انتخاب نمایید
                 </p>
