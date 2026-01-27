@@ -46,13 +46,18 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
 }) => {
   const isEdit = type === "edit";
 
-  const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
-    initialForm,
-    {
-      onValidate: attributeValueValidation,
-      runValidationOnChange: true,
-    }
-  );
+  const {
+    form,
+    errors,
+    handleFieldChange,
+    handleMultipleFieldsChange,
+    setForm,
+    reset,
+    submit,
+  } = useForm(initialForm, {
+    onValidate: attributeValueValidation,
+    runValidationOnChange: true,
+  });
 
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
   const { data: getAllAttribute } = useAttributesByGroup(form.group_id || 0);
@@ -92,8 +97,6 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       is_active,
       value,
     };
-
-    console.log(payload);
 
     if (isEdit) {
       return handleMutation(
@@ -139,7 +142,12 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
           placeholder="گروه ویژگی را انتخاب کنید..."
           labelPlacement="outside"
           selectedKeys={form.group_id ? [form.group_id.toString()] : []}
-          onChange={(e) => handleFieldChange("group_id", +e.target.value)}
+          onChange={(e) => {
+            handleMultipleFieldsChange({
+              group_id: +e.target.value,
+              attribute_id: null,
+            });
+          }}
         >
           {getAllAttributeGroup?.data?.map((item: any) => (
             <SelectItem key={item.id}>{item.name}</SelectItem>
