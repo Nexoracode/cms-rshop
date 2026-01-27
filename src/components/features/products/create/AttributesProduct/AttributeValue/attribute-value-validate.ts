@@ -5,6 +5,10 @@ export function attributeValueValidation(attr: any) {
     errs.value = "عنوان مقدار را وارد کنید";
   }
 
+  if (!attr.group_id) {
+    errs.group_id = "انتخاب گروه ویژگی الزامی است";
+  }
+
   if (!attr.attribute_id) {
     errs.attribute_id = "انتخاب ویژگی الزامی است";
   }

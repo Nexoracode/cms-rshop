@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { Input, Select, SelectItem } from "@heroui/react";
+import React, { useEffect, useMemo } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
@@ -17,6 +16,8 @@ import ColorPickerField from "@/components/shared/ColorPickerField";
 import { useAttributesByGroup } from "@/core/hooks/api/attributes/useAttribute";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { attributeValueValidation } from "./attribute-value-validate";
+import TextInput from "@/components/ui/inputs/TextInput";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 
 type Props = {
   type?: "add" | "edit";
@@ -64,9 +65,26 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
 
   const { mutateAsync: createAttributeValue, isPending: isPendingCreate } =
     useCreateAttributeValue();
-
   const { mutateAsync: updateAttributeValue, isPending: isPendingUpdate } =
     useUpdateAttributeValue();
+
+  const optionsAttrGroup: SelectOption[] = useMemo(() => {
+    return (
+      getAllAttributeGroup?.data?.map((attrGroup: any) => ({
+        key: String(attrGroup.id),
+        title: attrGroup.name,
+      })) ?? []
+    );
+  }, [getAllAttributeGroup?.data]);
+
+  const optionsAttr: SelectOption[] = useMemo(() => {
+    return (
+      getAllAttribute?.data?.map((attr: any) => ({
+        key: String(attr.id),
+        title: attr.name,
+      })) ?? []
+    );
+  }, [getAllAttribute?.data]);
 
   // sync edit mode
   useEffect(() => {
@@ -136,53 +154,52 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     >
       <div className="flex flex-col gap-5 px-2">
         {/* گروه ویژگی */}
-        <Select
+        <SelectBox
           isRequired
           label="گروه ویژگی"
           placeholder="گروه ویژگی را انتخاب کنید..."
-          labelPlacement="outside"
-          selectedKeys={form.group_id ? [form.group_id.toString()] : []}
-          onChange={(e) => {
+          onChange={(key) =>
             handleMultipleFieldsChange({
-              group_id: +e.target.value,
+              group_id: +key,
               attribute_id: null,
-            });
-          }}
-        >
-          {getAllAttributeGroup?.data?.map((item: any) => (
-            <SelectItem key={item.id}>{item.name}</SelectItem>
-          ))}
-        </Select>
+            })
+          }
+          options={
+            optionsAttrGroup.length
+              ? optionsAttrGroup
+              : [{ key: "-1", title: "آیتمی موجود نیست" }]
+          }
+          value={form.group_id ? String(form.group_id) : ""}
+          errorMessage={errors.group_id}
+        />
 
         {/* ویژگی */}
         {form.group_id ? (
-          <Select
+          <SelectBox
             isRequired
             label="ویژگی"
             placeholder="ویژگی را انتخاب کنید..."
-            labelPlacement="outside"
-            selectedKeys={
-              form.attribute_id ? [form.attribute_id.toString()] : []
+            onChange={(key) => handleFieldChange("attribute_id", +key)}
+            options={
+              optionsAttr.length
+                ? optionsAttr
+                : [{ key: "-1", title: "آیتمی موجود نیست" }]
             }
-            onChange={(e) => handleFieldChange("attribute_id", +e.target.value)}
+            value={form.attribute_id ? String(form.attribute_id) : ""}
             errorMessage={errors.attribute_id}
-          >
-            {getAllAttribute?.data?.map((item: any) => (
-              <SelectItem key={item.id}>{item.name}</SelectItem>
-            ))}
-          </Select>
+          />
         ) : (
           ""
         )}
 
         {/* عنوان مقدار */}
-        <Input
-          isRequired
+        <TextInput
           label="عنوان مقدار"
           placeholder="عنوان مقدار را وارد کنید..."
-          labelPlacement="outside"
           value={form.value}
-          onChange={(e) => handleFieldChange("value", e.target.value)}
+          onChange={(val) => handleFieldChange("value", val)}
+          isRequired
+          allowEnglishOnly={false}
           errorMessage={errors.value}
         />
 
