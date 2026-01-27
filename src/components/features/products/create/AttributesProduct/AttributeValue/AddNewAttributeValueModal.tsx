@@ -42,7 +42,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   onOpenChange,
   type = "add",
 }) => {
-  const isEdit = type === "add" ? false : true;
+  const isEdit = type === "edit";
 
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
     initialForm,
