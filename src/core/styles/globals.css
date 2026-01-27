@@ -1,13 +1,9 @@
 @import "./packages.css";
 @import "./tree.css";
+@import "./fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: IRANSans;
-  src: url("/fonts/IRANSans/IRANSansWeb_Medium.woff");
-}
 
 :root {
   /* 🌗 Backgrounds */
@@ -37,7 +33,6 @@
   --error: #FEE7EF;
 }
 
-
 @layer base {
   html {
     @apply !bg-gray-100;
@@ -48,11 +43,11 @@
  :where(*):not(.ltr, .ltr *) { direction: rtl; }
 
  *{
-  font-family: IRANSans !important
+  font-family: Dana-DemiBold
  }
 
   body {
-    @apply max-w-[1120px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[IRANSans] bg-gray-100 text-sm;
+    @apply max-w-[1120px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[Dana-DemiBold] bg-gray-100 text-sm;
   }
 
   input:focus {
