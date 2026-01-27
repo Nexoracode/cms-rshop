@@ -14,6 +14,7 @@ type Props = {
   onChange: (values: number[]) => void;
   selectedAttrId: number | undefined;
   isDisabledEdit: boolean;
+  selectedAttrGroupId: number | undefined;
 };
 
 const AddNewAttributeValue: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
   selectedValues,
   onChange,
   selectedAttrId,
+  selectedAttrGroupId,
   isDisabledEdit,
 }) => {
   const [selectedAttrEdit, setSelectedAttrEdit] = useState<number | undefined>(
@@ -85,6 +87,7 @@ const AddNewAttributeValue: React.FC<Props> = ({
           <AddNewAttributeValueModal
             type="edit"
             attributeId={selectedAttrId}
+            attributeGroupId={selectedAttrGroupId}
             defaultDatas={attrValues?.find((v) => v.id === selectedAttrEdit)}
           />
         </AttributeBox>

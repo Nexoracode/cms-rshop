@@ -22,6 +22,7 @@ type Props = {
   type?: "add" | "edit";
   defaultDatas?: any;
   attributeId?: number | null;
+  attributeGroupId?: number | null;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
@@ -38,6 +39,7 @@ const initialForm = {
 const AddNewAttributeValueModal: React.FC<Props> = ({
   defaultDatas,
   attributeId,
+  attributeGroupId,
   isOpen,
   onOpenChange,
   type = "add",
@@ -66,7 +68,8 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     if (defaultDatas) {
       setForm({
         ...defaultDatas,
-        group_id: defaultDatas.group_id ?? null,
+        group_id: attributeGroupId ?? null,
+        attribute_id: attributeId ?? null,
         is_active_color_picker: !!defaultDatas.display_color,
       });
     }
@@ -81,10 +84,16 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   }, [form.is_active_color_picker]);
 
   const handleConfirm = submit(async () => {
+    const { attribute_id, display_color, is_active, value } = form;
+
     const payload = {
-      ...form,
-      attribute_id: attributeId,
+      attribute_id,
+      display_color,
+      is_active,
+      value,
     };
+
+    console.log(payload);
 
     if (isEdit) {
       return handleMutation(
@@ -138,7 +147,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
         </Select>
 
         {/* ویژگی */}
-        {form.group_id && (
+        {form.group_id ? (
           <Select
             isRequired
             label="ویژگی"
@@ -154,6 +163,8 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
               <SelectItem key={item.id}>{item.name}</SelectItem>
             ))}
           </Select>
+        ) : (
+          ""
         )}
 
         {/* عنوان مقدار */}
@@ -179,6 +190,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
               value={form.display_color || "#000000"}
               onChange={(color) => handleFieldChange("display_color", color)}
               widthFull
+              label=""
             />
           )}
         </div>

@@ -131,6 +131,7 @@ export const AttributesContent = ({
         attrValues={attributeValues?.data}
         onChange={(ids) => setSelecteds((prev) => ({ ...prev, valueIds: ids }))}
         selectedAttrId={selecteds.attrId}
+        selectedAttrGroupId={selecteds.attrGroupId}
         selectedValues={selecteds.valueIds}
         isDisabledEdit={isDisabledEdit}
       />
