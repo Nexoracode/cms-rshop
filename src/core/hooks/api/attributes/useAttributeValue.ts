@@ -35,11 +35,11 @@ export const useCreateAttributeValue = () => {
   });
 };
 
-export const useUpdateAttributeValue = (id: number | undefined) => {
+export const useUpdateAttributeValue = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async ({ data, id }: { data: any; id: number | undefined }) => {
       return fetcher({
         route: `/attribute-value/${id}`,
         method: "PATCH",

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Input, Select, SelectItem, Switch } from "@heroui/react";
+import React, { useEffect } from "react";
+import { Input, Select, SelectItem } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
@@ -10,99 +10,100 @@ import {
   useCreateAttributeValue,
   useUpdateAttributeValue,
 } from "@/core/hooks/api/attributes/useAttributeValue";
-import { AttributeValue, CreateAttributeValue } from "../attribute.types";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import ColorPickerField from "@/components/shared/ColorPickerField";
 import { useAttributesByGroup } from "@/core/hooks/api/attributes/useAttribute";
+import { useForm } from "@/core/hooks/common/form/useForm";
+import { attributeValueValidation } from "./attribute-value-validate";
 
 type Props = {
-  defaultDatas?: AttributeValue;
-  type?: "edit" | "add";
-  groupId?: number | null;
+  type?: "add" | "edit";
+  defaultDatas?: any;
   attributeId?: number | null;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: any = {
+const initialForm = {
   value: "",
-  attribute_id: null,
-  group_id: null,
-  display_color: "",
-  display_order: null,
+  attribute_id: null as number | null,
+  group_id: null as number | null,
+  display_color: null as string | null,
   is_active: true,
+  is_active_color_picker: false,
 };
 
 const AddNewAttributeValueModal: React.FC<Props> = ({
   defaultDatas,
-  type = "add",
   attributeId,
   isOpen,
   onOpenChange,
+  type = "add",
 }) => {
-  const [datas, setDatas] = useState<any>(initialState);
-  const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
+  const isEdit = type === "add" ? false : true;
+
+  const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
+    initialForm,
+    {
+      onValidate: attributeValueValidation,
+      runValidationOnChange: true,
+    }
+  );
+
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
-  const { data: getAllAttribute } = useAttributesByGroup(datas.group_id || 0);
+  const { data: getAllAttribute } = useAttributesByGroup(form.group_id || 0);
 
   const { mutateAsync: createAttributeValue, isPending: isPendingCreate } =
     useCreateAttributeValue();
+
   const { mutateAsync: updateAttributeValue, isPending: isPendingUpdate } =
-    useUpdateAttributeValue(
-      type === "edit" ? (datas as AttributeValue).id : -1
+    useUpdateAttributeValue();
+
+  // sync edit mode
+  useEffect(() => {
+    if (defaultDatas) {
+      setForm({
+        ...defaultDatas,
+        group_id: defaultDatas.group_id ?? null,
+        is_active_color_picker: !!defaultDatas.display_color,
+      });
+    }
+  }, [defaultDatas]);
+
+  // sync color picker
+  useEffect(() => {
+    handleFieldChange(
+      "display_color",
+      form.is_active_color_picker ? "#000000" : null
     );
+  }, [form.is_active_color_picker]);
 
-  useEffect(() => {
-    if (isActiveColorPicker) {
-      setDatas((prev:any) => ({
-        ...prev,
-        display_color: "#000",
-      }));
-    } else {
-      setDatas((prev:any) => ({
-        ...prev,
-        display_color: null,
-      }));
-    }
-  }, [isActiveColorPicker]);
+  const handleConfirm = submit(async () => {
+    const payload = {
+      ...form,
+      attribute_id: attributeId,
+    };
 
-  useEffect(() => {
-    if (type === "add") {
-      setDatas({ ...initialState, attribute_id: attributeId || 0 });
-    } else {
-      setDatas(defaultDatas || initialState);
-    }
-    setIsActiveColorPicker(!!defaultDatas?.display_color);
-  }, [defaultDatas, type, attributeId]);
-
-  const handleConfirm = async () => {
-    if (type === "edit") {
-      const { id, ...rest } = datas as AttributeValue;
+    if (isEdit) {
       return handleMutation(
-        () => updateAttributeValue({ ...rest, attribute_id: attributeId }),
+        () => updateAttributeValue({ data: payload, id: defaultDatas?.id }),
         { resetForm }
       );
-    } else {
-      const payload = {
-        ...datas,
-        attribute_id: attributeId,
-      };
-      return handleMutation(() => createAttributeValue(payload), { resetForm });
     }
-  };
 
-  const resetForm = () => {
-    setDatas(initialState);
-  };
+    return handleMutation(() => createAttributeValue(payload), { resetForm });
+  });
+
+  const resetForm = () => reset();
 
   return (
     <BaseModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       triggerProps={
-        type === "add"
+        !isEdit
           ? {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
@@ -110,105 +111,82 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
           : undefined
       }
       trigger={
-        type === "edit" ? (
+        isEdit ? (
           <ActionButton icon={<TbEdit size={20} />} stopPropagation={false} />
         ) : undefined
       }
-      title={type === "edit" ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
+      title={isEdit ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
-      isActiveFooter={true}
-      size="md"
       icon={<FiCheckSquare />}
+      size="md"
     >
       <div className="flex flex-col gap-5 px-2">
         {/* گروه ویژگی */}
         <Select
           isRequired
           label="گروه ویژگی"
-          placeholder="گروه ویژگی را انتخاب کنید"
+          placeholder="گروه ویژگی را انتخاب کنید..."
           labelPlacement="outside"
-          selectedKeys={datas.group_id ? [datas.group_id.toString()] : []}
-          onChange={(e) =>
-            setDatas((prev:any) => ({ ...prev, group_id: +e.target.value }))
-          }
+          selectedKeys={form.group_id ? [form.group_id.toString()] : []}
+          onChange={(e) => handleFieldChange("group_id", +e.target.value)}
         >
-          {getAllAttributeGroup?.data?.length ? (
-            getAllAttributeGroup.data.map((item: any) => (
-              <SelectItem key={item.id}>{item.name}</SelectItem>
-            ))
-          ) : (
-            <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
-          )}
+          {getAllAttributeGroup?.data?.map((item: any) => (
+            <SelectItem key={item.id}>{item.name}</SelectItem>
+          ))}
         </Select>
 
         {/* ویژگی */}
-        {datas.group_id ? (
+        {form.group_id && (
           <Select
             isRequired
             label="ویژگی"
-            placeholder="ویژگی را انتخاب کنید"
+            placeholder="ویژگی را انتخاب کنید..."
             labelPlacement="outside"
             selectedKeys={
-              datas.attribute_id ? [datas.attribute_id.toString()] : []
+              form.attribute_id ? [form.attribute_id.toString()] : []
             }
-            onChange={(e) =>
-              setDatas((prev:any) => ({ ...prev, attribute_id: +e.target.value }))
-            }
+            onChange={(e) => handleFieldChange("attribute_id", +e.target.value)}
+            errorMessage={errors.attribute_id}
           >
-            {getAllAttribute?.data?.length ? (
-              getAllAttribute.data.map((item: any) => (
-                <SelectItem key={item.id}>{item.name}</SelectItem>
-              ))
-            ) : (
-              <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
-            )}
+            {getAllAttribute?.data?.map((item: any) => (
+              <SelectItem key={item.id}>{item.name}</SelectItem>
+            ))}
           </Select>
-        ) : (
-          ""
         )}
 
         {/* عنوان مقدار */}
         <Input
-          labelPlacement="outside"
           isRequired
           label="عنوان مقدار"
-          placeholder="عنوان مقدار را وارد کنید"
-          value={datas.value}
-          onChange={(e) =>
-            setDatas((prev:any) => ({ ...prev, value: e.target.value }))
-          }
+          placeholder="عنوان مقدار را وارد کنید..."
+          labelPlacement="outside"
+          value={form.value}
+          onChange={(e) => handleFieldChange("value", e.target.value)}
+          errorMessage={errors.value}
         />
 
         <div className="flex items-center gap-2">
           <ToggleSection
             title="انتخاب رنگ"
-            initialMode={isActiveColorPicker}
-            onChange={setIsActiveColorPicker}
+            initialMode={form.is_active_color_picker}
+            onChange={(val) => handleFieldChange("is_active_color_picker", val)}
           />
 
-          {isActiveColorPicker && (
+          {form.is_active_color_picker && (
             <ColorPickerField
-              label=""
-              value={datas.display_color || "#000000"}
-              onChange={(color) => {
-                setDatas((prev:any) => ({
-                  ...prev,
-                  display_color: color,
-                }));
-              }}
+              value={form.display_color || "#000000"}
+              onChange={(color) => handleFieldChange("display_color", color)}
               widthFull
             />
           )}
         </div>
 
         <ToggleSection
-          title={`وضعیت نمایش ${datas.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={datas.is_active}
-          onChange={(status) =>
-            setDatas((prev:any) => ({ ...prev, is_active: status }))
-          }
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
