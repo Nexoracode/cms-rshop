@@ -14,6 +14,7 @@ import { AttributeValue, CreateAttributeValue } from "../attribute.types";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import ColorPickerField from "@/components/shared/ColorPickerField";
 
 type Props = {
   defaultDatas?: AttributeValue;
@@ -132,24 +133,6 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
           }
         />
 
-        {/* رنگ (اختیاری) */}
-        {isActiveColorPicker && (
-          <div className="flex flex-col gap-2">
-            <label className="text-sm text-gray-600">رنگ نمایشی</label>
-            <input
-              type="color"
-              className="w-full h-12 rounded-xl cursor-pointer"
-              value={datas.display_color || "#000000"}
-              onChange={(e) =>
-                setDatas((prev) => ({
-                  ...prev,
-                  display_color: e.target.value,
-                }))
-              }
-            />
-          </div>
-        )}
-
         {/* گروه ویژگی */}
         <Select
           isRequired
@@ -172,11 +155,27 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
           )}
         </Select>
 
-        <ToggleSection
-          title="انتخاب رنگ"
-          initialMode={isActiveColorPicker}
-          onChange={setIsActiveColorPicker}
-        />
+        <div className="flex items-center gap-2">
+          <ToggleSection
+            title="انتخاب رنگ"
+            initialMode={isActiveColorPicker}
+            onChange={setIsActiveColorPicker}
+          />
+
+          {isActiveColorPicker && (
+            <ColorPickerField
+              label=""
+              value={datas.display_color || "#000000"}
+              onChange={(color) => {
+                setDatas((prev) => ({
+                  ...prev,
+                  display_color: color,
+                }));
+              }}
+              widthFull
+            />
+          )}
+        </div>
 
         <ToggleSection
           title={`وضعیت نمایش ${datas.is_active ? "فعال" : "غیرفعال"}`}
