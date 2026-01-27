@@ -127,17 +127,13 @@ export const AttributesContent = ({
         isDisabledEdit={isDisabledEdit}
       />
 
-      {selecteds.attrId ? (
-        <AddNewAttributeValue
-          attrValues={attributeValues?.data}
-          onChange={(ids) =>
-            setSelecteds((prev) => ({ ...prev, valueIds: ids }))
-          }
-          selectedAttrId={selecteds.attrId}
-          selectedValues={selecteds.valueIds}
-          isDisabledEdit={isDisabledEdit}
-        />
-      ) : null}
+      <AddNewAttributeValue
+        attrValues={attributeValues?.data}
+        onChange={(ids) => setSelecteds((prev) => ({ ...prev, valueIds: ids }))}
+        selectedAttrId={selecteds.attrId}
+        selectedValues={selecteds.valueIds}
+        isDisabledEdit={isDisabledEdit}
+      />
 
       {isActiveHeader ? (
         <FormActionButtons

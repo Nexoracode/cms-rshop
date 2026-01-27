@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Input, Switch } from "@heroui/react";
+import { Input, Select, SelectItem, Switch } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
@@ -12,6 +12,8 @@ import {
 } from "@/core/hooks/api/attributes/useAttributeValue";
 import { AttributeValue, CreateAttributeValue } from "../attribute.types";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 
 type Props = {
   defaultDatas?: AttributeValue;
@@ -40,6 +42,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     initialState
   );
   const [isActiveColorPicker, setIsActiveColorPicker] = useState(false);
+  const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
 
   const { mutateAsync: createAttributeValue, isPending: isPendingCreate } =
     useCreateAttributeValue();
@@ -105,7 +108,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       }
       trigger={
         type === "edit" ? (
-          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false}/>
+          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false} />
         ) : undefined
       }
       title={type === "edit" ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
@@ -147,28 +150,41 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
           </div>
         )}
 
-        {/* سوئیچ‌ها */}
-        <div className="flex items-center gap-8">
-          <Switch
-            color="secondary"
-            size="sm"
-            isSelected={isActiveColorPicker}
-            onValueChange={setIsActiveColorPicker}
-          >
-            انتخاب رنگ
-          </Switch>
+        {/* گروه ویژگی */}
+        <Select
+          isRequired
+          label="گروه ویژگی"
+          placeholder="گروه ویژگی را انتخاب کنید"
+          labelPlacement="outside"
+          selectedKeys={
+            datas.attribute_id ? [datas.attribute_id.toString()] : []
+          }
+          onChange={(e) =>
+            setDatas((prev) => ({ ...prev, attribute_id: +e.target.value }))
+          }
+        >
+          {getAllAttributeGroup?.data?.length ? (
+            getAllAttributeGroup.data.map((item: any) => (
+              <SelectItem key={item.id}>{item.name}</SelectItem>
+            ))
+          ) : (
+            <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
+          )}
+        </Select>
 
-          <Switch
-            color="secondary"
-            size="sm"
-            isSelected={datas.is_active}
-            onValueChange={(status) =>
-              setDatas((prev) => ({ ...prev, is_active: status }))
-            }
-          >
-            فعال
-          </Switch>
-        </div>
+        <ToggleSection
+          title="انتخاب رنگ"
+          initialMode={isActiveColorPicker}
+          onChange={setIsActiveColorPicker}
+        />
+
+        <ToggleSection
+          title={`وضعیت نمایش ${datas.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={datas.is_active}
+          onChange={(status) =>
+            setDatas((prev) => ({ ...prev, is_active: status }))
+          }
+        />
       </div>
     </BaseModal>
   );
