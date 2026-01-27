@@ -32,6 +32,7 @@ const AddNewAttribute: React.FC<Props> = ({ onChange, attr }) => {
       onEdit={setSelectedAttrEdit}
       deleteAttr={handleDelete}
       addBtn={<AddNewAttributeModal />}
+      placeholderInput="جستجو ویژگی..."
     >
       <AddNewAttributeModal
         type="edit"
