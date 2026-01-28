@@ -49,7 +49,6 @@ const BulkCategoryModal: React.FC<Props> = ({
       confirmText="اعمال تغییرات"
       onConfirm={handleConfirm}
       onCancel={reset}
-      isConfirmDisabled={!categoryId || selectedCount <= 0}
       placement="center"
     >
       <div className="mt-2">

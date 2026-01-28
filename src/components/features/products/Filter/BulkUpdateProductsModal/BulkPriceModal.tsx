@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Select, SelectItem, Button } from "@heroui/react";
+import { Button } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import PriceNumberInput from "@/components/ui/inputs/NumberInput";
 import BulkModalHeader from "./BulkModalHeader";
@@ -62,15 +62,8 @@ const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
       confirmText="اعمال تغییرات"
       onConfirm={handleConfirm}
       onCancel={reset}
-      isConfirmDisabled={
-        selectedCount <= 0 ||
-        priceMode === null ||
-        priceValue === null ||
-        Number.isNaN(priceValue) ||
-        !priceValue
-      }
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex flex-col items-center gap-6">
         <SelectBox
           label="حالت تغییر قیمت"
           value={priceMode ?? ""}
