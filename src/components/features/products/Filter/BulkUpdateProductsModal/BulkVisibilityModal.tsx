@@ -6,6 +6,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import BulkModalHeader from "./BulkModalHeader";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 import { Switch } from "@heroui/react";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 
 type Props = {
   selectedCount?: number;
@@ -54,7 +55,7 @@ const BulkVisibilityModal: React.FC<Props> = ({
         title: "وضعیت نمایش",
         icon: <AiOutlineEye size={20} />,
         className: "w-full",
-        size: "md"
+        size: "md",
       }}
     >
       <div className="space-y-5">
@@ -66,13 +67,11 @@ const BulkVisibilityModal: React.FC<Props> = ({
           placeholder="انتخاب وضعیت"
         />
 
-        <Switch
-          isSelected={isFeatured === true}
-          onValueChange={(val) => setIsFeatured(val)}
-          size="sm"
-        >
-          افزودن به پیشنهاد ویژه
-        </Switch>
+        <ToggleSection
+          title="پیشنهاد ویژه"
+          initialMode={isFeatured === true}
+          onChange={(val) => setIsFeatured(val)}
+        />
       </div>
     </BaseModal>
   );

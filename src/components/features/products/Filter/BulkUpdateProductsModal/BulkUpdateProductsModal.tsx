@@ -41,7 +41,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
       icon={<LuPackage size={22} />}
     >
       <div className="flex flex-col gap-4 mb-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <BulkVisibilityModal
             selectedCount={selectedCount}
             onConfirm={onConfirm}
@@ -53,7 +53,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <BulkPriceModal selectedCount={selectedCount} onConfirm={onConfirm} />
 
           <BulkCategoryModal
