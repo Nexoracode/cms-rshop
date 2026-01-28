@@ -2,13 +2,13 @@
 
 import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
-import DeleteButton from "@/components/shared/DeleteButton";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { MdOutlineCategory } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { IoSparklesOutline } from "react-icons/io5";
-import { useDeleteProduct } from "@/core/hooks/api/products/useProduct";
 import Image from "next/image";
+import { LuEye } from "react-icons/lu";
+import { useProductUpdate } from "@/core/hooks/api/products/useProduct";
 
 type Props = {
   product: any;
@@ -22,15 +22,24 @@ const ProductCard: React.FC<Props> = ({
   forceMobileLayout = true,
 }) => {
   const id = product.id;
-  const { mutate: deleteProduct } = useDeleteProduct(product.id);
+
+  const {mutate: productUpdate} = useProductUpdate(id)
 
   return (
     <BaseCard
-      className={`min-w-[250px] w-full ${forceMobileLayout ? "sm:flex-col" : ""}`}
-      bodyClassName={`flex flex-col items-center ${forceMobileLayout ? "sm:flex-row" : ""} gap-4`}
+      className={`min-w-[250px] w-full ${
+        forceMobileLayout ? "sm:flex-col" : ""
+      }`}
+      bodyClassName={`flex flex-col items-center ${
+        forceMobileLayout ? "sm:flex-row" : ""
+      } gap-4`}
       redirect={`/admin/products/create?edit_id=${id}&type=infos`}
     >
-      <div className={`relative w-full ${forceMobileLayout ? "sm:w-[130px] sm:h-[110px]" : ""} h-[188px]`}>
+      <div
+        className={`relative w-full ${
+          forceMobileLayout ? "sm:w-[130px] sm:h-[110px]" : ""
+        } h-[188px]`}
+      >
         <Image
           src={product.media_pinned?.url ?? product.image}
           alt="product cover"
@@ -47,11 +56,27 @@ const ProductCard: React.FC<Props> = ({
         )}
       </div>
 
-      <div className={`w-full ${forceMobileLayout ? "sm:flex-col sm:p-2" : ""} flex flex-col justify-between gap-4`}>
+      <div
+        className={`w-full ${
+          forceMobileLayout ? "sm:flex-col sm:p-2" : ""
+        } flex flex-col justify-between gap-4`}
+      >
         {/* Header */}
-        <div className={`flex flex-col ${forceMobileLayout ? "sm:flex-row" : ""} justify-between items-center w-full gap-3`}>
-          <div className={`text-[15px] text-black/80 flex flex-col ${forceMobileLayout ? "sm:flex-row" : ""} items-center gap-1`}>
-            <p className={`truncate max-w-[220px] ${forceMobileLayout ? "sm:max-w-[240px]" : ""}`}>
+        <div
+          className={`flex flex-col ${
+            forceMobileLayout ? "sm:flex-row" : ""
+          } justify-between items-center w-full gap-3`}
+        >
+          <div
+            className={`text-[15px] text-black/80 flex flex-col ${
+              forceMobileLayout ? "sm:flex-row" : ""
+            } items-center gap-1`}
+          >
+            <p
+              className={`truncate max-w-[220px] ${
+                forceMobileLayout ? "sm:max-w-[240px]" : ""
+              }`}
+            >
               {product.name ?? product.title}
             </p>
             <span className="text-gray-600 text-xs">
@@ -70,10 +95,12 @@ const ProductCard: React.FC<Props> = ({
                     : ""
                 }
               />
-              <DeleteButton
-                onDelete={() => {
-                  deleteProduct();
+              <ActionButton
+                icon={<LuEye size={18} />}
+                onClick={() => {
+                  productUpdate({is_visible: !product.is_visible})
                 }}
+                className={`${product.is_visible ? "" : "text-orange-600 border-orange-300 bg-orange-100"} hover:text-orange-600 hover:border-orange-300 hover:bg-orange-100 !opacity-100`}
               />
             </div>
           )}
@@ -102,7 +129,11 @@ const ProductCard: React.FC<Props> = ({
 
           <div className="flex items-end text-gray-600">
             {product.discount_amount > 0 || product.discount_percent > 0 ? (
-              <div className={`flex flex-col items-end gap-2 ${forceMobileLayout ? "sm:gap-1" : ""}`}>
+              <div
+                className={`flex flex-col items-end gap-2 ${
+                  forceMobileLayout ? "sm:gap-1" : ""
+                }`}
+              >
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-gray-500 line-through decoration-2 decoration-gray-400">
                     {Number(product.price).toLocaleString("fa-IR")}

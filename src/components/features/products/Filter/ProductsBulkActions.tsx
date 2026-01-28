@@ -50,7 +50,7 @@ const ProductsBulkActions = ({
           selectedCount={selectedItems.length}
           onConfirm={handleBulkUpdate}
         />
-        <BaseModal
+{/*         <BaseModal
           title="حذف محصولات انتخاب‌شده"
           confirmText="بله، حذف شود"
           cancelText="لغو"
@@ -62,7 +62,7 @@ const ProductsBulkActions = ({
           onConfirm={handleDelete}
         >
           با حذف محصولات انتخاب‌شده، بازگردانی آن‌ها ممکن نیست. آیا مطمئن هستید؟
-        </BaseModal>
+        </BaseModal> */}
       </div>
     </div>
   );

@@ -82,6 +82,8 @@ export const useProductCreate = () => {
 };
 
 export const useProductUpdate = (id: number | null) => {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: (data: any) => {
       return fetcher({
@@ -89,10 +91,12 @@ export const useProductUpdate = (id: number | null) => {
         method: "PATCH",
         body: data,
         isActiveToast: true,
-        successText:
-          "محصول با موفقیت آپدیت شد. لطفا در صورت نیاز ادامه پروسه رو دنبال کنید تا ویژگی های محصول را هم ویرایش کنید",
+        successText: "محصول با موفقیت آپدیت شد.",
         loadingText: "در حال آپدیت محصول",
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-products"] });
     },
   });
 };
