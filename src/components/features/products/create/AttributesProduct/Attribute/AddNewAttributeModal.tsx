@@ -33,7 +33,8 @@ type Props = {
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialForm: CreateAttribute = {
+const initialForm = {
+  id: null,
   name: "",
   slug: "",
   group_id: null as any,
@@ -51,17 +52,13 @@ const AddNewAttributeModal: React.FC<Props> = ({
 }) => {
   const isEdit = type === "edit";
 
-  const {
-    form,
-    errors,
-    handleFieldChange,
-    setForm,
-    reset,
-    submit,
-  } = useForm(initialForm, {
-    onValidate: attributeValidation,
-    runValidationOnChange: true,
-  });
+  const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
+    initialForm,
+    {
+      onValidate: attributeValidation,
+      runValidationOnChange: true,
+    }
+  );
 
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
 
@@ -82,7 +79,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (defaultDatas && isEdit) {
-      setForm(defaultDatas);
+      setForm(defaultDatas as any);
     }
   }, [defaultDatas, isEdit]);
 
@@ -101,7 +98,10 @@ const AddNewAttributeModal: React.FC<Props> = ({
 
   const handleConfirm = submit(async () => {
     if (isEdit) {
-      return handleMutation(() => updateAttribute(form as any), { resetForm });
+      return handleMutation(
+        () => updateAttribute({ data: form as any, id: form.id ?? -1 }),
+        { resetForm }
+      );
     }
 
     return handleMutation(() => createAttribute(form), { resetForm });
