@@ -38,7 +38,7 @@ const ShopInfosCard = () => {
                 className="w-20 h-20 object-contain border-2 bg-[rgba(255,255,255,.8)] rounded-2xl"
               />
               <div>
-                <p className="text-lg">فروشگاه آرشاپ</p>
+                <p className="text-lg font-[Dana-Bold] text-gray-700">فروشگاه آرشاپ</p>
 
                 <div className="mt-2 rounded-xl flex justify-start px-2 w-fit items-center gap-2 text-green-700">
                   <span className="relative flex size-2.5">
