@@ -62,11 +62,11 @@ export const useUpdateAttributeOrder = () => {
   });
 };
 
-export const useUpdateAttribute = (id: number) => {
+export const useUpdateAttribute = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async ({ data, id }: { data: any; id: number }) => {
       return fetcher({
         route: `/attribute/${id}`,
         method: "PATCH",
@@ -78,7 +78,7 @@ export const useUpdateAttribute = (id: number) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
-      queryClient.invalidateQueries({ queryKey: ["attribute", id] });
+      queryClient.invalidateQueries({ queryKey: ["attribute"] });
     },
   });
 };

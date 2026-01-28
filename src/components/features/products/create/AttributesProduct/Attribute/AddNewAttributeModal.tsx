@@ -1,38 +1,46 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
+import React, { useEffect, useMemo } from "react";
+import BaseModal from "@/components/ui/modals/BaseModal";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { TbEdit } from "react-icons/tb";
+import { AiOutlineFontColors } from "react-icons/ai";
+import { FiCheckSquare, FiCircle } from "react-icons/fi";
+import { BsMenuDown, BsPalette } from "react-icons/bs";
+import { ImCheckmark2 } from "react-icons/im";
+
 import {
   useCreateAttribute,
   useUpdateAttribute,
 } from "@/core/hooks/api/attributes/useAttribute";
 import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
-import { Input, Select, SelectItem, Switch } from "@heroui/react";
-import BaseModal from "@/components/ui/modals/BaseModal";
-import { ActionButton } from "@/components/ui/buttons/ActionButton";
-import { TbEdit } from "react-icons/tb";
-import { AiOutlineFontColors } from "react-icons/ai";
-import { BsMenuDown, BsPalette } from "react-icons/bs";
-import { FiCheckSquare, FiCircle } from "react-icons/fi";
-import { ImCheckmark2 } from "react-icons/im";
-import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
 import { handleMutation } from "@/core/utils/mutationHelper";
+
+import { useForm } from "@/core/hooks/common/form/useForm";
+import { attributeValidation } from "./attribute-validate";
+
+import TextInput from "@/components/ui/inputs/TextInput";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
+
+import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
 
 type Props = {
   defaultDatas?: Attribute;
-  type?: "edit" | "add";
+  type?: "add" | "edit";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: CreateAttribute = {
+const initialForm: CreateAttribute = {
   name: "",
-  group_id: 0,
-  is_public: false,
   slug: "",
+  group_id: null as any,
   type: "text",
-  display_order: null,
   is_variant: false,
+  is_public: false,
+  display_order: null,
 };
 
 const AddNewAttributeModal: React.FC<Props> = ({
@@ -41,72 +49,72 @@ const AddNewAttributeModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<CreateAttribute | Attribute>(initialState);
+  const isEdit = type === "edit";
+
+  const {
+    form,
+    errors,
+    handleFieldChange,
+    setForm,
+    reset,
+    submit,
+  } = useForm(initialForm, {
+    onValidate: attributeValidation,
+    runValidationOnChange: true,
+  });
 
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
+
   const { mutateAsync: createAttribute, isPending: isPendingCreate } =
-    useCreateAttribute(datas.group_id || undefined);
+    useCreateAttribute(form.group_id ?? 0);
+
   const { mutateAsync: updateAttribute, isPending: isPendingUpdate } =
-    useUpdateAttribute(type === "edit" ? (datas as Attribute).id : -1);
+    useUpdateAttribute();
+
+  const optionsAttrGroup: SelectOption[] = useMemo(() => {
+    return (
+      getAllAttributeGroup?.data?.map((item: any) => ({
+        key: String(item.id),
+        title: item.name,
+      })) ?? []
+    );
+  }, [getAllAttributeGroup?.data]);
 
   useEffect(() => {
-    type === "add"
-      ? setDatas(initialState)
-      : setDatas(defaultDatas || initialState);
-  }, [defaultDatas, type]);
+    if (defaultDatas && isEdit) {
+      setForm(defaultDatas);
+    }
+  }, [defaultDatas, isEdit]);
 
-  // نوع‌های ویژگی
-  const productInputTypes = [
-    {
-      key: "text",
-      label: "متنی",
-      icon: <AiOutlineFontColors className="w-4 h-4" />,
-    },
-    {
-      key: "color",
-      label: "انتخاب رنگ",
-      icon: <BsPalette className="w-4 h-4" />,
-    },
-    {
-      key: "checkBox",
-      label: "چک‌باکس (چند انتخابی)",
-      icon: <FiCheckSquare className="w-4 h-4" />,
-    },
-    {
-      key: "radioButton",
-      label: "گزینه‌ای (یک انتخابی)",
-      icon: <FiCircle className="w-4 h-4" />,
-    },
-    {
-      key: "select",
-      label: "منوی کشویی",
-      icon: <BsMenuDown className="w-4 h-4" />,
-    },
-    {
-      key: "boolean",
-      label: "بله / خیر",
-      icon: <ImCheckmark2 className="w-4 h-4" />,
-    },
+  const attributeTypes: {
+    key: AttributeTypes;
+    title: string;
+    icon: React.ReactNode;
+  }[] = [
+    { key: "text", title: "متنی", icon: <AiOutlineFontColors /> },
+    { key: "color", title: "انتخاب رنگ", icon: <BsPalette /> },
+    { key: "checkBox", title: "چک‌باکس", icon: <FiCheckSquare /> },
+    { key: "radioButton", title: "گزینه‌ای", icon: <FiCircle /> },
+    { key: "select", title: "منوی کشویی", icon: <BsMenuDown /> },
+    { key: "boolean", title: "بله / خیر", icon: <ImCheckmark2 /> },
   ];
 
-  const handleConfirm = async () => {
-    if (type === "edit") {
-      return handleMutation(() => updateAttribute(datas as Attribute), {
-        resetForm,
-      });
-    } else return handleMutation(() => createAttribute(datas), { resetForm });
-  };
+  const handleConfirm = submit(async () => {
+    if (isEdit) {
+      return handleMutation(() => updateAttribute(form as any), { resetForm });
+    }
 
-  const resetForm = () => {
-    setDatas(initialState);
-  };
+    return handleMutation(() => createAttribute(form), { resetForm });
+  });
+
+  const resetForm = () => reset();
 
   return (
     <BaseModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       triggerProps={
-        type === "add"
+        !isEdit
           ? {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
@@ -114,101 +122,78 @@ const AddNewAttributeModal: React.FC<Props> = ({
           : undefined
       }
       trigger={
-        type === "edit" ? (
-          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false}/>
+        isEdit ? (
+          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false} />
         ) : undefined
       }
-      title={type === "edit" ? "ویرایش ویژگی" : "افزودن ویژگی جدید"}
+      title={isEdit ? "ویرایش ویژگی" : "افزودن ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
-      size="lg"
-      icon={<AiOutlineFontColors />}
+      onCancel={resetForm}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
+      icon={<AiOutlineFontColors />}
+      size="lg"
     >
-      <div className="flex flex-col gap-5 px-2">
-        {/* عنوان */}
-        <Input
-          labelPlacement="outside"
-          isRequired
-          label="عنوان"
-          placeholder="عنوان ویژگی را وارد کنید"
-          value={datas.name}
-          onChange={(e) =>
-            setDatas((prev) => ({ ...prev, name: e.target.value }))
-          }
-        />
+      <div className="flex flex-col gap-6 px-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <TextInput
+            isRequired
+            label="عنوان ویژگی"
+            placeholder="عنوان ویژگی را وارد کنید..."
+            value={form.name}
+            onChange={(val) => handleFieldChange("name", val)}
+            errorMessage={errors.name}
+          />
 
-        {/* اسلاگ */}
-        <SlugInput
-          value={datas.slug}
-          onChange={(val) => setDatas((prev) => ({ ...prev, slug: val }))}
-          isActiveError={true}
-        />
+          <SlugInput
+            value={form.slug}
+            onChange={(val) => handleFieldChange("slug", val)}
+            isActiveError={!!errors.slug}
+            errorMessage={errors.slug}
+          />
+        </div>
 
-        {/* نوع ویژگی */}
-        <Select
-          isRequired
-          label="تایپ ویژگی"
-          placeholder="تایپ ویژگی را انتخاب کنید"
-          labelPlacement="outside"
-          selectedKeys={datas.type ? [datas.type] : []}
-          onChange={(e) =>
-            setDatas((prev) => ({
-              ...prev,
-              type: e.target.value as AttributeTypes,
-            }))
-          }
-        >
-          {productInputTypes.map((item) => (
-            <SelectItem key={item.key} startContent={item.icon}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </Select>
-
-        {/* گروه ویژگی */}
-        <Select
-          isRequired
-          label="دسته‌بندی ویژگی"
-          placeholder="دسته‌بندی ویژگی را انتخاب کنید"
-          labelPlacement="outside"
-          selectedKeys={datas.group_id ? [datas.group_id.toString()] : []}
-          onChange={(e) =>
-            setDatas((prev) => ({ ...prev, group_id: +e.target.value }))
-          }
-        >
-          {getAllAttributeGroup?.data?.length ? (
-            getAllAttributeGroup.data.map((item: any) => (
-              <SelectItem key={item.id}>{item.name}</SelectItem>
-            ))
-          ) : (
-            <SelectItem isDisabled>فعلاً آیتمی وجود ندارد</SelectItem>
-          )}
-        </Select>
-
-        {/* سوئیچ‌ها */}
-        <div className="flex items-center gap-8">
-          <Switch
-            color="secondary"
-            size="sm"
-            isSelected={datas.is_variant}
-            onValueChange={(status) =>
-              setDatas((prev) => ({ ...prev, is_variant: status }))
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <SelectBox
+            isRequired
+            label="گروه ویژگی"
+            placeholder="گروه ویژگی را انتخاب کنید..."
+            options={
+              optionsAttrGroup.length
+                ? optionsAttrGroup
+                : [{ key: "-1", title: "آیتمی موجود نیست" }]
             }
-          >
-            متغیر
-          </Switch>
+            value={form.group_id ? String(form.group_id) : ""}
+            onChange={(key) => handleFieldChange("group_id", Number(key))}
+            errorMessage={errors.group_id}
+          />
+          <SelectBox
+            isRequired
+            label="نوع ویژگی"
+            placeholder="نوع ویژگی را انتخاب کنید..."
+            options={attributeTypes.map((t) => ({
+              key: t.key,
+              title: t.title,
+              startContent: t.icon,
+            }))}
+            value={form.type}
+            onChange={(key) => handleFieldChange("type", key as AttributeTypes)}
+            errorMessage={errors.type}
+          />
+        </div>
 
-          <Switch
-            color="secondary"
-            size="sm"
-            isSelected={datas.is_public}
-            onValueChange={(status) =>
-              setDatas((prev) => ({ ...prev, is_public: status }))
-            }
-          >
-            سراسری
-          </Switch>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ToggleSection
+            title="ویژگی متغیر"
+            initialMode={form.is_variant}
+            onChange={(val) => handleFieldChange("is_variant", val)}
+          />
+
+          <ToggleSection
+            title="نمایش سراسری"
+            initialMode={form.is_public}
+            onChange={(val) => handleFieldChange("is_public", val)}
+          />
         </div>
       </div>
     </BaseModal>
