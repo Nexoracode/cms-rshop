@@ -143,6 +143,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
             value={form.name}
             onChange={(val) => handleFieldChange("name", val)}
             errorMessage={errors.name}
+            allowEnglishOnly={false}
           />
 
           <SlugInput
