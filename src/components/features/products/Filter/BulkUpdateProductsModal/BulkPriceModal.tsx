@@ -48,6 +48,7 @@ const BulkPriceModal: React.FC<Props> = ({ selectedCount = 0, onConfirm }) => {
         icon: <BiMoneyWithdraw size={20} />,
         title: "قیمت گروهی",
         className: "w-full",
+        size: "md",
       }}
       isOpen={isOpen}
       onOpenChange={setIsOpen}

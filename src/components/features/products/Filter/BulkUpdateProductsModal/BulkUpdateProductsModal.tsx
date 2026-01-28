@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { TbAlignBoxRightStretch } from "react-icons/tb";
-
 import BaseModal from "@/components/ui/modals/BaseModal";
 import BulkVisibilityModal from "./BulkVisibilityModal";
 import BulkDiscountModal from "./BulkDiscountModal";
 import BulkPriceModal from "./BulkPriceModal";
 import BulkCategoryModal from "./BulkCategoryModal";
+import { LuPackage } from "react-icons/lu";
 
 type Props = {
   selectedCount?: number;
@@ -39,7 +38,7 @@ const BulkUpdateProductsModal: React.FC<Props> = ({
         title: "بروزرسانی گروهی",
         className: "bg-primary-light text-primary"
       }}
-      icon={<TbAlignBoxRightStretch size={22} />}
+      icon={<LuPackage size={22} />}
     >
       <div className="flex flex-col gap-4 mb-4">
         <div className="flex items-center gap-2">

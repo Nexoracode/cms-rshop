@@ -34,7 +34,8 @@ const BulkCategoryModal: React.FC<Props> = ({
       triggerProps={{
         icon: <TbCategory size={20} />,
         title: "دسته‌بندی گروهی",
-        className: "w-full"
+        className: "w-full",
+        size: "md",
       }}
       isOpen={isOpen}
       onOpenChange={setIsOpen}

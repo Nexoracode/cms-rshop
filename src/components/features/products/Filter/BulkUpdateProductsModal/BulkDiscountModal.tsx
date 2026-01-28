@@ -52,11 +52,16 @@ const BulkDiscountModal: React.FC<Props> = ({
       confirmText="اعمال تخفیف"
       onConfirm={handleConfirm}
       onCancel={reset}
-      isConfirmDisabled={selectedCount <= 0 || discountValue === null || Number.isNaN(discountValue)}
+      isConfirmDisabled={
+        selectedCount <= 0 ||
+        discountValue === null ||
+        Number.isNaN(discountValue)
+      }
       triggerProps={{
         title: "تخفیف گروهی",
         icon: <TbShoppingCartDiscount size={20} />,
-        className: "w-full"
+        className: "w-full",
+        size: "md",
       }}
     >
       <NumberWithSelect

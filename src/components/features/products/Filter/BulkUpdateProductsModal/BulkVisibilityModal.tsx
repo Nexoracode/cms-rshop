@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Select, SelectItem, Switch } from "@heroui/react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { AiOutlineEye } from "react-icons/ai";
 import BulkModalHeader from "./BulkModalHeader";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
+import { Switch } from "@heroui/react";
 
 type Props = {
   selectedCount?: number;
@@ -54,6 +54,7 @@ const BulkVisibilityModal: React.FC<Props> = ({
         title: "وضعیت نمایش",
         icon: <AiOutlineEye size={20} />,
         className: "w-full",
+        size: "md"
       }}
     >
       <div className="space-y-5">
