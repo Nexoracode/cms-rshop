@@ -2,7 +2,7 @@ export function attributeValidation(attr: any) {
   const errs: Record<string, string> = {};
 
   if (attr.name?.trim().length === 0) {
-    errs.name = "عنوان مقدار را وارد کنید";
+    errs.name = "عنوان ویژگی را الزامی است";
   }
   
   if (attr.slug?.trim().length === 0) {

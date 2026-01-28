@@ -1,27 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
+import React, { useEffect } from "react";
+import BaseModal from "@/components/ui/modals/BaseModal";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { TbEdit } from "react-icons/tb";
+import { ImMakeGroup } from "react-icons/im";
 import {
   useCreateAttributeGroup,
   useUpdateAttributeGroup,
 } from "@/core/hooks/api/attributes/useAttributeGroup";
-import { Input } from "@heroui/react";
-import BaseModal from "@/components/ui/modals/BaseModal";
-import { ImMakeGroup } from "react-icons/im";
-import { ActionButton } from "@/components/ui/buttons/ActionButton";
-import { TbEdit } from "react-icons/tb";
-import { AttributeGroup, CreateAttributeGroup } from "../attribute.types";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import { useForm } from "@/core/hooks/common/form/useForm";
+import TextInput from "@/components/ui/inputs/TextInput";
+import SlugInput from "@/components/forms/Inputs/SlugInput";
+
+import { AttributeGroup, CreateAttributeGroup } from "../attribute.types";
+import { attributeGroupValidation } from "./attribute-group-validate";
 
 type Props = {
   defaultDatas?: AttributeGroup;
-  type?: "edit" | "add";
+  type?: "add" | "edit";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialState: CreateAttributeGroup = {
+const initialForm: CreateAttributeGroup = {
   name: "",
   slug: "",
   display_order: null,
@@ -33,42 +36,45 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
-  const [datas, setDatas] = useState<CreateAttributeGroup | AttributeGroup>(
-    initialState
+  const isEdit = type === "edit";
+
+  const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
+    initialForm,
+    {
+      onValidate: attributeGroupValidation,
+      runValidationOnChange: true,
+    }
   );
 
   const { mutateAsync: createAttributeGroup, isPending: isPendingCreate } =
     useCreateAttributeGroup();
+
   const { mutateAsync: updateAttributeGroup, isPending: isPendingUpdate } =
-    useUpdateAttributeGroup(
-      type === "edit" ? (datas as AttributeGroup).id : -1
-    );
+    useUpdateAttributeGroup(defaultDatas?.id ?? -1);
 
   useEffect(() => {
-    type === "add"
-      ? setDatas(initialState)
-      : setDatas(defaultDatas || initialState);
-  }, [defaultDatas, type]);
+    if (defaultDatas && isEdit) {
+      setForm(defaultDatas);
+    }
+  }, [defaultDatas, isEdit]);
 
-  const handleConfirm = async () => {
-    const { id, ...rest } = datas as AttributeGroup;
+  const handleConfirm = submit(async () => {
+    if (isEdit) {
+      const { id, ...payload } = form as AttributeGroup;
+      return handleMutation(() => updateAttributeGroup(payload), { resetForm });
+    }
 
-    if (type === "edit") {
-      return handleMutation(() => updateAttributeGroup(rest), { resetForm });
-    } else
-      return handleMutation(() => createAttributeGroup(rest), { resetForm });
-  };
+    return handleMutation(() => createAttributeGroup(form), { resetForm });
+  });
 
-  const resetForm = () => {
-    setDatas(initialState);
-  };
+  const resetForm = () => reset();
 
   return (
     <BaseModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       triggerProps={
-        type == "add"
+        !isEdit
           ? {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
@@ -76,34 +82,33 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
           : undefined
       }
       trigger={
-        type === "edit" ? (
-          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false}/>
+        isEdit ? (
+          <ActionButton icon={<TbEdit size={20} />} stopPropagation={false} />
         ) : undefined
       }
-      title={type === "edit" ? "ویرایش گروه ویژگی" : "افزودن گروه ویژگی جدید"}
+      title={isEdit ? "ویرایش گروه ویژگی" : "افزودن گروه ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
+      onCancel={resetForm}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
-      isActiveFooter={true}
       size="md"
       icon={<ImMakeGroup />}
     >
-      <div className="flex items-start gap-4 px-2">
-        <Input
-          labelPlacement="outside"
+      <div className="flex flex-col gap-4 px-2">
+        <TextInput
           isRequired
-          label="عنوان"
-          placeholder="عنوان گروه ویژگی را وارد کنید"
-          value={datas.name}
-          onChange={(e) =>
-            setDatas((prev) => ({ ...prev, name: e.target.value }))
-          }
+          label="عنوان گروه"
+          placeholder="عنوان گروه ویژگی را وارد کنید..."
+          value={form.name}
+          onChange={(val) => handleFieldChange("name", val)}
+          errorMessage={errors.name}
         />
 
         <SlugInput
-          value={datas.slug}
-          onChange={(val) => setDatas((prev) => ({ ...prev, slug: val }))}
-          isActiveError={true}
+          value={form.slug}
+          onChange={(val) => handleFieldChange("slug", val)}
+          isActiveError={!!errors.slug}
+          errorMessage={errors.slug}
         />
       </div>
     </BaseModal>
