@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Card, CardBody } from "@heroui/react";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { Card, CardBody } from "@heroui/react";
 import { TbEdit } from "react-icons/tb";
 
 type Props = {
@@ -29,25 +30,18 @@ const GuideBoxInfo: React.FC<Props> = ({
                     : imageFile
                 }
                 alt="preview"
-                className="rounded-xl mx-auto w-28 h-24 object-cover border"
+                className="rounded-xl mx-auto w-24 object-cover border"
               />
             )}
           </div>
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col w-full">
             <div className="flex items-center justify-between gap-2">
-              <p>{title}</p>
-              <button
-                onClick={onEdit}
-                className="bg-gray-100 rounded-md p-1.5 hover:opacity-70 transition-all"
-              >
-                <TbEdit size={18} />
-              </button>
+              <p><span className="text-xs text-green-700">راهنمای سایز</span> {title}</p>
+              <ActionButton onClick={onEdit} icon={<TbEdit size={18} />} />
             </div>
-            <div className="w-full bg-gray-100 rounded-xl p-3 sm:py-0">
-              <p className="text-gray-600 mt-2 text-justify leading-7 text-xs sm:whitespace-normal">
-                {description}
-              </p>
-            </div>
+            <p className="text-gray-600 mt-2 text-justify leading-7 text-xs sm:whitespace-normal">
+              {description}
+            </p>
           </div>
         </CardBody>
       </Card>

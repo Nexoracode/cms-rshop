@@ -14,7 +14,11 @@ import {
   SiTicktick,
 } from "react-icons/si";
 import { IoCloseCircle } from "react-icons/io5";
-import { BsArrow90DegDown, BsArrow90DegLeft, BsArrow90DegRight } from "react-icons/bs";
+import {
+  BsArrow90DegDown,
+  BsArrow90DegLeft,
+  BsArrow90DegRight,
+} from "react-icons/bs";
 
 type ConversationListProps = {
   conversations: Record<string, any>[];
@@ -61,7 +65,10 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
             <div className="mt-2 mr-2 flex items-center gap-2">
               <div className="scale-[-1]">
-                <BsArrow90DegRight className="rotate-180 scale-[-1] text-gray-500" size={12} />
+                <BsArrow90DegRight
+                  className="rotate-180 scale-[-1] text-gray-500"
+                  size={12}
+                />
               </div>
               <p className="text-gray-500 text-xs truncate">
                 {conv.messages[0].content}
@@ -83,9 +90,10 @@ const ConversationList: React.FC<ConversationListProps> = ({
                 )}
               </div>
               <div>
-                {conv.status === "open" && (
-                  <SiOpencollective size={16} className="text-orange-400" />
-                )}
+                {conv.status === "open" ||
+                  (conv.status === "waiting" && (
+                    <SiOpencollective size={16} className="text-orange-400" />
+                  ))}
                 {conv.status === "answered" && (
                   <SiTicktick size={16} className="text-green-500" />
                 )}

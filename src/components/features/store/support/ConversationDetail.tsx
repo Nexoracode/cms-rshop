@@ -257,7 +257,7 @@ const ConversationDetail: React.FC = () => {
           </p>
           <div className="flex items-center gap-2 mt-2.5">
             <div>
-              {conv.status === "open" && (
+              {conv.status === "open" || conv.status === "waiting" && (
                 <SiOpencollective size={16} className="text-orange-400" />
               )}
               {conv.status === "answered" && (
