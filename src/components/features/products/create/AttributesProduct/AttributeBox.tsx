@@ -11,11 +11,12 @@ type AttributeBoxProps = {
   addBtn: React.ReactNode;
   children: React.ReactNode;
   attr: any[];
-  onChoose: (id: number | undefined) => void;
+  onChoose: (id: number) => void;
   onEdit: (id: number) => void;
   deleteAttr: (id: number) => void;
   placeholderInput?: string;
   multiSelect?: boolean;
+  selectedIds?: number[];
 };
 
 const AttributeBox: React.FC<AttributeBoxProps> = ({
@@ -26,21 +27,15 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
   deleteAttr,
   onEdit,
   multiSelect = false,
-  placeholderInput = "جستجو گروه ویژگی...",
+  selectedIds = [],
+  placeholderInput = "جستجو مقدار ویژگی...",
 }) => {
   const [search, setSearch] = useState("");
-  const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
-    number | undefined
-  >(undefined);
+  const [singleSelectedId, setSingleSelectedId] = useState<number | undefined>();
 
   const getMatchScore = (text: string, query: string) => {
     if (!query) return 0;
-
-    const t = text.toLowerCase();
-    const q = query.toLowerCase();
-
-    if (t.includes(q)) return 1;
-    return 0;
+    return text.toLowerCase().includes(query.toLowerCase()) ? 1 : 0;
   };
 
   const sortedAttr =
@@ -48,62 +43,66 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
     [...attr].sort((a, b) => {
       const aLabel = a.name || a.value || "";
       const bLabel = b.name || b.value || "";
-
-      const aScore = getMatchScore(aLabel, search);
-      const bScore = getMatchScore(bLabel, search);
-
-      // match ها بالا، غیر match ها پایین
-      return bScore - aScore;
+      return (
+        getMatchScore(bLabel, search) - getMatchScore(aLabel, search)
+      );
     });
 
   return (
     <div className="p-2">
-      <div>
-        <div className="flex items-center justify-between">
-          <Input
-            type="search"
-            placeholder={placeholderInput}
-            startContent={<BiSearch size={18} />}
-            className="w-fit"
-            variant="flat"
-            size="sm"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+      <div className="flex items-center justify-between">
+        <Input
+          type="search"
+          placeholder={placeholderInput}
+          startContent={<BiSearch size={18} />}
+          className="w-fit"
+          variant="flat"
+          size="sm"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {addBtn}
+      </div>
 
-          {addBtn}
-        </div>
-        {/* isRequired={isDisabledEdit} */}
-        <div className="p-2 rounded-xl mt-3 border border-slate-300 max-h-[200px] h-full">
-          <ul className="flex flex-col overflow-y-auto overflow-hidden max-h-[180px]">
-            {sortedAttr?.length ? (
-              sortedAttr.map((item: any, index) => (
+      <div className="p-2 rounded-xl mt-3 border border-slate-300 max-h-[200px]">
+        <ul className="flex flex-col overflow-y-auto max-h-[180px]">
+          {sortedAttr?.length ? (
+            sortedAttr.map((item: any, index) => {
+              const isSelected = multiSelect
+                ? selectedIds.includes(item.id)
+                : singleSelectedId === item.id;
+
+              return (
                 <li
                   key={item.id}
-                  className={`border-slate-200 text-gray-700 flex items-center justify-between mx-2 p-2 py-1 group ${
-                    item.name ? "cursor-pointer" : "cursor-auto"
-                  } ${selectedAttrGroupId === item.id ? "bg-slate-100" : ""} ${
-                    attr?.length - 1 !== index ? "border-b" : ""
-                  }`}
+                  className={`
+                    flex items-center justify-between mx-2 p-2 py-1 group cursor-pointer
+                    ${isSelected ? "bg-sky-100" : ""}
+                    ${attr.length - 1 !== index ? "border-b border-slate-200" : ""}
+                  `}
                   onClick={() => {
-                    if (item.name) {
-                      setSelectedAttrGroupId(+item.id);
-                      onChoose(+item.id);
+                    const id = +item.id;
+                    if (multiSelect) {
+                      onChoose(id);
+                    } else {
+                      setSingleSelectedId(id);
+                      onChoose(id);
                     }
                   }}
                 >
-                  <span>{item.name || item.value}</span>
-                  <div className={`opacity-0 group-hover:opacity-100`}>
+                  <span className="text-gray-700">
+                    {item.name || item.value}
+                  </span>
+
+                  <div className="opacity-0 group-hover:opacity-100">
                     <div className="flex items-center gap-2">
                       <DeleteButton
-                        onDelete={() => {
-                          deleteAttr(item.id);
-                        }}
+                        onDelete={() => deleteAttr(item.id)}
                       />
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
-                          onEdit(+item.id);
+                          onEdit(item.id);
                         }}
                       >
                         {children}
@@ -111,22 +110,21 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                     </div>
                   </div>
                 </li>
-              ))
-            ) : (
-              <div className="flex flex-col items-center gap-4 py-4">
-                <IconBadge
-                  icon={LiaListOlSolid}
-                  circleClassName="bg-sky-100"
-                  iconClassName="text-sky-600"
-                />
-                <p className="text-gray-700">
-                  درصورت نبود مقدار آن را ایجاد و یا مقداری از لیست بالایی
-                  انتخاب کنید.
-                </p>
-              </div>
-            )}
-          </ul>
-        </div>
+              );
+            })
+          ) : (
+            <div className="flex flex-col items-center gap-4 py-4">
+              <IconBadge
+                icon={LiaListOlSolid}
+                circleClassName="bg-sky-100"
+                iconClassName="text-sky-600"
+              />
+              <p className="text-gray-700 text-sm text-center">
+                درصورت نبود مقدار آن را ایجاد و یا مقداری از لیست بالایی انتخاب کنید.
+              </p>
+            </div>
+          )}
+        </ul>
       </div>
     </div>
   );

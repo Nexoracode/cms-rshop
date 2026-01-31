@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import AddNewAttributeValueModal from "./AddNewAttributeValueModal";
 import { useDeleteAttributeValue } from "@/core/hooks/api/attributes/useAttributeValue";
 import { useAttributeContext } from "../../context/AttributeContext";
-import AnimatedMultiSelect from "@/components/forms/Inputs/SearchableMultiSelect";
 import { AttributeValue } from "../attribute.types";
 import AttributeBox from "../AttributeBox";
 
@@ -26,10 +25,10 @@ const AddNewAttributeValue: React.FC<Props> = ({
   isDisabledEdit,
 }) => {
   const [selectedAttrEdit, setSelectedAttrEdit] = useState<number | undefined>(
-    undefined
+    undefined,
   );
   const [selectedValueId, setSelectedValueId] = useState<number | undefined>(
-    undefined
+    undefined,
   );
 
   const deleteAttributeValue = useDeleteAttributeValue();
@@ -45,42 +44,30 @@ const AddNewAttributeValue: React.FC<Props> = ({
     });
   };
 
+  const filteredAttrValues = () => {
+    if (!attrInfos.length || !attrValues?.length) return attrValues;
+
+    return attrValues.filter((val: any) => {
+      const existVal = attrInfos.find((v: any) => v.id === val.id);
+      return !existVal;
+    });
+  };
+
   return (
     <>
-      <AnimatedMultiSelect
-        label="مقادیر ویژگی"
-        options={(attrValues ?? [])
-          .filter((val: any) => {
-            if (!attrInfos.length) return true;
-            const existVal = attrInfos.find((v: any) => v.id === val.id);
-            return !existVal;
-          })
-          .map((v: any) => ({
-            value: v.id,
-            label: v.value,
-            color: v.display_color,
-          }))}
-        selectedValues={selectedValues}
-        onChange={(vals) => onChange(vals.map(Number))}
-        placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
-      />
-
       {isDisabledEdit ? (
         <AttributeBox
-          attr={(attrValues ?? [])
-            .filter((val: any) => {
-              if (!attrInfos.length) return true;
-              const existVal = attrInfos.find((v: any) => v.id === val.id);
-              return !existVal;
-            })
-            .map((v: any) => ({
-              value: v.id,
-              label: v.value,
-              color: v.display_color,
-            }))}
+          attr={filteredAttrValues()?.map((v: any) => ({
+            id: v.id,
+            value: v.value,
+            color: v.display_color,
+          }))}
+          multiSelect
+          selectedIds={selectedValues}
           onChoose={(id) => {
-            if (!id) return;
-            if (!selectedValues.includes(id)) {
+            if (selectedValues.includes(id)) {
+              onChange(selectedValues.filter((v) => v !== id));
+            } else {
               onChange([...selectedValues, id]);
             }
           }}

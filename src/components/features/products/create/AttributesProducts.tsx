@@ -47,7 +47,7 @@ const AttributesProducts = () => {
 
   useEffect(() => {
     let attrValues: any[] = [];
-
+    
     if (productData?.data?.attribute_nodes) {
       const nodeValues = productData.data.attribute_nodes.flatMap(
         (group: any) =>
@@ -55,7 +55,7 @@ const AttributesProducts = () => {
       );
       attrValues = [...attrValues, ...nodeValues];
     }
-
+    
     if (productData?.data?.specifications) {
       const specValues = productData.data.specifications.flatMap((group: any) =>
         group.attributes.flatMap((attr: any) => attr.values ?? [])
@@ -64,7 +64,7 @@ const AttributesProducts = () => {
     }
 
     setAttrInfos(attrValues);
-  }, [productData?.data, setAttrInfos]);
+  }, [productData?.data]);
 
   const handleTabChange = (key: string | number) => {
     const k = String(key);
