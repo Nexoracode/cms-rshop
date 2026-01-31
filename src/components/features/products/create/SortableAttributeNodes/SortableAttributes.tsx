@@ -42,7 +42,11 @@ const SortableAttributes: React.FC<Props> = ({ attributes }) => {
       items,
       draggingId,
       overId,
-      (payload) => reorderAttribute.mutateAsync(payload),
+      (payload) => {
+        const productId = searchParams.get("edit_id");
+        const finalPayLoad = {...payload, product_id: productId ? +productId : -1 }
+        return reorderAttribute.mutateAsync(finalPayLoad);
+      },
       setItems,
       setDraggingId
     );

@@ -15,6 +15,7 @@ type AttributeBoxProps = {
   onEdit: (id: number) => void;
   deleteAttr: (id: number) => void;
   placeholderInput?: string;
+  multiSelect?: boolean;
 };
 
 const AttributeBox: React.FC<AttributeBoxProps> = ({
@@ -24,14 +25,13 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
   onChoose,
   deleteAttr,
   onEdit,
+  multiSelect = false,
   placeholderInput = "جستجو گروه ویژگی...",
 }) => {
   const [search, setSearch] = useState("");
   const [selectedAttrGroupId, setSelectedAttrGroupId] = useState<
     number | undefined
   >(undefined);
-
-  console.log("#################", attr);
 
   const getMatchScore = (text: string, query: string) => {
     if (!query) return 0;
@@ -120,7 +120,8 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                   iconClassName="text-sky-600"
                 />
                 <p className="text-gray-700">
-                  درصورت نبود مقدار  آن را ایجاد و یا مقداری از لیست بالایی انتخاب کنید.
+                  درصورت نبود مقدار آن را ایجاد و یا مقداری از لیست بالایی
+                  انتخاب کنید.
                 </p>
               </div>
             )}

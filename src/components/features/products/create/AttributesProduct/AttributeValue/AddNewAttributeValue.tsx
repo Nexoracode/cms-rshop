@@ -47,29 +47,55 @@ const AddNewAttributeValue: React.FC<Props> = ({
 
   return (
     <>
-      {/* حالت ویرایش (چند انتخابی با AnimatedMultiSelect) */}
-      {isDisabledEdit ? (
-        <div className="flex gap-2 items-end">
-          <AnimatedMultiSelect
-            label="مقادیر ویژگی"
-            options={(attrValues ?? [])
-              .filter((val: any) => {
-                if (!attrInfos.length) return true;
-                const existVal = attrInfos.find((v: any) => v.id === val.id);
-                return !existVal;
-              })
-              .map((v: any) => ({
-                value: v.id,
-                label: v.value,
-                color: v.display_color,
-              }))}
-            selectedValues={selectedValues}
-            onChange={(vals) => onChange(vals.map(Number))}
-            placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
-          />
+      <AnimatedMultiSelect
+        label="مقادیر ویژگی"
+        options={(attrValues ?? [])
+          .filter((val: any) => {
+            if (!attrInfos.length) return true;
+            const existVal = attrInfos.find((v: any) => v.id === val.id);
+            return !existVal;
+          })
+          .map((v: any) => ({
+            value: v.id,
+            label: v.value,
+            color: v.display_color,
+          }))}
+        selectedValues={selectedValues}
+        onChange={(vals) => onChange(vals.map(Number))}
+        placeholder="مقادیر مورد نظر را جستجو و انتخاب کنید"
+      />
 
-          <AddNewAttributeValueModal attributeId={selectedAttrId} />
-        </div>
+      {isDisabledEdit ? (
+        <AttributeBox
+          attr={(attrValues ?? [])
+            .filter((val: any) => {
+              if (!attrInfos.length) return true;
+              const existVal = attrInfos.find((v: any) => v.id === val.id);
+              return !existVal;
+            })
+            .map((v: any) => ({
+              value: v.id,
+              label: v.value,
+              color: v.display_color,
+            }))}
+          onChoose={(id) => {
+            if (!id) return;
+            if (!selectedValues.includes(id)) {
+              onChange([...selectedValues, id]);
+            }
+          }}
+          onEdit={setSelectedAttrEdit}
+          deleteAttr={handleDelete}
+          addBtn={<AddNewAttributeValueModal attributeId={selectedAttrId} />}
+          placeholderInput="جستجو مقدار ویژگی..."
+        >
+          <AddNewAttributeValueModal
+            type="edit"
+            attributeId={selectedAttrId}
+            attributeGroupId={selectedAttrGroupId}
+            defaultDatas={attrValues?.find((v) => v.id === selectedAttrEdit)}
+          />
+        </AttributeBox>
       ) : (
         <AttributeBox
           attr={attrValues}

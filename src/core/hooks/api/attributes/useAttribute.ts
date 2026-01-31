@@ -42,22 +42,24 @@ export const useUpdateAttributeOrder = () => {
     mutationFn: async ({
       id,
       display_order,
+      product_id,
     }: {
       id: number;
       display_order: number;
+      product_id: number;
     }) => {
       return fetcher({
         route: `/attribute/${id}/order`,
         method: "PATCH",
-        body: { display_order },
+        body: { display_order, product_id },
         isActiveToast: true,
         successText: "جایگاه ویژگی با موفقیت بروزرسانی شد",
         loadingText: "درحال بروزرسانی جایگاه ویژگی...",
       });
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: (_data) => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
-      queryClient.invalidateQueries({ queryKey: ["attribute", variables.id] });
+      queryClient.invalidateQueries({ queryKey: ["attribute"] });
     },
   });
 };
