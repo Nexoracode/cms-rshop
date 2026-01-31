@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import { Toaster } from "react-hot-toast";
-import GlobalLoader from "@/components/layout/GlobalLoader";
 import ClientProviders from "@/components/layout/ClientProviders";
 import { Suspense } from "react";
 

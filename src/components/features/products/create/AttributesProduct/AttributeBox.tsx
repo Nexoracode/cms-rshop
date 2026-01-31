@@ -11,12 +11,13 @@ type AttributeBoxProps = {
   addBtn: React.ReactNode;
   children: React.ReactNode;
   attr: any[];
-  onChoose: (id: number) => void;
+  onChoose?: (id: number) => void;
   onEdit: (id: number) => void;
   deleteAttr: (id: number) => void;
   placeholderInput?: string;
   multiSelect?: boolean;
   selectedIds?: number[];
+  selectedNone?: boolean;
 };
 
 const AttributeBox: React.FC<AttributeBoxProps> = ({
@@ -29,9 +30,12 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
   multiSelect = false,
   selectedIds = [],
   placeholderInput = "جستجو مقدار ویژگی...",
+  selectedNone = false,
 }) => {
   const [search, setSearch] = useState("");
-  const [singleSelectedId, setSingleSelectedId] = useState<number | undefined>();
+  const [singleSelectedId, setSingleSelectedId] = useState<
+    number | undefined
+  >();
 
   const getMatchScore = (text: string, query: string) => {
     if (!query) return 0;
@@ -43,9 +47,7 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
     [...attr].sort((a, b) => {
       const aLabel = a.name || a.value || "";
       const bLabel = b.name || b.value || "";
-      return (
-        getMatchScore(bLabel, search) - getMatchScore(aLabel, search)
-      );
+      return getMatchScore(bLabel, search) - getMatchScore(aLabel, search);
     });
 
   return (
@@ -76,17 +78,24 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                 <li
                   key={item.id}
                   className={`
-                    flex items-center justify-between mx-2 p-2 py-1 group cursor-pointer
+                    flex items-center select-none justify-between mx-2 p-2 py-1 group ${!selectedNone ? "cursor-pointer" : "cursor-default"}
                     ${isSelected ? "bg-sky-100" : ""}
                     ${attr.length - 1 !== index ? "border-b border-slate-200" : ""}
                   `}
                   onClick={() => {
-                    const id = +item.id;
-                    if (multiSelect) {
-                      onChoose(id);
-                    } else {
-                      setSingleSelectedId(id);
-                      onChoose(id);
+                    if (!selectedNone) {
+                      const id = +item.id;
+
+                      if (multiSelect) {
+                        if (selectedIds.includes(id)) {
+                          onChoose?.(id); // remove
+                        } else {
+                          onChoose?.(id); // add
+                        }
+                      } else {
+                        setSingleSelectedId(id);
+                        onChoose?.(id);
+                      }
                     }
                   }}
                 >
@@ -96,9 +105,7 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
 
                   <div className="opacity-0 group-hover:opacity-100">
                     <div className="flex items-center gap-2">
-                      <DeleteButton
-                        onDelete={() => deleteAttr(item.id)}
-                      />
+                      <DeleteButton onDelete={() => deleteAttr(item.id)} />
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
@@ -120,7 +127,8 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                 iconClassName="text-sky-600"
               />
               <p className="text-gray-700 text-sm text-center">
-                درصورت نبود مقدار آن را ایجاد و یا مقداری از لیست بالایی انتخاب کنید.
+                درصورت نبود مقدار آن را ایجاد و یا مقداری از لیست بالایی انتخاب
+                کنید.
               </p>
             </div>
           )}

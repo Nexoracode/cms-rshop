@@ -86,16 +86,11 @@ const AddNewAttributeValue: React.FC<Props> = ({
       ) : (
         <AttributeBox
           attr={attrValues}
-          onChoose={(id) => {
-            if (!id) return;
-            if (!selectedValues.includes(id)) {
-              onChange([...selectedValues, id]);
-            }
-          }}
           onEdit={setSelectedAttrEdit}
           deleteAttr={handleDelete}
           addBtn={<AddNewAttributeValueModal attributeId={selectedAttrId} />}
           placeholderInput="جستجو مقدار ویژگی..."
+          selectedNone
         >
           <AddNewAttributeValueModal
             type="edit"

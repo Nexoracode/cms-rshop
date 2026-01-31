@@ -48,6 +48,7 @@
 
   body {
     @apply max-w-[1120px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[Dana-DemiBold] bg-gray-100 text-sm;
+    font-feature-settings: "ss01", "ss02", "locl";
   }
 
   input:focus {
