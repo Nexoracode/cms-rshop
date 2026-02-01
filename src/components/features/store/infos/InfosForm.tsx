@@ -124,14 +124,14 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
-          label="نام کامل مدیر فروشگاه"
+          label="نام کامل دارنده کارت"
           placeholder="وارد کنید..."
           value={finderKeyValue("shop_card_holder")}
           onChange={(val) => updateFilderKeyValue("shop_card_holder", val)}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
-          errorMessage={errors.full_name}
+          errorMessage={errors.shop_card_holder}
         />
         {/*         <Input
           style={{ direction: "ltr" }}
@@ -155,7 +155,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
-          errorMessage={errors.full_name}
+          errorMessage={errors.bank_name}
         />
       </div>
 
@@ -169,7 +169,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           onChange={(val) => updateFilderKeyValue("shop_card_number", val)}
           isRequired
           allowEnglishOnly={false}
-          errorMessage={errors.card_number}
+          errorMessage={errors.shop_card_number}
         />
         <TextInput
           label="شماره شبا فروشگاه"
@@ -181,7 +181,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           endContent="IR"
           isRequired
           allowEnglishOnly={false}
-          errorMessage={errors.sheba_number}
+          errorMessage={errors.shop_iban}
         />
       </div>
 
