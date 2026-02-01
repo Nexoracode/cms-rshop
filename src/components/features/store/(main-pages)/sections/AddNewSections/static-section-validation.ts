@@ -1,8 +1,16 @@
 export function staticSectionValidation(data: any, showCategory?: boolean) {
   const errors: Record<string, string> = {};
 
-  if (isNaN(data.products_limit) || data.products_limit <= 0) {
-    errors.products_limit = "تعداد نمایش باید یک عدد معتبر باشد.";
+  if (data.title.trim() === "") {
+    errors.title = "عنوان بخش الزامی است.";
+  }
+  
+  if (data.slug.trim() === "") {
+    errors.slug = "نامک بخش الزامی است.";
+  }
+
+  if (isNaN(data.products_limit) || data.products_limit <= 3) {
+    errors.products_limit = "تعداد نمایش باید بیشتر از 3 باشد.";
   }
 
   if (!data.view_all_link || data.view_all_link.trim() === "") {

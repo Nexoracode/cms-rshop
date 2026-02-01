@@ -61,6 +61,12 @@ const StaticSectionModal: React.FC<Props> = ({
           : sectionType === "featured"
             ? "featured-offers"
             : "most-popular",
+      title:
+        sectionType === "category_based"
+          ? "محصولات بر اساس دسته‌بندی"
+          : sectionType === "featured"
+            ? "پیشنهاد ویژه"
+            : "محصولات پرطرفدار",
     },
     {
       onValidate: (data: any) =>
@@ -85,13 +91,25 @@ const StaticSectionModal: React.FC<Props> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    const { is_active, products_limit, view_all_link, category_id } = form;
+    const {
+      is_active,
+      products_limit,
+      view_all_link,
+      category_id,
+      title,
+      slug,
+      section_type,
+    } = form;
 
     const payload: Record<string, any> = {
       is_active,
       show_view_all_button: true,
       products_limit,
       view_all_link,
+      display_style: "carousel",
+      title,
+      slug,
+      section_type,
       ...(showCategoryField ? { category_id } : {}),
     };
 
@@ -131,7 +149,6 @@ const StaticSectionModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating}
     >
       <div className="flex flex-col gap-6">
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <TextInput
             label="عنوان بخش"
@@ -168,6 +185,7 @@ const StaticSectionModal: React.FC<Props> = ({
             max={30}
             value={form.products_limit}
             onChange={(limit) => handleFieldChange("products_limit", limit)}
+            errorMessage={errors.products_limit}
           />
           <TextInput
             label="لینک"
