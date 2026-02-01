@@ -4,7 +4,6 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import BaseCard from "@/components/ui/BaseCard";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { useForm } from "@/core/hooks/common/form/useForm";
-import { Input } from "@heroui/react";
 import { BsShop } from "react-icons/bs";
 import { FaTelegram } from "react-icons/fa";
 import { LuInstagram } from "react-icons/lu";
@@ -192,14 +191,13 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
+        <TextInput
           label={
             <div className="flex items-center gap-2">
               <LuInstagram className="text-xl text-pink-500" />
               <span>اینستاگرام</span>
             </div>
           }
-          labelPlacement="outside"
           placeholder="username"
           type="text"
           endContent={
@@ -209,17 +207,17 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
-          
+          value={finderKeyValue("social_instagram")}
+          onChange={(val) => updateFilderKeyValue("social_instagram", val)}
         />
 
-        <Input
+        <TextInput
           label={
             <div className="flex items-center gap-2">
               <FaTelegram className="text-xl text-sky-500" />
               <span>تلگرام</span>
             </div>
           }
-          labelPlacement="outside"
           placeholder="username"
           type="text"
           endContent={
@@ -227,18 +225,19 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span className="text-default-400 text-sm">https://t.me</span>
             </div>
           }
+          value={finderKeyValue("social_telegram")}
+          onChange={(val) => updateFilderKeyValue("social_telegram", val)}
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
+        <TextInput
           label={
             <div className="flex items-center gap-2">
               <img src="/images/eitaa.png" className="w-5" alt="eitaa" />
               <span>ایتا</span>
             </div>
           }
-          labelPlacement="outside"
           placeholder="username"
           type="text"
           endContent={
@@ -248,16 +247,17 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
+          value={finderKeyValue("social_eitaa")}
+          onChange={(val) => updateFilderKeyValue("social_eitaa", val)}
         />
 
-        <Input
+        <TextInput
           label={
             <div className="flex items-center gap-2">
               <img src="/images/rubika.png" className="w-5" alt="rubika" />
               <span>روبیکا</span>
             </div>
           }
-          labelPlacement="outside"
           placeholder="username"
           type="text"
           endContent={
@@ -267,18 +267,19 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
+          value={finderKeyValue("social_rubika")}
+          onChange={(val) => updateFilderKeyValue("social_rubika", val)}
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
+        <TextInput
           label={
             <div className="flex items-center gap-2">
               <img src="/images/whatsapp.png" className="w-5" alt="whatsap" />
               <span>واتساپ</span>
             </div>
           }
-          labelPlacement="outside"
           placeholder="username"
           type="text"
           endContent={
@@ -288,16 +289,17 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
+          value={finderKeyValue("social_whatsapp")}
+          onChange={(val) => updateFilderKeyValue("social_whatsapp", val)}
         />
 
-        <Input
+        <TextInput
           label={
             <div className="flex items-center gap-2">
               <img src="/images/balle.jpg" className="w-5" alt="balle" />
               <span>بله</span>
             </div>
           }
-          labelPlacement="outside"
           placeholder="username"
           type="text"
           endContent={
@@ -305,6 +307,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span className="text-default-400 text-sm">https://ble.ir</span>
             </div>
           }
+          value={finderKeyValue("social_bale")}
+          onChange={(val) => updateFilderKeyValue("social_bale", val)}
         />
       </div>
 
