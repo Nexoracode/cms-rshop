@@ -27,7 +27,7 @@ function Slider<T>({
   // هر اسلاید شامل rows آیتم است
   const slideItems = useMemo(() => {
     const result: T[][] = [];
-    for (let i = 0; i < items.length; i += rows) {
+    for (let i = 0; i < items?.length; i += rows) {
       result.push(items.slice(i, i + rows));
     }
     return result;
@@ -48,7 +48,7 @@ function Slider<T>({
     [slideItems, currentIndex, itemsPerView]
   );
 
-  if (!items.length) return null;
+  if (!items?.length) return <div className="relative group w-full h-full"></div>;
 
   const rowTemplate =
     typeof rowHeight === "number"

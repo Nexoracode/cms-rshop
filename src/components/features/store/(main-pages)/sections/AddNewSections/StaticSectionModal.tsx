@@ -78,7 +78,7 @@ const StaticSectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
-    const { view_all_link, products_limit, is_active, category } =
+    const { view_all_link, products_limit, is_active, category, title, slug, section_type } =
       defaultValues;
 
     setForm({
@@ -86,6 +86,9 @@ const StaticSectionModal: React.FC<Props> = ({
       view_all_link,
       products_limit,
       is_active,
+      title,
+      slug,
+      section_type,
       ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   }, [defaultValues]);

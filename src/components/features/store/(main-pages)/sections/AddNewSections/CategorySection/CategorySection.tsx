@@ -9,6 +9,8 @@ import { TbEdit } from "react-icons/tb";
 import StaticSectionModal from "../StaticSectionModal";
 import AddNewCategorySection from "./AddNewCategorySection";
 import { BiCategoryAlt } from "react-icons/bi";
+import DeleteButton from "@/components/shared/DeleteButton";
+import { useDeleteHomeSection } from "@/core/hooks/api/adminHome/useHomeSections";
 
 type CategorySectionProps = {
   categories: any[];
@@ -17,6 +19,7 @@ type CategorySectionProps = {
 const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
   const [activeSlider, setActiveSlider] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const { mutate: deleteHomeSection } = useDeleteHomeSection();
 
   return categories ? (
     <div className="hover-reveal-parent">
@@ -32,18 +35,26 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
 
       <div className="flex flex-col gap-2">
         <SectionTemplateHeader
-          title={"خرید براساس دسته بندی"}
+          title={categories[activeSlider]?.title}
           showViewAll={categories[activeSlider]?.show_view_all_button}
           viewAllLink={categories[activeSlider]?.view_all_link}
         >
           <div className="flex items-center gap-2">
+            <DeleteButton
+              onDelete={() => deleteHomeSection(categories[activeSlider]?.id)}
+            />
             <ActionButton
               icon={<TbEdit className="text-gray-700" size={18} />}
               onClick={() => {
                 setIsOpen(true);
               }}
             />
-            <StaticSectionModal title="دسته بندی" icon={<BiCategoryAlt />} showCategoryField sectionType={"category_based"}/>
+            <StaticSectionModal
+              title="دسته بندی"
+              icon={<BiCategoryAlt />}
+              showCategoryField
+              sectionType={"category_based"}
+            />
           </div>
         </SectionTemplateHeader>
 
