@@ -13,59 +13,19 @@ import { useInfosCreate } from "@/core/hooks/api/useSeting";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const initialInfos = [
-  {
-    key: "shop_card_number",
-    value: "",
-    category: "payment",
-  },
-  {
-    key: "shop_card_holder",
-    value: "",
-    category: "payment",
-  },
-  {
-    key: "shop_bank_name",
-    value: "",
-    category: "payment",
-  },
-  {
-    key: "shop_iban",
-    value: "",
-    category: "payment",
-  },
-  /* Soicial */
-  {
-    key: "social_instagram",
-    value: "",
-    category: "social",
-  },
-  {
-    key: "social_telegram",
-    value: "",
-    category: "social",
-  },
-  {
-    key: "social_eitaa",
-    value: "",
-    category: "social",
-  },
-  {
-    key: "social_rubika",
-    value: "",
-    category: "social",
-  },
-  {
-    key: "social_whatsapp",
-    value: "",
-    category: "social",
-  },
-  {
-    key: "social_bale",
-    value: "",
-    category: "social",
-  },
-];
+const initialInfos = {
+  shop_card_number: "",
+  shop_card_holder: "",
+  shop_bank_name: "",
+  shop_iban: "",
+
+  social_instagram: "",
+  social_telegram: "",
+  social_eitaa: "",
+  social_rubika: "",
+  social_whatsapp: "",
+  social_bale: "",
+};
 
 type InfosFormProps = {
   isLoading: boolean;
@@ -76,40 +36,46 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   const router = useRouter();
   const { mutate: createInfos } = useInfosCreate();
 
-  const { form, errors, setForm, submit } = useForm(initialInfos, {
-    onValidate: validateInfos,
-    runValidationOnChange: true,
-  });
+  const { form, errors, setForm, submit, handleFieldChange } = useForm(
+    initialInfos,
+    {
+      onValidate: validateInfos,
+      runValidationOnChange: true,
+    },
+  );
 
   useEffect(() => {
-    console.log("data =>", data);
-
-    data && setForm(data);
+    if (data) {
+      setForm(apiArrayToFormObject(data));
+    }
   }, [data]);
 
-  const handleSubmit = submit(async (changed) => {
-    createInfos(changed, {
-      onSuccess: (res) => {
-        if (res.ok) {
-          router.push("/admin/store/infos");
-        }
+  const handleSubmit = submit(async () => {
+    const payload = formObjectToApiArray(form);
+
+    createInfos(payload, {
+      onSuccess: (res: any) => {
+        if (res?.ok) router.push("/admin/store");
       },
     });
   });
 
-  const finderKeyValue = (key: string) => {
-    return form.find((item: any) => item.key === key)?.value || "";
+  const apiArrayToFormObject = (data: any[]) => {
+    return data.reduce(
+      (acc, item) => {
+        acc[item.key] = item.value ?? "";
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
   };
 
-  const updateFilderKeyValue = (key: string, value: string) => {
-    setForm((prev: any) => {
-      return prev.map((item: any) => {
-        if (item.key === key) {
-          return { ...item, value };
-        }
-        return item;
-      });
-    });
+  const formObjectToApiArray = (form: Record<string, string>) => {
+    return Object.entries(form).map(([key, value]) => ({
+      key,
+      value,
+      category: key.startsWith("social_") ? "social" : "payment",
+    }));
   };
 
   return (
@@ -126,8 +92,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
         <TextInput
           label="نام کامل دارنده کارت"
           placeholder="وارد کنید..."
-          value={finderKeyValue("shop_card_holder")}
-          onChange={(val) => updateFilderKeyValue("shop_card_holder", val)}
+          value={form.shop_card_holder}
+          onChange={(val) => handleFieldChange("shop_card_holder", val)}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
@@ -150,8 +116,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
         <TextInput
           label="نام بانک"
           placeholder="وارد کنید..."
-          value={finderKeyValue("shop_bank_name")}
-          onChange={(val) => updateFilderKeyValue("shop_bank_name", val)}
+          value={form.shop_bank_name}
+          onChange={(val) => handleFieldChange("shop_bank_name", val)}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
@@ -164,9 +130,9 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           label="شماره کارت فروشگاه"
           placeholder="0000_0000_0000_0000"
           maxLength={11}
-          value={finderKeyValue("shop_card_number")}
+          value={form.shop_card_number}
           inputAlign="left"
-          onChange={(val) => updateFilderKeyValue("shop_card_number", val)}
+          onChange={(val) => handleFieldChange("shop_card_number", val)}
           isRequired
           allowEnglishOnly={false}
           errorMessage={errors.shop_card_number}
@@ -175,9 +141,9 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           label="شماره شبا فروشگاه"
           placeholder="0000_0000_0000_0000_0000_0000"
           maxLength={30}
-          value={finderKeyValue("shop_iban")}
+          value={form.shop_iban}
           inputAlign="left"
-          onChange={(val) => updateFilderKeyValue("shop_iban", val)}
+          onChange={(val) => handleFieldChange("shop_iban", val)}
           endContent="IR"
           isRequired
           allowEnglishOnly={false}
@@ -207,8 +173,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
-          value={finderKeyValue("social_instagram")}
-          onChange={(val) => updateFilderKeyValue("social_instagram", val)}
+          value={form.social_instagram}
+          onChange={(val) => handleFieldChange("social_instagram", val)}
         />
 
         <TextInput
@@ -225,8 +191,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span className="text-default-400 text-sm">https://t.me</span>
             </div>
           }
-          value={finderKeyValue("social_telegram")}
-          onChange={(val) => updateFilderKeyValue("social_telegram", val)}
+          value={form.social_telegram}
+          onChange={(val) => handleFieldChange("social_telegram", val)}
         />
       </div>
 
@@ -247,8 +213,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
-          value={finderKeyValue("social_eitaa")}
-          onChange={(val) => updateFilderKeyValue("social_eitaa", val)}
+          value={form.social_eitaa}
+          onChange={(val) => handleFieldChange("social_eitaa", val)}
         />
 
         <TextInput
@@ -267,8 +233,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
-          value={finderKeyValue("social_rubika")}
-          onChange={(val) => updateFilderKeyValue("social_rubika", val)}
+          value={form.social_rubika}
+          onChange={(val) => handleFieldChange("social_rubika", val)}
         />
       </div>
 
@@ -289,8 +255,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
-          value={finderKeyValue("social_whatsapp")}
-          onChange={(val) => updateFilderKeyValue("social_whatsapp", val)}
+          value={form.social_whatsapp}
+          onChange={(val) => handleFieldChange("social_whatsapp", val)}
         />
 
         <TextInput
@@ -307,8 +273,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span className="text-default-400 text-sm">https://ble.ir</span>
             </div>
           }
-          value={finderKeyValue("social_bale")}
-          onChange={(val) => updateFilderKeyValue("social_bale", val)}
+          value={form.social_bale}
+          onChange={(val) => handleFieldChange("social_bale", val)}
         />
       </div>
 
