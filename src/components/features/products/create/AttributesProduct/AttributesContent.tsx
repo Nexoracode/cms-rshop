@@ -3,7 +3,7 @@
 import { useAttributesByGroup } from "@/core/hooks/api/attributes/useAttribute";
 import { useGetAttributeValues } from "@/core/hooks/api/attributes/useAttributeValue";
 import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
@@ -12,17 +12,12 @@ import { useSearchParams } from "next/navigation";
 import { useCreateAttributeProduct } from "@/core/hooks/api/attributes/useAttributeProducts";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import toast from "react-hot-toast";
+import { useAttributeContext } from "../context/AttributeContext";
 
 type Props = {
   isDisabledEdit?: boolean;
   isActiveHeader?: boolean;
   onOpenChange?: (open: boolean) => void;
-};
-
-const initialSelecteds = {
-  attrGroupId: undefined as number | undefined,
-  attrId: undefined as number | undefined,
-  valueIds: [] as number[],
 };
 
 const generateSKU = () => {
@@ -42,18 +37,38 @@ export const AttributesContent = ({
   const editId = sp.get("edit_id");
   const page = editId && !isNaN(+editId) ? +editId : 1;
 
-  const [selecteds, setSelecteds] = useState(initialSelecteds);
+  //
+  const { selecteds, setSelecteds, setAttrs } = useAttributeContext();
+  const addNewVariantProductMutation = useAddNewVariantProduct();
+  const addNewSimapleAttribute = useCreateAttributeProduct();
+  //
   const { data: attributeGroup } = useAttributesByGroupGroup();
   const { data: attributes } = useAttributesByGroup(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
-  const addNewVariantProductMutation = useAddNewVariantProduct();
-  const addNewSimapleAttribute = useCreateAttributeProduct();
+
+  console.log("##########", selecteds);
+
+  useEffect(() => {
+    setAttrs((prev) => ({ ...prev, attrGroup: attributeGroup?.data }));
+  }, [attributeGroup]);
+
+  useEffect(() => {
+    setAttrs((prev) => ({ ...prev, attr: attributes?.data }));
+  }, [attributes]);
+
+  useEffect(() => {
+    setAttrs((prev) => ({ ...prev, values: attributeValues?.data }));
+  }, [attributeValues]);
 
   const isSubmitting =
     addNewVariantProductMutation.isPending || addNewSimapleAttribute.isPending;
 
   const resetInfos = () => {
-    setSelecteds(initialSelecteds);
+    setSelecteds({
+      attrGroupId: undefined,
+      attrId: undefined,
+      valueIds: [],
+    });
   };
 
   const resetAndClose = () => {
@@ -75,7 +90,7 @@ export const AttributesContent = ({
     }
 
     const attrIsVariant = attributes.data.find(
-      (a: any) => a.id === attrId
+      (a: any) => a.id === attrId,
     )?.is_variant;
 
     if (attrIsVariant) {
@@ -107,32 +122,22 @@ export const AttributesContent = ({
 
   return (
     <div className="flex flex-col gap-6">
-      <AddNewAttrGroup
-        attrGroup={attributeGroup?.data}
-        isDisabledEdit={isDisabledEdit}
-        onChange={(groupId) =>
-          setSelecteds({
-            attrGroupId: groupId,
-            attrId: undefined,
-            valueIds: [],
-          })
-        }
-      />
+      <AddNewAttrGroup isDisabledEdit={isDisabledEdit} />
 
       <AddNewAttribute
-        onChange={(value) =>
-          setSelecteds((prev) => ({ ...prev, attrId: value }))
-        }
-        attr={attributes?.data}
+        //onChange={(value) =>
+        //  setSelecteds((prev) => ({ ...prev, attrId: value }))
+        //}
+        //attr={attributes?.data}
         isDisabledEdit={isDisabledEdit}
       />
 
       <AddNewAttributeValue
-        attrValues={attributeValues?.data}
-        onChange={(ids) => setSelecteds((prev) => ({ ...prev, valueIds: ids }))}
-        selectedAttrId={selecteds.attrId}
-        selectedAttrGroupId={selecteds.attrGroupId}
-        selectedValues={selecteds.valueIds}
+        //attrValues={attributeValues?.data}
+        //onChange={(ids) => setSelecteds((prev) => ({ ...prev, valueIds: ids }))}
+        //selectedAttrId={selecteds.attrId}
+        //selectedAttrGroupId={selecteds.attrGroupId}
+        //selectedValues={selecteds.valueIds}
         isDisabledEdit={isDisabledEdit}
       />
 

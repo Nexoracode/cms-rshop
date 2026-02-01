@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
@@ -16,9 +16,9 @@ import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 import { AttributeGroup, CreateAttributeGroup } from "../attribute.types";
 import { attributeGroupValidation } from "./attribute-group-validate";
+import { useAttributeContext } from "../../context/AttributeContext";
 
 type Props = {
-  defaultDatas?: AttributeGroup;
   type?: "add" | "edit";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -31,24 +31,29 @@ const initialForm: CreateAttributeGroup = {
 };
 
 const AddNewAttributeGroupModal: React.FC<Props> = ({
-  defaultDatas,
   type = "add",
   isOpen,
   onOpenChange,
 }) => {
   const isEdit = type === "edit";
-
+  const { attrs, selectedAttrEdit } = useAttributeContext();
+  //
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
     initialForm,
     {
       onValidate: attributeGroupValidation,
       runValidationOnChange: true,
-    }
+    },
   );
+
+  const defaultDatas = attrs.attrGroup?.length
+    ? (attrs.attrGroup?.find(
+        (g: any) => g.id === selectedAttrEdit,
+      ) as AttributeGroup)
+    : undefined;
 
   const { mutateAsync: createAttributeGroup, isPending: isPendingCreate } =
     useCreateAttributeGroup();
-
   const { mutateAsync: updateAttributeGroup, isPending: isPendingUpdate } =
     useUpdateAttributeGroup(defaultDatas?.id ?? -1);
 

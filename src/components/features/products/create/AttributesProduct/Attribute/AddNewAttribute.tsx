@@ -1,43 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
 import AddNewAttributeModal from "./AddNewAttributeModal";
 import { useDeleteAttribute } from "@/core/hooks/api/attributes/useAttribute";
-import { Attribute } from "../attribute.types";
 import AttributeBox from "../AttributeBox";
+import { useAttributeContext } from "../../context/AttributeContext";
 
 type Props = {
-  onChange: (value: number | undefined) => void;
-  attr: Attribute[];
   isDisabledEdit: boolean;
 };
 
-const AddNewAttribute: React.FC<Props> = ({ onChange, attr }) => {
-  const [selectedAttrEdit, setSelectedAttrEdit] = useState<number | undefined>(
-    undefined
-  );
-
+const AddNewAttribute: React.FC<Props> = ({ isDisabledEdit }) => {
+  const { setSelecteds, attrs } = useAttributeContext();
   const { mutate: deleteAttribute } = useDeleteAttribute();
 
   const handleDelete = (id: number) => {
     deleteAttribute(id, {
-      onSuccess: () => onChange(undefined),
+      onSuccess: () => setSelectedAttrId(undefined),
     });
+  };
+
+  const setSelectedAttrId = (id: number | undefined) => {
+    setSelecteds((prev) => ({ ...prev, attrId: id, valueIds: [] }));
   };
 
   return (
     <AttributeBox
-      attr={attr}
-      onChoose={onChange}
-      onEdit={setSelectedAttrEdit}
+      attr={attrs.attr}
       deleteAttr={handleDelete}
+      onChoose={setSelectedAttrId}
       addBtn={<AddNewAttributeModal />}
       placeholderInput="جستجو ویژگی..."
     >
-      <AddNewAttributeModal
-        type="edit"
-        defaultDatas={attr?.find((a) => a.id === selectedAttrEdit)}
-      />
+      <AddNewAttributeModal type="edit" />
     </AttributeBox>
   );
 };

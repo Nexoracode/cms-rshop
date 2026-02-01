@@ -25,9 +25,9 @@ import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 
 import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
+import { useAttributeContext } from "../../context/AttributeContext";
 
 type Props = {
-  defaultDatas?: Attribute;
   type?: "add" | "edit";
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -45,20 +45,25 @@ const initialForm = {
 };
 
 const AddNewAttributeModal: React.FC<Props> = ({
-  defaultDatas,
   type = "add",
   isOpen,
   onOpenChange,
 }) => {
   const isEdit = type === "edit";
+  const { attrs, selectedAttrEdit } = useAttributeContext();
+  //
 
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
     initialForm,
     {
       onValidate: attributeValidation,
       runValidationOnChange: true,
-    }
+    },
   );
+
+  const defaultDatas = attrs.attr?.length
+    ? (attrs.attr?.find((a) => a.id === selectedAttrEdit) as Attribute)
+    : undefined;
 
   const { data: getAllAttributeGroup } = useAttributesByGroupGroup();
 
@@ -100,7 +105,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
     if (isEdit) {
       return handleMutation(
         () => updateAttribute({ data: form as any, id: form.id ?? -1 }),
-        { resetForm }
+        { resetForm },
       );
     }
 

@@ -2,50 +2,39 @@
 
 import AddNewAttributeGroupModal from "./AddNewAttributeGroupModal";
 import { useDeleteAttributeGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
-import { AttributeGroup } from "../attribute.types";
 import AttributeBox from "../AttributeBox";
-import { useState } from "react";
+import { useAttributeContext } from "../../context/AttributeContext";
 
 type Props = {
-  onChange: (value: number | undefined) => void;
-  attrGroup: Record<string, any>[];
   isDisabledEdit: boolean;
 };
 
-const AddNewAttrGroup: React.FC<Props> = ({
-  onChange,
-  attrGroup,
-  isDisabledEdit,
-}) => {
-  const [selectedAttrEdit, setSelectedAttrEdit] = useState<number | undefined>(
-    undefined
-  );
+const AddNewAttrGroup: React.FC<Props> = ({ isDisabledEdit }) => {
+  const { setSelecteds, attrs } = useAttributeContext();
   const { mutate: deleteAttributeGroup } = useDeleteAttributeGroup();
 
   const handleDeleteAttrGroup = (id: number) => {
     deleteAttributeGroup(+id, {
-      onSuccess: () => onChange(undefined),
+      onSuccess: () => setSelectedAttrGroupId(undefined),
+    });
+  };
+
+  const setSelectedAttrGroupId = (id: number | undefined) => {
+    setSelecteds({
+      attrGroupId: id,
+      attrId: undefined,
+      valueIds: [],
     });
   };
 
   return (
     <AttributeBox
-      attr={attrGroup}
+      attr={attrs.attrGroup}
       addBtn={<AddNewAttributeGroupModal />}
-      onChoose={(id) => onChange(id)}
-      onEdit={setSelectedAttrEdit}
+      onChoose={setSelectedAttrGroupId}
       deleteAttr={handleDeleteAttrGroup}
     >
-      <AddNewAttributeGroupModal
-        type="edit"
-        defaultDatas={
-          attrGroup?.length
-            ? (attrGroup?.find(
-                (g: any) => g.id === selectedAttrEdit
-              ) as AttributeGroup)
-            : undefined
-        }
-      />
+      <AddNewAttributeGroupModal type="edit" />
     </AttributeBox>
   );
 };

@@ -6,13 +6,13 @@ import { Input } from "@heroui/react";
 import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { LiaListOlSolid } from "react-icons/lia";
+import { useAttributeContext } from "../context/AttributeContext";
 
 type AttributeBoxProps = {
   addBtn: React.ReactNode;
   children: React.ReactNode;
   attr: any[];
   onChoose?: (id: number) => void;
-  onEdit: (id: number) => void;
   deleteAttr: (id: number) => void;
   placeholderInput?: string;
   multiSelect?: boolean;
@@ -26,13 +26,13 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
   attr,
   onChoose,
   deleteAttr,
-  onEdit,
   multiSelect = false,
   selectedIds = [],
   placeholderInput = "جستجو مقدار ویژگی...",
   selectedNone = false,
 }) => {
   const [search, setSearch] = useState("");
+  const { setSelectedAttrEdit } = useAttributeContext();
   const [singleSelectedId, setSingleSelectedId] = useState<
     number | undefined
   >();
@@ -109,7 +109,7 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
-                          onEdit(item.id);
+                          setSelectedAttrEdit(item.id);
                         }}
                       >
                         {children}

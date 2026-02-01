@@ -18,12 +18,10 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { attributeValueValidation } from "./attribute-value-validate";
 import TextInput from "@/components/ui/inputs/TextInput";
 import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
+import { useAttributeContext } from "../../context/AttributeContext";
 
 type Props = {
   type?: "add" | "edit";
-  defaultDatas?: any;
-  attributeId?: number | null;
-  attributeGroupId?: number | null;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
@@ -38,15 +36,13 @@ const initialForm = {
 };
 
 const AddNewAttributeValueModal: React.FC<Props> = ({
-  defaultDatas,
-  attributeId,
-  attributeGroupId,
   isOpen,
   onOpenChange,
   type = "add",
 }) => {
   const isEdit = type === "edit";
-
+  const { attrs, selectedAttrEdit, selecteds } = useAttributeContext();
+  //
   const {
     form,
     errors,
@@ -67,6 +63,10 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     useCreateAttributeValue();
   const { mutateAsync: updateAttributeValue, isPending: isPendingUpdate } =
     useUpdateAttributeValue();
+
+  const defaultDatas = attrs.values?.length
+    ? (attrs.values?.find((v) => v.id === selectedAttrEdit) as any)
+    : undefined;
 
   const optionsAttrGroup: SelectOption[] = useMemo(() => {
     return (
@@ -91,8 +91,8 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     if (defaultDatas) {
       setForm({
         ...defaultDatas,
-        group_id: attributeGroupId ?? null,
-        attribute_id: attributeId ?? null,
+        group_id: selecteds.attrGroupId ?? null,
+        attribute_id: selectedAttrEdit ?? null,
         is_active_color_picker: !!defaultDatas.display_color,
       });
     }
@@ -102,7 +102,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   useEffect(() => {
     handleFieldChange(
       "display_color",
-      form.is_active_color_picker ? "#000000" : null
+      form.is_active_color_picker ? "#000000" : null,
     );
   }, [form.is_active_color_picker]);
 
@@ -119,7 +119,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     if (isEdit) {
       return handleMutation(
         () => updateAttributeValue({ data: payload, id: defaultDatas?.id }),
-        { resetForm }
+        { resetForm },
       );
     }
 
