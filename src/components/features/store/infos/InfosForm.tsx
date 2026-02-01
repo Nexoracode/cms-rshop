@@ -14,28 +14,30 @@ import { useInfosCreate } from "@/core/hooks/api/useSeting";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const initialInfos = {};
+const initialInfos = {
+  full_name: "",
+  phone_number: "",
+  shop_card_number: "",
+  shop_iban_number: "",
+};
 
 type InfosFormProps = {
   isLoading: boolean;
-  data: any
+  data: any;
 };
 
 const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   const router = useRouter();
   const { mutate: createInfos } = useInfosCreate();
 
-  const {
-    form,
-    errors,
-    setForm,
-    submit,
-  } = useForm(initialInfos, {
+  const { form, errors, setForm, submit } = useForm(initialInfos, {
     onValidate: validateInfos,
     runValidationOnChange: true,
   });
 
   useEffect(() => {
+    console.log("data =>", data);
+
     data && setForm(data);
   }, [data]);
 
