@@ -77,8 +77,9 @@ export const useUpdateAttributeOrderValue = () => {
         loadingText: "درحال بروزرسانی جایگاه مقدار ویژگی...",
       });
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: (_data) => {
       queryClient.invalidateQueries({ queryKey: ["attribute-values"] });
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
     },
   });
 };

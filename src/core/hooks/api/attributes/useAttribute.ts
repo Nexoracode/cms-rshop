@@ -60,6 +60,7 @@ export const useUpdateAttributeOrder = () => {
     onSuccess: (_data) => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute"] });
       queryClient.invalidateQueries({ queryKey: ["attribute"] });
+      queryClient.invalidateQueries({ queryKey: ["one-product"] });
     },
   });
 };

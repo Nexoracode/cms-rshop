@@ -58,6 +58,7 @@ export const useUpdateAttributeOrderGroup = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-attribute-group"] });
+       queryClient.invalidateQueries({ queryKey: ["one-product"] });
     },
   });
 };
