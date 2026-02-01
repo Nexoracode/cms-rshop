@@ -30,7 +30,7 @@ const initialForm = {
   title: "",
   subtitle: "",
   image_url: "",
-  background_color: "",
+  background_color: "#000",
   link: "",
   badge_text: "",
   badge_color: null,
