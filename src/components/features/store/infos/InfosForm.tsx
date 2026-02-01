@@ -155,7 +155,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
-          errorMessage={errors.bank_name}
+          errorMessage={errors.shop_bank_name}
         />
       </div>
 
