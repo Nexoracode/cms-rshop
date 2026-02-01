@@ -25,6 +25,7 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         defaultValues={mostPopular}
+        sectionType={"most_popular"}
       />
       {mostPopular ? (
         <SectionTemplate

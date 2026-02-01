@@ -27,7 +27,7 @@ const AddFeaturedOfferSection = () => {
             />
           </div> */}
           <div>
-            <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} />
+            <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} sectionType={"featured"} />
           </div>
         </div>
       }

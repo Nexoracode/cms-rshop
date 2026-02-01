@@ -30,6 +30,7 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
             isOpen={isOpen}
             onOpenChange={setIsOpen}
             defaultValues={featuredSection}
+            sectionType={"featured"}
           />
 
           <div className="hover-reveal-child">

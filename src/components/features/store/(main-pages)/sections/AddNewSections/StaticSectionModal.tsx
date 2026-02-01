@@ -21,6 +21,7 @@ type Props = {
   title: string;
   icon: React.ReactNode;
   showCategoryField?: boolean;
+  sectionType: string;
 };
 
 const initialForm = {
@@ -43,6 +44,7 @@ const StaticSectionModal: React.FC<Props> = ({
   icon,
   title,
   showCategoryField = false,
+  sectionType,
 }) => {
   const { mutateAsync: createSection, isPending: isCreating } =
     useCreateHomeSection();
@@ -50,12 +52,21 @@ const StaticSectionModal: React.FC<Props> = ({
     useUpdateHomeSection(defaultValues?.id ?? 0);
 
   const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
-    initialForm,
+    {
+      ...initialForm,
+      section_type: sectionType,
+      slug:
+        sectionType === "category_based"
+          ? "product-categories"
+          : sectionType === "featured"
+            ? "featured-offers"
+            : "most-popular",
+    },
     {
       onValidate: (data: any) =>
         staticSectionValidation(data, showCategoryField),
       runValidationOnChange: true,
-    }
+    },
   );
 
   useEffect(() => {
@@ -83,6 +94,8 @@ const StaticSectionModal: React.FC<Props> = ({
       view_all_link,
       ...(showCategoryField ? { category_id } : {}),
     };
+
+    console.log("payload => ", payload);
 
     if (defaultValues?.id) {
       return handleMutation(() => updateSection(payload), {
@@ -117,7 +130,35 @@ const StaticSectionModal: React.FC<Props> = ({
       icon={icon}
       isConfirmDisabled={isCreating || isUpdating}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <TextInput
+            label="عنوان بخش"
+            placeholder="وارد کنید..."
+            value={form.title}
+            onChange={(val) => handleFieldChange("title", val)}
+            isRequired
+            inputAlign="right"
+            allowEnglishOnly={false}
+            errorMessage={errors.title}
+          />
+          <TextInput
+            label="نامک"
+            placeholder="path/to/1"
+            value={form.slug}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            isRequired
+            errorMessage={errors.slug}
+            onChange={(val) => {
+              handleFieldChange("slug", val);
+            }}
+            inputAlign="left"
+            allowSpaces={false}
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <NumberInput
             label="تعداد محدودیت نمایش"
