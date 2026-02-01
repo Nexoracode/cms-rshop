@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react";
 import { Attribute } from "../AttributesProduct/attribute.types";
 import { useUpdateAttributeOrderValue } from "@/core/hooks/api/attributes/useAttributeValue";
 import { handleDropHelper } from "../../../../../core/utils/handleDropHelper";
-import { useDeleteAttributeNode, useDeleteAttributeNodeSimple } from "@/core/hooks/api/attributes/useVariantProduct";
+import {
+  useDeleteAttributeNode,
+  useDeleteAttributeNodeSimple,
+} from "@/core/hooks/api/attributes/useVariantProduct";
 import { useSearchParams } from "next/navigation";
 import { TiDeleteOutline } from "react-icons/ti";
 import toast from "react-hot-toast";
@@ -32,9 +35,16 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
       items,
       draggingId,
       overId,
-      (payload) => reorderValue.mutateAsync(payload),
+      (payload) => {
+        const productId = searchParams.get("edit_id");
+        const finalPayLoad = {
+          ...payload,
+          product_id: productId ? +productId : -1,
+        };
+        return reorderValue.mutateAsync(finalPayLoad);
+      },
       setItems,
-      setDraggingId
+      setDraggingId,
     );
   };
 
@@ -74,7 +84,9 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
     <div className="gap-3 sm:gap-4 mx-4 mt-6">
       {items
         .slice()
-        .sort((a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .sort(
+          (a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0),
+        )
         .map((val: any) => (
           <div
             key={val.id}

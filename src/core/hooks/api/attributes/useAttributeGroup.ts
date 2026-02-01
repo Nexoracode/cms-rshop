@@ -41,14 +41,16 @@ export const useUpdateAttributeOrderGroup = () => {
     mutationFn: async ({
       id,
       display_order,
+      product_id,
     }: {
       id: number;
       display_order: any;
+      product_id: number;
     }) => {
       return fetcher({
         route: `/attribute-group/${id}/order`,
         method: "PATCH",
-        body: { display_order },
+        body: { display_order, product_id },
         isActiveToast: true,
         successText: "با موفقیت بروزرسانی شد",
         loadingText: "درحال بروزرسانی...",

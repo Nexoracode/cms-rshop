@@ -5,6 +5,7 @@ import { AttributeGroup } from "../AttributesProduct/attribute.types";
 import SortableAttributes from "./SortableAttributes";
 import { useUpdateAttributeOrderGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
 import { handleDropHelper } from "@/core/utils/handleDropHelper";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   attributeNodes: AttributeGroup[];
@@ -14,6 +15,7 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
   const [items, setItems] = useState(attributeNodes);
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const reorderGroup = useUpdateAttributeOrderGroup();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     setItems(attributeNodes);
@@ -26,9 +28,16 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
       items,
       draggingId,
       overId,
-      (payload) => reorderGroup.mutateAsync(payload),
+      (payload) => {
+        const productId = searchParams.get("edit_id");
+        const finalPayLoad = {
+          ...payload,
+          product_id: productId ? +productId : -1,
+        };
+        return reorderGroup.mutateAsync(finalPayLoad);
+      },
       setItems,
-      setDraggingId
+      setDraggingId,
     );
   };
 
@@ -46,7 +55,9 @@ const SortableAttributeNodes: React.FC<Props> = ({ attributeNodes }) => {
             onDrop={() => handleDrop(group.id ?? 1)}
             className={`bg-white shadow-md rounded-2xl mt-6 cursor-grab border-2 border-purple-100 hover:border-purple-300 transition-all`}
           >
-            <h3 className="text-medium sm:text-lg text-purple-500 py-2 px-2 sm:px-4 bg-purple-50 rounded-xl">{group.name} <small className="text-black">({group.slug})</small></h3>
+            <h3 className="text-medium sm:text-lg text-purple-500 py-2 px-2 sm:px-4 bg-purple-50 rounded-xl">
+              {group.name} <small className="text-black">({group.slug})</small>
+            </h3>
             <SortableAttributes attributes={group.attributes ?? []} />
           </div>
         ))}

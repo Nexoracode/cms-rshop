@@ -62,14 +62,16 @@ export const useUpdateAttributeOrderValue = () => {
     mutationFn: async ({
       id,
       display_order,
+      product_id
     }: {
       id: number;
       display_order: number;
+      product_id: number;
     }) => {
       return fetcher({
         route: `/attribute-value/${id}/order`,
         method: "PATCH",
-        body: { display_order },
+        body: { display_order, product_id },
         isActiveToast: true,
         successText: "جایگاه مقدار ویژگی با موفقیت بروزرسانی شد",
         loadingText: "درحال بروزرسانی جایگاه مقدار ویژگی...",
