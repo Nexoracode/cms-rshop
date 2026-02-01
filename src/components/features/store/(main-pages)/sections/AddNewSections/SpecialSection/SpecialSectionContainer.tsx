@@ -8,7 +8,10 @@ import { ProductsSelectionProvider } from "@/components/features/products/Select
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { useDeleteHomeSection, useUpdateSectionOrder } from "@/core/hooks/api/adminHome/useHomeSections";
+import {
+  useDeleteHomeSection,
+  useUpdateSectionOrder,
+} from "@/core/hooks/api/adminHome/useHomeSections";
 import { handleDropHelper } from "@/core/utils/handleDropHelper";
 
 type PopularSectionContainerProps = {
@@ -39,7 +42,7 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
       overId,
       (payload) => reorder.mutateAsync(payload),
       setItems,
-      setDraggingId
+      setDraggingId,
     );
   };
 
@@ -68,7 +71,7 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
                 onDragStart={() => handleDragStart(section.id ?? 1)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(section.id ?? 1)}
-                  className={`relative rounded-xl hover:p-4 select-none cursor-grab border-3 border-transparent border-gray-200 hover:border-sky-300 transition-all`}
+                className={`relative rounded-xl hover:p-4 select-none cursor-grab border-3 border-transparent border-gray-200 hover:border-sky-300 transition-all`}
               >
                 <SectionTemplate
                   section={section}
