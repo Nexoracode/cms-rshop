@@ -35,13 +35,16 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
 
       <div className="flex flex-col gap-2">
         <SectionTemplateHeader
-          title={categories[activeSlider]?.title}
+          title={categories[activeSlider]?.title ?? "محصولات بر اساس دسته بندی"}
           showViewAll={categories[activeSlider]?.show_view_all_button}
           viewAllLink={categories[activeSlider]?.view_all_link}
         >
           <div className="flex items-center gap-2">
             <DeleteButton
-              onDelete={() => deleteHomeSection(categories[activeSlider]?.id)}
+              onDelete={() => {
+                deleteHomeSection(categories[activeSlider]?.id);
+                setActiveSlider(activeSlider - 1 >= 0 ? activeSlider - 1 : 0);
+              }}
             />
             <ActionButton
               icon={<TbEdit className="text-gray-700" size={18} />}
