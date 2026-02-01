@@ -14,12 +14,59 @@ import { useInfosCreate } from "@/core/hooks/api/useSeting";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const initialInfos = {
-  full_name: "",
-  phone_number: "",
-  shop_card_number: "",
-  shop_iban_number: "",
-};
+const initialInfos = [
+  {
+    key: "shop_card_number",
+    value: "",
+    category: "payment",
+  },
+  {
+    key: "shop_card_holder",
+    value: "",
+    category: "payment",
+  },
+  {
+    key: "shop_bank_name",
+    value: "",
+    category: "payment",
+  },
+  {
+    key: "shop_iban",
+    value: "",
+    category: "payment",
+  },
+  /* Soicial */
+  {
+    key: "social_instagram",
+    value: "",
+    category: "social",
+  },
+  {
+    key: "social_telegram",
+    value: "",
+    category: "social",
+  },
+  {
+    key: "social_eitaa",
+    value: "",
+    category: "social",
+  },
+  {
+    key: "social_rubika",
+    value: "",
+    category: "social",
+  },
+  {
+    key: "social_whatsapp",
+    value: "",
+    category: "social",
+  },
+  {
+    key: "social_bale",
+    value: "",
+    category: "social",
+  },
+];
 
 type InfosFormProps = {
   isLoading: boolean;
@@ -51,6 +98,21 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
     });
   });
 
+  const finderKeyValue = (key: string) => {
+    return form.find((item: any) => item.key === key)?.value || "";
+  };
+
+  const updateFilderKeyValue = (key: string, value: string) => {
+    setForm((prev: any) => {
+      return prev.map((item: any) => {
+        if (item.key === key) {
+          return { ...item, value };
+        }
+        return item;
+      });
+    });
+  };
+
   return (
     <BaseCard
       CardHeaderProps={{
@@ -63,16 +125,16 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
-          label="نام و نام خوانوادگی مدیر"
+          label="نام کامل مدیر فروشگاه"
           placeholder="وارد کنید..."
-          value={""}
-          onChange={() => {}}
+          value={finderKeyValue("shop_card_holder")}
+          onChange={(val) => updateFilderKeyValue("shop_card_holder", val)}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
           errorMessage={errors.full_name}
         />
-        <Input
+        {/*         <Input
           style={{ direction: "ltr" }}
           labelPlacement="outside"
           label="شماره تلفن مدیر"
@@ -85,6 +147,16 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           value={""}
           onChange={() => {}}
           errorMessage={errors.phone}
+        /> */}
+        <TextInput
+          label="نام بانک"
+          placeholder="وارد کنید..."
+          value={finderKeyValue("shop_bank_name")}
+          onChange={(val) => updateFilderKeyValue("shop_bank_name", val)}
+          isRequired
+          inputAlign="right"
+          allowEnglishOnly={false}
+          errorMessage={errors.full_name}
         />
       </div>
 
@@ -93,9 +165,9 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           label="شماره کارت فروشگاه"
           placeholder="0000_0000_0000_0000"
           maxLength={11}
-          value={""}
+          value={finderKeyValue("shop_card_number")}
           inputAlign="left"
-          onChange={() => {}}
+          onChange={(val) => updateFilderKeyValue("shop_card_number", val)}
           isRequired
           allowEnglishOnly={false}
           errorMessage={errors.card_number}
@@ -104,19 +176,21 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           label="شماره شبا فروشگاه"
           placeholder="0000_0000_0000_0000_0000_0000"
           maxLength={30}
-          value={""}
+          value={finderKeyValue("shop_iban")}
           inputAlign="left"
-          onChange={() => {}}
+          onChange={(val) => updateFilderKeyValue("shop_iban", val)}
           endContent="IR"
           isRequired
           allowEnglishOnly={false}
           errorMessage={errors.sheba_number}
         />
       </div>
+
       <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-t border-b py-3 my-2">
         <p>شبکه های اجتماعی فروشگاه</p>
         <TiSocialLinkedin className="text-2xl" />
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label={
@@ -135,6 +209,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
+          
         />
 
         <Input
