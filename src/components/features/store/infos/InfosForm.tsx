@@ -53,6 +53,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   const handleSubmit = submit(async () => {
     const payload = formObjectToApiArray(form);
 
+    console.log("Payload =>", payload);
+
     createInfos(payload, {
       onSuccess: (res: any) => {
         if (res?.ok) router.push("/admin/store");
