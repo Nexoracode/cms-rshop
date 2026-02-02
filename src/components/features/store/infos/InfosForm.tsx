@@ -45,8 +45,9 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   );
 
   useEffect(() => {
-    if (data) {
-      setForm(apiArrayToFormObject(data));
+    if (data?.length) {
+      const settings = data.filter((setting: any) => setting.key !== "homepage_layout_type")
+      setForm(apiArrayToFormObject(settings));
     }
   }, [data]);
 
