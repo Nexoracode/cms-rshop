@@ -7,6 +7,7 @@ import { BiLayout } from "react-icons/bi";
 import Image from "next/image";
 import { handleDropHelper } from "@/core/utils/handleDropHelper";
 import { useUpdateHeroOrder } from "@/core/hooks/api/adminHome/useHeroSlider";
+import { useUpdatePromoBannerOrder } from "@/core/hooks/api/adminHome/usePromoBanner";
 
 type PromoBannerLayoutModalProps = {
   isOpen?: boolean;
@@ -21,7 +22,7 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
 }) => {
   const [items, setItems] = useState(banners);
   const [draggingId, setDraggingId] = useState<number | null>(null);
-  const reorder = useUpdateHeroOrder();
+  const reorder = useUpdatePromoBannerOrder();
 
   useEffect(() => {
     setItems(banners);
@@ -36,7 +37,7 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
       overId,
       (payload) => reorder.mutateAsync(payload),
       setItems,
-      setDraggingId
+      setDraggingId,
     );
   };
 
@@ -46,22 +47,18 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
       onOpenChange={(val) => onOpenChange?.(val)}
       trigger={<ActionButton icon={<BiLayout size={18} />} />}
       triggerProps={null}
-      title={"ترتیب بنرها"}
+      title={"ترتیب بنرهای تبلیغاتی"}
       confirmText={"ثبت تغیرات"}
       size="3xl"
       icon={<BiLayout />}
       isActiveFooter={false}
     >
-      {/* <div className="flex items-center gap-1 mx-auto mb-8 my-6">
+      <div className="flex items-center gap-1 mx-auto mb-8 my-6">
         {items
           .slice()
           .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
           .map((slider) => {
-            const textColor = !slider.image_url
-              ? !slider.is_dark
-                ? "text-black"
-                : "text-white"
-              : "text-white";
+            const textColor = "text-white";
 
             return (
               <div
@@ -70,7 +67,7 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
                 onDragStart={() => handleDragStart(slider.id ?? 1)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(slider.id ?? 1)}
-                className={`relative w-28 h-28 rounded-xl overflow-hidden select-none flex items-end cursor-grab border-3 border-gray-200 hover:border-sky-500 transition-all ${
+                className={`relative w-36 h-20 rounded-xl overflow-hidden select-none flex items-end cursor-grab border-3 border-gray-200 hover:border-sky-500 transition-all ${
                   !slider.image_url ? `rounded-2xl` : "bg-black/80"
                 }`}
                 style={{
@@ -99,7 +96,7 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
               </div>
             );
           })}
-      </div> */}
+      </div>
     </BaseModal>
   );
 };

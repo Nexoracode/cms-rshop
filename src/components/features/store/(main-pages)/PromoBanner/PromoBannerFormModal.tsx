@@ -37,7 +37,6 @@ const initialPromoBannerForm = {
   is_active: true,
   is_closable: true,
 
-  priority: 10,
   display_duration: 10,
 
   start_date: null as string | null,
@@ -194,7 +193,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
 
         {/* عنوان و توضیحات */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <NumberInput
+          {/* <NumberInput
             label="اولویت نمایش"
             placeholder="10"
             value={form.priority}
@@ -204,7 +203,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             suffix="(عدد کمتر = اولویت بالاتر)"
             isRequired
             errorMessage={errors.priority}
-          />
+          /> */}
           <NumberInput
             label="مدت نمایش خودکار"
             placeholder="10"
@@ -216,24 +215,24 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             isRequired
             errorMessage={errors.display_duration}
           />
-        </div>
 
-        {/* بازه زمانی اعتبار */}
-        <IsoDatePicker
-          label="بازه اعتبار بنر"
-          enableRange
-          valueIsoRange={{ start: form.start_date, end: form.end_date }}
-          onChangeIsoRange={(range) => {
-            handleMultipleFieldsChange({
-              start_date: range?.start || null,
-              end_date: range?.end || null,
-            });
-          }}
-          showMonthAndYearPickers
-          className="w-full"
-          isRequired
-          errorMessage={errors.start_date}
-        />
+          {/* بازه زمانی اعتبار */}
+          <IsoDatePicker
+            label="بازه اعتبار بنر"
+            enableRange
+            valueIsoRange={{ start: form.start_date, end: form.end_date }}
+            onChangeIsoRange={(range) => {
+              handleMultipleFieldsChange({
+                start_date: range?.start || null,
+                end_date: range?.end || null,
+              });
+            }}
+            showMonthAndYearPickers
+            className="w-full"
+            isRequired
+            errorMessage={errors.start_date}
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* وضعیت نمایش */}
