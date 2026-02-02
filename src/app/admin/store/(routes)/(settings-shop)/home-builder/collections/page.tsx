@@ -8,7 +8,7 @@ import { HiOutlineCollection } from "react-icons/hi";
 const Collections = () => {
   const { data: collections, isLoading: isLoading } = useGetHomeSections();
 
-  const isExistItems = collections?.data?.length;
+  const isExistItems = !!collections?.data?.length;
 
   const specialProducts  = collections?.data?.filter((coll:any) => coll.section_type === "special_products")
 

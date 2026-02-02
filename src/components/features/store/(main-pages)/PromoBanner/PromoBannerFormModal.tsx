@@ -133,7 +133,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
         () => updateBanner({ id: bannerId, data: payload }),
         {
           resetForm,
-        }
+        },
       );
     } else {
       return handleMutation(() => createBanner(payload), { resetForm });
@@ -159,6 +159,14 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
       title={bannerId ? "ویرایش بنر تبلیغاتی" : "افزودن بنر تبلیغاتی جدید"}
       confirmText={bannerId ? "بروزرسانی" : "ایجاد بنر"}
       onConfirm={handleSubmit}
+      onCancel={() => {
+        !bannerId
+          ? resetForm()
+          : setForm({
+              ...initialPromoBannerForm,
+              ...defaultValues,
+            });
+      }}
       size="xl"
       icon={<TfiLayoutMediaOverlay />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
@@ -300,6 +308,7 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
                     handleFieldChange("background_color", bgColor)
                   }
                   widthFull
+                   
                 />
                 <ColorPickerField
                   label="رنگ متن"

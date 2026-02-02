@@ -86,6 +86,9 @@ const BaseModal: React.FC<BaseModalProps> = ({
       {/* ✅ Modal */}
       <Modal
         dir="rtl"
+        onClose={() => {
+          onCancel?.()
+        }}
         isOpen={isOpen}
         onOpenChange={handleOpenChange}
         placement={placement}
