@@ -6,7 +6,6 @@ import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { BiLayout } from "react-icons/bi";
 import Image from "next/image";
 import { handleDropHelper } from "@/core/utils/handleDropHelper";
-import { useUpdateHeroOrder } from "@/core/hooks/api/adminHome/useHeroSlider";
 import { useUpdatePromoBannerOrder } from "@/core/hooks/api/adminHome/usePromoBanner";
 
 type PromoBannerLayoutModalProps = {

@@ -54,7 +54,7 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
       isActiveFooter={false}
     >
       <div className="flex items-center gap-1 mx-auto mb-8 my-6">
-        {sliders
+        {items
           .slice()
           .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
           .map((slider) => {
