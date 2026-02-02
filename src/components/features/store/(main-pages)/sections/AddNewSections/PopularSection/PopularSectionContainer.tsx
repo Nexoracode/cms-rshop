@@ -7,6 +7,8 @@ import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import StaticSectionModal from "../StaticSectionModal";
 import { GiHeartBottle } from "react-icons/gi";
+import DeleteButton from "@/components/shared/DeleteButton";
+import { useDeleteHomeSection } from "@/core/hooks/api/adminHome/useHomeSections";
 
 type PopularSectionContainer = {
   mostPopular: any;
@@ -16,6 +18,7 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
   mostPopular,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { mutate: deleteHomeSection } = useDeleteHomeSection();
 
   return (
     <>
@@ -30,14 +33,21 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
       {mostPopular ? (
         <SectionTemplate
           section={mostPopular}
-          title="محبوب ترین محصولات"
+          title={mostPopular?.title}
           children={
-            <ActionButton
-              icon={<TbEdit className="text-gray-700" size={18} />}
-              onClick={() => {
-                setIsOpen(true);
-              }}
-            />
+            <div className="flex items-center gap-2">
+              <DeleteButton
+                onDelete={() => {
+                  deleteHomeSection(mostPopular?.id);
+                }}
+              />
+              <ActionButton
+                icon={<TbEdit className="text-gray-700" size={18} />}
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+              />
+            </div>
           }
         />
       ) : (

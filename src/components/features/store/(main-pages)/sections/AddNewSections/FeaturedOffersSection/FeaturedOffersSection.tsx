@@ -9,6 +9,8 @@ import AddFeaturedOfferSection from "./AddFeaturedOfferSection";
 import { useState } from "react";
 import { LuPercent } from "react-icons/lu";
 import StaticSectionModal from "../StaticSectionModal";
+import { useDeleteHomeSection } from "@/core/hooks/api/adminHome/useHomeSections";
+import DeleteButton from "@/components/shared/DeleteButton";
 
 type SectionIsFeaturedProps = {
   featuredSection?: any;
@@ -18,6 +20,7 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
   featuredSection,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { mutate: deleteHomeSection } = useDeleteHomeSection();
 
   return (
     <div>
@@ -33,7 +36,12 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
             sectionType={"featured"}
           />
 
-          <div className="hover-reveal-child">
+          <div className="hover-reveal-child flex items-center gap-2">
+            <DeleteButton
+              onDelete={() => {
+                deleteHomeSection(featuredSection?.id);
+              }}
+            />
             <ActionButton
               icon={<TbEdit className="text-gray-700" size={18} />}
               onClick={() => setIsOpen(true)}
