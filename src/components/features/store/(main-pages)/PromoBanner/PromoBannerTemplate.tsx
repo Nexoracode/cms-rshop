@@ -6,12 +6,17 @@ import PromoBannerFormModal from "./PromoBannerFormModal";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeletePromoBanner } from "@/core/hooks/api/adminHome/usePromoBanner";
 import Image from "next/image";
+import PromoBannerLayoutModal from "./PromoBannerLayoutModal";
 
 type PromoBannerProps = {
   banner: any;
+  banners: any;
 };
 
-const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
+const PromoBannerTemplate: React.FC<PromoBannerProps> = ({
+  banner,
+  banners,
+}) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { mutate: deletePromo } = useDeletePromoBanner();
 
@@ -41,11 +46,10 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({ banner }) => {
 
       <div className="hover-reveal-parent flex flex-col md:flex-row items-center justify-between p-6 md:p-10 h-full">
         <div
-          className={
-            `hover-reveal-child !left-14 flex items-center gap-2 rounded-lg px-2 py-1.5 bg-gray-700`
-          }
+          className={`hover-reveal-child !left-14 flex items-center gap-2 rounded-lg px-2 py-1.5 bg-gray-700`}
           onClick={(e) => e.stopPropagation()}
         >
+          <PromoBannerLayoutModal banners={banners} />
           <PromoBannerFormModal />
           <DeleteButton onDelete={() => deletePromo(id)} />
         </div>

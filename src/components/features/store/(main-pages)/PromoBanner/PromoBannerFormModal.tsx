@@ -19,6 +19,8 @@ import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import NumberInput from "@/components/ui/inputs/NumberInput"; // کامپوننت جدید عددی
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import { promoBannerValidation } from "./promo-bnanner-validation";
+import { LuPlus } from "react-icons/lu";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
 
 const initialPromoBannerForm = {
   title: "",
@@ -148,14 +150,8 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
-      triggerProps={
-        bannerId
-          ? null
-          : {
-              title: "+ افزودن بنر تبلیغاتی",
-              className: "bg-secondary-light text-secondary",
-            }
-      }
+      triggerProps={null}
+      trigger={bannerId ? null : <ActionButton icon={<LuPlus size={18} />} />}
       title={bannerId ? "ویرایش بنر تبلیغاتی" : "افزودن بنر تبلیغاتی جدید"}
       confirmText={bannerId ? "بروزرسانی" : "ایجاد بنر"}
       onConfirm={handleSubmit}
@@ -308,7 +304,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
                     handleFieldChange("background_color", bgColor)
                   }
                   widthFull
-                   
                 />
                 <ColorPickerField
                   label="رنگ متن"
