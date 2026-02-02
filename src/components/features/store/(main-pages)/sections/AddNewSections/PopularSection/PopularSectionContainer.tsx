@@ -20,7 +20,7 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: deleteHomeSection } = useDeleteHomeSection();
 
-  return (
+  return mostPopular ? (
     <>
       <StaticSectionModal
         title="محبوب ترین ها"
@@ -30,30 +30,28 @@ const PopularSectionContainer: React.FC<PopularSectionContainer> = ({
         defaultValues={mostPopular}
         sectionType={"most_popular"}
       />
-      {mostPopular ? (
-        <SectionTemplate
-          section={mostPopular}
-          title={mostPopular?.title}
-          children={
-            <div className="flex items-center gap-2">
-              <DeleteButton
-                onDelete={() => {
-                  deleteHomeSection(mostPopular?.id);
-                }}
-              />
-              <ActionButton
-                icon={<TbEdit className="text-gray-700" size={18} />}
-                onClick={() => {
-                  setIsOpen(true);
-                }}
-              />
-            </div>
-          }
-        />
-      ) : (
-        <AddNewPopularSection />
-      )}
+      <SectionTemplate
+        section={mostPopular}
+        title={mostPopular?.title}
+        children={
+          <div className="flex items-center gap-2">
+            <DeleteButton
+              onDelete={() => {
+                deleteHomeSection(mostPopular?.id);
+              }}
+            />
+            <ActionButton
+              icon={<TbEdit className="text-gray-700" size={18} />}
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            />
+          </div>
+        }
+      />
     </>
+  ) : (
+    <AddNewPopularSection />
   );
 };
 
