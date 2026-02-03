@@ -32,7 +32,7 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="flex flex-row gap-2 bg-white h-[100vh] py-12 px-2">
+    <div className="flex flex-row gap-2 bg-white h-[100vh] py-6 px-2">
       <ConversationList conversations={support?.data?.items} />
       <ConversationDetail />
     </div>
