@@ -12,6 +12,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import ConversationList from "@/components/features/store/support/ConversationList";
 import ConversationDetail from "@/components/features/store/support/ConversationDetail";
+import { TfiFullscreen } from "react-icons/tfi";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -32,8 +33,10 @@ const Products = () => {
       headerProps={{
         title: "پشتیبانی",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
-        showIconInActionSlot: true,
         className: "p-2 mb-4",
+        btnIcon: <TfiFullscreen />,
+        textBtn: "تمام صفحه",
+        redirect: "/chat"
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
