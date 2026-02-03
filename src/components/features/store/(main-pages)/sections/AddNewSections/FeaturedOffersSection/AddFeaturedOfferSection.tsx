@@ -1,3 +1,5 @@
+"use client"
+
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import AddSectionCard from "../../../shared/AddSectionCard";
 import StaticSectionModal from "../StaticSectionModal";

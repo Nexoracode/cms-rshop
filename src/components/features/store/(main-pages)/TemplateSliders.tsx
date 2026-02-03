@@ -44,9 +44,10 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
     const findedOther = sections.filter(
       (section) => section.section_type !== "featured",
     );
+    console.log("findedFeatured => ", findedFeatured, " => ", allSections);
     findedOther && setOtherSection(findedOther);
-    findedFeatured && setFeaturedSection(findedFeatured);
-  }, [sections]);
+    setFeaturedSection(findedFeatured);
+  }, [sections, allSections]);
 
   return (
     <div className="flex flex-col gap-6 select-none">
