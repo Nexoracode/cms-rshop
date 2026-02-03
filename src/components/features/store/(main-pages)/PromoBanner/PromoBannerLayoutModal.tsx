@@ -19,23 +19,18 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
   onOpenChange,
   banners,
 }) => {
-  const [items, setItems] = useState(banners);
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const reorder = useUpdatePromoBannerOrder();
-
-  useEffect(() => {
-    setItems(banners);
-  }, [banners]);
 
   const handleDragStart = (id: number) => setDraggingId(id);
 
   const handleDrop = async (overId: number) => {
     handleDropHelper(
-      items,
+      banners,
       draggingId,
       overId,
       (payload) => reorder.mutateAsync(payload),
-      setItems,
+      () => {},
       setDraggingId,
     );
   };
@@ -53,7 +48,7 @@ const PromoBannerLayoutModal: React.FC<PromoBannerLayoutModalProps> = ({
       isActiveFooter={false}
     >
       <div className="flex items-center gap-1 mx-auto mb-8 my-6">
-        {items
+        {banners
           .slice()
           .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
           .map((slider) => {

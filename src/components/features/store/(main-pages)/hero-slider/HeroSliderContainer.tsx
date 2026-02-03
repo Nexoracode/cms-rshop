@@ -1,3 +1,5 @@
+"use client"
+
 import Slider from "@/components/shared/Slider";
 import HeroTemplate from "./HeroTemplate";
 import { HeroSlider } from "./hero-slider.types";
@@ -20,7 +22,7 @@ const HeroSliderContainer: React.FC<Props> = ({ sliders = [], layoutType }) => {
           items={sortedSliders}
           className="w-full"
           renderItem={(slider) => (
-            <HeroTemplate key={slider.id} slider={slider} sliders={sortedSliders} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
+            <HeroTemplate slider={slider} sliders={sortedSliders} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
           )}
         />
       ) : (

@@ -37,7 +37,7 @@ const HeroTemplate: React.FC<HeroTemplateProps> = ({
 
   return (
     <div
-      key={slider.id}
+      //key={slider.id}
       className={`absolute inset-0 cursor-pointer ${className}`}
       onClick={() => setIsEditOpen(true)}
     >

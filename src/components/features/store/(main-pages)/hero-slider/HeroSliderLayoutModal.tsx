@@ -20,24 +20,19 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
   onOpenChange,
   sliders,
 }) => {
-  const [items, setItems] = useState(sliders);
   const [draggingId, setDraggingId] = useState<number | null>(null);
   const reorder = useUpdateHeroOrder();
-
-  useEffect(() => {
-    setItems(sliders);
-  }, [sliders]);
 
   const handleDragStart = (id: number) => setDraggingId(id);
 
   const handleDrop = async (overId: number) => {
     handleDropHelper(
-      items,
+      sliders,
       draggingId,
       overId,
       (payload) => reorder.mutateAsync(payload),
-      setItems,
-      setDraggingId
+      () => {},
+      setDraggingId,
     );
   };
 
@@ -54,7 +49,7 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
       isActiveFooter={false}
     >
       <div className="flex items-center gap-1 mx-auto mb-8 my-6">
-        {items
+        {sliders
           .slice()
           .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
           .map((slider) => {
