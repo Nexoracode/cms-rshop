@@ -5,10 +5,10 @@ import BrandCard from "@/components/features/products/brands/BrandCard";
 import BrandFilters from "@/components/features/products/brands/BrandFilters";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { BrandSortBy, useGetBrands } from "@/core/hooks/api/useBrand";
-import { TbBrandArc } from "react-icons/tb";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import { PiResizeBold } from "react-icons/pi";
 
 const SizeGuidePage = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -44,8 +44,8 @@ const SizeGuidePage = () => {
         <UnifiedCard
           searchFilter={<BrandFilters />}
           headerProps={{
-            title: "مدیریت برندها",
-            icon: <TbBrandArc className="text-2xl" />,
+            title: "مدیریت راهنمای سایز",
+            icon: <PiResizeBold className="text-2xl" />,
             children: <AddNewBrandModal />,
           }}
           isLoading={isLoading}

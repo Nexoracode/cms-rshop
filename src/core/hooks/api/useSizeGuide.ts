@@ -1,5 +1,33 @@
+import { ListQueryParams } from "@/core/types";
+import { buildListQuery } from "@/core/utils/buildListQuery";
 import { fetcher } from "@/core/utils/fetcher";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+export const useGetSizeGuide = ({
+  page = 1,
+  sortBy,
+  filter,
+  search,
+  limit = 10,
+}: ListQueryParams) => {
+  return useQuery({
+    queryKey: ["all-size-guide", page, sortBy, filter, search, limit],
+    queryFn: () => {
+      const qs = buildListQuery({
+        page,
+        limit,
+        sortBy,
+        search,
+        filter,
+      });
+
+      return fetcher({
+        route: `/orders/all?${qs}`,
+        isActiveToast: false,
+      });
+    },
+  });
+};
 
 export const useCreateSizeGuid = () => {
   return useMutation({
@@ -10,11 +38,9 @@ export const useCreateSizeGuid = () => {
     }) => {
       return fetcher({
         route: "/helpers",
-        method: "POST",
+        method: "GET",
         body: data,
-        isActiveToast: true,
-        successText: "راهنمای سایز با موفقیت ایجاد شد",
-        loadingText: "در حال ایجاد راهنمای سایز",
+        isActiveToast: false,
       });
     },
   });
@@ -48,6 +74,24 @@ export const useSizeGuideUpload = () => {
         body: data,
         isActiveToast: false,
       });
+    },
+  });
+};
+
+export const useDeleteSizeGuide = (id: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () =>
+      fetcher({
+        route: `/helpers/${id}`,
+        method: "DELETE",
+        successText: "راهنمای سایز با موفقیت حذف شد",
+        loadingText: "در حال حذف راهنما سایز",
+        isActiveToast: true,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-size-guide"] });
     },
   });
 };
