@@ -12,14 +12,6 @@ const OrdersFilter = () => {
           title: "بسته بندی",
           href: "/admin/store/gift-wrapping",
         },
-        {
-          title: "پروموشن‌ها",
-          href: "/admin/store/promotions",
-        },
-        {
-          title: "مشتریان",
-          href: "/admin/store/customers",
-        },
       ]}
       searchPlaceholder="جستجو کد سفارش، نام مشتری یا محصول..."
       showSearchBar

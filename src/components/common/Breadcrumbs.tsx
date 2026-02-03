@@ -35,6 +35,7 @@ const breadcrumbMap: Record<string, string> = {
 
   // store pages
   categories: "دسته‌بندی‌ها",
+  "size-guide": "راهنما سایز",
   "gift-wrapping": "بسته بندی ها",
   "card-to-card": "کارت به کارت",
   support: "پشتیبانی",

@@ -9,9 +9,10 @@ const ProductsFilter = () => {
     <SearchFilterCard
       searchPlaceholder="جستجو در محصولات..."
       relatedPages={[
-        { title: "تنوع محصولات", href: "/admin/products/variants" },
-        { title: "دسته‌بندی‌ها", href: "/admin/products/categories" },
-        { title: "برندها", href: "/admin/products/brands" },
+        { title: "برند", href: "/admin/products/brands" },
+        { title: "دسته‌بندی‌", href: "/admin/products/categories" },
+        { title: "راهنما سایز", href: "/admin/products/size-guide" },
+        { title: "تنوع محصول", href: "/admin/products/variants" },
       ]}
       showSearchBar
     >
