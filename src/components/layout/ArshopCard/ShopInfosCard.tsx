@@ -10,20 +10,20 @@ import { GoCommentDiscussion } from "react-icons/go";
 import { GrAnnounce } from "react-icons/gr";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { useLogout } from "@/core/hooks/api/auth/auth";
 
 const ShopInfosCard = () => {
   const router = useRouter();
+  const { mutate: logout } = useLogout();
 
   const logoutHandler = async () => {
-    const res = await fetch("/api/auth/logout", {
-      method: "POST",
+    logout(undefined, {
+      onSuccess: (res) => {
+        if (res.ok) {
+          router.push("/signin");
+        }
+      },
     });
-
-    if (res.status === 200) {
-      toast.success("با موفقیت از حساب خود خارج شدید.")
-      router.push("/signin");
-    }
   };
 
   return (
@@ -38,7 +38,9 @@ const ShopInfosCard = () => {
                 className="w-20 h-20 object-contain border-2 bg-[rgba(255,255,255,.8)] rounded-2xl"
               />
               <div>
-                <p className="text-lg font-[Dana-Bold] text-gray-700">فروشگاه آرشاپ</p>
+                <p className="text-lg font-[Dana-Bold] text-gray-700">
+                  فروشگاه آرشاپ
+                </p>
 
                 <div className="mt-2 rounded-xl flex justify-start px-2 w-fit items-center gap-2 text-green-700">
                   <span className="relative flex size-2.5">
