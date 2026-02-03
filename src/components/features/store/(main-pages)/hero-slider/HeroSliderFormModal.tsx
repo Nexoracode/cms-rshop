@@ -72,11 +72,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
 
   useEffect(() => {
     if (!defaultValues) return;
-
-    setForm({
-      ...initialSliderForm,
-      ...defaultValues,
-    });
+    setFormHandler();
   }, [defaultValues]);
 
   useEffect(() => {
@@ -132,7 +128,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
         () => updateSlider({ id: sliderId, data: payload }),
         {
           resetForm,
-        }
+        },
       );
     } else {
       return handleMutation(() => createSlider(payload), {
@@ -145,16 +141,22 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
     reset();
   };
 
+  const setFormHandler = () => {
+    setForm({
+      ...initialSliderForm,
+      ...defaultValues,
+    });
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
-      trigger={
-        sliderId ? null : (
-          <ActionButton icon={<LuPlus size={18} />} />
-        )
-      }
+      trigger={sliderId ? null : <ActionButton icon={<LuPlus size={18} />} />}
       triggerProps={null}
+      onCancel={() => {
+        !sliderId ? resetForm() : setFormHandler();
+      }}
       title={sliderId ? "ویرایش اسلایدر" : "افزودن اسلایدر جدید"}
       confirmText={sliderId ? "ویرایش اسلایدر" : "ایجاد اسلایدر"}
       onConfirm={handleSubmit}

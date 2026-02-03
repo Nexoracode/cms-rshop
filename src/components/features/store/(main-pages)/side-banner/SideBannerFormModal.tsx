@@ -134,7 +134,7 @@ const SideBannerFormModal: React.FC<Props> = ({
         () => updateBanner({ data: payload, id: bannerId ?? 0 }),
         {
           resetForm,
-        }
+        },
       );
     } else {
       return handleMutation(() => createBanner(payload), {
@@ -149,6 +149,13 @@ const SideBannerFormModal: React.FC<Props> = ({
     setShowBgColor(false);
   };
 
+  const setFormHandler = () => {
+    setForm({
+      ...initialForm,
+      ...defaultValues,
+    });
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -161,6 +168,9 @@ const SideBannerFormModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
+      onCancel={() => {
+        !bannerId ? resetForm() : setFormHandler();
+      }}
       title={bannerId ? "ویرایش بنر جانبی" : "افزودن بنر جانبی جدید"}
       confirmText={bannerId ? "ویرایش بنر" : "ایجاد بنر"}
       onConfirm={handleSubmit}

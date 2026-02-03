@@ -128,6 +128,17 @@ const SpecialSectionModal: React.FC<Props> = ({
     { key: "list", title: "لیستی" },
   ];
 
+  const resetForm = () => {
+    reset();
+  };
+
+  const setFormHandler = () => {
+    setForm({
+      ...initialForm,
+      ...defaultValues,
+    });
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -140,6 +151,9 @@ const SpecialSectionModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary",
             }
       }
+      onCancel={() => {
+        !defaultValues ? resetForm() : setFormHandler();
+      }}
       title={defaultValues?.id ? "ویرایش بخش" : "افزودن بخش جدید"}
       confirmText={defaultValues?.id ? "ویرایش بخش" : "ایجاد بخش"}
       onConfirm={handleSubmit}

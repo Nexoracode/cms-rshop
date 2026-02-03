@@ -78,8 +78,15 @@ const StaticSectionModal: React.FC<Props> = ({
   useEffect(() => {
     if (!defaultValues) return;
 
-    const { view_all_link, products_limit, is_active, category, title, slug, section_type } =
-      defaultValues;
+    const {
+      view_all_link,
+      products_limit,
+      is_active,
+      category,
+      title,
+      slug,
+      section_type,
+    } = defaultValues;
 
     setForm({
       ...initialForm,
@@ -133,6 +140,13 @@ const StaticSectionModal: React.FC<Props> = ({
     reset();
   };
 
+  const setFormHandler = () => {
+    setForm({
+      ...initialForm,
+      ...defaultValues,
+    });
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -145,6 +159,9 @@ const StaticSectionModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary",
             }
       }
+      onCancel={() => {
+        !defaultValues ? resetForm() : setFormHandler();
+      }}
       title={defaultValues?.id ? `ویرایش ${title}` : `افزودن ${title}`}
       confirmText={defaultValues?.id ? "ویرایش" : "ایجاد"}
       onConfirm={handleSubmit}
