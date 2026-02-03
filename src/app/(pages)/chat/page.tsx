@@ -34,7 +34,7 @@ const ChatPage = () => {
   return (
     <div className="flex flex-row gap-2 bg-white h-[100vh] py-6 px-2">
       <ConversationList conversations={support?.data?.items} />
-      <ConversationDetail />
+      <ConversationDetail showBackBtn/>
     </div>
   );
 };

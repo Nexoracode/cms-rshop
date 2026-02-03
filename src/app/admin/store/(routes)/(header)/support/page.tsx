@@ -34,7 +34,7 @@ const Products = () => {
         title: "پشتیبانی",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
         className: "p-2 mb-4",
-        btnIcon: <TfiFullscreen />,
+        btnIcon: <TfiFullscreen size={16}/>,
         textBtn: "تمام صفحه",
         redirect: "/chat"
       }}

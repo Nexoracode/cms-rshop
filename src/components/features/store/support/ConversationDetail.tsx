@@ -16,6 +16,8 @@ import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 import Link from "next/link";
 import { SiOpencollective, SiTicktick } from "react-icons/si";
 import { IoCloseCircle } from "react-icons/io5";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { BiArrowBack } from "react-icons/bi";
 
 // ایموجی‌های کاملاً بدون تکرار
 const EMOJI_CATEGORIES: Record<string, string[]> = {
@@ -134,7 +136,13 @@ const EMOJI_CATEGORIES: Record<string, string[]> = {
   ],
 };
 
-const ConversationDetail: React.FC = () => {
+type ConversationDetailProps = {
+  showBackBtn?: boolean;
+};
+
+const ConversationDetail: React.FC<ConversationDetailProps> = ({
+  showBackBtn = false,
+}) => {
   const searchParams = useSearchParams();
   const chatId = Number(searchParams.get("chat-id"));
 
@@ -194,11 +202,21 @@ const ConversationDetail: React.FC = () => {
     return (
       <div className="w-full relative flex flex-col min-h-[73vh] h-full overflow-hidden">
         {/* هدر */}
-        <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
-          <p className="text-lg text-gray-800 truncate">موضوع تیکت</p>
-          <p className="text-xs text-gray-500 mt-1">
-            پشتیبانی • تیکت #{chatId}
-          </p>
+        <div className="p-4 pt-0 bg border-b border-gray-100 bg-white flex items-center justify-between">
+          <div>
+            <p className="text-lg text-gray-800 truncate">موضوع تیکت</p>
+            <p className="text-xs text-gray-500 mt-1">
+              پشتیبانی • تیکت #{chatId}
+            </p>
+          </div>
+          {showBackBtn ? (
+            <ActionButton
+              route="/admin/store/support"
+              icon={<BiArrowBack size={16} className="text-gray-700" />}
+            />
+          ) : (
+            ""
+          )}
         </div>
 
         {/* پیام‌ها */}
@@ -249,7 +267,7 @@ const ConversationDetail: React.FC = () => {
   const conv = data.data;
 
   return (
-    <div className="w-full relative flex flex-col min-h-[73vh] overflow-hidden">
+    <div className={`w-full relative flex flex-col ${showBackBtn ? "max-h-[100vh]" : "h-[73vh]"} overflow-hidden`}>
       <div className="flex items-center justify-between p-4 pb-3 bg border-b border-gray-100 bg-white">
         <div>
           <p className="text-[14px] text-gray-700 truncate">{conv.subject}</p>
@@ -269,27 +287,39 @@ const ConversationDetail: React.FC = () => {
             <p className="text-xs text-gray-500">تیکت #{chatId}</p>
           </div>
         </div>
-        {conv?.product ? (
-          <Link
-            href={`/admin/products/create?edit_id=${conv.product.id}&type=infos`}
-          >
-            <img
-              src={conv.product.image}
-              alt={conv.product.title}
-              className="w-10 h-10 object-cover rounded-md"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = "/images/logo.png";
-              }}
+        <div className="flex items-center gap-2">
+          {conv?.product ? (
+            <Link
+              href={`/admin/products/create?edit_id=${conv.product.id}&type=infos`}
+              target="_blank"
+            >
+              <img
+                src={conv.product.image}
+                alt={conv.product.title}
+                className="w-10 h-10 object-cover rounded-md"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    "/images/logo.png";
+                }}
+              />
+            </Link>
+          ) : (
+            ""
+          )}
+          {showBackBtn ? (
+            <ActionButton
+              route="/admin/store/support"
+              icon={<BiArrowBack size={16} className="text-gray-700" />}
             />
-          </Link>
-        ) : (
-          ""
-        )}
+          ) : (
+            ""
+          )}
+        </div>
       </div>
 
       {/* پیام‌ها */}
       <div className="flex-1 overflow-y-auto p-5 space-y-5">
-        {conv.messages.map((msg: any) => {
+        {conv?.messages?.map((msg: any) => {
           const isAdmin =
             msg.sender?.role === "admin" || msg.sender?.role === "super_admin";
 
@@ -310,7 +340,9 @@ const ConversationDetail: React.FC = () => {
                       : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm"
                   }`}
                 >
-                  <p className="text-sm leading-relaxed break-words">{msg.content}</p>
+                  <p className="text-sm leading-relaxed break-words">
+                    {msg.content}
+                  </p>
                   <span
                     className={`block text-xs mt-2 ${
                       isAdmin ? "text-blue-100" : "text-gray-400"
@@ -346,25 +378,27 @@ const ConversationDetail: React.FC = () => {
 
             <PopoverContent className="w-72 px-0 py-3 max-h-52">
               <div className="h-52 overflow-y-auto pr-2 pl-4">
-                {Object.entries(EMOJI_CATEGORIES).map(([category, emojis]) => (
-                  <div key={category} className="mb-5 last:mb-0">
-                    <h4 className="text-xs font-semibold text-gray-600 mb-2 px-1">
-                      {category}
-                    </h4>
-                    <div className="grid grid-cols-6 gap-2.5">
-                      {emojis.map((emoji) => (
-                        <button
-                          key={emoji} // key منحصر به فرد
-                          onClick={() => handleEmojiClick(emoji)}
-                          className="p-1 pb-0 hover:bg-gray-100 rounded-lg transition-all hover:scale-110 text-xl"
-                          aria-label={emoji}
-                        >
-                          {emoji}
-                        </button>
-                      ))}
+                {Object?.entries(EMOJI_CATEGORIES)?.map(
+                  ([category, emojis]) => (
+                    <div key={category} className="mb-5 last:mb-0">
+                      <h4 className="text-xs font-semibold text-gray-600 mb-2 px-1">
+                        {category}
+                      </h4>
+                      <div className="grid grid-cols-6 gap-2.5">
+                        {emojis.map((emoji) => (
+                          <button
+                            key={emoji} // key منحصر به فرد
+                            onClick={() => handleEmojiClick(emoji)}
+                            className="p-1 pb-0 hover:bg-gray-100 rounded-lg transition-all hover:scale-110 text-xl"
+                            aria-label={emoji}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             </PopoverContent>
           </Popover>

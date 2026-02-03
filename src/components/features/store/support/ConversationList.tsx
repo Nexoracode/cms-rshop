@@ -32,7 +32,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
 
   return (
     <aside className="min-w-64 max-w-64 border-l min-h-[73vh] overflow-y-auto rounded-md p-1 flex flex-col">
-      {conversations.map((conv, index) => {
+      {conversations?.map((conv, index) => {
         const selectedId = Number(searchParams.get("chat-id"));
         const isSelected = selectedId === conv.id;
 
