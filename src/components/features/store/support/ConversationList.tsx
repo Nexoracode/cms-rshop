@@ -2,21 +2,14 @@
 
 import React from "react";
 import { toPersianUTC } from "@/core/utils/date";
-import { LuPackage, LuUser } from "react-icons/lu";
+import { LuPackage } from "react-icons/lu";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FaOpencart } from "react-icons/fa";
-import { FaEnvelopeOpen } from "react-icons/fa6";
 import {
-  SiClockify,
-  SiOpenaigym,
-  SiOpenbsd,
   SiOpencollective,
   SiTicktick,
 } from "react-icons/si";
 import { IoCloseCircle } from "react-icons/io5";
 import {
-  BsArrow90DegDown,
-  BsArrow90DegLeft,
   BsArrow90DegRight,
 } from "react-icons/bs";
 
@@ -38,7 +31,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   };
 
   return (
-    <aside className="min-w-64 max-w-64 border-l max-h-[60vh] overflow-y-auto rounded-md p-1 flex flex-col">
+    <aside className="min-w-64 max-w-64 border-l min-h-[73vh] overflow-y-auto rounded-md p-1 flex flex-col">
       {conversations.map((conv, index) => {
         const selectedId = Number(searchParams.get("chat-id"));
         const isSelected = selectedId === conv.id;

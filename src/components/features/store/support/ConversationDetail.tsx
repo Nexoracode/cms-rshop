@@ -7,7 +7,10 @@ import {
 } from "@/core/hooks/api/support/useSupport";
 import { toPersianUTC } from "@/core/utils/date";
 import { useState, useRef, useEffect } from "react";
-import { HiOutlineChatBubbleLeftRight, HiOutlinePaperAirplane } from "react-icons/hi2";
+import {
+  HiOutlineChatBubbleLeftRight,
+  HiOutlinePaperAirplane,
+} from "react-icons/hi2";
 import { BsEmojiSmile } from "react-icons/bs";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 import Link from "next/link";
@@ -189,77 +192,73 @@ const ConversationDetail: React.FC = () => {
 
   if (!chatId || !data?.data) {
     return (
-        <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
-      {/* هدر */}
-     <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
-        <p className="text-lg text-gray-800 truncate">
-          موضوع تیکت
-        </p>
-        <p className="text-xs text-gray-500 mt-1">پشتیبانی • تیکت #{chatId}</p>
-      </div>
+      <div className="w-full relative flex flex-col min-h-[73vh] h-full overflow-hidden">
+        {/* هدر */}
+        <div className="p-4 pt-0 bg border-b border-gray-100 bg-white">
+          <p className="text-lg text-gray-800 truncate">موضوع تیکت</p>
+          <p className="text-xs text-gray-500 mt-1">
+            پشتیبانی • تیکت #{chatId}
+          </p>
+        </div>
 
-      {/* پیام‌ها */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center text-gray-400">
-        {/* آیکون بزرگ */}
-        <HiOutlineChatBubbleLeftRight className="text-6xl text-gray-300" />
+        {/* پیام‌ها */}
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center text-gray-400">
+          {/* آیکون بزرگ */}
+          <HiOutlineChatBubbleLeftRight className="text-6xl text-gray-300" />
 
-        {/* متن راهنمای اصلی */}
-        <p className="text-lg font-semibold">
-          برای شروع، یک گفت‌وگو را انتخاب کنید
-        </p>
+          {/* متن راهنمای اصلی */}
+          <p className="text-lg font-semibold">
+            برای شروع، یک گفت‌وگو را انتخاب کنید
+          </p>
 
-        {/* متن توضیحی کوچک‌تر */}
-        <p className="text-sm text-gray-500 max-w-xs">
-          پس از انتخاب یک چت، پیام‌ها و جزئیات آن در اینجا نمایش داده می‌شوند.
-        </p>
+          {/* متن توضیحی کوچک‌تر */}
+          <p className="text-sm text-gray-500 max-w-xs">
+            پس از انتخاب یک چت، پیام‌ها و جزئیات آن در اینجا نمایش داده می‌شوند.
+          </p>
 
-        {/* می‌توان یک تصویر یا آیکون اضافی برای جذابیت اضافه کرد */}
-      </div>
+          {/* می‌توان یک تصویر یا آیکون اضافی برای جذابیت اضافه کرد */}
+        </div>
 
+        <div className="p-4 pt-3 bg-white border-t border-gray-100">
+          <div className="flex items-end gap-3">
+            <button
+              className="p-2.5 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
+              aria-label="انتخاب ایموجی"
+            >
+              <BsEmojiSmile size={22} />
+            </button>
 
-      <div className="p-4 pt-3 bg-white border-t border-gray-100">
-        <div className="flex items-end gap-3">
-             
-          <button
-            className="p-2.5 rounded-full hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-800"
-            aria-label="انتخاب ایموجی"
-          >
-            <BsEmojiSmile size={22} />
-          </button>
+            <div className="flex-1">
+              <div className="w-full px-5 py-2.5 text-gray-500 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400">
+                پیام خود را بنویسید...
+              </div>
+            </div>
 
-          <div className="flex-1">
-            <div
-              className="w-full px-5 py-2.5 text-gray-500 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all placeholder-gray-400"
-            >پیام خود را بنویسید...</div>
+            <button
+              onClick={handleSend}
+              className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white shadow-md transition-all hover:shadow-xl active:scale-95"
+            >
+              <HiOutlinePaperAirplane size={22} className="rotate-[-45deg]" />
+            </button>
           </div>
-        
-          <button
-            onClick={handleSend}
-            className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white shadow-md transition-all hover:shadow-xl active:scale-95"            
-          >
-            <HiOutlinePaperAirplane size={22} className="rotate-[-45deg]" />
-          </button>
         </div>
       </div>
-    </div>
     );
   }
 
-  const conv = data.data
-  
-  return (
-    <div className="w-full relative flex flex-col h-[60vh] overflow-hidden">
+  const conv = data.data;
 
+  return (
+    <div className="w-full relative flex flex-col min-h-[73vh] overflow-hidden">
       <div className="flex items-center justify-between p-4 pb-3 bg border-b border-gray-100 bg-white">
         <div>
-          <p className="text-[14px] text-gray-700 truncate">
-            {conv.subject}
-          </p>
+          <p className="text-[14px] text-gray-700 truncate">{conv.subject}</p>
           <div className="flex items-center gap-2 mt-2.5">
             <div>
-              {conv.status === "open" || conv.status === "waiting" && (
-                <SiOpencollective size={16} className="text-orange-400" />
-              )}
+              {conv.status === "open" ||
+                (conv.status === "waiting" && (
+                  <SiOpencollective size={16} className="text-orange-400" />
+                ))}
               {conv.status === "answered" && (
                 <SiTicktick size={16} className="text-green-500" />
               )}
@@ -270,10 +269,10 @@ const ConversationDetail: React.FC = () => {
             <p className="text-xs text-gray-500">تیکت #{chatId}</p>
           </div>
         </div>
-        {
-          conv?.product
-          ?
-          <Link href={`/admin/products/create?edit_id=${conv.product.id}&type=infos`}>
+        {conv?.product ? (
+          <Link
+            href={`/admin/products/create?edit_id=${conv.product.id}&type=infos`}
+          >
             <img
               src={conv.product.image}
               alt={conv.product.title}
@@ -283,23 +282,23 @@ const ConversationDetail: React.FC = () => {
               }}
             />
           </Link>
-          :""
-        }
+        ) : (
+          ""
+        )}
       </div>
 
       {/* پیام‌ها */}
       <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {conv.messages.map((msg: any) => {
-          const isAdmin = msg.sender?.role === "admin" || msg.sender?.role === "super_admin";
+          const isAdmin =
+            msg.sender?.role === "admin" || msg.sender?.role === "super_admin";
 
           return (
             <div
               key={msg.id}
               className={`flex ${!isAdmin ? "justify-end" : "justify-start"}`}
             >
-              <div
-                className={`flex flex-col items-start max-w-52`}
-              >
+              <div className={`flex flex-col items-start max-w-52`}>
                 <span className="text-xs font-medium text-gray-500 mb-1.5 px-1">
                   {isAdmin ? `${msg.sender?.name} (ادمین)` : msg.sender?.name}
                 </span>
@@ -311,9 +310,7 @@ const ConversationDetail: React.FC = () => {
                       : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm"
                   }`}
                 >
-                  <p className="text-sm leading-relaxed ">
-                    {msg.content}
-                  </p>
+                  <p className="text-sm leading-relaxed break-words">{msg.content}</p>
                   <span
                     className={`block text-xs mt-2 ${
                       isAdmin ? "text-blue-100" : "text-gray-400"
