@@ -35,7 +35,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
 }) => {
   const debounced = useDebouncedUrlSearch(
     syncSearchToUrl ? searchKey : undefined,
-    500
+    500,
   );
 
   const [localSearch, setLocalSearch] = useState<string>(debounced.value ?? "");
@@ -53,7 +53,25 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
 
   const handleInputChange = (val: string) => {
     setLocalSearch(val);
-    if (syncSearchToUrl) debounced.setValue(val);
+
+    if (selectedId) {
+      onChange("-1");
+    }
+
+    if (!syncSearchToUrl) return;
+
+    if (!val.trim()) {
+      debounced.setValue("");
+      return;
+    }
+
+    const hasLocalMatch = options.some((o) =>
+      o.title.toLowerCase().includes(val.toLowerCase()),
+    );
+
+    if (!hasLocalMatch) {
+      debounced.setValue(val);
+    }
   };
 
   const handleSelectionChange = (key: React.Key | null) => {
