@@ -39,7 +39,7 @@ const SizeGuideCard: React.FC<SizeGuideCardProps> = ({ size, onEdit }) => {
       {/* نام و اسلاگ */}
       <div className="flex flex-col justify-center items-center gap-2 mt-2">
         <div className="flex flex-col items-center leading-7 w-full rounded-2xl">
-          <p className="text-[15px]">{size.title}</p>
+          <p className="text-[15px] line-clamp-1">{size.title}</p>
           <p dir="rtl" className="text-right text-default-500 text-[13px] truncate w-36">{size.description} اره برای ما خیلی خوبع</p>
         </div>
       </div>

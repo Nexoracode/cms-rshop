@@ -30,6 +30,8 @@ export const useGetSizeGuide = ({
 };
 
 export const useCreateSizeGuid = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: {
       title: string;
@@ -43,10 +45,15 @@ export const useCreateSizeGuid = () => {
         isActiveToast: false,
       });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-size-guide"] });
+    },
   });
 };
 
 export const useUpdateSizeGuid = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: number }) => {
       return fetcher({
@@ -57,6 +64,9 @@ export const useUpdateSizeGuid = () => {
         successText: "راهنمای سایز با موفقیت آپدیت شد",
         loadingText: "در حال آپدیت راهنمای سایز",
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-size-guide"] });
     },
   });
 };
