@@ -22,7 +22,7 @@ type Props = {
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialBrandForm = {
+const initialSizeForm = {
   title: "",
   description: "",
   image: null as File | string | null,
@@ -35,7 +35,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
   onOpenChange,
 }) => {
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
-    initialBrandForm,
+    initialSizeForm,
     {
       onValidate: sizeGuideValidation,
       runValidationOnChange: true,
@@ -50,13 +50,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
     useUpdateSizeGuid();
 
   useEffect(() => {
-    if (defaultValues) {
-      setForm({
-        title: defaultValues.title ?? "",
-        description: defaultValues.description ?? "",
-        image: defaultValues.image ?? null,
-      });
-    }
+    setFormHandler();
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
@@ -88,6 +82,13 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
 
   const resetForm = () => reset();
 
+  const setFormHandler = () => {
+    setForm({
+      ...initialSizeForm,
+      ...defaultValues,
+    });
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -102,6 +103,9 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
+      onCancel={() => {
+        !sizGuideId ? resetForm() : setFormHandler();
+      }}
       title={sizGuideId ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
       confirmText={sizGuideId ? "ویرایش" : "ایجاد"}
       onConfirm={handleSubmit}
