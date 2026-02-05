@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
-import { TbBrandArc } from "react-icons/tb";
 import TextInput from "@/components/ui/inputs/TextInput";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { handleMutation } from "@/core/utils/mutationHelper";
@@ -14,6 +13,7 @@ import {
   useSizeGuideUpload,
   useUpdateSizeGuid,
 } from "@/core/hooks/api/useSizeGuide";
+import { PiResizeBold } from "react-icons/pi";
 
 type Props = {
   sizGuideId?: number | null;
@@ -105,7 +105,7 @@ const AddNewSizeGuideModal: React.FC<Props> = ({
       title={sizGuideId ? "ویرایش راهنمای سایز" : "افزودن راهنمای سایز"}
       confirmText={sizGuideId ? "ویرایش" : "ایجاد"}
       onConfirm={handleSubmit}
-      icon={<TbBrandArc />}
+      icon={<PiResizeBold />}
       isConfirmDisabled={isPendingUpload || isPendingCreate || isPendingUpdate}
     >
       <div className="flex flex-col gap-6">

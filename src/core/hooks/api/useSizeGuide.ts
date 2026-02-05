@@ -33,14 +33,10 @@ export const useCreateSizeGuid = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: {
-      title: string;
-      description: string;
-      image: string;
-    }) => {
+    mutationFn: (data: any) => {
       return fetcher({
         route: "/helpers",
-        method: "GET",
+        method: "POST",
         body: data,
         isActiveToast: false,
       });

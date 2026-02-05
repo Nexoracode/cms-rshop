@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import BrandCard from "@/components/features/products/brands/BrandCard";
-import BrandFilters from "@/components/features/products/brands/BrandFilters";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { BrandSortBy, useGetBrands } from "@/core/hooks/api/useBrand";
+import { BrandSortBy } from "@/core/hooks/api/useBrand";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { PiResizeBold } from "react-icons/pi";
 import SizeGuideCard from "@/components/features/products/size-guide/SizeGuideCard";
@@ -53,7 +50,7 @@ const SizeGuidePage = () => {
           headerProps={{
             title: "مدیریت راهنمای سایز",
             icon: <PiResizeBold className="text-2xl" />,
-            children: <AddNewBrandModal />,
+            children: <AddNewSizeGuideModal />,
           }}
           isLoading={isLoading}
           isExistItems={isExistItems}
