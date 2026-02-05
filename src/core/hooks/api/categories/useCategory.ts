@@ -1,13 +1,36 @@
 "use client";
 
+import { ListQueryParams } from "@/core/types";
+import { buildListQuery } from "@/core/utils/buildListQuery";
 import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useGetCategories = (page = 1) => {
+export type CategorySortBy = Array<
+  "id:ASC" | "id:DESC" | "name:ASC" | "name:DESC" | "logo:ASC" | "logo:DESC"
+>;
+
+export const useGetCategories = ({
+  page = 1,
+  filter,
+  search,
+  sortBy,
+  limit = 10,
+}: ListQueryParams) => {
   return useQuery({
-    queryKey: ["categories", { page }],
+    queryKey: ["categories", page, filter, search, sortBy, limit],
     queryFn: () => {
-      return fetcher({ route: `/category?page=${page}&limit=10`, isActiveToast: false });
+      const qs = buildListQuery({
+        page,
+        limit,
+        sortBy,
+        search,
+        filter,
+      });
+
+      return fetcher({
+        route: `/category?${qs}`,
+        isActiveToast: false,
+      });
     },
   });
 };

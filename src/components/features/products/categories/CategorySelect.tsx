@@ -1,45 +1,43 @@
 "use client";
 
 import React, { useMemo } from "react";
-import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
-import { useGetAllCategories } from "@/core/hooks/api/categories/useCategory";
+import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { flattenCategories } from "@/core/utils/flattenCategories";
+import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import AddNewCategoryModal from "./AddNewCategoryModal";
 
 type Props = {
   value?: string | number | null;
   onChange: (val: string | number | null) => void;
-  label?: string;
-  placeholder?: string;
-  withAddButton?: boolean;
-  onAddNewClick?: () => void;
   errorMessage?: string;
-  isDisabled?: boolean;
-  withAddModal?: boolean; // ✅ جدید
+  withAddModal?: boolean;
   isRequired?: boolean;
 };
 
 const CategorySelect: React.FC<Props> = ({
   value,
   onChange,
-  label = "دسته‌بندی",
-  placeholder = "دسته‌بندی مورد نظر را انتخاب کنید",
-  withAddButton = false,
-  onAddNewClick,
   errorMessage,
-  isDisabled = false,
-  withAddModal = false, // مقدار پیش‌فرض
+  withAddModal = false,
   isRequired = false,
 }) => {
-  const { data: categoriesData } = useGetAllCategories();
+  const { search } = useListQueryParams({
+    searchKey: "category",
+  });
 
-  const flatOptions: SelectOption[] = useMemo(() => {
-    return (flattenCategories(categoriesData?.data) || []).map(
-      (opt) => ({
-        key: String(opt.id),
-        title: opt.title,
-      })
-    );
+  const { data: categoriesData } = useGetCategories({
+    page: 1,
+    search,
+  });
+  
+  const options = useMemo(() => {
+    const flat = flattenCategories(categoriesData?.data?.items) || [];
+
+    return flat.map((cat: any) => ({
+      id: String(cat.id),
+      title: cat.title,
+    }));
   }, [categoriesData]);
 
   return (
@@ -48,29 +46,20 @@ const CategorySelect: React.FC<Props> = ({
         errorMessage?.length ? "items-center" : "items-end"
       } gap-2`}
     >
-      <SelectBox
-        key={categoriesData?.data?.items?.length}
-        label={label}
-        value={value ? String(value) : ""}
-        onChange={(val) => onChange(val ?? null)}
+      <AutocompleteInput
+        label="دسته‌بندی"
+        placeholder="در صورت نیاز انتخاب کنید (اختیاری)"
         options={
-          flatOptions.length
-            ? flatOptions
-            : [{ key: "-1", title: "آیتمی موجود نیست" }]
+          options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
-        placeholder={placeholder}
-        disabled={isDisabled}
-        size="md"
-        addButton={
-          withAddButton && onAddNewClick
-            ? { onClick: onAddNewClick, label: "+ افزودن" }
-            : undefined
-        }
-        errorMessage={errorMessage}
+        selectedId={value ? String(value) : ""}
+        onChange={(val) => onChange(val ?? null)}
         isRequired={isRequired}
+        searchKey="category"
+        syncSearchToUrl
+        errorMessage={errorMessage ?? ""}
       />
 
-      {/* ✅ فقط وقتی با prop فعال شد */}
       {withAddModal && <AddNewCategoryModal />}
     </div>
   );

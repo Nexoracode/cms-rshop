@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { FiSearch } from "react-icons/fi";
 import { useDebouncedUrlSearch } from "@/core/hooks/common/useDebouncedUrlSearch";
+import FieldErrorText from "@/components/forms/FieldErrorText";
 
 export type Option = {
   id: string | number;
@@ -20,6 +21,7 @@ type AutocompleteInputProps = {
   className?: string;
   syncSearchToUrl?: boolean;
   searchKey?: string;
+  errorMessage?: string;
 };
 
 const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
@@ -32,6 +34,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
   className = "",
   syncSearchToUrl = false,
   searchKey = "search",
+  errorMessage = "",
 }) => {
   const debounced = useDebouncedUrlSearch(
     syncSearchToUrl ? searchKey : undefined,
@@ -94,6 +97,12 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       onSelectionChange={handleSelectionChange}
       inputValue={localSearch}
       onInputChange={handleInputChange}
+      isInvalid={!!errorMessage?.length}
+      errorMessage={
+        errorMessage?.length ? (
+          <FieldErrorText error={errorMessage} />
+        ) : undefined
+      }
     >
       {options.length ? (
         options.map((opt) => (

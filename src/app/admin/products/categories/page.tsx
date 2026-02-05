@@ -4,13 +4,24 @@ import { useState } from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { TbCategory2 } from "react-icons/tb";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
-import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
+import {
+  CategorySortBy,
+  useGetCategories,
+} from "@/core/hooks/api/categories/useCategory";
 import { CategoryTree } from "@/components/features/products/categories/CategoryTree/CategoryTree";
 import CategoriesFilter from "@/components/features/products/categories/Filter/CategoriesFilter";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 
 const Categories = () => {
-  const { data: categories, isLoading } = useGetCategories();
+  const { page, sortBy, search, filter, isFilteredView } =
+    useListQueryParams<CategorySortBy[number]>();
+
+  const { data: categories, isLoading } = useGetCategories({
+    page,
+    search,
+    sortBy,
+  });
   const isExistItems = !!categories?.data?.items?.length;
 
   const [editCategory, setEditCategory] = useState<any | null>(null);
@@ -30,7 +41,7 @@ const Categories = () => {
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
       />
-      
+
       <div className="flex flex-col gap-4">
         <Breadcrumbs />
         {/* Main Card */}

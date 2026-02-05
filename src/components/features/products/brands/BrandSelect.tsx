@@ -1,19 +1,15 @@
 "use client";
 
 import React, { useMemo } from "react";
-import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
-import AddNewBrandModal from "./AddNewBrandModal";
 import { useGetBrands } from "@/core/hooks/api/useBrand";
+import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
+import AddNewBrandModal from "./AddNewBrandModal";
 
 type Props = {
   value?: string | number | null;
   onChange: (val: string | number | null) => void;
-  label?: string;
-  placeholder?: string;
-  withAddButton?: boolean;
-  onAddNewClick?: () => void;
   errorMessage?: string;
-  isDisabled?: boolean;
   withAddModal?: boolean;
   isRequired?: boolean;
 };
@@ -21,48 +17,48 @@ type Props = {
 const BrandSelect: React.FC<Props> = ({
   value,
   onChange,
-  label = "برند",
-  placeholder = "برند مورد نظر را انتخاب کنید",
-  withAddButton = false,
-  onAddNewClick,
   errorMessage,
-  isDisabled = false,
   withAddModal = false,
   isRequired = false,
 }) => {
-  const { data: allBrands } = useGetBrands();
+  const { search } = useListQueryParams({
+    searchKey: "brand",
+  });
 
-  const options: SelectOption[] = useMemo(() => {
+  const { data: brands } = useGetBrands({
+    page: 1,
+    search,
+  });
+
+  const options = useMemo(() => {
     return (
-      allBrands?.data?.items?.map((brand: any) => ({
-        key: String(brand.id),
+      brands?.data?.items?.map((brand: any) => ({
+        id: String(brand.id),
         title: brand.name,
       })) ?? []
     );
-  }, [allBrands?.data?.items]);
+  }, [brands?.data?.items]);
 
   return (
-    <div className={`w-full flex ${errorMessage?.length ? "items-center" : "items-end"} gap-2`}>
-      <SelectBox
-        label={label}
-        value={value ? String(value) : ""}
-        onChange={(val) => onChange(val ?? null)}
+    <div
+      className={`w-full flex ${
+        errorMessage?.length ? "items-center" : "items-end"
+      } gap-2`}
+    >
+      <AutocompleteInput
+        label="برند"
+        placeholder="در صورت نیاز انتخاب کنید (اختیاری)"
         options={
-          options.length ? options : [{ key: "-1", title: "آیتمی موجود نیست" }]
+          options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
-        placeholder={placeholder}
-        disabled={isDisabled}
-        size="md"
-        addButton={
-          withAddButton && onAddNewClick
-            ? { onClick: onAddNewClick, label: "+ افزودن برند" }
-            : undefined
-        }
-        errorMessage={errorMessage}
+        selectedId={value ? String(value) : ""}
+        onChange={(val) => onChange(val ?? null)}
         isRequired={isRequired}
+        searchKey="brand"
+        syncSearchToUrl
+        errorMessage={errorMessage}
       />
 
-      {/* ✅ فقط اگر بخوای مدال رو فعال کنی */}
       {withAddModal && <AddNewBrandModal />}
     </div>
   );
