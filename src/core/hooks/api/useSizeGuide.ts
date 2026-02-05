@@ -46,13 +46,9 @@ export const useCreateSizeGuid = () => {
   });
 };
 
-export const useUpdateSizeGuid = (id: number) => {
+export const useUpdateSizeGuid = () => {
   return useMutation({
-    mutationFn: (data: {
-      title: string;
-      description: string;
-      image: string;
-    }) => {
+    mutationFn: ({ data, id }: { data: any; id: number }) => {
       return fetcher({
         route: `/helpers/${id}`,
         method: "PATCH",
@@ -78,11 +74,11 @@ export const useSizeGuideUpload = () => {
   });
 };
 
-export const useDeleteSizeGuide = (id: number) => {
+export const useDeleteSizeGuide = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () =>
+    mutationFn: ({ id }: { id: number }) =>
       fetcher({
         route: `/helpers/${id}`,
         method: "DELETE",

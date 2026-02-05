@@ -9,18 +9,20 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { PiResizeBold } from "react-icons/pi";
+import SizeGuideCard from "@/components/features/products/size-guide/SizeGuideCard";
+import AddNewSizeGuideModal from "@/components/features/products/size-guide/AddNewSizeGuideModal";
 
 const SizeGuidePage = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<BrandSortBy[number]>();
 
-  const { data: brands, isLoading } = useGetBrands({
+  const { data: size, isLoading } = useGetBrands({
     page,
     search,
     sortBy,
   });
 
-  const isExistItems = !!brands?.data?.items?.length;
+  const isExistItems = !!size?.data?.items?.length;
 
   const [editBrand, setEditBrand] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -32,8 +34,8 @@ const SizeGuidePage = () => {
 
   return (
     <>
-      <AddNewBrandModal
-        brandId={editBrand?.id || 1}
+      <AddNewSizeGuideModal
+        sizGuideId={editBrand?.id || 1}
         defaultValues={editBrand}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
@@ -51,11 +53,11 @@ const SizeGuidePage = () => {
           isLoading={isLoading}
           isExistItems={isExistItems}
           searchInp={isFilteredView}
-          meta={brands?.data?.meta}
+          meta={size?.data?.meta}
           childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
         >
-          {brands?.data?.items?.map((b: any) => (
-            <BrandCard key={b.id} brand={b} onEdit={handleEditBrand} />
+          {size?.data?.items?.map((b: any) => (
+            <SizeGuideCard key={b.id} size={b} onEdit={handleEditBrand} />
           ))}
         </UnifiedCard>
       </div>
