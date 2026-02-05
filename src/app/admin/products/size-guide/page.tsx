@@ -11,12 +11,14 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { PiResizeBold } from "react-icons/pi";
 import SizeGuideCard from "@/components/features/products/size-guide/SizeGuideCard";
 import AddNewSizeGuideModal from "@/components/features/products/size-guide/AddNewSizeGuideModal";
+import SizeGuideFilters from "@/components/features/products/size-guide/Filter/SizeGuideFilters";
+import { useGetSizeGuide } from "@/core/hooks/api/useSizeGuide";
 
 const SizeGuidePage = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<BrandSortBy[number]>();
 
-  const { data: size, isLoading } = useGetBrands({
+  const { data: size, isLoading } = useGetSizeGuide({
     page,
     search,
     sortBy,
@@ -24,7 +26,7 @@ const SizeGuidePage = () => {
 
   const isExistItems = !!size?.data?.items?.length;
 
-  const [editBrand, setEditBrand] = useState<any | null>(null);
+  const [editSize, setEditBrand] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleEditBrand = (brand: any) => {
@@ -32,11 +34,14 @@ const SizeGuidePage = () => {
     setIsEditOpen(true);
   };
 
+  console.log(size?.data);
+  
+
   return (
     <>
       <AddNewSizeGuideModal
-        sizGuideId={editBrand?.id || 1}
-        defaultValues={editBrand}
+        sizGuideId={editSize?.id || 1}
+        defaultValues={editSize}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
       />
@@ -44,7 +49,7 @@ const SizeGuidePage = () => {
       <div className="flex flex-col gap-4">
         <Breadcrumbs />
         <UnifiedCard
-          searchFilter={<BrandFilters />}
+          searchFilter={<SizeGuideFilters />}
           headerProps={{
             title: "مدیریت راهنمای سایز",
             icon: <PiResizeBold className="text-2xl" />,

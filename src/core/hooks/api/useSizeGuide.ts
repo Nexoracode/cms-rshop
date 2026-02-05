@@ -22,7 +22,7 @@ export const useGetSizeGuide = ({
       });
 
       return fetcher({
-        route: `/orders/all?${qs}`,
+        route: `/helpers?${qs}`,
         isActiveToast: false,
       });
     },
