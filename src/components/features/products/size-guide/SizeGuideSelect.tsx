@@ -1,20 +1,15 @@
 "use client";
 
 import React, { useMemo } from "react";
-import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 import { useGetSizeGuide } from "@/core/hooks/api/useSizeGuide";
 import AddNewSizeGuideModal from "./AddNewSizeGuideModal";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 
 type SizeGuideSelectProps = {
   value?: string | number | null;
   onChange: (val: string | number | null) => void;
-  label?: string;
-  placeholder?: string;
-  withAddButton?: boolean;
-  onAddNewClick?: () => void;
   errorMessage?: string;
-  isDisabled?: boolean;
   withAddModal?: boolean;
   isRequired?: boolean;
 };
@@ -22,12 +17,7 @@ type SizeGuideSelectProps = {
 const SizeGuideSelect: React.FC<SizeGuideSelectProps> = ({
   value,
   onChange,
-  label = "راهنما سایز",
-  placeholder = "راهنما سایز مورد نظر را انتخاب کنید",
-  withAddButton = false,
-  onAddNewClick,
   errorMessage,
-  isDisabled = false,
   withAddModal = false,
   isRequired = false,
 }) => {
@@ -38,11 +28,11 @@ const SizeGuideSelect: React.FC<SizeGuideSelectProps> = ({
     page: 1,
     search,
   });
-  
-  const options: SelectOption[] = useMemo(() => {
+
+  const options = useMemo(() => {
     return (
       sizeGuide?.data?.items?.map((s: any) => ({
-        key: String(s.id),
+        id: String(s.id),
         title: s.title,
       })) ?? []
     );
@@ -52,23 +42,17 @@ const SizeGuideSelect: React.FC<SizeGuideSelectProps> = ({
     <div
       className={`w-full flex ${errorMessage?.length ? "items-center" : "items-end"} gap-2`}
     >
-      <SelectBox
-        label={label}
-        value={value ? String(value) : ""}
-        onChange={(val) => onChange(val ?? null)}
+      <AutocompleteInput
+        label={"راهنما سایز"}
+        placeholder={"در صورت نیاز انتخاب کنید (اختیاری)"}
         options={
-          options.length ? options : [{ key: "-1", title: "آیتمی موجود نیست" }]
+          options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
-        placeholder={placeholder}
-        disabled={isDisabled}
-        size="md"
-        addButton={
-          withAddButton && onAddNewClick
-            ? { onClick: onAddNewClick, label: "+ افزودن" }
-            : undefined
-        }
-        errorMessage={errorMessage}
+        selectedId={value ? String(value) : ""}
+        onChange={(val) => onChange(val ?? null)}
         isRequired={isRequired}
+        searchKey={"size"}
+        syncSearchToUrl
       />
 
       {withAddModal && <AddNewSizeGuideModal />}

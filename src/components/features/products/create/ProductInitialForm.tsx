@@ -258,6 +258,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         </div>
 
         <SizeGuideSelect
+          value={form.helper_id}
           onChange={(val) => handleFieldChange("helper_id", val)}
           withAddModal
         />
