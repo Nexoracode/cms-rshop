@@ -13,7 +13,6 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import ImagesProducts from "./ImagesProducts";
-import SizeGuide from "./SizeGuide/SizeGuide";
 import BrandSelect from "../brands/BrandSelect";
 import CategorySelect from "../categories/CategorySelect";
 const TextEditor = dynamic(() => import("@/components/forms/TextEditor"), {
@@ -33,6 +32,7 @@ import { validateProduct } from "./product-validation";
 import { CreateProductRequest, ProductResponse } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
+import SizeGuideSelect from "../size-guide/SizeGuideSelect";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -229,19 +229,37 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           onDiscountChange={(type, value) =>
             handleFieldChange(
               type === "amount" ? "discount_amount" : "discount_percent",
-              +value
+              +value,
             )
           }
           errorMessage={errors.price}
         />
 
-        <TextInput
-          label="کد انبار"
-          placeholder="مثلاً SKU12345"
-          value={form.sku}
-          inputAlign="left"
-          onChange={(val) => handleFieldChange("sku", val)}
-          errorMessage={errors.sku}
+        <div className="flex flex-col md:flex-row gap-4">
+          <TextInput
+            label="کد انبار"
+            placeholder="مثلاً SKU12345"
+            value={form.sku}
+            inputAlign="left"
+            onChange={(val) => handleFieldChange("sku", val)}
+            errorMessage={errors.sku}
+          />
+
+          <NumberInput
+            label="موجودی"
+            hideStepper
+            placeholder="1"
+            minValue={0}
+            value={form.stock}
+            labelPlacement="outside"
+            onValueChange={(val) => handleFieldChange("stock", +val)}
+            endContent={"عدد"}
+          />
+        </div>
+
+        <SizeGuideSelect
+          onChange={(val) => handleFieldChange("helper_id", val)}
+          withAddModal
         />
 
         <TextEditor
@@ -322,30 +340,6 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             }
           />
         </ToggleSection>
-
-        <ToggleSection
-          title="موجودی نامحدود"
-          initialMode={form.is_limited_stock}
-          hideChildrenWhenEnabled
-          onChange={(val) => handleFieldChange("is_limited_stock", val)}
-        >
-          <NumberInput
-            hideStepper
-            placeholder="1"
-            minValue={0}
-            value={form.stock}
-            labelPlacement="outside"
-            onValueChange={(val) => handleFieldChange("stock", +val)}
-            endContent={"عدد"}
-          />
-        </ToggleSection>
-
-        <SizeGuide
-          onHelperId={(id) => {
-            handleFieldChange("helper_id", id);
-          }}
-          sizeGuide={data?.helper}
-        />
       </BaseCard>
 
       <FormActionButtons
