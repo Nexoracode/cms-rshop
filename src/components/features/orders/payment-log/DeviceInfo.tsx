@@ -4,108 +4,351 @@ import {
   MdTabletMac,
   MdLaptop,
   MdComputer,
-  MdLanguage
+  MdLanguage,
+  MdSecurity,
+  MdInfoOutline,
+  MdDevices,
+  MdBrowserUpdated
 } from "react-icons/md";
+import { FaWindows, FaApple, FaLinux, FaAndroid } from "react-icons/fa";
+import { SiGooglechrome, SiFirefox, SiSafari, SiOpera } from "react-icons/si";
+import { FaEdgeLegacy } from "react-icons/fa6";
+import { useState } from "react";
 
 interface DeviceInfoProps {
   userAgent: string;
   ip: string;
+  timestamp?: string;
+  showFullDetails?: boolean;
 }
 
-const DeviceInfo = ({ userAgent, ip }: DeviceInfoProps) => {
-  // تجزیه user agent
-  const getDeviceInfo = (ua: string) => {
-    let device = "دستگاه ناشناخته";
-    let os = "سیستم عامل ناشناخته";
-    let browser = "مرورگر ناشناخته";
-    let deviceIcon = <MdComputer className="text-gray-400" />;
-    
-    // تشخیص دستگاه
-    if (/mobile|iphone|android/i.test(ua)) {
-      device = "موبایل";
-      deviceIcon = <MdPhoneIphone className="text-blue-400" />;
-    } else if (/tablet|ipad/i.test(ua)) {
-      device = "تبلت";
-      deviceIcon = <MdTabletMac className="text-purple-400" />;
-    } else if (/laptop/i.test(ua)) {
-      device = "لپ‌تاپ";
-      deviceIcon = <MdLaptop className="text-green-400" />;
-    } else {
-      device = "کامپیوتر";
-      deviceIcon = <MdDesktopWindows className="text-gray-400" />;
-    }
-    
-    // تشخیص سیستم عامل
-    if (/windows/i.test(ua)) {
-      os = "Windows";
-    } else if (/mac os|macintosh/i.test(ua)) {
-      os = "macOS";
-    } else if (/linux/i.test(ua)) {
-      os = "Linux";
-    } else if (/android/i.test(ua)) {
-      os = "Android";
-    } else if (/ios|iphone|ipad/i.test(ua)) {
-      os = "iOS";
-    }
-    
-    // تشخیص مرورگر
-    if (/chrome/i.test(ua) && !/edge/i.test(ua)) {
-      browser = "Google Chrome";
-    } else if (/firefox/i.test(ua)) {
-      browser = "Mozilla Firefox";
-    } else if (/safari/i.test(ua) && !/chrome/i.test(ua)) {
-      browser = "Safari";
-    } else if (/edge/i.test(ua)) {
-      browser = "Microsoft Edge";
-    } else if (/opera|opr/i.test(ua)) {
-      browser = "Opera";
-    }
-    
-    return { device, os, browser, deviceIcon };
+// Helper function to format dates
+const formatTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('fa-IR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }).format(date);
+};
+
+// Function to extract detailed device info
+const parseUserAgent = (ua: string) => {
+  const info = {
+    device: {
+      type: "دسکتاپ" as "موبایل" | "تبلت" | "دسکتاپ" | "لپ‌تاپ",
+      model: "",
+      manufacturer: "",
+      icon: <MdDesktopWindows className="text-gray-400" />
+    },
+    os: {
+      name: "نامشخص",
+      version: "",
+      icon: <MdComputer className="text-gray-400" />
+    },
+    browser: {
+      name: "نامشخص",
+      version: "",
+      engine: "",
+      icon: <MdLanguage className="text-gray-400" />
+    },
+    isMobile: false,
+    isTablet: false,
+    isDesktop: true,
+    isBot: /bot|crawler|spider/i.test(ua)
   };
+
+  // Detect device type
+  if (/mobile|iphone|ipod|android.*mobile/i.test(ua)) {
+    info.device.type = "موبایل";
+    info.device.icon = <MdPhoneIphone className="text-blue-500" />;
+    info.isMobile = true;
+    info.isDesktop = false;
+    
+    // Detect mobile manufacturer/model
+    if (/iphone/i.test(ua)) {
+      info.device.manufacturer = "Apple";
+      info.device.model = "iPhone";
+    } else if (/samsung/i.test(ua)) {
+      info.device.manufacturer = "Samsung";
+    } else if (/xiaomi|redmi|poco/i.test(ua)) {
+      info.device.manufacturer = "Xiaomi";
+    } else if (/huawei|honor/i.test(ua)) {
+      info.device.manufacturer = "Huawei";
+    }
+  } else if (/tablet|ipad|android(?!.*mobile)/i.test(ua)) {
+    info.device.type = "تبلت";
+    info.device.icon = <MdTabletMac className="text-purple-500" />;
+    info.isTablet = true;
+    info.isDesktop = false;
+  } else if (/laptop/i.test(ua)) {
+    info.device.type = "لپ‌تاپ";
+    info.device.icon = <MdLaptop className="text-green-500" />;
+  }
+
+  // Detect operating system
+  const osPatterns = [
+    { pattern: /windows nt 10/i, name: "Windows 10/11", icon: <FaWindows className="text-blue-600" /> },
+    { pattern: /windows nt 6\.3/i, name: "Windows 8.1", icon: <FaWindows className="text-blue-500" /> },
+    { pattern: /windows nt 6\.2/i, name: "Windows 8", icon: <FaWindows className="text-blue-400" /> },
+    { pattern: /windows nt 6\.1/i, name: "Windows 7", icon: <FaWindows className="text-blue-300" /> },
+    { pattern: /mac os x 10[._](?:15|14|13)/i, name: "macOS Sonoma/Ventura", icon: <FaApple className="text-gray-700" /> },
+    { pattern: /mac os x 10[._](?:12|11)/i, name: "macOS Monterey/Big Sur", icon: <FaApple className="text-gray-600" /> },
+    { pattern: /mac os x/i, name: "macOS", icon: <FaApple className="text-gray-800" /> },
+    { pattern: /linux/i, name: "Linux", icon: <FaLinux className="text-orange-600" /> },
+    { pattern: /android 1[0-9]/i, name: "Android 10+", icon: <FaAndroid className="text-green-600" /> },
+    { pattern: /android [5-9]/i, name: "Android 5-9", icon: <FaAndroid className="text-green-500" /> },
+    { pattern: /android/i, name: "Android", icon: <FaAndroid className="text-green-400" /> },
+    { pattern: /ios|iphone os/i, name: "iOS", icon: <FaApple className="text-blue-400" /> }
+  ];
+
+  for (const osPattern of osPatterns) {
+    if (osPattern.pattern.test(ua)) {
+      info.os.name = osPattern.name;
+      info.os.icon = osPattern.icon;
+      break;
+    }
+  }
+
+  // Extract OS version
+  const osVersionMatch = ua.match(/(?:windows|mac os x|android|ios|iphone os)[\s\/]?([\d._]+)/i);
+  if (osVersionMatch) {
+    info.os.version = osVersionMatch[1].replace(/_/g, '.');
+  }
+
+  // Detect browser
+  const browserPatterns = [
+    { pattern: /chrome\/([\d.]+)/i, name: "Chrome", icon: <SiGooglechrome className="text-green-600" />, engine: "Blink" },
+    { pattern: /firefox\/([\d.]+)/i, name: "Firefox", icon: <SiFirefox className="text-orange-500" />, engine: "Gecko" },
+    { pattern: /safari\/([\d.]+)/i, name: "Safari", icon: <SiSafari className="text-blue-500" />, engine: "WebKit" },
+    { pattern: /edg\/([\d.]+)/i, name: "Edge", icon: <FaEdgeLegacy className="text-blue-700" />, engine: "Blink" },
+    { pattern: /edge\/([\d.]+)/i, name: "Edge Legacy", icon: <FaEdgeLegacy className="text-blue-600" />, engine: "EdgeHTML" },
+    { pattern: /opr\/([\d.]+)/i, name: "Opera", icon: <SiOpera className="text-red-500" />, engine: "Blink" },
+    { pattern: /opera\/([\d.]+)/i, name: "Opera", icon: <SiOpera className="text-red-400" />, engine: "Presto/Blink" }
+  ];
+
+  for (const browserPattern of browserPatterns) {
+    const match = ua.match(browserPattern.pattern);
+    if (match) {
+      info.browser.name = browserPattern.name;
+      info.browser.icon = browserPattern.icon;
+      info.browser.engine = browserPattern.engine;
+      info.browser.version = match[1];
+      break;
+    }
+  }
+
+  return info;
+};
+
+// IP info component
+const IPInfo = ({ ip }: { ip: string }) => {
+  const [showDetails, setShowDetails] = useState(false);
   
-  const { device, os, browser, deviceIcon } = getDeviceInfo(userAgent);
+  const isLocalIP = ip.startsWith('192.168.') || ip.startsWith('10.') || 
+                   ip.startsWith('172.16.') || ip === '::1' || ip.includes('localhost');
+  
+  const isIPv6 = ip.includes(':');
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-3">
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {deviceIcon}
+          <MdSecurity className={`text-lg ${isLocalIP ? 'text-green-500' : 'text-yellow-500'}`} />
           <div>
-            <p className="font-medium text-sm">{device}</p>
-            <p className="text-xs text-gray-500">نوع دستگاه</p>
+            <p className="font-mono text-sm">{ip}</p>
+            <div className="flex items-center gap-2 text-xs">
+              <span className={`px-1.5 py-0.5 rounded ${isLocalIP ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                {isLocalIP ? 'IP داخلی' : 'IP عمومی'}
+              </span>
+              {isIPv6 && (
+                <span className="px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded">
+                  IPv6
+                </span>
+              )}
+            </div>
           </div>
         </div>
-        
-        {ip && (
-          <div className="text-right">
-            <p className="font-mono text-sm">{ip}</p>
-            <p className="text-xs text-gray-500">آدرس IP</p>
+        <button
+          onClick={() => setShowDetails(!showDetails)}
+          className="text-gray-500 hover:text-gray-700 transition-colors p-1"
+          title="نمایش جزئیات"
+        >
+          <MdInfoOutline size={18} />
+        </button>
+      </div>
+      
+      {showDetails && (
+        <div className="mt-2 p-3 bg-white rounded border text-xs">
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <p className="text-gray-600">نوع آدرس:</p>
+              <p className="font-medium">{isIPv6 ? 'IPv6' : 'IPv4'}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">دسترسی:</p>
+              <p className="font-medium">{isLocalIP ? 'شبکه داخلی' : 'اینترنت عمومی'}</p>
+            </div>
           </div>
+          {!isLocalIP && (
+            <div className="mt-2 pt-2 border-t">
+              <p className="text-gray-600">امنیت:</p>
+              <p className="font-medium text-yellow-600">درخواست از اینترنت عمومی</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: DeviceInfoProps) => {
+  const [showRawUA, setShowRawUA] = useState(false);
+  const deviceInfo = parseUserAgent(userAgent);
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+        <div className="flex items-center gap-2">
+          <MdDevices className="text-xl text-gray-600" />
+          <h3 className="font-bold text-gray-800">مشخصات دستگاه</h3>
+        </div>
+        {deviceInfo.isBot && (
+          <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full flex items-center gap-1">
+            <MdSecurity size={12} />
+            ربات/کراولر
+          </span>
         )}
       </div>
-      
-      <div className="grid grid-cols-2 gap-3 text-sm">
-        <div>
-          <p className="text-gray-600">سیستم عامل</p>
-          <p className="font-medium">{os}</p>
+
+      {/* Device Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Device Card */}
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-white rounded-lg border border-blue-200">
+              {deviceInfo.device.icon}
+            </div>
+            <div>
+              <p className="font-bold text-gray-900">{deviceInfo.device.type}</p>
+              {deviceInfo.device.manufacturer && (
+                <p className="text-sm text-gray-600">{deviceInfo.device.manufacturer}</p>
+              )}
+            </div>
+          </div>
+          {deviceInfo.device.model && (
+            <p className="text-xs text-gray-500 mt-1">{deviceInfo.device.model}</p>
+          )}
         </div>
-        <div>
-          <p className="text-gray-600">مرورگر</p>
-          <p className="font-medium">{browser}</p>
+
+        {/* OS Card */}
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-white rounded-lg border border-gray-200">
+              {deviceInfo.os.icon}
+            </div>
+            <div>
+              <p className="font-bold text-gray-900">{deviceInfo.os.name}</p>
+              {deviceInfo.os.version && (
+                <p className="text-sm text-gray-600">نسخه {deviceInfo.os.version}</p>
+              )}
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">سیستم عامل</p>
+        </div>
+
+        {/* Browser Card */}
+        <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-white rounded-lg border border-green-200">
+              {deviceInfo.browser.icon}
+            </div>
+            <div>
+              <p className="font-bold text-gray-900">{deviceInfo.browser.name}</p>
+              {deviceInfo.browser.version && (
+                <p className="text-sm text-gray-600">نسخه {deviceInfo.browser.version}</p>
+              )}
+            </div>
+          </div>
+          {deviceInfo.browser.engine && (
+            <p className="text-xs text-gray-500 mt-1">موتور: {deviceInfo.browser.engine}</p>
+          )}
         </div>
       </div>
-      
-      {/* نمایش user agent کامل (مخفی شده) */}
-      <details className="mt-3">
-        <summary className="cursor-pointer text-blue-600 text-sm flex items-center gap-1">
-          <MdLanguage size={16} />
-          نمایش User Agent کامل
-        </summary>
-        <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-x-auto">
-          {userAgent}
-        </pre>
-      </details>
+
+      {/* IP Information */}
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <MdSecurity className="text-gray-600" />
+          <h4 className="font-medium text-gray-800">اطلاعات شبکه</h4>
+        </div>
+        <IPInfo ip={ip} />
+      </div>
+
+      {/* Advanced Details */}
+      {showFullDetails && (
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <MdBrowserUpdated className="text-gray-600" />
+              <h4 className="font-medium text-gray-800">اطلاعات پیشرفته</h4>
+            </div>
+            <button
+              onClick={() => setShowRawUA(!showRawUA)}
+              className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            >
+              <MdLanguage size={16} />
+              {showRawUA ? 'مخفی کردن' : 'نمایش'} User Agent
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+            <div>
+              <p className="text-gray-600">نوع دستگاه</p>
+              <p className="font-medium capitalize">{deviceInfo.device.type}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">موبایل</p>
+              <p className={`font-medium ${deviceInfo.isMobile ? 'text-green-600' : 'text-gray-600'}`}>
+                {deviceInfo.isMobile ? 'بله' : 'خیر'}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600">دسکتاپ</p>
+              <p className={`font-medium ${deviceInfo.isDesktop ? 'text-green-600' : 'text-gray-600'}`}>
+                {deviceInfo.isDesktop ? 'بله' : 'خیر'}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600">ربات</p>
+              <p className={`font-medium ${deviceInfo.isBot ? 'text-red-600' : 'text-green-600'}`}>
+                {deviceInfo.isBot ? 'بله' : 'خیر'}
+              </p>
+            </div>
+          </div>
+          
+          {showRawUA && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">User Agent کامل:</p>
+              <pre className="p-3 bg-gray-100 rounded border text-xs overflow-x-auto">
+                {userAgent}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Timestamp */}
+      {timestamp && (
+        <div className="text-xs text-gray-500 flex items-center justify-end gap-1">
+          <MdInfoOutline size={12} />
+          آخرین فعالیت: {formatTime(timestamp)}
+        </div>
+      )}
     </div>
   );
 };
