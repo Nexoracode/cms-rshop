@@ -7,8 +7,6 @@ import {
   MdLanguage,
   MdSecurity,
   MdInfoOutline,
-  MdDevices,
-  MdBrowserUpdated,
 } from "react-icons/md";
 import { FaWindows, FaApple, FaLinux, FaAndroid } from "react-icons/fa";
 import { SiGooglechrome, SiFirefox, SiSafari, SiOpera } from "react-icons/si";
@@ -20,7 +18,6 @@ interface DeviceInfoProps {
   userAgent: string;
   ip: string;
   timestamp?: string;
-  showFullDetails?: boolean;
 }
 
 // Helper function to format dates
@@ -230,30 +227,24 @@ const parseUserAgent = (ua: string) => {
   return info;
 };
 
-const DeviceInfo = ({
-  userAgent,
-  ip,
-  timestamp,
-  showFullDetails = false,
-}: DeviceInfoProps) => {
+const DeviceInfo = ({ userAgent, ip, timestamp }: DeviceInfoProps) => {
   const [showRawUA, setShowRawUA] = useState(false);
   const deviceInfo = parseUserAgent(userAgent);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-white rounded-lg border border-gray-200 p-4">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-        <div className="flex items-center gap-2">
-          <MdDevices className="text-xl text-gray-600" />
-          <h3 className="font-bold text-gray-800">مشخصات دستگاه</h3>
-        </div>
-        {deviceInfo.isBot && (
+      {deviceInfo.isBot && (
+        <div className="w-full flex items-center justify-between">
+          <span className="text-red-500 text-[13px] animate-pulse">
+            هشدار. یک ربات شناسایی شد!
+          </span>
           <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full flex items-center gap-1">
             <MdSecurity size={12} />
             ربات/کراولر
           </span>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Device Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -325,78 +316,32 @@ const DeviceInfo = ({
       </div>
 
       {/* IP Information */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <MdSecurity className="text-gray-600" />
-          <h4 className="font-medium text-gray-800">اطلاعات شبکه</h4>
-        </div>
-        {ip !== undefined ? <SimpleIPInfo ip={ip} /> : ""}
+      {ip !== undefined ? <SimpleIPInfo ip={ip} /> : ""}
+
+      <div className="flex items-center gap-6 justify-between">
+        {/* Advanced Details */}
+        <button
+          onClick={() => setShowRawUA(!showRawUA)}
+          className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+        >
+          <MdLanguage size={16} />
+          {showRawUA ? "مخفی کردن" : "نمایش"} User Agent
+        </button>
+
+        {/* Timestamp */}
+        {timestamp && (
+          <div className="text-xs text-gray-500 flex items-center justify-end gap-1">
+            <MdInfoOutline size={12} />
+            آخرین فعالیت: {formatTime(timestamp)}
+          </div>
+        )}
       </div>
 
-      {/* Advanced Details */}
-      {showFullDetails && (
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <MdBrowserUpdated className="text-gray-600" />
-              <h4 className="font-medium text-gray-800">اطلاعات پیشرفته</h4>
-            </div>
-            <button
-              onClick={() => setShowRawUA(!showRawUA)}
-              className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
-            >
-              <MdLanguage size={16} />
-              {showRawUA ? "مخفی کردن" : "نمایش"} User Agent
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-            <div>
-              <p className="text-gray-600">نوع دستگاه</p>
-              <p className="font-medium capitalize">{deviceInfo.device.type}</p>
-            </div>
-            <div>
-              <p className="text-gray-600">موبایل</p>
-              <p
-                className={`font-medium ${deviceInfo.isMobile ? "text-green-600" : "text-gray-600"}`}
-              >
-                {deviceInfo.isMobile ? "بله" : "خیر"}
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-600">دسکتاپ</p>
-              <p
-                className={`font-medium ${deviceInfo.isDesktop ? "text-green-600" : "text-gray-600"}`}
-              >
-                {deviceInfo.isDesktop ? "بله" : "خیر"}
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-600">ربات</p>
-              <p
-                className={`font-medium ${deviceInfo.isBot ? "text-red-600" : "text-green-600"}`}
-              >
-                {deviceInfo.isBot ? "بله" : "خیر"}
-              </p>
-            </div>
-          </div>
-
-          {showRawUA && (
-            <div className="mt-4">
-              <p className="text-sm text-gray-600 mb-2">User Agent کامل:</p>
-              <pre className="p-3 bg-gray-100 rounded border text-xs overflow-x-auto">
-                {userAgent}
-              </pre>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Timestamp */}
-      {timestamp && (
-        <div className="text-xs text-gray-500 flex items-center justify-end gap-1">
-          <MdInfoOutline size={12} />
-          آخرین فعالیت: {formatTime(timestamp)}
+      {showRawUA && (
+        <div className="mt-4">
+          <pre className="p-3 bg-gray-100 rounded border text-xs overflow-x-auto">
+            {userAgent}
+          </pre>
         </div>
       )}
     </div>

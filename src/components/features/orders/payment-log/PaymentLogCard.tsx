@@ -327,17 +327,14 @@ const PaymentCard = ({ payment }: { payment: any }) => {
               {payment.logs && payment.logs.length > 0 ? (
                 <div className="space-y-4">
                   {payment.logs
-                    .filter((log: any) => log.user_agent) // فقط لاگ‌هایی که user_agent دارند
+                    .filter((log: any) => log.user_agent)
                     .map((log: any, index: number) => (
-                      <div
+                      <DeviceInfo
                         key={log.id || index}
-                        className="bg-white p-3 rounded border"
-                      >
-                        <DeviceInfo userAgent={log.user_agent} ip={log.ip} />
-                        <p className="text-xs text-gray-500 mt-2">
-                          زمان: {formatDate(log.created_at)}
-                        </p>
-                      </div>
+                        userAgent={log.user_agent}
+                        ip={log.ip}
+                        timestamp={log.created_at}
+                      />
                     ))}
                 </div>
               ) : (
