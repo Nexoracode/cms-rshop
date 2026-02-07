@@ -16,7 +16,7 @@ export const useGetPaymentLogs = ({
       });
 
       return fetcher({
-        route: `/payment-logs?${qs}`,
+        route: `/payment?${qs}`,
         isActiveToast: false,
       });
     },

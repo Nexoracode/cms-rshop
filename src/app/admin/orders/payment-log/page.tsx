@@ -8,23 +8,25 @@ import { OrderSortBy } from "@/components/features/orders/order-types";
 import { useGetPaymentLogs } from "@/core/hooks/api/orders/usePaymentLogs";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { MdCheckCircle, MdOutlinePayments, MdPending } from "react-icons/md";
-import PaymentLogCard from "@/components/features/orders/payment-log/PaymentLogCard";
+import PaymentCard from "@/components/features/orders/payment-log/PaymentLogCard";
 import { RiFileList3Line } from "react-icons/ri";
 import { StatCard } from "@/components/common/StatCard";
-import BaseCard from "@/components/ui/BaseCard";
 
 const Orders = () => {
   const { page, isFilteredView } = useListQueryParams<OrderSortBy[number]>();
-  const { data: logs, isLoading } = useGetPaymentLogs({ page });
-  const isExistItems = !!logs?.data?.length;
+  const { data: payments, isLoading } = useGetPaymentLogs({ page });
+  const isExistItems = !!payments?.data?.items?.length;
+
+  console.log("payments =>", payments, "isExistItems =>", isExistItems);
 
   const statItems =
     !isLoading && isExistItems
       ? [
           {
             title: "پرداخت‌های موفق",
-            value: logs.data.filter((log: any) => log.status === "verified")
-              .length,
+            value: payments.data.items.filter(
+              (payment: any) => payment.status === "success",
+            ).length,
             icon: <MdCheckCircle />,
             color: {
               from: "from-green-50",
@@ -36,10 +38,10 @@ const Orders = () => {
           },
           {
             title: "در حال انتظار",
-            value: logs.data.filter(
-              (log: any) =>
-                log.status === "callback_received" ||
-                log.status === "initiated",
+            value: payments.data.items.filter(
+              (payment: any) =>
+                payment.status === "in_progress" ||
+                payment.status === "pending",
             ).length,
             icon: <MdPending />,
             color: {
@@ -51,8 +53,8 @@ const Orders = () => {
             },
           },
           {
-            title: "کل لاگ‌ها",
-            value: logs.data.length,
+            title: "کل پرداخت‌ها",
+            value: payments.data.items.length,
             icon: <MdOutlinePayments />,
             color: {
               from: "from-purple-50",
@@ -79,18 +81,19 @@ const Orders = () => {
 
       <UnifiedCard
         headerProps={{
-          title: "تاریخچه لاگ‌ها",
+          title: "تاریخچه پرداخت‌ها",
           icon: <RiFileList3Line className="text-2xl" />,
           showIconInActionSlot: true,
         }}
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={isFilteredView}
-        meta={logs?.data?.meta}
+        meta={payments?.data?.meta}
         className="mb-6"
+        childrenClassName="space-y-4"
       >
-        {logs?.data?.map((log: any) => (
-          <PaymentLogCard key={log.id} log={log} />
+        {payments?.data?.items?.map((payment: any) => (
+          <PaymentCard key={payment.id} payment={payment} />
         ))}
       </UnifiedCard>
     </div>
