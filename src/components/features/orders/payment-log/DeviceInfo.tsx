@@ -1,6 +1,6 @@
-import { 
-  MdDesktopWindows, 
-  MdPhoneIphone, 
+import {
+  MdDesktopWindows,
+  MdPhoneIphone,
   MdTabletMac,
   MdLaptop,
   MdComputer,
@@ -8,12 +8,13 @@ import {
   MdSecurity,
   MdInfoOutline,
   MdDevices,
-  MdBrowserUpdated
+  MdBrowserUpdated,
 } from "react-icons/md";
 import { FaWindows, FaApple, FaLinux, FaAndroid } from "react-icons/fa";
 import { SiGooglechrome, SiFirefox, SiSafari, SiOpera } from "react-icons/si";
 import { FaEdgeLegacy } from "react-icons/fa6";
 import { useState } from "react";
+import SimpleIPInfo from "./SimpleIPInfo";
 
 interface DeviceInfoProps {
   userAgent: string;
@@ -25,13 +26,13 @@ interface DeviceInfoProps {
 // Helper function to format dates
 const formatTime = (dateString: string) => {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat('fa-IR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
+  return new Intl.DateTimeFormat("fa-IR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   }).format(date);
 };
 
@@ -42,23 +43,23 @@ const parseUserAgent = (ua: string) => {
       type: "دسکتاپ" as "موبایل" | "تبلت" | "دسکتاپ" | "لپ‌تاپ",
       model: "",
       manufacturer: "",
-      icon: <MdDesktopWindows className="text-gray-400" />
+      icon: <MdDesktopWindows className="text-gray-400" />,
     },
     os: {
       name: "نامشخص",
       version: "",
-      icon: <MdComputer className="text-gray-400" />
+      icon: <MdComputer className="text-gray-400" />,
     },
     browser: {
       name: "نامشخص",
       version: "",
       engine: "",
-      icon: <MdLanguage className="text-gray-400" />
+      icon: <MdLanguage className="text-gray-400" />,
     },
     isMobile: false,
     isTablet: false,
     isDesktop: true,
-    isBot: /bot|crawler|spider/i.test(ua)
+    isBot: /bot|crawler|spider/i.test(ua),
   };
 
   // Detect device type
@@ -67,7 +68,7 @@ const parseUserAgent = (ua: string) => {
     info.device.icon = <MdPhoneIphone className="text-blue-500" />;
     info.isMobile = true;
     info.isDesktop = false;
-    
+
     // Detect mobile manufacturer/model
     if (/iphone/i.test(ua)) {
       info.device.manufacturer = "Apple";
@@ -91,18 +92,66 @@ const parseUserAgent = (ua: string) => {
 
   // Detect operating system
   const osPatterns = [
-    { pattern: /windows nt 10/i, name: "Windows 10/11", icon: <FaWindows className="text-blue-600" /> },
-    { pattern: /windows nt 6\.3/i, name: "Windows 8.1", icon: <FaWindows className="text-blue-500" /> },
-    { pattern: /windows nt 6\.2/i, name: "Windows 8", icon: <FaWindows className="text-blue-400" /> },
-    { pattern: /windows nt 6\.1/i, name: "Windows 7", icon: <FaWindows className="text-blue-300" /> },
-    { pattern: /mac os x 10[._](?:15|14|13)/i, name: "macOS Sonoma/Ventura", icon: <FaApple className="text-gray-700" /> },
-    { pattern: /mac os x 10[._](?:12|11)/i, name: "macOS Monterey/Big Sur", icon: <FaApple className="text-gray-600" /> },
-    { pattern: /mac os x/i, name: "macOS", icon: <FaApple className="text-gray-800" /> },
-    { pattern: /linux/i, name: "Linux", icon: <FaLinux className="text-orange-600" /> },
-    { pattern: /android 1[0-9]/i, name: "Android 10+", icon: <FaAndroid className="text-green-600" /> },
-    { pattern: /android [5-9]/i, name: "Android 5-9", icon: <FaAndroid className="text-green-500" /> },
-    { pattern: /android/i, name: "Android", icon: <FaAndroid className="text-green-400" /> },
-    { pattern: /ios|iphone os/i, name: "iOS", icon: <FaApple className="text-blue-400" /> }
+    {
+      pattern: /windows nt 10/i,
+      name: "Windows 10/11",
+      icon: <FaWindows className="text-blue-600" />,
+    },
+    {
+      pattern: /windows nt 6\.3/i,
+      name: "Windows 8.1",
+      icon: <FaWindows className="text-blue-500" />,
+    },
+    {
+      pattern: /windows nt 6\.2/i,
+      name: "Windows 8",
+      icon: <FaWindows className="text-blue-400" />,
+    },
+    {
+      pattern: /windows nt 6\.1/i,
+      name: "Windows 7",
+      icon: <FaWindows className="text-blue-300" />,
+    },
+    {
+      pattern: /mac os x 10[._](?:15|14|13)/i,
+      name: "macOS Sonoma/Ventura",
+      icon: <FaApple className="text-gray-700" />,
+    },
+    {
+      pattern: /mac os x 10[._](?:12|11)/i,
+      name: "macOS Monterey/Big Sur",
+      icon: <FaApple className="text-gray-600" />,
+    },
+    {
+      pattern: /mac os x/i,
+      name: "macOS",
+      icon: <FaApple className="text-gray-800" />,
+    },
+    {
+      pattern: /linux/i,
+      name: "Linux",
+      icon: <FaLinux className="text-orange-600" />,
+    },
+    {
+      pattern: /android 1[0-9]/i,
+      name: "Android 10+",
+      icon: <FaAndroid className="text-green-600" />,
+    },
+    {
+      pattern: /android [5-9]/i,
+      name: "Android 5-9",
+      icon: <FaAndroid className="text-green-500" />,
+    },
+    {
+      pattern: /android/i,
+      name: "Android",
+      icon: <FaAndroid className="text-green-400" />,
+    },
+    {
+      pattern: /ios|iphone os/i,
+      name: "iOS",
+      icon: <FaApple className="text-blue-400" />,
+    },
   ];
 
   for (const osPattern of osPatterns) {
@@ -114,20 +163,57 @@ const parseUserAgent = (ua: string) => {
   }
 
   // Extract OS version
-  const osVersionMatch = ua.match(/(?:windows|mac os x|android|ios|iphone os)[\s\/]?([\d._]+)/i);
+  const osVersionMatch = ua.match(
+    /(?:windows|mac os x|android|ios|iphone os)[\s\/]?([\d._]+)/i,
+  );
   if (osVersionMatch) {
-    info.os.version = osVersionMatch[1].replace(/_/g, '.');
+    info.os.version = osVersionMatch[1].replace(/_/g, ".");
   }
 
   // Detect browser
   const browserPatterns = [
-    { pattern: /chrome\/([\d.]+)/i, name: "Chrome", icon: <SiGooglechrome className="text-green-600" />, engine: "Blink" },
-    { pattern: /firefox\/([\d.]+)/i, name: "Firefox", icon: <SiFirefox className="text-orange-500" />, engine: "Gecko" },
-    { pattern: /safari\/([\d.]+)/i, name: "Safari", icon: <SiSafari className="text-blue-500" />, engine: "WebKit" },
-    { pattern: /edg\/([\d.]+)/i, name: "Edge", icon: <FaEdgeLegacy className="text-blue-700" />, engine: "Blink" },
-    { pattern: /edge\/([\d.]+)/i, name: "Edge Legacy", icon: <FaEdgeLegacy className="text-blue-600" />, engine: "EdgeHTML" },
-    { pattern: /opr\/([\d.]+)/i, name: "Opera", icon: <SiOpera className="text-red-500" />, engine: "Blink" },
-    { pattern: /opera\/([\d.]+)/i, name: "Opera", icon: <SiOpera className="text-red-400" />, engine: "Presto/Blink" }
+    {
+      pattern: /chrome\/([\d.]+)/i,
+      name: "Chrome",
+      icon: <SiGooglechrome className="text-green-600" />,
+      engine: "Blink",
+    },
+    {
+      pattern: /firefox\/([\d.]+)/i,
+      name: "Firefox",
+      icon: <SiFirefox className="text-orange-500" />,
+      engine: "Gecko",
+    },
+    {
+      pattern: /safari\/([\d.]+)/i,
+      name: "Safari",
+      icon: <SiSafari className="text-blue-500" />,
+      engine: "WebKit",
+    },
+    {
+      pattern: /edg\/([\d.]+)/i,
+      name: "Edge",
+      icon: <FaEdgeLegacy className="text-blue-700" />,
+      engine: "Blink",
+    },
+    {
+      pattern: /edge\/([\d.]+)/i,
+      name: "Edge Legacy",
+      icon: <FaEdgeLegacy className="text-blue-600" />,
+      engine: "EdgeHTML",
+    },
+    {
+      pattern: /opr\/([\d.]+)/i,
+      name: "Opera",
+      icon: <SiOpera className="text-red-500" />,
+      engine: "Blink",
+    },
+    {
+      pattern: /opera\/([\d.]+)/i,
+      name: "Opera",
+      icon: <SiOpera className="text-red-400" />,
+      engine: "Presto/Blink",
+    },
   ];
 
   for (const browserPattern of browserPatterns) {
@@ -144,68 +230,12 @@ const parseUserAgent = (ua: string) => {
   return info;
 };
 
-// IP info component
-const IPInfo = ({ ip }: { ip: string }) => {
-  const [showDetails, setShowDetails] = useState(false);
-  
-  const isLocalIP = ip.startsWith('192.168.') || ip.startsWith('10.') || 
-                   ip.startsWith('172.16.') || ip === '::1' || ip.includes('localhost');
-  
-  const isIPv6 = ip.includes(':');
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <MdSecurity className={`text-lg ${isLocalIP ? 'text-green-500' : 'text-yellow-500'}`} />
-          <div>
-            <p className="font-mono text-sm">{ip}</p>
-            <div className="flex items-center gap-2 text-xs">
-              <span className={`px-1.5 py-0.5 rounded ${isLocalIP ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                {isLocalIP ? 'IP داخلی' : 'IP عمومی'}
-              </span>
-              {isIPv6 && (
-                <span className="px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded">
-                  IPv6
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => setShowDetails(!showDetails)}
-          className="text-gray-500 hover:text-gray-700 transition-colors p-1"
-          title="نمایش جزئیات"
-        >
-          <MdInfoOutline size={18} />
-        </button>
-      </div>
-      
-      {showDetails && (
-        <div className="mt-2 p-3 bg-white rounded border text-xs">
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <p className="text-gray-600">نوع آدرس:</p>
-              <p className="font-medium">{isIPv6 ? 'IPv6' : 'IPv4'}</p>
-            </div>
-            <div>
-              <p className="text-gray-600">دسترسی:</p>
-              <p className="font-medium">{isLocalIP ? 'شبکه داخلی' : 'اینترنت عمومی'}</p>
-            </div>
-          </div>
-          {!isLocalIP && (
-            <div className="mt-2 pt-2 border-t">
-              <p className="text-gray-600">امنیت:</p>
-              <p className="font-medium text-yellow-600">درخواست از اینترنت عمومی</p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: DeviceInfoProps) => {
+const DeviceInfo = ({
+  userAgent,
+  ip,
+  timestamp,
+  showFullDetails = false,
+}: DeviceInfoProps) => {
   const [showRawUA, setShowRawUA] = useState(false);
   const deviceInfo = parseUserAgent(userAgent);
 
@@ -234,14 +264,20 @@ const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: Devic
               {deviceInfo.device.icon}
             </div>
             <div>
-              <p className="font-bold text-gray-900">{deviceInfo.device.type}</p>
+              <p className="font-bold text-gray-900">
+                {deviceInfo.device.type}
+              </p>
               {deviceInfo.device.manufacturer && (
-                <p className="text-sm text-gray-600">{deviceInfo.device.manufacturer}</p>
+                <p className="text-sm text-gray-600">
+                  {deviceInfo.device.manufacturer}
+                </p>
               )}
             </div>
           </div>
           {deviceInfo.device.model && (
-            <p className="text-xs text-gray-500 mt-1">{deviceInfo.device.model}</p>
+            <p className="text-xs text-gray-500 mt-1">
+              {deviceInfo.device.model}
+            </p>
           )}
         </div>
 
@@ -254,7 +290,9 @@ const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: Devic
             <div>
               <p className="font-bold text-gray-900">{deviceInfo.os.name}</p>
               {deviceInfo.os.version && (
-                <p className="text-sm text-gray-600">نسخه {deviceInfo.os.version}</p>
+                <p className="text-sm text-gray-600">
+                  نسخه {deviceInfo.os.version}
+                </p>
               )}
             </div>
           </div>
@@ -268,14 +306,20 @@ const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: Devic
               {deviceInfo.browser.icon}
             </div>
             <div>
-              <p className="font-bold text-gray-900">{deviceInfo.browser.name}</p>
+              <p className="font-bold text-gray-900">
+                {deviceInfo.browser.name}
+              </p>
               {deviceInfo.browser.version && (
-                <p className="text-sm text-gray-600">نسخه {deviceInfo.browser.version}</p>
+                <p className="text-sm text-gray-600">
+                  نسخه {deviceInfo.browser.version}
+                </p>
               )}
             </div>
           </div>
           {deviceInfo.browser.engine && (
-            <p className="text-xs text-gray-500 mt-1">موتور: {deviceInfo.browser.engine}</p>
+            <p className="text-xs text-gray-500 mt-1">
+              موتور: {deviceInfo.browser.engine}
+            </p>
           )}
         </div>
       </div>
@@ -286,7 +330,7 @@ const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: Devic
           <MdSecurity className="text-gray-600" />
           <h4 className="font-medium text-gray-800">اطلاعات شبکه</h4>
         </div>
-        <IPInfo ip={ip} />
+        {ip !== undefined ? <SimpleIPInfo ip={ip} /> : ""}
       </div>
 
       {/* Advanced Details */}
@@ -302,10 +346,10 @@ const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: Devic
               className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
             >
               <MdLanguage size={16} />
-              {showRawUA ? 'مخفی کردن' : 'نمایش'} User Agent
+              {showRawUA ? "مخفی کردن" : "نمایش"} User Agent
             </button>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
             <div>
               <p className="text-gray-600">نوع دستگاه</p>
@@ -313,24 +357,30 @@ const DeviceInfo = ({ userAgent, ip, timestamp, showFullDetails = false }: Devic
             </div>
             <div>
               <p className="text-gray-600">موبایل</p>
-              <p className={`font-medium ${deviceInfo.isMobile ? 'text-green-600' : 'text-gray-600'}`}>
-                {deviceInfo.isMobile ? 'بله' : 'خیر'}
+              <p
+                className={`font-medium ${deviceInfo.isMobile ? "text-green-600" : "text-gray-600"}`}
+              >
+                {deviceInfo.isMobile ? "بله" : "خیر"}
               </p>
             </div>
             <div>
               <p className="text-gray-600">دسکتاپ</p>
-              <p className={`font-medium ${deviceInfo.isDesktop ? 'text-green-600' : 'text-gray-600'}`}>
-                {deviceInfo.isDesktop ? 'بله' : 'خیر'}
+              <p
+                className={`font-medium ${deviceInfo.isDesktop ? "text-green-600" : "text-gray-600"}`}
+              >
+                {deviceInfo.isDesktop ? "بله" : "خیر"}
               </p>
             </div>
             <div>
               <p className="text-gray-600">ربات</p>
-              <p className={`font-medium ${deviceInfo.isBot ? 'text-red-600' : 'text-green-600'}`}>
-                {deviceInfo.isBot ? 'بله' : 'خیر'}
+              <p
+                className={`font-medium ${deviceInfo.isBot ? "text-red-600" : "text-green-600"}`}
+              >
+                {deviceInfo.isBot ? "بله" : "خیر"}
               </p>
             </div>
           </div>
-          
+
           {showRawUA && (
             <div className="mt-4">
               <p className="text-sm text-gray-600 mb-2">User Agent کامل:</p>
