@@ -321,22 +321,67 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             {/* Technical Details */}
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
               <h4 className="font-bold text-gray-800 mb-3">
-                اطلاعات دستگاه کاربر
+                اطلاعات دستگاه کاربر (آخرین فعالیت)
               </h4>
 
               {payment.logs && payment.logs.length > 0 ? (
-                <div className="space-y-4">
-                  {payment.logs
-                    .filter((log: any) => log.user_agent)
-                    .map((log: any, index: number) => (
-                      <DeviceInfo
-                        key={log.id || index}
-                        userAgent={log.user_agent}
-                        ip={log.ip}
-                        timestamp={log.created_at}
-                      />
-                    ))}
-                </div>
+                <>
+                  {(() => {
+                    // فیلتر لاگ‌های دارای user_agent و مرتب‌سازی بر اساس تاریخ
+                    const validLogs =
+                      payment.logs
+                        ?.filter((log: any) => log.user_agent)
+                        ?.sort(
+                          (a: any, b: any) =>
+                            new Date(b.created_at).getTime() -
+                            new Date(a.created_at).getTime(),
+                        ) || [];
+
+                    if (validLogs.length === 0) {
+                      return (
+                        <p className="text-gray-500 text-sm">
+                          اطلاعات دستگاه در دسترس نیست
+                        </p>
+                      );
+                    }
+
+                    const latestLog = validLogs[0];
+
+                    return (
+                      <div className="space-y-4">
+                        <DeviceInfo
+                          key={latestLog.id}
+                          userAgent={latestLog.user_agent}
+                          ip={latestLog.ip}
+                          timestamp={latestLog.created_at}
+                        />
+
+                        {/* نمایش تعداد لاگ‌های دیگر */}
+                        {validLogs.length > 1 && (
+                          <div className="text-xs text-gray-500 bg-gray-100 p-2 rounded text-center">
+                            <span className="inline-flex items-center gap-1">
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                              {validLogs.length - 1} فعالیت دیگر در تاریخچه وجود
+                              دارد
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </>
               ) : (
                 <p className="text-gray-500 text-sm">
                   اطلاعات دستگاه در دسترس نیست
