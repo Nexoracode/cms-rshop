@@ -90,6 +90,7 @@ const Orders = () => {
         searchInp={isFilteredView}
         meta={payments?.data?.meta}
         className="mb-6"
+        bodyClassName="space-y-4"
       >
         {payments?.data?.items?.map((payment: any) => (
           <PaymentCard key={payment.id} payment={payment} />
