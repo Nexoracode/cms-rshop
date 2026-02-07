@@ -58,6 +58,7 @@ const breadcrumbMap: Record<string, string> = {
   // orders
   orders: "سفارش‌ها",
   "manual-order": "سفارش دستی",
+  "payment-log": "لاگ های پرداخت",
   order: "سفارش",
 
   // products
