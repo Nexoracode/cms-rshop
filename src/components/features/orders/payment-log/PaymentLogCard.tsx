@@ -103,76 +103,102 @@ const PaymentCard = ({ payment }: { payment: any }) => {
         </div>
 
         {/* Quick Info Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-          <div className="flex items-center gap-2">
-            <MdPerson className="text-gray-400" />
-            <div>
-              <p className="text-xs text-gray-500">کاربر</p>
-              <p className="text-sm font-medium">
-                {payment.user?.first_name} {payment.user?.last_name}
-              </p>
+        {!isExpanded ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+            <div className="flex items-center gap-2">
+              <MdPerson className="text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-500">کاربر</p>
+                <p className="text-sm font-medium">
+                  {payment.user?.first_name} {payment.user?.last_name}
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <MdReceipt className="text-gray-400" />
-            <div>
-              <p className="text-xs text-gray-500">سفارش</p>
-              <p className="text-sm font-medium">#{payment.order?.id}</p>
+            <div className="flex items-center gap-2">
+              <MdReceipt className="text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-500">سفارش</p>
+                <p className="text-sm font-medium">#{payment.order?.id}</p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <MdCreditCard className="text-gray-400" />
-            <div>
-              <p className="text-xs text-gray-500">مبلغ</p>
-              <p className="text-sm font-medium">
-                {formatCurrency(payment.amount)}
-              </p>
+            <div className="flex items-center gap-2">
+              <MdCreditCard className="text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-500">مبلغ</p>
+                <p className="text-sm font-medium">
+                  {formatCurrency(payment.amount)}
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <MdAccessTime className="text-gray-400" />
-            <div>
-              <p className="text-xs text-gray-500">زمان</p>
-              <p className="text-sm font-medium">
-                {formatDate(payment.created_at)}
-              </p>
+            <div className="flex items-center gap-2">
+              <MdAccessTime className="text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-500">زمان</p>
+                <p className="text-sm font-medium">
+                  {formatDate(payment.created_at)}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InfoRow label="کد رهگیری" value={payment.authority} hoverable />
+            {payment.ref_id && (
+              <InfoRow label="کد پیگیری" value={payment.ref_id} hoverable />
+            )}
+            {payment.card_to_card_status && (
+              <div>
+                <p className="text-sm text-gray-600">وضعیت کارت به کارت</p>
+                <p className="font-medium">{payment.card_to_card_status}</p>
+              </div>
+            )}
+            {payment.tracking_code && (
+              <div>
+                <p className="text-sm text-gray-600">کد رهگیری</p>
+                <p className="font-medium">{payment.tracking_code}</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Expanded Details */}
       {isExpanded && (
         <div className="p-5 bg-gray-50 border-t border-gray-100">
           <div className="space-y-4">
-            {/* Payment Information */}
-            <div className="bg-white p-4 rounded-lg border">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InfoRow
-                  label="کد رهگیری"
-                  value={payment.authority}
-                  hoverable
-                />
-                {payment.ref_id && (
-                  <InfoRow label="کد پیگیری" value={payment.ref_id} hoverable />
-                )}
-                {payment.card_to_card_status && (
+            {/* User Information */}
+            {payment.user && (
+              <div className="bg-white p-4 rounded-lg border">
+                <h4 className="font-bold text-gray-800 mb-3">اطلاعات کاربر</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <p className="text-sm text-gray-600">وضعیت کارت به کارت</p>
-                    <p className="font-medium">{payment.card_to_card_status}</p>
+                    <p className="text-sm text-gray-600">نام</p>
+                    <p className="font-medium">
+                      {payment.user.first_name} {payment.user.last_name}
+                    </p>
                   </div>
-                )}
-                {payment.tracking_code && (
                   <div>
-                    <p className="text-sm text-gray-600">کد رهگیری</p>
-                    <p className="font-medium">{payment.tracking_code}</p>
+                    <p className="text-sm text-gray-600">تلفن</p>
+                    <p className="font-medium">{payment.user.phone}</p>
                   </div>
-                )}
+                  <div>
+                    <p className="text-sm text-gray-600">ایمیل</p>
+                    <p className="font-medium">{payment.user.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">وضعیت</p>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${payment.user.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                    >
+                      {payment.user.is_active ? "فعال" : "غیرفعال"}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Order Summary */}
             {payment.order && (
@@ -226,37 +252,6 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                         درگاه: {payment.gateway}
                       </span>
                     )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* User Information */}
-            {payment.user && (
-              <div className="bg-white p-4 rounded-lg border">
-                <h4 className="font-bold text-gray-800 mb-3">اطلاعات کاربر</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600">نام</p>
-                    <p className="font-medium">
-                      {payment.user.first_name} {payment.user.last_name}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">تلفن</p>
-                    <p className="font-medium">{payment.user.phone}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">ایمیل</p>
-                    <p className="font-medium">{payment.user.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">وضعیت</p>
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${payment.user.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
-                    >
-                      {payment.user.is_active ? "فعال" : "غیرفعال"}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -317,7 +312,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             )}
 
             {/* Technical Details */}
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <div className="bg-white p-4 rounded-lg border">
               <h4 className="font-bold text-gray-800 mb-3">
                 اطلاعات دستگاه کاربر (آخرین فعالیت)
               </h4>
