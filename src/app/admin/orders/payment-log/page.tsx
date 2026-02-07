@@ -88,7 +88,6 @@ const Orders = () => {
         searchInp={isFilteredView}
         meta={logs?.data?.meta}
         className="mb-6"
-        childrenClassName="space-y-4"
       >
         {logs?.data?.map((log: any) => (
           <PaymentLogCard key={log.id} log={log} />
