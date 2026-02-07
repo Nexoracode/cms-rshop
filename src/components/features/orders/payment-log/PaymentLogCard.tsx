@@ -142,24 +142,6 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             </div>
           </div>
         </div>
-
-        {/* Status Badge */}
-        <div className="flex items-center gap-3 mt-4">
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-medium ${statusConfig.color}`}
-          >
-            {statusConfig.text}
-          </span>
-          <span className="flex items-center gap-1 text-sm text-gray-600">
-            {paymentMethodInfo.icon}
-            {paymentMethodInfo.text}
-          </span>
-          {payment.gateway && (
-            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-              درگاه: {payment.gateway}
-            </span>
-          )}
-        </div>
       </div>
 
       {/* Expanded Details */}
@@ -223,12 +205,28 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                   </div>
                 </div>
 
-                {/* Order Status */}
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <p className="text-sm text-gray-600">وضعیت سفارش</p>
-                  <p className="font-medium capitalize">
-                    {payment.order.status}
-                  </p>
+                <div className="flex flex-row-reverse items-center justify-between mt-4 border-t border-gray-200 pt-4">
+                  {/* Order Status */}
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    وضعیت سفارش: {payment.order.status}
+                  </span>
+                  {/* Status Badge */}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${statusConfig.color}`}
+                    >
+                      {statusConfig.text}
+                    </span>
+                    <span className="flex items-center gap-1 text-sm text-gray-600">
+                      {paymentMethodInfo.icon}
+                      {paymentMethodInfo.text}
+                    </span>
+                    {payment.gateway && (
+                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        درگاه: {payment.gateway}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
