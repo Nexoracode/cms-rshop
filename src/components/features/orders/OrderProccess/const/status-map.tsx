@@ -8,8 +8,16 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineCheckCircle, MdOutlineCancel } from "react-icons/md";
 import { FaUndo } from "react-icons/fa";
 import { BiLoader } from "react-icons/bi";
-import { PaymentLogStatus, PaymentLogStatusType } from "./payment-constants";
-import { getPaymentLogStatusText } from "./payment-constants-fa";
+import {
+  PaymentLogStatus,
+  PaymentLogStatusType,
+  PaymentStatus,
+  PaymentStatusType,
+} from "./payment-constants";
+import {
+  getPaymentLogStatusText,
+  getPaymentStatusDetailText,
+} from "./payment-constants-fa";
 import { GoIssueClosed } from "react-icons/go";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { HiOutlineBanknotes } from "react-icons/hi2";
@@ -155,6 +163,51 @@ export const getPaymentLogStatusMap = (status: PaymentLogStatusType) => {
 
   return {
     title: getPaymentLogStatusText(status),
+    ...baseMap[status],
+  };
+};
+
+export const getPaymentStatusMap = (status: PaymentStatusType) => {
+  const baseMap = {
+    [PaymentStatus.PENDING]: {
+      icon: <BiLoader className="animate-spin" size={20}/>,
+      color: "text-sky-600",
+      bgColor: "bg-sky-50",
+    },
+    [PaymentStatus.IN_PROGRESS]: {
+      icon: <BiLoader size={20}/>,
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
+    },
+    [PaymentStatus.SUCCESS]: {
+      icon: <GoIssueClosed size={20} />,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+    },
+    [PaymentStatus.FAILED]: {
+      icon: <AiOutlineCloseCircle size={20} />,
+      color: "text-red-600",
+      bgColor: "bg-red-50",
+    },
+    [PaymentStatus.CANCELLED]: {
+      icon: <MdOutlineCancel size={20} />,
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
+    },
+    [PaymentStatus.VERIFIED]: {
+      icon: <HiOutlineBanknotes size={20} />,
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+    },
+    [PaymentStatus.REFUNDED]: {
+      icon: <HiOutlineBanknotes size={20} />,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+    },
+  };
+
+  return {
+    title: getPaymentStatusDetailText(status),
     ...baseMap[status],
   };
 };

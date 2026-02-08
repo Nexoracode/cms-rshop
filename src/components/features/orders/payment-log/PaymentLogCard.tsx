@@ -23,42 +23,12 @@ import {
   getPaymentLogStatusText,
 } from "../OrderProccess/const/payment-constants-fa";
 import { getOrderStatusText } from "../OrderProccess/const/order-constants-fa";
-import { getPaymentLogStatusMap } from "../OrderProccess/const/status-map";
+import { getPaymentLogStatusMap, getPaymentStatusMap } from "../OrderProccess/const/status-map";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
   const num = typeof amount === "string" ? parseFloat(amount) : amount;
   return new Intl.NumberFormat("fa-IR").format(num) + " تومان";
-};
-
-// Helper function to get payment status color and icon
-const getPaymentStatusConfig = (status: string) => {
-  switch (status) {
-    case "success":
-      return {
-        color: "bg-green-100 text-green-800 border-green-200",
-        icon: <MdCheckCircle className="text-green-500" />,
-        text: "موفق",
-      };
-    case "in_progress":
-      return {
-        color: "bg-blue-100 text-blue-800 border-blue-200",
-        icon: <MdSchedule className="text-blue-500" />,
-        text: "در حال پردازش",
-      };
-    case "pending":
-      return {
-        color: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        icon: <MdPending className="text-yellow-500" />,
-        text: "در انتظار",
-      };
-    default:
-      return {
-        color: "bg-gray-100 text-gray-800 border-gray-200",
-        icon: <MdInfo className="text-gray-500" />,
-        text: status,
-      };
-  }
 };
 
 // Helper function to get payment method info
@@ -79,7 +49,7 @@ const getPaymentMethodInfo = (method: string) => {
 // Payment Card Component (با ساختار جدید)
 const PaymentCard = ({ payment }: { payment: any }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const statusConfig = getPaymentStatusConfig(payment.status);
+  const statusConfig = getPaymentStatusMap(payment.status);
   const paymentMethodInfo = getPaymentMethodInfo(payment.payment_method);
 
   return (
@@ -179,7 +149,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-medium ${statusConfig.color}`}
                 >
-                  {statusConfig.text}
+                  {statusConfig.title}
                 </span>
                 <span className="flex items-center gap-1 text-sm text-gray-600">
                   {paymentMethodInfo.icon}
