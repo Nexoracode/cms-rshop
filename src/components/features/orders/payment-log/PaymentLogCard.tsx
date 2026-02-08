@@ -23,7 +23,11 @@ import {
   getPaymentLogStatusText,
 } from "../OrderProccess/const/payment-constants-fa";
 import { getOrderStatusText } from "../OrderProccess/const/order-constants-fa";
-import { getPaymentLogStatusMap, getPaymentMethodMap, getPaymentStatusMap } from "../OrderProccess/const/status-map";
+import {
+  getPaymentLogStatusMap,
+  getPaymentMethodMap,
+  getPaymentStatusMap,
+} from "../OrderProccess/const/status-map";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
@@ -51,16 +55,28 @@ const PaymentCard = ({ payment }: { payment: any }) => {
               <p className="text-sm text-gray-600 mt-1">{payment.message}</p>
             </div>
           </div>
-          <button
+          <div
+            className="flex flex-row-reverse items-center cursor-pointer select-none"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-gray-500 hover:text-gray-700 transition-colors p-1"
           >
-            {isExpanded ? (
-              <MdExpandLess size={24} />
+            <button className="text-gray-500 hover:text-gray-700 transition-colors p-1">
+              {isExpanded ? (
+                <MdExpandLess size={24} />
+              ) : (
+                <MdExpandMore size={24} />
+              )}
+            </button>
+            {!isExpanded ? (
+              <span
+                className={`flex items-center gap-1 text-[13px] text-gray-600 ${paymentMethodInfo.color}`}
+              >
+                {paymentMethodInfo.title}
+                {paymentMethodInfo.icon}
+              </span>
             ) : (
-              <MdExpandMore size={24} />
+              ""
             )}
-          </button>
+          </div>
         </div>
 
         {/* Quick Info Row */}
@@ -136,7 +152,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 >
                   {statusConfig.title}
                 </span>
-                <span className="flex items-center gap-1 text-sm text-gray-600">
+                <span className={`flex items-center gap-1 text-[13px] text-gray-600 ${paymentMethodInfo.color}`}>
                   {paymentMethodInfo.icon}
                   {paymentMethodInfo.title}
                 </span>
