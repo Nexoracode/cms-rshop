@@ -14,7 +14,7 @@ import CategoriesFilter from "../Filter/CategoriesFilter";
 const CategoriesSelectionModal: React.FC = () => {
   const { selectedCategories, setCategories } = useCategoriesSelection();
 
-  const { data: categories, isLoading } = useGetCategories();
+  const { data: categories, isLoading } = useGetCategories({});
   const isExistItems = !!categories?.data?.items?.length;
 
   const selectedIds = useMemo(

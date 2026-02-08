@@ -55,8 +55,6 @@ const BulkCategoryModal: React.FC<Props> = ({
         <CategorySelect
           value={categoryId}
           onChange={(val) => setCategoryId(val ? Number(val) : null)}
-          label="انتخاب دسته‌بندی جدید"
-          placeholder="دسته‌بندی موردنظر را انتخاب کنید"
         />
       </div>
     </BaseModal>

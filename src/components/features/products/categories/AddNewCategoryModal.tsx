@@ -153,12 +153,10 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
             }`}
           >
             <CategorySelect
-              label="دسته‌بندی والد"
               value={isParent ? null : form.parentId}
               onChange={(val) =>
                 handleFieldChange("parentId", Number(val) || 0)
               }
-              placeholder="انتخاب کنید"
               isDisabled={isParent}
               errorMessage={errors.parentId}
               withAddModal={false}

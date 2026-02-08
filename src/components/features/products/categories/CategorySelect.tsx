@@ -13,6 +13,7 @@ type Props = {
   errorMessage?: string;
   withAddModal?: boolean;
   isRequired?: boolean;
+  isDisabled?: boolean;
 };
 
 const CategorySelect: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const CategorySelect: React.FC<Props> = ({
   errorMessage,
   withAddModal = false,
   isRequired = false,
+  isDisabled = false,
 }) => {
   const { search } = useListQueryParams({
     searchKey: "category",
@@ -30,7 +32,7 @@ const CategorySelect: React.FC<Props> = ({
     page: 1,
     search,
   });
-  
+
   const options = useMemo(() => {
     const flat = flattenCategories(categoriesData?.data?.items) || [];
 
@@ -44,7 +46,7 @@ const CategorySelect: React.FC<Props> = ({
     <div
       className={`w-full flex ${
         errorMessage?.length ? "items-center" : "items-end"
-      } gap-2`}
+      } gap-2 ${isDisabled ? "pointer-events-none opacity-75" : ""}`}
     >
       <AutocompleteInput
         label="دسته‌بندی"

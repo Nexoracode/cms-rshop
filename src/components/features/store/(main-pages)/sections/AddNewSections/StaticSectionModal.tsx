@@ -225,12 +225,10 @@ const StaticSectionModal: React.FC<Props> = ({
 
         {showCategoryField ? (
           <CategorySelect
-            label="دسته بندی"
             value={form.category_id}
             onChange={(val) =>
               handleFieldChange("category_id", Number(val) || 0)
             }
-            placeholder="انتخاب کنید"
             errorMessage={errors.category_id}
             withAddModal={false}
           />
