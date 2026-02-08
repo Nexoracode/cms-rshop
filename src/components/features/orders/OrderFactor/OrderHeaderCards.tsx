@@ -11,7 +11,7 @@ import {
   FiPackage,
 } from "react-icons/fi";
 import { toPersianUTC } from "@/core/utils/date";
-import { getPaymentStatusText } from "../OrderProccess/const/order-constants";
+import { getPaymentStatusText } from "../OrderProccess/const/payment-constants-fa";
 import { statusMap } from "@/core/constants/statusMap";
 import { StatusOrder } from "../order-types";
 

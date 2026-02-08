@@ -232,7 +232,7 @@ const DeviceInfo = ({ userAgent, ip, timestamp }: DeviceInfoProps) => {
   const deviceInfo = parseUserAgent(userAgent);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 mt-4">
       {/* Header */}
       {deviceInfo.isBot && (
         <div className="w-full flex items-center justify-between">

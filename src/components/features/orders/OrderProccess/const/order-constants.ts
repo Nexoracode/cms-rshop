@@ -16,7 +16,7 @@ export const statusOptions: { key: StatusOrder; title: string }[] = [
   { key: "cancelled", title: "لغو شده" },
 ];
 
-export const getPaymentStatusText = (payment: any): string => {
+/* export const getPaymentStatusText = (payment: any): string => {
   // پرداخت آنلاین
   if (payment?.payment_method === "online" || payment?.gateway) {
     switch (payment.status) {
@@ -56,4 +56,4 @@ export const getPaymentStatusText = (payment: any): string => {
 
   // هیچ پرداختی ثبت نشده
   return "پرداخت نشده";
-};
+}; */

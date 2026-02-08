@@ -6,7 +6,7 @@ import { toPersianUTC } from "@/core/utils/date";
 import { PiMoneyWavy } from "react-icons/pi";
 import { price } from "@/core/utils/helper";
 import React from "react";
-import { getPaymentStatusText } from "../const/order-constants";
+import { getPaymentStatusText } from "../const/payment-constants-fa";
 
 type PaymentCardProps = {
   order: any;

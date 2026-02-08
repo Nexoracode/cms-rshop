@@ -18,6 +18,7 @@ import { useState } from "react";
 import { formatDate } from "@/core/utils/date";
 import InfoRow from "@/components/shared/InfoRow";
 import DeviceInfo from "./DeviceInfo";
+import { statusOptions } from "../OrderProccess/const/order-constants";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
@@ -166,7 +167,12 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             <div className="flex flex-row-reverse items-center justify-between mt-4 border-t border-gray-200 pt-4">
               {/* Order Status */}
               <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                وضعیت سفارش: {payment.order.status}
+                سفارش:{" "}
+                {
+                  statusOptions.find(
+                    (item) => item.key === payment.order.status,
+                  )?.title
+                }
               </span>
               {/* Status Badge */}
               <div className="flex items-center gap-3">
@@ -255,18 +261,24 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             {/* Logs Section */}
             {payment.logs && payment.logs.length > 0 && (
               <div className="bg-white p-4 rounded-lg">
-                <h4 className="font-bold text-gray-800 mb-3">
+                <h4 className="font-bold text-gray-800 mb-4">
                   تاریخچه لاگ‌ها ({payment.logs.length})
                 </h4>
                 <div className="space-y-3">
                   {payment.logs.map((log: any) => {
                     const logStatus = getPaymentStatusConfig(log.status);
                     return (
-                      <div key={log.id} className="bg-white p-3 rounded-lg border">
+                      <div
+                        key={log.id}
+                        className="bg-white p-3 rounded-lg border"
+                      >
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-2">
                             <div className={`p-1 rounded ${logStatus.color}`}>
-                              {logStatus.icon}
+                              <span className="relative flex size-3">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                                <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
+                              </span>
                             </div>
                             <div>
                               <p className="text-sm font-medium">
@@ -313,9 +325,15 @@ const PaymentCard = ({ payment }: { payment: any }) => {
 
             {/* Technical Details */}
             <div className="bg-white p-4 rounded-lg">
-              <h4 className="font-bold text-gray-800 mb-3">
-                اطلاعات دستگاه کاربر (آخرین فعالیت)
-              </h4>
+              <div className="flex items-center gap-6 justify-between">
+                <h4 className="font-bold text-gray-800 mb-3">
+                  اطلاعات دستگاه کاربر (آخرین فعالیت)
+                </h4>
+                <span className="relative flex size-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex size-3 rounded-full bg-orange-500"></span>
+                </span>
+              </div>
 
               {payment.logs && payment.logs.length > 0 ? (
                 <>
