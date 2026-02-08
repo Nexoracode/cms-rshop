@@ -23,7 +23,7 @@ import {
   getPaymentLogStatusText,
 } from "../OrderProccess/const/payment-constants-fa";
 import { getOrderStatusText } from "../OrderProccess/const/order-constants-fa";
-import { getPaymentLogStatusMap, getPaymentStatusMap } from "../OrderProccess/const/status-map";
+import { getPaymentLogStatusMap, getPaymentMethodMap, getPaymentStatusMap } from "../OrderProccess/const/status-map";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
@@ -31,26 +31,11 @@ const formatCurrency = (amount: string | number) => {
   return new Intl.NumberFormat("fa-IR").format(num) + " تومان";
 };
 
-// Helper function to get payment method info
-const getPaymentMethodInfo = (method: string) => {
-  switch (method) {
-    case "online":
-      return { text: "آنلاین", icon: <MdPayment className="text-blue-500" /> };
-    case "card_to_card":
-      return {
-        text: "کارت به کارت",
-        icon: <MdCreditScore className="text-purple-500" />,
-      };
-    default:
-      return { text: method, icon: <MdCreditCard className="text-gray-500" /> };
-  }
-};
-
 // Payment Card Component (با ساختار جدید)
 const PaymentCard = ({ payment }: { payment: any }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const statusConfig = getPaymentStatusMap(payment.status);
-  const paymentMethodInfo = getPaymentMethodInfo(payment.payment_method);
+  const paymentMethodInfo = getPaymentMethodMap(payment.payment_method);
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 overflow-hidden">
@@ -153,7 +138,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 </span>
                 <span className="flex items-center gap-1 text-sm text-gray-600">
                   {paymentMethodInfo.icon}
-                  {paymentMethodInfo.text}
+                  {paymentMethodInfo.title}
                 </span>
                 {payment.gateway && (
                   <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">

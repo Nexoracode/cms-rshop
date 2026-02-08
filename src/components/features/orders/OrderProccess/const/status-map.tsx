@@ -5,22 +5,25 @@ import { StatusOrder } from "@/components/features/orders/order-types";
 import { LuClock } from "react-icons/lu";
 import { PiHandArrowDownFill, PiMoneyWavy } from "react-icons/pi";
 import { TbTruckDelivery } from "react-icons/tb";
-import { MdOutlineCheckCircle, MdOutlineCancel } from "react-icons/md";
-import { FaUndo } from "react-icons/fa";
+import { MdOutlineCheckCircle, MdOutlineCancel, MdOutlinePayment, MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { FaRegFileAlt, FaUndo } from "react-icons/fa";
 import { BiLoader } from "react-icons/bi";
 import {
   PaymentLogStatus,
   PaymentLogStatusType,
+  PaymentMethod,
+  PaymentMethodType,
   PaymentStatus,
   PaymentStatusType,
 } from "./payment-constants";
 import {
   getPaymentLogStatusText,
+  getPaymentMethodText,
   getPaymentStatusDetailText,
 } from "./payment-constants-fa";
 import { GoIssueClosed } from "react-icons/go";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { HiOutlineBanknotes } from "react-icons/hi2";
+import { AiOutlineCloseCircle, AiOutlineCreditCard } from "react-icons/ai";
+import { HiOutlineBanknotes, HiOutlineBuildingLibrary } from "react-icons/hi2";
 
 export const statusMap: Record<
   StatusOrder,
@@ -170,12 +173,12 @@ export const getPaymentLogStatusMap = (status: PaymentLogStatusType) => {
 export const getPaymentStatusMap = (status: PaymentStatusType) => {
   const baseMap = {
     [PaymentStatus.PENDING]: {
-      icon: <BiLoader className="animate-spin" size={20}/>,
+      icon: <BiLoader className="animate-spin" size={20} />,
       color: "text-sky-600",
       bgColor: "bg-sky-50",
     },
     [PaymentStatus.IN_PROGRESS]: {
-      icon: <BiLoader size={20}/>,
+      icon: <BiLoader size={20} />,
       color: "text-amber-600",
       bgColor: "bg-amber-50",
     },
@@ -209,5 +212,50 @@ export const getPaymentStatusMap = (status: PaymentStatusType) => {
   return {
     title: getPaymentStatusDetailText(status),
     ...baseMap[status],
+  };
+};
+
+export const getPaymentMethodMap = (method: PaymentMethodType) => {
+  const baseMap = {
+    [PaymentMethod.ONLINE]: {
+      icon: <MdOutlinePayment size={20} />,
+      color: "text-sky-600",
+      bgColor: "bg-sky-50",
+    },
+    [PaymentMethod.CASH]: {
+      icon: <HiOutlineBanknotes size={20} />,
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
+    },
+    [PaymentMethod.CARD_TO_CARD]: {
+      icon: <AiOutlineCreditCard size={20} />,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+    },
+    [PaymentMethod.CHEQUE]: {
+      icon: <FaRegFileAlt size={20} />,
+      color: "text-orange-600",
+      bgColor: "bg-orange-50",
+    },
+    [PaymentMethod.BANK_TRANSFER]: {
+      icon: <HiOutlineBuildingLibrary size={20} />,
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50",
+    },
+    [PaymentMethod.CREDIT]: {
+      icon: <MdOutlineAccountBalanceWallet size={20} />,
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+    },
+    [PaymentMethod.WALLET]: {
+      icon: <MdOutlineAccountBalanceWallet size={20} />,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+    },
+  };
+
+  return {
+    title: getPaymentMethodText(method),
+    ...baseMap[method],
   };
 };
