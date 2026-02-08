@@ -144,23 +144,51 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InfoRow label="کد رهگیری" value={payment.authority} hoverable />
-            {payment.ref_id && (
-              <InfoRow label="کد پیگیری" value={payment.ref_id} hoverable />
-            )}
-            {payment.card_to_card_status && (
-              <div>
-                <p className="text-sm text-gray-600">وضعیت کارت به کارت</p>
-                <p className="font-medium">{payment.card_to_card_status}</p>
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoRow label="کد رهگیری" value={payment.authority} hoverable />
+              {payment.ref_id && (
+                <InfoRow label="کد پیگیری" value={payment.ref_id} hoverable />
+              )}
+              {payment.card_to_card_status && (
+                <div>
+                  <p className="text-sm text-gray-600">وضعیت کارت به کارت</p>
+                  <p className="font-medium">{payment.card_to_card_status}</p>
+                </div>
+              )}
+              {payment.tracking_code && (
+                <div>
+                  <p className="text-sm text-gray-600">کد رهگیری</p>
+                  <p className="font-medium">{payment.tracking_code}</p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-row-reverse items-center justify-between mt-4 border-t border-gray-200 pt-4">
+              {/* Order Status */}
+              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                وضعیت سفارش: {payment.order.status}
+              </span>
+              {/* Status Badge */}
+              <div className="flex items-center gap-3">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${statusConfig.color}`}
+                >
+                  {statusConfig.text}
+                </span>
+                <span className="flex items-center gap-1 text-sm text-gray-600">
+                  {paymentMethodInfo.icon}
+                  {paymentMethodInfo.text}
+                </span>
+                {payment.gateway && (
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    درگاه:{" "}
+                    {payment.gateway === "zarinpal"
+                      ? "زرین‌پال"
+                      : payment.gateway}
+                  </span>
+                )}
               </div>
-            )}
-            {payment.tracking_code && (
-              <div>
-                <p className="text-sm text-gray-600">کد رهگیری</p>
-                <p className="font-medium">{payment.tracking_code}</p>
-              </div>
-            )}
+            </div>
           </div>
         )}
       </div>
@@ -169,89 +197,56 @@ const PaymentCard = ({ payment }: { payment: any }) => {
       {isExpanded && (
         <div className="p-5 bg-gray-50 border-t border-gray-100">
           <div className="space-y-4">
-            {/* User Information */}
-            {payment.user && (
-              <div className="bg-white p-4 rounded-lg border">
-                <h4 className="font-bold text-gray-800 mb-3">اطلاعات کاربر</h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600">نام</p>
-                    <p className="font-medium">
-                      {payment.user.first_name} {payment.user.last_name}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">تلفن</p>
-                    <p className="font-medium">{payment.user.phone}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">ایمیل</p>
-                    <p className="font-medium">{payment.user.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">وضعیت</p>
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${payment.user.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
-                    >
-                      {payment.user.is_active ? "فعال" : "غیرفعال"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Order Summary */}
             {payment.order && (
-              <div className="bg-white p-4 rounded-lg border">
+              <div className="bg-white p-4 rounded-lg">
                 <h4 className="font-bold text-gray-800 mb-3">خلاصه سفارش</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <p className="text-sm text-gray-600">جمع جزء</p>
+                    <p className="text-sm text-gray-600 pb-2">جمع جزء</p>
                     <p className="font-medium">
                       {formatCurrency(payment.order.subtotal)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">تخفیف</p>
-                    <p className="font-medium text-green-600">
+                    <p className="text-sm text-gray-600 pb-2">تخفیف</p>
+                    <p className="font-medium">
                       {formatCurrency(payment.order.discount_total)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">هزینه ارسال</p>
+                    <p className="text-sm text-gray-600 pb-2">هزینه ارسال</p>
                     <p className="font-medium">
                       {formatCurrency(payment.order.shipping_cost)}
                     </p>
                   </div>
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <p className="text-sm text-gray-600">جمع کل</p>
-                    <p className="font-bold text-lg">
+                  <div>
+                    <p className="text-sm text-gray-600 pb-2">جمع کل</p>
+                    <p className="font-[Dana-ExtraBold] text-green-700">
                       {formatCurrency(payment.order.total)}
                     </p>
                   </div>
                 </div>
+              </div>
+            )}
 
-                <div className="flex flex-row-reverse items-center justify-between mt-4 border-t border-gray-200 pt-4">
-                  {/* Order Status */}
-                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                    وضعیت سفارش: {payment.order.status}
-                  </span>
-                  {/* Status Badge */}
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${statusConfig.color}`}
-                    >
-                      {statusConfig.text}
-                    </span>
-                    <span className="flex items-center gap-1 text-sm text-gray-600">
-                      {paymentMethodInfo.icon}
-                      {paymentMethodInfo.text}
-                    </span>
-                    {payment.gateway && (
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        درگاه: {payment.gateway}
-                      </span>
-                    )}
+            {/* User Information */}
+            {payment.user && (
+              <div className="bg-white p-4 rounded-lg">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600 pb-2">نام</p>
+                    <p className="font-medium">
+                      {payment.user.first_name} {payment.user.last_name}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 pb-2">تلفن</p>
+                    <p className="font-medium">{payment.user.phone}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 pb-2">ایمیل</p>
+                    <p className="font-medium truncate">{payment.user.email}</p>
                   </div>
                 </div>
               </div>
@@ -259,7 +254,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
 
             {/* Logs Section */}
             {payment.logs && payment.logs.length > 0 && (
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="bg-white p-4 rounded-lg">
                 <h4 className="font-bold text-gray-800 mb-3">
                   تاریخچه لاگ‌ها ({payment.logs.length})
                 </h4>
@@ -267,7 +262,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                   {payment.logs.map((log: any) => {
                     const logStatus = getPaymentStatusConfig(log.status);
                     return (
-                      <div key={log.id} className="bg-white p-3 rounded border">
+                      <div key={log.id} className="bg-white p-3 rounded-lg border">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-2">
                             <div className={`p-1 rounded ${logStatus.color}`}>
@@ -290,14 +285,19 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                         </div>
                         {log.ip && (
                           <div className="mt-2 pt-2 border-t border-gray-100 text-xs">
-                            <p className="text-gray-600">IP: {log.ip}</p>
                             {log.payload &&
                               Object.keys(log.payload).length > 0 && (
                                 <details className="mt-1">
-                                  <summary className="cursor-pointer text-blue-600">
+                                  <summary className="cursor-pointer text-blue-600 select-none">
                                     نمایش جزئیات
                                   </summary>
-                                  <pre className="mt-1 p-2 bg-gray-100 rounded text-xs overflow-x-auto">
+                                  <pre
+                                    style={{
+                                      direction: "ltr",
+                                      unicodeBidi: "plaintext",
+                                    }}
+                                    className="mt-2 p-4 bg-gray-900 text-gray-100 rounded-lg text-xs leading-relaxed overflow-x-auto border border-gray-700 text-left"
+                                  >
                                     {JSON.stringify(log.payload, null, 2)}
                                   </pre>
                                 </details>
@@ -312,7 +312,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             )}
 
             {/* Technical Details */}
-            <div className="bg-white p-4 rounded-lg border">
+            <div className="bg-white p-4 rounded-lg">
               <h4 className="font-bold text-gray-800 mb-3">
                 اطلاعات دستگاه کاربر (آخرین فعالیت)
               </h4>
@@ -351,7 +351,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
 
                         {/* نمایش تعداد لاگ‌های دیگر */}
                         {validLogs.length > 1 && (
-                          <div className="text-xs text-gray-500 bg-gray-100 p-2 rounded text-center">
+                          <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded text-center mx-4">
                             <span className="inline-flex items-center gap-1">
                               <svg
                                 className="w-4 h-4"

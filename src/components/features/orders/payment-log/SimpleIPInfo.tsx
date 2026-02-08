@@ -234,7 +234,7 @@ const SimpleIPInfo = ({
   return (
     <div className="space-y-4">
       {/* کارت اصلی (همیشه نمایش داده می‌شود) */}
-      <div className="bg-gradient-to-br from-white via-gray-50 to-white rounded-lg border-y border-slate-200">
+      <div className="bg-gradient-to-br from-white via-gray-100 to-white rounded-lg">
         {/* هدر کارت */}
         <div className="p-4">
           <div className="flex items-center justify-between">
