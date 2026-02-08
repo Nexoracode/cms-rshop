@@ -4,13 +4,13 @@ import { useState } from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import { Chip, AvatarGroup, Avatar } from "@heroui/react";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
-import { statusOptions } from "./OrderProccess/const/order-constants";
 import { StatusOrder } from "./order-types";
 import { statusMap } from "@/core/constants/statusMap";
 import CardRows from "@/components/shared/CardRows";
 import type { PopoverSelectItem } from "@/components/ui/PopoverSelect";
 import PopoverSelect from "@/components/ui/PopoverSelect";
 import { toPersianUTC } from "@/core/utils/date";
+import { orderStatusOptions } from "./OrderProccess/const/order-constants";
 
 type Props = {
   order: any;
@@ -20,8 +20,8 @@ type Props = {
 const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const updateOrderStatus = useUpdateOrderStatus();
   const initialKey = (order?.status ?? "pending").toLowerCase() as StatusOrder;
-  const initialStatus =
-    statusOptions.find((s) => s.key === initialKey) ?? statusOptions[0];
+  const initialStatus = 
+    orderStatusOptions.find((s) => s.key === initialKey) ?? orderStatusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
 
   const rowItems = [
@@ -82,11 +82,11 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
         </div>
         {!disableAction ? (
           <PopoverSelect
-            items={statusOptions as PopoverSelectItem[]}
+            items={orderStatusOptions as PopoverSelectItem[]}
             initialKey={selectedStatus.key}
             isLoading={updateOrderStatus.isPending}
             onSelect={(key) => {
-              const next = statusOptions.find((s) => s.key === key);
+              const next = orderStatusOptions.find((s) => s.key === key);
               if (!next) return;
 
               setSelectedStatus(next);

@@ -11,7 +11,6 @@ import SelectableUsersBox from "@/components/features/store/customers/Selectable
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
 import { useCreateManualOrder } from "@/core/hooks/api/orders/useOrder";
 import { toast } from "react-hot-toast";
-import { statusOptions } from "../OrderProccess/const/order-constants";
 import { StatusOrder } from "../order-types";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useRouter } from "next/navigation";
@@ -21,6 +20,7 @@ import SelectableUserAddressCard from "../../store/customers/UserAddress/Selecta
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateManualOrder } from "./manual-order-validation";
 import ProductVariantQuantitySelectionBox from "../../products/SelectableProduct/ProductVariantQuantitySelectionBox";
+import { orderStatusOptions } from "../OrderProccess/const/order-constants";
 
 const initialFormData = {
   userId: null as number | null,
@@ -148,7 +148,7 @@ const ManualOrderForm = () => {
           label="وضعیت سفارش"
           value={form.status}
           onChange={(val) => handleFieldChange("status", val as StatusOrder)}
-          options={statusOptions.map((opt) => ({
+          options={orderStatusOptions.map((opt) => ({
             key: opt.key,
             title: opt.title,
           }))}

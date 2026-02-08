@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import FilterModal from "@/components/ui/modals/FilterModal/FilterModal";
 import { FilterField } from "@/components/ui/modals/FilterModal";
-import { statusOptions } from "../OrderProccess/const/order-constants";
+import { orderStatusOptions } from "../OrderProccess/const/order-constants";
 
 const OrdersFilterModal: React.FC = () => {
   const fields: FilterField[] = useMemo(
@@ -12,7 +12,7 @@ const OrdersFilterModal: React.FC = () => {
         key: "status",
         label: "وضعیت سفارش",
         type: "select",
-        options: statusOptions,
+        options: orderStatusOptions,
       },
       { key: "createdAt", label: "تاریخ ثبت سفارش", type: "dateRange" },
     ],

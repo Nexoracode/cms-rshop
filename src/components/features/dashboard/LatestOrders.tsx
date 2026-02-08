@@ -5,7 +5,6 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 const OrderCard = dynamic(() => import("@/components/features/orders/OrderCard"), { ssr: false });
 import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
 //
-import { Order } from "../orders/order-types";
 import { IoReceiptOutline } from "react-icons/io5";
 
 const LatestOrders = () => {
@@ -27,7 +26,7 @@ const LatestOrders = () => {
       isExistItems={isExistItems}
       childrenClassName="grid md:grid-cols-2"
     >
-      {orders?.data?.items?.map((order: Order) => (
+      {orders?.data?.items?.map((order: any) => (
         <OrderCard key={order.id} order={order} disableAction/>
       ))}
     </UnifiedCard>

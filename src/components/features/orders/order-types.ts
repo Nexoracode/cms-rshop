@@ -1,28 +1,3 @@
-export type Order = {
-  id: number;
-  created_at: string;
-  status: "pending" | "paid" | "canceled" | string;
-  total: string;
-  items: {
-    id: number;
-    product: {
-      id: number;
-      name: string;
-      price: string;
-    };
-  }[];
-  user: {
-    id: number;
-    first_name: string | null;
-    last_name: string | null;
-    avatar_url: string | null;
-    addresses: {
-      province: string;
-      city: string;
-    }[];
-  };
-};
-
 export type StatusOrder =
   | "start_order"
   | "pending_approval"

@@ -5,7 +5,7 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import OrdersFilter from "@/components/features/orders/Filter/OrdersFilter";
 import OrderCard from "@/components/features/orders/OrderCard";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import { Order, OrderSortBy } from "@/components/features/orders/order-types";
+import { OrderSortBy } from "@/components/features/orders/order-types";
 import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
 // Icons
 import { IoReceiptOutline } from "react-icons/io5";
@@ -41,7 +41,7 @@ const Orders = () => {
         className="mb-6"
         childrenClassName="grid md:grid-cols-2"
       >
-        {orders?.data?.items?.map((order: Order) => (
+        {orders?.data?.items?.map((order: any) => (
           <OrderCard key={order.id} order={order} />
         ))}
       </UnifiedCard>

@@ -18,11 +18,12 @@ import { useState } from "react";
 import { formatDate } from "@/core/utils/date";
 import InfoRow from "@/components/shared/InfoRow";
 import DeviceInfo from "./DeviceInfo";
-import { statusOptions } from "../OrderProccess/const/order-constants";
+import { orderStatusOptions } from "../OrderProccess/const/order-constants";
 import {
   getPaymentGatewayText,
   getPaymentLogStatusText,
 } from "../OrderProccess/const/payment-constants-fa";
+import { getOrderStatusText } from "../OrderProccess/const/order-constants-fa";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
@@ -173,9 +174,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
               <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
                 سفارش:{" "}
                 {
-                  statusOptions.find(
-                    (item) => item.key === payment.order.status,
-                  )?.title
+                  getOrderStatusText(payment.order.status)
                 }
               </span>
               {/* Status Badge */}

@@ -1,59 +1,37 @@
 import { StatusOrder } from "../../order-types";
 
-export const statusOptions: { key: StatusOrder; title: string }[] = [
+export const OrderStatus = {
+  START_ORDER: "start_order", // شروع سفارش
+  PENDING_APPROVAL: "pending_approval", // در انتظار تایید
+  AWAITING_PAYMENT: "awaiting_payment", // در انتظار پرداخت
+  PAYMENT_CONFIRMATION_PENDING: "payment_confirmation_pending", // تایید پرداخت در انتظار
+  PREPARING: "preparing", // در حال آماده‌سازی
+  SHIPPING: "shipping", // در حال ارسال
+  DELIVERED: "delivered", // تحویل شده
+  NOT_DELIVERED: "not_delivered", // تحویل نشده
+  EXPIRED: "expired", // منقضی شده
+  REJECTED: "rejected", // رد شده
+  REFUNDED: "refunded", // بازپرداخت شده
+  PAYMENT_FAILED: "payment_failed", // پرداخت ناموفق
+  PROCESSING: "processing", // در حال پردازش
+  CANCELLED: "cancelled", // لغو شده
+} as const;
+
+export type OrderStatusType = (typeof OrderStatus)[keyof typeof OrderStatus];
+
+export const orderStatusOptions: { key: StatusOrder; title: string }[] = [
   { key: "start_order", title: "ثبت اولیه" },
   { key: "pending_approval", title: "در انتظار تایید" },
   { key: "awaiting_payment", title: "در انتظار پرداخت" },
-  { key: "payment_confirmation_pending", title: "در انتظار تایید پرداخت" },
+  { key: "payment_confirmation_pending", title: "در انتظار تأیید پرداخت" },
   { key: "preparing", title: "در حال آماده‌سازی" },
   { key: "shipping", title: "در حال ارسال" },
-  { key: "delivered", title: "تحویل گرفته" },
-  { key: "not_delivered", title: "تحویل نگرفته" },
+  { key: "delivered", title: "تحویل شده" },
+  { key: "not_delivered", title: "تحویل نشده" },
   { key: "expired", title: "منقضی شده" },
   { key: "rejected", title: "رد شده" },
   { key: "refunded", title: "عودت وجه" },
   { key: "payment_failed", title: "پرداخت ناموفق" },
+  { key: "processing", title: "درحال پردازش" },
   { key: "cancelled", title: "لغو شده" },
 ];
-
-/* export const getPaymentStatusText = (payment: any): string => {
-  // پرداخت آنلاین
-  if (payment?.payment_method === "online" || payment?.gateway) {
-    switch (payment.status) {
-      case "success":
-        return "پرداخت موفق";
-      case "failed":
-        return "پرداخت ناموفق";
-      case "pending":
-      case "in_progress":
-        return "در انتظار پرداخت";
-      case "cancelled":
-        return "لغو شده توسط مشتری";
-      case "refunded":
-        return "وجه بازگشت داده شد";
-      case "verified":
-        return "تأیید شده";
-      default:
-        return "وضعیت پرداخت نامشخص";
-    }
-  }
-
-  // کارت به کارت
-  if (payment?.payment_method === "card_to_card") {
-    switch (payment.card_to_card_status) {
-      case "pending":
-        return "منتظر آپلود رسید";
-      case "uploaded":
-        return "رسید آپلود شد (در انتظار تأیید)";
-      case "approved":
-        return "تأیید شده توسط ادمین";
-      case "rejected":
-        return "رسید رد شد";
-      default:
-        return "کارت به کارت — در انتظار رسید";
-    }
-  }
-
-  // هیچ پرداختی ثبت نشده
-  return "پرداخت نشده";
-}; */
