@@ -5,7 +5,7 @@ import BaseCard from "@/components/ui/BaseCard";
 import { Chip, AvatarGroup, Avatar } from "@heroui/react";
 import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
 import { StatusOrder } from "./order-types";
-import { statusMap } from "@/core/constants/statusMap";
+import { statusMap } from "@/components/features/orders/OrderProccess/const/status-map";
 import CardRows from "@/components/shared/CardRows";
 import type { PopoverSelectItem } from "@/components/ui/PopoverSelect";
 import PopoverSelect from "@/components/ui/PopoverSelect";

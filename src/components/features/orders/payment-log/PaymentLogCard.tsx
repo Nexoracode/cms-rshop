@@ -18,12 +18,12 @@ import { useState } from "react";
 import { formatDate } from "@/core/utils/date";
 import InfoRow from "@/components/shared/InfoRow";
 import DeviceInfo from "./DeviceInfo";
-import { orderStatusOptions } from "../OrderProccess/const/order-constants";
 import {
   getPaymentGatewayText,
   getPaymentLogStatusText,
 } from "../OrderProccess/const/payment-constants-fa";
 import { getOrderStatusText } from "../OrderProccess/const/order-constants-fa";
+import { getPaymentLogStatusMap } from "../OrderProccess/const/status-map";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
@@ -172,10 +172,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
             <div className="flex flex-row-reverse items-center justify-between mt-4 border-t border-gray-200 pt-4">
               {/* Order Status */}
               <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                سفارش:{" "}
-                {
-                  getOrderStatusText(payment.order.status)
-                }
+                سفارش: {getOrderStatusText(payment.order.status)}
               </span>
               {/* Status Badge */}
               <div className="flex items-center gap-3">
@@ -266,7 +263,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 </h4>
                 <div className="space-y-3">
                   {payment.logs.map((log: any) => {
-                    const logStatus = getPaymentStatusConfig(log.status);
+                    const logStatus = getPaymentLogStatusMap(log.status);
                     return (
                       <div
                         key={log.id}
@@ -274,11 +271,16 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                       >
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-2">
-                            <div className={`p-1 rounded ${logStatus.color}`}>
-                              <span className="relative flex size-3">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                                <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
-                              </span>
+                            <div
+                              className={`relative p-1 rounded ${logStatus.color}`}
+                            >
+                              <div>{logStatus.icon}</div>
+                              <div className="absolute top-0 right-0">
+                                <span className="relative flex size-3">
+                                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gray-400 opacity-75"></span>
+                                  <span className="relative inline-flex size-3 rounded-full bg-gray-500"></span>
+                                </span>
+                              </div>
                             </div>
                             <div>
                               <p className="text-sm font-medium">
@@ -329,10 +331,6 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 <h4 className="font-bold text-gray-800 mb-3">
                   اطلاعات دستگاه کاربر (آخرین فعالیت)
                 </h4>
-                <span className="relative flex size-3">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
-                  <span className="relative inline-flex size-3 rounded-full bg-orange-500"></span>
-                </span>
               </div>
 
               {payment.logs && payment.logs.length > 0 ? (
@@ -369,7 +367,7 @@ const PaymentCard = ({ payment }: { payment: any }) => {
 
                         {/* نمایش تعداد لاگ‌های دیگر */}
                         {validLogs.length > 1 && (
-                          <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded text-center mx-4">
+                          <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded text-center">
                             <span className="inline-flex items-center gap-1">
                               <svg
                                 className="w-4 h-4"

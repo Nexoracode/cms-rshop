@@ -44,7 +44,7 @@ export const getPaymentLogStatusText = (
     case PaymentLogStatus.FAILED:
       return "ناموفق";
     case PaymentLogStatus.CALLBACK_RECEIVED:
-      return "دریافت کال‌بک";
+      return "دریافت بازخورد از درگاه";
     case PaymentLogStatus.USER_CANCELLED:
       return "لغو توسط کاربر";
     default:

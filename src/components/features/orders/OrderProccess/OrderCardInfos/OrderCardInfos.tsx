@@ -2,7 +2,7 @@
 
 import InfoRow from "@/components/shared/InfoRow";
 import BaseCard from "@/components/ui/BaseCard";
-import { statusMap } from "@/core/constants/statusMap";
+import { statusMap } from "@/components/features/orders/OrderProccess/const/status-map";
 import { toPersianUTC } from "@/core/utils/date";
 import React from "react";
 import { IoReceiptOutline } from "react-icons/io5";

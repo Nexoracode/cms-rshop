@@ -1,3 +1,5 @@
+"use client";
+
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { StatusOrder } from "@/components/features/orders/order-types";
 import { LuClock } from "react-icons/lu";
@@ -6,6 +8,11 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineCheckCircle, MdOutlineCancel } from "react-icons/md";
 import { FaUndo } from "react-icons/fa";
 import { BiLoader } from "react-icons/bi";
+import { PaymentLogStatus, PaymentLogStatusType } from "./payment-constants";
+import { getPaymentLogStatusText } from "./payment-constants-fa";
+import { GoIssueClosed } from "react-icons/go";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { HiOutlineBanknotes } from "react-icons/hi2";
 
 export const statusMap: Record<
   StatusOrder,
@@ -115,4 +122,39 @@ export const statusMap: Record<
     bgColor: "bg-gray-50",
     borderColor: "border-gray-200",
   },
+};
+
+export const getPaymentLogStatusMap = (status: PaymentLogStatusType) => {
+  const baseMap = {
+    [PaymentLogStatus.INITIATED]: {
+      icon: <BiLoader />,
+      color: "text-sky-600",
+      bgColor: "bg-sky-50",
+    },
+    [PaymentLogStatus.VERIFIED]: {
+      icon: <GoIssueClosed size={20} />,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+    },
+    [PaymentLogStatus.FAILED]: {
+      icon: <AiOutlineCloseCircle size={20} />,
+      color: "text-red-600",
+      bgColor: "bg-red-50",
+    },
+    [PaymentLogStatus.CALLBACK_RECEIVED]: {
+      icon: <HiOutlineBanknotes size={20} />,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+    },
+    [PaymentLogStatus.USER_CANCELLED]: {
+      icon: <MdOutlineCancel size={20} />,
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
+    },
+  };
+
+  return {
+    title: getPaymentLogStatusText(status),
+    ...baseMap[status],
+  };
 };

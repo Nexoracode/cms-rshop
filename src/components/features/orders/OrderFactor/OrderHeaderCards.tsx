@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import { toPersianUTC } from "@/core/utils/date";
 import { getPaymentStatusText } from "../OrderProccess/const/payment-constants-fa";
-import { statusMap } from "@/core/constants/statusMap";
+import { statusMap } from "@/components/features/orders/OrderProccess/const/status-map";
 import { StatusOrder } from "../order-types";
 
 type OrderHeaderProps = {

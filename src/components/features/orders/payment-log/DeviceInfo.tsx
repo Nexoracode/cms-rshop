@@ -318,11 +318,11 @@ const DeviceInfo = ({ userAgent, ip, timestamp }: DeviceInfoProps) => {
       {/* IP Information */}
       {ip !== undefined ? <SimpleIPInfo ip={ip} /> : ""}
 
-      <div className="flex items-center gap-6 justify-between">
+      <div className="flex flex-row-reverse items-center gap-6 justify-between">
         {/* Advanced Details */}
         <button
           onClick={() => setShowRawUA(!showRawUA)}
-          className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+          className="text-[13px] text-blue-600 hover:text-blue-800 flex items-center gap-1"
         >
           <MdLanguage size={16} />
           {showRawUA ? "مخفی کردن" : "نمایش"} User Agent
@@ -330,8 +330,11 @@ const DeviceInfo = ({ userAgent, ip, timestamp }: DeviceInfoProps) => {
 
         {/* Timestamp */}
         {timestamp && (
-          <div className="text-xs text-gray-500 flex items-center justify-end gap-1">
-            <MdInfoOutline size={12} />
+          <div className="text-xs text-gray-500 flex items-center justify-end gap-2">
+            <span className="relative flex size-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-400 opacity-75"></span>
+              <span className="relative inline-flex size-3 rounded-full bg-yellow-500"></span>
+            </span>
             آخرین فعالیت: {formatTime(timestamp)}
           </div>
         )}
@@ -339,7 +342,7 @@ const DeviceInfo = ({ userAgent, ip, timestamp }: DeviceInfoProps) => {
 
       {showRawUA && (
         <div className="mt-4">
-          <pre className="p-3 bg-gray-100 rounded border text-xs overflow-x-auto">
+          <pre className="p-3 bg-gray-100 rounded-lg text-xs overflow-x-auto">
             {userAgent}
           </pre>
         </div>
