@@ -27,7 +27,7 @@ export type BaseTabsProps = {
 
 const BaseTabs: React.FC<BaseTabsProps> = ({
   items,
-  activeKey,
+  activeKey="coupon",
   onTabChange,
   variant = "solid",
   fullWidth = true,
@@ -43,7 +43,7 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
 
   useEffect(() => {
     if (!searchParams) return
-    handleTabChange(searchParams.get(queryKey) ?? "coupon");
+    handleTabChange(searchParams.get(queryKey) ?? String(activeKey));
   }, [searchParams])
 
   const handleTabChange = (key: string | number) => {

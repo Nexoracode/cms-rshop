@@ -147,7 +147,6 @@ const AttributesProducts = () => {
           onTabChange={(key) => handleTabChange(String(key))}
           tabListClassName="flex-wrap md:flex-nowrap mb-4"
           syncWithQuery
-          queryKey="type"
         />
       }
     />
