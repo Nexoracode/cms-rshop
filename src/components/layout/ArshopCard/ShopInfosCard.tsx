@@ -7,10 +7,11 @@ import BoxLink from "@/components/shared/BoxLink";
 import { FiUsers } from "react-icons/fi";
 import { TbLogout2, TbReportAnalytics } from "react-icons/tb";
 import { GoCommentDiscussion } from "react-icons/go";
-import { GrAnnounce } from "react-icons/gr";
+import { GrAnnounce, GrUserAdmin } from "react-icons/gr";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useRouter } from "next/navigation";
 import { useLogout } from "@/core/hooks/api/auth/auth";
+import { RiAdminLine } from "react-icons/ri";
 
 const ShopInfosCard = () => {
   const router = useRouter();
@@ -73,14 +74,14 @@ const ShopInfosCard = () => {
       </Card>
 
       <div className="grid grid-cols-3 sm:flex justify-center items-center gap-3 md:gap-6 mt-4 mb-16">
-        {/*  <BoxLink
+        <BoxLink
           key="store/me"
           title="اطلاعات من"
-          icon={<RiAdminLine className="text-2xl" />}
+          icon={<GrUserAdmin className="text-2xl" />}
           routeName="store/me"
           parentStyle="bg-white shadow-md"
           color="text-green-700"
-        /> */}
+        />
 
         <BoxLink
           key="store/finance"
