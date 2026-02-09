@@ -30,7 +30,10 @@ const VariantRowEditor: React.FC<Props> = ({
   errors = {},
 }) => {
   return (
-    <BaseCard className="w-full transition-all" bodyClassName="flex flex-col gap-4 p-4">
+    <BaseCard
+      className="w-full transition-all"
+      bodyClassName="flex flex-col gap-4 p-4"
+    >
       <div className="cursor-auto text-center text-gray-600 mb-2 p-2.5 px-6 border rounded-xl">
         {value?.name ?? `واریانت ${index + 1}`}
       </div>
@@ -42,6 +45,7 @@ const VariantRowEditor: React.FC<Props> = ({
         value={value.sku}
         onChange={(val) => onChange(index, { sku: val })}
         errorMessage={errors.sku}
+        allowSpecialChars
       />
 
       <DiscountedPriceInput
@@ -50,7 +54,12 @@ const VariantRowEditor: React.FC<Props> = ({
         discount_percent={value.discount_percent ?? 0}
         onPriceChange={(price) => onChange(index, { price: +price })}
         onDiscountChange={(type, val) =>
-          onChange(index, type === "amount" ? { discount_amount: +val, discount_percent: 0 } : { discount_percent: +val, discount_amount: 0 })
+          onChange(
+            index,
+            type === "amount"
+              ? { discount_amount: +val, discount_percent: 0 }
+              : { discount_percent: +val, discount_amount: 0 },
+          )
         }
         style="flex flex-col gap-4"
         errorMessage={errors.price}

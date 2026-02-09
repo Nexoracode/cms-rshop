@@ -243,6 +243,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             inputAlign="left"
             onChange={(val) => handleFieldChange("sku", val)}
             errorMessage={errors.sku}
+            allowSpecialChars
           />
 
           <NumberInput
