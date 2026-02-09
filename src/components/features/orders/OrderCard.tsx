@@ -9,7 +9,7 @@ import { statusMap } from "@/components/features/orders/OrderProccess/const/stat
 import CardRows from "@/components/shared/CardRows";
 import type { PopoverSelectItem } from "@/components/ui/PopoverSelect";
 import PopoverSelect from "@/components/ui/PopoverSelect";
-import { toPersianUTC } from "@/core/utils/date";
+import { formatDate, toPersianUTC } from "@/core/utils/date";
 import { orderStatusOptions } from "./OrderProccess/const/order-constants";
 
 type Props = {
@@ -20,8 +20,9 @@ type Props = {
 const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
   const updateOrderStatus = useUpdateOrderStatus();
   const initialKey = (order?.status ?? "pending").toLowerCase() as StatusOrder;
-  const initialStatus = 
-    orderStatusOptions.find((s) => s.key === initialKey) ?? orderStatusOptions[0];
+  const initialStatus =
+    orderStatusOptions.find((s) => s.key === initialKey) ??
+    orderStatusOptions[0];
   const [selectedStatus, setSelectedStatus] = useState(initialStatus);
 
   const rowItems = [
@@ -61,25 +62,37 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
         isAccept
           ? "shadow shadow-yellow-300"
           : isNotDelivered
-          ? "shadow shadow-red-300"
-          : ""
+            ? "shadow shadow-red-300"
+            : ""
       }
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <div
-            className={`text-2xl rounded-full border p-4 ${statusInfo?.color} ${statusInfo.bgColor} ${statusInfo.borderColor}`}
+            className={`text-2xl rounded-b-3xl rounded-tl-3xl rounded-tr-md border p-4 ${statusInfo?.color} ${statusInfo.bgColor} ${statusInfo.borderColor}`}
           >
             <span className="text-2xl">{statusInfo.icon}</span>
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-[17px] text-primary">#{order?.id}</p>
             <span className="text-xs text-gray-500">
-              {toPersianUTC(order.created_at)}
+              {formatDate(order.created_at)}
             </span>
           </div>
         </div>
+
+{/*         <p className="text-slate-600 flex items-center gap-2">
+          <span>اقلام:</span>
+          <span>
+            {order.items.length === 1 ? "1 عدد" : `${order.items.length} تا`}
+          </span>
+        </p> */}
+      </div>
+
+      <CardRows items={rowItems} />
+
+      <div className="flex flex-row-reverse items-center justify-between w-full py-4 px-2">
         {!disableAction ? (
           <PopoverSelect
             items={orderStatusOptions as PopoverSelectItem[]}
@@ -94,7 +107,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
                 { id: order.id, status: next.key },
                 {
                   onError: () => setSelectedStatus(selectedStatus),
-                }
+                },
               );
             }}
             buttonClassName="capitalize w-full xs:w-fit text-sm"
@@ -105,19 +118,9 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
             {statusInfo.title}
           </Chip>
         )}
-      </div>
-
-      <CardRows items={rowItems} />
-
-      <div className="flex items-center justify-between w-full py-4 px-2">
-        <p className="text-slate-600 flex items-center gap-2">
-          <span>تعداد سفارش</span>
-          <span>{order.items.length}</span>
-        </p>
-        
         <AvatarGroup
           isBordered
-          max={4}
+          max={3}
           total={order?.items?.length - 1}
           size="sm"
         >
