@@ -9,7 +9,7 @@ const OrdersFilter = () => {
     <SearchFilterCard
       relatedPages={[
         {
-          title: "لاگ های خرید",
+          title: "لاگ های پرداخت",
           href: "/admin/orders/payment-log",
         },
         {

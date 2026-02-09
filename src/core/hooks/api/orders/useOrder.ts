@@ -103,6 +103,27 @@ export const useUpdateOrderStatus = () => {
   });
 };
 
+export const useUpdateOrderRef = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: any }) => {
+      return fetcher({
+        route: `/orders/${id}/ref`,
+        method: "PATCH",
+        body: data,
+        isActiveToast: false,
+      });
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["one-order", variables.id] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === "all-orders",
+      });
+    },
+  });
+};
+
 /* ------------------------------ Mark Order Delivered ------------------------------ */
 
 export const useMarkOrderDelivered = () => {

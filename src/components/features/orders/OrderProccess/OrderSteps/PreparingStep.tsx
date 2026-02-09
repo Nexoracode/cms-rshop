@@ -3,14 +3,31 @@ import SlugInput from "@/components/forms/Inputs/SlugInput";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import FormActionButtons from "@/components/common/FormActionButtons";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
-import { useUpdateOrderStatus } from "@/core/hooks/api/orders/useOrder";
+import {
+  useUpdateOrderRef,
+  useUpdateOrderStatus,
+} from "@/core/hooks/api/orders/useOrder";
 
 const PreparingStep = ({ order }: { order: any }) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = useState(false);
+  const [refId, setRefId] = useState("");
   const updateOrderStatus = useUpdateOrderStatus();
+  const updateOrderRef = useUpdateOrderRef();
 
   const dispatchOrder = () => {
-    updateOrderStatus.mutate({ id: order.id, status: "shipping" });
+    if (isTrackingEnabled && refId.length) {
+      updateOrderRef.mutate(
+        { id: order.id, data: { paymentRef: refId } },
+        {
+          onSuccess: (res) => {
+            res.ok &&
+              updateOrderStatus.mutate({ id: order.id, status: "shipping" });
+          },
+        },
+      );
+    } else {
+      updateOrderStatus.mutate({ id: order.id, status: "shipping" });
+    }
   };
 
   return (
@@ -30,12 +47,12 @@ const PreparingStep = ({ order }: { order: any }) => {
           <div className="!space-y-10">
             <SlugInput
               label="کد رهگیری"
-              value=""
-              onChange={() => {}}
+              value={refId}
+              onChange={setRefId}
               size="sm"
             />
 
-            <SelectBox
+            {/*    <SelectBox
               label="نوع ارسال"
               value=""
               onChange={() => {}}
@@ -46,7 +63,7 @@ const PreparingStep = ({ order }: { order: any }) => {
               placeholder="انتخاب کنید"
               isRequired
               size="sm"
-            />
+            /> */}
           </div>
         </ToggleSection>
       </div>
