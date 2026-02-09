@@ -28,23 +28,8 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
   return (
     <Card className="shadow-md">
       <CardBody className="flex flex-col gap-4">
-        {relatedPages.length > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-start bg-slate-50 rounded-xl p-2">
-            <p className="pr-2">{relatedTitle}</p>
-            <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
-              {relatedPages.map((page) => (
-                <OptionButton
-                  key={page.href}
-                  title={page.title}
-                  href={page.href}
-                  className="w-full sm:w-fit"
-                />
-              ))}
-            </div>
-          </div>
-        )}
         {showSearchBar || children ? (
-          <div className="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 rounded-xl p-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2 rounded-xl p-2">
             {showSearchBar && (
               <DebouncedSearchURL placeholder={searchPlaceholder} />
             )}
@@ -54,6 +39,22 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
           </div>
         ) : (
           ""
+        )}
+        {relatedPages.length > 0 && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-50 gap-4 text-start rounded-xl p-2">
+            <p className="pr-2">{relatedTitle}</p>
+            <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
+              {relatedPages.map((page) => (
+                <OptionButton
+                  key={page.href}
+                  title={page.title}
+                  href={page.href}
+                  className="w-full sm:w-fit"
+                  variant="flat"
+                />
+              ))}
+            </div>
+          </div>
         )}
       </CardBody>
     </Card>
