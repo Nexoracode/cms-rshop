@@ -3,7 +3,7 @@
 import Slider from "@/components/shared/Slider";
 import ProductTemplate from "../../../ProductTemplate";
 import AmazingOfferCard from "./AmazingOfferCard";
-import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { ActionButton } from "@/components/ui/buttons/ActionButton"; 
 import { TbEdit } from "react-icons/tb";
 import AddFeaturedOfferSection from "./AddFeaturedOfferSection";
 import { useState } from "react";

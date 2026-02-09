@@ -1,7 +1,7 @@
 "use client";
 
-import DiscountedPrice from "@/components/features/products/Helper/DiscountedPrice";
-import DiscountTotal from "@/components/features/products/Helper/DiscountTotal";
+import DiscountedPrice from "../../products/Helper/DiscountedPrice";
+import DiscountTotal from "../../products/Helper/DiscountTotal";
 import BaseCard from "@/components/ui/BaseCard";
 import Image from "next/image";
 

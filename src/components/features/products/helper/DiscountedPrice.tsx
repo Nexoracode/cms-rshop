@@ -1,3 +1,5 @@
+"use client"
+
 import Toman from "@/components/common/Toman";
 
 type DiscountedPriceProps = {
