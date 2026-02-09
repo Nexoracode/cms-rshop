@@ -41,26 +41,22 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       href={href}
       variant={variant}
       size={size}
-      className={`w-fit rounded-lg ${className}`}
+      className={`w-fit rounded-lg flex items-center gap-1.5 ${className}`}
     >
-      <div className="flex items-center gap-1.5">
-        <span className="text-lg">{icon ? icon : <GoArrowUpRight />}</span>
-        <span className="text-[13px]">{title}</span>
-      </div>
+      <span className="text-lg">{icon ? icon : <GoArrowUpRight />}</span>
+      <span className="text-[13px]">{title}</span>
     </Button>
   ) : (
     <Button
       onPress={onClick}
       variant={variant}
       size={size}
-      className={`w-fit rounded-lg ${className}`}
+      className={`w-fit rounded-lg flex items-center gap-1.5 ${className}`}
       isDisabled={isDisabled}
       isLoading={isLoading}
     >
-      <div className="flex items-center gap-1.5">
-        {icon && <span className="text-lg">{icon}</span>}
-        <span className="text-[13px]">{title}</span>
-      </div>
+      {icon && <span className="text-lg">{icon}</span>}
+      <span className="text-[13px]">{title}</span>
     </Button>
   );
 };

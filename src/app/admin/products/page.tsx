@@ -13,8 +13,7 @@ import {
 } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 // Icons
-import { LuPlus } from "react-icons/lu";
-import { BsShop } from "react-icons/bs";
+import { LuPackage, LuPlus } from "react-icons/lu";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
 
 const Products = () => {
@@ -38,7 +37,7 @@ const Products = () => {
         searchFilter={<ProductsFilter />}
         headerProps={{
           title: "مدیریت محصولات",
-          icon: <BsShop className="text-2xl" />,
+          icon: <LuPackage className="text-2xl" />,
           redirect: "/admin/products/create?type=infos",
           btnIcon: <LuPlus />,
         }}

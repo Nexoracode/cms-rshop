@@ -3,7 +3,8 @@
 import dynamic from "next/dynamic";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { useGetProducts } from "@/core/hooks/api/products/useProduct";
-import { TfiShoppingCartFull } from "react-icons/tfi";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import { BiArrowBack } from "react-icons/bi";
 const ProductCard = dynamic(() => import("../products/ProductCard"), { ssr: false });
 
 const ProductListMostViewed = () => {
@@ -15,8 +16,11 @@ const ProductListMostViewed = () => {
     <UnifiedCard
       headerProps={{
         title: "پربازدیدترین محصولات",
-        icon: <TfiShoppingCartFull className="text-2xl" />,
-        showIconInActionSlot: true,
+        icon: <HiOutlineUserGroup className="text-2xl" />,
+        btnIcon: <BiArrowBack/>,
+        textBtn: "محصولات",
+        redirect: "/admin/products",
+        btnClassName: "flex-row-reverse bg-orange-700/10 text-orange-700"
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
