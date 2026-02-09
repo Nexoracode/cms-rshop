@@ -40,6 +40,7 @@ const VariantRowEditor: React.FC<Props> = ({
 
       <TextInput
         label="کد انبار"
+        inputAlign="left"
         placeholder="مثلاً SKU12345"
         className="bg-white rounded-xl text-right"
         value={value.sku}

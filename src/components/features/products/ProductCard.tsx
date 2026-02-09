@@ -35,7 +35,9 @@ const ProductCard: React.FC<Props> = ({
       redirect={`/admin/products/create?edit_id=${id}&type=infos`}
       bodyClassName="flex flex-row items-center"
     >
-      <div className="bg-white p-1 border border-gray-300 rounded-xl flex flex-col items-center gap-2.5">
+      <div
+        className={`bg-white w-[37px] p-1 ${product.helper || product.is_featured || product.is_same_day_shipping ? "border" : ""} border-gray-200 rounded-xl flex flex-col items-center gap-2.5`}
+      >
         {product.helper && (
           <div className="bg-white rounded-lg border border-green-300 p-1">
             <PiResizeBold className="text-green-600" size={16} />

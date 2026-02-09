@@ -54,7 +54,8 @@ const BaseTabs: React.FC<BaseTabsProps> = ({
     if (syncWithQuery && queryKey) {
       const params = new URLSearchParams(searchParams.toString());
       params.set(queryKey, String(key));
-
+      console.log(`${pathname}?${params.toString()}`);
+      
       router.replace(`${pathname}?${params.toString()}`, {
         scroll: false,
       });
