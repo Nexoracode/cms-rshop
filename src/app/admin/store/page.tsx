@@ -26,7 +26,7 @@ const storeSettingsLinks = [
   {
     title: "صفحه اصلی",
     icon: <SiMaterialformkdocs className="text-2xl" />,
-    route: "store/home-builder",
+    route: "store/home-builder", 
   },
   {
     title: "گزارش عملکرد",
