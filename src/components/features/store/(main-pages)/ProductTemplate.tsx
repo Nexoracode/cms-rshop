@@ -1,7 +1,7 @@
 "use client";
 
-import DiscountedPrice from "../../products/Helper/DiscountedPrice";
-import DiscountTotal from "../../products/Helper/DiscountTotal";
+/* import DiscountedPrice from "@/components/features/products/Helper/DiscountedPrice";
+import DiscountTotal from "@/components/features/products/Helper/DiscountTotal" */
 import BaseCard from "@/components/ui/BaseCard";
 import Image from "next/image";
 
@@ -49,16 +49,16 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
         <div className="flex justify-between items-start">
           <div className="text-[12px] bg-[#D52E4E] rounded-full text-white px-2">
-            <DiscountTotal
+            {/* <DiscountTotal
               discount_amount={discount_amount}
               discount_percent={discount_percent}
-            />
+            /> */}
           </div>
-          <DiscountedPrice
+       {/*    <DiscountedPrice
             discount_amount={discount_amount}
             discount_percent={discount_percent}
             price={price}
-          />
+          /> */}
         </div>
       </div>
     </BaseCard>
