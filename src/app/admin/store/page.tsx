@@ -13,7 +13,7 @@ import {
 import { RiTimerLine } from "react-icons/ri";
 import { LuPackage, LuSettings2 } from "react-icons/lu";
 import { MdOutlineVerifiedUser } from "react-icons/md";
-import { TbChartDots, TbTruckDelivery } from "react-icons/tb";
+import { TbChartDots, TbLoader, TbTruckDelivery } from "react-icons/tb";
 import BaseCard from "@/components/ui/BaseCard";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
 
@@ -26,7 +26,7 @@ const storeSettingsLinks = [
   {
     title: "صفحه اصلی",
     icon: <SiMaterialformkdocs className="text-2xl" />,
-    route: "store/home-builder", 
+    route: "store/home-builder",
   },
   {
     title: "گزارش عملکرد",
@@ -42,6 +42,7 @@ const storeSettingsLinks = [
     title: "بلاگ‌ها",
     icon: <HiOutlineDocumentText className="text-2xl" />,
     route: "store/blog",
+    badge: "به زودی",
   },
 ];
 
@@ -53,11 +54,6 @@ const orderSettingsLinks = [
     route: "store/gift-wrapping",
   },
   {
-    title: "تأیید خودکار",
-    icon: <MdOutlineVerifiedUser className="text-2xl" />,
-    route: "store/auto-approval",
-  },
-  {
     title: "زمان رزرو",
     icon: <RiTimerLine className="text-2xl" />,
     route: "store/reservation-times",
@@ -65,12 +61,14 @@ const orderSettingsLinks = [
   {
     title: "پیش‌سفارش",
     icon: <HiOutlineClipboardDocumentCheck className="text-2xl" />,
-    route: "store/pre-order",
+    route: "store",
+    badge: "به زودی",
   },
   {
     title: "روش‌های ارسال",
     icon: <TbTruckDelivery className="text-2xl" />,
-    route: "store/shippings",
+    route: "store/#",
+    badge: "به زودی",
   },
 ];
 
@@ -88,15 +86,23 @@ const Settings: React.FC = () => {
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
-          {storeSettingsLinks.map(({ title, icon, route }) => (
-            <BoxLink
-              key={route}
-              title={title}
-              icon={icon}
-              routeName={route}
-              parentStyle="text-gray-700"
-              titleStyle="text-gray-600"
-            />
+          {storeSettingsLinks.map(({ title, icon, route, badge }) => (
+            <div key={route} className="relative">
+              <BoxLink
+                title={title}
+                icon={icon}
+                routeName={route}
+                parentStyle="text-gray-700"
+                titleStyle="text-gray-600"
+              />
+              {badge ? (
+                <div className="absolute top-2 -left-4 w-full flex items-center justify-center">
+                  <TbLoader className="animate-spin text-yellow-600" size={16} />
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           ))}
         </BaseCard>
 
@@ -109,15 +115,23 @@ const Settings: React.FC = () => {
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
-          {orderSettingsLinks.map(({ title, icon, route }) => (
-            <BoxLink
-              key={route}
-              title={title}
-              icon={icon}
-              routeName={route}
-              parentStyle="text-blue-700"
-              titleStyle="text-gray-600"
-            />
+          {orderSettingsLinks.map(({ title, icon, route, badge }) => (
+            <div key={route} className="relative">
+              <BoxLink
+                title={title}
+                icon={icon}
+                routeName={route}
+                parentStyle="text-blue-700"
+                titleStyle="text-gray-600"
+              />
+              {badge ? (
+                <div className="absolute top-2 -left-4 w-full flex items-center justify-center">
+                  <TbLoader className="animate-spin text-yellow-600" size={16} />
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           ))}
         </BaseCard>
       </div>
