@@ -1,24 +1,19 @@
 "use client";
 
 import {
-  MdCheckCircle,
-  MdPending,
   MdAccessTime,
   MdPerson,
   MdReceipt,
   MdCreditCard,
-  MdInfo,
   MdExpandMore,
   MdExpandLess,
-  MdPayment,
-  MdCreditScore,
-  MdSchedule,
 } from "react-icons/md";
 import { useState } from "react";
 import { formatDate } from "@/core/utils/date";
 import InfoRow from "@/components/shared/InfoRow";
 import DeviceInfo from "./DeviceInfo";
 import {
+  getCardToCardStatusText,
   getPaymentGatewayText,
   getPaymentLogStatusText,
 } from "../OrderProccess/const/payment-constants-fa";
@@ -28,6 +23,7 @@ import {
   getPaymentMethodMap,
   getPaymentStatusMap,
 } from "../OrderProccess/const/status-map";
+import Link from "next/link";
 
 // Helper function to format currency
 const formatCurrency = (amount: string | number) => {
@@ -128,16 +124,17 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 <InfoRow label="کد پیگیری" value={payment.ref_id} hoverable />
               )}
               {payment.card_to_card_status && (
-                <div>
-                  <p className="text-sm text-gray-600">وضعیت کارت به کارت</p>
-                  <p className="font-medium">{payment.card_to_card_status}</p>
-                </div>
+                <InfoRow
+                  label="وضعیت کارت به کارت"
+                  value={getCardToCardStatusText(payment.card_to_card_status)}
+                />
               )}
               {payment.tracking_code && (
-                <div>
-                  <p className="text-sm text-gray-600">کد رهگیری</p>
-                  <p className="font-medium">{payment.tracking_code}</p>
-                </div>
+                <InfoRow
+                  label="کد رهگیری"
+                  value={payment.tracking_code}
+                  hoverable
+                />
               )}
             </div>
             <div className="flex flex-row-reverse items-center justify-between mt-4 border-t border-gray-200 pt-4">
@@ -152,7 +149,9 @@ const PaymentCard = ({ payment }: { payment: any }) => {
                 >
                   {statusConfig.title}
                 </span>
-                <span className={`flex items-center gap-1 text-[13px] text-gray-600 ${paymentMethodInfo.color}`}>
+                <span
+                  className={`flex items-center gap-1 text-[13px] text-gray-600 ${paymentMethodInfo.color}`}
+                >
                   {paymentMethodInfo.icon}
                   {paymentMethodInfo.title}
                 </span>
@@ -173,8 +172,20 @@ const PaymentCard = ({ payment }: { payment: any }) => {
           <div className="space-y-4">
             {/* Order Summary */}
             {payment.order && (
-              <div className="bg-white p-4 rounded-lg">
-                <h4 className="font-bold text-gray-800 mb-3">خلاصه سفارش</h4>
+              <div className="relative bg-white p-4 rounded-lg">
+                <div className="flex items-center justify-between w-full">
+                  <h4 className="font-bold text-gray-800 mb-3">خلاصه سفارش</h4>
+                  <Link
+                    href={`/admin/orders/order?id=${payment.order.id}`}
+                    className="rounded-full cursor-pointer"
+                  >
+                    <img
+                      src={payment?.receipt_image?.url ?? "/images/box.png"}
+                      alt="receipt-image"
+                      className="w-10 h-10 object-cover rounded-xl border border-gray-300 p-0.5"
+                    />
+                  </Link>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
                     <p className="text-sm text-gray-600 pb-2">جمع جزء</p>
