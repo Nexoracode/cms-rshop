@@ -36,25 +36,6 @@ const ProductCard: React.FC<Props> = ({
       bodyClassName="flex flex-row items-center"
     >
       <div
-        className={`bg-white w-[37px] p-1 ${product.helper || product.is_featured || product.is_same_day_shipping ? "border" : ""} border-gray-200 rounded-xl flex flex-col items-center gap-2.5`}
-      >
-        {product.helper && (
-          <div className="bg-white rounded-lg border border-green-300 p-1">
-            <PiResizeBold className="text-green-600" size={16} />
-          </div>
-        )}
-        {product.is_featured && (
-          <div className="bg-white rounded-lg border border-fuchsia-300 p-1">
-            <IoSparklesOutline className="text-fuchsia-500" size={16} />
-          </div>
-        )}
-        {product.is_same_day_shipping && (
-          <div className="bg-white rounded-lg border border-fuchsia-300 p-1">
-            <TbTruckDelivery className="text-orange-500" size={16} />
-          </div>
-        )}
-      </div>
-      <div
         className={`w-full h-full flex flex-col items-center ${
           forceMobileLayout ? "sm:flex-row" : ""
         } gap-4`}
@@ -133,6 +114,23 @@ const ProductCard: React.FC<Props> = ({
           {/* Footer */}
           <div className="flex items-end justify-between">
             <div className="flex flex-col gap-2">
+              <div className={`bg-white p-1 flex items-center gap-2.5`}>
+                {product.helper && (
+                  <div className="bg-white rounded-lg border border-green-300 p-1">
+                    <PiResizeBold className="text-green-600" size={16} />
+                  </div>
+                )}
+                {product.is_featured && (
+                  <div className="bg-white rounded-lg border border-fuchsia-300 p-1">
+                    <IoSparklesOutline className="text-fuchsia-500" size={16} />
+                  </div>
+                )}
+                {product.is_same_day_shipping && (
+                  <div className="bg-white rounded-lg border border-fuchsia-300 p-1">
+                    <TbTruckDelivery className="text-orange-500" size={16} />
+                  </div>
+                )}
+              </div>
               <p className="text-gray-600 text-[13px]">
                 موجودی{" "}
                 {product.is_limited_stock
