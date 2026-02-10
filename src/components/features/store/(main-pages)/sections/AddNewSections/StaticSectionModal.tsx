@@ -76,28 +76,7 @@ const StaticSectionModal: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    if (!defaultValues) return;
-
-    const {
-      view_all_link,
-      products_limit,
-      is_active,
-      category,
-      title,
-      slug,
-      section_type,
-    } = defaultValues;
-
-    setForm({
-      ...initialForm,
-      view_all_link,
-      products_limit,
-      is_active,
-      title,
-      slug,
-      section_type,
-      ...(showCategoryField ? { category_id: category?.id } : {}),
-    });
+    setFormHandler();
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
@@ -141,9 +120,27 @@ const StaticSectionModal: React.FC<Props> = ({
   };
 
   const setFormHandler = () => {
+    if (!defaultValues) return;
+
+    const {
+      view_all_link,
+      products_limit,
+      is_active,
+      category,
+      title,
+      slug,
+      section_type,
+    } = defaultValues;
+
     setForm({
       ...initialForm,
-      ...defaultValues,
+      view_all_link,
+      products_limit,
+      is_active,
+      title,
+      slug,
+      section_type,
+      ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   };
 
