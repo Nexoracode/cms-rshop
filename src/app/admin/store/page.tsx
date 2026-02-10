@@ -12,7 +12,6 @@ import {
 } from "react-icons/hi2";
 import { RiTimerLine } from "react-icons/ri";
 import { LuPackage, LuSettings2 } from "react-icons/lu";
-import { MdOutlineVerifiedUser } from "react-icons/md";
 import { TbChartDots, TbLoader, TbTruckDelivery } from "react-icons/tb";
 import BaseCard from "@/components/ui/BaseCard";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
@@ -24,7 +23,7 @@ const storeSettingsLinks = [
     route: "store/infos",
   },
   {
-    title: "صفحه اصلی",
+    title: "صفحه ساز",
     icon: <SiMaterialformkdocs className="text-2xl" />,
     route: "store/home-builder",
   },
@@ -41,7 +40,7 @@ const storeSettingsLinks = [
   {
     title: "بلاگ‌ها",
     icon: <HiOutlineDocumentText className="text-2xl" />,
-    route: "store/blog",
+    route: "store/#",
     badge: "به زودی",
   },
 ];
@@ -61,7 +60,7 @@ const orderSettingsLinks = [
   {
     title: "پیش‌سفارش",
     icon: <HiOutlineClipboardDocumentCheck className="text-2xl" />,
-    route: "store",
+    route: "store/#",
     badge: "به زودی",
   },
   {
@@ -86,8 +85,8 @@ const Settings: React.FC = () => {
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
-          {storeSettingsLinks.map(({ title, icon, route, badge }) => (
-            <div key={route} className="relative">
+          {storeSettingsLinks.map(({ title, icon, route, badge }, index) => (
+            <div key={index} className="relative">
               <BoxLink
                 title={title}
                 icon={icon}
@@ -97,7 +96,10 @@ const Settings: React.FC = () => {
               />
               {badge ? (
                 <div className="absolute top-2 -left-4 w-full flex items-center justify-center">
-                  <TbLoader className="animate-spin text-yellow-600" size={16} />
+                  <TbLoader
+                    className="animate-spin text-yellow-600"
+                    size={16}
+                  />
                 </div>
               ) : (
                 ""
@@ -115,8 +117,8 @@ const Settings: React.FC = () => {
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
-          {orderSettingsLinks.map(({ title, icon, route, badge }) => (
-            <div key={route} className="relative">
+          {orderSettingsLinks.map(({ title, icon, route, badge }, index) => (
+            <div key={index} className="relative">
               <BoxLink
                 title={title}
                 icon={icon}
@@ -126,7 +128,10 @@ const Settings: React.FC = () => {
               />
               {badge ? (
                 <div className="absolute top-2 -left-4 w-full flex items-center justify-center">
-                  <TbLoader className="animate-spin text-yellow-600" size={16} />
+                  <TbLoader
+                    className="animate-spin text-yellow-600"
+                    size={16}
+                  />
                 </div>
               ) : (
                 ""

@@ -83,9 +83,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
   }, [getAllAttributeGroup?.data]);
 
   useEffect(() => {
-    if (defaultDatas && isEdit) {
-      setForm(defaultDatas as any);
-    }
+   setFormHandler()
   }, [defaultDatas, isEdit]);
 
   const attributeTypes: {
@@ -112,6 +110,12 @@ const AddNewAttributeModal: React.FC<Props> = ({
     return handleMutation(() => createAttribute(form), { resetForm });
   });
 
+  const setFormHandler = () => {
+    if (defaultDatas && isEdit) {
+      setForm(defaultDatas as any);
+    }
+  };
+
   const resetForm = () => reset();
 
   return (
@@ -134,7 +138,9 @@ const AddNewAttributeModal: React.FC<Props> = ({
       title={isEdit ? "ویرایش ویژگی" : "افزودن ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
-      onCancel={resetForm}
+      onCancel={() => {
+        !isEdit ? resetForm() : setFormHandler();
+      }}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
       icon={<AiOutlineFontColors />}
       size="lg"

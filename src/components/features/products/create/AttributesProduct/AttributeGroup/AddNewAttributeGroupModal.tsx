@@ -58,9 +58,7 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
     useUpdateAttributeGroup(defaultDatas?.id ?? -1);
 
   useEffect(() => {
-    if (defaultDatas && isEdit) {
-      setForm(defaultDatas);
-    }
+    setFormHandler();
   }, [defaultDatas, isEdit]);
 
   const handleConfirm = submit(async () => {
@@ -71,6 +69,12 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
 
     return handleMutation(() => createAttributeGroup(form), { resetForm });
   });
+
+  const setFormHandler = () => {
+    if (defaultDatas && isEdit) {
+      setForm(defaultDatas);
+    }
+  };
 
   const resetForm = () => reset();
 
@@ -94,7 +98,9 @@ const AddNewAttributeGroupModal: React.FC<Props> = ({
       title={isEdit ? "ویرایش گروه ویژگی" : "افزودن گروه ویژگی جدید"}
       confirmText="ثبت تغییرات"
       onConfirm={handleConfirm}
-      onCancel={resetForm}
+      onCancel={() => {
+         !isEdit ? resetForm() : setFormHandler();
+      }}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
       size="md"
       icon={<ImMakeGroup />}

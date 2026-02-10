@@ -88,14 +88,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
 
   // sync edit mode
   useEffect(() => {
-    if (defaultDatas) {
-      setForm({
-        ...defaultDatas,
-        group_id: selecteds.attrGroupId ?? null,
-        attribute_id: selectedAttrEdit ?? null,
-        is_active_color_picker: !!defaultDatas.display_color,
-      });
-    }
+    setFormHandler();
   }, [defaultDatas]);
 
   // sync color picker
@@ -126,6 +119,17 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     return handleMutation(() => createAttributeValue(payload), { resetForm });
   });
 
+  const setFormHandler = () => {
+    if (defaultDatas) {
+      setForm({
+        ...defaultDatas,
+        group_id: selecteds.attrGroupId ?? null,
+        attribute_id: selectedAttrEdit ?? null,
+        is_active_color_picker: !!defaultDatas.display_color,
+      });
+    }
+  };
+
   const resetForm = () => reset();
 
   return (
@@ -147,7 +151,9 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       }
       title={isEdit ? "ویرایش مقدار ویژگی" : "افزودن مقدار ویژگی جدید"}
       confirmText="ثبت تغییرات"
-      onCancel={() => reset()}
+      onCancel={() => {
+        !isEdit ? resetForm() : setFormHandler();
+      }}
       onConfirm={handleConfirm}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
       icon={<FiCheckSquare />}

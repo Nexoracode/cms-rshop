@@ -124,22 +124,9 @@ export const AttributesContent = ({
     <div className="flex flex-col gap-6">
       <AddNewAttrGroup isDisabledEdit={isDisabledEdit} />
 
-      <AddNewAttribute
-        //onChange={(value) =>
-        //  setSelecteds((prev) => ({ ...prev, attrId: value }))
-        //}
-        //attr={attributes?.data}
-        isDisabledEdit={isDisabledEdit}
-      />
+      <AddNewAttribute isDisabledEdit={isDisabledEdit}/>
 
-      <AddNewAttributeValue
-        //attrValues={attributeValues?.data}
-        //onChange={(ids) => setSelecteds((prev) => ({ ...prev, valueIds: ids }))}
-        //selectedAttrId={selecteds.attrId}
-        //selectedAttrGroupId={selecteds.attrGroupId}
-        //selectedValues={selecteds.valueIds}
-        isDisabledEdit={isDisabledEdit}
-      />
+      <AddNewAttributeValue isDisabledEdit={isDisabledEdit}/>
 
       {isActiveHeader ? (
         <FormActionButtons
