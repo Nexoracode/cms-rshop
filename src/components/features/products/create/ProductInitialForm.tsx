@@ -53,7 +53,7 @@ const initialProductForm: CreateProductRequest = {
   is_visible: false,
   media_ids: [],
   media_pinned_id: 0,
-  helper_id: 0,
+  helper_id: null,
   brand_id: 0,
   sku: "",
   is_active: true,
