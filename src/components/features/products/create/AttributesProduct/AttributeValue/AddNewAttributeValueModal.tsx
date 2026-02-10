@@ -89,6 +89,8 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   // sync edit mode
   useEffect(() => {
     setFormHandler();
+    console.log("Default Dats =>", defaultDatas);
+    
   }, [defaultDatas]);
 
   // sync color picker
@@ -124,7 +126,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
       setForm({
         ...defaultDatas,
         group_id: selecteds.attrGroupId ?? null,
-        attribute_id: selectedAttrEdit ?? null,
+        attribute_id: selecteds.attrId ?? null,
         is_active_color_picker: !!defaultDatas.display_color,
       });
     }
