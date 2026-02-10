@@ -49,7 +49,10 @@ const SizeGuideSelect: React.FC<SizeGuideSelectProps> = ({
           options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
         selectedId={value ? String(value) : ""}
-        onChange={(val) => onChange(val ?? null)}
+        onChange={(val) => {
+          console.log("%%%%%%%%", val);
+          onChange(val ? Number(val) : null);
+        }}
         isRequired={isRequired}
         searchKey={"size"}
         syncSearchToUrl

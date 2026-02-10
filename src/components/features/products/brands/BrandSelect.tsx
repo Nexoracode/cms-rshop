@@ -52,7 +52,11 @@ const BrandSelect: React.FC<Props> = ({
           options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
         selectedId={value ? String(value) : ""}
-        onChange={(val) => onChange(val ?? null)}
+        onChange={(val) => {
+          console.log("#$$$$$$$$$$$",val);
+          
+          onChange(val ?? null)
+        }}
         isRequired={isRequired}
         searchKey="brand"
         syncSearchToUrl

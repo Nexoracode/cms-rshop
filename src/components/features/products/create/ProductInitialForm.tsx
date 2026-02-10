@@ -82,6 +82,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     setForm,
     handleMultipleFieldsChange,
     submit,
+    getChangedFields,
   } = useForm(initialProductForm, {
     onValidate: validateProduct,
     runValidationOnChange: true,
@@ -90,6 +91,11 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
   useEffect(() => {
     data && setForm(mapAPIToLocalProduct(data));
   }, [data]);
+
+  useEffect(() => {
+    console.log("Current form:", form);
+    console.log("Changed fields:", getChangedFields());
+  }, [form, getChangedFields]);
 
   const handleSubmit = submit(async (changed) => {
     const {
@@ -261,9 +267,10 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
 
         <SizeGuideSelect
           value={form.helper_id}
-          onChange={(val) =>
-            handleFieldChange("helper_id", val == -1 ? null : val)
-          }
+          onChange={(val) => {
+            console.log("EEEEEEEEEE", val);
+            handleFieldChange("helper_id", val == -1 ? null : val);
+          }}
           withAddModal
         />
 
