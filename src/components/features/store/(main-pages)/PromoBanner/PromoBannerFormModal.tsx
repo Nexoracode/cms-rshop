@@ -188,22 +188,12 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             inputAlign="left"
             allowSpecialChars
             allowedSpecialChars={["/", "-"]}
+            allowSpaces={false}
           />
         </div>
 
         {/* عنوان و توضیحات */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* <NumberInput
-            label="اولویت نمایش"
-            placeholder="10"
-            value={form.priority}
-            onChange={(val) => handleFieldChange("priority", val)}
-            min={1}
-            max={1000}
-            suffix="(عدد کمتر = اولویت بالاتر)"
-            isRequired
-            errorMessage={errors.priority}
-          /> */}
           <NumberInput
             label="مدت نمایش خودکار"
             placeholder="10"
