@@ -49,6 +49,7 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
       const bLabel = b.name || b.value || "";
       return getMatchScore(bLabel, search) - getMatchScore(aLabel, search);
     });
+  console.log(sortedAttr);
 
   return (
     <div className="p-2">
@@ -99,9 +100,19 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
                     }
                   }}
                 >
-                  <span className="text-gray-700">
-                    {item.name || item.value}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {item.display_color ? (
+                      <div
+                        className={`w-3 h-3 rounded-full border`}
+                        style={{ backgroundColor: item.display_color }}
+                      ></div>
+                    ) : (
+                      ""
+                    )}
+                    <span className="text-gray-700">
+                      {item.name || item.value}
+                    </span>
+                  </div>
 
                   <div className="opacity-0 group-hover:opacity-100">
                     <div className="flex items-center gap-2">
