@@ -8,6 +8,7 @@ export function promoBannerValidation(data: any) {
   if (!data.link || !data.link.trim()) {
     errors.link = "لینک دکمه الزامی است";
   }
+  console.log("Data => ", data);
 
   if (data.useBackground) {
     if (!data.description || !data.description.trim()) {
@@ -37,14 +38,9 @@ export function promoBannerValidation(data: any) {
     errors.start_date = "بازه زمانی اعتبار الزامی است";
   }
 
-  // اولویت و مدت نمایش
-  if (isNaN(data.priority) || data.priority < 1) {
-    errors.priority = "اولویت باید عدد مثبت باشد";
-  }
-
   if (isNaN(data.display_duration) || data.display_duration < 5) {
     errors.display_duration = "مدت نمایش باید حداقل ۵ ثانیه باشد";
   }
-
+  
   return errors;
 }

@@ -251,11 +251,11 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
         </div>
 
         <DualToggleSection
-          mode2Title="پس‌زمینه بدون عکس"
-          title="پس‌زمینه عکس‌دار"
-          value={!form.useBackground}
+          title="پس‌زمینه بدون عکس"
+          mode2Title="پس‌زمینه عکس‌دار"
+          value={form.useBackground}
           onChange={(isPhotoBackground: boolean) => {
-            if (isPhotoBackground) {
+            if (!isPhotoBackground) {
               handleMultipleFieldsChange({
                 useBackground: false,
                 background_color: "",
@@ -271,19 +271,6 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
             }
           }}
           children={
-            <ImageBoxUploader
-              changeStatusFile={form.mediaFile}
-              defaultImg={form.image_url ?? null}
-              onFile={(file) =>
-                handleMultipleFieldsChange({
-                  mediaFile: file,
-                  image_url: "",
-                })
-              }
-              errorMessage={errors.image_url}
-            />
-          }
-          mode2Children={
             <div className="flex flex-col gap-4">
               <TextInput
                 label="متن لینک"
@@ -325,6 +312,19 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
                 errorMessage={errors.description}
               />
             </div>
+          }
+          mode2Children={
+            <ImageBoxUploader
+              changeStatusFile={form.mediaFile}
+              defaultImg={form.image_url ?? null}
+              onFile={(file) =>
+                handleMultipleFieldsChange({
+                  mediaFile: file,
+                  image_url: "",
+                })
+              }
+              errorMessage={errors.image_url}
+            />
           }
         />
       </div>
