@@ -50,7 +50,6 @@ const SizeGuideSelect: React.FC<SizeGuideSelectProps> = ({
         }
         selectedId={value ? String(value) : ""}
         onChange={(val) => {
-          console.log("%%%%%%%%", val);
           onChange(val ? Number(val) : null);
         }}
         isRequired={isRequired}

@@ -16,7 +16,7 @@ type AutocompleteInputProps = {
   placeholder?: string;
   options: Option[];
   selectedId?: string | number;
-  onChange: (id: string) => void;
+  onChange: (id: string | null) => void;
   isRequired?: boolean;
   className?: string;
   syncSearchToUrl?: boolean;
@@ -58,7 +58,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
     setLocalSearch(val);
 
     if (selectedId) {
-      onChange("-1");
+      onChange(null);
     }
 
     if (!syncSearchToUrl) return;
@@ -79,6 +79,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
 
   const handleSelectionChange = (key: React.Key | null) => {
     if (!key) return;
+    if (key.toString() === String(selectedId)) return;
     onChange(key.toString());
     const sel = options.find((o) => String(o.id) === String(key));
     if (sel) setLocalSearch(sel.title);
