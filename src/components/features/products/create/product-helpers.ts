@@ -1,12 +1,14 @@
 import type { ProductResponse, CreateProductRequest } from "./types/product";
 
-const toNumber = (value: string | number | null | undefined, defaultValue = 0) =>
-  value === null || value === undefined ? defaultValue : Number(value);
+const toNumber = (
+  value: string | number | null | undefined,
+  defaultValue = 0,
+) => (value === null || value === undefined ? defaultValue : Number(value));
 
 export function mapAPIToLocalProduct(p: ProductResponse): CreateProductRequest {
   const mediaIds = p.media_ids?.length
     ? p.media_ids
-    : p.medias?.map((m) => m.id) ?? [];
+    : (p.medias?.map((m) => m.id) ?? []);
 
   return {
     name: p.name ?? "",
@@ -29,6 +31,7 @@ export function mapAPIToLocalProduct(p: ProductResponse): CreateProductRequest {
     media_pinned_id: p.media_pinned_id ?? null,
     helper_id: p.helper?.id ?? p.helper_id ?? null,
     brand_id: p.brand?.id ?? p.brand_id ?? null,
-    sku: p.sku || ""
+    sku: p.sku || "",
+    is_active: p.is_active,
   };
 }

@@ -42,6 +42,7 @@ export interface ProductResponse {
   specifications: any[];
   attribute_nodes: AttributeNode[];
   sku: string
+  is_active: boolean
 }
 
 export interface CreateProductRequest {
@@ -66,6 +67,7 @@ export interface CreateProductRequest {
   helper_id: number | null;
   brand_id: number | null;
   sku: string
+  is_active: boolean
 }
 
 

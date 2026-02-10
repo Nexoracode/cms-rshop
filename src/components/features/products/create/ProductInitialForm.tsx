@@ -56,6 +56,7 @@ const initialProductForm: CreateProductRequest = {
   helper_id: 0,
   brand_id: 0,
   sku: "",
+  is_active: true,
 };
 
 type ProductInitialFormProps = {
@@ -108,7 +109,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     const result: any = {
       discount_percent: (discount_percent && +discount_percent) || 0,
       discount_amount: (discount_amount && +discount_amount) || 0,
-      ...(helper_id ? { helper_id: +helper_id } : {}),
+      helper_id: !helper_id ? null : +helper_id,
       ...(brand_id ? { brand_id: +brand_id } : {}),
       media_pinned_id,
       category_id: +category_id,
@@ -260,7 +261,9 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
 
         <SizeGuideSelect
           value={form.helper_id}
-          onChange={(val) => handleFieldChange("helper_id", val)}
+          onChange={(val) =>
+            handleFieldChange("helper_id", val == -1 ? null : val)
+          }
           withAddModal
         />
 
@@ -285,6 +288,12 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           title="نمایش در فروشگاه"
           initialMode={form.is_visible}
           onChange={(val) => handleFieldChange("is_visible", val)}
+        />
+
+        <ToggleSection
+          title={`وضعیت ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
 
         <ToggleSection
