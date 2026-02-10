@@ -89,17 +89,15 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   // sync edit mode
   useEffect(() => {
     setFormHandler();
-    console.log("Default Dats =>", defaultDatas);
-    
   }, [defaultDatas]);
 
   // sync color picker
   useEffect(() => {
     handleFieldChange(
       "display_color",
-      form.is_active_color_picker ? "#000000" : null,
+      form.is_active_color_picker ? (defaultDatas.display_color ?? "#000000") : null,
     );
-  }, [form.is_active_color_picker]);
+  }, [form.is_active_color_picker, defaultDatas]);
 
   const handleConfirm = submit(async () => {
     const { attribute_id, display_color, is_active, value } = form;
