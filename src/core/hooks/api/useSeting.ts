@@ -10,6 +10,18 @@ export const useGetSettings = () => {
   });
 };
 
+export const useGetSetting = (key: string) => {
+  return useQuery({
+    queryKey: ["setting"],
+    queryFn: () => {
+      return fetcher({
+        route: `/admin/settings/${key}`,
+        isActiveToast: false,
+      });
+    },
+  });
+};
+
 export const useInfosCreate = () => {
   return useMutation({
     mutationFn: (data: any) => {
@@ -17,6 +29,21 @@ export const useInfosCreate = () => {
         route: "/admin/settings/bulk-upsert",
         method: "POST",
         body: { settings: data },
+        isActiveToast: true,
+        successText: "عملیات با موفقیت انجام شد",
+        loadingText: "در حال ثبت تغیرات",
+      });
+    },
+  });
+};
+
+export const useInfoCreate = () => {
+  return useMutation({
+    mutationFn: (data: any) => {
+      return fetcher({
+        route: "/admin/settings/upsert",
+        method: "POST",
+        body: data,
         isActiveToast: true,
         successText: "عملیات با موفقیت انجام شد",
         loadingText: "در حال ثبت تغیرات",
