@@ -64,6 +64,15 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   const { mutateAsync: updateAttributeValue, isPending: isPendingUpdate } =
     useUpdateAttributeValue();
 
+  useEffect(() => {
+    if (selecteds.attrGroupId) {
+      handleFieldChange("group_id", selecteds.attrGroupId);
+    }
+    if (selecteds.attrId) {
+      handleFieldChange("attribute_id", selecteds.attrId);
+    }
+  }, [selecteds.attrGroupId, selecteds.attrId]);
+
   const defaultDatas = attrs.values?.length
     ? (attrs.values?.find((v) => v.id === selectedAttrEdit) as any)
     : undefined;
@@ -95,7 +104,9 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   useEffect(() => {
     handleFieldChange(
       "display_color",
-      form.is_active_color_picker ? (defaultDatas.display_color ?? "#000000") : null,
+      form.is_active_color_picker
+        ? (defaultDatas.display_color ?? "#000000")
+        : null,
     );
   }, [form.is_active_color_picker, defaultDatas]);
 
