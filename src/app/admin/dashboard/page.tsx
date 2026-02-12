@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <div>
       <ShopInfosCard />
-      <section className="w-full flex flex-col gap-4">
+      <section className="w-full flex flex-col gap-6">
         <ReportsList />
         <LatestOrders />
         <ProductListMostViewed />
