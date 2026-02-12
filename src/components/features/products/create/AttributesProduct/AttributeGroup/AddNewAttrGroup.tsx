@@ -33,6 +33,7 @@ const AddNewAttrGroup: React.FC<Props> = ({ isDisabledEdit }) => {
       addBtn={<AddNewAttributeGroupModal />}
       onChoose={setSelectedAttrGroupId}
       deleteAttr={handleDeleteAttrGroup}
+      placeholderInput="جستجو گروه ویژگی..."
     >
       <AddNewAttributeGroupModal type="edit" />
     </AttributeBox>

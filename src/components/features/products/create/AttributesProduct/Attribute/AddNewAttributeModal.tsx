@@ -50,7 +50,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
   onOpenChange,
 }) => {
   const isEdit = type === "edit";
-  const { attrs, selectedAttrEdit } = useAttributeContext();
+  const { attrs, selectedAttrEdit, selecteds } = useAttributeContext();
   //
 
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
@@ -60,6 +60,12 @@ const AddNewAttributeModal: React.FC<Props> = ({
       runValidationOnChange: true,
     },
   );
+
+  useEffect(() => {
+    if (selecteds.attrGroupId) {
+      handleFieldChange("group_id", selecteds.attrGroupId)
+    }
+  }, [selecteds.attrGroupId])
 
   const defaultDatas = attrs.attr?.length
     ? (attrs.attr?.find((a) => a.id === selectedAttrEdit) as Attribute)
@@ -83,7 +89,7 @@ const AddNewAttributeModal: React.FC<Props> = ({
   }, [getAllAttributeGroup?.data]);
 
   useEffect(() => {
-   setFormHandler()
+    setFormHandler();
   }, [defaultDatas, isEdit]);
 
   const attributeTypes: {
@@ -175,7 +181,13 @@ const AddNewAttributeModal: React.FC<Props> = ({
                 ? optionsAttrGroup
                 : [{ key: "-1", title: "آیتمی موجود نیست" }]
             }
-            value={form.group_id ? String(form.group_id) : ""}
+            value={
+              selecteds.attrGroupId
+                ? String(selecteds.attrGroupId)
+                : form.group_id
+                  ? String(form.group_id)
+                  : ""
+            }
             onChange={(key) => handleFieldChange("group_id", Number(key))}
             errorMessage={errors.group_id}
           />
