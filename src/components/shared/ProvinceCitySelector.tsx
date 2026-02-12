@@ -23,7 +23,7 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
         id: r.province,
         title: r.province,
       })),
-    []
+    [],
   );
 
   // بر اساس استان انتخاب‌شده، شهرها رو فیلتر کن
@@ -45,7 +45,7 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
         placeholder="انتخاب استان"
         options={provinceOptions}
         selectedId={selectedProvince}
-        onChange={(id) => {
+        onChange={(id: any) => {
           setSelectedProvince(id);
           setSelectedCity("");
         }}
@@ -56,7 +56,7 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
         placeholder="انتخاب شهر"
         options={cityOptions}
         selectedId={selectedCity}
-        onChange={(id) => setSelectedCity(id)}
+        onChange={(id: any) => setSelectedCity(id)}
       />
     </div>
   );
