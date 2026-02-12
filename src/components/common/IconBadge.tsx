@@ -16,7 +16,7 @@ const IconBadge = ({
   iconClassName = "",
 }: IconBadgeProps) => {
   return (
-    <div className={`relative ${wrapperClassName}`}>
+    <div className={`w-fit relative ${wrapperClassName}`}>
       <div className={`w-[100px] h-[100px] rounded-full ${circleClassName}`} />
       <Icon
         className={`absolute -top-4 -left-4 text-[100px] ${iconClassName}`}

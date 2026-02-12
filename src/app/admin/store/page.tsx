@@ -27,6 +27,7 @@ import { PiResizeBold } from "react-icons/pi";
 import { MdOutlineCategory } from "react-icons/md";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { LiaTruckLoadingSolid } from "react-icons/lia";
+import ReservationTimesModal from "@/components/features/store/ReservationTimesModal";
 
 const storeSettingsLinks = [
   {
@@ -72,7 +73,8 @@ const orderSettingsLinks = [
   {
     title: "زمان رزرو",
     icon: <RiTimerLine className="text-2xl" />,
-    route: "store/reservation-times",
+    children: true,
+    Modal: ReservationTimesModal,
   },
   {
     title: "پیش‌سفارش",
@@ -181,27 +183,45 @@ const Settings: React.FC = () => {
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
-          {orderSettingsLinks.map(({ title, icon, route, badge }, index) => (
-            <div key={index} className="relative">
-              <BoxLink
-                title={title}
-                icon={icon}
-                routeName={route}
-                parentStyle="text-blue-600"
-                titleStyle="text-gray-600"
-              />
-              {badge ? (
-                <div className="absolute top-2 -left-4 w-full flex items-center justify-center">
-                  <TbLoader
-                    className="animate-spin text-yellow-600"
-                    size={16}
+          {orderSettingsLinks.map(
+            ({ title, icon, route, badge, children, Modal }, index) => (
+              <div key={index} className="relative">
+                {!children ? (
+                  <BoxLink
+                    title={title}
+                    icon={icon}
+                    routeName={route ?? "store"}
+                    parentStyle="text-blue-600"
+                    titleStyle="text-gray-600"
                   />
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-          ))}
+                ) : (
+                  <Modal
+                    trigger={
+                      <div>
+                        <BoxLink
+                          title={title}
+                          icon={icon}
+                          routeName={route ?? "store"}
+                          parentStyle="text-blue-600"
+                          titleStyle="text-gray-600"
+                        />
+                      </div>
+                    }
+                  />
+                )}
+                {badge ? (
+                  <div className="absolute top-2 -left-4 w-full flex items-center justify-center">
+                    <TbLoader
+                      className="animate-spin text-yellow-600"
+                      size={16}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            ),
+          )}
         </BaseCard>
 
         <BaseCard
