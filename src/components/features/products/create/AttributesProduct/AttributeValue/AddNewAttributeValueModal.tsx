@@ -71,7 +71,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     if (selecteds.attrId) {
       handleFieldChange("attribute_id", selecteds.attrId);
     }
-  }, [selecteds.attrGroupId, selecteds.attrId]);
+  }, [selecteds.attrGroupId, selecteds.attrId, form.attribute_id, form.group_id]);
 
   const defaultDatas = attrs.values?.length
     ? (attrs.values?.find((v) => v.id === selectedAttrEdit) as any)
@@ -98,14 +98,14 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   // sync edit mode
   useEffect(() => {
     setFormHandler();
-  }, [defaultDatas]);
+  }, [defaultDatas, isEdit]);
 
   // sync color picker
   useEffect(() => {
     handleFieldChange(
       "display_color",
       form.is_active_color_picker
-        ? (defaultDatas.display_color ?? "#000000")
+        ? (defaultDatas?.display_color ?? "#000000")
         : null,
     );
   }, [form.is_active_color_picker, defaultDatas]);
@@ -131,7 +131,7 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
   });
 
   const setFormHandler = () => {
-    if (defaultDatas) {
+    if (defaultDatas && isEdit) {
       setForm({
         ...defaultDatas,
         group_id: selecteds.attrGroupId ?? null,
