@@ -51,7 +51,7 @@ const breadcrumbMap: Record<string, string> = {
   "first-order": "تخفیف خرید اول",
   "next-order-reward": "تخفیف خرید بعدی",
   sms: "ارسال پیامک",
-  "reservation-times": "ساعات رزرو",
+  "reservation-times": "زمان رزرو",
   shippings: "ارسال‌ها",
   "auto-approval": "تأیید خودکار",
 

@@ -5,6 +5,7 @@ import { CardHeader as HerouiCardHeader } from "@heroui/react";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import { OptionButtonProps } from "@/components/ui/buttons/OptionButton";
 import { LuPlus } from "react-icons/lu";
+import { HelpTooltip } from "@/components/feedback/HelpTooltip";
 
 export type CardHeaderProps = {
   icon?: React.ReactNode;
@@ -20,6 +21,8 @@ export type CardHeaderProps = {
   hideAction?: boolean;
   className?: string;
   btnClassName?: string;
+  tooltipTitle?: string;
+  tooltipDescription?: string;
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({
@@ -36,6 +39,8 @@ const CardHeader: React.FC<CardHeaderProps> = ({
   hideAction = false,
   className = "",
   btnClassName = "bg-secondary-light text-secondary flex-1",
+  tooltipDescription = "",
+  tooltipTitle = "",
 }) => {
   const hasButtonProps = !!(onAdd || redirect);
 
@@ -79,7 +84,17 @@ const CardHeader: React.FC<CardHeaderProps> = ({
           {title}
         </p>
 
-        <div>{actionNode}</div>
+        <div>
+          {actionNode}
+          {tooltipTitle ? (
+            <HelpTooltip
+              title={tooltipTitle}
+              description={tooltipDescription}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </HerouiCardHeader>
   );

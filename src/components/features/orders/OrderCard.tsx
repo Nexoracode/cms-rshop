@@ -9,7 +9,7 @@ import { statusMap } from "@/components/features/orders/OrderProccess/const/stat
 import CardRows from "@/components/shared/CardRows";
 import type { PopoverSelectItem } from "@/components/ui/PopoverSelect";
 import PopoverSelect from "@/components/ui/PopoverSelect";
-import { formatDate, toPersianUTC } from "@/core/utils/date";
+import { formatDate } from "@/core/utils/date";
 import { orderStatusOptions } from "./OrderProccess/const/order-constants";
 
 type Props = {

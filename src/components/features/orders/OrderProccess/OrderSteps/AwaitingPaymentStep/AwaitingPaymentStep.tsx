@@ -55,7 +55,7 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
       <p className="text-default-600 leading-7 text-center px-4 animate-pulse">
         سفارش در انتظار پرداخت مشتری است.
         <br />
-        محصولات تا ۴ ساعت برای مشتری رزرو می‌شود.
+        محصولات برای مشتری رزرو شده است.
       </p>
 
       <Spinner size="lg" className="my-4" />
