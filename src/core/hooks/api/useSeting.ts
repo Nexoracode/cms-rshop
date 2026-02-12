@@ -37,7 +37,7 @@ export const useInfosCreate = () => {
   });
 };
 
-export const useInfoCreate = () => {
+export const useSettingCreate = () => {
   return useMutation({
     mutationFn: (data: any) => {
       return fetcher({

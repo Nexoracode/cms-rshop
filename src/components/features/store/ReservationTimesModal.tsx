@@ -1,10 +1,10 @@
 "use client";
 
 import { HelpTooltip } from "@/components/feedback/HelpTooltip";
-import BaseCard from "@/components/ui/BaseCard";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import { useGetSetting } from "@/core/hooks/api/useSeting";
+import { useGetSetting, useSettingCreate } from "@/core/hooks/api/useSeting";
+import { useEffect, useState } from "react";
 import { RiTimerLine } from "react-icons/ri";
 
 // ثابت کردن گزینه‌ها (مشابه orderStatusOptions)
@@ -24,10 +24,23 @@ const ReservationTimesModal: React.FC<ReservationTimesModalProps> = ({
   trigger,
 }) => {
   const { data: reservationOrder } = useGetSetting("reservation_order");
+  const { mutate: updateReservationOrder } = useSettingCreate();
 
-  const currentValue = reservationOrder?.data?.value ?? "70";
+  const [currentValue, setCurrentValue] = useState("70");
 
-  console.log(currentValue, reservationOrder);
+  useEffect(() => {
+    if (reservationOrder?.data?.value)
+      setCurrentValue(reservationOrder?.data?.value);
+  }, [reservationOrder?.data]);
+
+  const updateReserveTime = () => {
+    const res = {
+      key: "reservation_order",
+      value: currentValue,
+      category: "payment",
+    };
+    updateReservationOrder(res);
+  };
 
   return (
     <BaseModal
@@ -49,7 +62,8 @@ const ReservationTimesModal: React.FC<ReservationTimesModalProps> = ({
             label="زمان رزرو سفارش"
             value={currentValue}
             onChange={(val) => {
-              console.log("زمان جدید انتخاب شد:", val);
+              setCurrentValue(val);
+              updateReserveTime();
             }}
             options={reservationTimeOptions.map((opt) => ({
               key: opt.key,
