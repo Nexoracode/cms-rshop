@@ -98,7 +98,7 @@ const ShopInfosCard = () => {
           icon={<GrAnnounce className="text-2xl" />}
           routeName="store/promotions"
           parentStyle="bg-white shadow-md"
-          color="text-orange-700"
+          color="text-pink-700"
         />
 
         <BoxLink

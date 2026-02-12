@@ -2,7 +2,7 @@
 
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
-import { BsShop } from "react-icons/bs";
+import { BsBasket, BsShop } from "react-icons/bs";
 import { IoReceiptOutline } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
 import { HiOutlineInformationCircle } from "react-icons/hi";
@@ -17,12 +17,16 @@ import {
   TbCategory2,
   TbChartDots,
   TbLoader,
+  TbRosetteDiscount,
+  TbShoppingCartDiscount,
   TbTruckDelivery,
 } from "react-icons/tb";
 import BaseCard from "@/components/ui/BaseCard";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
 import { PiResizeBold } from "react-icons/pi";
 import { MdOutlineCategory } from "react-icons/md";
+import { TfiShoppingCartFull } from "react-icons/tfi";
+import { LiaTruckLoadingSolid } from "react-icons/lia";
 
 const storeSettingsLinks = [
   {
@@ -107,6 +111,34 @@ const productSettingsLinks = [
   },
 ];
 
+const promotionsSettingsLinks = [
+  {
+    title: "تخفیف ها",
+    icon: <TbRosetteDiscount className="text-2xl" />,
+    route: "store/promotions/coupon",
+  },
+  {
+    title: "پیشنهاد شگفت‌انگیز",
+    icon: <BsBasket className="text-2xl" />,
+    route: "store/promotions/flash-deal",
+  },
+  {
+    title: "خرید اول",
+    icon: <TfiShoppingCartFull className="text-2xl" />,
+    route: "store/promotions/first-order",
+  },
+  {
+    title: "خرید بعدی",
+    icon: <TbShoppingCartDiscount className="text-2xl" />,
+    route: "store/promotions/next-order-reward",
+  },
+  {
+    title: "ارسال رایگان",
+    icon: <LiaTruckLoadingSolid className="text-2xl" />,
+    route: "store/promotions/free-shipping",
+  },
+];
+
 const Settings: React.FC = () => {
   return (
     <>
@@ -125,7 +157,7 @@ const Settings: React.FC = () => {
                 title={title}
                 icon={icon}
                 routeName={route}
-                parentStyle="text-green-700"
+                parentStyle="text-gray-600"
                 titleStyle="text-gray-600"
               />
               {badge ? (
@@ -155,7 +187,7 @@ const Settings: React.FC = () => {
                 title={title}
                 icon={icon}
                 routeName={route}
-                parentStyle="text-blue-700"
+                parentStyle="text-blue-600"
                 titleStyle="text-gray-600"
               />
               {badge ? (
@@ -185,7 +217,27 @@ const Settings: React.FC = () => {
                 title={title}
                 icon={icon}
                 routeName={route}
-                parentStyle="text-orange-700"
+                parentStyle="text-orange-600"
+                titleStyle="text-gray-600"
+              />
+            </div>
+          ))}
+        </BaseCard>
+
+        <BaseCard
+          className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
+          CardHeaderProps={{
+            title: "تنظیمات پروموشن ها",
+          }}
+          bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
+        >
+          {promotionsSettingsLinks.map(({ title, icon, route }, index) => (
+            <div key={index} className="relative">
+              <BoxLink
+                title={title}
+                icon={icon}
+                routeName={route}
+                parentStyle="text-pink-600"
                 titleStyle="text-gray-600"
               />
             </div>
