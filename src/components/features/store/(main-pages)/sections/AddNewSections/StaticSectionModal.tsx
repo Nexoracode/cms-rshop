@@ -13,6 +13,8 @@ import {
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { staticSectionValidation } from "./static-section-validation";
 import CategorySelect from "@/components/features/products/categories/CategorySelect";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { LuPlus } from "react-icons/lu";
 
 type Props = {
   defaultValues?: any;
@@ -148,14 +150,10 @@ const StaticSectionModal: React.FC<Props> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
-      triggerProps={
-        defaultValues?.id
-          ? null
-          : {
-              title: "+ افزودن",
-              className: "bg-secondary-light text-secondary",
-            }
+      trigger={
+        defaultValues?.id ? null : <ActionButton icon={<LuPlus size={18} />} />
       }
+      triggerProps={null}
       onCancel={() => {
         !defaultValues ? resetForm() : setFormHandler();
       }}

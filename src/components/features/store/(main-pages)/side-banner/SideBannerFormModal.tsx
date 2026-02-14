@@ -18,6 +18,8 @@ import { validateSideBanner } from "./side-banner-validation";
 import { SideBannerPosition } from "./side-banner.types";
 import { CiImageOn } from "react-icons/ci";
 import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { LuPlus } from "react-icons/lu";
 
 type Props = {
   bannerId?: number;
@@ -163,14 +165,8 @@ const SideBannerFormModal: React.FC<Props> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
-      triggerProps={
-        bannerId
-          ? null
-          : {
-              title: "+ افزودن",
-              className: "bg-secondary-light text-secondary mb-1",
-            }
-      }
+      trigger={bannerId ? null : <ActionButton icon={<LuPlus size={18} />} />}
+      triggerProps={null}
       onCancel={() => {
         !bannerId ? resetForm() : setFormHandler();
       }}

@@ -18,7 +18,7 @@ export function HelpTooltip({
   children,
   placement = "top",
   className,
-  contentClassName = "max-w-[320px] text-sm p-4",
+  contentClassName = "!max-w-[320px] text-sm p-4",
   description,
   title,
 }: HelpTooltipProps) {
@@ -43,7 +43,7 @@ export function HelpTooltip({
 
       <PopoverContent className={contentClassName}>
         {children}
-        <div className="flex flex-col gap-4 p-3">
+        <div className="flex flex-col gap-4 p-3 max-w-[430px]">
           <p className="text-lg">{title}</p>
           <div className="text-gray-600 leading-7 whitespace-pre-wrap break-words font-[Dana-Medium]">
             {description}

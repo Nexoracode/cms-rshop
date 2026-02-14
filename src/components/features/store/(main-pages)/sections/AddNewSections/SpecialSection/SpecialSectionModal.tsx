@@ -21,6 +21,8 @@ import ProductSelectionBox from "@/components/features/products/SelectableProduc
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { LuPlus } from "react-icons/lu";
 
 type Props = {
   defaultValues?: any;
@@ -143,14 +145,10 @@ const SpecialSectionModal: React.FC<Props> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={(val) => onOpenChange?.(val)}
-      triggerProps={
-        defaultValues?.id
-          ? null
-          : {
-              title: "+ افزودن",
-              className: "bg-secondary-light text-secondary",
-            }
+      trigger={
+        defaultValues?.id ? null : <ActionButton icon={<LuPlus size={18} />} />
       }
+      triggerProps={null}
       onCancel={() => {
         !defaultValues ? resetForm() : setFormHandler();
       }}
