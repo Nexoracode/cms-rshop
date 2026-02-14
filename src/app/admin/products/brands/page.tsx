@@ -47,6 +47,17 @@ const BrandsProduct = () => {
             title: "مدیریت برندها",
             icon: <TbBrandArc className="text-2xl" />,
             children: <AddNewBrandModal />,
+            tooltipTitle: "راهنمای برندها",
+            tooltipDescription: `مدیریت برندهای فروشگاه:
+
+🏢 لوگو + نام برند (فارسی و انگلیسی)
+✅ وضعیت فعال/غیرفعال
+
+🔹 دکمه + ◄ افزودن برند جدید
+🔹 کلیک روی کارت ◄ ویرایش
+🔹 سطل زباله ◄ حذف
+
+برندها در صفحه اصلی (اسلایدر برندها) و فیلتر محصولات نمایش داده می‌شوند.`,
           }}
           isLoading={isLoading}
           isExistItems={isExistItems}
