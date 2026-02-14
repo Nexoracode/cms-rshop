@@ -182,20 +182,29 @@ const SideBannerFormModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
-        <TextInput
-          label="لینک"
-          placeholder="path/to/1"
-          value={form.link}
-          allowSpecialChars
-          allowedSpecialChars={["/", "-"]}
-          isRequired
-          errorMessage={errors.link}
-          onChange={(val) => {
-            handleFieldChange("link", val);
-          }}
-          inputAlign="left"
-          allowSpaces={false}
-        />
+        <div className="grid grid-cols-1 gap-4 items-end md:grid-cols-2">
+          <TextInput
+            label="لینک"
+            placeholder="path/to/1"
+            value={form.link}
+            allowSpecialChars
+            allowedSpecialChars={["/", "-"]}
+            isRequired
+            errorMessage={errors.link}
+            onChange={(val) => {
+              handleFieldChange("link", val);
+            }}
+            inputAlign="left"
+            allowSpaces={false}
+          />
+          <div>
+            <ToggleSection
+              title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+              initialMode={form.is_active}
+              onChange={(val) => handleFieldChange("is_active", val)}
+            />
+          </div>
+        </div>
         <DualToggleSection
           title="بدون عکس"
           mode2Title="عکس دار"
@@ -306,11 +315,6 @@ const SideBannerFormModal: React.FC<Props> = ({
               errorMessage={errors.image_url}
             />
           }
-        />
-        <ToggleSection
-          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
