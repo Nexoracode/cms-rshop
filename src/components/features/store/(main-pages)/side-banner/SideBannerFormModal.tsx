@@ -31,7 +31,7 @@ const initialForm = {
   title: "",
   subtitle: "",
   image_url: "",
-  background_color: "#000",
+  background_color: null,
   link: "",
   badge_text: "",
   badge_color: null,
@@ -39,6 +39,7 @@ const initialForm = {
 
   mediaFile: null as File | null,
   show_badge: false,
+  useBackground: false,
 };
 
 const SideBannerFormModal: React.FC<Props> = ({
@@ -180,29 +181,43 @@ const SideBannerFormModal: React.FC<Props> = ({
       icon={<CiImageOn />}
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
+        <TextInput
+          label="لینک"
+          placeholder="path/to/1"
+          value={form.link}
+          allowSpecialChars
+          allowedSpecialChars={["/", "-"]}
+          isRequired
+          errorMessage={errors.link}
+          onChange={(val) => {
+            handleFieldChange("link", val);
+          }}
+          inputAlign="left"
+          allowSpaces={false}
+        />
         <DualToggleSection
-          title="عکس دار"
-          mode2Title="بدون عکس"
-          value={!form.background_color}
-          onChange={(isPreparation: any) => {
-            /* handleMultipleFieldsChange({
-              requires_preparation: isPreparation,
-              preparation_days: isPreparation ? form.preparation_days || 1 : 0,
-              is_same_day_shipping: isPreparation,
-            }); */
+          title="بدون عکس"
+          mode2Title="عکس دار"
+          value={form.useBackground}
+          onChange={(val: any) => {
+            if (val) {
+              handleMultipleFieldsChange({
+                background_color: "" as any,
+                badge_color: null,
+                badge_text: "",
+                show_badge: false,
+                subtitle: "",
+                title: "",
+                useBackground: true,
+              });
+            } else {
+              handleFieldChange("useBackground", false);
+            }
           }}
           children={
-            <ImageBoxUploader
-              changeStatusFile={form.mediaFile}
-              defaultImg={form?.image_url ?? null}
-              onFile={(file) => handleFieldChange("mediaFile", file)}
-              errorMessage={errors.image_url}
-            />
-          }
-          mode2Children={
             <div className="flex flex-col gap-6">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <TextInput
                   label="عنوان"
                   placeholder="عنوان بنر را وارد کنید"
@@ -214,10 +229,10 @@ const SideBannerFormModal: React.FC<Props> = ({
                 />
                 <ColorPickerField
                   label="رنگ پس زمینه"
-                  value={form.background_color}
+                  value={form.background_color ?? "#000"}
                   onChange={(color) =>
                     handleMultipleFieldsChange({
-                      background_color: color,
+                      background_color: color as any,
                     })
                   }
                   widthFull
@@ -283,21 +298,14 @@ const SideBannerFormModal: React.FC<Props> = ({
               </ToggleSection>
             </div>
           }
-        />
-
-        <TextInput
-          label="لینک"
-          placeholder="path/to/1"
-          value={form.link}
-          allowSpecialChars
-          allowedSpecialChars={["/", "-"]}
-          isRequired
-          errorMessage={errors.link}
-          onChange={(val) => {
-            handleFieldChange("link", val);
-          }}
-          inputAlign="left"
-          allowSpaces={false}
+          mode2Children={
+            <ImageBoxUploader
+              changeStatusFile={form.mediaFile}
+              defaultImg={form?.image_url ?? null}
+              onFile={(file) => handleFieldChange("mediaFile", file)}
+              errorMessage={errors.image_url}
+            />
+          }
         />
         <ToggleSection
           title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
