@@ -128,6 +128,7 @@ const SideBannerFormModal: React.FC<Props> = ({
       badge_text,
       badge_color: badge_color,
     };
+    console.log("DDDDDDDDDDDDDDDD", payload);
 
     if (bannerId) {
       return handleMutation(

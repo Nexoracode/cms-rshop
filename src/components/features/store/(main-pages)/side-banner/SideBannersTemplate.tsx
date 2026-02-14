@@ -44,8 +44,8 @@ const SideBannersTemplate: React.FC<SideBannersTemplateProps> = ({
           <div className="relative z-10 flex flex-col gap-1 w-24">
             {banner.badge_text ? (
               <div
-                className={`text-white rounded-lg z-20 mt-4 p-1 px-1.5 w-fit mb-3`}
-                style={{ backgroundColor: banner.badge_color ?? "gray" }}
+                className={`text-white rounded-lg z-20 p-1 px-1.5 w-fit mb-3`}
+                style={{ backgroundColor: banner.badge_color ?? "" }}
               >
                 <div className="!text-xs !truncate max-w-16 text-orange-400">
                   {banner.badge_text}

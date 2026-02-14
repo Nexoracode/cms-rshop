@@ -21,10 +21,6 @@ export function validateSideBanner(data: any, showBadgeFields: boolean) {
     if (!data.badge_text || data.badge_text.trim() === "") {
       errors.badge_text = "لطفاً متن برچسب را وارد کنید.";
     }
-
-    if (!data.badge_color || data.badge_color.trim() === "") {
-      errors.badge_color = "لطفاً رنگ برچسب را انتخاب کنید.";
-    }
   }
 
   return errors;
