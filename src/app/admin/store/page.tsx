@@ -63,7 +63,7 @@ const orderSettingsLinks = [
   {
     title: "بسته‌بندی",
     icon: <LuPackage className="text-2xl" />,
-    route: "order/gift-wrapping",
+    route: "orders/gift-wrapping",
   },
   {
     title: "لاگ های پرداخت",

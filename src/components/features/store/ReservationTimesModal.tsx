@@ -29,14 +29,21 @@ const ReservationTimesModal: React.FC<ReservationTimesModalProps> = ({
   const [currentValue, setCurrentValue] = useState("70");
 
   useEffect(() => {
+    console.log("@@@@@@@@@@@@@@@@", currentValue);
+    
+  }, [currentValue])
+
+  useEffect(() => {
+    console.log("DDDDDDDDDDDDDDDDDDDDDDDD");
+    
     if (reservationOrder?.data?.value)
       setCurrentValue(reservationOrder?.data?.value);
   }, [reservationOrder?.data]);
 
-  const updateReserveTime = () => {
+  const updateReserveTime = (val: number) => {
     const res = {
       key: "reservation_order",
-      value: currentValue,
+      value: +val,
       category: "payment",
     };
     updateReservationOrder(res);
@@ -63,7 +70,7 @@ const ReservationTimesModal: React.FC<ReservationTimesModalProps> = ({
             value={currentValue}
             onChange={(val) => {
               setCurrentValue(val);
-              updateReserveTime();
+              updateReserveTime(+val);
             }}
             options={reservationTimeOptions.map((opt) => ({
               key: opt.key,

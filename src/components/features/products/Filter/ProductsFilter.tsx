@@ -11,7 +11,6 @@ const ProductsFilter = () => {
       relatedPages={[
         { title: "برند", href: "/admin/products/brands" },
         { title: "دسته‌بندی‌", href: "/admin/products/categories" },
-        { title: "راهنما سایز", href: "/admin/products/size-guide" },
         { title: "تنوع محصول", href: "/admin/products/variants" },
       ]}
       showSearchBar
