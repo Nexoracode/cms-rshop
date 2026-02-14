@@ -13,8 +13,12 @@ const CategoriesFilterModal: React.FC = () => {
         type: "boolean01",
         default: "",
       },
-      { key: "starts_at", label: "شروع بازه اعتبار", type: "singleDate" },
-      { key: "ends_at", label: "پایان بازه اعتبار", type: "singleDate" },
+      {
+        key: "discount",
+        label: "تخفیف",
+        type: "boolean01",
+        default: "",
+      },
     ],
     []
   );

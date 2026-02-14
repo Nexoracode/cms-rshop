@@ -21,7 +21,9 @@ const Categories = () => {
     page,
     search,
     sortBy,
+    filter
   });
+  
   const isExistItems = !!categories?.data?.items?.length;
 
   const [editCategory, setEditCategory] = useState<any | null>(null);
