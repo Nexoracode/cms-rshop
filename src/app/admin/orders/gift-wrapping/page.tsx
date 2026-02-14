@@ -32,7 +32,7 @@ const giftWrapping = () => {
         headerProps={{
           title: "مدیریت بسته بندی ها",
           icon: <LuGift className="text-2xl" />,
-          redirect: "/admin/store/gift-wrapping/create",
+          redirect: "/admin/orders/gift-wrapping/create",
           btnIcon: <LuPlus />,
             tooltipTitle: "راهنمای مدیریت بسته‌بندی‌ها",
             tooltipDescription: `🎁 بسته‌بندی هدیه (صورتی)

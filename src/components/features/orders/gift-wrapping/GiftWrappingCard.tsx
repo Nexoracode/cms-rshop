@@ -29,7 +29,7 @@ const GiftWrappingCard: React.FC<GiftWrappingCardProps> = ({ gift }) => {
   return (
     <BaseCard
       bodyClassName="flex flex-col gap-4 p-2 hover-reveal-parent group"
-      redirect={`/admin/store/gift-wrapping/create?edit_id=${gift.id}`}
+      redirect={`/admin/orders/gift-wrapping/create?edit_id=${gift.id}`}
     >
       <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteGift(gift.id)} />

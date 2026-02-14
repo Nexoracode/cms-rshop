@@ -14,7 +14,7 @@ const OrdersFilter = () => {
         },
         {
           title: "بسته بندی",
-          href: "/admin/store/gift-wrapping",
+          href: "/admin/orders/gift-wrapping",
         },
       ]}
       searchPlaceholder="جستجو کد سفارش، نام مشتری یا محصول..."
