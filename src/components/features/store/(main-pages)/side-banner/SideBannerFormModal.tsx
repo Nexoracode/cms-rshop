@@ -17,6 +17,7 @@ import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import { validateSideBanner } from "./side-banner-validation";
 import { SideBannerPosition } from "./side-banner.types";
 import { CiImageOn } from "react-icons/ci";
+import DualToggleSection from "@/components/shared/Toggle/DualToggleSection";
 
 type Props = {
   bannerId?: number;
@@ -180,111 +181,129 @@ const SideBannerFormModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-6">
-        <div className="w-full flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-2xl">
-          <ImageBoxUploader
-            changeStatusFile={form.mediaFile}
-            defaultImg={form?.image_url ?? null}
-            onFile={(file) => handleFieldChange("mediaFile", file)}
-            errorMessage={errors.image_url}
-          />
-          <ColorPickerField
-            label=""
-            value={form.background_color}
-            onChange={(color) =>
-              handleMultipleFieldsChange({
-                background_color: color,
-              })
-            }
-          />
-        </div>
+        <DualToggleSection
+          title="عکس دار"
+          mode2Title="بدون عکس"
+          value={!form.background_color}
+          onChange={(isPreparation: any) => {
+            /* handleMultipleFieldsChange({
+              requires_preparation: isPreparation,
+              preparation_days: isPreparation ? form.preparation_days || 1 : 0,
+              is_same_day_shipping: isPreparation,
+            }); */
+          }}
+          children={
+            <ImageBoxUploader
+              changeStatusFile={form.mediaFile}
+              defaultImg={form?.image_url ?? null}
+              onFile={(file) => handleFieldChange("mediaFile", file)}
+              errorMessage={errors.image_url}
+            />
+          }
+          mode2Children={
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-2">
+                <TextInput
+                  label="عنوان"
+                  placeholder="عنوان بنر را وارد کنید"
+                  value={form.title}
+                  errorMessage={errors.title}
+                  isRequired
+                  onChange={(val) => handleFieldChange("title", val)}
+                  allowEnglishOnly={false}
+                />
+                <ColorPickerField
+                  label="رنگ پس زمینه"
+                  value={form.background_color}
+                  onChange={(color) =>
+                    handleMultipleFieldsChange({
+                      background_color: color,
+                    })
+                  }
+                  widthFull
+                />
+              </div>
 
-        <div className="flex items-center gap-2">
-          <TextInput
-            label="عنوان"
-            placeholder="عنوان بنر را وارد کنید"
-            value={form.title}
-            errorMessage={errors.title}
-            isRequired
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
-          <TextInput
-            label="لینک"
-            placeholder="path/to/1"
-            value={form.link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            isRequired
-            errorMessage={errors.link}
-            onChange={(val) => {
-              handleFieldChange("link", val);
-            }}
-            inputAlign="left"
-            allowSpaces={false}
-          />
-        </div>
+              <Textarea
+                label="متن / زیرعنوان"
+                value={form.subtitle}
+                onChange={(val) => handleFieldChange("subtitle", val)}
+                placeholder="زیرعنوان را وارد کنید"
+                isRequired
+                errorMessage={errors.subtitle}
+              />
 
-        <Textarea
-          label="متن / زیرعنوان"
-          value={form.subtitle}
-          onChange={(val) => handleFieldChange("subtitle", val)}
-          placeholder="زیرعنوان را وارد کنید"
-          isRequired
-          errorMessage={errors.subtitle}
+              {/* badge toggle */}
+              <ToggleSection
+                title={"نمایش برچسب (Badge)"}
+                initialMode={showBadge}
+                onChange={(val) => {
+                  setShowBadge(val);
+                  handleFieldChange("show_badge", val);
+                  if (!val) {
+                    handleFieldChange("badge_text", "");
+                  }
+                }}
+              >
+                <TextInput
+                  label="متن برچسب"
+                  placeholder="مثلاً 14% یا جدید"
+                  value={form.badge_text}
+                  onChange={(val) => {
+                    handleFieldChange("badge_text", val);
+                    if (!showBadge && val) setShowBadge(true);
+                    handleMultipleFieldsChange({ show_badge: Boolean(val) });
+                  }}
+                  allowSpecialChars
+                  allowEnglishOnly={false}
+                  isRequired
+                  errorMessage={errors.badge_text}
+                  className="mb-4"
+                />
+                <ToggleSection
+                  title={"رنگ پس زمینه پرچسب"}
+                  initialMode={showBgColor}
+                  onChange={(val) => {
+                    setShowBgColor(val);
+                    handleFieldChange("badge_color", "#000" as any);
+                    if (!val) {
+                      handleFieldChange("badge_color", null);
+                    }
+                  }}
+                >
+                  <ColorPickerField
+                    label=""
+                    value={form.badge_color ?? ""}
+                    onChange={(color) =>
+                      handleFieldChange("badge_color", color)
+                    }
+                    widthFull
+                  />
+                </ToggleSection>
+              </ToggleSection>
+            </div>
+          }
         />
 
+        <TextInput
+          label="لینک"
+          placeholder="path/to/1"
+          value={form.link}
+          allowSpecialChars
+          allowedSpecialChars={["/", "-"]}
+          isRequired
+          errorMessage={errors.link}
+          onChange={(val) => {
+            handleFieldChange("link", val);
+          }}
+          inputAlign="left"
+          allowSpaces={false}
+        />
         <ToggleSection
           title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
         />
-
-        {/* badge toggle */}
-        <ToggleSection
-          title={"نمایش برچسب (Badge)"}
-          initialMode={showBadge}
-          onChange={(val) => {
-            setShowBadge(val);
-            handleFieldChange("show_badge", val);
-            if (!val) {
-              handleFieldChange("badge_text", "");
-            }
-          }}
-        >
-          <TextInput
-            label="متن برچسب"
-            placeholder="مثلاً 14% یا جدید"
-            value={form.badge_text}
-            onChange={(val) => {
-              handleFieldChange("badge_text", val);
-              if (!showBadge && val) setShowBadge(true);
-              handleMultipleFieldsChange({ show_badge: Boolean(val) });
-            }}
-            allowSpecialChars
-            allowEnglishOnly={false}
-            isRequired
-            errorMessage={errors.badge_text}
-            className="mb-4"
-          />
-          <ToggleSection
-            title={"رنگ پس زمینه پرچسب"}
-            initialMode={showBgColor}
-            onChange={(val) => {
-              setShowBgColor(val);
-              handleFieldChange("badge_color", "#000" as any);
-              if (!val) {
-                handleFieldChange("badge_color", null);
-              }
-            }}
-          >
-            <ColorPickerField
-              label=""
-              value={form.badge_color ?? ""}
-              onChange={(color) => handleFieldChange("badge_color", color)}
-              widthFull
-            />
-          </ToggleSection>
-        </ToggleSection>
       </div>
     </BaseModal>
   );
