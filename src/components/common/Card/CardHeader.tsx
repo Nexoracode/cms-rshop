@@ -84,8 +84,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
           {title}
         </p>
 
-        <div>
-          {actionNode}
+        <div className="flex items-center gap-4">
           {tooltipTitle ? (
             <HelpTooltip
               title={tooltipTitle}
@@ -94,6 +93,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
           ) : (
             ""
           )}
+          <div className={tooltipTitle ? "border-r border-slate-300 pr-4" : ""}>{actionNode}</div>
         </div>
       </div>
     </HerouiCardHeader>
