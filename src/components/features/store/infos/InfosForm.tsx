@@ -46,7 +46,9 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
 
   useEffect(() => {
     if (data?.length) {
-      const settings = data.filter((setting: any) => setting.key !== "homepage_layout_type")
+      const settings = data.filter(
+        (setting: any) => setting.key !== "homepage_layout_type",
+      );
       setForm(apiArrayToFormObject(settings));
     }
   }, [data]);
@@ -86,7 +88,9 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
       CardHeaderProps={{
         title: "اطلاعات کلی فروشگاه",
         icon: <BsShop className="w-6 h-6" />,
-        showIconInActionSlot: true,
+        tooltipTitle: "اطلاعات حیاتی فروشگاه",
+        tooltipDescription:
+          "در این بخش اطلاعات ضروری برای تنظیمات فروشگاه و شبکه‌های اجتماعی را وارد کنید. این اطلاعات برای تکمیل فرآیند پرداخت و ارتباط با مشتریان استفاده خواهد شد.",
       }}
       wrapperContents
       isLoading={isLoading}

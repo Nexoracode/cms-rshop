@@ -13,11 +13,13 @@ const HomeBuilder = () => {
 
   return (
     <UnifiedCard
-      searchFilter={<HomeBuilderFilter/>}
+      searchFilter={<HomeBuilderFilter />}
       headerProps={{
         title: "مدیریت صفحه اصلی",
         icon: <SiMaterialformkdocs className="text-2xl" />,
-        showIconInActionSlot: true,
+        tooltipTitle: "راهنمای صفحه‌ساز",
+        tooltipDescription:
+          "در این بخش می‌توانید چیدمان و محتوای صفحه اصلی فروشگاه را به صورت کاملاً بصری و بدون نیاز به کدنویسی طراحی کنید. با استفاده از ابزارهای موجود، المان‌های مختلف را به صفحه اضافه، جابجا یا حذف کنید.",
       }}
       isLoading={isLoading}
       isExistItems={true}
