@@ -23,6 +23,7 @@ export type CardHeaderProps = {
   btnClassName?: string;
   tooltipTitle?: string;
   tooltipDescription?: string;
+  contentClassName?: string
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({
@@ -41,6 +42,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
   btnClassName = "bg-secondary-light text-secondary flex-1",
   tooltipDescription = "",
   tooltipTitle = "",
+  contentClassName = "",
 }) => {
   const hasButtonProps = !!(onAdd || redirect);
 
@@ -86,14 +88,25 @@ const CardHeader: React.FC<CardHeaderProps> = ({
 
         <div className="flex items-center gap-4">
           {tooltipTitle ? (
-            <HelpTooltip
-              title={tooltipTitle}
-              description={tooltipDescription}
-            />
+            <div className={!actionNode ? "pl-2" : ""}>
+              <HelpTooltip
+                title={tooltipTitle}
+                description={tooltipDescription}
+                contentClassName={contentClassName}
+              />
+            </div>
           ) : (
             ""
           )}
-          <div className={tooltipTitle ? "border-r border-slate-300 pr-4" : ""}>{actionNode}</div>
+          {actionNode ? (
+            <div
+              className={tooltipTitle ? "border-r border-slate-300 pr-4" : ""}
+            >
+              {actionNode}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </HerouiCardHeader>
