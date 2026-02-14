@@ -63,12 +63,12 @@ const orderSettingsLinks = [
   {
     title: "بسته‌بندی",
     icon: <LuPackage className="text-2xl" />,
-    route: "store/gift-wrapping",
+    route: "order/gift-wrapping",
   },
   {
     title: "لاگ های پرداخت",
     icon: <RiFileList3Line className="text-2xl" />,
-    route: "store/gift-wrapping",
+    route: "orders/payment-log",
   },
   {
     title: "زمان رزرو",

@@ -5,8 +5,8 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { ProductSortBy } from "@/core/hooks/api/products/useProduct";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { useGetGiftWrappings } from "@/core/hooks/api/useGiftWrapping";
-import GiftWrappingCard from "@/components/features/store/gift-wrapping/GiftWrappingCard";
-import GiftsFilter from "@/components/features/store/gift-wrapping/Filter/GiftsFilter";
+import GiftWrappingCard from "@/components/features/orders/gift-wrapping/GiftWrappingCard";
+import GiftsFilter from "@/components/features/orders/gift-wrapping/Filter/GiftsFilter";
 // Icons
 import { LuGift, LuPlus } from "react-icons/lu";
 

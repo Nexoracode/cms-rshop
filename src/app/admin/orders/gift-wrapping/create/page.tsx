@@ -1,7 +1,7 @@
 "use client"
 
 import { useGetOneGiftWrapping } from "@/core/hooks/api/useGiftWrapping";
-import GiftWrappingForm from "@/components/features/store/gift-wrapping/GiftWrappingForm";
+import GiftWrappingForm from "@/components/features/orders/gift-wrapping/GiftWrappingForm";
 import { useFetchOnEdit } from "@/core/hooks/common/useFetchOnEdit";
 
 const GiftWrappingCreate = () => {
