@@ -50,12 +50,12 @@ const SectionTemplate: React.FC<SectionTemplateProps> = ({
       )}
 
       {display_style === "grid" && (
-        <div className="w-fit mx-auto grid grid-cols-4">
+        <div className="w-fit mx-auto grid grid-cols-4 gap-1">
           {products.map((product: any) => (
             <ProductTemplate
               key={product.id}
               product={product}
-              className={`shadow-none !rounded-none w-[190px]`}
+              className={`shadow !rounded-none w-[190px]`}
             />
           ))}
         </div>
