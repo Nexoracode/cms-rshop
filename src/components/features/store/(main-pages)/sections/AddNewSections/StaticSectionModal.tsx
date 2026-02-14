@@ -57,7 +57,7 @@ const StaticSectionModal: React.FC<Props> = ({
       section_type: sectionType,
       slug:
         sectionType === "category_based"
-          ? "product-categories"
+          ? `product-categories-${Math.floor(Math.random() * 100) + 1}`
           : sectionType === "featured"
             ? "featured-offers"
             : "most-popular",
