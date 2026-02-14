@@ -45,7 +45,9 @@ export function HelpTooltip({
         {children}
         <div className="flex flex-col gap-4 p-3">
           <p className="text-lg">{title}</p>
-          <p className="text-gray-600 leading-7">{description}</p>
+          <div className="text-gray-600 leading-7 whitespace-pre-wrap break-words font-[Dana-Medium]">
+            {description}
+          </div>
         </div>
       </PopoverContent>
     </Popover>
