@@ -5,6 +5,7 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { useGetProducts } from "@/core/hooks/api/products/useProduct";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { BiArrowBack } from "react-icons/bi";
+import { LuPackage } from "react-icons/lu";
 const ProductCard = dynamic(() => import("../products/ProductCard"), { ssr: false });
 
 const ProductListMostViewed = () => {
@@ -15,8 +16,8 @@ const ProductListMostViewed = () => {
   return (
     <UnifiedCard
       headerProps={{
-        title: "پربازدیدترین محصولات",
-        icon: <HiOutlineUserGroup className="text-2xl" />,
+        title: "جدیدترین محصولات",
+        icon: <LuPackage className="text-2xl" />,
         btnIcon: <BiArrowBack/>,
         textBtn: "محصولات",
         redirect: "/admin/products",
