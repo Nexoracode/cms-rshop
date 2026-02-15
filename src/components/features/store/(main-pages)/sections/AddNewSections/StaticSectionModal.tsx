@@ -32,6 +32,7 @@ const initialForm = {
   slug: "product-categories",
   description: "",
   section_type: "category_based",
+  promotion_id: null,
   display_style: "carousel",
   products_limit: 10,
   show_view_all_button: true,
@@ -71,13 +72,13 @@ const StaticSectionModal: React.FC<Props> = ({
       slug:
         sectionType === "category_based"
           ? `product-categories-${Math.floor(Math.random() * 100) + 1}`
-          : sectionType === "featured"
+          : sectionType === "promotion_based"
             ? "featured-offers"
             : "most-popular",
       title:
         sectionType === "category_based"
           ? "محصولات بر اساس دسته‌بندی"
-          : sectionType === "featured"
+          : sectionType === "promotion_based"
             ? "پیشنهاد ویژه"
             : "محصولات پرطرفدار",
     },
@@ -116,6 +117,7 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+       ...(form?.promotion_id ? {promotion_id: form.promotion_id} : {}),
       start_date,
       end_date,
       ...(showCategoryField ? { category_id } : {}),
@@ -159,6 +161,7 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      ...(defaultValues?.promotion_id ? {promotion_id: defaultValues.promotion_id} : {}),
       start_date,
       end_date,
       ...(showCategoryField ? { category_id: category?.id } : {}),
@@ -237,22 +240,25 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        {sectionType === "featured" ? (
-          <IsoDatePicker
-            label="بازه اعتبار"
-            enableRange
-            valueIsoRange={{ start: form.start_date, end: form.end_date }}
-            onChangeIsoRange={(range) => {
-              handleMultipleFieldsChange({
-                start_date: range?.start ?? null,
-                end_date: range?.end ?? null,
-              });
-            }}
-            showMonthAndYearPickers
-            className="w-full"
-            isRequired
-            errorMessage={errors.start_date}
-          />
+        {sectionType === "promotion_based" ? (
+          <>
+            <IsoDatePicker
+              label="بازه اعتبار"
+              enableRange
+              valueIsoRange={{ start: form.start_date, end: form.end_date }}
+              onChangeIsoRange={(range) => {
+                handleMultipleFieldsChange({
+                  start_date: range?.start ?? null,
+                  end_date: range?.end ?? null,
+                });
+              }}
+              showMonthAndYearPickers
+              className="w-full"
+              isRequired
+              errorMessage={errors.start_date}
+            />
+
+          </>
         ) : (
           ""
         )}
