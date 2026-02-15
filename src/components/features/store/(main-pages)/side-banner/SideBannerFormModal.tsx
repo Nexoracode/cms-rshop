@@ -202,8 +202,8 @@ const SideBannerFormModal: React.FC<Props> = ({
           </div>
         </div>
         <DualToggleSection
-          title="بدون عکس"
-          mode2Title="عکس دار"
+          title="پس زمینه به همراه متن"
+          mode2Title="پس زمینه تنها"
           value={form.useBackground}
           onChange={(val: any) => {
             if (val) {
@@ -222,6 +222,12 @@ const SideBannerFormModal: React.FC<Props> = ({
           }}
           children={
             <div className="flex flex-col gap-6">
+              <ImageBoxUploader
+                changeStatusFile={form.mediaFile}
+                defaultImg={form?.image_url ?? null}
+                onFile={(file) => handleFieldChange("mediaFile", file)}
+                errorMessage={errors.image_url_bg}
+              />
               <div className="flex items-center gap-4">
                 <TextInput
                   label="عنوان"

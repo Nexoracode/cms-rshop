@@ -28,9 +28,6 @@ const FlashDealSelect: React.FC<Props> = ({
     search,
   });
 
-  console.log(promotions);
-  
-
   const options = useMemo(() => {
     return (
       promotions?.data?.items
