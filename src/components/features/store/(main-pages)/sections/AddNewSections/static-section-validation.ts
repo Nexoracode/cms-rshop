@@ -2,9 +2,9 @@ export function staticSectionValidation(data: any, showCategory?: boolean, secti
   const errors: Record<string, string> = {};
 
   if (sectionType === "promotion_based") {
-    if (!data?.start_date?.length && !data?.end_date?.length) {
+    /* if (!data?.start_date?.length && !data?.end_date?.length) {
       errors.start_date = "بازه اعتبار تخفیف شگفت انگیز الزامی است"
-    }
+    } */
     if (!data?.promotion_id) {
       errors.promotion_id = "انتخاب پروموشن الزامی است"
     }

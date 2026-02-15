@@ -58,15 +58,7 @@ const StaticSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
 
-  const {
-    form,
-    errors,
-    setForm,
-    handleFieldChange,
-    handleMultipleFieldsChange,
-    reset,
-    submit,
-  } = useForm(
+  const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
     {
       ...initialForm,
       section_type: sectionType,
@@ -103,8 +95,6 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-      start_date,
-      end_date,
     } = form;
 
     const payload: Record<string, any> = {
@@ -117,8 +107,6 @@ const StaticSectionModal: React.FC<Props> = ({
       slug,
       section_type,
       ...(form?.promotion_id ? { promotion_id: form.promotion_id } : {}),
-      start_date,
-      end_date,
       ...(showCategoryField ? { category_id } : {}),
     };
 
@@ -148,8 +136,8 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-      start_date,
-      end_date,
+      /* start_date,
+      end_date, */
     } = defaultValues;
 
     setForm({
@@ -163,8 +151,8 @@ const StaticSectionModal: React.FC<Props> = ({
       ...(defaultValues?.promotion_id
         ? { promotion_id: defaultValues.promotion_id }
         : {}),
-      start_date,
-      end_date,
+      /*    start_date,
+      end_date, */
       ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   };
@@ -242,29 +230,12 @@ const StaticSectionModal: React.FC<Props> = ({
         </div>
 
         {sectionType === "promotion_based" ? (
-          <>
-            <IsoDatePicker
-              label="بازه اعتبار"
-              enableRange
-              valueIsoRange={{ start: form.start_date, end: form.end_date }}
-              onChangeIsoRange={(range) => {
-                handleMultipleFieldsChange({
-                  start_date: range?.start ?? null,
-                  end_date: range?.end ?? null,
-                });
-              }}
-              showMonthAndYearPickers
-              className="w-full"
-              isRequired
-              errorMessage={errors.start_date}
-            />
-            <FlashDealSelect
-              value={form.promotion_id}
-              onChange={(val) => handleFieldChange("promotion_id", Number(val))}
-              errorMessage={errors.promotion_id}
-              isRequired
-            />
-          </>
+          <FlashDealSelect
+            value={form.promotion_id}
+            onChange={(val) => handleFieldChange("promotion_id", Number(val))}
+            errorMessage={errors.promotion_id}
+            isRequired
+          />
         ) : (
           ""
         )}
