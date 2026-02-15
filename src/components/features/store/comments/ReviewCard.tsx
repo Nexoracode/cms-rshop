@@ -57,24 +57,42 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
 
   return (
     <BaseCard
-      className="flex flex-col gap-3 p-1 max-w-[377px] w-full hover-reveal-parent"
+      className="flex flex-col gap-3 p-1 w-full hover-reveal-parent"
       bodyClassName="overflow-hidden p-2.5 cursor-auto"
     >
       {/* دکمه حذف */}
-      <div className="hover-reveal-child">
+      <div className="absolute left-2.5 top-2.5 flex items-center gap-2">
+        <OptionButton
+          title={isApproved ? "تایید شده" : "تایید نظر"}
+          size="sm"
+          isLoading={isPending}
+          onClick={handleToggleApprove}
+          className={`border-l ml-1 rounded-none pl-3 text-sky-600`}
+          variant="light"
+        />
         <DeleteButton onDelete={() => deleteReview(item.id)} />
       </div>
 
       {/* محصول */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 mb-3">
         <img
           src={product.image}
           alt={product.name}
-          className="rounded-xl object-cover w-16 h-16"
+          className="rounded-xl object-cover w-16 h-16 border p-1"
         />
-        <div className="w-full h-full flex flex-col justify-between gap-1 py-1">
+        <div className="w-full h-full flex flex-col justify-between gap-3">
+          <div className="text-[13px] text-gray-700 flex items-center gap-2">
+            <Link
+              href={`/admin/store/customers/create?edit_id=${item.user.id}`}
+              className="flex items-center gap-1 text-xs text-gray-700 border-l-2 pl-2"
+            >
+              <HiOutlineUser size={18} />
+              <span>{item.user.name}</span>
+            </Link>
+            <RatingStars rating={item.rating} singleStarHighlight size={14} />
+          </div>
           <h3 className="line-clamp-1 truncate w-56">{product.name}</h3>
-          <div className="flex items-center justify-between gap-2">
+          {/* <div className="flex items-center justify-between gap-2">
             <span className="text-gray-700">
               {formatPrice(product.final_price)} تومان
             </span>
@@ -85,38 +103,11 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
                 </span>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
-      <div className="my-2 mx-4"></div>
-      <div className="bg-gray-50 rounded-xl p-4">
-        <div className="text-xs text-gray-700 flex items-center justify-between border-b pb-2">
-          <Link
-            href={`/admin/store/customers/create?edit_id=${item.user.id}`}
-            className="flex items-center gap-1.5"
-          >
-            <HiOutlineUser size={21} />
-            <span>{item.user.name}</span>
-          </Link>
-          <div>
-            <OptionButton
-              title={isApproved ? "تایید شده" : "تایید"}
-              size="sm"
-              isLoading={isPending}
-              onClick={handleToggleApprove}
-              className={isApproved ? "bg-sky-50 text-sky-600" : ""}
-            />
-          </div>
-        </div>
-        <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed">
-          {item.comment}
-        </div>
-        <div className="flex items-center justify-between mt-1">
-          <span className="text-xs text-gray-600">
-            {formatDate(item.created_at)}
-          </span>
-          <RatingStars rating={item.rating} singleStarHighlight />
-        </div>
+      <div className="text-sm text-gray-700 leading-relaxed">
+        {item.comment}
       </div>
     </BaseCard>
   );

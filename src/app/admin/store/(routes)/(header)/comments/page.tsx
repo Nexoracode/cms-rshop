@@ -35,7 +35,7 @@ const AdminReviews = () => {
       isExistItems={isExistItems}
       searchInp={isFilteredView}
       meta={reviews?.data?.meta}
-      childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center md:justify-items-stretch"
+      childrenClassName="flex flex-col gap-4"
     >
       {reviews?.data?.items?.map((item: any) => (
         <ReviewCard key={item.id} item={item} />
