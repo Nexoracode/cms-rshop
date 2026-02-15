@@ -9,10 +9,11 @@ import {
   useDeleteReview,
   useUpdateReviewStatus,
 } from "@/core/hooks/api/useReview";
-import { toPersianUTC } from "@/core/utils/date";
+import { formatDate } from "@/core/utils/date";
+import { Divider } from "@heroui/react";
 import Link from "next/link";
 import { useState } from "react";
-import { LuCircleUser } from "react-icons/lu";
+import { HiOutlineUser } from "react-icons/hi2";
 
 type ReviewCardProps = {
   item: {
@@ -87,30 +88,34 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
           </div>
         </div>
       </div>
-
-      <div className="px-1 pt-1 mt-5 border-x-2 rounded-xl border-slate-200">
-        <Link
-          href={`/admin/store/customers/create?edit_id=${item.user.id}`}
-          className="text-xs text-gray-700 flex items-center justify-between bg-slate-50 rounded-xl px-2 py-2"
-        >
-          <div className="flex items-center gap-1.5">
-            <LuCircleUser className="text-xl" />
+      <div className="my-2 mx-4"></div>
+      <div className="bg-gray-50 rounded-xl p-4">
+        <div className="text-xs text-gray-700 flex items-center justify-between border-b pb-2">
+          <Link
+            href={`/admin/store/customers/create?edit_id=${item.user.id}`}
+            className="flex items-center gap-1.5"
+          >
+            <HiOutlineUser size={21} />
             <span>{item.user.name}</span>
+          </Link>
+          <div>
+            <OptionButton
+              title={isApproved ? "تایید شده" : "تایید"}
+              size="sm"
+              isLoading={isPending}
+              onClick={handleToggleApprove}
+              className={isApproved ? "bg-sky-50 text-sky-600" : ""}
+            />
           </div>
-          <span>{toPersianUTC(item.created_at)}</span>
-        </Link>
-        <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed px-1.5">
+        </div>
+        <div className="h-16 overflow-y-auto pt-3 text-sm text-gray-700 leading-relaxed">
           {item.comment}
         </div>
-        <div className="flex items-center justify-between mt-1 px-1.5">
-          <RatingStars rating={item.rating} size={16} />
-          <OptionButton
-            title={isApproved ? "تایید شده" : "تایید کامنت"}
-            size="sm"
-            isLoading={isPending}
-            onClick={handleToggleApprove}
-            className={isApproved ? "bg-green-50 text-green-600" : ""}
-          />
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-xs text-gray-600">
+            {formatDate(item.created_at)}
+          </span>
+          <RatingStars rating={item.rating} singleStarHighlight />
         </div>
       </div>
     </BaseCard>

@@ -48,9 +48,7 @@ export const useUpdateReviewStatus = (id: number) => {
         route: `/admin/reviews/${id}/status`,
         method: "PATCH",
         body: data,
-        isActiveToast: true,
-        loadingText: "در حال بروزرسانی وضعیت نظر...",
-        successText: "وضعیت نظر با موفقیت بروزرسانی شد",
+        isActiveToast: false,
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["all-reviews"] });
