@@ -77,7 +77,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
       </div>
 
       {/* محصول */}
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex flex-col sm:flex-row justify-center gap-3 mb-3">
         <img
           src={product.image}
           alt={product.name}
@@ -94,19 +94,7 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
             </Link>
             <RatingStars rating={item.rating} singleStarHighlight size={14} />
           </div>
-          <h3 className="line-clamp-1 truncate w-56">{product.name}</h3>
-          {/* <div className="flex items-center justify-between gap-2">
-            <span className="text-gray-700">
-              {formatPrice(product.final_price)} تومان
-            </span>
-            <div className="flex items-center gap-2">
-              {product.discount_percent > 0 && (
-                <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
-                  {product.discount_percent}% تخفیف
-                </span>
-              )}
-            </div>
-          </div> */}
+          <h3 className="line-clamp-1 truncate max-w-56">{product.name}</h3>
         </div>
       </div>
       <div className="text-sm text-gray-700 leading-relaxed">
