@@ -62,15 +62,16 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
     >
       {/* دکمه حذف */}
       <div className="absolute left-2.5 top-2.5 flex items-center gap-2">
+        <div className="hover-reveal-child !top-0 !left-[92px] border-l rounded-none pl-3">
+          <DeleteButton onDelete={() => deleteReview(item.id)} />
+        </div>
         <OptionButton
           title={isApproved ? "تایید شده" : "تایید نظر"}
           size="sm"
           isLoading={isPending}
           onClick={handleToggleApprove}
-          className={`border-l ml-1 rounded-none pl-3 text-sky-600`}
-          variant="light"
+          className={isApproved ? "text-sky-600 bg-sky-50" : ""}
         />
-        <DeleteButton onDelete={() => deleteReview(item.id)} />
       </div>
 
       {/* محصول */}
