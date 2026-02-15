@@ -29,6 +29,9 @@ const FreeShipping = () => {
         title: "لیست ارسال رایگان",
         icon: <LiaTruckLoadingSolid className="text-2xl" />,
         children: <FreeShippingListModal />,
+        tooltipTitle: "مدیریت ارسال رایگان",
+        tooltipDescription:
+          "در این بخش می‌توانید شرایط ارسال رایگان را تعریف و مدیریت کنید. امکان تعیین حداقل مبلغ سفارش، بازه زمانی اعتبار و سایر محدودیت‌ها وجود دارد. این تنظیمات هنگام ثبت سفارش به‌صورت خودکار اعمال می‌شوند.",
       }}
       isLoading={isLoading}
       isExistItems={hasItems}

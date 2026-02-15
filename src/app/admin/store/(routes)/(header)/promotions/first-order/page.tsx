@@ -29,6 +29,9 @@ const FirstOrder = () => {
         title: "لیست خریدهای اول",
         icon: <TfiShoppingCartFull className="text-2xl" />,
         children: <FirstOrderListModal />,
+        tooltipTitle: "مدیریت خریدهای اول",
+        tooltipDescription:
+          "در این بخش می‌توانید سفارش‌هایی را مشاهده کنید که به عنوان اولین خرید کاربران ثبت شده‌اند. این اطلاعات برای بررسی عملکرد کمپین‌های جذب مشتری، اعمال تخفیف خرید اول و تحلیل رفتار کاربران جدید کاربرد دارد.",
       }}
       isLoading={isLoading}
       isExistItems={hasItems}

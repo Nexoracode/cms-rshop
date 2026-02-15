@@ -29,6 +29,9 @@ const FlashDeal = () => {
         title: "لیست پیشنهادهای شگفت‌انگیز",
         icon: <BsBasket className="text-2xl" />,
         children: <FlashDealListModal />,
+        tooltipTitle: "مدیریت پیشنهادهای شگفت‌انگیز",
+        tooltipDescription:
+          "در این بخش می‌توانید محصولات دارای پیشنهاد شگفت‌انگیز را مدیریت کنید. این پیشنهادها معمولاً شامل تخفیف ویژه با مدت زمان محدود هستند و به‌صورت برجسته در فروشگاه نمایش داده می‌شوند. امکان افزودن، ویرایش یا حذف پیشنهادها وجود دارد.",
       }}
       isLoading={isLoading}
       isExistItems={hasItems}

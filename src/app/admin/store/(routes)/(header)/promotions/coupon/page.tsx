@@ -30,6 +30,9 @@ const Coupon = () => {
         title: "لیست تخفیف ها",
         icon: <TbRosetteDiscount className="text-2xl" />,
         children: <CouponsListModal />,
+        tooltipTitle: "مدیریت تخفیف‌ها",
+        tooltipDescription:
+          "در این بخش می‌توانید کدهای تخفیف فروشگاه را مشاهده و مدیریت کنید. امکان ایجاد، ویرایش یا حذف تخفیف‌ها وجود دارد. هر تخفیف می‌تواند شامل درصد یا مبلغ ثابت، تاریخ اعتبار و محدودیت استفاده باشد.",
       }}
       isLoading={isLoading}
       isExistItems={hasItems}

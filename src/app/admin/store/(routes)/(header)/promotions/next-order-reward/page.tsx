@@ -12,12 +12,14 @@ import { TbShoppingCartDiscount } from "react-icons/tb";
 const NextOrderReward = () => {
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<PromotionSortBy[number]>();
-  const { data: nextOrderRewards, isLoading } = NextOrderRewardHooks.useGetList({
-    page,
-    sortBy,
-    search,
-    filter,
-  });
+  const { data: nextOrderRewards, isLoading } = NextOrderRewardHooks.useGetList(
+    {
+      page,
+      sortBy,
+      search,
+      filter,
+    },
+  );
 
   const items = nextOrderRewards?.data?.items || [];
   const hasItems = items.length > 0;
@@ -29,6 +31,9 @@ const NextOrderReward = () => {
         title: "لیست خریدهای بعدی",
         icon: <TbShoppingCartDiscount className="text-2xl" />,
         children: <NextOrderRewardListModal />,
+        tooltipTitle: "مدیریت خریدهای بعدی",
+        tooltipDescription:
+          "در این بخش می‌توانید پاداش یا تخفیف مربوط به سفارش‌های بعدی کاربران را مدیریت کنید. این تنظیمات پس از اولین خرید کاربر فعال می‌شوند و می‌توانند شامل درصد یا مبلغ تخفیف، بازه زمانی اعتبار و شرایط اعمال باشند.",
       }}
       isLoading={isLoading}
       isExistItems={hasItems}
