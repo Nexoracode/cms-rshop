@@ -1,7 +1,7 @@
 export function staticSectionValidation(data: any, showCategory?: boolean, sectionType?: any) {
   const errors: Record<string, string> = {};
 
-  if (sectionType === "featured" && !data?.start_date?.length && !data?.end_date?.length) {
+  if (sectionType === "promotion_based" && !data?.start_date?.length && !data?.end_date?.length) {
     errors.start_date = "بازه اعتبار تخفیف شگفت انگیز الزامی است"
   }
 

@@ -20,16 +20,16 @@ const AddFeaturedOfferSection = () => {
             در ایام خاص میتونی از این بخش استفاده کنی البته قبلش باید چندتا
             پروموشن اضافه کرده باشی!
           </p>
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <OptionButton
               title="محصولات"
               href="/admin/store/promotions/flash-deal/products"
               className="text-white"
             />
-          </div>
-          {/* <div>
-            <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} sectionType={"featured"} />
           </div> */}
+          <div>
+            <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} sectionType={"promotion_based"} />
+          </div>
         </div>
       }
     />
