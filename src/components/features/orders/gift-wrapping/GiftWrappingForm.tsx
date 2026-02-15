@@ -161,7 +161,7 @@ const GiftWrappingForm: React.FC<GiftWrappingFormProps> = ({
       />
 
       <FormActionButtons
-        cancelHref="/admin/gift-wrappings"
+        cancelHref="/admin/orders/gift-wrapping"
         onSubmit={handleSubmit}
         isLoading={isLoading}
       />

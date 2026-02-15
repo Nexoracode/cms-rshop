@@ -41,7 +41,7 @@ const ManualOrderForm = () => {
     {
       onValidate: validateManualOrder,
       runValidationOnChange: true,
-    }
+    },
   );
 
   const { data: user, refetch, isFetching } = useGetOneUser(form.userId ?? 0);
@@ -96,18 +96,20 @@ const ManualOrderForm = () => {
 
   return (
     <BaseCard
-      className="shadow-md mt-6"
+      className="shadow-md"
       CardHeaderProps={{
         title: "ایجاد سفارش دستی",
         icon: <HiOutlineDocumentText />,
-        showIconInActionSlot: true,
+        tooltipTitle: "ایجاد سفارش دستی",
+        tooltipDescription:
+          "در این بخش می‌توانید یک سفارش جدید برای مشتری ثبت کنید، بدون اینکه مشتری خودش آن را در فروشگاه ثبت کرده باشد. این قابلیت برای ثبت سفارش تلفنی، حضوری یا اصلاح سفارشات مشتری مفید است. می‌توانید محصولات، تعداد، قیمت و اطلاعات مشتری را مشخص کرده و سفارش را ثبت کنید.",
       }}
       wrapperContents
     >
       {/* انتخاب کاربر */}
       <SelectableUsersBox
         onChange={(selectedUsers) => {
-          const firstUserId = selectedUsers[0];          
+          const firstUserId = selectedUsers[0];
           handleFieldChange("userId", firstUserId || null);
         }}
         error={!!errors?.userId?.length}
