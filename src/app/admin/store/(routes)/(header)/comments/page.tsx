@@ -27,7 +27,9 @@ const AdminReviews = () => {
       headerProps={{
         title: "لیست نظرات کاربران",
         icon: <LuMessagesSquare />,
-        showIconInActionSlot: true,
+        tooltipTitle: "مدیریت نظرات کاربران",
+        tooltipDescription:
+          "در این بخش می‌توانید تمامی نظرات ثبت‌شده توسط کاربران را مشاهده و مدیریت کنید. امکان پاسخ‌دهی به نظرات، تایید یا رد شدن آنها و بررسی امتیازهای ثبت‌شده توسط کاربران وجود دارد. این ابزار به شما کمک می‌کند بازخورد مشتریان را بهتر درک کنید و کیفیت خدمات و محصولات را بهبود دهید.",
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
