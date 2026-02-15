@@ -15,6 +15,7 @@ import { staticSectionValidation } from "./static-section-validation";
 import CategorySelect from "@/components/features/products/categories/CategorySelect";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { LuPlus } from "react-icons/lu";
+import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 
 type Props = {
   defaultValues?: any;
@@ -37,6 +38,8 @@ const initialForm = {
   view_all_link: "",
   category_id: 0,
   is_active: true,
+  start_date: null as string | null,
+  end_date: null as string | null,
 };
 
 const StaticSectionModal: React.FC<Props> = ({
@@ -53,7 +56,15 @@ const StaticSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
 
-  const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
+  const {
+    form,
+    errors,
+    setForm,
+    handleFieldChange,
+    handleMultipleFieldsChange,
+    reset,
+    submit,
+  } = useForm(
     {
       ...initialForm,
       section_type: sectionType,
@@ -72,7 +83,7 @@ const StaticSectionModal: React.FC<Props> = ({
     },
     {
       onValidate: (data: any) =>
-        staticSectionValidation(data, showCategoryField),
+        staticSectionValidation(data, showCategoryField, sectionType),
       runValidationOnChange: true,
     },
   );
@@ -90,6 +101,8 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      start_date,
+      end_date,
     } = form;
 
     const payload: Record<string, any> = {
@@ -101,10 +114,10 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      start_date,
+      end_date,
       ...(showCategoryField ? { category_id } : {}),
     };
-
-    console.log("payload => ", payload);
 
     if (defaultValues?.id) {
       return handleMutation(() => updateSection(payload), {
@@ -217,6 +230,26 @@ const StaticSectionModal: React.FC<Props> = ({
             allowSpaces={false}
           />
         </div>
+
+        {sectionType === "featured" ? (
+          <IsoDatePicker
+            label="بازه اعتبار"
+            enableRange
+            valueIsoRange={{ start: form.start_date, end: form.end_date }}
+            onChangeIsoRange={(range) => {
+              handleMultipleFieldsChange({
+                start_date: range?.start ?? null,
+                end_date: range?.end ?? null,
+              });
+            }}
+            showMonthAndYearPickers
+            className="w-full"
+            isRequired
+            errorMessage={errors.start_date}
+          />
+        ) : (
+          ""
+        )}
 
         {showCategoryField ? (
           <CategorySelect

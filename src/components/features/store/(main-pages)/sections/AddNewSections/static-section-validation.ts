@@ -1,5 +1,9 @@
-export function staticSectionValidation(data: any, showCategory?: boolean) {
+export function staticSectionValidation(data: any, showCategory?: boolean, sectionType?: any) {
   const errors: Record<string, string> = {};
+
+  if (sectionType === "featured" && !data?.start_date?.length && !data?.end_date?.length) {
+    errors.start_date = "بازه اعتبار تخفیف شگفت انگیز الزامی است"
+  }
 
   if (data.title.trim() === "") {
     errors.title = "عنوان بخش الزامی است.";
