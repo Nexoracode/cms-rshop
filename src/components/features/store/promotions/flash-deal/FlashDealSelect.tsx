@@ -1,43 +1,50 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useGetBrands } from "@/core/hooks/api/useBrand";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
-import AddNewBrandModal from "./AddNewBrandModal";
+import { FlashDealHooks } from "@/core/hooks/api/usePromotions";
+import OptionButton from "@/components/ui/buttons/OptionButton";
 
 type Props = {
   value?: string | number | null;
   onChange: (val: string | number | null) => void;
   errorMessage?: string;
-  withAddModal?: boolean;
   isRequired?: boolean;
 };
 
-const BrandSelect: React.FC<Props> = ({
+const FlashDealSelect: React.FC<Props> = ({
   value,
   onChange,
   errorMessage,
-  withAddModal = false,
   isRequired = false,
 }) => {
   const { search } = useListQueryParams({
-    searchKey: "brand",
+    searchKey: "promotion",
   });
 
-  const { data: brands } = useGetBrands({
+  const { data: promotions } = FlashDealHooks.useGetList({
     page: 1,
     search,
   });
 
+  console.log(promotions);
+  
+
   const options = useMemo(() => {
     return (
-      brands?.data?.items?.map((brand: any) => ({
-        id: String(brand.id),
-        title: brand.name,
-      })) ?? []
+      promotions?.data?.items
+        ?.filter((item: any) =>
+          item.conditions?.some(
+            (condition: any) => condition.type === "product",
+          ),
+        )
+        .map((item: any) => ({
+          id: String(item.id),
+          title: item.name,
+        })) ?? []
     );
-  }, [brands?.data?.items]);
+  }, [promotions?.data?.items]);
 
   return (
     <div
@@ -46,26 +53,29 @@ const BrandSelect: React.FC<Props> = ({
       } gap-2`}
     >
       <AutocompleteInput
-        label="برند"
+        label="پروموشن"
         placeholder="انتخاب کنید"
         options={
           options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
         selectedId={value ? String(value) : ""}
         onChange={(val) => {
-          console.log("#$$$$$$$$$$$",val);
-          
-          onChange(val ?? null)
+          onChange(val ?? null);
         }}
         isRequired={isRequired}
-        searchKey="brand"
+        searchKey="promotion"
         syncSearchToUrl
         errorMessage={errorMessage}
       />
-
-      {withAddModal && <AddNewBrandModal />}
+      <div className="flex items-center gap-4">
+        <OptionButton
+          title="افزودن"
+          href="/admin/store/promotions/flash-deal/products"
+          className="py-5 rounded-xl"
+        />
+      </div>
     </div>
   );
 };
 
-export default BrandSelect;
+export default FlashDealSelect;

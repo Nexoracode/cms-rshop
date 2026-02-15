@@ -16,6 +16,7 @@ import CategorySelect from "@/components/features/products/categories/CategorySe
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { LuPlus } from "react-icons/lu";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
+import FlashDealSelect from "../../../promotions/flash-deal/FlashDealSelect";
 
 type Props = {
   defaultValues?: any;
@@ -89,8 +90,6 @@ const StaticSectionModal: React.FC<Props> = ({
     },
   );
 
-  console.log("#############", defaultValues);
-
   useEffect(() => {
     setFormHandler();
   }, [defaultValues]);
@@ -117,7 +116,7 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-       ...(form?.promotion_id ? {promotion_id: form.promotion_id} : {}),
+      ...(form?.promotion_id ? { promotion_id: form.promotion_id } : {}),
       start_date,
       end_date,
       ...(showCategoryField ? { category_id } : {}),
@@ -161,7 +160,9 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-      ...(defaultValues?.promotion_id ? {promotion_id: defaultValues.promotion_id} : {}),
+      ...(defaultValues?.promotion_id
+        ? { promotion_id: defaultValues.promotion_id }
+        : {}),
       start_date,
       end_date,
       ...(showCategoryField ? { category_id: category?.id } : {}),
@@ -257,7 +258,12 @@ const StaticSectionModal: React.FC<Props> = ({
               isRequired
               errorMessage={errors.start_date}
             />
-
+            <FlashDealSelect
+              value={form.promotion_id}
+              onChange={(val) => handleFieldChange("promotion_id", Number(val))}
+              errorMessage={errors.promotion_id}
+              isRequired
+            />
           </>
         ) : (
           ""

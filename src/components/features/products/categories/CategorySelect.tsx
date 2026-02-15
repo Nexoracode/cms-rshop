@@ -50,7 +50,7 @@ const CategorySelect: React.FC<Props> = ({
     >
       <AutocompleteInput
         label="دسته‌بندی"
-        placeholder="در صورت نیاز انتخاب کنید (اختیاری)"
+        placeholder="انتخاب کنید"
         options={
           options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
