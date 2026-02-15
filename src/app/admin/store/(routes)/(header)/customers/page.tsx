@@ -30,6 +30,9 @@ const CustomersList = () => {
         title: "لیست کاربران",
         icon: <FiUsers className="text-2xl" />,
         children: <AddNewCustomerModal />,
+        tooltipTitle: "مدیریت کاربران",
+        tooltipDescription:
+          "در این بخش می‌توانید تمامی کاربران ثبت‌شده در فروشگاه را مشاهده و مدیریت کنید. امکان افزودن کاربر جدید، ویرایش اطلاعات کاربران موجود و دسترسی به جزئیات آن‌ها فراهم است.",
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}

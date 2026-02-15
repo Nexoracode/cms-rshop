@@ -34,9 +34,12 @@ const Products = () => {
         title: "پشتیبانی",
         icon: <MdOutlineSupportAgent className="text-2xl" />,
         className: "p-2 mb-4",
-        btnIcon: <TfiFullscreen size={16}/>,
+        btnIcon: <TfiFullscreen size={16} />,
         textBtn: "تمام صفحه",
-        redirect: "/chat"
+        redirect: "/chat",
+        tooltipTitle: "پشتیبانی کاربران",
+        tooltipDescription:
+          "در این بخش می‌توانید با مشتریان و کاربران فروشگاه ارتباط برقرار کنید، درخواست‌ها و مشکلات آن‌ها را مشاهده و پاسخ دهید. با دکمه 'تمام صفحه' می‌توانید محیط چت را در حالت فول‌اسکرین باز کرده و تجربه مدیریت راحت‌تری داشته باشید.",
       }}
       isLoading={isLoading}
       isExistItems={isExistItems}
