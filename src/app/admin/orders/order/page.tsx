@@ -14,7 +14,7 @@ const OrderDetail = () => {
   const orderId = searchParams.get("id");
 
   const { data: order, isLoading } = useGetOneOrder(
-    orderId ? +orderId : undefined
+    orderId ? +orderId : undefined,
   );
 
   const orderData = order?.data;
@@ -38,6 +38,9 @@ const OrderDetail = () => {
           redirect: `/factor?id=${order?.data?.id}`,
           textBtn: "فاکتور",
           btnIcon: <GoArrowUpRight />,
+          tooltipTitle: "اطلاعات کامل سفارش",
+          tooltipDescription:
+            "در این بخش می‌توانید تمامی جزئیات یک سفارش را مشاهده کنید: وضعیت سفارش از ثبت تا تحویل، اطلاعات محصولات، جمع کل، تخفیف‌ها، هزینه ارسال و بسته‌بندی، اطلاعات گیرنده، روش و وضعیت پرداخت و اطلاعات ارسال. دکمه 'فاکتور' امکان دسترسی سریع به فاکتور سفارش را فراهم می‌کند.",
         }}
       >
         <OrderWizard order={orderData} />
