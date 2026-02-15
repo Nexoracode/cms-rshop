@@ -77,12 +77,7 @@ const SideBannerFormModal: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    if (!defaultValues) return;
-
-    setForm({
-      ...initialForm,
-      ...defaultValues,
-    });
+    setFormHandler();
   }, [defaultValues]);
 
   useEffect(() => {
@@ -132,7 +127,6 @@ const SideBannerFormModal: React.FC<Props> = ({
       badge_text,
       badge_color: badge_color,
     };
-    console.log("DDDDDDDDDDDDDDDD", payload);
 
     if (bannerId) {
       return handleMutation(
@@ -155,9 +149,11 @@ const SideBannerFormModal: React.FC<Props> = ({
   };
 
   const setFormHandler = () => {
+    if (!defaultValues) return;
     setForm({
       ...initialForm,
       ...defaultValues,
+      useBackground: !!defaultValues?.title?.length,
     });
   };
 
@@ -178,29 +174,20 @@ const SideBannerFormModal: React.FC<Props> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-1 gap-4 items-end md:grid-cols-2">
-          <TextInput
-            label="لینک"
-            placeholder="path/to/1"
-            value={form.link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            isRequired
-            errorMessage={errors.link}
-            onChange={(val) => {
-              handleFieldChange("link", val);
-            }}
-            inputAlign="left"
-            allowSpaces={false}
-          />
-          <div>
-            <ToggleSection
-              title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-              initialMode={form.is_active}
-              onChange={(val) => handleFieldChange("is_active", val)}
-            />
-          </div>
-        </div>
+        <TextInput
+          label="لینک"
+          placeholder="path/to/1"
+          value={form.link}
+          allowSpecialChars
+          allowedSpecialChars={["/", "-"]}
+          isRequired
+          errorMessage={errors.link}
+          onChange={(val) => {
+            handleFieldChange("link", val);
+          }}
+          inputAlign="left"
+          allowSpaces={false}
+        />
         <DualToggleSection
           title="پس زمینه به همراه متن"
           mode2Title="پس زمینه تنها"
@@ -317,6 +304,11 @@ const SideBannerFormModal: React.FC<Props> = ({
               errorMessage={errors.image_url}
             />
           }
+        />
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
