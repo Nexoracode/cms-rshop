@@ -1,69 +1,62 @@
-import dynamic from "next/dynamic";
+"use client";
+
+import { useMemo } from "react";
 import BoxLink from "@/components/shared/BoxLink";
-const MiniChart = dynamic(() => import("@/components/ui/charts/MiniChart"));
-//? Icons
-import { TbWorldSearch } from "react-icons/tb";
-import { PiMoneyWavyBold } from "react-icons/pi";
-import { HiOutlineDocumentText } from "react-icons/hi";
-import { FiUsers } from "react-icons/fi";
+import MiniChart from "@/components/ui/charts/MiniChart";
+import { useGetDashboardStats } from "@/core/hooks/api/useDashboard";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import { IoReceiptOutline } from "react-icons/io5";
+import { GoCommentDiscussion } from "react-icons/go";
+import { TbMoneybag } from "react-icons/tb";
 
 const ReportsList = () => {
-  // ✅ بخش داده‌ها (اینجا بذار)
-  const months = [
-    "فروردین",
-    "اردیبهشت",
-    "خرداد",
-    "تیر",
-    "مرداد",
-    "شهریور",
-    "مهر",
-    "آبان",
-    "آذر",
-    "دی",
-    "بهمن",
-    "اسفند",
-  ];
+  const { data: stats } = useGetDashboardStats();
 
-  const visitsData = months.map((name) => ({
-    name,
-    value: Math.floor(Math.random() * 5000) + 1000,
-  }));
+  const commentsData = useMemo(() => {
+    return (
+      stats?.data?.comments?.map((item: any) => ({
+        name: item.month,
+        value: item.value,
+      })) ?? []
+    );
+  }, [stats?.data?.comments]);
 
-  const salesData = months.map((name) => ({
-    name,
-    value: Math.floor(Math.random() * 8000000) + 2000000,
-  }));
+  const salesData = useMemo(() => {
+    return (
+      stats?.data?.total_sales?.map((item: any) => ({
+        name: item.month,
+        value: item.value,
+      })) ?? []
+    );
+  }, [stats?.data?.total_sales]);
 
-  const ordersData = months.map((name) => ({
-    name,
-    value: Math.floor(Math.random() * 500) + 50,
-  }));
+  const ordersData = useMemo(() => {
+    return (
+      stats?.data?.orders?.map((item: any) => ({
+        name: item.month,
+        value: item.value,
+      })) ?? []
+    );
+  }, [stats?.data?.orders]);
 
-  const usersData = months.map((name) => ({
-    name,
-    value: Math.floor(Math.random() * 300) + 10,
-  }));
+  const usersData = useMemo(() => {
+    return (
+      stats?.data?.new_customers?.map((item: any) => ({
+        name: item.month,
+        value: item.value,
+      })) ?? []
+    );
+  }, [stats?.data?.new_customers]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
       <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
         <BoxLink
-          title="بازدید"
-          icon={<TbWorldSearch className="text-2xl" />}
-          routeName={"dashboard/#"}
-          parentStyle="text-gray-700 flex flex-col items-center"
-          titleStyle="text-gray-600"
-        />
-        <MiniChart data={visitsData} color="#3b82f6" />
-      </div>
-
-      <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
-        <BoxLink
           title="فروش کل"
-          icon={<PiMoneyWavyBold className="text-2xl" />}
+          icon={<TbMoneybag className="text-2xl" />}
           routeName={"dashboard/#"}
           parentStyle="text-gray-700 flex flex-col items-center"
-          titleStyle="text-gray-600"
+          titleStyle="text-gray-600 -mt-1"
         />
         <MiniChart data={salesData} color="#16a34a" />
       </div>
@@ -71,7 +64,7 @@ const ReportsList = () => {
       <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
         <BoxLink
           title="سفارش‌ها"
-          icon={<HiOutlineDocumentText className="text-2xl" />}
+          icon={<IoReceiptOutline className="text-2xl" />}
           routeName={"dashboard/#"}
           parentStyle="text-gray-700 flex flex-col items-center"
           titleStyle="text-gray-600"
@@ -82,12 +75,23 @@ const ReportsList = () => {
       <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
         <BoxLink
           title="مشتری جدید"
-          icon={<FiUsers className="text-2xl" />}
+          icon={<HiOutlineUserGroup className="text-2xl" />}
           routeName={"dashboard/#"}
           parentStyle="text-gray-700 flex flex-col items-center"
           titleStyle="text-gray-600"
         />
         <MiniChart data={usersData} color="#ef4444" />
+      </div>
+
+      <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
+        <BoxLink
+          title="نظرات مشتریان"
+          icon={<GoCommentDiscussion className="text-2xl" />}
+          routeName={"dashboard/#"}
+          parentStyle="text-gray-700 flex flex-col items-center"
+          titleStyle="text-gray-600"
+        />
+        <MiniChart data={commentsData} color="#3b82f6" />
       </div>
     </div>
   );
