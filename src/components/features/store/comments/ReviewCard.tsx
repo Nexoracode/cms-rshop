@@ -62,7 +62,9 @@ const ReviewCard = ({ item }: ReviewCardProps) => {
     >
       {/* دکمه حذف */}
       <div className="absolute left-2.5 top-2.5 flex items-center gap-2">
-        <div className="hover-reveal-child !top-0 !left-[92px] border-l rounded-none pl-3">
+        <div
+          className={`hover-reveal-child ${isApproved ? "!left-[92px]" : "!left-[83px]"} !top-0 border-l rounded-none pl-3`}
+        >
           <DeleteButton onDelete={() => deleteReview(item.id)} />
         </div>
         <OptionButton
