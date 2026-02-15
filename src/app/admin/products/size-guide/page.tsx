@@ -32,7 +32,6 @@ const SizeGuidePage = () => {
   };
 
   console.log(size?.data);
-  
 
   return (
     <>
@@ -51,6 +50,9 @@ const SizeGuidePage = () => {
             title: "مدیریت راهنمای سایز",
             icon: <PiResizeBold className="text-2xl" />,
             children: <AddNewSizeGuideModal />,
+            tooltipTitle: "راهنمای سایز چیست؟",
+            tooltipDescription:
+              "در این بخش می‌توانید راهنمای سایز محصولات را مدیریت کنید. راهنمای سایز به مشتریان کمک می‌کند تا با مشاهده جدول یا تصویر اندازه‌ها، سایز مناسب خود را انتخاب کنند و از اشتباه در خرید جلوگیری شود. شما می‌توانید عنوان، توضیحات و تصویر مربوط به راهنمای سایز را ثبت، ویرایش یا حذف کنید.",
           }}
           isLoading={isLoading}
           isExistItems={isExistItems}
