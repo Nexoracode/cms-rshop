@@ -3,7 +3,7 @@
 import Slider from "@/components/shared/Slider";
 import ProductTemplate from "../../../ProductTemplate";
 import AmazingOfferCard from "./AmazingOfferCard";
-import { ActionButton } from "@/components/ui/buttons/ActionButton"; 
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { TbEdit } from "react-icons/tb";
 import AddFeaturedOfferSection from "./AddFeaturedOfferSection";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { LuPercent } from "react-icons/lu";
 import StaticSectionModal from "../StaticSectionModal";
 import { useDeleteHomeSection } from "@/core/hooks/api/adminHome/useHomeSections";
 import DeleteButton from "@/components/shared/DeleteButton";
+import CountdownTimer from "@/components/shared/CountdownTimer";
 
 type SectionIsFeaturedProps = {
   featuredSection?: any;
@@ -26,7 +27,12 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
     <div>
       {featuredSection ? (
         <div className="w-full hover-reveal-parent bg-[#E5344E] h-[294px] rounded-xl flex items-center justify-center p-4">
-          <AmazingOfferCard />
+          <AmazingOfferCard>
+            <CountdownTimer
+              endDate={featuredSection?.end_date}
+              className="mt-3 mb-1.5"
+            />
+          </AmazingOfferCard>
           <StaticSectionModal
             title="شگفت انگیز"
             icon={<LuPercent />}
