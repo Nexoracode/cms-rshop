@@ -88,6 +88,8 @@ const StaticSectionModal: React.FC<Props> = ({
     },
   );
 
+  console.log("#############", defaultValues);
+
   useEffect(() => {
     setFormHandler();
   }, [defaultValues]);
@@ -145,6 +147,8 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      start_date,
+      end_date,
     } = defaultValues;
 
     setForm({
@@ -155,6 +159,8 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      start_date,
+      end_date,
       ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   };

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import AddSectionCard from "../../../shared/AddSectionCard";
@@ -16,16 +16,14 @@ const AddFeaturedOfferSection = () => {
             alt="AmazingText"
             className="w-[120px]"
           />
-          <p className="text-white">در ایام خاص میتونی از این بخش استفاده کنی البته قبلش باید چندتا پروموشن اضافه کرده باشی!</p>
+          <p className="text-white">
+            در ایام خاص میتونی از این بخش استفاده کنی البته قبلش باید چندتا
+            پروموشن اضافه کرده باشی!
+          </p>
           <div className="flex items-center gap-4">
             <OptionButton
               title="محصولات"
               href="/admin/store/promotions/flash-deal/products"
-              className="text-white"
-            />
-            <OptionButton
-              title="دسته‌بندی‌ها"
-              href="/admin/store/promotions/flash-deal/categories"
               className="text-white"
             />
           </div>
