@@ -15,9 +15,7 @@ const StorePageEditor = () => {
 
   const currentPage = data?.data?.find((item: any) => item.type === type);
 
-  if (isLoading) return <div>Loading...</div>;
-
-  return <StorePageForm initialData={currentPage} type={type as any} />;
+  return <StorePageForm initialData={currentPage} type={type as any} isLoading={isLoading}/>;
 };
 
 export default StorePageEditor;
