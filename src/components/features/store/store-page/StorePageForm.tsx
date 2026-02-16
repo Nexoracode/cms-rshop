@@ -6,6 +6,10 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { useEffect } from "react";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { storeFormValidation } from "./store-form-validate";
+import TextInput from "@/components/ui/inputs/TextInput";
+import Textarea from "@/components/ui/inputs/Textarea";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import FormActionButtons from "@/components/common/FormActionButtons";
 
 type StorePageFormProps = {
   initialData: any;
@@ -14,13 +18,13 @@ type StorePageFormProps = {
 };
 
 const initialStoreForm = {
-    type: "",
-    title: "",
-    content: "",
-    meta_title: "",
-    meta_description: "",
-    is_active: true
-}
+  type: "",
+  title: "",
+  content: "",
+  meta_title: "",
+  meta_description: "",
+  is_active: true,
+};
 
 const StorePageForm: React.FC<StorePageFormProps> = ({
   initialData,
@@ -44,6 +48,8 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
     initialData && setForm(initialData);
   }, [initialData]);
 
+  const handleSubmit = submit(async (changed) => {});
+
   return (
     <BaseCard
       CardHeaderProps={{
@@ -54,11 +60,56 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
       wrapperContents
       isLoading={isLoading}
     >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <TextInput
+          label="عنوان"
+          placeholder="عنوان را وارد کنید"
+          value={form.title}
+          onChange={(title) => {
+            handleFieldChange("title", title);
+          }}
+          isRequired
+          inputAlign="right"
+          allowEnglishOnly={false}
+          errorMessage={errors.name}
+        />
+        <TextInput
+          label="عنوان متا"
+          placeholder="عنوان متا را وارد کنید"
+          value={form.title}
+          onChange={(title) => {
+            handleFieldChange("meta_title", title);
+          }}
+          isRequired
+          inputAlign="right"
+          allowEnglishOnly={false}
+          errorMessage={errors.meta_title}
+        />
+      </div>
+      <Textarea
+        label="توضیحات متا"
+        value={form.meta_description}
+        onChange={(val) => handleFieldChange("meta_description", val)}
+        placeholder="توضیحات متا را وارد کنید"
+        isRequired
+        errorMessage={errors.description}
+      />
       <TextEditor
         value={form.content ?? ""}
         onChange={(content) => handleFieldChange("content", content)}
         label="توضیحات"
         errorMessage={errors.content}
+      />
+      <ToggleSection
+        title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+        initialMode={form.is_active}
+        onChange={(val) => handleFieldChange("is_active", val)}
+      />
+
+      <FormActionButtons
+        cancelHref="/admin/store/store-pages"
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </BaseCard>
   );
