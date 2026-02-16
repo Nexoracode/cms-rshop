@@ -16,7 +16,7 @@ const breadcrumbMap: Record<string, string> = {
   store: "فروشگاه",
   me: "اطلاعات من",
   "store-pages": "صفحات فروشگاه",
-  faq: "سؤالات متداول",
+  faqs: "سؤالات متداول",
   "home-builder": "صفحه اصلی",
   collections: "مجموعه ها",
   help: "راهنما",
