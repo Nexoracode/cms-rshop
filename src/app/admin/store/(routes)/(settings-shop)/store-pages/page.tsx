@@ -5,13 +5,12 @@ import {
   TbCreditCardRefund,
   TbWorldSearch,
 } from "react-icons/tb";
-import { useRouter } from "next/navigation";
 import BaseCard from "@/components/ui/BaseCard";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { LuMessageCircleQuestion } from "react-icons/lu";
+import Link from "next/link";
 
 const AboutStore = () => {
-  const router = useRouter();
 
   const pages = [
     {
@@ -53,9 +52,9 @@ const AboutStore = () => {
         const Icon = page.icon;
 
         return (
-          <div
+          <Link
             key={page.type}
-            onClick={() => router.push(`/admin/store/store-pages/${page.type}`)}
+            href={`/admin/store/store-pages/${page.type}`}
             className="cursor-pointer rounded-2xl border border-gray-200 p-5 flex items-center gap-4 hover:shadow-md transition-all"
           >
             <div
@@ -68,13 +67,13 @@ const AboutStore = () => {
               <span className="font-semibold text-gray-800">{page.title}</span>
               <span className="text-sm text-gray-500">{page.description}</span>
             </div>
-          </div>
+          </Link>
         );
       })}
 
       {/* FAQ */}
-      <div
-        onClick={() => router.push("/admin/store/faqs")}
+      <Link
+        href={"/admin/store/store-pages/faqs"}
         className="cursor-pointer rounded-2xl border border-gray-200 p-5 flex items-center gap-4 hover:shadow-md transition-all"
       >
         <div className="w-12 h-12 flex items-center justify-center rounded-xl text-2xl text-green-700 bg-green-700/10">
@@ -85,7 +84,7 @@ const AboutStore = () => {
           <span className="font-semibold text-gray-800">سوالات متداول</span>
           <span className="text-sm text-gray-500">مدیریت FAQ فروشگاه</span>
         </div>
-      </div>
+      </Link>
     </BaseCard>
   );
 };
