@@ -21,14 +21,14 @@ const IconCard: React.FC<IconCardProps> = ({ icon, onEdit }) => {
     <BaseCard
       bodyClassName="p-2 hover-reveal-parent group"
       onClick={() => onEdit?.(icon)}
-      className="rounded-md border-none shadow-md"
+      className="rounded-md shadow-none border border-gray-200 hover:shadow-md"
     >
       <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteIcon({ id: icon.id })} />
       </div>
 
       {/* نمایش SVG */}
-      <div className=" border border-gray-200 rounded-md px-14 py-10">
+      <div className=" border border-gray-200 rounded-md px-10 py-8">
         <div dangerouslySetInnerHTML={{ __html: icon.svg }}></div>
       </div>
 

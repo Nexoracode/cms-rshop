@@ -79,7 +79,7 @@ const IconsPage = () => {
           isExistItems={isExistItems}
           searchInp={isFilteredView}
           meta={icons?.data?.meta}
-          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 !gap-2"
+          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 !gap-2"
         >
           {icons?.data?.items?.map((b: any) => (
             <IconCard key={b.id} icon={b} onEdit={handleEditIcon} />
