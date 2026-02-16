@@ -1,10 +1,8 @@
 "use client";
 
 import { BsInfoCircle } from "react-icons/bs";
-import { IoDocumentTextOutline } from "react-icons/io5";
 import {
   TbCreditCardRefund,
-  TbUserQuestion,
   TbWorldSearch,
 } from "react-icons/tb";
 import { useRouter } from "next/navigation";
