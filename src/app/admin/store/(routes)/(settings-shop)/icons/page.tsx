@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import BrandCard from "@/components/features/products/brands/BrandCard";
 import BrandFilters from "@/components/features/products/brands/BrandFilters";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { BrandSortBy, useGetBrands } from "@/core/hooks/api/useBrand";
-import { TbBrandArc, TbIcons } from "react-icons/tb";
+import { TbIcons } from "react-icons/tb";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
-import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
-import Breadcrumbs from "@/components/common/Breadcrumbs";
 import IconCard from "@/components/features/store/icons/IconCard";
+import IconFormModal from "@/components/features/store/icons/IconFormModal";
 
 const IconsPage = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -33,7 +31,7 @@ const IconsPage = () => {
 
   return (
     <>
-      <AddNewBrandModal
+      <IconFormModal
         brandId={editBrand?.id || 1}
         defaultValues={editBrand}
         isOpen={isEditOpen}
@@ -46,7 +44,7 @@ const IconsPage = () => {
           headerProps={{
             title: "مدیریت آیکون ها",
             icon: <TbIcons className="text-2xl" />,
-            children: <AddNewBrandModal />,
+            children: <IconFormModal />,
             tooltipTitle: "راهنمای آیکون ها",
             tooltipDescription: `🎨 مدیریت آیکون‌ها
 اینجا همه چیز رو برای آیکون‌های سایتت تنظیم می‌کنی! هم می‌تونی از آیکون‌های آماده SVG که از قبل هست استفاده کنی، هم آیکون‌های مخصوص خودتو اضافه کنی.

@@ -29,7 +29,7 @@ const IconCard: React.FC<IconCardProps> = ({ brand, onEdit }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="w-32 bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
+        <div className="w-28 border bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
           <Image
             alt={brand.name}
             className="w-full group-hover:scale-150 min-h-[160px] md:min-h-[120px] object-cover rounded-2xl"
