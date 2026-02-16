@@ -195,7 +195,7 @@ const SideBannerFormModal: React.FC<Props> = ({
           onChange={(val: any) => {
             if (val) {
               handleMultipleFieldsChange({
-                background_color: "" as any,
+                background_color: null as any,
                 badge_color: null,
                 badge_text: "",
                 show_badge: false,
@@ -204,7 +204,15 @@ const SideBannerFormModal: React.FC<Props> = ({
                 useBackground: true,
               });
             } else {
-              handleFieldChange("useBackground", false);
+              handleMultipleFieldsChange({
+                background_color: null as any,
+                badge_color: null,
+                badge_text: "",
+                show_badge: false,
+                subtitle: "",
+                title: "",
+                useBackground: false,
+              });
             }
           }}
           children={
