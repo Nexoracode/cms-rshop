@@ -1,46 +1,49 @@
 "use client";
 
 import { useState } from "react";
-import BrandFilters from "@/components/features/products/brands/BrandFilters";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
-import { BrandSortBy, useGetBrands } from "@/core/hooks/api/useBrand";
 import { TbIcons } from "react-icons/tb";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import IconCard from "@/components/features/store/icons/IconCard";
 import IconFormModal from "@/components/features/store/icons/IconFormModal";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
+import { useGetIcons } from "@/core/hooks/api/useIcon";
 
 const IconsPage = () => {
-  const { page, sortBy, search, filter, isFilteredView } =
-    useListQueryParams<BrandSortBy[number]>();
+  const { page, search, isFilteredView } = useListQueryParams();
 
-  const { data: brands, isLoading } = useGetBrands({
+  const { data: icons, isLoading } = useGetIcons({
     page,
     search,
-    sortBy,
   });
 
-  const isExistItems = !!brands?.data?.items?.length;
+  const isExistItems = !!icons?.data?.items?.length;
 
-  const [editBrand, setEditBrand] = useState<any | null>(null);
+  const [editIcon, setEditIcon] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const handleEditBrand = (brand: any) => {
-    setEditBrand(brand);
+  const handleEditIcon = (brand: any) => {
+    setEditIcon(brand);
     setIsEditOpen(true);
   };
 
   return (
     <>
       <IconFormModal
-        brandId={editBrand?.id || 1}
-        defaultValues={editBrand}
+        brandId={editIcon?.id || 1}
+        defaultValues={editIcon}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
       />
 
       <div className="flex flex-col gap-4">
         <UnifiedCard
-          searchFilter={<BrandFilters />}
+          searchFilter={
+            <SearchFilterCard
+              searchPlaceholder="جستجو در آیکون ها..."
+              showSearchBar
+            />
+          }
           headerProps={{
             title: "مدیریت آیکون ها",
             icon: <TbIcons className="text-2xl" />,
@@ -75,11 +78,11 @@ const IconsPage = () => {
           isLoading={isLoading}
           isExistItems={isExistItems}
           searchInp={isFilteredView}
-          meta={brands?.data?.meta}
+          meta={icons?.data?.meta}
           childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3"
         >
-          {brands?.data?.items?.map((b: any) => (
-            <IconCard key={b.id} brand={b} onEdit={handleEditBrand} />
+          {icons?.data?.items?.map((b: any) => (
+            <IconCard key={b.id} brand={b} onEdit={handleEditIcon} />
           ))}
         </UnifiedCard>
       </div>
