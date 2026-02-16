@@ -3,7 +3,7 @@
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
 import { BsBasket, BsShop } from "react-icons/bs";
-import { SiMaterialformkdocs } from "react-icons/si";
+import { SiMaterialformkdocs, SiSvgtrace } from "react-icons/si";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import {
   HiOutlineDocumentText,
@@ -15,6 +15,7 @@ import {
   TbBrandArc,
   TbCategory2,
   TbChartDots,
+  TbIcons,
   TbLoader,
   TbRosetteDiscount,
   TbShoppingCartDiscount,
@@ -49,6 +50,11 @@ const storeSettingsLinks = [
     title: "صفحات فروشگاه",
     icon: <TbWorldSearch className="text-2xl" />,
     route: "store/store-pages",
+  },
+  {
+    title: "آیکون ها",
+    icon: <TbIcons className="text-2xl" />,
+    route: "store/icons",
   },
   {
     title: "بلاگ‌ها",
