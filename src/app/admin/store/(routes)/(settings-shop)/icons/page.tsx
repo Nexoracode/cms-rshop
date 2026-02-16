@@ -79,10 +79,10 @@ const IconsPage = () => {
           isExistItems={isExistItems}
           searchInp={isFilteredView}
           meta={icons?.data?.meta}
-          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3"
+          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 !gap-2"
         >
           {icons?.data?.items?.map((b: any) => (
-            <IconCard key={b.id} brand={b} onEdit={handleEditIcon} />
+            <IconCard key={b.id} icon={b} onEdit={handleEditIcon} />
           ))}
         </UnifiedCard>
       </div>

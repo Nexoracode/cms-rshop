@@ -2,45 +2,39 @@
 
 import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { useDeleteBrand } from "@/core/hooks/api/useBrand";
-import { Image } from "@heroui/react";
+import { useDeleteIcon } from "@/core/hooks/api/useIcon";
 import BaseCard from "@/components/ui/BaseCard";
 
 type IconCardProps = {
-  brand: {
+  icon: {
     id: number;
     name: string;
-    slug: string;
-    logo: string;
+    svg: string; // اینجا slug و logo رو به svg تغییر بده
   };
-  onEdit?: (brand: Record<string, any>) => void;
+  onEdit?: (icon: Record<string, any>) => void;
 };
 
-const IconCard: React.FC<IconCardProps> = ({ brand, onEdit }) => {
-  const { mutate: deleteBrand } = useDeleteBrand();
+const IconCard: React.FC<IconCardProps> = ({ icon, onEdit }) => {
+  const { mutate: deleteIcon } = useDeleteIcon();
 
   return (
     <BaseCard
       bodyClassName="p-2 hover-reveal-parent group"
-      onClick={() => onEdit?.(brand)}
+      onClick={() => onEdit?.(icon)}
+      className="rounded-md border-none shadow-md"
     >
       <div className="hover-reveal-child">
-        <DeleteButton onDelete={() => deleteBrand(brand.id)} />
+        <DeleteButton onDelete={() => deleteIcon({ id: icon.id })} />
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="w-28 border bg-slate-200 aspect-[3/2] overflow-hidden rounded-2xl">
-          <Image
-            alt={brand.name}
-            className="w-full group-hover:scale-150 min-h-[160px] md:min-h-[120px] object-cover rounded-2xl"
-            radius="lg"
-            width={"100%"}
-            src={brand.logo}
-          />
-        </div>
-
-        <p className="text-sm">{brand.name}</p>
+      {/* نمایش SVG */}
+      <div className=" border border-gray-200 rounded-md px-14 py-10">
+        <div dangerouslySetInnerHTML={{ __html: icon.svg }}></div>
       </div>
+
+      <p className="text-[14px] text-center text-gray-500 font-[Dana-Bold] pt-4 pb-2">
+        {icon.name}
+      </p>
     </BaseCard>
   );
 };

@@ -19,7 +19,7 @@ export const useGetIcons = ({
       });
 
       return fetcher({
-        route: `/api/icons?${qs}`,
+        route: `/icons?${qs}`,
         isActiveToast: false,
       });
     },
@@ -32,7 +32,7 @@ export const useGetIcon = (id: number) => {
     queryKey: ["icon", id],
     queryFn: () => {
       return fetcher({
-        route: `/api/icons/${id}`,
+        route: `/icons/${id}`,
         isActiveToast: false,
       });
     },
@@ -47,7 +47,7 @@ export const useCreateIcon = () => {
   return useMutation({
     mutationFn: (data) => {
       return fetcher({
-        route: "/api/icons",
+        route: "/icons",
         method: "POST",
         body: data,
         isActiveToast: true,
@@ -68,7 +68,7 @@ export const useUpdateIcon = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: number; data: any }) => {
       return fetcher({
-        route: `/api/icons/${id}`,
+        route: `/icons/${id}`,
         method: "PATCH",
         body: data,
         isActiveToast: true,
@@ -90,7 +90,7 @@ export const useDeleteIcon = () => {
   return useMutation({
     mutationFn: ({ id }: { id: number }) =>
       fetcher({
-        route: `/api/icons/${id}`,
+        route: `/icons/${id}`,
         method: "DELETE",
         successText: "آیکون با موفقیت حذف شد",
         loadingText: "در حال حذف آیکون",
