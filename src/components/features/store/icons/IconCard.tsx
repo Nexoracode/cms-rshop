@@ -32,7 +32,7 @@ const IconCard: React.FC<IconCardProps> = ({ icon, onEdit }) => {
         <div dangerouslySetInnerHTML={{ __html: icon.svg }}></div>
       </div>
 
-      <p className="text-[14px] text-center text-gray-500 font-[Dana-Bold] pt-4 pb-2">
+      <p className="text-[14px] text-center text-gray-500 pt-4 pb-2">
         {icon.name}
       </p>
     </BaseCard>
