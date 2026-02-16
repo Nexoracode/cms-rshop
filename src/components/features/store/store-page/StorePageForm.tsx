@@ -13,6 +13,7 @@ import { storePageConfig } from "./storePageConfig";
 import { TbWorldSearch } from "react-icons/tb";
 import { StorePage } from "./store-pages-type";
 import { useUpdateStoreInfo } from "@/core/hooks/api/useStoreInfo";
+import { useRouter } from "next/navigation";
 
 type StorePageFormProps = {
   initialData: any;
@@ -34,6 +35,7 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
   type,
   isLoading,
 }) => {
+  const router = useRouter();
   const updateStoreInfo = useUpdateStoreInfo(type);
 
   const { form, errors, handleFieldChange, setForm, submit } = useForm(
@@ -53,7 +55,7 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
 
     const { title, content, meta_title, meta_description, is_active } = form;
 
-    await updateStoreInfo.mutateAsync({
+    const res = await updateStoreInfo.mutateAsync({
       title,
       content,
       meta_title,
@@ -61,6 +63,9 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
       is_active,
       type,
     });
+    if (res.ok) {
+      router.push("/admin/store/store-pages");
+    }
   });
 
   const { title, icon: Icon } = storePageConfig[type as StorePage] || {
@@ -94,14 +99,15 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
         <TextInput
           label="عنوان متا برای SEO"
           placeholder="عنوان متا را وارد کنید"
-          value={form.title}
-          onChange={(title) => {
-            handleFieldChange("meta_title", title);
+          value={form.meta_title}
+          onChange={(meta_title) => {
+            handleFieldChange("meta_title", meta_title);
           }}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
           errorMessage={errors.meta_title}
+          allowSpecialChars
         />
       </div>
       <Textarea
