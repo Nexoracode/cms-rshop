@@ -3,7 +3,6 @@
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
 import { BsBasket, BsShop } from "react-icons/bs";
-import { IoReceiptOutline } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import {
@@ -20,6 +19,7 @@ import {
   TbRosetteDiscount,
   TbShoppingCartDiscount,
   TbTruckDelivery,
+  TbWorldSearch,
 } from "react-icons/tb";
 import BaseCard from "@/components/ui/BaseCard";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
@@ -31,24 +31,24 @@ import ReservationTimesModal from "@/components/features/store/ReservationTimesM
 
 const storeSettingsLinks = [
   {
-    title: "اطلاعات فروشگاه",
-    icon: <BsShop className="text-2xl" />,
-    route: "store/infos",
-  },
-  {
     title: "صفحه ساز",
     icon: <SiMaterialformkdocs className="text-2xl" />,
     route: "store/home-builder",
   },
   {
+    title: "اطلاعات اصلی",
+    icon: <BsShop className="text-2xl" />,
+    route: "store/infos",
+  },
+  /* {
     title: "گزارش عملکرد",
     icon: <TbChartDots className="text-2xl" />,
     route: "store/analytics",
-  },
+  }, */
   {
-    title: "درباره فروشگاه",
-    icon: <HiOutlineInformationCircle className="text-2xl" />,
-    route: "store/about",
+    title: "صفحات فروشگاه",
+    icon: <TbWorldSearch className="text-2xl" />,
+    route: "store/store-pages",
   },
   {
     title: "بلاگ‌ها",
