@@ -2,42 +2,40 @@
 
 import { BsInfoCircle } from "react-icons/bs";
 import { IoDocumentTextOutline } from "react-icons/io5";
-import { HiOutlineReceiptRefund } from "react-icons/hi";
-import { TbUserQuestion, TbWorldSearch } from "react-icons/tb";
+import {
+  TbCreditCardRefund,
+  TbUserQuestion,
+  TbWorldSearch,
+} from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import BaseCard from "@/components/ui/BaseCard";
+import { TfiShoppingCartFull } from "react-icons/tfi";
+import { LuMessageCircleQuestion } from "react-icons/lu";
 
 const AboutStore = () => {
   const router = useRouter();
 
-  const items = [
+  const pages = [
     {
+      type: "about_us",
       title: "درباره ما",
       description: "مدیریت صفحه معرفی فروشگاه",
       icon: BsInfoCircle,
       color: "text-yellow-700 bg-yellow-700/10",
-      route: "/admin/store/store-pages/about_us",
     },
     {
+      type: "purchase_guide",
       title: "راهنمای خرید",
       description: "مدیریت راهنمای خرید مشتریان",
-      icon: IoDocumentTextOutline,
+      icon: TfiShoppingCartFull,
       color: "text-blue-700 bg-blue-700/10",
-      route: "/admin/store/store-pages/purchase_guide",
     },
     {
+      type: "return_policy",
       title: "شرایط بازگشت کالا",
       description: "مدیریت قوانین مرجوعی",
-      icon: HiOutlineReceiptRefund,
+      icon: TbCreditCardRefund,
       color: "text-orange-700 bg-orange-700/10",
-      route: "/admin/store/store-pages/return_policy",
-    },
-    {
-      title: "سوالات متداول",
-      description: "مدیریت FAQ فروشگاه",
-      icon: TbUserQuestion,
-      color: "text-green-700 bg-green-700/10",
-      route: "/admin/store/faqs",
     },
   ];
 
@@ -46,31 +44,50 @@ const AboutStore = () => {
       CardHeaderProps={{
         title: "صفحات فروشگاه",
         icon: <TbWorldSearch />,
+        tooltipTitle: "مدیریت صفحات محتوایی فروشگاه",
+        tooltipDescription:
+          "در این بخش می‌توانید صفحات ثابت و اطلاع‌رسانی فروشگاه مانند درباره ما، راهنمای خرید، قوانین بازگشت کالا و سوالات متداول را ایجاد، ویرایش و فعال یا غیرفعال کنید. این صفحات مستقیماً در سایت به کاربران نمایش داده می‌شوند و نقش مهمی در اعتمادسازی و راهنمایی مشتریان دارند.",
       }}
       bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-4"
     >
-      {items.map((item, index) => {
-        const Icon = item.icon;
+      {/* Store Pages */}
+      {pages.map((page) => {
+        const Icon = page.icon;
 
         return (
           <div
-            key={index}
-            onClick={() => router.push(item.route)}
+            key={page.type}
+            onClick={() => router.push(`/admin/store/store-pages/${page.type}`)}
             className="cursor-pointer rounded-2xl border border-gray-200 p-5 flex items-center gap-4 hover:shadow-md transition-all"
           >
             <div
-              className={`w-12 h-12 flex items-center justify-center rounded-xl text-2xl ${item.color}`}
+              className={`w-12 h-12 flex items-center justify-center rounded-xl text-2xl ${page.color}`}
             >
               <Icon />
             </div>
 
             <div className="flex flex-col">
-              <span className="font-semibold text-gray-800">{item.title}</span>
-              <span className="text-sm text-gray-500">{item.description}</span>
+              <span className="font-semibold text-gray-800">{page.title}</span>
+              <span className="text-sm text-gray-500">{page.description}</span>
             </div>
           </div>
         );
       })}
+
+      {/* FAQ */}
+      <div
+        onClick={() => router.push("/admin/store/faqs")}
+        className="cursor-pointer rounded-2xl border border-gray-200 p-5 flex items-center gap-4 hover:shadow-md transition-all"
+      >
+        <div className="w-12 h-12 flex items-center justify-center rounded-xl text-2xl text-green-700 bg-green-700/10">
+          <LuMessageCircleQuestion />
+        </div>
+
+        <div className="flex flex-col">
+          <span className="font-semibold text-gray-800">سوالات متداول</span>
+          <span className="text-sm text-gray-500">مدیریت FAQ فروشگاه</span>
+        </div>
+      </div>
     </BaseCard>
   );
 };
