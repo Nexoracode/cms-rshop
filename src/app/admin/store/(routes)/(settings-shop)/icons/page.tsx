@@ -9,6 +9,7 @@ import { TbBrandArc, TbIcons } from "react-icons/tb";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import AddNewBrandModal from "@/components/features/products/brands/AddNewBrandModal";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import IconCard from "@/components/features/store/icons/IconCard";
 
 const IconsPage = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -77,10 +78,10 @@ const IconsPage = () => {
           isExistItems={isExistItems}
           searchInp={isFilteredView}
           meta={brands?.data?.meta}
-          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3"
         >
           {brands?.data?.items?.map((b: any) => (
-            <BrandCard key={b.id} brand={b} onEdit={handleEditBrand} />
+            <IconCard key={b.id} brand={b} onEdit={handleEditBrand} />
           ))}
         </UnifiedCard>
       </div>
