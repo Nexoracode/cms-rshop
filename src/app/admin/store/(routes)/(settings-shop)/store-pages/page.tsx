@@ -24,7 +24,7 @@ const AboutStore = () => {
                                 className={`${style} text-yellow-700 bg-yellow-700/10`}
                             />
                         }
-                        onPress={() => router.push("/admin/settings/about-store/about")}
+                        onPress={() => router.push("/admin/store/store-pages/about")}
                     > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
 
                     <AccordionItem
@@ -36,7 +36,7 @@ const AboutStore = () => {
                                 className={`${style} text-blue-700 bg-blue-700/10`}
                             />
                         }
-                        onPress={() => router.push("/admin/settings/about-store/help")}
+                        onPress={() => router.push("/admin/store/store-pages/help")}
                     > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
 
                     <AccordionItem
@@ -48,7 +48,7 @@ const AboutStore = () => {
                                 className={`${style} text-orange-700 bg-orange-700/10`}
                             />
                         }
-                        onPress={() => router.push("/admin/settings/about-store/refund")}
+                        onPress={() => router.push("/admin/store/store-pages/refund")}
                     > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
 
                     <AccordionItem
@@ -60,7 +60,7 @@ const AboutStore = () => {
                                 className={`${style} text-green-700 bg-green-700/10`}
                             />
                         }
-                        onPress={() => router.push("/admin/settings/about-store/faq")}
+                        onPress={() => router.push("/admin/store/store-pages/faq")}
                     > <p className="animate-pulse pr-8 pb-4">در حال انتقال</p> </AccordionItem>
                 </Accordion>
             </div>

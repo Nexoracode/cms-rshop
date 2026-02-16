@@ -48,7 +48,7 @@ const storeSettingsLinks = [
   {
     title: "درباره فروشگاه",
     icon: <HiOutlineInformationCircle className="text-2xl" />,
-    route: "store/about-store",
+    route: "store/about",
   },
   {
     title: "بلاگ‌ها",

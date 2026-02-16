@@ -5,10 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoChevronBack } from "react-icons/io5";
 
-/**
- * مپ مسیرها به متن فارسی
- * اگر نیاز به تغییر یا افزودن دارید همینجا اضافه کنید.
- */
 const breadcrumbMap: Record<string, string> = {
   // top-level
   "": "خانه",
@@ -19,7 +15,7 @@ const breadcrumbMap: Record<string, string> = {
   // settings group (inside admin/(settings)/...)
   store: "فروشگاه",
   me: "اطلاعات من",
-  "about-store": "درباره فروشگاه",
+  "store-pages": "صفحات فروشگاه",
   faq: "سؤالات متداول",
   "home-builder": "صفحه اصلی",
   collections: "مجموعه ها",
@@ -29,7 +25,7 @@ const breadcrumbMap: Record<string, string> = {
   commission: "کمیسیون",
   "financial-history": "تاریخچه مالی",
   settlement: "تسویه",
-  infos: "اطلاعات",
+  infos: "اطلاعات فروشگاه",
   social: "شبکه‌های اجتماعی",
   "user-infos": "اطلاعات کاربر",
 
