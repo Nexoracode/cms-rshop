@@ -36,9 +36,7 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
     errors,
     handleFieldChange,
     setForm,
-    handleMultipleFieldsChange,
     submit,
-    getChangedFields,
   } = useForm(initialStoreForm, {
     onValidate: storeFormValidation,
     runValidationOnChange: true,
@@ -74,7 +72,7 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
           errorMessage={errors.name}
         />
         <TextInput
-          label="عنوان متا"
+          label="عنوان متا برای SEO"
           placeholder="عنوان متا را وارد کنید"
           value={form.title}
           onChange={(title) => {
@@ -87,7 +85,7 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
         />
       </div>
       <Textarea
-        label="توضیحات متا"
+        label="توضیحات متا برای SEO"
         value={form.meta_description}
         onChange={(val) => handleFieldChange("meta_description", val)}
         placeholder="توضیحات متا را وارد کنید"
