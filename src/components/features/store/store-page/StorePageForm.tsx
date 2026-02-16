@@ -4,12 +4,14 @@ import TextEditor from "@/components/forms/TextEditor";
 import BaseCard from "@/components/ui/BaseCard";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { useEffect } from "react";
-import { TfiShoppingCartFull } from "react-icons/tfi";
 import { storeFormValidation } from "./store-form-validate";
 import TextInput from "@/components/ui/inputs/TextInput";
 import Textarea from "@/components/ui/inputs/Textarea";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import FormActionButtons from "@/components/common/FormActionButtons";
+import { storePageConfig } from "./storePageConfig";
+import { TbWorldSearch } from "react-icons/tb";
+import { StorePage } from "./store-pages-type";
 
 type StorePageFormProps = {
   initialData: any;
@@ -31,16 +33,13 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
   type,
   isLoading,
 }) => {
-  const {
-    form,
-    errors,
-    handleFieldChange,
-    setForm,
-    submit,
-  } = useForm(initialStoreForm, {
-    onValidate: storeFormValidation,
-    runValidationOnChange: true,
-  });
+  const { form, errors, handleFieldChange, setForm, submit } = useForm(
+    initialStoreForm,
+    {
+      onValidate: storeFormValidation,
+      runValidationOnChange: true,
+    },
+  );
 
   useEffect(() => {
     initialData && setForm(initialData);
@@ -48,11 +47,16 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
 
   const handleSubmit = submit(async (changed) => {});
 
+  const { title, icon: Icon } = storePageConfig[type as StorePage] || {
+    title: "صفحه فروشگاه",
+    icon: TbWorldSearch,
+  };
+
   return (
     <BaseCard
       CardHeaderProps={{
-        title: "",
-        icon: <TfiShoppingCartFull />,
+        title,
+        icon: <Icon />,
         showIconInActionSlot: true,
       }}
       wrapperContents
