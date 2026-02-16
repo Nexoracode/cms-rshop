@@ -63,7 +63,7 @@ export const useUpdateStoreInfo = (type: string | null) => {
     mutationFn: (data: any) =>
       fetcher({
         route: `/admin/store-info/${type}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
         isActiveToast: true,
         loadingText: "در حال بروزرسانی...",
@@ -117,7 +117,7 @@ export const useUpdateStoreFaq = (id: number | null) => {
     mutationFn: (data: any) =>
       fetcher({
         route: `/admin/store-info/faqs/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: data,
         isActiveToast: true,
         loadingText: "در حال ویرایش سوال...",

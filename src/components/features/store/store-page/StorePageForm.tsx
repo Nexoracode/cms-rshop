@@ -12,6 +12,7 @@ import FormActionButtons from "@/components/common/FormActionButtons";
 import { storePageConfig } from "./storePageConfig";
 import { TbWorldSearch } from "react-icons/tb";
 import { StorePage } from "./store-pages-type";
+import { useUpdateStoreInfo } from "@/core/hooks/api/useStoreInfo";
 
 type StorePageFormProps = {
   initialData: any;
@@ -33,6 +34,8 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
   type,
   isLoading,
 }) => {
+  const updateStoreInfo = useUpdateStoreInfo(type);
+
   const { form, errors, handleFieldChange, setForm, submit } = useForm(
     initialStoreForm,
     {
@@ -45,7 +48,20 @@ const StorePageForm: React.FC<StorePageFormProps> = ({
     initialData && setForm(initialData);
   }, [initialData]);
 
-  const handleSubmit = submit(async (changed) => {});
+  const handleSubmit = submit(async (changed) => {
+    if (!type) return;
+
+    const { title, content, meta_title, meta_description, is_active } = form;
+
+    await updateStoreInfo.mutateAsync({
+      title,
+      content,
+      meta_title,
+      meta_description,
+      is_active,
+      type,
+    });
+  });
 
   const { title, icon: Icon } = storePageConfig[type as StorePage] || {
     title: "صفحه فروشگاه",
