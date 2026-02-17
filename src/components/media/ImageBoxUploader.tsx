@@ -1,9 +1,9 @@
 "use client";
 
 import { Chip } from "@heroui/react";
-import { useEffect, useRef, useState } from "react";
 import { RiImageAddLine } from "react-icons/ri";
 import FieldErrorText from "../forms/FieldErrorText";
+import { useImageUploader } from "@/core/hooks/common/useImageUploader";
 
 type Props = {
   title?: string;
@@ -24,26 +24,11 @@ const ImageBoxUploader: React.FC<Props> = ({
   defaultImg,
   errorMessage,
 }) => {
-  const [imageFile, setImageFile] = useState<File | string | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (changeStatusFile) setImageFile(changeStatusFile);
-    else if (defaultImg) setImageFile(defaultImg);
-    else setImageFile(null);
-  }, [changeStatusFile, defaultImg]);
-
-  const handleImageClick = () => {
-    inputRef.current?.click();
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.size <= 5 * 1024 * 1024) {
-      setImageFile(file);
-      onFile(file);
-    }
-  };
+  const { imageFile, inputRef, handleImageClick, handleImageChange } = useImageUploader({
+    onFile,
+    changeStatusFile,
+    defaultImg,
+  });
 
   return (
     <div className="w-full">
