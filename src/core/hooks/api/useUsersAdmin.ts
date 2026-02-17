@@ -1,0 +1,66 @@
+import { fetcher } from "@/core/utils/fetcher";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+/* =========================
+   👤 اطلاعات کاربر فعلی
+========================= */
+export const useGetAdminMe = () => {
+  return useQuery({
+    queryKey: ["admin-me"],
+    queryFn: () =>
+      fetcher({
+        route: "/admin/users/me",
+        isActiveToast: false,
+      }),
+  });
+};
+
+/* =========================
+   🛡 لیست نقش‌ها
+========================= */
+export const useGetAdminRoles = () => {
+  return useQuery({
+    queryKey: ["admin-roles"],
+    queryFn: () =>
+      fetcher({
+        route: "/admin/users/roles",
+        isActiveToast: false,
+      }),
+  });
+};
+
+/* =========================
+   👑 لیست ادمین‌ها
+========================= */
+export const useGetAdmins = () => {
+  return useQuery({
+    queryKey: ["admin-users"],
+    queryFn: () =>
+      fetcher({
+        route: "/admin/users/admins",
+        isActiveToast: false,
+      }),
+  });
+};
+
+/* =========================
+   ➕ ایجاد ادمین جدید
+========================= */
+export const useCreateAdminUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: any) =>
+      fetcher({
+        route: "/admin/users/create",
+        method: "POST",
+        body: data,
+        isActiveToast: true,
+        successText: "کاربر با موفقیت ایجاد شد",
+        loadingText: "در حال ایجاد کاربر",
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+};
