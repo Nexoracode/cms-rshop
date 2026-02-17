@@ -98,7 +98,7 @@ const IconFormModal: React.FC<Props> = ({
           onChange={(val) => handleFieldChange("svg", val)}
           isRequired
           minRows={5}
-          errorMessage={errors.description}
+          errorMessage={errors.svg}
         />
       </div>
     </BaseModal>
