@@ -3,7 +3,7 @@
 import { useAttributesByGroup } from "@/core/hooks/api/attributes/useAttribute";
 import { useGetAttributeValues } from "@/core/hooks/api/attributes/useAttributeValue";
 import { useAttributesByGroupGroup } from "@/core/hooks/api/attributes/useAttributeGroup";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddNewAttrGroup from "./AttributeGroup/AddNewAttrGroup";
 import AddNewAttribute from "./Attribute/AddNewAttribute";
 import AddNewAttributeValue from "./AttributeValue/AddNewAttributeValue";
@@ -45,8 +45,6 @@ export const AttributesContent = ({
   const { data: attributeGroup } = useAttributesByGroupGroup();
   const { data: attributes } = useAttributesByGroup(selecteds.attrGroupId);
   const { data: attributeValues } = useGetAttributeValues(selecteds.attrId);
-
-  console.log("##########", selecteds);
 
   useEffect(() => {
     setAttrs((prev) => ({ ...prev, attrGroup: attributeGroup?.data }));

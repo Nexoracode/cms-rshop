@@ -29,7 +29,7 @@ const UserBoxUploader: React.FC<Props> = ({
     });
 
   return (
-    <div className="w-full">
+    <div>
       {/* Upload Box */}
       <div
         className="w-[145px] h-[145px] group border-2 border-dashed overflow-hidden border-gray-300 rounded-full flex items-center justify-center cursor-pointer hover:border-gray-400 transition"
