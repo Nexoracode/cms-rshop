@@ -30,7 +30,7 @@ const IconsPage = () => {
   return (
     <>
       <IconFormModal
-        brandId={editIcon?.id || 1}
+        iconId={editIcon?.id || 1}
         defaultValues={editIcon}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}

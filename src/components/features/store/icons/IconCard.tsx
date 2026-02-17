@@ -29,7 +29,10 @@ const IconCard: React.FC<IconCardProps> = ({ icon, onEdit }) => {
 
       {/* نمایش SVG */}
       <div className="border-b border-gray-200 px-12 py-8">
-        <div dangerouslySetInnerHTML={{ __html: icon.svg }}></div>
+        <div
+          className="[&>svg]:w-9 [&>svg]:h-auto [&>svg]:max-h-12"
+          dangerouslySetInnerHTML={{ __html: icon.svg }}
+        />
       </div>
 
       <p className="text-[14px] text-center text-gray-500 pt-4 pb-2">

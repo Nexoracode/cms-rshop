@@ -2,19 +2,16 @@
 
 import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import {
-  useBrandUpload,
-  useCreateBrand,
-  useUpdateBrand,
-} from "@/core/hooks/api/useBrand";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { TbIcons } from "react-icons/tb";
 import { useForm } from "@/core/hooks/common/form/useForm";
-import { handleMutation } from "@/core/utils/mutationHelper";
 import { IconFormvalidation } from "./icon-form-validate";
+import Textarea from "@/components/ui/inputs/Textarea";
+import { handleMutation } from "@/core/utils/mutationHelper";
+import { useCreateIcon, useUpdateIcon } from "@/core/hooks/api/useIcon";
 
 type Props = {
-  brandId?: number | null;
+  iconId?: number | null;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -22,12 +19,11 @@ type Props = {
 
 const initialIconForm = {
   name: "",
-  slug: "",
-  logo: null as File | string | null,
+  svg: "",
 };
 
 const IconFormModal: React.FC<Props> = ({
-  brandId,
+  iconId,
   defaultValues,
   isOpen,
   onOpenChange,
@@ -40,44 +36,29 @@ const IconFormModal: React.FC<Props> = ({
     },
   );
 
-  const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
-    useBrandUpload();
-  const { mutateAsync: createBrand, isPending: isPendingCreate } =
-    useCreateBrand();
-  const { mutateAsync: updateBrand, isPending: isPendingUpdate } =
-    useUpdateBrand();
+  const { mutateAsync: updateIcon } = useUpdateIcon();
+  const { mutateAsync: createIcon } = useCreateIcon();
 
   useEffect(() => {
-    if (defaultValues) {
-      setForm(defaultValues);
-    }
+    setFormHandler();
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    let logoUrl = typeof form.logo === "string" ? form.logo : "";
-
-    if (form.logo instanceof File) {
-      const formData = new FormData();
-      formData.append("files", form.logo);
-
-      const uploadRes = (await handleMutation(() => uploadMedias(formData), {
-        returnResponse: true,
-      })) as any;
-
-      if (!uploadRes.ok) return false;
-      logoUrl = uploadRes.data?.[0]?.url ?? null;
-    }
-
-    const { name, slug } = form;
-    const payload = { name, slug, logo: logoUrl };
-    if (brandId)
-      return handleMutation(() => updateBrand({ ...payload, id: brandId }), {
+    const { name, svg } = form;
+    if (iconId)
+      return handleMutation(() => updateIcon({id: iconId, data: { name, svg }}), {
         resetForm,
       });
-    else return handleMutation(() => createBrand(payload), { resetForm });
+    else return handleMutation(() => createIcon({name, svg} as any), { resetForm });
   });
 
   const resetForm = () => reset();
+
+  const setFormHandler = () => {
+    if (defaultValues) {
+      setForm(defaultValues);
+    }
+  };
 
   return (
     <BaseModal
@@ -86,18 +67,20 @@ const IconFormModal: React.FC<Props> = ({
         onOpenChange?.(val);
       }}
       triggerProps={
-        brandId
+        iconId
           ? null
           : {
               title: "+ افزودن",
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
-      title={brandId ? "ویرایش آیکون" : "افزودن آیکون جدید"}
-      confirmText={brandId ? "ویرایش آیکون" : "ایجاد آیکون"}
+      onCancel={() => {
+        !iconId ? resetForm() : setFormHandler();
+      }}
+      title={iconId ? "ویرایش آیکون" : "افزودن آیکون جدید"}
+      confirmText={iconId ? "ویرایش آیکون" : "ایجاد آیکون"}
       onConfirm={handleSubmit}
       icon={<TbIcons />}
-      isConfirmDisabled={isPendingUpload || isPendingCreate || isPendingUpdate}
     >
       <div className="flex flex-col gap-6">
         <SlugInput
@@ -107,6 +90,15 @@ const IconFormModal: React.FC<Props> = ({
           isRequired
           errorMessage={errors.name}
           label="نام آیکون (انگلیسی)"
+        />
+        <Textarea
+          label="SVG آیکون"
+          placeholder="svg خود را در این جا جای گذاری کنید"
+          value={form.svg}
+          onChange={(val) => handleFieldChange("svg", val)}
+          isRequired
+          minRows={5}
+          errorMessage={errors.description}
         />
       </div>
     </BaseModal>

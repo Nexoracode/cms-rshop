@@ -24,7 +24,7 @@ import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
 
-import { Attribute, AttributeTypes, CreateAttribute } from "../attribute.types";
+import { Attribute, AttributeTypes } from "../attribute.types";
 import { useAttributeContext } from "../../context/AttributeContext";
 
 type Props = {

@@ -51,7 +51,7 @@ export const useCreateIcon = () => {
         method: "POST",
         body: data,
         isActiveToast: true,
-        successText: "✨ آیکون با موفقیت اضافه شد",
+        successText: "آیکون با موفقیت اضافه شد",
         loadingText: "در حال افزودن آیکون",
       });
     },
