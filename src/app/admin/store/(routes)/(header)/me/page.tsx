@@ -8,7 +8,6 @@ import AddNewCustomerModal from "@/components/features/store/customers/modals/Ad
 import { UserSortBy, useGetAllUsers } from "@/core/hooks/api/users/useUsers";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { HiOutlineUserGroup } from "react-icons/hi2";
-import { GrUserAdmin } from "react-icons/gr";
 import { useGetAdminMe } from "@/core/hooks/api/useUsersAdmin";
 import MyProfileForm from "@/components/features/store/me/MyProfileForm";
 
@@ -25,20 +24,10 @@ const Me = () => {
 
   return (
     <div className="flex flex-col gap-4">
+      <MyProfileForm info={admin?.data} isLoading={isLoadingAdminData} />
       <UnifiedCard
         headerProps={{
-          title: "اطلاعات من",
-          icon: <GrUserAdmin className="text-2xl" />,
-          showIconInActionSlot: true
-        }}
-        isLoading={isLoadingAdminData}
-        isExistItems={isExistItems}
-      >
-        <MyProfileForm info={admin?.data}/>
-      </UnifiedCard>
-      {/* <UnifiedCard
-        headerProps={{
-          title: "لیست کارمندان فروشگاه",
+          title: "اطلاعات کارمندان فروشگاه",
           icon: <HiOutlineUserGroup className="text-2xl" />,
           children: <AddNewCustomerModal />,
         }}
@@ -50,7 +39,7 @@ const Me = () => {
         {users?.data?.items?.map((user: any) => (
           <CustomerCard key={user.id} infos={user} />
         ))}
-      </UnifiedCard> */}
+      </UnifiedCard>
     </div>
   );
 };
