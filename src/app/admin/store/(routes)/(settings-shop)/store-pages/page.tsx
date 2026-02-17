@@ -37,24 +37,11 @@ const AboutStore = () => {
       CardHeaderProps={{
         title: "صفحات فروشگاه",
         icon: <TbWorldSearch />,
-        showIconInActionSlot: true,
+        tooltipTitle: "راهنمای صفحات فروشگاه",
+        tooltipDescription:
+          "در این بخش می‌توانید صفحات ثابت فروشگاه مانند درباره ما، راهنمای خرید، قوانین بازگشت و سوالات متداول را ایجاد، ویرایش و فعال یا غیرفعال کنید. این صفحات مستقیماً در سایت نمایش داده می‌شوند.",
       }}
     >
-      <div className="w-full flex items-center justify-between px-4">
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 mb-4">
-            راهنمای صفحات فروشگاه
-          </h2>
-          <p className="text-gray-600  leading-7">
-            در این بخش می‌توانید صفحات ثابت و اطلاع‌رسانی فروشگاه مانند درباره
-            ما، راهنمای خرید، قوانین بازگشت کالا و سوالات متداول را ایجاد،
-            ویرایش و فعال یا غیرفعال کنید. این صفحات مستقیماً در سایت به کاربران
-            نمایش داده می‌شوند و نقش مهمی در اعتمادسازی و راهنمایی مشتریان
-            دارند.
-          </p>
-        </div>
-        <img src="/images/why-us.jpg" alt="چرا ما" className="w-72" />
-      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Store Pages */}
         {pages.map((page) => {
