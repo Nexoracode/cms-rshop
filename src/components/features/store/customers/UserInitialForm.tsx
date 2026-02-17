@@ -15,6 +15,9 @@ import { UserAddress } from "./customer.types";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { userInitialValidate } from "./user-initial-validate";
+import IconBadge from "@/components/common/IconBadge";
+import { LiaListOlSolid } from "react-icons/lia";
+import { MdOutlineMyLocation } from "react-icons/md";
 
 const initialUserForm = {
   first_name: "",
@@ -36,16 +39,13 @@ const UserInitialForm = ({ user, isLoading }: Props) => {
   const router = useRouter();
   const { mutate: updateUser, isPending } = useUpdateUser();
 
-  const {
-    form,
-    errors,
-    handleFieldChange,
-    setForm,
-    submit,
-  } = useForm(initialUserForm, {
-    onValidate: userInitialValidate,
-    runValidationOnChange: true,
-  });
+  const { form, errors, handleFieldChange, setForm, submit } = useForm(
+    initialUserForm,
+    {
+      onValidate: userInitialValidate,
+      runValidationOnChange: true,
+    },
+  );
 
   useEffect(() => {
     if (!user) return;
@@ -78,7 +78,7 @@ const UserInitialForm = ({ user, isLoading }: Props) => {
         onSuccess: (res) => {
           res.ok && router.push("/admin/products");
         },
-      }
+      },
     );
   });
 
@@ -167,10 +167,28 @@ const UserInitialForm = ({ user, isLoading }: Props) => {
           {form?.addresses?.map((addr: UserAddress, index: number) => (
             <UserAddressCard key={index} address={addr} userId={user?.id} />
           )) || (
-            <div className="w-full flex flex-col items-center gap-4  rounded-xl border-3 border-dashed px-4 py-6">
-              <LuMapPinHouse className="text-5xl text-gray-600" />
-              <p> آدرسی از سمت کاربر هنوز ثبت نشده!!</p>
-              <UserAddressModal userId={user?.id} />
+            <div className="w-full flex flex-col items-center gap-3">
+              <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-300">
+                <div className="flex items-center gap-3">
+                  <IconBadge
+                    icon={MdOutlineMyLocation}
+                    circleClassName="bg-sky-100 !w-6 !h-6"
+                    iconClassName="text-sky-600 -top-[43px] -left-[6px] w-6"
+                  />
+                  <p>آدرس ها</p>
+                </div>
+                <UserAddressModal userId={user?.id} />
+              </div>
+              <div className="w-full flex flex-col items-center gap-4 pt-6">
+                <IconBadge
+                  icon={LiaListOlSolid}
+                  circleClassName="bg-sky-100"
+                  iconClassName="text-sky-600"
+                />
+                <p className="text-gray-700 text-sm text-center">
+                  درصورت نبود آدرس آن را ایجاد کنید.
+                </p>
+              </div>
             </div>
           )}
         </div>

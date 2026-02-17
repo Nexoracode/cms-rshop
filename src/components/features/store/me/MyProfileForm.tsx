@@ -16,6 +16,7 @@ import IconBadge from "@/components/common/IconBadge";
 import { rolePersian } from "@/core/types/enum-fa";
 import { Role } from "@/core/types";
 import { HiOutlineLightningBolt } from "react-icons/hi";
+import { Divider } from "@heroui/react";
 
 type MyProfileFormProps = {
   info: any;
@@ -76,7 +77,9 @@ const MyProfileForm: React.FC<MyProfileFormProps> = ({ info, isLoading }) => {
               <p>{info?.role?.length ? rolePersian[info.role as Role] : ""}</p>
             </div>
             <div>
-              <p className="text-nowrap text-gray-600 text-[13px]">فروشگاه آرشاپ</p>
+              <p className="text-nowrap text-gray-600 text-[13px]">
+                فروشگاه آرشاپ
+              </p>
             </div>
           </div>
         </div>
@@ -126,25 +129,33 @@ const MyProfileForm: React.FC<MyProfileFormProps> = ({ info, isLoading }) => {
             <FormActionButtons onSubmit={handleSubmit} />
           </div>
         </div>
+        <div className="px-4">
+          <Divider />
+        </div>
+        <div>
+            <div>
+                <p>آدرس های من</p>
+            </div>
+        </div>
       </div>
 
       {/* ستون read-only و permissions */}
       <div className="w-full lg:w-2/6 border-r pr-6 flex flex-col justify-between gap-5 pt-5">
         <div className="flex flex-col gap-5">
           <div className="flex items-center justify-between">
-            <p className="text-[13px]">شناسه کاربری</p>
+            <p className="text-[13px] text-gray-800">شناسه کاربری</p>
             <p className="text-[13px] text-gray-600">#{info?.id}</p>
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="text-[13px]">عضویت</p>
+            <p className="text-[13px] text-gray-800">عضویت</p>
             <p className="text-[13px] text-gray-600">
               {info?.created_at ? formatDate(info?.created_at) : "-"}
             </p>
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="text-[13px]">حساب فعال</p>
+            <p className="text-[13px] text-gray-800">حساب فعال</p>
             <span className="relative flex size-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex size-3 rounded-full bg-green-500"></span>
@@ -153,7 +164,7 @@ const MyProfileForm: React.FC<MyProfileFormProps> = ({ info, isLoading }) => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <p className="text-[13px]">مجوزها</p>
+          <p className="text-[13px] text-gray-800">مجوزها</p>
           <ul className="space-y-1.5 bg-green-50 rounded-md p-3">
             {info?.permissions?.map((perm: string, idx: number) => (
               <li key={idx} className="flex items-center gap-2 text-gray-600">
