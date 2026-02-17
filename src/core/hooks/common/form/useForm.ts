@@ -124,7 +124,7 @@ export const useForm = <T extends Record<string, any>>(
         if (!core.triggerValidation()) return;
 
         if (!hasChanges) {
-          toast.error("هیچ تغییری اعمال نشده است");
+          toast.error("مطمئنی همه چی اکیه؟", {icon: "👀"});
           window.scrollTo({ top: 85, behavior: "smooth" });
           return;
         }
