@@ -45,11 +45,11 @@ const FaqsPage = () => {
               relatedPages={[
                 {
                   title: "آیکون ها",
-                  href: "/admin/orders/payment-log",
+                  href: "/admin/store/icons",
                 },
                 {
                   title: "دسته بندی سوالات",
-                  href: "/admin/store/store-pages/faqs/categories",
+                  href: "/admin/store/store-pages/faqs/cates",
                 },
               ]}
             />
