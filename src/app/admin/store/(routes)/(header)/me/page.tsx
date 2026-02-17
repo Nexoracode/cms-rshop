@@ -10,6 +10,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { GrUserAdmin } from "react-icons/gr";
 import { useGetAdminMe } from "@/core/hooks/api/useUsersAdmin";
+import MyProfileForm from "@/components/features/store/me/MyProfileForm";
 
 const Me = () => {
   const { page } = useListQueryParams<UserSortBy[number]>();
@@ -22,9 +23,6 @@ const Me = () => {
 
   const isExistItems = !!users?.data?.items?.length;
 
-  console.log("admin =>", admin);
-  
-
   return (
     <div className="flex flex-col gap-4">
       <UnifiedCard
@@ -35,8 +33,10 @@ const Me = () => {
         }}
         isLoading={isLoadingAdminData}
         isExistItems={isExistItems}
-      ></UnifiedCard>
-      <UnifiedCard
+      >
+        <MyProfileForm info={admin?.data}/>
+      </UnifiedCard>
+      {/* <UnifiedCard
         headerProps={{
           title: "لیست کارمندان فروشگاه",
           icon: <HiOutlineUserGroup className="text-2xl" />,
@@ -50,7 +50,7 @@ const Me = () => {
         {users?.data?.items?.map((user: any) => (
           <CustomerCard key={user.id} infos={user} />
         ))}
-      </UnifiedCard>
+      </UnifiedCard> */}
     </div>
   );
 };
