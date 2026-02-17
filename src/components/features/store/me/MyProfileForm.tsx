@@ -101,18 +101,18 @@ const MyProfileForm: React.FC<MyProfileFormProps> = ({ info }) => {
         </div>
 
         <div className="flex items-center justify-between">
+          <p className="text-[13px]">عضویت</p>
+          <p className="text-[13px] text-gray-600">
+            {formatDate(info?.created_at)}
+          </p>
+        </div>
+       
+        <div className="flex items-center justify-between">
           <p className="text-[13px]">حساب فعال</p>
           <span className="relative flex size-3">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex size-3 rounded-full bg-green-500"></span>
           </span>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <p className="text-[13px]">عضویت</p>
-          <p className="text-[13px] text-gray-600">
-            {formatDate(info?.created_at)}
-          </p>
         </div>
 
         <ul className="space-y-1.5 bg-green-50 rounded-md p-1.5">

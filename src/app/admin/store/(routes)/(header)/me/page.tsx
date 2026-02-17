@@ -29,6 +29,7 @@ const Me = () => {
         headerProps={{
           title: "اطلاعات من",
           icon: <GrUserAdmin className="text-2xl" />,
+          showIconInActionSlot: true
         }}
         isLoading={isLoadingAdminData}
         isExistItems={isExistItems}
