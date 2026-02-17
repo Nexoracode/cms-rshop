@@ -92,11 +92,6 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     data && setForm(mapAPIToLocalProduct(data));
   }, [data]);
 
-  useEffect(() => {
-    console.log("Current form:", form);
-    console.log("Changed fields:", getChangedFields());
-  }, [form, getChangedFields]);
-
   const handleSubmit = submit(async (changed) => {
     const {
       brand_id,
