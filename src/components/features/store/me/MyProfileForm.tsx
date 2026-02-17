@@ -37,10 +37,10 @@ const MyProfileForm: React.FC<MyProfileFormProps> = ({ info }) => {
   });
 
   useEffect(() => {
-    if (info) {
-      setForm(info);
-    }
+    info && setForm(info);
   }, [info]);
+
+  const handleSubmit = submit(async (changed) => {});
 
   return (
     <div className="flex gap-6">
