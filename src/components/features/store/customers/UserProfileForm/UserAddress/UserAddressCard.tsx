@@ -36,43 +36,72 @@ const UserAddressCard: React.FC<Props> = ({ address, userId }) => {
           )}
         </div>
 
-        {/* Address Details */}
-        <div className="grid gap-3.5 text-sm text-gray-600">
-          <div className="flex items-center gap-1.5">
-            <LuMapPinned className="text-gray-500 text-[26px] p-1" />
-            <span>
-              {address.city}, {address.province}
-            </span>
+        {/* Quick Info Row style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* شهر و استان */}
+          <div className="flex items-center gap-2">
+            <LuMapPinned className="text-gray-400 text-lg" />
+            <div className="flex flex-col">
+              <p className="text-xs text-gray-500 mb-1">شهر و استان</p>
+              <p className="text-[14px] font-medium truncate">
+                {address.city}, {address.province}
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-slate-50 rounded-md py-1">
-            <MdOutlineMapsHomeWork className="text-gray-500 text-[26px] p-1" />
-            <span className="truncate">{address.address_line}</span>
+          {/* آدرس */}
+          <div className="flex items-center gap-2">
+            <MdOutlineMapsHomeWork className="text-gray-400 text-lg" />
+            <div className="flex flex-col">
+              <p className="text-xs text-gray-500 mb-1">آدرس</p>
+              <p className="text-[14px] font-medium truncate max-w-44">
+                {address.address_line}
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <HiOutlineOfficeBuilding className="text-gray-500 text-[26px] p-1" />
-            <span>
-              پلاک {address.plaque}
-              {address.unit ? `, واحد ${address.unit}` : ""}
-            </span>
+          {/* پلاک و واحد */}
+          <div className="flex items-center gap-2">
+            <HiOutlineOfficeBuilding className="text-gray-400 text-lg" />
+            <div className="flex flex-col">
+              <p className="text-xs text-gray-500 mb-1">پلاک / واحد</p>
+              <p className="text-[14px] font-medium">
+                پلاک {address.plaque}
+                {address.unit ? `, واحد ${address.unit}` : ""}
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-slate-50 rounded-md py-1">
-            <HiOutlineMail className="text-gray-500 text-[26px] p-1" />
-            <span>کد پستی: {address.postal_code}</span>
+          {/* کد پستی */}
+          <div className="flex items-center gap-2">
+            <HiOutlineMail className="text-gray-400 text-lg" />
+            <div className="flex flex-col">
+              <p className="text-xs text-gray-500 mb-1">کد پستی</p>
+              <p className="text-[14px] font-medium">{address.postal_code}</p>
+            </div>
           </div>
 
+          {/* نام تحویل‌گیرنده */}
           {address.recipient_name && (
-            <div className="flex items-center gap-1.5">
-              <LuUser className="text-gray-500 text-[26px] p-1" />
-              <span>نام تحویل‌گیرنده: {address.recipient_name}</span>
+            <div className="flex items-center gap-2">
+              <LuUser className="text-gray-400 text-lg" />
+              <div className="flex flex-col">
+                <p className="text-xs text-gray-500 truncate mb-1">
+                  نام تحویل‌گیرنده
+                </p>
+                <p className="text-[14px] font-medium">{address.recipient_name}</p>
+              </div>
             </div>
           )}
+
+          {/* شماره تحویل‌گیرنده */}
           {address.recipient_phone && (
-            <div className="flex items-center gap-1.5 bg-slate-50 rounded-md py-1">
-              <FiPhoneOutgoing className="text-gray-500 text-[26px] p-1" />
-              <span>شماره تحویل‌گیرنده: {address.recipient_phone}</span>
+            <div className="flex items-center gap-2">
+              <FiPhoneOutgoing className="text-gray-400 text-lg" />
+              <div className="flex flex-col">
+                <p className="text-xs text-gray-500 mb-1">شماره تحویل‌گیرنده</p>
+                <p className="text-[14px]">{address.recipient_phone}</p>
+              </div>
             </div>
           )}
         </div>

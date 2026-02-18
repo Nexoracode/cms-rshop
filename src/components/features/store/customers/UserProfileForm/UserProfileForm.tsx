@@ -223,7 +223,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
                 <p>آدرس ها</p>
                 <UserAddressModal userId={info?.id} />
               </div>
-              <div className="w-full grid grid-cols-3 gap-4 pt-6">
+              <div className="w-full flex flex-col gap-4 pt-6">
                 {form?.addresses?.map((addr: UserAddress, index: number) => (
                   <UserAddressCard
                     key={index}
