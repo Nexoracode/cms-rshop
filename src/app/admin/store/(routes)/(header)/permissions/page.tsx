@@ -30,8 +30,8 @@ const Me = () => {
         headerProps={{
           title: "دسترسی ها",
           icon: <GrUserAdmin />,
-          tooltipTitle: "",
-          tooltipDescription: "",
+          tooltipTitle: "اطلاعات حساب و مجوزها",
+          tooltipDescription: `در این بخش می‌توانید اطلاعات حساب کاربری و سطح دسترسی فعلی خود را مشاهده کنید. ویرایش اطلاعات در این صفحه غیرفعال است، اما از طریق دکمه «ویرایش اطلاعات» می‌توانید مشخصات فردی و آدرس‌های خود را به‌روزرسانی کنید. تغییر نقش‌ها و مجوزها فقط توسط سوپر ادمین انجام می‌شود.`,
           textBtn: "ویرایش اطلاعات",
           redirect: `/admin/store/customers/create?edit_id=${admin?.data?.id}`,
           btnIcon: <GoArrowUpRight />,

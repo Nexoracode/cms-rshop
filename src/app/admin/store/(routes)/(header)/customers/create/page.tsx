@@ -16,12 +16,11 @@ const UserDetailPage = () => {
       headerProps={{
         title: "اطلاعات کاربر",
         icon: <HiOutlineUser />,
-        tooltipTitle: "",
-        tooltipDescription: "",
+        tooltipTitle: "مدیریت اطلاعات کاربر",
+        tooltipDescription: `در این بخش می‌توانید اطلاعات حساب کاربری را مشاهده و ویرایش کنید. امکان به‌روزرسانی مشخصات فردی، اطلاعات تماس و افزودن یا مدیریت آدرس‌ها وجود دارد. تغییرات پس از ثبت، در سیستم ذخیره خواهد شد.`,
       }}
       info={oneUser?.data}
       isLoading={isLoading}
-      
     />
   );
 };

@@ -37,7 +37,7 @@ const breadcrumbMap: Record<string, string> = {
   support: "پشتیبانی",
   blog: "بلاگ",
   comments: "دیدگاه ها",
-  customers: "مشتریان",
+  customers: "کاربران",
   "pre-order": "پیش‌سفارش",
   promotions: "پروموشن ها",
   coupon: "کد تخفیف",
