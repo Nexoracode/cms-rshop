@@ -15,7 +15,6 @@ import { Role } from "@/core/types";
 import { HiOutlineLightningBolt } from "react-icons/hi";
 import MyInfoSidebar from "./MyInfoSidebar";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { useBrandUpload } from "@/core/hooks/api/useBrand";
 import { CardHeaderProps } from "@/components/common/Card/CardHeader";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
@@ -25,6 +24,7 @@ import { UserAddress } from "../customer.types";
 import { MdOutlineMyLocation } from "react-icons/md";
 import { LiaListOlSolid } from "react-icons/lia";
 import { useRouter } from "next/navigation";
+import { useSizeGuideUpload } from "@/core/hooks/api/useSizeGuide";
 
 type MyProfileFormProps = {
   info: any;
@@ -57,7 +57,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   const router = useRouter();
   const { mutate: updateUser, isPending } = useUpdateUser();
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
-    useBrandUpload();
+    useSizeGuideUpload();
 
   const {
     form,
@@ -121,7 +121,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
       <div className="flex flex-col lg:flex-row gap-6">
         {/* ستون اصلی فرم */}
         <div
-          className={`w-4/6 flex-1 flex flex-col gap-6 pt-5 ${disableEditForm ? "pointer-events-none" : ""}`}
+          className={`w-4/6 flex-1 flex flex-col gap-6 pt-5 ${!hiddenUserAddress ? "pb-4" : ""} ${disableEditForm ? "pointer-events-none" : ""}`}
         >
           <div className="flex items-center gap-2.5">
             <UserBoxUploader
@@ -213,50 +213,31 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
         <MyInfoSidebar info={info} />
       </div>
       {!hiddenUserAddress ? (
-        <div className="-mb-4">
-          {form?.addresses ? (
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <p>آدرس های کاربر</p>
+        <div
+          className={`grid grid-cols-1 ${
+            form?.addresses?.length ? "sm:grid-cols-2" : ""
+          } gap-4 pb-4`}
+        >
+          {!form?.addresses?.map((addr: UserAddress, index: number) => (
+            <UserAddressCard key={index} address={addr} userId={info?.id} />
+          )) || (
+            <div className="w-full flex flex-col items-center gap-3">
+              <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
+                <p>آدرس ها</p>
                 <UserAddressModal userId={info?.id} />
               </div>
-            </div>
-          ) : (
-            ""
-          )}
-          <div
-            className={`grid grid-cols-1 ${
-              form?.addresses?.length ? "sm:grid-cols-2" : ""
-            } gap-4 pb-4`}
-          >
-            {form?.addresses?.map((addr: UserAddress, index: number) => (
-              <UserAddressCard key={index} address={addr} userId={info?.id} />
-            )) || (
-              <div className="w-full flex flex-col items-center gap-3">
-                <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-300">
-                  <div className="flex items-center gap-3">
-                    <IconBadge
-                      icon={MdOutlineMyLocation}
-                      circleClassName="bg-sky-100 !w-6 !h-6"
-                      iconClassName="text-sky-600 -top-[43px] -left-[6px] w-6"
-                    />
-                    <p>آدرس ها</p>
-                  </div>
-                  <UserAddressModal userId={info?.id} />
-                </div>
-                <div className="w-full flex flex-col items-center gap-4 pt-6">
-                  <IconBadge
-                    icon={LiaListOlSolid}
-                    circleClassName="bg-sky-100"
-                    iconClassName="text-sky-600"
-                  />
-                  <p className="text-gray-700 text-sm text-center">
-                    درصورت نبود آدرس آن را ایجاد کنید.
-                  </p>
-                </div>
+              <div className="w-full flex flex-col items-center gap-4 pt-6">
+                <IconBadge
+                  icon={LiaListOlSolid}
+                  circleClassName="bg-sky-100"
+                  iconClassName="text-sky-600"
+                />
+                <p className="text-gray-700 text-sm text-center">
+                  درصورت نبود آدرس آن را ایجاد کنید.
+                </p>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ) : (
         ""
