@@ -46,17 +46,13 @@ const CustomerCard: React.FC<Props> = ({
     {
       label: "شماره تماس",
       value: phone || "-",
+      bgLabel: is_phone_verified ? "text-green-600" : "text-red-600",
     },
     { label: "ایمیل", value: email || "—" },
     {
       label: "وضعیت حساب",
       value: is_active ? "فعال" : "غیرفعال",
       bgLabel: is_active ? "text-green-600" : "text-red-600",
-    },
-    {
-      label: "وریفای تلفن",
-      value: is_phone_verified ? "بله" : "خیر",
-      bgLabel: is_phone_verified ? "text-green-600" : "text-red-600",
     },
   ];
 

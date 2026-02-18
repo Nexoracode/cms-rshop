@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { useAddNewUser } from "@/core/hooks/api/users/useUsers";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import { FiUserPlus } from "react-icons/fi";
 import TextInput from "@/components/ui/inputs/TextInput";
 import EmailInput from "@/components/shared/EmailInput";
 import PhoneInput from "@/components/shared/PhoneInput";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import { HiOutlineUser } from "react-icons/hi2";
+import SelectBox from "@/components/ui/inputs/SelectBox";
+import { Role } from "@/core/types";
+import { rolePersian } from "@/core/types/enum-fa";
 
 const AddNewCustomerModal: React.FC = () => {
   const [form, setForm] = useState({
@@ -16,6 +19,7 @@ const AddNewCustomerModal: React.FC = () => {
     phone: "",
     phoneValid: true,
     email: "",
+    role: "user" as Role,
   });
 
   const { mutateAsync: addNewUser, isPending } = useAddNewUser();
@@ -27,6 +31,7 @@ const AddNewCustomerModal: React.FC = () => {
       phone: "",
       phoneValid: true,
       email: "",
+      role: "user",
     });
   };
 
@@ -37,10 +42,11 @@ const AddNewCustomerModal: React.FC = () => {
       first_name: form.firstName.trim(),
       last_name: form.lastName.trim(),
       phone: form.phone,
-      password: "123456@Ss",
+      //password: "123456@Ss",
       email: form.email ? form.email.trim() : undefined,
+      role: form.role
     };
-
+    console.log(newUser);
     return handleMutation(() => addNewUser(newUser), { resetForm });
   };
 
@@ -56,7 +62,7 @@ const AddNewCustomerModal: React.FC = () => {
         className: "bg-secondary-light text-secondary",
         title: "+ افزودن",
       }}
-      icon={<FiUserPlus />}
+      icon={<HiOutlineUser />}
       isConfirmDisabled={isPending}
     >
       <div className="flex flex-col gap-6">
@@ -93,6 +99,16 @@ const AddNewCustomerModal: React.FC = () => {
             onChange={(val) => setForm({ ...form, email: val })}
           />
         </div>
+        <SelectBox
+          label="نقش کاربر"
+          value={form.role}
+          onChange={(val) => setForm({ ...form, role: val as Role })}
+          options={Object.entries(rolePersian).map(([key, title]) => ({
+            key,
+            title,
+          }))}
+          placeholder="انتخاب وضعیت"
+        />
       </div>
     </BaseModal>
   );

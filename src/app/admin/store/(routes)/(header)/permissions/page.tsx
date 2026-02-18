@@ -5,22 +5,21 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import CustomerCard from "@/components/features/store/customers/CustomerCard";
 import AddNewCustomerModal from "@/components/features/store/customers/modals/AddNewCustomerModal";
 // Icons
-import { UserSortBy } from "@/core/hooks/api/users/useUsers";
-import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { useGetAdminMe, useGetStaffs } from "@/core/hooks/api/useUsersAdmin";
 import UserProfileForm from "@/components/features/store/customers/UserProfileForm/UserProfileForm";
 import { GrUserAdmin } from "react-icons/gr";
 import { GoArrowUpRight } from "react-icons/go";
 
-const Me = () => {
-  const { page } = useListQueryParams<UserSortBy[number]>();
+const Permissions = () => {
 
   const { data: admin, isLoading: isLoadingAdminData } = useGetAdminMe();
 
   const { data: staffs, isLoading: isLoadingStaffsData } = useGetStaffs();
 
-  const isExistItems = !!staffs?.data?.items?.length;
+  const isExistItems = !!staffs?.data?.length;
+
+  console.log("staffs => ", staffs);
 
   return (
     <div className="flex flex-col gap-4">
@@ -46,10 +45,9 @@ const Me = () => {
         }}
         isLoading={isLoadingStaffsData}
         isExistItems={isExistItems}
-        meta={staffs?.data?.meta}
         childrenClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center md:justify-items-stretch"
       >
-        {staffs?.data?.items?.map((user: any) => (
+        {staffs?.data?.map((user: any) => (
           <CustomerCard key={user.id} infos={user} disableAction />
         ))}
       </UnifiedCard>
@@ -57,4 +55,4 @@ const Me = () => {
   );
 };
 
-export default Me;
+export default Permissions;
