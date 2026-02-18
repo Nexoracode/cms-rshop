@@ -24,11 +24,11 @@ const CardRows: React.FC<Props> = ({
       {items.map((row, index) => (
         <div
           key={index}
-          className={`flex border-none justify-between items-center rounded-xl px-3 py-2 text-sm ${
+          className={`flex border-none justify-between items-center gap-8 rounded-xl px-3 py-2 text-sm ${
             index % 2 === 1 && !disableOddBg ? "bg-slate-100" : "bg-white"
           }`}
         >
-          <span className="text-gray-800">
+          <span className="text-gray-800 text-nowrap">
             {row.label}
             {!disableCol ? ":" : ""}
           </span>
