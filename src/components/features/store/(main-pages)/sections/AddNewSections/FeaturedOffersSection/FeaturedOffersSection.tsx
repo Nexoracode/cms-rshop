@@ -39,7 +39,7 @@ const FeaturedOffersSection: React.FC<SectionIsFeaturedProps> = ({
             isOpen={isOpen}
             onOpenChange={setIsOpen}
             defaultValues={featuredSection}
-            sectionType={"promotion_based"}
+            sectionType={"featured"}
           />
 
           <div className="hover-reveal-child flex items-center gap-2">

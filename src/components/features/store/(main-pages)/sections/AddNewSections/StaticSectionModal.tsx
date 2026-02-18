@@ -33,7 +33,7 @@ const initialForm = {
   slug: "product-categories",
   description: "",
   section_type: "category_based",
-  promotion_id: null,
+  /*  promotion_id: null, */
   display_style: "carousel",
   products_limit: 10,
   show_view_all_button: true,
@@ -58,8 +58,41 @@ const StaticSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
 
-  const { form, errors, setForm, handleFieldChange, reset, submit } = useForm(
+  console.log("", initialForm);
+
+  const {
+    form,
+    errors,
+    setForm,
+    handleFieldChange,
+    handleMultipleFieldsChange,
+    reset,
+    submit,
+  } = useForm(
     {
+      ...initialForm,
+      section_type: sectionType,
+      slug:
+        sectionType === "category_based"
+          ? `product-categories-${Math.floor(Math.random() * 100) + 1}`
+          : sectionType === "featured"
+            ? "featured-offers"
+            : "most-popular",
+      title:
+        sectionType === "category_based"
+          ? "محصولات بر اساس دسته‌بندی"
+          : sectionType === "featured"
+            ? "پیشنهاد ویژه"
+            : "محصولات پرطرفدار",
+    },
+    {
+      onValidate: (data: any) =>
+        staticSectionValidation(data, showCategoryField, sectionType),
+      runValidationOnChange: true,
+    },
+  );
+  /* 
+{
       ...initialForm,
       section_type: sectionType,
       slug:
@@ -75,13 +108,7 @@ const StaticSectionModal: React.FC<Props> = ({
             ? "پیشنهاد ویژه"
             : "محصولات پرطرفدار",
     },
-    {
-      onValidate: (data: any) =>
-        staticSectionValidation(data, showCategoryField, sectionType),
-      runValidationOnChange: true,
-    },
-  );
-
+*/
   useEffect(() => {
     setFormHandler();
   }, [defaultValues]);
@@ -95,6 +122,8 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      start_date,
+      end_date,
     } = form;
 
     const payload: Record<string, any> = {
@@ -106,7 +135,9 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-      ...(form?.promotion_id ? { promotion_id: form.promotion_id } : {}),
+      start_date,
+      end_date,
+      /*    ...(form?.promotion_id ? { promotion_id: form.promotion_id } : {}), */
       ...(showCategoryField ? { category_id } : {}),
     };
 
@@ -136,8 +167,8 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-      /* start_date,
-      end_date, */
+      start_date,
+      end_date,
     } = defaultValues;
 
     setForm({
@@ -148,11 +179,11 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
-      ...(defaultValues?.promotion_id
+      /* ...(defaultValues?.promotion_id
         ? { promotion_id: defaultValues.promotion_id }
-        : {}),
-      /*    start_date,
-      end_date, */
+        : {}), */
+      start_date,
+      end_date,
       ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   };
@@ -229,12 +260,31 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        {sectionType === "promotion_based" ? (
+        {/*  {sectionType === "promotion_based" ? (
           <FlashDealSelect
             value={form.promotion_id}
             onChange={(val) => handleFieldChange("promotion_id", Number(val))}
             errorMessage={errors.promotion_id}
             isRequired
+          />
+        ) : (
+          ""
+        )} */}
+        {sectionType === "featured" ? (
+          <IsoDatePicker
+            label="بازه اعتبار"
+            enableRange
+            valueIsoRange={{ start: form.start_date, end: form.end_date }}
+            onChangeIsoRange={(range) => {
+              handleMultipleFieldsChange({
+                start_date: range?.start ?? "",
+                end_date: range?.end ?? "",
+              });
+            }}
+            showMonthAndYearPickers
+            className="w-full"
+            isRequired
+            errorMessage={errors.start_date}
           />
         ) : (
           ""

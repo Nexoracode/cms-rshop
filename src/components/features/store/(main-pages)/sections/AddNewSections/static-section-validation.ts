@@ -9,6 +9,12 @@ export function staticSectionValidation(data: any, showCategory?: boolean, secti
       errors.promotion_id = "انتخاب پروموشن الزامی است"
     }
   }
+  
+  if (sectionType === "featured") {
+    if (!data?.start_date?.length && !data?.end_date?.length) {
+      errors.start_date = "بازه اعتبار تخفیف شگفت انگیز الزامی است"
+    }
+  }
 
   if (data.title.trim() === "") {
     errors.title = "عنوان بخش الزامی است.";

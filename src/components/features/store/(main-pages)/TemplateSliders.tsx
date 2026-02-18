@@ -38,11 +38,17 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
   } = allSections ?? {};
 
   useEffect(() => {
-    const findedFeatured = sections.find(
+    /* const findedFeatured = sections.find(
       (section) => section.section_type === "promotion_based",
     );
     const findedOther = sections.filter(
       (section) => section.section_type !== "promotion_based",
+    ); */
+    const findedFeatured = sections.find(
+      (section) => section.section_type === "featured",
+    );
+    const findedOther = sections.filter(
+      (section) => section.section_type !== "featured",
     );
     console.log("findedFeatured => ", findedFeatured, " => ", allSections);
     findedOther && setOtherSection(findedOther);

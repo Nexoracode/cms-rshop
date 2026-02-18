@@ -20,7 +20,8 @@ const AddFeaturedOfferSection = () => {
             پروموشن اضافه کرده باشی!
           </p>
           <div>
-            <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} sectionType={"promotion_based"} />
+            {/* <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} sectionType={"promotion_based"} /> */}
+            <StaticSectionModal title="شگفت انگیز" icon={<LuPercent />} sectionType={"featured"} />
           </div>
         </div>
       }
