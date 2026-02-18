@@ -11,6 +11,8 @@ import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { useDeleteUser } from "@/core/hooks/api/users/useUsers";
 import { HiOutlineUser } from "react-icons/hi2";
 import { TbCurrentLocation } from "react-icons/tb";
+import { rolePersian } from "@/core/types/enum-fa";
+import { Role } from "@/core/types";
 
 type Props = {
   infos: Customer;
@@ -48,6 +50,10 @@ const CustomerCard: React.FC<Props> = ({
       value: phone || "-",
       bgLabel: is_phone_verified ? "text-green-600" : "text-red-600",
     },
+    {
+      label: "نقش کاربر",
+      value: rolePersian[infos.role as Role] || "عادی",
+    },
     { label: "ایمیل", value: email || "—" },
     {
       label: "وضعیت حساب",
@@ -59,7 +65,11 @@ const CustomerCard: React.FC<Props> = ({
   return (
     <BaseCard
       bodyClassName="w-full hover-reveal-parent"
-      redirect={!disableAction ? `/admin/store/customers/create?edit_id=${id}` : undefined}
+      redirect={
+        !disableAction
+          ? `/admin/store/customers/create?edit_id=${id}`
+          : undefined
+      }
     >
       <div className="relative flex flex-col items-center mb-4">
         <div>

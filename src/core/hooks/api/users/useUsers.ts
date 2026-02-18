@@ -92,7 +92,7 @@ export const useUpdateUser = () => {
   });
 };
 
-export const useAddNewUser = () => {
+/* export const useAddNewUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -111,3 +111,4 @@ export const useAddNewUser = () => {
     },
   });
 };
+ */

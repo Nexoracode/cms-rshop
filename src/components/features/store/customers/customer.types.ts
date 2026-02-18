@@ -7,6 +7,7 @@ export type Customer = {
   avatar_url?: string;
   is_active: boolean;
   is_phone_verified?: boolean;
+  role: string
 };
 
 export type CreateCustomer = Omit<Customer, "id">;

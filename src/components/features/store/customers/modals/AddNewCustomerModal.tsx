@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAddNewUser } from "@/core/hooks/api/users/useUsers";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import TextInput from "@/components/ui/inputs/TextInput";
 import EmailInput from "@/components/shared/EmailInput";
@@ -11,6 +10,7 @@ import { HiOutlineUser } from "react-icons/hi2";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { Role } from "@/core/types";
 import { rolePersian } from "@/core/types/enum-fa";
+import { useCreateUser } from "@/core/hooks/api/useUsersAdmin";
 
 const AddNewCustomerModal: React.FC = () => {
   const [form, setForm] = useState({
@@ -22,7 +22,7 @@ const AddNewCustomerModal: React.FC = () => {
     role: "user" as Role,
   });
 
-  const { mutateAsync: addNewUser, isPending } = useAddNewUser();
+  const { mutateAsync: addNewUser, isPending } = useCreateUser();
 
   const resetForm = () => {
     setForm({
@@ -42,7 +42,6 @@ const AddNewCustomerModal: React.FC = () => {
       first_name: form.firstName.trim(),
       last_name: form.lastName.trim(),
       phone: form.phone,
-      //password: "123456@Ss",
       email: form.email ? form.email.trim() : undefined,
       role: form.role
     };

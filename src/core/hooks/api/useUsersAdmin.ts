@@ -46,7 +46,7 @@ export const useGetStaffs = () => {
 /* =========================
    ➕ ایجاد کارمند جدید
 ========================= */
-export const useCreateAdminUser = () => {
+export const useCreateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -61,6 +61,7 @@ export const useCreateAdminUser = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      queryClient.invalidateQueries({ queryKey: ["all-users"] });
     },
   });
 };

@@ -48,7 +48,7 @@ const Permissions = () => {
         childrenClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center md:justify-items-stretch"
       >
         {staffs?.data?.map((user: any) => (
-          <CustomerCard key={user.id} infos={user} disableAction />
+          <CustomerCard key={user.id} infos={user} />
         ))}
       </UnifiedCard>
     </div>
