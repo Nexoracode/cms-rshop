@@ -15,7 +15,7 @@ const breadcrumbMap: Record<string, string> = {
   // settings group (inside admin/(settings)/...)
   store: "فروشگاه",
   icons: "آیکون ها",
-  me: "اطلاعات من",
+  permissions: "دسترسی ها",
   "store-pages": "صفحات فروشگاه",
   about_us: "درباره ما",
   purchase_guide: "راهنمای خرید",

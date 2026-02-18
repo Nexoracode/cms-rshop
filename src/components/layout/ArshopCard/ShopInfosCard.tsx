@@ -75,10 +75,10 @@ const ShopInfosCard = () => {
 
       <div className="grid grid-cols-3 sm:flex justify-center items-center gap-3 md:gap-6 mt-4 mb-16">
         <BoxLink
-          key="store/me"
-          title="اطلاعات من"
+          key="store/permissions"
+          title="دسترسی ها"
           icon={<GrUserAdmin className="text-2xl" />}
-          routeName="store/me"
+          routeName="store/permissions"
           parentStyle="bg-white shadow-md"
           color="text-green-700"
         />

@@ -9,7 +9,9 @@ import { UserSortBy, useGetAllUsers } from "@/core/hooks/api/users/useUsers";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { useGetAdminMe } from "@/core/hooks/api/useUsersAdmin";
-import MyProfileForm from "@/components/features/store/me/MyProfileForm";
+import UserProfileForm from "@/components/features/store/permissions/UserProfileForm";
+import { GrUserAdmin } from "react-icons/gr";
+import { GoArrowUpRight } from "react-icons/go";
 
 const Me = () => {
   const { page } = useListQueryParams<UserSortBy[number]>();
@@ -24,7 +26,21 @@ const Me = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <MyProfileForm info={admin?.data} isLoading={isLoadingAdminData} />
+      <UserProfileForm
+        headerProps={{
+          title: "دسترسی ها",
+          icon: <GrUserAdmin />,
+          tooltipTitle: "",
+          tooltipDescription: "",
+          textBtn: "ویرایش اطلاعات",
+          redirect: `/admin/store/customers/create?edit_id=${admin?.data?.id}`,
+          btnIcon: <GoArrowUpRight />,
+        }}
+        info={admin?.data}
+        isLoading={isLoadingAdminData}
+        hiddenUserAddress
+        disableEditForm
+      />
       <UnifiedCard
         headerProps={{
           title: "اطلاعات کارمندان فروشگاه",
