@@ -129,17 +129,6 @@ const MyProfileForm: React.FC<MyProfileFormProps> = ({ info, isLoading }) => {
             <FormActionButtons onSubmit={handleSubmit} />
           </div>
         </div>
-        <div className="px-4">
-          <Divider />
-        </div>
-        <div>
-            <div>
-                <p>آقای مداحی باید ادرس های کامل ادمین و کلا کاربر رو که با هر نقشی میخواد باشه برام بفرستین تا بتونه این جا ادرس هاش رو ببینه و در صورت لزم اضافه و حذف و... رو انجام بده</p>
-            </div>
-            <div className="text-red-500">
-                <p> برای سمت ادمین، نیازی نیست آدرس رو نمایش بدی</p>
-            </div>
-        </div>
       </div>
 
       {/* ستون read-only و permissions */}
