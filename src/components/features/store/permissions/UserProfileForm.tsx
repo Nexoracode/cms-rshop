@@ -89,7 +89,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
     >
       <div className="flex flex-col lg:flex-row gap-6">
         {/* ستون اصلی فرم */}
-        <div className="w-4/6 flex-1 flex flex-col gap-6 pt-5">
+        <div className={`w-4/6 flex-1 flex flex-col gap-6 pt-5 ${disableEditForm ? "pointer-events-none" : ""}`}>
           <div className="flex items-center gap-2.5">
             <UserBoxUploader
               defaultImg={form.avatar_url}
