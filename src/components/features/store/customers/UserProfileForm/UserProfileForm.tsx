@@ -25,6 +25,7 @@ import { MdOutlineMyLocation } from "react-icons/md";
 import { LiaListOlSolid } from "react-icons/lia";
 import { useRouter } from "next/navigation";
 import { useSizeGuideUpload } from "@/core/hooks/api/useSizeGuide";
+import { TbBuildingEstate } from "react-icons/tb";
 
 type MyProfileFormProps = {
   info: any;
@@ -136,12 +137,14 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
                   iconClassName="text-sky-600 -top-[43px] -left-[6px] w-6"
                 />
                 <p>
-                  {info?.role?.length ? rolePersian[info.role as Role] : ""}
+                  {info?.role?.length
+                    ? rolePersian[info.role as Role]
+                    : "کاربر عادی"}
                 </p>
               </div>
               <div>
                 <p className="text-nowrap text-gray-600 text-[13px]">
-                  فروشگاه آرشاپ
+                  پنل مدیریت فروشگاه
                 </p>
               </div>
             </div>
@@ -213,27 +216,38 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
         <MyInfoSidebar info={info} />
       </div>
       {!hiddenUserAddress ? (
-        <div
-          className={`grid grid-cols-1 ${
-            form?.addresses?.length ? "sm:grid-cols-2" : ""
-          } gap-4 pb-4`}
-        >
-          {!form?.addresses?.map((addr: UserAddress, index: number) => (
-            <UserAddressCard key={index} address={addr} userId={info?.id} />
-          )) || (
+        <div>
+          {form.addresses.length ? (
             <div className="w-full flex flex-col items-center gap-3">
+              <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
+                <p>آدرس ها</p>
+                <UserAddressModal userId={info?.id} />
+              </div>
+              <div className="w-full grid grid-cols-3 gap-4 pt-6">
+                {form?.addresses?.map((addr: UserAddress, index: number) => (
+                  <UserAddressCard
+                    key={index}
+                    address={addr}
+                    userId={info?.id}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="w-full flex flex-col items-center gap-3 pb-6">
               <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
                 <p>آدرس ها</p>
                 <UserAddressModal userId={info?.id} />
               </div>
               <div className="w-full flex flex-col items-center gap-4 pt-6">
                 <IconBadge
-                  icon={LiaListOlSolid}
+                  icon={TbBuildingEstate}
                   circleClassName="bg-sky-100"
                   iconClassName="text-sky-600"
                 />
                 <p className="text-gray-700 text-sm text-center">
-                  درصورت نبود آدرس آن را ایجاد کنید.
+                  هنوز آدرسی ثبت نشده است. برای افزودن، از گزینه بالا استفاده
+                  کنید.
                 </p>
               </div>
             </div>
