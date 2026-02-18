@@ -17,7 +17,8 @@ type Props = {
 
 const UserAddressCard: React.FC<Props> = ({ address, userId }) => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-
+  console.log(address);
+  
   return (
     <>
       <BaseCard wrapperContents onClick={() => setIsAddressModalOpen(true)}>
@@ -37,7 +38,7 @@ const UserAddressCard: React.FC<Props> = ({ address, userId }) => {
         </div>
 
         {/* Quick Info Row style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
           {/* شهر و استان */}
           <div className="flex items-center gap-2">
             <LuMapPinned className="text-gray-400 text-lg" />
