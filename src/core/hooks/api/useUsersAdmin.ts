@@ -32,14 +32,19 @@ export const useGetAdminRoles = () => {
 /* =========================
    👑 لیست کارمندان
 ========================= */
-export const useGetStaffs = () => {
+export const useGetStaffs = ({
+  admin = false,
+}: {
+  admin: boolean;
+}) => {
   return useQuery({
-    queryKey: ["admin-users"],
+    queryKey: ["admin-users", admin],
     queryFn: () =>
       fetcher({
         route: "/admin/users/admins",
         isActiveToast: false,
       }),
+    enabled: admin,
   });
 };
 

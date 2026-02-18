@@ -82,9 +82,9 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
 
     let imageUrl = typeof form.avatar_url === "string" ? form.avatar_url : "";
 
-    if (form.avatar_url instanceof File) {
+    if ((form.avatar_url as any) instanceof File) {
       const formData = new FormData();
-      formData.append("files", form.avatar_url);
+      formData.append("files", form.avatar_url as any);
 
       const uploadRes = (await handleMutation(() => uploadMedias(formData), {
         returnResponse: true,
@@ -100,6 +100,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
       first_name,
       last_name,
       phone,
+      avatar_url: imageUrl,
       ...(email ? { email } : {}),
       is_active,
     };
@@ -107,7 +108,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
       { data: dataToSend, id: info?.id },
       {
         onSuccess: (res) => {
-          res.ok && router.push("/admin/products");
+          res.ok && router.push("/admin/store/customers");
         },
       },
     );
@@ -215,7 +216,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
           )}
         </div>
 
-        <MyInfoSidebar info={info} disableExtraData={disableShowIsActive}/>
+        <MyInfoSidebar info={info} disableExtraData={disableShowIsActive} />
       </div>
       {!hiddenUserAddress ? (
         <div>
