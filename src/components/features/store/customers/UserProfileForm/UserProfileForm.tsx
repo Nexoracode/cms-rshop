@@ -139,7 +139,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
                 <p>
                   {info?.role?.length
                     ? rolePersian[info.role as Role]
-                    : "کاربر عادی"}
+                    : "نقش کاربر"}
                 </p>
               </div>
               <div>

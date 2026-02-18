@@ -63,7 +63,7 @@ const CustomerCard: React.FC<Props> = ({
   return (
     <BaseCard
       bodyClassName="w-full hover-reveal-parent"
-      redirect={`/admin/store/customers/create?edit_id=${id}`}
+      redirect={!disableAction ? `/admin/store/customers/create?edit_id=${id}` : undefined}
     >
       <div className="relative flex flex-col items-center mb-4">
         <div>
@@ -81,19 +81,21 @@ const CustomerCard: React.FC<Props> = ({
         </div>
 
         <div className="hover-reveal-child flex flex-col-reverse items-center gap-1.5">
-          <UserAddressModal
-            userId={id}
-            btnAdd={<ActionButton icon={<TbCurrentLocation size={19} />} />}
-          />
           {!disableAction && (
-            <DeleteButton onDelete={() => deleteMutation.mutate()} />
+            <>
+              <UserAddressModal
+                userId={id}
+                btnAdd={<ActionButton icon={<TbCurrentLocation size={19} />} />}
+              />
+              <DeleteButton onDelete={() => deleteMutation.mutate()} />
+            </>
           )}
           {showDeselectIcon && (
             <ActionButton
               icon={<AiOutlineCloseCircle size={18} />}
               onClick={() => {
                 /* e.preventDefault();
-                    e.stopPropagation(); */
+              e.stopPropagation(); */
                 onDelete?.(id);
               }}
             />

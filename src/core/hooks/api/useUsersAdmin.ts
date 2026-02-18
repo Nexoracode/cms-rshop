@@ -30,9 +30,9 @@ export const useGetAdminRoles = () => {
 };
 
 /* =========================
-   👑 لیست ادمین‌ها
+   👑 لیست کارمندان
 ========================= */
-export const useGetAdmins = () => {
+export const useGetStaffs = () => {
   return useQuery({
     queryKey: ["admin-users"],
     queryFn: () =>
@@ -44,7 +44,7 @@ export const useGetAdmins = () => {
 };
 
 /* =========================
-   ➕ ایجاد ادمین جدید
+   ➕ ایجاد کارمند جدید
 ========================= */
 export const useCreateAdminUser = () => {
   const queryClient = useQueryClient();
