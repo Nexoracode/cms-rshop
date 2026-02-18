@@ -4,7 +4,7 @@ import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import SelectableCard from "@/components/ui/SelectableCard";
 import UserAddressCard from "./UserAddressCard";
-import { UserAddress } from "../customer.types";
+import { UserAddress } from "../../customer.types";
 import FieldErrorText from "@/components/forms/FieldErrorText";
 
 type Props = {

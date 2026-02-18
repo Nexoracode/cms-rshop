@@ -1,7 +1,7 @@
 "use client";
 
 import { LuMapPinHouse } from "react-icons/lu";
-import UserAddressCard from "./UserAddress/UserAddressCard";
+import UserAddressCard from "./UserProfileForm/UserAddress/UserAddressCard";
 import UserAddressModal from "./modals/UserAddressModal";
 
 type UserAddress = {

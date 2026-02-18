@@ -9,7 +9,7 @@ import { UserSortBy, useGetAllUsers } from "@/core/hooks/api/users/useUsers";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { useGetAdminMe } from "@/core/hooks/api/useUsersAdmin";
-import UserProfileForm from "@/components/features/store/permissions/UserProfileForm";
+import UserProfileForm from "@/components/features/store/customers/UserProfileForm/UserProfileForm";
 import { GrUserAdmin } from "react-icons/gr";
 import { GoArrowUpRight } from "react-icons/go";
 

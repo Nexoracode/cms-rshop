@@ -6,9 +6,9 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import { LuMapPinned, LuUser } from "react-icons/lu";
 import { MdOutlineMapsHomeWork } from "react-icons/md";
 import { HiOutlineOfficeBuilding, HiOutlineMail } from "react-icons/hi";
-import UserAddressModal from "../modals/UserAddressModal";
+import UserAddressModal from "../../modals/UserAddressModal";
 import { FiPhoneOutgoing } from "react-icons/fi";
-import { UserAddress } from "../customer.types";
+import { UserAddress } from "../../customer.types";
 
 type Props = {
   userId: number;

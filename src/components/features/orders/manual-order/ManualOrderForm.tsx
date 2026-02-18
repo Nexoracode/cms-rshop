@@ -14,7 +14,7 @@ import { toast } from "react-hot-toast";
 import { StatusOrder } from "../order-types";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useRouter } from "next/navigation";
-import SelectableUserAddressCard from "../../store/customers/UserAddress/SelectableUserAddressCard";
+import SelectableUserAddressCard from "../../store/customers/UserProfileForm/UserAddress/SelectableUserAddressCard";
 
 // Hook و validation
 import { useForm } from "@/core/hooks/common/form/useForm";

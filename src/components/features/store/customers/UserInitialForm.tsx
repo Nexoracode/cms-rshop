@@ -10,7 +10,7 @@ import PhoneInput from "@/components/shared/PhoneInput";
 import EmailInput from "@/components/shared/EmailInput";
 import UserAddressModal from "./modals/UserAddressModal";
 import { useRouter } from "next/navigation";
-import UserAddressCard from "./UserAddress/UserAddressCard";
+import UserAddressCard from "./UserProfileForm/UserAddress/UserAddressCard";
 import { UserAddress } from "./customer.types";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
 import { useForm } from "@/core/hooks/common/form/useForm";
