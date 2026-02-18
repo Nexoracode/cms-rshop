@@ -3,16 +3,14 @@
 import React from "react";
 import BaseCard from "@/components/ui/BaseCard";
 import DeleteButton from "@/components/shared/DeleteButton";
-import { FiUser } from "react-icons/fi";
 import CardRows from "@/components/shared/CardRows";
-import StatusBadge from "@/components/shared/StatusBadge";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Customer } from "./customer.types";
 import UserAddressModal from "./modals/UserAddressModal";
-import { MdOutlineAddLocationAlt } from "react-icons/md";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { useDeleteUser } from "@/core/hooks/api/users/useUsers";
 import { HiOutlineUser } from "react-icons/hi2";
+import { TbCurrentLocation } from "react-icons/tb";
 
 type Props = {
   infos: Customer;
@@ -43,17 +41,23 @@ const CustomerCard: React.FC<Props> = ({
   const rowItems = [
     {
       label: "نام کامل ",
-      value: `${first_name || "نام"} ${last_name || "و نام خوانوادگی"}`
+      value: `${first_name || "نام"} ${last_name || "و نام خوانوادگی"}`,
     },
     {
       label: "شماره تماس",
       value: phone || "-",
-      bgLabel: is_phone_verified
-        ? "bg-green-50 text-green-700 rounded-md px-2 py-1"
-        : "bg-red-50 text-red-700 rounded-md px-2 py-1",
     },
-    { label: "ایمیل", value: email || "-" },
-    { label: "وضعیت حساب", value: is_active ? "فعال" : "غیرفعال" },
+    { label: "ایمیل", value: email || "—" },
+    {
+      label: "وضعیت حساب",
+      value: is_active ? "فعال" : "غیرفعال",
+      bgLabel: is_active ? "text-green-600" : "text-red-600",
+    },
+    {
+      label: "وریفای تلفن",
+      value: is_phone_verified ? "بله" : "خیر",
+      bgLabel: is_phone_verified ? "text-green-600" : "text-red-600",
+    },
   ];
 
   return (
@@ -61,7 +65,7 @@ const CustomerCard: React.FC<Props> = ({
       bodyClassName="w-full hover-reveal-parent"
       redirect={`/admin/store/customers/create?edit_id=${id}`}
     >
-      <div className="relative flex flex-col items-center gap-4">
+      <div className="relative flex flex-col items-center mb-4">
         <div>
           {avatar_url ? (
             <img
@@ -76,12 +80,10 @@ const CustomerCard: React.FC<Props> = ({
           )}
         </div>
 
-        <div className="hover-reveal-child flex items-center gap-1.5">
+        <div className="hover-reveal-child flex flex-col-reverse items-center gap-1.5">
           <UserAddressModal
             userId={id}
-            btnAdd={
-              <ActionButton icon={<MdOutlineAddLocationAlt size={19} />} />
-            }
+            btnAdd={<ActionButton icon={<TbCurrentLocation size={19} />} />}
           />
           {!disableAction && (
             <DeleteButton onDelete={() => deleteMutation.mutate()} />
@@ -99,7 +101,7 @@ const CustomerCard: React.FC<Props> = ({
         </div>
       </div>
 
-      <CardRows items={rowItems} />
+      <CardRows items={rowItems} disableOddBg disableCol />
     </BaseCard>
   );
 };
