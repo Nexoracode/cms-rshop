@@ -12,6 +12,7 @@ import UserAddressModal from "./modals/UserAddressModal";
 import { MdOutlineAddLocationAlt } from "react-icons/md";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { useDeleteUser } from "@/core/hooks/api/users/useUsers";
+import { HiOutlineUser } from "react-icons/hi2";
 
 type Props = {
   infos: Customer;
@@ -41,6 +42,10 @@ const CustomerCard: React.FC<Props> = ({
 
   const rowItems = [
     {
+      label: "نام کامل ",
+      value: `${first_name || "نام"} ${last_name || "و نام خوانوادگی"}`
+    },
+    {
       label: "شماره تماس",
       value: phone || "-",
       bgLabel: is_phone_verified
@@ -48,6 +53,7 @@ const CustomerCard: React.FC<Props> = ({
         : "bg-red-50 text-red-700 rounded-md px-2 py-1",
     },
     { label: "ایمیل", value: email || "-" },
+    { label: "وضعیت حساب", value: is_active ? "فعال" : "غیرفعال" },
   ];
 
   return (
@@ -55,7 +61,7 @@ const CustomerCard: React.FC<Props> = ({
       bodyClassName="w-full hover-reveal-parent"
       redirect={`/admin/store/customers/create?edit_id=${id}`}
     >
-      <div className="flex items-center gap-2 mb-2">
+      <div className="relative flex flex-col items-center gap-4">
         <div>
           {avatar_url ? (
             <img
@@ -64,40 +70,32 @@ const CustomerCard: React.FC<Props> = ({
               className="w-14 h-14 rounded-full object-cover"
             />
           ) : (
-            <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
-              <FiUser className="text-gray-400 text-2xl" />
+            <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-200 flex items-center justify-center">
+              <HiOutlineUser className="text-gray-400 text-3xl" />
             </div>
           )}
         </div>
-        <div className="w-full flex justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <p className="truncate text-right">
-              {first_name || "-"} {last_name || "-"}
-            </p>
-            <StatusBadge isActive={is_active} size="sm" />
-          </div>
 
-          <div className="hover-reveal-child flex items-center gap-1.5">
-            <UserAddressModal
-              userId={id}
-              btnAdd={
-                <ActionButton icon={<MdOutlineAddLocationAlt size={19} />} />
-              }
-            />
-            {!disableAction && (
-              <DeleteButton onDelete={() => deleteMutation.mutate()} />
-            )}
-            {showDeselectIcon && (
-              <ActionButton
-                icon={<AiOutlineCloseCircle size={18} />}
-                onClick={() => {
-                  /* e.preventDefault();
+        <div className="hover-reveal-child flex items-center gap-1.5">
+          <UserAddressModal
+            userId={id}
+            btnAdd={
+              <ActionButton icon={<MdOutlineAddLocationAlt size={19} />} />
+            }
+          />
+          {!disableAction && (
+            <DeleteButton onDelete={() => deleteMutation.mutate()} />
+          )}
+          {showDeselectIcon && (
+            <ActionButton
+              icon={<AiOutlineCloseCircle size={18} />}
+              onClick={() => {
+                /* e.preventDefault();
                     e.stopPropagation(); */
-                  onDelete?.(id);
-                }}
-              />
-            )}
-          </div>
+                onDelete?.(id);
+              }}
+            />
+          )}
         </div>
       </div>
 
