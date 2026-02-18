@@ -191,11 +191,13 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
             />
           </div>
           {!disableShowIsActive ? (
-            <ToggleSection
-              title={` وضعیت حساب ${form.is_active ? "فعال" : "غیرفعال"}`}
-              initialMode={form.is_active}
-              onChange={(val) => handleFieldChange("is_active", val)}
-            />
+            <div className="grid grid-cols-2 items-center gap-4">
+              <ToggleSection
+                title={`وضعیت حساب`}
+                initialMode={form.is_active}
+                onChange={(val) => handleFieldChange("is_active", val)}
+              />
+            </div>
           ) : (
             ""
           )}
@@ -213,7 +215,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
           )}
         </div>
 
-        <MyInfoSidebar info={info} />
+        <MyInfoSidebar info={info} disableExtraData={disableShowIsActive}/>
       </div>
       {!hiddenUserAddress ? (
         <div>

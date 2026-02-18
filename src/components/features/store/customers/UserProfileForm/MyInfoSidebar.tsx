@@ -5,9 +5,13 @@ import { FaCheckCircle } from "react-icons/fa";
 
 type MyInfoSidebarProps = {
   info: any;
+  disableExtraData: boolean;
 };
 
-const MyInfoSidebar: React.FC<MyInfoSidebarProps> = ({ info }) => {
+const MyInfoSidebar: React.FC<MyInfoSidebarProps> = ({
+  info,
+  disableExtraData,
+}) => {
   console.log(info);
 
   return (
@@ -17,19 +21,28 @@ const MyInfoSidebar: React.FC<MyInfoSidebarProps> = ({ info }) => {
           <p className="text-[13px] text-gray-800">شناسه کاربری</p>
           <p className="text-[13px] text-gray-600">#{info?.id}</p>
         </div>
+        {!disableExtraData ? (
+          <div className="flex items-center justify-between">
+            <p className="text-[13px] text-gray-800">عضویت</p>
+            <p className="text-[13px] text-gray-600">
+              {info?.created_at ? formatDate(info?.created_at) : "-"}
+            </p>
+          </div>
+        ) : (
+          ""
+        )}
 
         <div className="flex items-center justify-between">
-          <p className="text-[13px] text-gray-800">عضویت</p>
-          <p className="text-[13px] text-gray-600">
-            {info?.created_at ? formatDate(info?.created_at) : "-"}
+          <p className="text-[13px] text-gray-800">
+            حساب {info?.is_active ? "فعال" : "غیرفعال"}
           </p>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <p className="text-[13px] text-gray-800">حساب فعال</p>
           <span className="relative flex size-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex size-3 rounded-full bg-green-500"></span>
+            <span
+              className={`absolute inline-flex h-full w-full animate-ping rounded-full ${info?.is_active ? "bg-green-400" : "bg-red-400"} opacity-75`}
+            ></span>
+            <span
+              className={`relative inline-flex size-3 rounded-full ${info?.is_active ? "bg-green-500" : "bg-red-500"}`}
+            ></span>
           </span>
         </div>
       </div>
