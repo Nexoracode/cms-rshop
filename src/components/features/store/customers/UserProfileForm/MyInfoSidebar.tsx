@@ -8,6 +8,8 @@ type MyInfoSidebarProps = {
 };
 
 const MyInfoSidebar: React.FC<MyInfoSidebarProps> = ({ info }) => {
+  console.log(info);
+
   return (
     <div className="w-full lg:w-2/6 border-r pr-6 flex flex-col justify-between gap-10 pt-5">
       <div className="flex flex-col gap-5">
@@ -31,18 +33,21 @@ const MyInfoSidebar: React.FC<MyInfoSidebarProps> = ({ info }) => {
           </span>
         </div>
       </div>
-
-      <div className="flex flex-col gap-2">
-        <p className="text-[13px] text-gray-800">مجوزها</p>
-        <ul className="space-y-1.5 bg-green-50 rounded-md p-3">
-          {info?.permissions?.map((perm: string, idx: number) => (
-            <li key={idx} className="flex items-center gap-2 text-gray-600">
-              <FaCheckCircle className="text-green-500" />
-              <span className="text-[13px] truncate">{perm}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {info?.permissions ? (
+        <div className="flex flex-col gap-2">
+          <p className="text-[13px] text-gray-800">مجوزها</p>
+          <ul className="space-y-1.5 bg-green-50 rounded-md p-3">
+            {info?.permissions?.map((perm: string, idx: number) => (
+              <li key={idx} className="flex items-center gap-2 text-gray-600">
+                <FaCheckCircle className="text-green-500" />
+                <span className="text-[13px] truncate">{perm}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

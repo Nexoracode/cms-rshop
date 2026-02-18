@@ -40,6 +40,7 @@ const Me = () => {
         isLoading={isLoadingAdminData}
         hiddenUserAddress
         disableEditForm
+        disableShowIsActive
       />
       <UnifiedCard
         headerProps={{

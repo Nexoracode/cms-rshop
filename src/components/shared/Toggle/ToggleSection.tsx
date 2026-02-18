@@ -26,13 +26,13 @@ const ToggleSection: FC<Props> = ({
 
   return (
     <div
-      className={`w-full flex flex-col justify-between border border-slate-200 p-3 ${
+      className={`w-full flex flex-col justify-between border border-slate-200 p-2.5 ${
         subtitle ? "py-2" : ""
-      } rounded-2xl`}
+      } rounded-xl`}
     >
       <div className="flex items-center justify-between text-gray-700">
         <div className="flex flex-col">
-          <p>{title}</p>
+          <p className="text-gray-700">{title}</p>
           {subtitle ? (
             <p className="text-xs text-gray-600 mt-1">{subtitle}</p>
           ) : null}

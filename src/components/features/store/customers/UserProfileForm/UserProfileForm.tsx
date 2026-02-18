@@ -17,13 +17,22 @@ import MyInfoSidebar from "./MyInfoSidebar";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { useBrandUpload } from "@/core/hooks/api/useBrand";
 import { CardHeaderProps } from "@/components/common/Card/CardHeader";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
+import UserAddressModal from "../modals/UserAddressModal";
+import UserAddressCard from "./UserAddress/UserAddressCard";
+import { UserAddress } from "../customer.types";
+import { MdOutlineMyLocation } from "react-icons/md";
+import { LiaListOlSolid } from "react-icons/lia";
+import { useRouter } from "next/navigation";
 
 type MyProfileFormProps = {
   info: any;
   isLoading: boolean;
   headerProps: CardHeaderProps;
-  disableEditForm: boolean;
-  hiddenUserAddress: boolean;
+  disableEditForm?: boolean;
+  hiddenUserAddress?: boolean;
+  disableShowIsActive?: boolean;
 };
 
 const initialProfileForm = {
@@ -32,6 +41,9 @@ const initialProfileForm = {
   first_name: "",
   last_name: "",
   phone: "",
+  is_active: true,
+  is_phone_verified: false,
+  addresses: [],
 };
 
 const UserProfileForm: React.FC<MyProfileFormProps> = ({
@@ -40,7 +52,10 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   headerProps,
   hiddenUserAddress = false,
   disableEditForm = false,
+  disableShowIsActive = false,
 }) => {
+  const router = useRouter();
+  const { mutate: updateUser, isPending } = useUpdateUser();
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useBrandUpload();
 
@@ -78,7 +93,23 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
       imageUrl = uploadRes.data?.[0]?.url ?? null;
     }
 
-    const { avatar_url, email, first_name, last_name, phone } = form;
+    const { email, first_name, is_active, last_name, phone } = form;
+
+    const dataToSend = {
+      first_name,
+      last_name,
+      phone,
+      ...(email ? { email } : {}),
+      is_active,
+    };
+    updateUser(
+      { data: dataToSend, id: info?.id },
+      {
+        onSuccess: (res) => {
+          res.ok && router.push("/admin/products");
+        },
+      },
+    );
   });
 
   return (
@@ -89,7 +120,9 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
     >
       <div className="flex flex-col lg:flex-row gap-6">
         {/* ستون اصلی فرم */}
-        <div className={`w-4/6 flex-1 flex flex-col gap-6 pt-5 ${disableEditForm ? "pointer-events-none" : ""}`}>
+        <div
+          className={`w-4/6 flex-1 flex flex-col gap-6 pt-5 ${disableEditForm ? "pointer-events-none" : ""}`}
+        >
           <div className="flex items-center gap-2.5">
             <UserBoxUploader
               defaultImg={form.avatar_url}
@@ -154,10 +187,22 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
               errorMessage={errors.email}
             />
           </div>
+          {!disableShowIsActive ? (
+            <ToggleSection
+              title={` وضعیت حساب ${form.is_active ? "فعال" : "غیرفعال"}`}
+              initialMode={form.is_active}
+              onChange={(val) => handleFieldChange("is_active", val)}
+            />
+          ) : (
+            ""
+          )}
           {!disableEditForm ? (
             <div className="flex items-center justify-end">
               <div className="-ml-4">
-                <FormActionButtons onSubmit={handleSubmit} />
+                <FormActionButtons
+                  onSubmit={handleSubmit}
+                  isLoading={isLoading || isPending}
+                />
               </div>
             </div>
           ) : (
@@ -167,7 +212,55 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
 
         <MyInfoSidebar info={info} />
       </div>
-      {!hiddenUserAddress ? "Address" : ""}
+      {!hiddenUserAddress ? (
+        <div className="-mb-4">
+          {form?.addresses ? (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <p>آدرس های کاربر</p>
+                <UserAddressModal userId={info?.id} />
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+          <div
+            className={`grid grid-cols-1 ${
+              form?.addresses?.length ? "sm:grid-cols-2" : ""
+            } gap-4 pb-4`}
+          >
+            {form?.addresses?.map((addr: UserAddress, index: number) => (
+              <UserAddressCard key={index} address={addr} userId={info?.id} />
+            )) || (
+              <div className="w-full flex flex-col items-center gap-3">
+                <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-300">
+                  <div className="flex items-center gap-3">
+                    <IconBadge
+                      icon={MdOutlineMyLocation}
+                      circleClassName="bg-sky-100 !w-6 !h-6"
+                      iconClassName="text-sky-600 -top-[43px] -left-[6px] w-6"
+                    />
+                    <p>آدرس ها</p>
+                  </div>
+                  <UserAddressModal userId={info?.id} />
+                </div>
+                <div className="w-full flex flex-col items-center gap-4 pt-6">
+                  <IconBadge
+                    icon={LiaListOlSolid}
+                    circleClassName="bg-sky-100"
+                    iconClassName="text-sky-600"
+                  />
+                  <p className="text-gray-700 text-sm text-center">
+                    درصورت نبود آدرس آن را ایجاد کنید.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </BaseCard>
   );
 };

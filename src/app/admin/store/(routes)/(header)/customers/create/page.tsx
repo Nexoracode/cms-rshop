@@ -2,7 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useGetOneUser } from "@/core/hooks/api/users/useUsers";
-import UserInitialForm from "@/components/features/store/customers/UserInitialForm";
+import UserProfileForm from "@/components/features/store/customers/UserProfileForm/UserProfileForm";
+import { HiOutlineUser } from "react-icons/hi2";
 
 const UserDetailPage = () => {
   const params = useSearchParams();
@@ -11,9 +12,16 @@ const UserDetailPage = () => {
   const { data: oneUser, isLoading } = useGetOneUser(userId);
 
   return (
-    <UserInitialForm
-      user={oneUser?.data ?? []}
+    <UserProfileForm
+      headerProps={{
+        title: "اطلاعات کاربر",
+        icon: <HiOutlineUser />,
+        tooltipTitle: "",
+        tooltipDescription: "",
+      }}
+      info={oneUser?.data}
       isLoading={isLoading}
+      
     />
   );
 };
