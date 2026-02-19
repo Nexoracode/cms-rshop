@@ -3,18 +3,16 @@
 import React from "react";
 import BoxLink from "@/components/shared/BoxLink";
 import { BsBasket, BsShop } from "react-icons/bs";
-import { SiMaterialformkdocs, SiSvgtrace } from "react-icons/si";
-import { HiOutlineInformationCircle } from "react-icons/hi";
+import { SiMaterialformkdocs } from "react-icons/si";
 import {
   HiOutlineDocumentText,
   HiOutlineClipboardDocumentCheck,
 } from "react-icons/hi2";
 import { RiFileList3Line, RiTimerLine } from "react-icons/ri";
-import { LuPackage, LuSettings2 } from "react-icons/lu";
+import { LuPackage } from "react-icons/lu";
 import {
   TbBrandArc,
   TbCategory2,
-  TbChartDots,
   TbIcons,
   TbLoader,
   TbRosetteDiscount,

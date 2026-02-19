@@ -12,6 +12,7 @@ import { validateInfos } from "./infos-validation";
 import { useInfosCreate } from "@/core/hooks/api/useSeting";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { HiOutlinePhoneIncoming } from "react-icons/hi";
 
 const initialInfos = {
   shop_card_number: "",
@@ -25,6 +26,9 @@ const initialInfos = {
   social_rubika: "",
   social_whatsapp: "",
   social_bale: "",
+
+  contact_email: "",
+  contact_phone: "",
 };
 
 type InfosFormProps = {
@@ -79,7 +83,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
     return Object.entries(form).map(([key, value]) => ({
       key,
       value,
-      category: key.startsWith("social_") ? "social" : "payment",
+      category: key.startsWith("social_") ? "social" : key.startsWith("contact_") ? "contact" : "payment",
     }));
   };
 
@@ -183,6 +187,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           value={form.social_instagram}
           allowSpecialChars
           onChange={(val) => handleFieldChange("social_instagram", val)}
+          inputAlign="left"
         />
 
         <TextInput
@@ -202,6 +207,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           allowSpecialChars
           value={form.social_telegram}
           onChange={(val) => handleFieldChange("social_telegram", val)}
+          inputAlign="left"
         />
       </div>
 
@@ -225,6 +231,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           allowSpecialChars
           value={form.social_eitaa}
           onChange={(val) => handleFieldChange("social_eitaa", val)}
+          inputAlign="left"
         />
 
         <TextInput
@@ -246,6 +253,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           }
           value={form.social_rubika}
           onChange={(val) => handleFieldChange("social_rubika", val)}
+          inputAlign="left"
         />
       </div>
 
@@ -269,6 +277,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           }
           value={form.social_whatsapp}
           onChange={(val) => handleFieldChange("social_whatsapp", val)}
+          inputAlign="left"
         />
 
         <TextInput
@@ -288,6 +297,34 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           }
           value={form.social_bale}
           onChange={(val) => handleFieldChange("social_bale", val)}
+          inputAlign="left"
+        />
+      </div>
+
+      <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-t border-b py-3 my-2">
+        <p>تماس با ما</p>
+        <HiOutlinePhoneIncoming className="text-2xl" />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <TextInput
+          label="تلفن پشتیبانی"
+          allowSpecialChars
+          placeholder="09XX-XXX-XXXX"
+          type="text"
+          value={form.contact_phone}
+          onChange={(val) => handleFieldChange("contact_phone", val)}
+          inputAlign="left"
+        />
+
+        <TextInput
+          label="ایمیل پشتیبانی"
+          allowSpecialChars
+          placeholder="example@gmail.com"
+          type="text"
+          value={form.contact_email}
+          onChange={(val) => handleFieldChange("contact_email", val)}
+          inputAlign="left"
         />
       </div>
 
