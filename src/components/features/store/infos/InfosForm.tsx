@@ -181,6 +181,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
             </div>
           }
           value={form.social_instagram}
+          allowSpecialChars
           onChange={(val) => handleFieldChange("social_instagram", val)}
         />
 
@@ -198,6 +199,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span className="text-default-400 text-sm">https://t.me</span>
             </div>
           }
+          allowSpecialChars
           value={form.social_telegram}
           onChange={(val) => handleFieldChange("social_telegram", val)}
         />
@@ -220,6 +222,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               </span>
             </div>
           }
+          allowSpecialChars
           value={form.social_eitaa}
           onChange={(val) => handleFieldChange("social_eitaa", val)}
         />
@@ -231,6 +234,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span>روبیکا</span>
             </div>
           }
+          allowSpecialChars
           placeholder="username"
           type="text"
           endContent={
@@ -253,6 +257,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span>واتساپ</span>
             </div>
           }
+          allowSpecialChars
           placeholder="username"
           type="text"
           endContent={
@@ -273,6 +278,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span>بله</span>
             </div>
           }
+          allowSpecialChars
           placeholder="username"
           type="text"
           endContent={
