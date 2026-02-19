@@ -34,6 +34,7 @@ type MyProfileFormProps = {
   disableEditForm?: boolean;
   hiddenUserAddress?: boolean;
   disableShowIsActive?: boolean;
+  disableShowPermissions?: boolean;
 };
 
 const initialProfileForm = {
@@ -54,6 +55,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   hiddenUserAddress = false,
   disableEditForm = false,
   disableShowIsActive = false,
+  disableShowPermissions = false,
 }) => {
   const router = useRouter();
   const { mutate: updateUser, isPending } = useUpdateUser();
@@ -78,7 +80,6 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   }, [info]);
 
   const handleSubmit = submit(async (changed) => {
-    console.log(form);
 
     let imageUrl = typeof form.avatar_url === "string" ? form.avatar_url : "";
 
@@ -216,7 +217,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
           )}
         </div>
 
-        <MyInfoSidebar info={info} disableExtraData={disableShowIsActive} />
+        <MyInfoSidebar info={info} disableExtraData={disableShowIsActive} disableShowPermissions={disableShowPermissions} />
       </div>
       {!hiddenUserAddress ? (
         <div>

@@ -19,12 +19,14 @@ type Props = {
   disableAction?: boolean;
   showDeselectIcon?: boolean;
   onDelete?: (id: number) => void;
+  redirect?: string;
 };
 
 const CustomerCard: React.FC<Props> = ({
   infos,
   disableAction = false,
   showDeselectIcon = false,
+  redirect,
   onDelete,
 }) => {
   const {
@@ -67,7 +69,9 @@ const CustomerCard: React.FC<Props> = ({
       bodyClassName="w-full hover-reveal-parent group"
       redirect={
         !disableAction
-          ? `/admin/store/customers/create?edit_id=${id}`
+          ? redirect
+            ? redirect
+            : `/admin/store/customers/create?edit_id=${id}`
           : undefined
       }
     >

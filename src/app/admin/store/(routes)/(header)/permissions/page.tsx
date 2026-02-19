@@ -23,8 +23,6 @@ const Permissions = () => {
 
   const isExistItems = !!staffs?.data?.length;
 
-  console.log("staffs => ", staffs);
-
   return (
     <div className="flex flex-col gap-4">
       <UserProfileForm
@@ -32,7 +30,7 @@ const Permissions = () => {
           title: "دسترسی ها",
           icon: <GrUserAdmin />,
           textBtn: "ویرایش",
-          redirect: `/admin/store/customers/create?edit_id=${admin?.data?.id}`,
+          redirect: `/admin/store/customers/create?edit_id=${admin?.data?.id}&is_staff=true`,
           btnIcon: <GoArrowUpRight />,
         }}
         info={admin?.data}

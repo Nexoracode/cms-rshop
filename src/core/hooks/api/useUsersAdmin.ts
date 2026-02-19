@@ -48,6 +48,24 @@ export const useGetStaffs = ({
   });
 };
 
+export const useGetStaff = ({
+  admin = false,
+  id,
+}: {
+  admin: boolean;
+  id: number;
+}) => {
+  return useQuery({
+    queryKey: ["admin-user", admin, id],
+    queryFn: () =>
+      fetcher({
+        route: `/admin/users/admins/${id}`,
+        isActiveToast: false,
+      }),
+    enabled: admin,
+  });
+};
+
 /* =========================
    ➕ ایجاد کارمند جدید
 ========================= */
