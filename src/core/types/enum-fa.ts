@@ -5,7 +5,7 @@ export const rolePersian: Record<Role, string> = {
   super_admin: "مدیر ارشد",
   user: "کاربر عادی",
   accountant: "حسابدار",
-  manager: "مدیر",
+  manager: "مدیریت",
   warehouse_manager: "مدیر انبار",
   staff: "کارمند",
 };

@@ -79,8 +79,11 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
     onValidate: myProfileValidation,
     runValidationOnChange: true,
   });
-
+  console.log(getChangedFields());
+  
   useEffect(() => {
+    console.log(info);
+    
     info && setForm(info);
   }, [info]);
 
@@ -217,7 +220,9 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
                 <SelectBox
                   label=""
                   value={form.role}
-                  onChange={(val) => setForm({ ...form, role: val as Role })}
+                  onChange={(val) => {
+                    handleFieldChange("role", val);
+                  }}
                   options={Object.entries(rolePersian).map(([key, title]) => ({
                     key,
                     title,
