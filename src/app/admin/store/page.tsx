@@ -32,14 +32,14 @@ import ReservationTimesModal from "@/components/features/store/ReservationTimesM
 
 const storeSettingsLinks = [
   {
+    title: "اطلاعات فروشگاه",
+    icon: <BsShop className="text-2xl" />,
+    route: "store/infos",
+  },
+  {
     title: "صفحه ساز",
     icon: <SiMaterialformkdocs className="text-2xl" />,
     route: "store/home-builder",
-  },
-  {
-    title: "اطلاعات اصلی",
-    icon: <BsShop className="text-2xl" />,
-    route: "store/infos",
   },
   /* {
     title: "گزارش عملکرد",
