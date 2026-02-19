@@ -83,7 +83,11 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
     return Object.entries(form).map(([key, value]) => ({
       key,
       value,
-      category: key.startsWith("social_") ? "social" : key.startsWith("contact_") ? "contact" : "payment",
+      category: key.startsWith("social_")
+        ? "social"
+        : key.startsWith("contact_")
+          ? "contact"
+          : "payment",
     }));
   };
 
@@ -162,7 +166,34 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
         />
       </div>
 
-      <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-t border-b py-3 my-2">
+      <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-b py-3 my-2">
+        <p>تماس با ما</p>
+        <HiOutlinePhoneIncoming className="text-xl" />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <TextInput
+          label="تلفن پشتیبانی"
+          allowSpecialChars
+          placeholder="09XX-XXX-XXXX"
+          type="text"
+          value={form.contact_phone}
+          onChange={(val) => handleFieldChange("contact_phone", val)}
+          inputAlign="left"
+        />
+
+        <TextInput
+          label="ایمیل پشتیبانی"
+          allowSpecialChars
+          placeholder="example@gmail.com"
+          type="text"
+          value={form.contact_email}
+          onChange={(val) => handleFieldChange("contact_email", val)}
+          inputAlign="left"
+        />
+      </div>
+
+      <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-b py-3 my-2">
         <p>شبکه های اجتماعی فروشگاه</p>
         <TiSocialLinkedin className="text-2xl" />
       </div>
@@ -297,33 +328,6 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           }
           value={form.social_bale}
           onChange={(val) => handleFieldChange("social_bale", val)}
-          inputAlign="left"
-        />
-      </div>
-
-      <div className="flex items-center cursor-auto text-gray-700 gap-6 justify-between border-t border-b py-3 my-2">
-        <p>تماس با ما</p>
-        <HiOutlinePhoneIncoming className="text-2xl" />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <TextInput
-          label="تلفن پشتیبانی"
-          allowSpecialChars
-          placeholder="09XX-XXX-XXXX"
-          type="text"
-          value={form.contact_phone}
-          onChange={(val) => handleFieldChange("contact_phone", val)}
-          inputAlign="left"
-        />
-
-        <TextInput
-          label="ایمیل پشتیبانی"
-          allowSpecialChars
-          placeholder="example@gmail.com"
-          type="text"
-          value={form.contact_email}
-          onChange={(val) => handleFieldChange("contact_email", val)}
           inputAlign="left"
         />
       </div>
