@@ -30,7 +30,7 @@ const Permissions = () => {
           title: "دسترسی ها",
           icon: <GrUserAdmin />,
           textBtn: "ویرایش",
-          redirect: `/admin/store/customers/create?edit_id=${admin?.data?.id}&is_staff=true`,
+          redirect: `/admin/store/permissions/staff?edit_id=${admin?.data?.id}`,
           btnIcon: <GoArrowUpRight />,
         }}
         info={admin?.data}
@@ -51,7 +51,7 @@ const Permissions = () => {
           childrenClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center md:justify-items-stretch"
         >
           {staffs?.data?.map((user: any) => (
-            <CustomerCard key={user.id} infos={user} />
+            <CustomerCard key={user.id} infos={user} redirect={`/admin/store/permissions/staff?edit_id=${user?.id}`}/>
           ))}
         </UnifiedCard>
       ) : (
