@@ -18,7 +18,7 @@ export const useGetAdminMe = () => {
 /* =========================
    🛡 لیست نقش‌ها
 ========================= */
-export const useGetAdminRoles = () => {
+export const useGetAdminRoles = ({ admin = false }: { admin: boolean }) => {
   return useQuery({
     queryKey: ["admin-roles"],
     queryFn: () =>
@@ -26,17 +26,14 @@ export const useGetAdminRoles = () => {
         route: "/admin/users/roles",
         isActiveToast: false,
       }),
+    enabled: admin,
   });
 };
 
 /* =========================
    👑 لیست کارمندان
 ========================= */
-export const useGetStaffs = ({
-  admin = false,
-}: {
-  admin: boolean;
-}) => {
+export const useGetStaffs = ({ admin = false }: { admin: boolean }) => {
   return useQuery({
     queryKey: ["admin-users", admin],
     queryFn: () =>
