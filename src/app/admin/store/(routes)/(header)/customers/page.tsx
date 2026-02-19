@@ -9,6 +9,7 @@ import AddNewCustomerModal from "@/components/features/store/customers/modals/Ad
 import { UserSortBy, useGetAllUsers } from "@/core/hooks/api/users/useUsers";
 import { FiUsers } from "react-icons/fi";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 
 const CustomersList = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -28,7 +29,7 @@ const CustomersList = () => {
       searchFilter={<CustomersFilter />}
       headerProps={{
         title: "لیست کاربران",
-        icon: <FiUsers className="text-2xl" />,
+        icon: <HiOutlineUserGroup className="text-2xl" />,
         children: <AddNewCustomerModal />,
         tooltipTitle: "مدیریت کاربران",
         tooltipDescription:

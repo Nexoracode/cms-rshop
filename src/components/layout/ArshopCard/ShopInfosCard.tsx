@@ -11,7 +11,7 @@ import { GrAnnounce, GrUserAdmin } from "react-icons/gr";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useRouter } from "next/navigation";
 import { useLogout } from "@/core/hooks/api/auth/auth";
-import { RiAdminLine } from "react-icons/ri";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 
 const ShopInfosCard = () => {
   const router = useRouter();
@@ -104,7 +104,7 @@ const ShopInfosCard = () => {
         <BoxLink
           key="store/customers"
           title="مشتریان"
-          icon={<FiUsers className="text-2xl" />}
+          icon={<HiOutlineUserGroup className="text-[28px] -mb-1" />}
           routeName="store/customers"
           parentStyle="bg-white shadow-md"
           color="text-sky-700"
