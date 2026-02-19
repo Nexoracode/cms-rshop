@@ -4,11 +4,9 @@ export function myProfileValidation(info: Record<string, any>) {
   const { email, first_name, last_name, phone } = info;
 
   // Email
-  if (!email?.trim().length) {
-    errs.email = "ایمیل الزامی است";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+ /*  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errs.email = "فرمت ایمیل معتبر نیست";
-  }
+  } */
 
   // First Name
   if (!first_name?.trim().length) {
@@ -18,7 +16,7 @@ export function myProfileValidation(info: Record<string, any>) {
   // Last Name
   if (!last_name?.trim().length) {
     errs.last_name = "نام خانوادگی الزامی است";
-  } 
+  }
 
   // Phone
   if (!phone?.trim().length) {

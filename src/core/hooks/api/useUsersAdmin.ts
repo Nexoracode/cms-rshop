@@ -2,7 +2,7 @@ import { fetcher } from "@/core/utils/fetcher";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /* =========================
-   👤 اطلاعات کاربر فعلی
+   👤 اطلاعات کارمند فعلی
 ========================= */
 export const useGetAdminMe = () => {
   return useQuery({
@@ -66,6 +66,25 @@ export const useGetStaff = ({
   });
 };
 
+export const useUpdateStaff = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ data, id }: { data: Record<string, any>; id: number }) =>
+      fetcher({
+        route: `/admin/users/admins/${id}`,
+        method: "PATCH",
+        successText: "کارمند با موفقیت ویرایش شد",
+        loadingText: "در حال ویرایش کارمند",
+        isActiveToast: true,
+        body: data,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    },
+  });
+};
+
 /* =========================
    ➕ ایجاد کارمند جدید
 ========================= */
@@ -79,8 +98,8 @@ export const useCreateUser = () => {
         method: "POST",
         body: data,
         isActiveToast: true,
-        successText: "کاربر با موفقیت ایجاد شد",
-        loadingText: "در حال ایجاد کاربر",
+        successText: "کارمند با موفقیت ایجاد شد",
+        loadingText: "در حال ایجاد کارمند",
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });

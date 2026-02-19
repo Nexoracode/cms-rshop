@@ -21,11 +21,12 @@ import { useUpdateUser } from "@/core/hooks/api/users/useUsers";
 import UserAddressModal from "../modals/UserAddressModal";
 import UserAddressCard from "./UserAddress/UserAddressCard";
 import { UserAddress } from "../customer.types";
-import { MdOutlineMyLocation } from "react-icons/md";
-import { LiaListOlSolid } from "react-icons/lia";
 import { useRouter } from "next/navigation";
 import { useSizeGuideUpload } from "@/core/hooks/api/useSizeGuide";
 import { TbBuildingEstate } from "react-icons/tb";
+import SelectBox from "@/components/ui/inputs/SelectBox";
+import { useUpdateStaff } from "@/core/hooks/api/useUsersAdmin";
+import { useQueryParam } from "@/core/hooks/common/useQueryParam";
 
 type MyProfileFormProps = {
   info: any;
@@ -46,6 +47,7 @@ const initialProfileForm = {
   is_active: true,
   is_phone_verified: false,
   addresses: [],
+  role: "user",
 };
 
 const UserProfileForm: React.FC<MyProfileFormProps> = ({
@@ -58,7 +60,10 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   disableShowPermissions = false,
 }) => {
   const router = useRouter();
-  const { mutate: updateUser, isPending } = useUpdateUser();
+  const roles = useQueryParam(["role", "staff_role"]);
+  
+  const { mutate: updateUser, isPending: isPendingUser } = useUpdateUser();
+  const { mutate: updateStaff, isPending: isPendingStaff } = useUpdateStaff();
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useSizeGuideUpload();
 
@@ -80,7 +85,6 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   }, [info]);
 
   const handleSubmit = submit(async (changed) => {
-
     let imageUrl = typeof form.avatar_url === "string" ? form.avatar_url : "";
 
     if ((form.avatar_url as any) instanceof File) {
@@ -95,24 +99,40 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
       imageUrl = uploadRes.data?.[0]?.url ?? null;
     }
 
-    const { email, first_name, is_active, last_name, phone } = form;
+    const { email, first_name, is_active, last_name, phone, role } = form;
 
     const dataToSend = {
       first_name,
       last_name,
       phone,
+      role,
       avatar_url: imageUrl,
-      ...(email ? { email } : {}),
+      email: !email?.length ? null : email,
       is_active,
     };
-    updateUser(
-      { data: dataToSend, id: info?.id },
-      {
-        onSuccess: (res) => {
-          res.ok && router.push("/admin/store/customers");
+
+    console.log(dataToSend);
+    
+
+    if (roles.role && roles.role !== "user") {
+      updateStaff(
+        { data: dataToSend, id: info?.id },
+        {
+          onSuccess: (res) => {
+            res.ok && router.push("/admin/store/permissions");
+          },
         },
-      },
-    );
+      );
+    } else {
+      updateUser(
+        { data: dataToSend, id: info?.id },
+        {
+          onSuccess: (res) => {
+            res.ok && router.push("/admin/store/customers");
+          },
+        },
+      );
+    }
   });
 
   return (
@@ -188,12 +208,25 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
               label=""
               value={form.email || ""}
               onChange={(v) => handleFieldChange("email", v)}
-              isRequired
               errorMessage={errors.email}
             />
           </div>
           {!disableShowIsActive ? (
             <div className="grid grid-cols-2 items-center gap-4">
+              {(roles?.role === "true" && roles?.staff_role?.length) ? (
+                <SelectBox
+                  label=""
+                  value={form.role}
+                  onChange={(val) => setForm({ ...form, role: val as Role })}
+                  options={Object.entries(rolePersian).map(([key, title]) => ({
+                    key,
+                    title,
+                  }))}
+                  placeholder="انتخاب وضعیت"
+                />
+              ) : (
+                ""
+              )}
               <ToggleSection
                 title={`وضعیت حساب`}
                 initialMode={form.is_active}
@@ -208,7 +241,12 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
               <div className="-ml-4">
                 <FormActionButtons
                   onSubmit={handleSubmit}
-                  isLoading={isLoading || isPending}
+                  isLoading={
+                    isLoading ||
+                    isPendingStaff ||
+                    isPendingUser ||
+                    isPendingUpload
+                  }
                 />
               </div>
             </div>
@@ -217,7 +255,11 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
           )}
         </div>
 
-        <MyInfoSidebar info={info} disableExtraData={disableShowIsActive} disableShowPermissions={disableShowPermissions} />
+        <MyInfoSidebar
+          info={info}
+          disableExtraData={disableShowIsActive}
+          disableShowPermissions={disableShowPermissions}
+        />
       </div>
       {!hiddenUserAddress ? (
         <div>
