@@ -13,6 +13,8 @@ import { useInfosCreate } from "@/core/hooks/api/useSeting";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { HiOutlinePhoneIncoming } from "react-icons/hi";
+import EmailInput from "@/components/shared/EmailInput";
+import PhoneInput from "@/components/shared/PhoneInput";
 
 const initialInfos = {
   shop_card_number: "",
@@ -172,24 +174,16 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <TextInput
+        <PhoneInput
           label="تلفن پشتیبانی"
-          allowSpecialChars
-          placeholder="09XX-XXX-XXXX"
-          type="text"
           value={form.contact_phone}
           onChange={(val) => handleFieldChange("contact_phone", val)}
-          inputAlign="left"
         />
 
-        <TextInput
+        <EmailInput
           label="ایمیل پشتیبانی"
-          allowSpecialChars
-          placeholder="example@gmail.com"
-          type="text"
           value={form.contact_email}
           onChange={(val) => handleFieldChange("contact_email", val)}
-          inputAlign="left"
         />
       </div>
 
