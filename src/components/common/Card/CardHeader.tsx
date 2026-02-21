@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CardHeader as HerouiCardHeader } from "@heroui/react";
+import { Divider, CardHeader as HerouiCardHeader } from "@heroui/react";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import { OptionButtonProps } from "@/components/ui/buttons/OptionButton";
 import { LuPlus } from "react-icons/lu";
@@ -23,7 +23,7 @@ export type CardHeaderProps = {
   btnClassName?: string;
   tooltipTitle?: string;
   tooltipDescription?: string;
-  contentClassName?: string
+  contentClassName?: string;
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({
@@ -77,8 +77,8 @@ const CardHeader: React.FC<CardHeaderProps> = ({
   );
 
   return (
-    <HerouiCardHeader className={`flex gap-3 ${className}`}>
-      <div className="w-full rounded-xl p-2 flex items-center justify-between bg-slate-50">
+    <HerouiCardHeader className={`flex flex-col ${className}`}>
+      <div className="w-full p-2 pb-4 flex items-center justify-between">
         <p className="text-[14px] leading-7 flex items-center gap-2">
           {showIconBesideTitle && icon && (
             <span className="text-2xl">{icon}</span>
@@ -108,6 +108,9 @@ const CardHeader: React.FC<CardHeaderProps> = ({
             ""
           )}
         </div>
+      </div>
+      <div className="w-full px-2">
+        <div className="border-dashed border border-slate-200"></div>
       </div>
     </HerouiCardHeader>
   );
