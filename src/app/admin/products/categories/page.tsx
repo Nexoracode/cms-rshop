@@ -12,6 +12,7 @@ import { CategoryTree } from "@/components/features/products/categories/Category
 import CategoriesFilter from "@/components/features/products/categories/Filter/CategoriesFilter";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { IconsSelectionProvider } from "@/components/features/store/icons/SelectableIconBox/IconsSelectionContext";
 
 const Categories = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -36,13 +37,14 @@ const Categories = () => {
 
   return (
     <>
-      {/* Modal for Edit */}
-      <AddNewCategoryModal
-        categoryId={editCategory?.id || 1}
-        defaultValues={editCategory}
-        isOpen={isEditOpen}
-        onOpenChange={setIsEditOpen}
-      />
+      <IconsSelectionProvider initialIcons={editCategory?.icon}>
+        <AddNewCategoryModal
+          categoryId={editCategory?.id || 1}
+          defaultValues={editCategory}
+          isOpen={isEditOpen}
+          onOpenChange={setIsEditOpen}
+        />
+      </IconsSelectionProvider>
 
       <div className="flex flex-col gap-4">
         <Breadcrumbs />
@@ -52,7 +54,11 @@ const Categories = () => {
           headerProps={{
             title: "مدیریت دسته‌بندی‌ها",
             icon: <TbCategory2 className="text-2xl" />,
-            children: <AddNewCategoryModal />,
+            children: (
+              <IconsSelectionProvider>
+                <AddNewCategoryModal />
+              </IconsSelectionProvider>
+            ),
             tooltipTitle: "راهنمای دسته‌بندی‌ها",
             tooltipDescription: `ساختار سلسله‌مراتبی دسته‌بندی‌های فروشگاه. هر دسته‌بندی می‌تواند شامل زیرمجموعه‌های متعددی باشد:
 

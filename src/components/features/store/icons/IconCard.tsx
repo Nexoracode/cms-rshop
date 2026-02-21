@@ -4,17 +4,23 @@ import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import { useDeleteIcon } from "@/core/hooks/api/useIcon";
 import BaseCard from "@/components/ui/BaseCard";
+import { Icon } from "./icon-types";
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type IconCardProps = {
-  icon: {
-    id: number;
-    name: string;
-    svg: string; // اینجا slug و logo رو به svg تغییر بده
-  };
+  icon: Icon;
   onEdit?: (icon: Record<string, any>) => void;
+  showDeselectIcon?: boolean;
+  onDelete?: (id: number) => void;
 };
 
-const IconCard: React.FC<IconCardProps> = ({ icon, onEdit }) => {
+const IconCard: React.FC<IconCardProps> = ({
+  icon,
+  onEdit,
+  showDeselectIcon,
+  onDelete,
+}) => {
   const { mutate: deleteIcon } = useDeleteIcon();
 
   return (
@@ -25,6 +31,17 @@ const IconCard: React.FC<IconCardProps> = ({ icon, onEdit }) => {
     >
       <div className="hover-reveal-child">
         <DeleteButton onDelete={() => deleteIcon({ id: icon.id })} />
+      </div>
+
+      <div className="hover-reveal-child flex flex-col-reverse items-center gap-1.5">
+        {showDeselectIcon && (
+          <ActionButton
+            icon={<AiOutlineCloseCircle size={18} />}
+            onClick={() => {
+              onDelete?.(icon.id);
+            }}
+          />
+        )}
       </div>
 
       {/* نمایش SVG */}

@@ -41,7 +41,7 @@ const SelectionBox = <T,>({
             }`}
           >
             {icon}
-            <p className="mt-2">هنوز موردی انتخاب نشده!</p>
+            <p className="mt-2">هنوز موردی اضافه نشده. برای افزودن، از گزینه بالا استفاده کنید.</p>
           </div>
         )}
       </BaseCard>

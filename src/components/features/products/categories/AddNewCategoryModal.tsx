@@ -17,6 +17,7 @@ import TextInput from "@/components/ui/inputs/TextInput";
 import FieldErrorText from "@/components/forms/FieldErrorText";
 import CategorySelect from "./CategorySelect";
 import { handleMutation } from "@/core/utils/mutationHelper";
+import SelectableIconsBox from "../../store/icons/SelectableIconBox/SelectableIconsBox";
 
 const initialCategoryForm = {
   title: "",
@@ -26,6 +27,7 @@ const initialCategoryForm = {
   mediaId: "",
   media: null as any,
   mediaFile: null as File | null,
+  icon_id: null as number | null,
 };
 
 type AddNewCategoryModalProps = {
@@ -80,6 +82,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       media,
       mediaId: media?.id ?? "",
       mediaFile: null,
+      icon_id: defaultValues?.icon?.id ?? null,
     });
 
     setIsParent(parent_id === 0);
@@ -221,6 +224,13 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
           onValueChange={(val) =>
             handleFieldChange("discount", String(val) || "0")
           }
+        />
+
+        <SelectableIconsBox
+          onChange={(ids) => {
+            console.log(ids);
+            handleFieldChange("icon_id", ids[0] || null);
+          }}
         />
       </div>
     </BaseModal>
