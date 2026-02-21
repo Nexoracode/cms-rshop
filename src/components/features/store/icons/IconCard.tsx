@@ -12,6 +12,7 @@ type IconCardProps = {
   icon: Icon;
   onEdit?: (icon: Record<string, any>) => void;
   showDeselectIcon?: boolean;
+  disableAction?: boolean;
   onDelete?: (id: number) => void;
 };
 
@@ -19,6 +20,7 @@ const IconCard: React.FC<IconCardProps> = ({
   icon,
   onEdit,
   showDeselectIcon,
+  disableAction,
   onDelete,
 }) => {
   const { mutate: deleteIcon } = useDeleteIcon();
@@ -30,7 +32,11 @@ const IconCard: React.FC<IconCardProps> = ({
       className="rounded-md shadow-none border border-gray-200 hover:shadow-md"
     >
       <div className="hover-reveal-child">
-        <DeleteButton onDelete={() => deleteIcon({ id: icon.id })} />
+        {!disableAction ? (
+          <DeleteButton onDelete={() => deleteIcon({ id: icon.id })} />
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="hover-reveal-child flex flex-col-reverse items-center gap-1.5">
@@ -45,9 +51,9 @@ const IconCard: React.FC<IconCardProps> = ({
       </div>
 
       {/* نمایش SVG */}
-      <div className="border-b border-gray-200 px-12 py-8">
+      <div className="border-b border-gray-200 px-12 py-8 w-full flex items-center justify-center">
         <div
-          className="[&>svg]:w-8 mr-1 [&>svg]:h-auto [&>svg]:max-h-12"
+          className="[&>svg]:w-8 [&>svg]:h-auto [&>svg]:max-h-12"
           dangerouslySetInnerHTML={{ __html: icon.svg }}
         />
       </div>

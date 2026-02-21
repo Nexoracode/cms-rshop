@@ -10,6 +10,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import IconFormModal from "../IconFormModal";
 import { useGetIcons } from "@/core/hooks/api/useIcon";
 import { useIconsSelection } from "./IconsSelectionContext";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 
 const IconsSelectionModal: React.FC = () => {
   const { page, search, isFilteredView } = useListQueryParams();
@@ -37,7 +38,7 @@ const IconsSelectionModal: React.FC = () => {
       title="انتخاب آیکون"
       icon={<TbIcons />}
       isActiveFooter={false}
-      size="4xl"
+      size="xl"
     >
       <UnifiedCard
         headerProps={{
@@ -45,11 +46,17 @@ const IconsSelectionModal: React.FC = () => {
           icon: <TbIcons className="text-2xl" />,
           children: <IconFormModal />,
         }}
+        searchFilter={
+          <SearchFilterCard
+            searchPlaceholder="جستجو در آیکون ها..."
+            showSearchBar
+          />
+        }
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={isFilteredView}
         meta={icons?.data?.meta}
-        childrenClassName="grid grid-cols-2 md:grid-cols-4"
+        childrenClassName="grid grid-cols-1 phone:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 !gap-2"
       >
         {icons?.data?.items?.map((icon: any) => (
           <SelectableCard
@@ -60,7 +67,7 @@ const IconsSelectionModal: React.FC = () => {
               handleSelectionChange(icon, selected)
             }
           >
-            <IconCard icon={icon} />
+            <IconCard icon={icon} disableAction />
           </SelectableCard>
         ))}
       </UnifiedCard>

@@ -33,16 +33,17 @@ const InnerSelectableIconsBox: React.FC<{
   return (
     <SelectionBox
       title="آیکون های انتخاب شده"
-      icon={<TbIcons className="text-5xl" />}
+      icon={TbIcons}
       initial={selectedIcons}
       modal={<IconsSelectionModal />}
       error={error}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 phone:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 gap-2">
         {selectedIcons.map((icon: any) => (
           <IconCard
             key={icon.id}
             showDeselectIcon
+            disableAction
             icon={icon}
             onDelete={removeIcon}
           />
