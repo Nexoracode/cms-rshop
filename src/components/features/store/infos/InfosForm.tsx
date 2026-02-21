@@ -146,7 +146,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
         <TextInput
           label="شماره کارت فروشگاه"
           placeholder="0000_0000_0000_0000"
-          maxLength={11}
+          maxLength={16}
           value={form.shop_card_number}
           inputAlign="left"
           onChange={(val) => handleFieldChange("shop_card_number", val)}
@@ -200,15 +200,15 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span>اینستاگرام</span>
             </div>
           }
-          placeholder="username"
+          placeholder="لینک کامل اینستاگرام"
           type="text"
-          endContent={
+          /* endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
                 https://instagram.com
               </span>
             </div>
-          }
+          } */
           value={form.social_instagram}
           allowSpecialChars
           onChange={(val) => handleFieldChange("social_instagram", val)}
@@ -222,13 +222,13 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span>تلگرام</span>
             </div>
           }
-          placeholder="username"
+          placeholder="لینک کامل تلگرام"
           type="text"
-          endContent={
+          /* endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">https://t.me</span>
             </div>
-          }
+          } */
           allowSpecialChars
           value={form.social_telegram}
           onChange={(val) => handleFieldChange("social_telegram", val)}
@@ -244,15 +244,15 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
               <span>ایتا</span>
             </div>
           }
-          placeholder="username"
+          placeholder="لینک کامل ایتا"
           type="text"
-          endContent={
+          /* endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
                 https://eitaa.com
               </span>
             </div>
-          }
+          } */
           allowSpecialChars
           value={form.social_eitaa}
           onChange={(val) => handleFieldChange("social_eitaa", val)}
@@ -267,15 +267,15 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
             </div>
           }
           allowSpecialChars
-          placeholder="username"
+          placeholder="لینک کامل روبیکا"
           type="text"
-          endContent={
+          /* endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
                 https://rubika.ir
               </span>
             </div>
-          }
+          } */
           value={form.social_rubika}
           onChange={(val) => handleFieldChange("social_rubika", val)}
           inputAlign="left"
@@ -291,15 +291,15 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
             </div>
           }
           allowSpecialChars
-          placeholder="username"
+          placeholder="لینک کامل واتساپ"
           type="text"
-          endContent={
+         /*  endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
                 https://whatsapp.com
               </span>
             </div>
-          }
+          } */
           value={form.social_whatsapp}
           onChange={(val) => handleFieldChange("social_whatsapp", val)}
           inputAlign="left"
@@ -313,13 +313,13 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
             </div>
           }
           allowSpecialChars
-          placeholder="username"
+          placeholder="لینک کامل بله"
           type="text"
-          endContent={
+          /* endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">https://ble.ir</span>
             </div>
-          }
+          } */
           value={form.social_bale}
           onChange={(val) => handleFieldChange("social_bale", val)}
           inputAlign="left"
