@@ -28,6 +28,7 @@ const initialCategoryForm = {
   media: null as any,
   mediaFile: null as File | null,
   icon_id: null as number | null,
+  level: 1,
 };
 
 type AddNewCategoryModalProps = {
@@ -44,7 +45,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   onOpenChange,
 }) => {
   const [isParent, setIsParent] = useState(true);
-
+  
   const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
   const { mutateAsync: updateCategory, isPending: isUpdating } =
@@ -83,6 +84,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       mediaId: media?.id ?? "",
       mediaFile: null,
       icon_id: defaultValues?.icon?.id ?? null,
+      level: defaultValues?.level ?? 1,
     });
 
     setIsParent(parent_id === 0);
@@ -226,12 +228,16 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
           }
         />
 
-        <SelectableIconsBox
-          onChange={(ids) => {
-            console.log(ids);
-            handleFieldChange("icon_id", ids[0] || null);
-          }}
-        />
+        {form.level === 1 ? (
+          <SelectableIconsBox
+            onChange={(ids) => {
+              console.log(ids);
+              handleFieldChange("icon_id", ids[0] || null);
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </BaseModal>
   );

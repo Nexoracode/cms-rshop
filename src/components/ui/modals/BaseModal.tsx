@@ -23,6 +23,7 @@ type BaseModalProps = {
   size?: ModalSize;
   trigger?: React.ReactElement<any> | React.ReactNode;
   triggerProps?: Omit<OptionButtonProps, "onClick"> | null; // ✅ پراپ‌های OptionButton
+  confirmActionClose?: boolean;
 };
 
 const BaseModal: React.FC<BaseModalProps> = ({
@@ -44,6 +45,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
     title: "+ افزودن",
     className: "bg-secondary-light text-secondary",
   },
+  confirmActionClose = false,
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledIsOpen !== undefined;
@@ -87,7 +89,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
       <Modal
         dir="rtl"
         onClose={() => {
-          onCancel?.()
+          onCancel?.();
         }}
         isOpen={isOpen}
         onOpenChange={handleOpenChange}
@@ -125,6 +127,9 @@ const BaseModal: React.FC<BaseModalProps> = ({
                           onClose();
                         }}
                         onSubmit={async () => {
+                          if (confirmActionClose) {
+                            onClose();
+                          }
                           const result = await onConfirm?.();
 
                           if (result === true) {

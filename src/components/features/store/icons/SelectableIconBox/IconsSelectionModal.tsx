@@ -37,7 +37,7 @@ const IconsSelectionModal: React.FC = () => {
     <BaseModal
       title="انتخاب آیکون"
       icon={<TbIcons />}
-      isActiveFooter={false}
+      confirmActionClose
       size="xl"
     >
       <UnifiedCard
