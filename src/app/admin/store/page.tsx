@@ -154,6 +154,7 @@ const Settings: React.FC = () => {
           className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
           CardHeaderProps={{
             title: "تنظیمات فروشگاه",
+            enableBorder: true,
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
@@ -184,6 +185,7 @@ const Settings: React.FC = () => {
           className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
           CardHeaderProps={{
             title: "تنظیمات سفارش گیری",
+            enableBorder: true,
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
@@ -232,6 +234,7 @@ const Settings: React.FC = () => {
           className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
           CardHeaderProps={{
             title: "تنظیمات محصولات",
+            enableBorder: true,
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >
@@ -252,6 +255,7 @@ const Settings: React.FC = () => {
           className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
           CardHeaderProps={{
             title: "تنظیمات پروموشن ها",
+            enableBorder: true,
           }}
           bodyClassName="grid grid-cols-2 sm:grid-cols-3 items-center gap-4 mb-3"
         >

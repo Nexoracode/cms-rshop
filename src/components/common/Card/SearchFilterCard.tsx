@@ -31,14 +31,14 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
         {relatedPages.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-50 gap-4 text-start rounded-xl p-2">
             <p className="pr-2">{relatedTitle}</p>
-            <div className="flex flex-wrap xs:flex-nowrap gap-2 w-full sm:w-fit">
-              {relatedPages.map((page) => (
+            <div className="flex flex-wrap xs:flex-nowrap w-full sm:w-fit">
+              {relatedPages.map((page, index) => (
                 <OptionButton
                   key={page.href}
                   title={page.title}
                   href={page.href}
-                  className="w-full sm:w-fit"
-                  variant="flat"
+                  className={`w-full sm:w-fit rounded-sm border-slate-300 text-gray-700 ${index === relatedPages.length - 1 ? "" : "border-l pl-4"}`}
+                  variant="light"
                 />
               ))}
             </div>

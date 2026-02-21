@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Divider, CardHeader as HerouiCardHeader } from "@heroui/react";
+import { CardHeader as HerouiCardHeader } from "@heroui/react";
 import OptionButton from "@/components/ui/buttons/OptionButton";
 import { OptionButtonProps } from "@/components/ui/buttons/OptionButton";
 import { LuPlus } from "react-icons/lu";
@@ -24,6 +24,7 @@ export type CardHeaderProps = {
   tooltipTitle?: string;
   tooltipDescription?: string;
   contentClassName?: string;
+  enableBorder?: boolean;
 };
 
 const CardHeader: React.FC<CardHeaderProps> = ({
@@ -43,6 +44,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
   tooltipDescription = "",
   tooltipTitle = "",
   contentClassName = "",
+  enableBorder = false,
 }) => {
   const hasButtonProps = !!(onAdd || redirect);
 
@@ -78,7 +80,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
 
   return (
     <HerouiCardHeader className={`flex flex-col ${className}`}>
-      <div className="w-full p-2 pb-4 flex items-center justify-between">
+      <div className={`w-full ${enableBorder ? "px-2 pt-1 pb-3" : "p-2"} flex items-center justify-between`}>
         <p className="text-[14px] leading-7 flex items-center gap-2">
           {showIconBesideTitle && icon && (
             <span className="text-2xl">{icon}</span>
@@ -98,20 +100,16 @@ const CardHeader: React.FC<CardHeaderProps> = ({
           ) : (
             ""
           )}
-          {actionNode ? (
-            <div
-              className={tooltipTitle ? "" : ""}
-            >
-              {actionNode}
-            </div>
-          ) : (
-            ""
-          )}
+          {actionNode ? <div>{actionNode}</div> : ""}
         </div>
       </div>
-      <div className="w-full px-2">
-        <div className="border-dashed border border-slate-200"></div>
-      </div>
+      {enableBorder ? (
+        <div className="w-full px-2">
+          <div className="border-dashed border border-slate-200"></div>
+        </div>
+      ) : (
+        ""
+      )}
     </HerouiCardHeader>
   );
 };
