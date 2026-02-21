@@ -14,10 +14,13 @@ const DebouncedSearchURL: React.FC<Props> = ({ placeholder }) => {
   return (
     <Input
       dir="rtl"
-      variant="bordered"
       labelPlacement="outside"
       startContent={<FiSearch className="text-lg pointer-events-none" />}
       placeholder={placeholder}
+      classNames={{
+        inputWrapper: "bg-transparent !bg-transparent shadow-none",
+        input: "bg-transparent",
+      }}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onClear={() => setValue("")}

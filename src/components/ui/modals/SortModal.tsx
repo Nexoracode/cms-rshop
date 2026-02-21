@@ -116,7 +116,7 @@ const SortModal: React.FC<SortModalProps> = ({
       size={size}
       triggerProps={{
         title: "مرتب‌سازی",
-        icon: <BiSortAlt2 className="!text-[16px]" />,
+        icon: <BiSortAlt2 className="!text-[17px]" />,
         className: "w-full sm:w-fit text-sky-600 bg-sky-100",
       }}
     >

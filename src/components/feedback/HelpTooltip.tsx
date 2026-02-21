@@ -31,10 +31,10 @@ export function HelpTooltip({
       className={className}
     >
       <PopoverTrigger>
-        <div className="">
+        <div>
           <IconBadge
             icon={PiQuestion}
-            circleClassName="bg-orange-100 !w-6 !h-6"
+            circleClassName="bg-orange-100 !rounded-lg !w-6 !h-6"
             iconClassName="text-yellow-600 -top-[43px] -left-[6px] w-6 animate-pulse"
             wrapperClassName="cursor-pointer"
           />

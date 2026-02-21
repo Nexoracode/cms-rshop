@@ -45,7 +45,7 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
           </div>
         )}
         {showSearchBar || children ? (
-          <div className="flex flex-col sm:flex-row items-center gap-2 rounded-xl p-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             {showSearchBar && (
               <DebouncedSearchURL placeholder={searchPlaceholder} />
             )}

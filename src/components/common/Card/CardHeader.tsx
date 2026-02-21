@@ -100,7 +100,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
           )}
           {actionNode ? (
             <div
-              className={tooltipTitle ? "border-r border-slate-300 pr-4" : ""}
+              className={tooltipTitle ? "" : ""}
             >
               {actionNode}
             </div>
