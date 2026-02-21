@@ -21,6 +21,7 @@ export type UnifiedCardProps = {
   isExistItems?: boolean;
   searchInp?: boolean;
   childrenClassName?: string;
+  disableWrapperStyle?: boolean
 };
 
 const UnifiedCard: React.FC<UnifiedCardProps> = ({
@@ -36,20 +37,21 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
   isExistItems = true,
   searchInp = false,
   childrenClassName = "",
+  disableWrapperStyle= false
 }) => {
   return (
     <div className="flex flex-col gap-4">
       {/* Search / Filter */}
       {searchFilter && searchFilter}
 
-      <Card className={`w-full shadow-md ${className}`}>
+      <Card className={`w-full shadow-md ${disableWrapperStyle ? "shadow-none rounded-none" : ""} ${className}`}>
         {/* Header */}
-        <CardHeader {...headerProps} />
+        <CardHeader {...headerProps} className={disableWrapperStyle ? "!p-0 !pb-4 !rounded-none" : ""}/>
 
         {/* Body */}
         <CardBody
           dir="rtl"
-          className={`flex flex-col gap-6 text-start ${bodyClassName}`}
+          className={`flex flex-col gap-6 text-start ${disableWrapperStyle ? "!p-0" : ""} ${bodyClassName}`}
         >
           {/* Tabs */}
           {tabsComponent && <div>{tabsComponent}</div>}

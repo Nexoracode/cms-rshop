@@ -16,6 +16,7 @@ export type SearchFilterCardProps = {
   searchPlaceholder?: string;
   children?: React.ReactNode;
   showSearchBar?: boolean;
+  disableWrapperStyle?: boolean;
 };
 
 const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
@@ -24,10 +25,11 @@ const SearchFilterCard: React.FC<SearchFilterCardProps> = ({
   searchPlaceholder = "جستجو...",
   children,
   showSearchBar = false,
+  disableWrapperStyle,
 }) => {
   return (
-    <Card className="shadow-md">
-      <CardBody className="flex flex-col gap-4">
+    <Card className={`shadow-md ${disableWrapperStyle ? "shadow-none bg-slate-50 rounded-md" : ""}`}>
+      <CardBody className={`flex flex-col gap-4 ${disableWrapperStyle ? "p-0" : ""}`}>
         {relatedPages.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-50 gap-4 text-start rounded-xl p-2">
             <p className="pr-2">{relatedTitle}</p>

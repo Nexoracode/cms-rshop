@@ -79,8 +79,8 @@ const CardHeader: React.FC<CardHeaderProps> = ({
   );
 
   return (
-    <HerouiCardHeader className={`flex flex-col ${className}`}>
-      <div className={`w-full ${enableBorder ? "px-2 pt-1 pb-3" : "p-2"} flex items-center justify-between`}>
+    <HerouiCardHeader className={`flex flex-col ${className} ${enableBorder ? "" : "p-4"}`}>
+      <div className={`w-full ${enableBorder ? "px-2 pt-1 pb-3" : ""} flex items-center justify-between`}>
         <p className="text-[14px] leading-7 flex items-center gap-2">
           {showIconBesideTitle && icon && (
             <span className="text-2xl">{icon}</span>

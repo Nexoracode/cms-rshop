@@ -43,13 +43,13 @@ const IconsSelectionModal: React.FC = () => {
       <UnifiedCard
         headerProps={{
           title: "لیست آیکون ها",
-          icon: <TbIcons className="text-2xl" />,
           children: <IconFormModal />,
         }}
         searchFilter={
           <SearchFilterCard
             searchPlaceholder="جستجو در آیکون ها..."
             showSearchBar
+            disableWrapperStyle
           />
         }
         isLoading={isLoading}
@@ -57,6 +57,7 @@ const IconsSelectionModal: React.FC = () => {
         searchInp={isFilteredView}
         meta={icons?.data?.meta}
         childrenClassName="grid grid-cols-1 phone:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 !gap-2"
+        disableWrapperStyle
       >
         {icons?.data?.items?.map((icon: any) => (
           <SelectableCard
