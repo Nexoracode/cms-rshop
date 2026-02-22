@@ -136,7 +136,7 @@ const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده با تعداد"
-      icon={<TbPackages className="text-5xl" />}
+      icon={TbPackages}
       initial={selectedProducts}
       modal={<MultiProductVariantsModal />}
       error={error}

@@ -47,7 +47,7 @@ const InnerProductVariantSelectionBox: React.FC<{
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده"
-      icon={<TbPackages className="text-5xl" />}
+      icon={TbPackages}
       initial={selectedProducts}
       modal={<MultiProductVariantsModal />}
       error={error}
