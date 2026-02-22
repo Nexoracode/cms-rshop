@@ -30,7 +30,6 @@ const SelectableUserAddressCard: React.FC<Props> = ({
         className={`shadow-none cursor-auto ${
           error ? "border border-red-300" : ""
         }`}
-        bodyClassName="grid grid-cols-1 sm:grid-cols-2 gap-2"
         CardHeaderProps={{
           title: "آدرس های کاربر",
           children: addNewButton,
