@@ -106,6 +106,32 @@ const ManualOrderForm = () => {
       }}
       wrapperContents
     >
+      {/* تخفیف دستی */}
+      <SwitchWrapper
+        label="تخفیف فاکتور"
+        description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
+        initialSelected={false}
+        onChange={setIsDiscountEnabled}
+      >
+        <DiscountInput
+          value={discountValue}
+          onValueChange={(val) => setDiscountValue(val ?? 0)}
+          selectedKey={discountType}
+          onSelectChange={(val) => setDiscountType(val as Discount)}
+        />
+      </SwitchWrapper>
+
+      <SelectBox
+        label="وضعیت سفارش"
+        value={form.status}
+        onChange={(val) => handleFieldChange("status", val as StatusOrder)}
+        options={orderStatusOptions.map((opt) => ({
+          key: opt.key,
+          title: opt.title,
+        }))}
+        placeholder="انتخاب وضعیت"
+      />
+
       {/* انتخاب کاربر */}
       <SelectableUsersBox
         onChange={(selectedUsers) => {
@@ -143,35 +169,6 @@ const ManualOrderForm = () => {
         }}
         error={!!errors?.products?.length}
       />
-
-      {/* وضعیت سفارش */}
-      <div className="mt-4">
-        <SelectBox
-          label="وضعیت سفارش"
-          value={form.status}
-          onChange={(val) => handleFieldChange("status", val as StatusOrder)}
-          options={orderStatusOptions.map((opt) => ({
-            key: opt.key,
-            title: opt.title,
-          }))}
-          placeholder="انتخاب وضعیت"
-        />
-      </div>
-
-      {/* تخفیف دستی */}
-      <SwitchWrapper
-        label="تخفیف فاکتور"
-        description="این مبلغ به عنوان تخفیف از مجموع فاکتور کسر می‌شود"
-        initialSelected={false}
-        onChange={setIsDiscountEnabled}
-      >
-        <DiscountInput
-          value={discountValue}
-          onValueChange={(val) => setDiscountValue(val ?? 0)}
-          selectedKey={discountType}
-          onSelectChange={(val) => setDiscountType(val as Discount)}
-        />
-      </SwitchWrapper>
 
       {/* دکمه‌ها */}
       <FormActionButtons

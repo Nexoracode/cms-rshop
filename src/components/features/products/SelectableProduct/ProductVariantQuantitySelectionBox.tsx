@@ -135,7 +135,7 @@ const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
 
   return (
     <SelectionBox
-      title="محصولات انتخاب‌شده با تعداد"
+      title="محصولات انتخاب‌شده با تنوع ها"
       icon={TbPackage}
       initial={selectedProducts}
       modal={<MultiProductVariantsModal />}
