@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectionBox from "@/components/shared/SelectionBox";
 import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./CustomersSelectionModal";
 import { useCustomersSelection } from "./CustomersSelectionContext";
 import { Customer } from "../customer.types";
-import { FiUsers } from "react-icons/fi";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 
 type Props = {
   onChange?: (userIds: number[]) => void;
@@ -33,7 +33,7 @@ const InnerSelectableUsersBox: React.FC<{
   return (
     <SelectionBox
       title="کاربران انتخاب شده"
-      icon={<FiUsers className="text-5xl" />}
+      icon={HiOutlineUserGroup}
       initial={selectedCustomers}
       modal={<UsersSelectionModal />}
       error={error}
