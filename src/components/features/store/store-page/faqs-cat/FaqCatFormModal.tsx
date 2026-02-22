@@ -3,12 +3,17 @@
 import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import SlugInput from "@/components/forms/Inputs/SlugInput";
-import { TbIcons } from "react-icons/tb";
 import { useForm } from "@/core/hooks/common/form/useForm";
-import Textarea from "@/components/ui/inputs/Textarea";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { useCreateIcon, useUpdateIcon } from "@/core/hooks/api/useIcon";
 import { faqcatFormValidation } from "./faqcat-form-validate";
+import TextInput from "@/components/ui/inputs/TextInput";
+import ToggleSection from "@/components/shared/Toggle/ToggleSection";
+import {
+  useCreateFaqCategory,
+  useUpdateFaqCategory,
+} from "@/core/hooks/api/faq/useFaqCat";
+import { TbFolderQuestion } from "react-icons/tb";
+import SelectableIconsBox from "../../icons/SelectableIconBox/SelectableIconsBox";
 
 type Props = {
   iconId?: number | null;
@@ -17,9 +22,11 @@ type Props = {
   onOpenChange?: (open: boolean) => void;
 };
 
-const initialIconForm = {
+const initialCategoryForm = {
   name: "",
   svg: "",
+  icon_id: null as number | null,
+  is_active: true,
 };
 
 const FaqCatFormModal: React.FC<Props> = ({
@@ -29,15 +36,15 @@ const FaqCatFormModal: React.FC<Props> = ({
   onOpenChange,
 }) => {
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
-    initialIconForm,
+    initialCategoryForm,
     {
       onValidate: faqcatFormValidation,
       runValidationOnChange: true,
     },
   );
 
-  const { mutateAsync: updateIcon } = useUpdateIcon();
-  const { mutateAsync: createIcon } = useCreateIcon();
+  const { mutateAsync: updateCategory } = useUpdateFaqCategory();
+  const { mutateAsync: createCategory } = useCreateFaqCategory();
 
   useEffect(() => {
     setFormHandler();
@@ -46,10 +53,16 @@ const FaqCatFormModal: React.FC<Props> = ({
   const handleSubmit = submit(async () => {
     const { name, svg } = form;
     if (iconId)
-      return handleMutation(() => updateIcon({id: iconId, data: { name, svg }}), {
+      return handleMutation(
+        () => updateCategory({ id: iconId, data: { name, svg } }),
+        {
+          resetForm,
+        },
+      );
+    else
+      return handleMutation(() => createCategory({ name, svg } as any), {
         resetForm,
       });
-    else return handleMutation(() => createIcon({name, svg} as any), { resetForm });
   });
 
   const resetForm = () => reset();
@@ -80,25 +93,30 @@ const FaqCatFormModal: React.FC<Props> = ({
       title={iconId ? "ویرایش آیکون" : "افزودن آیکون جدید"}
       confirmText={iconId ? "ویرایش آیکون" : "ایجاد آیکون"}
       onConfirm={handleSubmit}
-      icon={<TbIcons />}
+      icon={<TbFolderQuestion />}
     >
       <div className="flex flex-col gap-6">
-        <SlugInput
+        <TextInput
+          label="نام"
+          placeholder="نام دسته بندی را وارد کنید"
           value={form.name}
-          onChange={(val) => handleFieldChange("name", val)}
-          isActiveError={true}
+          onChange={(name) => {
+            handleFieldChange("name", name);
+          }}
           isRequired
+          inputAlign="right"
+          allowEnglishOnly={false}
           errorMessage={errors.name}
-          label="نام آیکون (انگلیسی)"
         />
-        <Textarea
-          label="SVG آیکون"
-          placeholder="svg خود را در این جا جای گذاری کنید"
-          value={form.svg}
-          onChange={(val) => handleFieldChange("svg", val)}
-          isRequired
-          minRows={5}
-          errorMessage={errors.svg}
+
+        <SelectableIconsBox
+          onChange={(ids) => handleFieldChange("icon_id", ids[0] || null)}
+        />
+
+        <ToggleSection
+          title={`وضعیت ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>

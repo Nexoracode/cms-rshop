@@ -46,11 +46,11 @@ export const useCreateFaqCategory = () => {
    Update FAQ Category
 ========================================================= */
 
-export const useUpdateFaqCategory = (id: number) => {
+export const useUpdateFaqCategory = () => {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: ({ data, id }: { data: any; id: number }) =>
       fetcher({
         route: `/admin/store-info/faq-categories/${id}`,
         method: "PATCH",
