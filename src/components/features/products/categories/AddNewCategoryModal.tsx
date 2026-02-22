@@ -90,6 +90,8 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setIsParent(parent_id === 0);
   }, [defaultValues]);
 
+  console.log(isParent);
+
   const handleSubmit = submit(async () => {
     let finalMediaId = form.mediaId;
 
@@ -228,7 +230,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
           }
         />
 
-        {form.level === 1 ? (
+        {form.level === 1 && isParent ? (
           <SelectableIconsBox
             onChange={(ids) => {
               console.log(ids);

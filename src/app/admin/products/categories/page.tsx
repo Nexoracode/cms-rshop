@@ -37,7 +37,7 @@ const Categories = () => {
 
   return (
     <>
-      <IconsSelectionProvider initialIcons={editCategory?.icon}>
+      <IconsSelectionProvider initialIcons={editCategory?.icon} singleSelect>
         <AddNewCategoryModal
           categoryId={editCategory?.id || 1}
           defaultValues={editCategory}
@@ -55,7 +55,7 @@ const Categories = () => {
             title: "مدیریت دسته‌بندی‌ها",
             icon: <TbCategory2 className="text-2xl" />,
             children: (
-              <IconsSelectionProvider>
+              <IconsSelectionProvider singleSelect>
                 <AddNewCategoryModal />
               </IconsSelectionProvider>
             ),
