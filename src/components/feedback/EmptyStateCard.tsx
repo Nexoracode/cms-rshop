@@ -1,20 +1,29 @@
+"use client";
+
+import { LiaListOlSolid } from "react-icons/lia";
+import IconBadge from "../common/IconBadge";
+
 type EmptyStateCardProps = {
   message?: string;
-  icon?: React.ReactNode;
+  icon?: any;
   className?: string;
 };
 
 const EmptyStateCard: React.FC<EmptyStateCardProps> = ({
-  message = "هنوز موردی اضافه نشده است!!",
-  icon = <img src="/images/box.png" width={170} className="mb-4"/>,
+  message = "هنوز موردی اضافه نشده. برای افزودن، از گزینه بالا استفاده کنید.",
+  icon = LiaListOlSolid,
   className = "",
 }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center py-10 bg-slate-50 rounded-2xl text-gray-600 gap-2 ${className}`}
+      className={`w-full flex flex-col items-center gap-4 py-6 ${className}`}
     >
-      <span className="text-[80px]">{icon}</span>
-      <p className="text-center text-sm sm:text-base animate-pulse font-medium">{message}</p>
+      <IconBadge
+        icon={icon}
+        circleClassName="bg-sky-100"
+        iconClassName="text-sky-600"
+      />
+      <p className="text-gray-700 text-sm text-center">{message}</p>
     </div>
   );
 };
