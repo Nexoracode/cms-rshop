@@ -11,12 +11,14 @@ type Props = {
   onChange?: (iconIds: number[]) => void;
   initialIcons?: any[];
   error?: boolean;
+  classNameIconsWrapper?: string;
 };
 
 const InnerSelectableIconsBox: React.FC<{
   onChange?: (ids: number[]) => void;
   error?: boolean;
-}> = ({ onChange, error }) => {
+  classNameIconsWrapper?: string;
+}> = ({ onChange, error, classNameIconsWrapper }) => {
   const { selectedIcons, removeIcon } = useIconsSelection();
   const isFirstRender = useRef(true);
 
@@ -25,7 +27,7 @@ const InnerSelectableIconsBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    
+
     onChange?.(selectedIcons.map((u) => u.id));
   }, [selectedIcons]);
 
@@ -37,7 +39,9 @@ const InnerSelectableIconsBox: React.FC<{
       modal={<IconsSelectionModal />}
       error={error}
     >
-      <div className="grid grid-cols-1 phone:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 gap-2">
+      <div
+        className={`grid grid-cols-1 phone:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 gap-2 ${classNameIconsWrapper}`}
+      >
         {selectedIcons.map((icon: any) => (
           <IconCard
             key={icon.id}
@@ -52,8 +56,8 @@ const InnerSelectableIconsBox: React.FC<{
   );
 };
 
-const SelectableIconsBox: React.FC<Props> = ({ onChange, error }) => {
-  return <InnerSelectableIconsBox onChange={onChange} error={error} />;
+const SelectableIconsBox: React.FC<Props> = ({ onChange, error, classNameIconsWrapper }) => {
+  return <InnerSelectableIconsBox onChange={onChange} error={error} classNameIconsWrapper={classNameIconsWrapper} />;
 };
 
 export default SelectableIconsBox;

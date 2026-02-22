@@ -90,8 +90,8 @@ const FaqCatFormModal: React.FC<Props> = ({
       onCancel={() => {
         !iconId ? resetForm() : setFormHandler();
       }}
-      title={iconId ? "ویرایش آیکون" : "افزودن آیکون جدید"}
-      confirmText={iconId ? "ویرایش آیکون" : "ایجاد آیکون"}
+      title={iconId ? "ویرایش دسته بندی" : "افزودن دسته بندی"}
+      confirmText={iconId ? "ویرایش دسته بندی" : "ایجاد دسته بندی"}
       onConfirm={handleSubmit}
       icon={<TbFolderQuestion />}
     >
@@ -109,14 +109,15 @@ const FaqCatFormModal: React.FC<Props> = ({
           errorMessage={errors.name}
         />
 
-        <SelectableIconsBox
-          onChange={(ids) => handleFieldChange("icon_id", ids[0] || null)}
-        />
-
         <ToggleSection
           title={`وضعیت ${form.is_active ? "فعال" : "غیرفعال"}`}
           initialMode={form.is_active}
           onChange={(val) => handleFieldChange("is_active", val)}
+        />
+
+        <SelectableIconsBox
+          onChange={(ids) => handleFieldChange("icon_id", ids[0] || null)}
+          classNameIconsWrapper="grid-cols-1 xs:!grid-cols-2 md:!grid-cols-3"
         />
       </div>
     </BaseModal>
