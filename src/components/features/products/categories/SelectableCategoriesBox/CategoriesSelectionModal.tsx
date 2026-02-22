@@ -10,6 +10,7 @@ import { useCategoriesSelection } from "./CategoriesSelectionContext";
 import { CategoryTree } from "../CategoryTree/CategoryTree";
 import { findItemById } from "@/core/utils/findItemById";
 import CategoriesFilter from "../Filter/CategoriesFilter";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 
 const CategoriesSelectionModal: React.FC = () => {
   const { selectedCategories, setCategories } = useCategoriesSelection();
@@ -19,7 +20,7 @@ const CategoriesSelectionModal: React.FC = () => {
 
   const selectedIds = useMemo(
     () => selectedCategories.map((c) => c.id),
-    [selectedCategories]
+    [selectedCategories],
   );
 
   const handleTreeSelectionChange = (ids: number[]) => {
@@ -32,20 +33,26 @@ const CategoriesSelectionModal: React.FC = () => {
     <BaseModal
       title="انتخاب دسته‌بندی‌ها"
       icon={<TbCategory2 className="text-2xl" />}
-      isActiveFooter={false}
+      confirmActionClose
       size="3xl"
     >
       <UnifiedCard
         headerProps={{
-          title: "مدیریت دسته‌بندی‌ها",
-          icon: <TbCategory2 className="text-2xl" />,
+          title: "لیست دسته‌بندی‌ها",
           children: <AddNewCategoryModal />,
         }}
-        searchFilter={<CategoriesFilter />}
+        searchFilter={
+          <SearchFilterCard
+            searchPlaceholder="جستجو براساس عنوان و..."
+            showSearchBar
+            disableWrapperStyle
+          />
+        }
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={false}
         childrenClassName="space-y-4"
+        disableWrapperStyle
       >
         {categories?.data?.items && (
           <CategoryTree

@@ -28,7 +28,7 @@ const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
   return (
     <SelectionBox
       title="دسته‌بندی‌های انتخاب‌شده"
-      icon={<TbCategory2 className="text-5xl" />}
+      icon={TbCategory2}
       initial={selectedCategories}
       modal={<CategoriesSelectionModal />}
       error={error}
