@@ -37,7 +37,7 @@ const FaqCatCard: React.FC<FaqCatCardProps> = ({
       <div className="border-b border-gray-200 px-12 py-8 w-full flex items-center justify-center">
         <div
           className="[&>svg]:w-8 [&>svg]:h-auto [&>svg]:max-h-12"
-          dangerouslySetInnerHTML={{ __html: data.icon.svg }}
+          dangerouslySetInnerHTML={{ __html: data?.icon?.svg }}
         />
       </div>
 

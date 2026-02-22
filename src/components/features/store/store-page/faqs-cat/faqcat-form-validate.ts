@@ -1,14 +1,14 @@
 export function faqcatFormValidation(icon: any) {
   const errs: Record<string, string> = {};
 
-  const { name, svg } = icon;
+  const { name, icon_id } = icon;
 
   if (!name.length) {
-    errs.name = "نام آیکون الزامی است.";
+    errs.name = "نام دسته بندی سوال الزامی است.";
   }
 
-  if (!svg.length) {
-    errs.svg = "svg آیکون الزامی است.";
+  if (!icon_id) {
+    errs.icon_id = "آیکون الزامی است.";
   }
 
   return errs;

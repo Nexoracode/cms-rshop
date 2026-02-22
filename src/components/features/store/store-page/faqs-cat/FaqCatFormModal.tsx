@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
-import SlugInput from "@/components/forms/Inputs/SlugInput";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import { faqcatFormValidation } from "./faqcat-form-validate";
@@ -14,6 +13,7 @@ import {
 } from "@/core/hooks/api/faq/useFaqCat";
 import { TbFolderQuestion } from "react-icons/tb";
 import SelectableIconsBox from "../../icons/SelectableIconBox/SelectableIconsBox";
+import { useIconsSelection } from "../../icons/SelectableIconBox/IconsSelectionContext";
 
 type Props = {
   iconId?: number | null;
@@ -24,7 +24,6 @@ type Props = {
 
 const initialCategoryForm = {
   name: "",
-  svg: "",
   icon_id: null as number | null,
   is_active: true,
 };
@@ -35,6 +34,7 @@ const FaqCatFormModal: React.FC<Props> = ({
   isOpen,
   onOpenChange,
 }) => {
+  const { removeIcon } = useIconsSelection();
   const { form, errors, handleFieldChange, setForm, reset, submit } = useForm(
     initialCategoryForm,
     {
@@ -51,21 +51,28 @@ const FaqCatFormModal: React.FC<Props> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    const { name, svg } = form;
+    const { name, icon_id, is_active } = form;
+
+    const data = {
+      name,
+      icon_id,
+      is_active,
+    };
+
     if (iconId)
-      return handleMutation(
-        () => updateCategory({ id: iconId, data: { name, svg } }),
-        {
-          resetForm,
-        },
-      );
+      return handleMutation(() => updateCategory({ id: iconId, data }), {
+        resetForm,
+      });
     else
-      return handleMutation(() => createCategory({ name, svg } as any), {
+      return handleMutation(() => createCategory(data as any), {
         resetForm,
       });
   });
 
-  const resetForm = () => reset();
+  const resetForm = () => {
+    removeIcon(form.icon_id!);
+    reset()
+  };
 
   const setFormHandler = () => {
     if (defaultValues) {
@@ -118,6 +125,7 @@ const FaqCatFormModal: React.FC<Props> = ({
         <SelectableIconsBox
           onChange={(ids) => handleFieldChange("icon_id", ids[0] || null)}
           classNameIconsWrapper="grid-cols-1 xs:!grid-cols-2 md:!grid-cols-3"
+          error={!!errors.icon_id}
         />
       </div>
     </BaseModal>
