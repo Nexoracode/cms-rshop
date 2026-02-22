@@ -11,6 +11,7 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuPlus } from "react-icons/lu";
 import MultiProductsSelector from "./MultiProductsSelector";
 import BaseModal from "@/components/ui/modals/BaseModal";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 
 const MultiProductsModal = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -29,11 +30,17 @@ const MultiProductsModal = () => {
     <BaseModal
       title="انتخاب محصولات"
       icon={<BsShop />}
-      isActiveFooter={false}
-      size="3xl"
+      size="2xl"
+      confirmActionClose
     >
       <UnifiedCard
-        searchFilter={<ProductsFilter />}
+        searchFilter={
+          <SearchFilterCard
+            searchPlaceholder="جستجو در محصولات..."
+            showSearchBar
+            disableWrapperStyle
+          />
+        }
         headerProps={{
           title: "مدیریت محصولات",
           icon: <BsShop className="text-2xl" />,

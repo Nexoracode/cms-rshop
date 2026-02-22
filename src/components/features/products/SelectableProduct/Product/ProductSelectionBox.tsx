@@ -5,7 +5,7 @@ import SelectionBox from "@/components/shared/SelectionBox";
 import MultiProductsModal from "./MultiProductsModal";
 import { useProductsSelection } from "../ProductsSelectionContext";
 import ProductVariantsCard from "../../ProductVariantsCard";
-import { TbPackages } from "react-icons/tb";
+import { TbPackage } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ProductVariants } from "../selectable-product";
 
@@ -33,7 +33,7 @@ const InnerProductVariantSelectionBox: React.FC<{
   return (
     <SelectionBox
       title="محصولات انتخاب‌شده"
-      icon={<TbPackages className="text-5xl" />}
+      icon={TbPackage}
       initial={selectedProducts}
       modal={<MultiProductsModal />}
       error={error}
