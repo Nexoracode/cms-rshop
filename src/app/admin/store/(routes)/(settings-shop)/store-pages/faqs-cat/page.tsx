@@ -5,10 +5,7 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import IconFormModal from "@/components/features/store/icons/IconFormModal";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import { useGetStoreCatFaqs } from "@/core/hooks/api/useFaq";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { BiMessageDetail } from "react-icons/bi";
 import { TbFolderQuestion } from "react-icons/tb";
-import IconCard from "@/components/features/store/icons/IconCard";
 import FaqCatCard from "@/components/features/store/store-page/faqs/FaqCatCard";
 
 const FaqsPage = () => {
@@ -58,6 +55,7 @@ const FaqsPage = () => {
             <FaqCatCard
               key={cat.id}
               data={cat}
+              onEdit={handleEditIcon}
             />
           ))}
         </UnifiedCard>
