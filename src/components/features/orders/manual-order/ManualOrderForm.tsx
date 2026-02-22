@@ -24,6 +24,7 @@ import { orderStatusOptions } from "../OrderProccess/const/order-constants";
 import { TbBuildingEstate } from "react-icons/tb";
 import IconBadge from "@/components/common/IconBadge";
 import UserAddressModal from "../../store/customers/modals/UserAddressModal";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 const initialFormData = {
   userId: null as number | null,
@@ -145,36 +146,25 @@ const ManualOrderForm = () => {
       />
 
       {/* نمایش آدرس‌ها */}
-      {isFetching ? (
-        <p className="text-sm text-gray-500 mt-3">در حال بارگذاری آدرس‌ها...</p>
-      ) : user?.data?.addresses?.length > 0 ? (
+      {user?.data?.addresses?.length > 0 ? (
         <SelectableUserAddressCard
           userId={user?.data.id}
           addresses={user?.data.addresses}
-          selectedAddressId={form.selectedAddressId ?? undefined} // این خط مشکل رو حل می‌کنه
+          selectedAddressId={form.selectedAddressId ?? undefined}
           onChange={(addressId) =>
             handleFieldChange("selectedAddressId", addressId)
           }
           error={!!errors?.selectedAddressId?.length}
         />
       ) : form.userId ? (
-        <div className="w-full flex flex-col items-center gap-3 pb-6">
-          <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
-            <p>آدرس های کاربر</p>
-            <UserAddressModal userId={user?.data.id} />
-          </div>
-          <div className="w-full flex flex-col items-center gap-4 pt-6">
-            <IconBadge
-              icon={TbBuildingEstate}
-              circleClassName="bg-sky-100"
-              iconClassName="text-sky-600"
-            />
-            <p className="text-gray-700 text-sm text-center">
-              هنوز آدرسی ثبت نشده است. برای افزودن، از گزینه بالا استفاده کنید.
-            </p>
-          </div>
-        </div>
-      ) : null}
+        <EmptyStateContainer
+          title="آدرس های کاربر"
+          icon={TbBuildingEstate}
+          modal={<UserAddressModal userId={user?.data.id} />}
+        />
+      ) : (
+        ""
+      )}
 
       <ProductVariantQuantitySelectionBox
         onChange={(selectedProducts) => {

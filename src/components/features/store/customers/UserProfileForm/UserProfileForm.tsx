@@ -27,6 +27,7 @@ import { TbBuildingEstate } from "react-icons/tb";
 import SelectBox from "@/components/ui/inputs/SelectBox";
 import { useUpdateStaff } from "@/core/hooks/api/useUsersAdmin";
 import { useQueryParam } from "@/core/hooks/common/useQueryParam";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 type MyProfileFormProps = {
   info: any;
@@ -61,29 +62,22 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
 }) => {
   const router = useRouter();
   const roles = useQueryParam(["role", "staff_role"]);
-  
+
   const { mutate: updateUser, isPending: isPendingUser } = useUpdateUser();
   const { mutate: updateStaff, isPending: isPendingStaff } = useUpdateStaff();
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
     useSizeGuideUpload();
 
-  const {
-    form,
-    errors,
-    handleFieldChange,
-    setForm,
-    handleMultipleFieldsChange,
-    submit,
-    getChangedFields,
-  } = useForm(initialProfileForm, {
-    onValidate: myProfileValidation,
-    runValidationOnChange: true,
-  });
-  console.log(getChangedFields());
-  
+  const { form, errors, handleFieldChange, setForm, submit } = useForm(
+    initialProfileForm,
+    {
+      onValidate: myProfileValidation,
+      runValidationOnChange: true,
+    },
+  );
+
   useEffect(() => {
     console.log(info);
-    
     info && setForm(info);
   }, [info]);
 
@@ -115,7 +109,6 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
     };
 
     console.log(dataToSend);
-    
 
     if (roles.role && roles.role !== "user") {
       updateStaff(
@@ -216,7 +209,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
           </div>
           {!disableShowIsActive ? (
             <div className="grid grid-cols-2 items-center gap-4">
-              {(roles?.role === "true" && roles?.staff_role?.length) ? (
+              {roles?.role === "true" && roles?.staff_role?.length ? (
                 <SelectBox
                   label=""
                   value={form.role}
@@ -267,43 +260,26 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
         />
       </div>
       {!hiddenUserAddress ? (
-        <div>
-          {form.addresses.length ? (
-            <div className="w-full flex flex-col items-center gap-3">
-              <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
-                <p>آدرس های کاربر</p>
-                <UserAddressModal userId={info?.id} />
-              </div>
-              <div className="w-full flex flex-col gap-4 pt-6">
-                {form?.addresses?.map((addr: UserAddress, index: number) => (
-                  <UserAddressCard
-                    key={index}
-                    address={addr}
-                    userId={info?.id}
-                  />
-                ))}
-              </div>
+        form.addresses ? (
+          <EmptyStateContainer
+            title="آدرس های کاربر"
+            icon={TbBuildingEstate}
+            initial={form.addresses}
+            modal={<UserAddressModal userId={info?.id} />}
+          >
+            <div className="w-full flex flex-col gap-4 pt-6">
+              {form?.addresses?.map((addr: UserAddress, index: number) => (
+                <UserAddressCard key={index} address={addr} userId={info?.id} />
+              ))}
             </div>
-          ) : (
-            <div className="w-full flex flex-col items-center gap-3 pb-6">
-              <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
-                <p>آدرس ها</p>
-                <UserAddressModal userId={info?.id} />
-              </div>
-              <div className="w-full flex flex-col items-center gap-4 pt-6">
-                <IconBadge
-                  icon={TbBuildingEstate}
-                  circleClassName="bg-sky-100"
-                  iconClassName="text-sky-600"
-                />
-                <p className="text-gray-700 text-sm text-center">
-                  هنوز آدرسی ثبت نشده است. برای افزودن، از گزینه بالا استفاده
-                  کنید.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+          </EmptyStateContainer>
+        ) : (
+          <EmptyStateContainer
+            title="آدرس های کاربر"
+            icon={TbBuildingEstate}
+            modal={<UserAddressModal userId={info?.id} />}
+          />
+        )
       ) : (
         ""
       )}
