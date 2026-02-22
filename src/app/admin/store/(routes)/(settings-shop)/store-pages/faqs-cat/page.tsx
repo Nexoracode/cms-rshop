@@ -4,12 +4,12 @@ import { useState } from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import IconFormModal from "@/components/features/store/icons/IconFormModal";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
-import { useGetStoreCatFaqs } from "@/core/hooks/api/useFaq";
 import { TbFolderQuestion } from "react-icons/tb";
-import FaqCatCard from "@/components/features/store/store-page/faqs/FaqCatCard";
+import FaqCatCard from "@/components/features/store/store-page/faqs-cat/FaqCatCard";
+import { useGetFaqCategories } from "@/core/hooks/api/faq/useFaqCat";
 
 const FaqsPage = () => {
-  const { data: catFaqs, isLoading } = useGetStoreCatFaqs();
+  const { data: catFaqs, isLoading } = useGetFaqCategories();
 
   const isExistItems = !!catFaqs?.data?.length;
 

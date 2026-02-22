@@ -73,7 +73,7 @@ const AboutStore = () => {
 
         {/* FAQ */}
         <Link
-          href={"/admin/store/store-pages/faqs"}
+          href={"/admin/store/store-pages/faqs-cat"}
           className="cursor-pointer rounded-2xl border border-gray-200 p-5 flex items-center gap-4 hover:shadow-md transition-all"
         >
           <div className="w-12 h-12 flex items-center justify-center rounded-xl text-2xl text-green-700 bg-green-700/10">

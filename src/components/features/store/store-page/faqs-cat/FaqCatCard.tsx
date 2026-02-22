@@ -3,7 +3,8 @@
 import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
-import { useDeleteFaqCat } from "@/core/hooks/api/useFaq";
+import { useDeleteFaqCategory } from "@/core/hooks/api/faq/useFaqCat";
+
 
 type FaqCatCardProps = {
   data: any;
@@ -16,7 +17,7 @@ const FaqCatCard: React.FC<FaqCatCardProps> = ({
   disableAction,
   data,
 }) => {
-  const { mutate: deleteFaqCat } = useDeleteFaqCat();
+  const { mutate: deleteFaqCat } = useDeleteFaqCategory();
 
   return (
     <BaseCard

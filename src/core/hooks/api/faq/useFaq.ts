@@ -6,17 +6,6 @@ import { ListQueryParams } from "@/core/types";
 import { buildListQuery } from "@/core/utils/buildListQuery";
 
 /* ---------------------- Get All FAQs ---------------------- */
-export const useGetStoreCatFaqs = () => {
-  return useQuery({
-    queryKey: ["store-faq-cat"],
-    queryFn: () =>
-      fetcher({
-        route: `/admin/store-info/faq-categories`,
-        isActiveToast: false,
-      }),
-  });
-};
-
 export const useGetStoreFaqs = ({ page = 1, limit = 15 }: ListQueryParams) => {
   return useQuery({
     queryKey: ["store-faqs", page, limit],
@@ -74,24 +63,6 @@ export const useUpdateStoreFaq = (id: number | null) => {
 };
 
 /* ---------------------- Delete FAQ ---------------------- */
-export const useDeleteFaqCat = () => {
-  const qc = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: number) =>
-      fetcher({
-        route: `/admin/store-info/faq-categories/${id}`,
-        method: "DELETE",
-        isActiveToast: true,
-        loadingText: "در حال حذف دسته بندی سوال...",
-        successText: "دسته بندی حذف شد",
-      }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["store-faq-cat"] });
-    },
-  });
-};
-
 export const useDeleteStoreFaq = () => {
   const qc = useQueryClient();
 
