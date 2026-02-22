@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import SelectionBox from "@/components/shared/SelectionBox";
 import IconCard from "../IconCard";
 import IconsSelectionModal from "./IconsSelectionModal";
-import { FiUsers } from "react-icons/fi";
 import { useIconsSelection } from "./IconsSelectionContext";
 import { TbIcons } from "react-icons/tb";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 type Props = {
   onChange?: (iconIds: number[]) => void;
@@ -31,7 +30,7 @@ const InnerSelectableIconsBox: React.FC<{
   }, [selectedIcons]);
 
   return (
-    <SelectionBox
+    <EmptyStateContainer
       title="آیکون های انتخاب شده"
       icon={TbIcons}
       initial={selectedIcons}
@@ -49,7 +48,7 @@ const InnerSelectableIconsBox: React.FC<{
           />
         ))}
       </div>
-    </SelectionBox>
+    </EmptyStateContainer>
   );
 };
 

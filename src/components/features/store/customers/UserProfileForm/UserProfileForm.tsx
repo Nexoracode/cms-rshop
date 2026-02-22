@@ -271,7 +271,7 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
           {form.addresses.length ? (
             <div className="w-full flex flex-col items-center gap-3">
               <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
-                <p>آدرس ها</p>
+                <p>آدرس های کاربر</p>
                 <UserAddressModal userId={info?.id} />
               </div>
               <div className="w-full flex flex-col gap-4 pt-6">

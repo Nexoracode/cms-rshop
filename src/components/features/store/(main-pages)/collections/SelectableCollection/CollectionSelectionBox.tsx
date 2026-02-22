@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import SelectionBox from "@/components/shared/SelectionBox";
 import CollectionsModal from "./CollectionsModal";
 import { useCollectionsSelection } from "./CollectionsSelectionContext";
 import { TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import CollectionCard from "../CollectionCard";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 const InnerCollectionVariantSelectionBox: React.FC<{
   onChange?: (data: any) => void;
@@ -20,7 +20,7 @@ const InnerCollectionVariantSelectionBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    
+
     const collections = selectedCollections.map((p: any) => ({
       collection_id: p.id,
       variant_ids: p.variants?.map((v: any) => v.id) ?? [],
@@ -30,9 +30,9 @@ const InnerCollectionVariantSelectionBox: React.FC<{
   }, [selectedCollections]);
 
   return (
-    <SelectionBox
+    <EmptyStateContainer
       title="مجموعه های انتخاب‌شده"
-      icon={<TbPackages className="text-5xl" />}
+      icon={TbPackages}
       initial={selectedCollections}
       modal={<CollectionsModal />}
       error={error}
@@ -52,7 +52,7 @@ const InnerCollectionVariantSelectionBox: React.FC<{
           />
         ))}
       </div>
-    </SelectionBox>
+    </EmptyStateContainer>
   );
 };
 
@@ -65,7 +65,9 @@ const CollectionSelectionBox: React.FC<CollectionSelectionBoxProps> = ({
   onChange,
   error,
 }) => {
-  return <InnerCollectionVariantSelectionBox onChange={onChange} error={error} />;
+  return (
+    <InnerCollectionVariantSelectionBox onChange={onChange} error={error} />
+  );
 };
 
 export default CollectionSelectionBox;

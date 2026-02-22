@@ -109,6 +109,17 @@ const ManualOrderForm = () => {
       }}
       wrapperContents
     >
+      <SelectBox
+        label="وضعیت سفارش"
+        value={form.status}
+        onChange={(val) => handleFieldChange("status", val as StatusOrder)}
+        options={orderStatusOptions.map((opt) => ({
+          key: opt.key,
+          title: opt.title,
+        }))}
+        placeholder="انتخاب وضعیت"
+      />
+
       {/* تخفیف دستی */}
       <SwitchWrapper
         label="تخفیف فاکتور"
@@ -123,17 +134,6 @@ const ManualOrderForm = () => {
           onSelectChange={(val) => setDiscountType(val as Discount)}
         />
       </SwitchWrapper>
-
-      <SelectBox
-        label="وضعیت سفارش"
-        value={form.status}
-        onChange={(val) => handleFieldChange("status", val as StatusOrder)}
-        options={orderStatusOptions.map((opt) => ({
-          key: opt.key,
-          title: opt.title,
-        }))}
-        placeholder="انتخاب وضعیت"
-      />
 
       {/* انتخاب کاربر */}
       <SelectableUsersBox
@@ -160,7 +160,7 @@ const ManualOrderForm = () => {
       ) : form.userId ? (
         <div className="w-full flex flex-col items-center gap-3 pb-6">
           <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
-            <p>آدرس ها</p>
+            <p>آدرس های کاربر</p>
             <UserAddressModal userId={user?.data.id} />
           </div>
           <div className="w-full flex flex-col items-center gap-4 pt-6">

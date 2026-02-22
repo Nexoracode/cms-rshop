@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import SelectionBox from "@/components/shared/SelectionBox";
 import MultiProductVariantsModal from "./ProductVariants/MultiProductVariantsModal";
 import { useProductsSelection } from "./ProductsSelectionContext";
 import ProductVariantsCard from "../ProductVariantsCard";
 import { TbPackage, TbPackages } from "react-icons/tb";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ProductVariants } from "./selectable-product";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
   onChange?: (products: any[]) => void;
@@ -134,7 +134,7 @@ const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
   };
 
   return (
-    <SelectionBox
+    <EmptyStateContainer
       title="محصولات انتخاب‌شده با تنوع ها"
       icon={TbPackage}
       initial={selectedProducts}
@@ -207,7 +207,7 @@ const InnerMultiProductVariantsSelectorQuantityCard: React.FC<{
           ))
         )}
       </div>
-    </SelectionBox>
+    </EmptyStateContainer>
   );
 };
 

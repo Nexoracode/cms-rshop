@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import SelectionBox from "@/components/shared/SelectionBox";
 import { Category } from "../category.types";
 import CategoriesSelectionModal from "./CategoriesSelectionModal";
 import { CategoryNode } from "../CategoryTree/CategoryTree";
 import { useCategoriesSelection } from "./CategoriesSelectionContext";
 import { TbCategory2 } from "react-icons/tb";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 type Props = {
   onChange?: (ids: number[]) => void;
@@ -26,7 +26,7 @@ const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
   }, [selectedCategories]);
 
   return (
-    <SelectionBox
+    <EmptyStateContainer
       title="دسته‌بندی‌های انتخاب‌شده"
       icon={TbCategory2}
       initial={selectedCategories}
@@ -46,7 +46,7 @@ const InnerSelectableCategoriesBox: React.FC<Props> = ({ onChange, error }) => {
           />
         ))}
       </div>
-    </SelectionBox>
+    </EmptyStateContainer>
   );
 };
 

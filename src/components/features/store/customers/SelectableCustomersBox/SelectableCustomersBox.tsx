@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import SelectionBox from "@/components/shared/SelectionBox";
 import CustomerCard from "../CustomerCard";
 import UsersSelectionModal from "./CustomersSelectionModal";
 import { useCustomersSelection } from "./CustomersSelectionContext";
 import { Customer } from "../customer.types";
 import { HiOutlineUserGroup } from "react-icons/hi2";
+import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
 type Props = {
   onChange?: (userIds: number[]) => void;
@@ -31,7 +31,7 @@ const InnerSelectableUsersBox: React.FC<{
   }, [selectedCustomers]);
 
   return (
-    <SelectionBox
+    <EmptyStateContainer
       title="کاربران انتخاب شده"
       icon={HiOutlineUserGroup}
       initial={selectedCustomers}
@@ -49,7 +49,7 @@ const InnerSelectableUsersBox: React.FC<{
           />
         ))}
       </div>
-    </SelectionBox>
+    </EmptyStateContainer>
   );
 };
 
