@@ -41,7 +41,7 @@ const UsersSelectionModal: React.FC = () => {
   };
 
   return (
-    <BaseModal title="انتخاب کاربران" icon={<HiOutlineUserGroup />} size="4xl">
+    <BaseModal title="انتخاب کاربران" icon={<HiOutlineUserGroup />} size="4xl" confirmActionClose>
       <UnifiedCard
         searchFilter={
           <SearchFilterCard

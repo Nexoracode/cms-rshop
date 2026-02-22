@@ -21,6 +21,9 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { validateManualOrder } from "./manual-order-validation";
 import ProductVariantQuantitySelectionBox from "../../products/SelectableProduct/ProductVariantQuantitySelectionBox";
 import { orderStatusOptions } from "../OrderProccess/const/order-constants";
+import { TbBuildingEstate } from "react-icons/tb";
+import IconBadge from "@/components/common/IconBadge";
+import UserAddressModal from "../../store/customers/modals/UserAddressModal";
 
 const initialFormData = {
   userId: null as number | null,
@@ -155,11 +158,21 @@ const ManualOrderForm = () => {
           error={!!errors?.selectedAddressId?.length}
         />
       ) : form.userId ? (
-        <div className="text-center py-8 text-red-600">
-          <p>هیچ آدرسی برای این کاربر ثبت نشده است.</p>
-          <p className="text-sm text-gray-500 mt-2">
-            برای ایجاد سفارش، ابتدا آدرس برای کاربر اضافه کنید.
-          </p>
+        <div className="w-full flex flex-col items-center gap-3 pb-6">
+          <div className="w-full flex items-center gap-6 justify-between pt-3 border-t border-slate-200">
+            <p>آدرس ها</p>
+            <UserAddressModal userId={user?.data.id} />
+          </div>
+          <div className="w-full flex flex-col items-center gap-4 pt-6">
+            <IconBadge
+              icon={TbBuildingEstate}
+              circleClassName="bg-sky-100"
+              iconClassName="text-sky-600"
+            />
+            <p className="text-gray-700 text-sm text-center">
+              هنوز آدرسی ثبت نشده است. برای افزودن، از گزینه بالا استفاده کنید.
+            </p>
+          </div>
         </div>
       ) : null}
 
