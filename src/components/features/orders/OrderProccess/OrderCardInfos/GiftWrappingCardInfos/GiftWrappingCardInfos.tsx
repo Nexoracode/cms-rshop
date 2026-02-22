@@ -37,7 +37,7 @@ const GiftWrappingCardInfos: React.FC<GiftWrappingCardProps> = ({ order }) => {
           hoverable
           isActiveBg
         />
-        <InfoRow label="توضیحات مشتری" value={gift_message ?? "—"} hoverable />
+        <InfoRow label="توضیحات کاربر" value={gift_message ?? "—"} hoverable />
       </BaseCard>
     )
   );

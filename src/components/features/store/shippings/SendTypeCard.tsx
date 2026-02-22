@@ -48,7 +48,7 @@ const SendTypeCard: React.FC<Props> = ({ children, childrenBody, isActiveCard = 
                             }
                             onValueChange={setLocalTimeValue}
                         />
-                        <small className="text-gray-600 text-start">مدت زمانی که پس از آماده‌سازی سفارش، تحویل به مسئول ارسال و تحویل به مشتری برای تکمیل سفارش لازم است.</small>
+                        <small className="text-gray-600 text-start">مدت زمانی که پس از آماده‌سازی سفارش، تحویل به مسئول ارسال و تحویل به کاربر برای تکمیل سفارش لازم است.</small>
                     </div>
 
                     <div className="flex flex-col gap-4">
@@ -153,7 +153,7 @@ const SendTypeCard: React.FC<Props> = ({ children, childrenBody, isActiveCard = 
                         >
                             پرداخت در محل (اختیاری)
                         </Switch>
-                        <small className="text-gray-600 text-right">امکان پرداخت مبلغ سفارش و ارسال، به هنگام دریافت مرسوله توسط مشتری</small>
+                        <small className="text-gray-600 text-right">امکان پرداخت مبلغ سفارش و ارسال، به هنگام دریافت مرسوله توسط کاربر</small>
                     </div>
                 </div>
             </CardBody>

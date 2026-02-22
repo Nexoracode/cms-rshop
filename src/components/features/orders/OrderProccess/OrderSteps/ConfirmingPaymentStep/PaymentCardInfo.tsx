@@ -33,12 +33,12 @@ const PaymentCardInfo = ({ order }: { order: any }) => {
           isActiveBg
         />
         <InfoRow
-          label="شماره همراه مشتری"
+          label="شماره همراه کاربر"
           value={order?.user?.phone || order?.user?.email || "—"}
           hoverable
         />
         <InfoRow
-          label="شماره کارت مشتری"
+          label="شماره کارت کاربر"
           value={order?.payment?.sender_card_number || "—"}
           hoverable
           isActiveBg

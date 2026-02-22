@@ -48,7 +48,7 @@ const RejectReceiptImageModal: React.FC<RejectReceiptImageModalProps> = ({
     >
       <div className="flex flex-col gap-4">
         <p className="text-sm text-default-600 leading-6">
-          لطفاً دلیل عدم تأیید رسید پرداخت را وارد کنید. این پیام به مشتری نمایش
+          لطفاً دلیل عدم تأیید رسید پرداخت را وارد کنید. این پیام به کاربر نمایش
           داده می‌شود.
         </p>
 

@@ -16,20 +16,20 @@ const Sms = () => {
   const [value, setValue] = useState<any>();
 
   const smsType = [
-    { key: "all", label: "تمام مشتریان" },
-    { key: "last_3_months", label: "مشتریان سه ماه اخیر" },
-    { key: "last_1_month", label: "مشتریان یک ماه اخیر" },
+    { key: "all", label: "تمام کاربران" },
+    { key: "last_3_months", label: "کاربران سه ماه اخیر" },
+    { key: "last_1_month", label: "کاربران یک ماه اخیر" },
     {
       key: "failed_1_year",
-      label: "مشتریانی که در یک سال اخیر خرید ناموفق داشته اند",
+      label: "کاربرانی که در یک سال اخیر خرید ناموفق داشته اند",
     },
     {
       key: "failed_3_months",
-      label: "مشتریانی که در سه ماه اخیر خرید ناموفق داسته اند",
+      label: "کاربرانی که در سه ماه اخیر خرید ناموفق داسته اند",
     },
     {
       key: "failed_1_month",
-      label: "مشتریانی که در یک ماه اخیر خرید ناموفق داشته اند",
+      label: "کاربرانی که در یک ماه اخیر خرید ناموفق داشته اند",
     },
   ];
 
@@ -38,13 +38,13 @@ const Sms = () => {
       <div className="bg-white rounded-2xl p-4 py-6 flex flex-col items-center gap-4">
         <div className="w-full flex flex-col gap-6 text-start">
           <p className="text-sm text-gray-600">
-            شما می‌توانید برای مشتریانتان پیامک بفرستید، و آنها را برای بازدید
+            شما می‌توانید برای کاربرانتان پیامک بفرستید، و آنها را برای بازدید
             از سایت و یا خرید مجدد ترغیب کنید.
           </p>
           <Select
             labelPlacement="outside"
-            label="انتخاب مشتریان"
-            placeholder="مشتریانی که میخواهید به آن ها پیامک فرستاده شود"
+            label="انتخاب کاربران"
+            placeholder="کاربرانی که میخواهید به آن ها پیامک فرستاده شود"
             selectedKeys={value}
             onSelectionChange={setValue}
           >

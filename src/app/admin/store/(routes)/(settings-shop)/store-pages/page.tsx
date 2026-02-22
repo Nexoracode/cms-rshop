@@ -19,7 +19,7 @@ const AboutStore = () => {
     {
       type: "purchase_guide",
       title: "راهنمای خرید",
-      description: "مدیریت راهنمای خرید مشتریان",
+      description: "مدیریت راهنمای خرید کاربران",
       icon: TfiShoppingCartFull,
       color: "text-blue-700 bg-blue-700/10",
     },

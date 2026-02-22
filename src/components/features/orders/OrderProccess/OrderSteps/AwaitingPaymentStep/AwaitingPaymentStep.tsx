@@ -13,7 +13,7 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
       <Alert
         color="warning"
         title="سفارش منقضی شده است"
-        description="مهلت پرداخت مشتری به پایان رسیده و موجودی رزرو شده آزاد شد."
+        description="مهلت پرداخت کاربر به پایان رسیده و موجودی رزرو شده آزاد شد."
       />
     );
   }
@@ -30,7 +30,7 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
 
         <ToggleSection
           title="بازگشت وجه"
-          subtitle="در صورت پرداخت مشتری، مبلغ را بازگردانید."
+          subtitle="در صورت پرداخت کاربر، مبلغ را بازگردانید."
           initialMode={isTrackingEnabled}
           onChange={setIsTrackingEnabled}
         >
@@ -45,7 +45,7 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
       <Alert
         color="danger"
         title="پرداخت ناموفق بود"
-        description="درگاه پرداخت خطا داد یا مشتری پرداخت را لغو کرد."
+        description="درگاه پرداخت خطا داد یا کاربر پرداخت را لغو کرد."
       />
     );
   }
@@ -53,9 +53,9 @@ const AwaitingPaymentStep = ({ order }: { order: any }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <p className="text-default-600 leading-7 text-center px-4 animate-pulse">
-        سفارش در انتظار پرداخت مشتری است.
+        سفارش در انتظار پرداخت کاربر است.
         <br />
-        محصولات برای مشتری رزرو شده است.
+        محصولات برای کاربر رزرو شده است.
       </p>
 
       <Spinner size="lg" className="my-4" />

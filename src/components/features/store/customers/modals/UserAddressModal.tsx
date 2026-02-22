@@ -126,7 +126,7 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
             setForm((prev) => ({ ...prev, is_self: val === "self" }))
           }
           options={[
-            { label: "برای خود مشتری", value: "self" },
+            { label: "برای خود کاربر", value: "self" },
             { label: "برای شخص دیگر", value: "other" },
           ]}
           radioSize="sm"

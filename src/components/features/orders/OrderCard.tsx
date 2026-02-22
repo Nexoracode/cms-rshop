@@ -31,7 +31,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
       value: `${Number(order?.total ?? 0).toLocaleString("fa-IR")} تومان`,
     },
     {
-      label: "مشتری",
+      label: "کاربر",
       value: `${order.user.first_name ?? "نام"} ${
         order.user.last_name ?? "و نام خوانوادگی"
       }`.trim(),

@@ -26,7 +26,7 @@ const ConfirmingPaymentStep = ({ order }: { order: any }) => {
     order?.payment?.receipt_image ? (
       <div className="text-center">
         <p className="text-default-600 leading-7 mb-6">
-          مشتری پرداخت کارت به کارت انجام داده و تصویر رسید را ارسال کرده است.
+          کاربر پرداخت کارت به کارت انجام داده و تصویر رسید را ارسال کرده است.
         </p>
 
         <Link
@@ -61,7 +61,7 @@ const ConfirmingPaymentStep = ({ order }: { order: any }) => {
     <Alert
       color="secondary"
       title="پرداخت در حال انجام"
-      description="پرداخت مشتری در حال پردازش است. لطفاً منتظر بمانید."
+      description="پرداخت کاربر در حال پردازش است. لطفاً منتظر بمانید."
     />
   );
 };

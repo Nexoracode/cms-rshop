@@ -9,7 +9,7 @@ import { FiUsers } from "react-icons/fi";
 const promotionItems = [
   {
     title: "کد تخفیف عمومی",
-    subtitle: "اعمال کد تخفیف برای همه محصولات ، مشتریان و...",
+    subtitle: "اعمال کد تخفیف برای همه محصولات ، کاربران و...",
     icon: <TbRosetteDiscount className="text-3xl" />,
     color: "text-purple-700 bg-purple-700/10",
     path: "/admin/store/promotions/coupon/create",
@@ -29,8 +29,8 @@ const promotionItems = [
     path: "/admin/store/promotions/coupon/categories",
   },
   {
-    title: "مشتریان",
-    subtitle: "تعریف کد تخفیف فقط برای مشتریان",
+    title: "کاربران",
+    subtitle: "تعریف کد تخفیف فقط برای کاربران",
     icon: <FiUsers className="text-3xl" />,
     color: "text-sky-700 bg-sky-700/10",
     path: "/admin/store/promotions/coupon/customers",

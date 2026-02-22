@@ -103,7 +103,7 @@ const ShopInfosCard = () => {
 
         <BoxLink
           key="store/customers"
-          title="مشتریان"
+          title="کاربران"
           icon={<HiOutlineUserGroup className="text-[28px] -mb-1" />}
           routeName="store/customers"
           parentStyle="bg-white shadow-md"

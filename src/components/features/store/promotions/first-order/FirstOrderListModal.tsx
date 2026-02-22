@@ -15,8 +15,8 @@ export const FirstOrderListModal: React.FC = () => {
       path: "/admin/store/promotions/first-order/create",
     },
     {
-      title: "مشتریان",
-      subtitle: "اعمال تخفیف خرید اول فقط برای مشتریان خاص",
+      title: "کاربران",
+      subtitle: "اعمال تخفیف خرید اول فقط برای کاربران خاص",
       icon: <TfiShoppingCartFull className="text-3xl" />,
       color: "text-sky-700 bg-sky-700/10",
       path: "/admin/store/promotions/first-order/customers",

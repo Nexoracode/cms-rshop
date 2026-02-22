@@ -15,8 +15,8 @@ const PendingApprovalStep = ({ order }: { order: any }) => {
     return (
       <Alert
         color="danger"
-        title="سفارش توسط مشتری لغو شده است"
-        description="مشتری قبل از پرداخت، سفارش را کنسل کرد."
+        title="سفارش توسط کاربر لغو شده است"
+        description="کاربر قبل از پرداخت، سفارش را کنسل کرد."
       />
     );
   }

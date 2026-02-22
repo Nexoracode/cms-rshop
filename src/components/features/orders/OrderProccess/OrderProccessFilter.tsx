@@ -16,11 +16,11 @@ const OrderProccessFilter: React.FC<OrderProccessFilterProps> = ({
     <SearchFilterCard
       relatedPages={[
         {
-          title: "سفارش های مشتری",
+          title: "سفارش های کاربر",
           href: `/admin/orders?search=${customerName}`,
         },
         {
-          title: "اطلاعات مشتری",
+          title: "اطلاعات کاربر",
           href: `/admin/store/customers/create?edit_id=${customerId}`,
         },
       ]}

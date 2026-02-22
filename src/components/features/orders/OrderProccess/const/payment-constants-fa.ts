@@ -20,7 +20,7 @@ export const getPaymentOnlineStatusText = (
     case PaymentStatus.FAILED:
       return "پرداخت ناموفق";
     case PaymentStatus.CANCELLED:
-      return "لغو شده توسط مشتری";
+      return "لغو شده توسط کاربر";
     case PaymentStatus.REFUNDED:
       return "وجه بازگشت داده شد";
     case PaymentStatus.VERIFIED:

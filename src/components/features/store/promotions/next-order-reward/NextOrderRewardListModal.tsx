@@ -16,8 +16,8 @@ export const NextOrderRewardListModal: React.FC = () => {
       path: "/admin/store/promotions/next-order-reward/create",
     },
     {
-      title: "مشتریان",
-      subtitle: "اعمال فقط برای مشتریان خاص",
+      title: "کاربران",
+      subtitle: "اعمال فقط برای کاربران خاص",
       icon: <FiUsers className="text-3xl" />,
       color: "text-sky-700 bg-sky-700/10",
       path: "/admin/store/promotions/next-order-reward/customers",

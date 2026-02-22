@@ -96,7 +96,7 @@ const orders = Array.from({ length: 20 }, (_, i) => ({
 
 const refunds = [
   { id: "R-001", order: "O-20250012", amount: 507723, reason: "محصول معیوب" },
-  { id: "R-002", order: "O-20250045", amount: 88915, reason: "عدم رضایت مشتری" },
+  { id: "R-002", order: "O-20250045", amount: 88915, reason: "عدم رضایت کاربر" },
   { id: "R-003", order: "O-20250123", amount: 401503, reason: "ارسال اشتباه" },
 ];
 
@@ -201,7 +201,7 @@ export default function FinanceProComplete() {
         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 bg-white rounded-3xl shadow-xl p-8">
           <div>
             <h1 className="text-4xl font-bold text-gray-900">داشبورد مالی پیشرفته فروشگاه</h1>
-            <p className="text-lg text-gray-600 mt-2">تحلیل جامع فروش، سود، تسویه، مالیات و رفتار مشتری</p>
+            <p className="text-lg text-gray-600 mt-2">تحلیل جامع فروش، سود، تسویه، مالیات و رفتار کاربر</p>
           </div>
           <div className="flex gap-4">
             <button

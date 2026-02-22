@@ -74,7 +74,7 @@ const ReportsList = () => {
 
       <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
         <BoxLink
-          title="مشتری جدید"
+          title="کاربر جدید"
           icon={<HiOutlineUserGroup className="text-2xl" />}
           routeName={"dashboard/#"}
           parentStyle="text-gray-700 flex flex-col items-center"
@@ -85,7 +85,7 @@ const ReportsList = () => {
 
       <div className="flex flex-col items-center bg-white rounded-2xl shadow-md p-3 hover:bg-gray-100 transition">
         <BoxLink
-          title="نظرات مشتریان"
+          title="نظرات کاربران"
           icon={<GoCommentDiscussion className="text-2xl" />}
           routeName={"dashboard/#"}
           parentStyle="text-gray-700 flex flex-col items-center"

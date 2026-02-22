@@ -16,8 +16,8 @@ export const FreeShippingListModal: React.FC = () => {
       path: "/admin/store/promotions/free-shipping/create",
     },
     {
-      title: "مشتریان",
-      subtitle: "اعمال ارسال رایگان فقط برای مشتریان خاص",
+      title: "کاربران",
+      subtitle: "اعمال ارسال رایگان فقط برای کاربران خاص",
       icon: <FiUsers className="text-3xl" />,
       color: "text-sky-700 bg-sky-700/10",
       path: "/admin/store/promotions/free-shipping/customers",

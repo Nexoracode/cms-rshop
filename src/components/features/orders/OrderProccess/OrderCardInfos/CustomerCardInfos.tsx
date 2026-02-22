@@ -32,7 +32,7 @@ const CustomerCardInfos: React.FC<CustomerInfosCardProps> = ({ order }) => {
         label="سفارش برای"
         value={
           address.is_self
-            ? "مشتری"
+            ? "کاربر"
             : `${address.recipient_name} (${
                 address.recipient_phone || "بدون شماره"
               })`

@@ -19,13 +19,13 @@ const RefundSection = ({ order }: { order: any }) => {
           hoverable
         />
         <InfoRow
-          label="شماره همراه مشتری"
+          label="شماره همراه کاربر"
           value={order?.user?.phone || order?.user?.email || "—"}
           hoverable
           isActiveBg
         />
         <InfoRow
-          label="شماره کارت مشتری"
+          label="شماره کارت کاربر"
           value={order?.user?.card_number || "—"}
           hoverable
         />
@@ -34,7 +34,7 @@ const RefundSection = ({ order }: { order: any }) => {
       <FormActionButtons
         onSubmit={refundOrderHandler}
         isSubmitting={false}
-        submitText="تأیید پرداخت وجه به مشتری"
+        submitText="تأیید پرداخت وجه به کاربر"
       />
     </>
   );

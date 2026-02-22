@@ -17,7 +17,7 @@ const OrdersFilter = () => {
           href: "/admin/orders/gift-wrapping",
         },
       ]}
-      searchPlaceholder="جستجو کد سفارش، نام مشتری یا محصول..."
+      searchPlaceholder="جستجو کد سفارش، نام کاربر یا محصول..."
       showSearchBar
     >
       <OrdersFilterModal />
