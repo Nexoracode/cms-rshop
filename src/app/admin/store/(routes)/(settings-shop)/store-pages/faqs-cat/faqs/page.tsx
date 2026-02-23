@@ -5,12 +5,12 @@ import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { LuMessageCircleQuestion } from "react-icons/lu";
 import { useGetFaqs } from "@/core/hooks/api/faq/useFaq";
 import FaqFormModal from "@/components/features/store/store-page/faqs-cat/faqs/FaqFormModal";
+import FaqCard from "@/components/features/store/store-page/faqs-cat/faqs/FaqCard";
 
 const FaqsPage = () => {
   const { data: faqs, isLoading } = useGetFaqs();
 
   console.log(faqs);
-  
 
   const isExistItems = !!faqs?.data?.length;
 
@@ -24,7 +24,7 @@ const FaqsPage = () => {
 
   return (
     <>
-    {/*   <FaqFormModal
+      {/*   <FaqFormModal
         faqcatId={editIcon?.id || 1}
         defaultValues={editIcon}
         isOpen={isEditOpen}
@@ -60,8 +60,8 @@ const FaqsPage = () => {
           isExistItems={isExistItems}
           childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 !gap-2"
         >
-          {faqs?.data?.map((cat: any) => (
-            <></>
+          {faqs?.data?.map((faq: any) => (
+            <FaqCard key={faq.id} data={faq} onEdit={handleEditIcon} />
           ))}
         </UnifiedCard>
       </div>
