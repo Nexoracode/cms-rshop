@@ -58,7 +58,7 @@ const FaqsPage = () => {
           }}
           isLoading={isLoading}
           isExistItems={isExistItems}
-          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 !gap-2"
+          childrenClassName="grid md:grid-cols-2 !gap-2"
         >
           {faqs?.data?.map((faq: any) => (
             <FaqCard key={faq.id} data={faq} onEdit={handleEditIcon} />

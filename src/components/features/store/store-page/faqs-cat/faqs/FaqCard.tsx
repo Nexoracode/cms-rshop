@@ -16,7 +16,7 @@ const FaqCard: React.FC<FaqCardProps> = ({ onEdit, disableAction, data }) => {
 
   return (
     <BaseCard
-      bodyClassName="p-2 hover-reveal-parent group cursor-pointer"
+      bodyClassName="p-4 hover-reveal-parent group cursor-pointer"
       onClick={() => onEdit?.(data)}
       className="rounded-md shadow-none border border-gray-200 hover:shadow-md"
     >
@@ -27,24 +27,23 @@ const FaqCard: React.FC<FaqCardProps> = ({ onEdit, disableAction, data }) => {
         ) : null}
       </div>
 
-      {/* آیکون دسته‌بندی */}
-      <div className="border-b border-gray-200 px-4 py-4 w-full flex items-center justify-center">
+      <div className="pb-3 text-gray-600 border-b border-slate-100 mb-3 flex items-center gap-2">
         <div
-          className="[&>svg]:w-8 [&>svg]:h-auto [&>svg]:max-h-12"
+          className="[&>svg]:w-5 [&>svg]:h-auto [&>svg]:max-h-5"
           dangerouslySetInnerHTML={{ __html: data?.faq_category?.icon?.svg }}
         />
+        <p className="text-[13px]">{data?.faq_category?.name}</p>
       </div>
 
       {/* عنوان سوال */}
-      <p className="text-[14px] font-medium text-center pt-2">
-        {data.question}
-      </p>
+      <p className="text-[14px] font-medium">{data.question}</p>
 
       {/* پاسخ کوتاه */}
-      <p className="text-[13px] text-center text-gray-500 pt-1">
+      <p className="text-[13px] text-gray-500 pt-2">
         {data.answer.length > 80
           ? data.answer.slice(0, 80) + "..."
           : data.answer}
+        {/* آیکون دسته‌بندی */}
       </p>
     </BaseCard>
   );
