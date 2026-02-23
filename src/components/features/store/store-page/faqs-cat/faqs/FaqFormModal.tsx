@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { useForm } from "@/core/hooks/common/form/useForm";
 import { handleMutation } from "@/core/utils/mutationHelper";
@@ -10,6 +10,8 @@ import { faqFormValidation } from "./faq-form-validate";
 import { LuMessageCircleQuestion } from "react-icons/lu";
 import { useCreateFaq, useUpdateFaq } from "@/core/hooks/api/faq/useFaq";
 import Textarea from "@/components/ui/inputs/Textarea";
+import SelectBox, { SelectOption } from "@/components/ui/inputs/SelectBox";
+import { useGetFaqCategories } from "@/core/hooks/api/faq/useFaqCat";
 
 type Props = {
   faqId?: number | null;
@@ -39,6 +41,7 @@ const FaqFormModal: React.FC<Props> = ({
     },
   );
 
+  const { data: faqsCat } = useGetFaqCategories();
   const { mutateAsync: updateFaq } = useUpdateFaq();
   const { mutateAsync: createFaq } = useCreateFaq();
 
@@ -47,12 +50,13 @@ const FaqFormModal: React.FC<Props> = ({
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    const { is_active, answer, question } = form;
+    const { is_active, faq_category_id, answer, question } = form;
 
     const data = {
       answer,
       question,
       is_active,
+      faq_category_id,
     };
 
     if (faqId)
@@ -72,6 +76,15 @@ const FaqFormModal: React.FC<Props> = ({
       setForm(defaultValues);
     }
   };
+
+  const optionsFaqCats: SelectOption[] = useMemo(() => {
+    return (
+      faqsCat?.data?.map((item: any) => ({
+        key: String(item.id),
+        title: item.name,
+      })) ?? []
+    );
+  }, [faqsCat?.data]);
 
   return (
     <BaseModal
@@ -107,6 +120,17 @@ const FaqFormModal: React.FC<Props> = ({
           inputAlign="right"
           allowEnglishOnly={false}
           errorMessage={errors.question}
+        />
+
+        <SelectBox
+          label="دسته بندی سوال"
+          value={form.faq_category_id}
+          onChange={(val) => handleFieldChange("faq_category_id", val)}
+          options={optionsFaqCats.map((opt) => ({
+            key: opt.key,
+            title: opt.title,
+          }))}
+          placeholder="دسته بندی سوال را وارد کنید"
         />
 
         <Textarea

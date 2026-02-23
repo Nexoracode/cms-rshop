@@ -22,7 +22,6 @@ import { validateManualOrder } from "./manual-order-validation";
 import ProductVariantQuantitySelectionBox from "../../products/SelectableProduct/ProductVariantQuantitySelectionBox";
 import { orderStatusOptions } from "../OrderProccess/const/order-constants";
 import { TbBuildingEstate } from "react-icons/tb";
-import IconBadge from "@/components/common/IconBadge";
 import UserAddressModal from "../../store/customers/modals/UserAddressModal";
 import EmptyStateContainer from "@/components/common/EmptyStateContainer";
 
