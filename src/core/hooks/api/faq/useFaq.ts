@@ -2,28 +2,21 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "@/core/utils/fetcher";
-import { ListQueryParams } from "@/core/types";
-import { buildListQuery } from "@/core/utils/buildListQuery";
 
 /* ---------------------- Get All FAQs ---------------------- */
-export const useGetStoreFaqs = ({ page = 1, limit = 15 }: ListQueryParams) => {
+export const useGetFaqs = () => {
   return useQuery({
-    queryKey: ["store-faqs", page, limit],
-    queryFn: () => {
-      const qs = buildListQuery({
-        page,
-        limit,
-      });
-      return fetcher({
-        route: `/admin/store-info/faqs?${qs}`,
+    queryKey: ["faqs"],
+    queryFn: () =>
+      fetcher({
+        route: `/admin/store-info/faqs`,
         isActiveToast: false,
-      });
-    },
+      }),
   });
 };
 
 /* ---------------------- Create FAQ ---------------------- */
-export const useCreateStoreFaq = () => {
+export const useCreateFaq = () => {
   const qc = useQueryClient();
 
   return useMutation({
@@ -43,7 +36,7 @@ export const useCreateStoreFaq = () => {
 };
 
 /* ---------------------- Update FAQ ---------------------- */
-export const useUpdateStoreFaq = (id: number | null) => {
+export const useUpdateFaq = (id: number | null) => {
   const qc = useQueryClient();
 
   return useMutation({
@@ -63,7 +56,7 @@ export const useUpdateStoreFaq = (id: number | null) => {
 };
 
 /* ---------------------- Delete FAQ ---------------------- */
-export const useDeleteStoreFaq = () => {
+export const useDeleteFaq = () => {
   const qc = useQueryClient();
 
   return useMutation({
@@ -82,7 +75,7 @@ export const useDeleteStoreFaq = () => {
 };
 
 /* ---------------------- Bulk Delete FAQs ---------------------- */
-export const useBulkDeleteStoreFaqs = () => {
+export const useBulkDeleteFaqs = () => {
   const qc = useQueryClient();
 
   return useMutation({
