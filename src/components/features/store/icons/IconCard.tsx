@@ -53,7 +53,7 @@ const IconCard: React.FC<IconCardProps> = ({
       {/* نمایش SVG */}
       <div className="border-b border-gray-200 px-12 py-8 w-full flex items-center justify-center">
         <div
-          className="[&>svg]:w-8 [&>svg]:h-auto [&>svg]:max-h-12"
+          className="[&>svg]:w-7 [&>svg]:h-auto [&>svg]:max-h-7"
           dangerouslySetInnerHTML={{ __html: icon.svg }}
         />
       </div>
