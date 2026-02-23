@@ -36,7 +36,7 @@ export const useGetSupportList = ({
   filter,
   search,
   sortBy,
-  limit = 10,
+  limit = 13,
 }: UseGetSortParams) => {
   return useQuery({
     queryKey: ["support-list", page, filter, search, sortBy, limit],
