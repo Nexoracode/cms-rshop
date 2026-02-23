@@ -9,7 +9,7 @@ import { useGetFaqCategories } from "@/core/hooks/api/faq/useFaqCat";
 import { IconsSelectionProvider } from "@/components/features/store/icons/SelectableIconBox/IconsSelectionContext";
 import FaqCatFormModal from "@/components/features/store/store-page/faqs-cat/FaqCatFormModal";
 
-const FaqsPage = () => {
+const FaqsCategoryPage = () => {
   const { data: catFaqs, isLoading } = useGetFaqCategories();
 
   console.log(catFaqs);
@@ -20,15 +20,17 @@ const FaqsPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleEditIcon = (faqcat: any) => {
+    console.log("#############", faqcat);
+    
     setEditIcon(faqcat);
     setIsEditOpen(true);
   };
-
+  
   return (
     <>
-      <IconsSelectionProvider initialIcons={editIcon?.icon} singleSelect>
+      <IconsSelectionProvider initialIcons={editIcon?.icon ? [editIcon?.icon] : []} singleSelect>
         <FaqCatFormModal
-          iconId={editIcon?.id || 1}
+          faqcatId={editIcon?.id || null}
           defaultValues={editIcon}
           isOpen={isEditOpen}
           onOpenChange={setIsEditOpen}
@@ -88,4 +90,4 @@ const FaqsPage = () => {
   );
 };
 
-export default FaqsPage;
+export default FaqsCategoryPage;

@@ -1,11 +1,11 @@
 "use client";
 
-const CategoriesFaqsPage = () => {
+const FaqsPage = () => {
   return (
     <div>
-      <p>CategoriesFaqsPage</p>
+      <p>FaqsPage</p>
     </div>
   );
 };
 
-export default CategoriesFaqsPage;
+export default FaqsPage;

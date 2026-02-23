@@ -22,7 +22,7 @@ const FaqCatCard: React.FC<FaqCatCardProps> = ({
   return (
     <BaseCard
       bodyClassName="p-2 hover-reveal-parent group"
-      onClick={() => onEdit?.(data.id)}
+      onClick={() => onEdit?.(data)}
       className="rounded-md shadow-none border border-gray-200 hover:shadow-md"
     >
       <div className="hover-reveal-child">

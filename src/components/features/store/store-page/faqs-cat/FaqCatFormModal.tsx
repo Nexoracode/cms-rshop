@@ -16,7 +16,7 @@ import SelectableIconsBox from "../../icons/SelectableIconBox/SelectableIconsBox
 import { useIconsSelection } from "../../icons/SelectableIconBox/IconsSelectionContext";
 
 type Props = {
-  iconId?: number | null;
+  faqcatId?: number | null;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -29,7 +29,7 @@ const initialCategoryForm = {
 };
 
 const FaqCatFormModal: React.FC<Props> = ({
-  iconId,
+  faqcatId,
   defaultValues,
   isOpen,
   onOpenChange,
@@ -47,6 +47,7 @@ const FaqCatFormModal: React.FC<Props> = ({
   const { mutateAsync: createCategory } = useCreateFaqCategory();
 
   useEffect(() => {
+    console.log("defaultValues --->", defaultValues);
     setFormHandler();
   }, [defaultValues]);
 
@@ -59,8 +60,8 @@ const FaqCatFormModal: React.FC<Props> = ({
       is_active,
     };
 
-    if (iconId)
-      return handleMutation(() => updateCategory({ id: iconId, data }), {
+    if (faqcatId)
+      return handleMutation(() => updateCategory({ id: faqcatId, data }), {
         resetForm,
       });
     else
@@ -87,7 +88,7 @@ const FaqCatFormModal: React.FC<Props> = ({
         onOpenChange?.(val);
       }}
       triggerProps={
-        iconId
+        faqcatId
           ? null
           : {
               title: "+ افزودن",
@@ -95,10 +96,10 @@ const FaqCatFormModal: React.FC<Props> = ({
             }
       }
       onCancel={() => {
-        !iconId ? resetForm() : setFormHandler();
+        !faqcatId ? resetForm() : setFormHandler();
       }}
-      title={iconId ? "ویرایش دسته بندی" : "افزودن دسته بندی"}
-      confirmText={iconId ? "ویرایش دسته بندی" : "ایجاد دسته بندی"}
+      title={faqcatId ? "ویرایش دسته بندی" : "افزودن دسته بندی"}
+      confirmText={faqcatId ? "ویرایش دسته بندی" : "ایجاد دسته بندی"}
       onConfirm={handleSubmit}
       icon={<TbFolderQuestion />}
     >

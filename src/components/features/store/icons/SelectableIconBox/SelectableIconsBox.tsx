@@ -21,6 +21,7 @@ const InnerSelectableIconsBox: React.FC<{
 }> = ({ onChange, error, classNameIconsWrapper }) => {
   const { selectedIcons, removeIcon } = useIconsSelection();
   const isFirstRender = useRef(true);
+  console.log(selectedIcons);
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -42,7 +43,7 @@ const InnerSelectableIconsBox: React.FC<{
       <div
         className={`grid grid-cols-1 phone:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 gap-2 ${classNameIconsWrapper}`}
       >
-        {selectedIcons.map((icon: any) => (
+        {selectedIcons?.map((icon: any) => (
           <IconCard
             key={icon.id}
             showDeselectIcon
@@ -56,8 +57,18 @@ const InnerSelectableIconsBox: React.FC<{
   );
 };
 
-const SelectableIconsBox: React.FC<Props> = ({ onChange, error, classNameIconsWrapper }) => {
-  return <InnerSelectableIconsBox onChange={onChange} error={error} classNameIconsWrapper={classNameIconsWrapper} />;
+const SelectableIconsBox: React.FC<Props> = ({
+  onChange,
+  error,
+  classNameIconsWrapper,
+}) => {
+  return (
+    <InnerSelectableIconsBox
+      onChange={onChange}
+      error={error}
+      classNameIconsWrapper={classNameIconsWrapper}
+    />
+  );
 };
 
 export default SelectableIconsBox;
