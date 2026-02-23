@@ -131,6 +131,7 @@ const FaqFormModal: React.FC<Props> = ({
             title: opt.title,
           }))}
           placeholder="دسته بندی سوال را وارد کنید"
+          errorMessage={errors.faq_category_id}
         />
 
         <Textarea
