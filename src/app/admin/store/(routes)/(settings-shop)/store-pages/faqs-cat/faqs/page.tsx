@@ -1,10 +1,81 @@
 "use client";
 
+import { useState } from "react";
+import UnifiedCard from "@/components/common/Card/UnifiedCard";
+import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
+import { TbFolderQuestion } from "react-icons/tb";
+import FaqCatCard from "@/components/features/store/store-page/faqs-cat/FaqCatCard";
+import { useGetFaqCategories } from "@/core/hooks/api/faq/useFaqCat";
+import { IconsSelectionProvider } from "@/components/features/store/icons/SelectableIconBox/IconsSelectionContext";
+import FaqCatFormModal from "@/components/features/store/store-page/faqs-cat/FaqCatFormModal";
+import { LuMessageCircleQuestion } from "react-icons/lu";
+
 const FaqsPage = () => {
+  const { data: catFaqs, isLoading } = useGetFaqCategories();
+
+  const isExistItems = !!catFaqs?.data?.length;
+
+  const [editIcon, setEditIcon] = useState<any | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const handleEditIcon = (faqcat: any) => {
+    setEditIcon(faqcat);
+    setIsEditOpen(true);
+  };
+
   return (
-    <div>
-      <p>FaqsPage</p>
-    </div>
+    <>
+      <IconsSelectionProvider
+        initialIcons={editIcon?.icon ? [editIcon?.icon] : undefined}
+        singleSelect
+      >
+        <FaqCatFormModal
+          faqcatId={editIcon?.id || 1}
+          defaultValues={editIcon}
+          isOpen={isEditOpen}
+          onOpenChange={setIsEditOpen}
+        />
+      </IconsSelectionProvider>
+
+      <div className="flex flex-col gap-4">
+        <UnifiedCard
+          headerProps={{
+            title: "مدیریت سوالات متداول",
+            icon: <LuMessageCircleQuestion className="text-2xl" />,
+            tooltipTitle: "راهنمای سوالات متداول",
+            tooltipDescription: `❓ مدیریت سوالات این دسته
+اینجا می‌تونی سوالات مربوط به این دسته رو ایجاد و مدیریت کنی. هر سوال شامل عنوان (سوال) و توضیح (پاسخ) هست که در سایت به کاربر نمایش داده میشه.
+
+➕ افزودن سوال جدید:
+روی دکمه "افزودن سوال" کلیک کن، متن سوال رو کوتاه و واضح بنویس و پاسخ کامل و کاربردی براش ثبت کن.
+
+✏️ ویرایش سوال:
+روی کارت هر سوال کلیک کن تا بتونی متن سوال یا پاسخ رو تغییر بدی.
+
+🗑 حذف:
+اگه سوالی دیگه کاربرد نداره، می‌تونی حذفش کنی. قبلش مطمئن شو که اطلاعات مهمی داخلش نیست.
+
+📌 نظم و خوانایی:
+سوال‌ها رو واضح، مستقیم و بدون جمله‌های طولانی بنویس. پاسخ‌ها بهتره مرحله‌ای یا پاراگراف‌بندی شده باشن تا کاربر سریع جوابشو پیدا کنه.
+
+🎯 تجربه کاربر مهمه:
+هدف این بخش کم کردن تماس‌های پشتیبانیه؛ پس سوال‌هایی رو اضافه کن که واقعاً کاربران زیاد می‌پرسن.`,
+            children: (
+              <IconsSelectionProvider singleSelect>
+                <FaqCatFormModal />
+              </IconsSelectionProvider>
+            ),
+          }}
+          isLoading={isLoading}
+          isExistItems={isExistItems}
+          childrenClassName="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 !gap-2"
+        >
+          {catFaqs?.data?.map((cat: any) => (
+            <FaqCatCard key={cat.id} data={cat} onEdit={handleEditIcon} />
+          ))}
+        </UnifiedCard>
+      </div>
+    </>
   );
 };
 

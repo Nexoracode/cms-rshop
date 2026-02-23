@@ -21,7 +21,7 @@ const breadcrumbMap: Record<string, string> = {
   about_us: "درباره ما",
   purchase_guide: "راهنمای خرید",
   return_policy: "شرایط بازگشت کالا",
-  faqs: "سؤالات متداول",
+  faqs: "سوالات متداول",
   "faqs-cat": "دسته بندی سوالات",
   "home-builder": "صفحه اصلی",
   collections: "مجموعه ها",

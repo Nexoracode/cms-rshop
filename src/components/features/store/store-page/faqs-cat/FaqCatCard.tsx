@@ -4,7 +4,9 @@ import React from "react";
 import DeleteButton from "@/components/shared/DeleteButton";
 import BaseCard from "@/components/ui/BaseCard";
 import { useDeleteFaqCategory } from "@/core/hooks/api/faq/useFaqCat";
-
+import { ActionButton } from "@/components/ui/buttons/ActionButton";
+import { LuMessageCircleQuestion } from "react-icons/lu";
+import { MdOutlineQuestionMark } from "react-icons/md";
 
 type FaqCatCardProps = {
   data: any;
@@ -25,9 +27,15 @@ const FaqCatCard: React.FC<FaqCatCardProps> = ({
       onClick={() => onEdit?.(data)}
       className="rounded-md shadow-none border border-gray-200 hover:shadow-md"
     >
-      <div className="hover-reveal-child">
+      <div className="hover-reveal-child flex flex-col gap-2">
         {!disableAction ? (
-          <DeleteButton onDelete={() => deleteFaqCat(data.id)} />
+          <>
+            <DeleteButton onDelete={() => deleteFaqCat(data.id)} />
+            <ActionButton
+              icon={<MdOutlineQuestionMark size={18} />}
+              route="/admin/store/store-pages/faqs-cat/faqs"
+            />
+          </>
         ) : (
           ""
         )}
