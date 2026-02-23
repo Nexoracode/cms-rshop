@@ -30,7 +30,7 @@ export const useCreateFaq = () => {
         successText: "سوال ایجاد شد",
       }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["store-faqs"] });
+      qc.invalidateQueries({ queryKey: ["faqs"] });
     },
   });
 };
@@ -50,7 +50,7 @@ export const useUpdateFaq = () => {
         successText: "سوال بروزرسانی شد",
       }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["store-faqs"] });
+      qc.invalidateQueries({ queryKey: ["faqs"] });
     },
   });
 };
@@ -69,7 +69,7 @@ export const useDeleteFaq = () => {
         successText: "سوال حذف شد",
       }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["store-faqs"] });
+      qc.invalidateQueries({ queryKey: ["faqs"] });
     },
   });
 };
@@ -89,7 +89,7 @@ export const useBulkDeleteFaqs = () => {
         successText: "سوالات حذف شدند",
       }),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["store-faqs"] });
+      qc.invalidateQueries({ queryKey: ["faqs"] });
     },
   });
 };

@@ -120,6 +120,7 @@ const FaqFormModal: React.FC<Props> = ({
           inputAlign="right"
           allowEnglishOnly={false}
           errorMessage={errors.question}
+          allowSpecialChars
         />
 
         <SelectBox
