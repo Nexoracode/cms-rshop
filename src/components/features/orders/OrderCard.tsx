@@ -82,7 +82,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
           </div>
         </div>
 
-{/*         <p className="text-slate-600 flex items-center gap-2">
+        {/*         <p className="text-slate-600 flex items-center gap-2">
           <span>اقلام:</span>
           <span>
             {order.items.length === 1 ? "1 عدد" : `${order.items.length} تا`}
@@ -90,7 +90,7 @@ const OrderCard: React.FC<Props> = ({ order, disableAction = false }) => {
         </p> */}
       </div>
 
-      <CardRows items={rowItems} />
+      <CardRows items={rowItems} disableCol />
 
       <div className="flex flex-row-reverse items-center justify-between w-full py-4 px-2">
         {!disableAction ? (
