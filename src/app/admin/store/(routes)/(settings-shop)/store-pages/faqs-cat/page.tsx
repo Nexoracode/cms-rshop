@@ -12,25 +12,24 @@ import FaqCatFormModal from "@/components/features/store/store-page/faqs-cat/Faq
 const FaqsCategoryPage = () => {
   const { data: catFaqs, isLoading } = useGetFaqCategories();
 
-  console.log(catFaqs);
-
   const isExistItems = !!catFaqs?.data?.length;
 
   const [editIcon, setEditIcon] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleEditIcon = (faqcat: any) => {
-    console.log("#############", faqcat);
-    
     setEditIcon(faqcat);
     setIsEditOpen(true);
   };
-  
+
   return (
     <>
-      <IconsSelectionProvider initialIcons={editIcon?.icon ? [editIcon?.icon] : []} singleSelect>
+      <IconsSelectionProvider
+        initialIcons={editIcon?.icon ? [editIcon?.icon] : undefined}
+        singleSelect
+      >
         <FaqCatFormModal
-          faqcatId={editIcon?.id || null}
+          faqcatId={editIcon?.id || 1}
           defaultValues={editIcon}
           isOpen={isEditOpen}
           onOpenChange={setIsEditOpen}
