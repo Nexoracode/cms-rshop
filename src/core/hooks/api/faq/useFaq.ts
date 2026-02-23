@@ -36,11 +36,11 @@ export const useCreateFaq = () => {
 };
 
 /* ---------------------- Update FAQ ---------------------- */
-export const useUpdateFaq = (id: number | null) => {
+export const useUpdateFaq = () => {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: ({ data, id }: { data: any; id: number | null }) =>
       fetcher({
         route: `/admin/store-info/faqs/${id}`,
         method: "PATCH",

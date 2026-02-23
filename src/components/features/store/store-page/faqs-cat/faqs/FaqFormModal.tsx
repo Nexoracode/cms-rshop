@@ -6,28 +6,27 @@ import { useForm } from "@/core/hooks/common/form/useForm";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import TextInput from "@/components/ui/inputs/TextInput";
 import ToggleSection from "@/components/shared/Toggle/ToggleSection";
-import {
-  useCreateFaqCategory,
-  useUpdateFaqCategory,
-} from "@/core/hooks/api/faq/useFaqCat";
 import { faqFormValidation } from "./faq-form-validate";
 import { LuMessageCircleQuestion } from "react-icons/lu";
+import { useCreateFaq, useUpdateFaq } from "@/core/hooks/api/faq/useFaq";
+import Textarea from "@/components/ui/inputs/Textarea";
 
 type Props = {
-  faqcatId?: number | null;
+  faqId?: number | null;
   defaultValues?: any;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
 
 const initialFaqForm = {
-  name: "",
-  icon_id: null as number | null,
+  question: "",
+  answer: "",
+  faq_category_id: null as number | null,
   is_active: true,
 };
 
 const FaqFormModal: React.FC<Props> = ({
-  faqcatId,
+  faqId,
   defaultValues,
   isOpen,
   onOpenChange,
@@ -40,28 +39,28 @@ const FaqFormModal: React.FC<Props> = ({
     },
   );
 
-  const { mutateAsync: updateCategory } = useUpdateFaqCategory();
-  const { mutateAsync: createCategory } = useCreateFaqCategory();
+  const { mutateAsync: updateFaq } = useUpdateFaq();
+  const { mutateAsync: createFaq } = useCreateFaq();
 
   useEffect(() => {
     setFormHandler();
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
-    const { name, icon_id, is_active } = form;
+    const { is_active, answer, question } = form;
 
     const data = {
-      name,
-      icon_id,
+      answer,
+      question,
       is_active,
     };
 
-    if (faqcatId)
-      return handleMutation(() => updateCategory({ id: faqcatId, data }), {
+    if (faqId)
+      return handleMutation(() => updateFaq({ id: faqId, data }), {
         resetForm,
       });
     else
-      return handleMutation(() => createCategory(data as any), {
+      return handleMutation(() => createFaq(data as any), {
         resetForm,
       });
   });
@@ -81,7 +80,7 @@ const FaqFormModal: React.FC<Props> = ({
         onOpenChange?.(val);
       }}
       triggerProps={
-        faqcatId
+        faqId
           ? null
           : {
               title: "+ افزودن",
@@ -89,10 +88,10 @@ const FaqFormModal: React.FC<Props> = ({
             }
       }
       onCancel={() => {
-        !faqcatId ? resetForm() : setFormHandler();
+        !faqId ? resetForm() : setFormHandler();
       }}
-      title={faqcatId ? "ویرایش سوال" : "افزودن سوال"}
-      confirmText={faqcatId ? "ویرایش سوال" : "ایجاد سوال"}
+      title={faqId ? "ویرایش سوال" : "افزودن سوال"}
+      confirmText={faqId ? "ویرایش سوال" : "ایجاد سوال"}
       onConfirm={handleSubmit}
       icon={<LuMessageCircleQuestion />}
     >
@@ -100,15 +99,25 @@ const FaqFormModal: React.FC<Props> = ({
         <TextInput
           label="عنوان"
           placeholder="عنوان سوال را وارد کنید"
-          value={form.name}
-          onChange={(name) => {
-            handleFieldChange("name", name);
+          value={form.question}
+          onChange={(question) => {
+            handleFieldChange("question", question);
           }}
           isRequired
           inputAlign="right"
           allowEnglishOnly={false}
-          errorMessage={errors.name}
+          errorMessage={errors.question}
         />
+
+        <Textarea
+          label="جواب سوال"
+          isRequired
+          value={form.answer}
+          onChange={(val) => handleFieldChange("answer", val)}
+          placeholder="جواب سوال را وارد کنید"
+          errorMessage={errors.answer}
+        />
+
         <ToggleSection
           title={`وضعیت ${form.is_active ? "فعال" : "غیرفعال"}`}
           initialMode={form.is_active}

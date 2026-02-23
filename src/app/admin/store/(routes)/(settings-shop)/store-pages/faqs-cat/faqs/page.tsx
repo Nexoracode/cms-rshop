@@ -14,22 +14,22 @@ const FaqsPage = () => {
 
   const isExistItems = !!faqs?.data?.length;
 
-  const [editIcon, setEditIcon] = useState<any | null>(null);
+  const [editFaq, setEditFaq] = useState<any | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const handleEditIcon = (faqcat: any) => {
-    setEditIcon(faqcat);
+  const handleEditIcon = (faq: any) => {
+    setEditFaq(faq);
     setIsEditOpen(true);
   };
 
   return (
     <>
-      {/*   <FaqFormModal
-        faqcatId={editIcon?.id || 1}
-        defaultValues={editIcon}
+      <FaqFormModal
+        faqId={editFaq?.id || 1}
+        defaultValues={editFaq}
         isOpen={isEditOpen}
         onOpenChange={setIsEditOpen}
-      /> */}
+      />
 
       <div className="flex flex-col gap-4">
         <UnifiedCard
