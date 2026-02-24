@@ -10,12 +10,21 @@ import {
 } from "@/core/hooks/api/support/useSupport";
 import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import ScrollPagination from "@/core/hooks/system/InfiniteScrollPagination";
-import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useEffect, useState } from "react";
 
 const ChatPage = () => {
+  const router = useRouter();
   const { page, sortBy, search, filter } =
     useListQueryParams<SupportSortBy[number]>();
   const listRef = useRef<HTMLDivElement | null>(null);
+  const [allItems, setAllItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (page !== 1) {
+      router.push("?page=1");
+    }
+  }, []);
 
   const { data: support, isLoading } = useGetSupportList({
     page,
@@ -24,9 +33,21 @@ const ChatPage = () => {
     sortBy,
   });
 
-  const isExistItems = !!support?.data?.items?.length;
+  // جمع آوری آیتم‌ها در state
+  useEffect(() => {
+    if (support?.data?.items) {
+      if (page === 1) {
+        setAllItems(support.data.items);
+      } else {
+        setAllItems((prev) => [...prev, ...support.data.items]);
+      }
+    }
+  }, [support, page]);
 
-  if (isLoading) {
+
+  const isExistItems = allItems.length > 0;
+
+  if (isLoading && page === 1) {
     return <LoadingApiCall />;
   }
 
@@ -37,8 +58,8 @@ const ChatPage = () => {
   return (
     <>
       <div className="flex flex-row gap-2 bg-white h-[100vh] py-6 px-2">
-        <ConversationList 
-          conversations={support?.data?.items} 
+        <ConversationList
+          conversations={allItems}
           containerRef={listRef}
           className="overflow-y-auto"
         />
