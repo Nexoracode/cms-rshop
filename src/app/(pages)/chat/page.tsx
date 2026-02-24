@@ -15,25 +15,16 @@ import { useRef, useEffect, useState } from "react";
 
 const ChatPage = () => {
   const router = useRouter();
-  const { page, sortBy, search, filter } =
-    useListQueryParams<SupportSortBy[number]>();
+  const { page } = useListQueryParams<SupportSortBy[number]>();
   const listRef = useRef<HTMLDivElement | null>(null);
   const [allItems, setAllItems] = useState<any[]>([]);
 
   useEffect(() => {
-    if (page !== 1) {
-      router.push("?page=1");
-    }
+    if (page !== 1) router.push("?page=1");
   }, []);
 
-  const { data: support, isLoading } = useGetSupportList({
-    page,
-    filter,
-    search,
-    sortBy,
-  });
+  const { data: support, isLoading } = useGetSupportList({ page });
 
-  // جمع آوری آیتم‌ها در state
   useEffect(() => {
     if (support?.data?.items) {
       if (page === 1) {
@@ -43,7 +34,6 @@ const ChatPage = () => {
       }
     }
   }, [support, page]);
-
 
   const isExistItems = allItems.length > 0;
 
@@ -57,13 +47,15 @@ const ChatPage = () => {
 
   return (
     <>
-      <div className="flex flex-row gap-2 bg-white h-[100vh] py-6 px-2">
-        <ConversationList
-          conversations={allItems}
-          containerRef={listRef}
-          className="overflow-y-auto"
-        />
-        <ConversationDetail showBackBtn />
+      <div className="flex items-center justify-center h-[100vh]">
+        <div className="w-full flex flex-row gap-2 bg-white rounded-xl h-[80vh] py-6 px-2">
+          <ConversationList
+            conversations={allItems}
+            containerRef={listRef}
+            className="overflow-y-auto"
+          />
+          <ConversationDetail showBackBtn />
+        </div>
       </div>
       <ScrollPagination
         containerRef={listRef}

@@ -14,12 +14,19 @@ import ConversationList from "@/components/features/store/support/ConversationLi
 import ConversationDetail from "@/components/features/store/support/ConversationDetail";
 import { TfiFullscreen } from "react-icons/tfi";
 import ScrollPagination from "@/core/hooks/system/InfiniteScrollPagination";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Products = () => {
+  const router = useRouter();
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<SupportSortBy[number]>();
   const listRef = useRef<HTMLDivElement | null>(null);
+  const [allItems, setAllItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (page !== 1) router.push("?page=1");
+  }, []);
 
   const { data: support, isLoading } = useGetSupportList({
     page,
@@ -27,6 +34,16 @@ const Products = () => {
     search,
     sortBy,
   });
+
+  useEffect(() => {
+    if (support?.data?.items) {
+      if (page === 1) {
+        setAllItems(support.data.items);
+      } else {
+        setAllItems((prev) => [...prev, ...support.data.items]);
+      }
+    }
+  }, [support, page]);
 
   const isExistItems = !!support?.data?.items?.length;
 
@@ -48,12 +65,11 @@ const Products = () => {
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={isFilteredView}
-        // meta={support?.data?.meta}
         bodyClassName="p-0"
       >
         <div className="flex flex-row gap-2">
           <ConversationList
-            conversations={support?.data?.items}
+            conversations={allItems}
             className="max-h-[73vh]"
             containerRef={listRef}
           />
