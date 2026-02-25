@@ -33,28 +33,45 @@ const SelectableCard: React.FC<Props> = ({
 
   return (
     <div
-      className={`relative transition-all duration-300 rounded-xl border border-transparent
-        ${selected ? "border border-sky-300 scale-95" : ""}
-        ${disabled ? "pointer-events-none cursor-default" : ""}
-      `}
-      onMouseEnter={() => !disabled && setHovered(true)}
-      onMouseLeave={() => !disabled && setHovered(false)}
+      className={`group relative rounded-xl overflow-hidden transition-all duration-300 p-0.5
+    ${
+      selected
+        ? "shadow-lg shadow-blue-500/10 scale-95"
+        : ""
+    }
+    ${disabled ? "opacity-60 pointer-events-none" : "cursor-pointer"}
+  `}
+      onClick={() => !disabled && handleChange(!selected)}
+      role="button"
+      tabIndex={disabled ? -1 : 0}
     >
-      {!disabled &&
-        (hovered || selected) && ( // چک id
-          <Tooltip content="انتخاب کارت" color="secondary" showArrow>
-            <div className="absolute top-2 right-2 z-20 bg-sky-500/30 py-1.5 rounded-lg">
-              <Checkbox
-                isSelected={selected}
-                color="secondary"
-                className="mr-0.5"
-                onValueChange={(v) => handleChange(!!v)}
-              />
-            </div>
-          </Tooltip>
-        )}
+      {/* لایه انتخاب – فقط وقتی انتخاب شده یا hover */}
+      <div
+        className={`
+      absolute inset-0 pointer-events-none transition-opacity duration-200
+      ${selected || hovered ? "opacity-100" : "opacity-0"}
+      ${selected ? "bg-blue-50/40" : "bg-black/5 group-hover:bg-black/5"}
+    `}
+      />
 
-      {children}
+      {/* checkbox کوچک و شیک در گوشه */}
+      {!disabled && (hovered || selected) && (
+        <div className="absolute top-3 right-3 z-10">
+          <Checkbox
+            isSelected={selected}
+            color="secondary" // یا secondary اگر می‌خوای
+            radius="full"
+            onValueChange={(v) => handleChange(!!v)}
+            // جلوگیری از bubble کردن کلیک به div والد
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
+      {/* محتوای اصلی کارت */}
+      <div className="relative z-0 transition-all duration-300 group-hover:scale-[1.01]">
+        {children}
+      </div>
     </div>
   );
 };
