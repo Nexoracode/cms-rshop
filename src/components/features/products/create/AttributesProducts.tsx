@@ -125,7 +125,7 @@ const AttributesProducts = () => {
           relatedPages={[
             {
               title: "اطلاعات محصول",
-              href: `/admin/products/create?edit_id=${28}&type=infos`,
+              href: `/admin/products/create?edit_id=${page}&type=infos`,
             },
             {
               title: "تنوع محصولات",
