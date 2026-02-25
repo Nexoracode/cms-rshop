@@ -35,13 +35,15 @@ const Products = () => {
       <ShopInfosCard />
       <UnifiedCard
         searchFilter={<ProductsFilter />}
-        headerProps={{
-          title: "مدیریت محصولات",
-          icon: <LuPackage className="text-2xl" />,
-          redirect: "/admin/products/create?type=infos",
-          btnIcon: <LuPlus />,
-          tooltipTitle: "راهنمای مدیریت محصولات",
-          tooltipDescription: `📦 کارت محصول (نمایش فعلی)
+        headerProps={
+          !selectedItems.length
+            ? {
+                title: "مدیریت محصولات",
+                icon: <LuPackage className="text-2xl" />,
+                redirect: "/admin/products/create?type=infos",
+                btnIcon: <LuPlus />,
+                tooltipTitle: "راهنمای مدیریت محصولات",
+                tooltipDescription: `📦 کارت محصول (نمایش فعلی)
 • وقتی روی فضای کارت هاور میکنی دو دکمه ظاهر می‌شود:
   ✏️ ویرایش  
   فرم کامل اطلاعات محصول عنوان، قیمت، توضیحات و …
@@ -67,18 +69,23 @@ const Products = () => {
 ⚠️ نکته مهم:
 • قبل از مخفی کردن محصول (چشم)، مطمئن شو تغییرات ذخیره شده باشند تا چیزی از دست نرود.
 • برای مدیریت کامل ویژگی‌ها و تنوع‌ها، بهتر است از صفحه اختصاصی تنوع محصول استفاده کنی تا همه چیز مرتب و سازماندهی شده باشد.`,
-        }}
+              }
+            : {
+                title: "مدیریت محصولات",
+                icon: <LuPackage className="text-2xl" />,
+                children: (
+                  <ProductsBulkActions
+                    selectedItems={selectedItems}
+                    onClearSelection={() => setSelectedItems([])}
+                  />
+                ),
+              }
+        }
         isLoading={isLoading}
         isExistItems={isExistItems}
         searchInp={isFilteredView}
         meta={products?.data?.meta}
       >
-        {selectedItems.length > 0 && (
-          <ProductsBulkActions
-            selectedItems={selectedItems}
-            onClearSelection={() => setSelectedItems([])}
-          />
-        )}
         {products?.data?.items?.map((product: any) => (
           <SelectableCard
             key={product.id}
