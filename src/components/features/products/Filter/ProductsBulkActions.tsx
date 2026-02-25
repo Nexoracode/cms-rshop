@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import BaseModal from "@/components/ui/modals/BaseModal";
 import BulkUpdateProductsModal from "@/components/features/products/Filter/BulkUpdateProductsModal/BulkUpdateProductsModal";
 import {
   useBulkUpdateProducts,
@@ -23,34 +22,32 @@ const ProductsBulkActions = ({
   const handleDelete = () => {
     deleteGroupProduct.mutate(
       { ids: selectedItems },
-      { onSuccess: () => onClearSelection() }
+      { onSuccess: () => onClearSelection() },
     );
   };
 
   const handleBulkUpdate = (changed: any) => {
     bulkUpdateProducts.mutate(
       { ids: selectedItems, ...changed },
-      { onSuccess: () => onClearSelection() }
+      { onSuccess: () => onClearSelection() },
     );
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center mb-4 -mt-2 justify-between gap-4 text-start p-2">
-      <p className="pr-2">عملیات گروهی</p>
-      <div className="flex flex-wrap gap-2 w-full sm:w-fit">
-        <Button
-          color="default"
-          variant="flat"
-          onPress={onClearSelection}
-          size="sm"
-        >
-          لغو انتخاب
-        </Button>
-        <BulkUpdateProductsModal
-          selectedCount={selectedItems.length}
-          onConfirm={handleBulkUpdate}
-        />
-{/*         <BaseModal
+    <div className="flex items-center gap-2">
+      <Button
+        color="default"
+        variant="flat"
+        onPress={onClearSelection}
+        size="sm"
+      >
+        لغو انتخاب
+      </Button>
+      <BulkUpdateProductsModal
+        selectedCount={selectedItems.length}
+        onConfirm={handleBulkUpdate}
+      />
+      {/*         <BaseModal
           title="حذف محصولات انتخاب‌شده"
           confirmText="بله، حذف شود"
           cancelText="لغو"
@@ -63,7 +60,6 @@ const ProductsBulkActions = ({
         >
           با حذف محصولات انتخاب‌شده، بازگردانی آن‌ها ممکن نیست. آیا مطمئن هستید؟
         </BaseModal> */}
-      </div>
     </div>
   );
 };

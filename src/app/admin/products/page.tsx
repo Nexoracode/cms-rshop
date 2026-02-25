@@ -79,7 +79,6 @@ const Products = () => {
             onClearSelection={() => setSelectedItems([])}
           />
         )}
-
         {products?.data?.items?.map((product: any) => (
           <SelectableCard
             key={product.id}
