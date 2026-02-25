@@ -72,6 +72,7 @@ const BaseModal: React.FC<BaseModalProps> = ({
           cloneElement(trigger as React.ReactElement<any>, {
             onClick: (e: any) => {
               (trigger as any).props.onClick?.(e);
+              e.stopPropagation();
               handleOpenChange(true);
             },
           })
