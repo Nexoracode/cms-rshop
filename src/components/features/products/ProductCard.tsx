@@ -12,6 +12,7 @@ import { PiResizeBold } from "react-icons/pi";
 import { HiOutlineStar } from "react-icons/hi2";
 import { FiMoon } from "react-icons/fi";
 import { RiSunLine } from "react-icons/ri";
+import OptionButton from "@/components/ui/buttons/OptionButton";
 
 type Props = {
   product: any;
@@ -34,14 +35,29 @@ const ProductCard: React.FC<Props> = ({
       className={`min-w-[250px] w-full ${
         forceMobileLayout ? "sm:flex-col" : ""
       }`}
-      redirect={`/admin/products/create?edit_id=${id}&type=infos`}
-      bodyClassName="flex flex-row items-center"
+      bodyClassName="flex flex-row items-center group relative"
     >
       <div
         className={`w-full h-full flex flex-col items-center ${
           forceMobileLayout ? "sm:flex-row" : ""
         } gap-4`}
       >
+        <div className="absolute inset-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all w-full h-full bg-black/20 z-10 rounded-xl">
+          {!disableAction && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex items-center gap-2">
+              <OptionButton
+                title="ویرایش"
+                className="bg-white"
+                href={`/admin/products/create?edit_id=${id}&type=infos`}
+              />
+              <OptionButton
+                title="تنوع محصول"
+                className="bg-white"
+                href={`/admin/products/create?edit_id=${id}&type=variant`}
+              />
+            </div>
+          )}
+        </div>
         <div
           className={`relative w-full ${
             forceMobileLayout ? "sm:w-[130px] sm:h-[110px]" : ""
@@ -75,7 +91,7 @@ const ProductCard: React.FC<Props> = ({
             } justify-between items-center w-full gap-3`}
           >
             <div
-              className={`text-[15px] text-black/80 flex flex-col ${
+              className={`text-[15px] text-black/80 group-hover:blur-lg flex flex-col ${
                 forceMobileLayout ? "sm:flex-row" : ""
               } items-center gap-1`}
             >
@@ -92,15 +108,15 @@ const ProductCard: React.FC<Props> = ({
             </div>
 
             {!disableAction && (
-              <div className="flex">
+              <div className="flex items-center z-20 rounded-lg overflow-hidden">
                 <ActionButton
                   icon={<MdOutlineCategory size={18} />}
-                  route={`/admin/products/create?edit_id=${id}&type=variant`}
+                  onClick={() => {}}
                   className={`w-full sm:w-fit rounded-sm bg-white hover:bg-slate-50 ${
                     product?.variants?.length
                       ? "bg-purple-100 text-purple-600"
                       : ""
-                  } border-slate-200 text-gray-700 pl-3 hover:pr-3`}
+                  } border-slate-200 text-gray-700 pl-3 pr-3`}
                 />
                 <ActionButton
                   icon={
@@ -120,7 +136,7 @@ const ProductCard: React.FC<Props> = ({
           </div>
 
           {/* Footer */}
-          <div className="flex items-end justify-between">
+          <div className="flex items-end justify-between group-hover:blur-lg">
             <div className="flex flex-col gap-2">
               <div className={`bg-white p-1 flex items-center gap-2.5`}>
                 {product.is_same_day_shipping && (
