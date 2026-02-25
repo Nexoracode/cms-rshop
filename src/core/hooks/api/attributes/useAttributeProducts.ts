@@ -31,6 +31,7 @@ export const useCreateAttributeProduct = () => {
         queryClient.invalidateQueries({ queryKey: ["product-attributes"] });
       }
       queryClient.invalidateQueries({ queryKey: ["one-product"] });
+      queryClient.invalidateQueries({ queryKey: ["all-products"] });
     },
   });
 };

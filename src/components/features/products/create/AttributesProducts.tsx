@@ -6,12 +6,12 @@ import { useAttributeContext } from "./context/AttributeContext";
 import SortableAttributeNodes from "./SortableAttributeNodes/SortableAttributeNodes";
 import { useEffect, useState, useMemo } from "react";
 import SpecTree from "./helpers/SpecTree";
-import { BiCategoryAlt } from "react-icons/bi";
 import BaseTabs, { BaseTabItem } from "@/components/ui/BaseTabs";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import AttributesModal from "./AttributesProduct/AttributesModal";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import VaraintsForm from "./variant/VaraintsForm";
+import { MdOutlineCategory } from "react-icons/md";
 
 const AttributesProducts = () => {
   const pathname = usePathname();
@@ -135,7 +135,7 @@ const AttributesProducts = () => {
         />
       }
       headerProps={{
-        icon: <BiCategoryAlt className="text-xl" />,
+        icon: <MdOutlineCategory className="text-xl" />,
         title: "ویژگی ها و تنوع محصولات",
         children: <AttributesModal />,
       }}

@@ -18,6 +18,7 @@ type Props = {
   isDisabledEdit?: boolean;
   isActiveHeader?: boolean;
   onOpenChange?: (open: boolean) => void;
+  product_id?: number;
 };
 
 const generateSKU = () => {
@@ -32,9 +33,10 @@ export const AttributesContent = ({
   isDisabledEdit = true,
   isActiveHeader = true,
   onOpenChange,
+  product_id,
 }: Props) => {
   const sp = useSearchParams();
-  const editId = sp.get("edit_id");
+  const editId = product_id || sp.get("edit_id");
   const page = editId && !isNaN(+editId) ? +editId : 1;
 
   //
@@ -122,9 +124,9 @@ export const AttributesContent = ({
     <div className="flex flex-col gap-6">
       <AddNewAttrGroup isDisabledEdit={isDisabledEdit} />
 
-      <AddNewAttribute isDisabledEdit={isDisabledEdit}/>
+      <AddNewAttribute isDisabledEdit={isDisabledEdit} />
 
-      <AddNewAttributeValue isDisabledEdit={isDisabledEdit}/>
+      <AddNewAttributeValue isDisabledEdit={isDisabledEdit} />
 
       {isActiveHeader ? (
         <FormActionButtons

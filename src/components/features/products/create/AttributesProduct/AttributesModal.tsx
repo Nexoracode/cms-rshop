@@ -3,7 +3,7 @@
 import BaseModal from "@/components/ui/modals/BaseModal";
 import { AttributesContent } from "./AttributesContent";
 import { LuPlus } from "react-icons/lu";
-import { TbCategory2 } from "react-icons/tb";
+import { MdOutlineCategory } from "react-icons/md";
 
 const AttributesModal = () => {
   return (
@@ -16,7 +16,7 @@ const AttributesModal = () => {
         icon: <LuPlus className="text-lg" />,
         className: "bg-secondary-light text-secondary flex-1"
       }}
-      icon={<TbCategory2 />}
+      icon={<MdOutlineCategory />}
     >
       <AttributesContent />
     </BaseModal>

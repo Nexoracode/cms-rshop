@@ -13,6 +13,8 @@ import { HiOutlineStar } from "react-icons/hi2";
 import { FiMoon } from "react-icons/fi";
 import { RiSunLine } from "react-icons/ri";
 import OptionButton from "@/components/ui/buttons/OptionButton";
+import BaseModal from "@/components/ui/modals/BaseModal";
+import { AttributesContent } from "./create/AttributesProduct/AttributesContent";
 
 type Props = {
   product: any;
@@ -109,15 +111,26 @@ const ProductCard: React.FC<Props> = ({
 
             {!disableAction && (
               <div className="flex items-center z-20 rounded-lg overflow-hidden">
-                <ActionButton
-                  icon={<MdOutlineCategory size={18} />}
-                  onClick={() => {}}
-                  className={`w-full sm:w-fit rounded-sm bg-white hover:bg-slate-50 ${
-                    product?.variants?.length
-                      ? "bg-purple-100 text-purple-600"
-                      : ""
-                  } border-slate-200 text-gray-700 pl-3 pr-3`}
-                />
+                <BaseModal
+                  title="مدیریت ویژگی‌ها"
+                  isActiveFooter={false}
+                  size="xl"
+                  trigger={
+                    <div>
+                      <ActionButton
+                        icon={<MdOutlineCategory size={18} />}
+                        className={`w-full sm:w-fit rounded-sm bg-white hover:bg-slate-50 ${
+                          product?.variants?.length
+                            ? "bg-purple-100 text-purple-600"
+                            : ""
+                        } border-slate-200 text-gray-700 pl-3 pr-3`}
+                      />
+                    </div>
+                  }
+                  icon={<MdOutlineCategory />}
+                >
+                  <AttributesContent product_id={product.id} />
+                </BaseModal>
                 <ActionButton
                   icon={
                     !product.is_visible ? (

@@ -15,6 +15,7 @@ export const useAddNewVariantProduct = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["one-product"] });
+      queryClient.invalidateQueries({ queryKey: ["all-products"] });
     },
   });
 };
