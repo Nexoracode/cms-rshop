@@ -35,7 +35,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`bg-gray-100 rounded-lg p-1.5 hover:opacity-70 transition-all ${
+      className={`bg-gray-100 rounded-lg p-1.5 transition-all ${
         className || ""
       }`}
     >

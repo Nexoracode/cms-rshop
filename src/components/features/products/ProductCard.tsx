@@ -5,11 +5,13 @@ import BaseCard from "@/components/ui/BaseCard";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { MdOutlineCategory } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
-import { IoSparklesOutline } from "react-icons/io5";
 import Image from "next/image";
 import { LuEye } from "react-icons/lu";
 import { useProductUpdate } from "@/core/hooks/api/products/useProduct";
 import { PiResizeBold } from "react-icons/pi";
+import { HiOutlineStar } from "react-icons/hi2";
+import { FiMoon } from "react-icons/fi";
+import { RiSunLine } from "react-icons/ri";
 
 type Props = {
   product: any;
@@ -90,22 +92,28 @@ const ProductCard: React.FC<Props> = ({
             </div>
 
             {!disableAction && (
-              <div className="flex gap-2">
+              <div className="flex">
                 <ActionButton
                   icon={<MdOutlineCategory size={18} />}
                   route={`/admin/products/create?edit_id=${id}&type=variant`}
-                  className={
+                  className={`w-full sm:w-fit rounded-sm bg-white hover:bg-slate-50 ${
                     product?.variants?.length
                       ? "bg-purple-100 text-purple-600"
                       : ""
-                  }
+                  } border-slate-200 text-gray-700 pl-3 hover:pr-3`}
                 />
                 <ActionButton
-                  icon={<LuEye size={18} />}
+                  icon={
+                    !product.is_visible ? (
+                      <FiMoon size={18} />
+                    ) : (
+                      <RiSunLine size={18} />
+                    )
+                  }
                   onClick={() => {
                     productUpdate({ is_visible: !product.is_visible });
                   }}
-                  className={`${product.is_visible ? "" : "text-orange-600 border-orange-300 bg-orange-100"} hover:text-orange-600 hover:border-orange-300 hover:bg-orange-100 !opacity-100`}
+                  className={`w-full sm:w-fit rounded-sm bg-white ${!product.is_visible ? "hover:bg-black/70 hover:text-white" : "hover:bg-yellow-100 hover:text-yellow-700"}  border-slate-200 text-gray-700 border-r pr-3 pl-3`}
                 />
               </div>
             )}
@@ -115,20 +123,14 @@ const ProductCard: React.FC<Props> = ({
           <div className="flex items-end justify-between">
             <div className="flex flex-col gap-2">
               <div className={`bg-white p-1 flex items-center gap-2.5`}>
+                {product.is_same_day_shipping && (
+                  <TbTruckDelivery className="text-orange-500" size={17} />
+                )}
                 {product.helper && (
-                  <div className="bg-white rounded-lg border border-green-300 p-1">
-                    <PiResizeBold className="text-green-600" size={16} />
-                  </div>
+                  <PiResizeBold className="text-green-600" size={17} />
                 )}
                 {product.is_featured && (
-                  <div className="bg-white rounded-lg border border-fuchsia-300 p-1">
-                    <IoSparklesOutline className="text-fuchsia-500" size={16} />
-                  </div>
-                )}
-                {product.is_same_day_shipping && (
-                  <div className="bg-white rounded-lg border border-fuchsia-300 p-1">
-                    <TbTruckDelivery className="text-orange-500" size={16} />
-                  </div>
+                  <HiOutlineStar className="text-fuchsia-500" size={17} />
                 )}
               </div>
               <p className="text-gray-600 text-[13px]">
