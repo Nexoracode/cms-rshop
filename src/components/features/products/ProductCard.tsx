@@ -6,7 +6,6 @@ import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { MdOutlineCategory } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import Image from "next/image";
-import { LuEye } from "react-icons/lu";
 import { useProductUpdate } from "@/core/hooks/api/products/useProduct";
 import { PiResizeBold } from "react-icons/pi";
 import { HiOutlineStar } from "react-icons/hi2";
