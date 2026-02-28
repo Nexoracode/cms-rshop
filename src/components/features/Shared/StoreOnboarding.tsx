@@ -10,14 +10,14 @@ type StoreOnboardingProps = {
 
 const StoreOnboarding: React.FC<StoreOnboardingProps> = ({ className }) => {
   const { data: settings, isLoading } = useGetSettings();
-  
+
   const requiredKeys = [
-    'shop_bank_name',
-    'shop_card_holder', 
-    'shop_card_number',
-    'shop_iban',
-    'contact_email',
-    'contact_phone'
+    "shop_bank_name",
+    "shop_card_holder",
+    "shop_card_number",
+    "shop_iban",
+    "contact_email",
+    "contact_phone",
   ];
 
   if (isLoading) {
@@ -30,6 +30,7 @@ const StoreOnboarding: React.FC<StoreOnboardingProps> = ({ className }) => {
         <Alert
           color={"warning"}
           title={"برای نمایش فروشگاه باید اطلاعات فروشگاه را کامل وارد کنید"}
+          className="shadow-md"
           endContent={
             <Button
               color="warning"
@@ -46,9 +47,9 @@ const StoreOnboarding: React.FC<StoreOnboardingProps> = ({ className }) => {
     );
   }
 
-  const isComplete = requiredKeys.every(key => {
+  const isComplete = requiredKeys.every((key) => {
     const item = settings.data.find((setting: any) => setting.key === key);
-    return item && item.value && item.value.trim() !== '';
+    return item && item.value && item.value.trim() !== "";
   });
 
   if (!isComplete) {
@@ -57,6 +58,7 @@ const StoreOnboarding: React.FC<StoreOnboardingProps> = ({ className }) => {
         <Alert
           color={"warning"}
           title={"برای نمایش فروشگاه باید اطلاعات فروشگاه را کامل وارد کنید"}
+          className="shadow-md"
           endContent={
             <Button
               color="warning"
