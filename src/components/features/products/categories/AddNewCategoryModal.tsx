@@ -117,7 +117,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       return;
     }
 
-    const { discount, media, slug, title, parent_id } = defaultValues;
+    const { discount, media, slug, title, parent_id, level, icon } = defaultValues;
 
     setForm({
       title,
@@ -127,11 +127,11 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       media,
       mediaId: media?.id ?? "",
       mediaFile: null,
-      icon_id: defaultValues?.icon?.id ?? null,
-      level: defaultValues?.level ?? 1,
+      icon_id: icon?.id,
+      level: level,
     });
 
-    setIsParent(parent_id === 0);
+    setIsParent(level === 1);
   };
 
   return (
