@@ -43,7 +43,7 @@ const ProductCard: React.FC<Props> = ({
           forceMobileLayout ? "sm:flex-row" : ""
         } gap-4`}
       >
-        <div className="absolute inset-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all w-full h-full bg-black/20 z-10 rounded-xl">
+        <div className={`absolute inset-0 opacity-0 invisible ${!disableAction ? "group-hover:opacity-100 group-hover:visible" : ""} transition-all w-full h-full bg-black/20 z-10 rounded-xl`}>
           {!disableAction && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex items-center gap-2">
               <OptionButton
@@ -92,7 +92,7 @@ const ProductCard: React.FC<Props> = ({
             } justify-between items-center w-full gap-3`}
           >
             <div
-              className={`text-[15px] text-black/80 group-hover:blur-lg flex flex-col ${
+              className={`text-[15px] text-black/80 ${!disableAction ? "group-hover:blur-lg" : ""} flex flex-col ${
                 forceMobileLayout ? "sm:flex-row" : ""
               } items-center gap-1`}
             >
@@ -148,7 +148,7 @@ const ProductCard: React.FC<Props> = ({
           </div>
 
           {/* Footer */}
-          <div className="flex items-end justify-between group-hover:blur-lg">
+          <div className={`flex items-end justify-between ${!disableAction ? "group-hover:blur-lg" : ""}`}>
             <div className="flex flex-col gap-2">
               <div className={`bg-white p-1 flex items-center gap-2.5`}>
                 {product.is_same_day_shipping && (

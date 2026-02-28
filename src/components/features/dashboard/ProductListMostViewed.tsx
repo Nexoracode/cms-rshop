@@ -26,7 +26,7 @@ const ProductListMostViewed = () => {
       isExistItems={isExistItems}
     >
       {products?.data?.items?.map((product: any, index: number) => (
-        <ProductCard key={index} product={product} />
+        <ProductCard key={index} product={product} disableAction/>
       ))}
     </UnifiedCard>
   );
