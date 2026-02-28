@@ -13,15 +13,26 @@ import { UserAddress } from "../../customer.types";
 type Props = {
   userId: number;
   address: UserAddress;
+  disableAction?: boolean;
 };
 
-const UserAddressCard: React.FC<Props> = ({ address, userId }) => {
+const UserAddressCard: React.FC<Props> = ({
+  address,
+  userId,
+  disableAction = false,
+}) => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  console.log(address);
-  
+
   return (
     <>
-      <BaseCard wrapperContents onClick={() => setIsAddressModalOpen(true)}>
+      <BaseCard
+        wrapperContents
+        onClick={() => {
+          if (!disableAction) {
+            setIsAddressModalOpen(true);
+          }
+        }}
+      >
         {/* Header */}
         <div className="flex items-center justify-between">
           <h4 className="text-gray-800 font-semibold">
@@ -90,7 +101,9 @@ const UserAddressCard: React.FC<Props> = ({ address, userId }) => {
                 <p className="text-xs text-gray-500 truncate mb-1">
                   نام تحویل‌گیرنده
                 </p>
-                <p className="text-[14px] font-medium">{address.recipient_name}</p>
+                <p className="text-[14px] font-medium">
+                  {address.recipient_name}
+                </p>
               </div>
             </div>
           )}

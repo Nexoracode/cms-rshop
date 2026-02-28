@@ -43,7 +43,7 @@ const SelectableUserAddressCard: React.FC<Props> = ({
               if (selected) onChange(id as number);
             }}
           >
-            <UserAddressCard address={address} userId={userId} />
+            <UserAddressCard address={address} userId={userId} disableAction/>
           </SelectableCard>
         ))}
       </div>
