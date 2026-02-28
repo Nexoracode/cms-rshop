@@ -88,13 +88,7 @@ export const useUpdateCategory = () => {
       fetcher({
         route: `/category/${data.id}`,
         method: "PATCH",
-        body: {
-          title: data.title,
-          slug: data.slug,
-          mediaId: data.mediaId,
-          discount: data.discount,
-          parentId: data.parentId,
-        },
+        body: data,
         isActiveToast: true,
         loadingText: "در حال بروزرسانی دسته بندی",
         successText: "دسته بندی با موفقیت بروزرسانی شد!"

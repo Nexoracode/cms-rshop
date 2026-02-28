@@ -30,7 +30,7 @@ export const IconsSelectionProvider: React.FC<{
   const [selectedIcons, setSelectedIcons] = useState<Icon[]>([]);
 
   useEffect(() => {
-    if (initialIcons.length) {
+    if (initialIcons?.length) {
       setSelectedIcons(initialIcons);
     }
   }, [initialIcons]);

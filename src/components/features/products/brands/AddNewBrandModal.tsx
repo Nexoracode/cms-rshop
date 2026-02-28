@@ -39,7 +39,7 @@ const AddNewBrandModal: React.FC<Props> = ({
     {
       onValidate: validateBrand,
       runValidationOnChange: true,
-    }
+    },
   );
 
   const { mutateAsync: uploadMedias, isPending: isPendingUpload } =
@@ -50,13 +50,7 @@ const AddNewBrandModal: React.FC<Props> = ({
     useUpdateBrand();
 
   useEffect(() => {
-    if (defaultValues) {
-      setForm({
-        name: defaultValues.name ?? "",
-        slug: defaultValues.slug ?? "",
-        logo: defaultValues.logo ?? null,
-      });
-    }
+    setFormHandler();
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
@@ -85,6 +79,16 @@ const AddNewBrandModal: React.FC<Props> = ({
 
   const resetForm = () => reset();
 
+  const setFormHandler = () => {
+    if (defaultValues) {
+      setForm({
+        name: defaultValues.name ?? "",
+        slug: defaultValues.slug ?? "",
+        logo: defaultValues.logo ?? null,
+      });
+    }
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -99,6 +103,9 @@ const AddNewBrandModal: React.FC<Props> = ({
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
+      onCancel={() => {
+        !brandId ? resetForm() : setFormHandler();
+      }}
       title={brandId ? "ویرایش برند" : "افزودن برند جدید"}
       confirmText={brandId ? "ویرایش برند" : "ایجاد برند"}
       onConfirm={handleSubmit}

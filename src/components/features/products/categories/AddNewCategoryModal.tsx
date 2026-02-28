@@ -45,8 +45,9 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   onOpenChange,
 }) => {
   const [isParent, setIsParent] = useState(true);
-  console.log(defaultValues);
-  
+
+  console.log("Category", defaultValues);
+
   const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
   const { mutateAsync: updateCategory, isPending: isUpdating } =
@@ -68,27 +69,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   });
 
   useEffect(() => {
-    if (!defaultValues) {
-      setForm(initialCategoryForm);
-      setIsParent(true);
-      return;
-    }
-
-    const { discount, media, slug, title, parent_id } = defaultValues;
-
-    setForm({
-      title,
-      slug,
-      discount,
-      parentId: parent_id,
-      media,
-      mediaId: media?.id ?? "",
-      mediaFile: null,
-      icon_id: defaultValues?.icon?.id ?? null,
-      level: defaultValues?.level ?? 1,
-    });
-
-    setIsParent(parent_id === 0);
+    setFormHandler();
   }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
@@ -129,6 +110,30 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setIsParent(false);
   };
 
+  const setFormHandler = () => {
+    if (!defaultValues) {
+      setForm(initialCategoryForm);
+      setIsParent(true);
+      return;
+    }
+
+    const { discount, media, slug, title, parent_id } = defaultValues;
+
+    setForm({
+      title,
+      slug,
+      discount,
+      parentId: parent_id,
+      media,
+      mediaId: media?.id ?? "",
+      mediaFile: null,
+      icon_id: defaultValues?.icon?.id ?? null,
+      level: defaultValues?.level ?? 1,
+    });
+
+    setIsParent(parent_id === 0);
+  };
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -143,6 +148,9 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
               className: "bg-secondary-light text-secondary mb-1",
             }
       }
+      onCancel={() => {
+        !categoryId ? resetForm() : setFormHandler();
+      }}
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
       onConfirm={handleSubmit}
