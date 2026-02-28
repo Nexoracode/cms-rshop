@@ -71,7 +71,7 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
                 {searchInp ? (
                   <EmptyStateCard
                     message="جستجو شما نتیجه ای نداشت!!"
-                    icon={<BiSearchAlt className="text-warning-500" />}
+                    icon={BiSearchAlt}
                   />
                 ) : (
                   <EmptyStateCard />
