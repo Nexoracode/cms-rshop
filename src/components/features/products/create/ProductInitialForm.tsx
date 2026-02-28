@@ -33,6 +33,7 @@ import { CreateProductRequest, ProductResponse } from "./types/product";
 import { mapAPIToLocalProduct } from "./product-helpers";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import SizeGuideSelect from "../size-guide/SizeGuideSelect";
+import { IconsSelectionProvider } from "../../store/icons/SelectableIconBox/IconsSelectionContext";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -206,13 +207,15 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         </div>
 
         <div className="flex flex-col md:flex-row gap-4">
-          <CategorySelect
-            value={form.category_id}
-            onChange={(val) => handleFieldChange("category_id", Number(val))}
-            withAddModal
-            errorMessage={errors.category_id}
-            isRequired
-          />
+          <IconsSelectionProvider>
+            <CategorySelect
+              value={form.category_id}
+              onChange={(val) => handleFieldChange("category_id", Number(val))}
+              withAddModal
+              errorMessage={errors.category_id}
+              isRequired
+            />
+          </IconsSelectionProvider>
 
           <BrandSelect
             value={form.brand_id}
