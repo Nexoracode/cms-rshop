@@ -10,6 +10,7 @@ import { useGetOrders } from "@/core/hooks/api/orders/useOrder";
 // Icons
 import { IoReceiptOutline } from "react-icons/io5";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
+import StoreOnboarding from "@/components/features/Shared/StoreOnboarding";
 
 const Orders = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -27,6 +28,7 @@ const Orders = () => {
   return (
     <>
       <ShopInfosCard />
+      <StoreOnboarding/>
       <UnifiedCard
         searchFilter={<OrdersFilter />}
         headerProps={{

@@ -15,6 +15,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 // Icons
 import { LuPackage, LuPlus } from "react-icons/lu";
 import ShopInfosCard from "@/components/layout/ArshopCard/ShopInfosCard";
+import StoreOnboarding from "@/components/features/Shared/StoreOnboarding";
 
 const Products = () => {
   const { page, sortBy, search, filter, isFilteredView } =
@@ -33,6 +34,7 @@ const Products = () => {
   return (
     <>
       <ShopInfosCard />
+      <StoreOnboarding/>
       <UnifiedCard
         searchFilter={<ProductsFilter />}
         headerProps={

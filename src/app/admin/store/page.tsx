@@ -27,6 +27,7 @@ import { MdOutlineCategory } from "react-icons/md";
 import { TfiShoppingCartFull } from "react-icons/tfi";
 import { LiaTruckLoadingSolid } from "react-icons/lia";
 import ReservationTimesModal from "@/components/features/store/ReservationTimesModal";
+import StoreOnboarding from "@/components/features/Shared/StoreOnboarding";
 
 const storeSettingsLinks = [
   {
@@ -149,6 +150,7 @@ const Settings: React.FC = () => {
   return (
     <>
       <ShopInfosCard />
+      <StoreOnboarding />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
         <BaseCard
           className="shadow-md mx-auto sm:mx-0 max-w-[392px] w-full rounded-2xl"
