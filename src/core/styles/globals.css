@@ -43,7 +43,7 @@
  :where(*):not(.ltr, .ltr *) { direction: rtl; }
 
  *{
-  font-family: Dana-DemiBold
+  font-family: Dana-DemiBold !important
  }
 
   body {
