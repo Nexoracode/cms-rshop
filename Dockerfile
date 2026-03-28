@@ -2,6 +2,9 @@
 FROM node:20-bookworm AS builder
 WORKDIR /app
 
+# تنظیم میرور NPM لیارا برای دسترسی آفلاین
+RUN npm config set registry https://package-mirror.liara.ir/repository/npm/ --global
+
 # نصب وابستگی‌ها
 COPY package*.json ./
 RUN npm ci
