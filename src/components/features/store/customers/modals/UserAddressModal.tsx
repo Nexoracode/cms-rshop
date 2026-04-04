@@ -104,10 +104,14 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     <BaseModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      triggerProps={{
-        title: "+ افزودن",
-        className: "bg-secondary-light text-secondary",
-      }}
+      triggerProps={
+        defaultData
+          ? null
+          : {
+              title: "+ افزودن",
+              className: "bg-secondary-light text-secondary",
+            }
+      }
       onCancel={() => {
         !userId ? resetForm() : setFormHandler();
       }}
