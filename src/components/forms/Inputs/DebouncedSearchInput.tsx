@@ -15,11 +15,11 @@ const DebouncedSearchURL: React.FC<Props> = ({ placeholder }) => {
     <Input
       dir="rtl"
       labelPlacement="outside"
-      startContent={<FiSearch className="text-lg pointer-events-none" />}
+      startContent={<FiSearch className="text-lg pointer-events-none text-slate-700" />}
       placeholder={placeholder}
       classNames={{
-        inputWrapper: "bg-transparent !bg-transparent shadow-none",
-        input: "bg-transparent",
+        inputWrapper: "bg-transparent !bg-transparent shadow-none !border-none",
+        input: "placeholder:!text-[13px]"
       }}
       value={value}
       onChange={(e) => setValue(e.target.value)}
