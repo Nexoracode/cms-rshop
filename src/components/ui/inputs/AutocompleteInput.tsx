@@ -93,7 +93,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       labelPlacement="outside"
       isRequired={isRequired}
       startContent={<FiSearch className="text-lg pointer-events-none" />}
-      className={`w-full ${className}`}
+      className={`w-full ${className} autocomplete-inp`}
       selectedKey={selectedId ? String(selectedId) : undefined}
       onSelectionChange={handleSelectionChange}
       inputValue={localSearch}

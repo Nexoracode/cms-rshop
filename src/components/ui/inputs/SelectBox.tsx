@@ -61,59 +61,50 @@ const SelectBox: React.FC<Props> = ({
   addButton = null,
   className,
 }) => {
-  // value ممکنه عدد باشه؛ فقط null/undefined رو به "" تبدیل کن
   const valueStr = value != null ? String(value) : "";
 
   return (
-    <>
-        <Select
-          dir="rtl"
-          label={label}
-          labelPlacement="outside"
-          startContent={startContent}
-          selectedKeys={valueStr ? [valueStr] : []}
-          placeholder={placeholder ?? "انتخاب کنید"}
-          onSelectionChange={(keys) => {
-            const val = Array.from(keys)[0] as string | undefined;
-            onChange(val ?? "");
-          }}
-          isDisabled={disabled}
-          size={size}
-          variant={variant}
-          isRequired={isRequired}
-          isInvalid={!!errorMessage?.length}
-          errorMessage={
-            errorMessage?.length ? (
-              <FieldErrorText error={errorMessage} />
-            ) : undefined
-          }
-          description={description}
-          className={className}
-        >
-          {options.length ? (
-            options.map((o: any) => (
-              <SelectItem key={String(o.key)}>{o.title}</SelectItem>
-            ))
-          ) : (
-            <SelectItem key="-1" isDisabled>
-              آیتمی موجود نیست
-            </SelectItem>
-          )}
-        </Select>
-
-{/*       {addButton && (
-        <button
-          type="button"
-          onClick={addButton.onClick}
-          className={
-            addButton.className ??
-            "w-24 text-center text-purple-700 bg-purple-200 rounded-xl py-1.5"
-          }
-        >
-          {addButton.label ?? "+ افزودن"}
-        </button>
-      )} */}
-    </>
+    <Select
+      dir="rtl"
+      label={label}
+      labelPlacement="outside"
+      startContent={startContent}
+      selectedKeys={valueStr ? [valueStr] : []}
+      placeholder={placeholder ?? "انتخاب کنید"}
+      onSelectionChange={(keys) => {
+        const val = Array.from(keys)[0] as string | undefined;
+        onChange(val ?? "");
+      }}
+      isDisabled={disabled}
+      size={size}
+      variant={variant}
+      isRequired={isRequired}
+      isInvalid={!!errorMessage?.length}
+      errorMessage={
+        errorMessage?.length ? (
+          <FieldErrorText error={errorMessage} />
+        ) : undefined
+      }
+      description={description}
+      className={className}
+      classNames={{
+        selectorIcon: "!text-slate-400 w-5 h-5",
+        value: `!text-slate-700 !text-[13px]`,
+        label: "text-right !-mt-2 !text-[13px] !text-slate-700",
+        trigger:
+          "!bg-transparent !transition-all shadow-none border border-slate-200 rounded-lg h-[48px] hover:!bg-transparent focus:!border-sky-500 focus:!bg-transparent",
+      }}
+    >
+      {options.length ? (
+        options.map((o: any) => (
+          <SelectItem key={String(o.key)}>{o.title}</SelectItem>
+        ))
+      ) : (
+        <SelectItem key="-1" isDisabled>
+          آیتمی موجود نیست
+        </SelectItem>
+      )}
+    </Select>
   );
 };
 

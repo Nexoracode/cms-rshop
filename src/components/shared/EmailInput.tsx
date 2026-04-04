@@ -97,6 +97,12 @@ export default function EmailInput({
           )
         ) : undefined
       }
+      classNames={{
+        input: `placeholder:!text-slate-400 !text-slate-700 text-[13px]`,
+        label: "text-right !-mt-2 !text-[13px] !text-slate-700",
+        inputWrapper:
+          "rtl:direction-rtl bg-transparent !transition-all px-4 shadow-none border border-slate-200 rounded-lg h-[48px] hover:!bg-transparent focus-within:border-sky-500 focus-within:!bg-transparent",
+      }}
     />
   );
 }

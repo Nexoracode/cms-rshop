@@ -33,6 +33,29 @@
   --error: #FEE7EF;
 }
 
+
+[data-slot="input-wrapper"] {
+    background-color: transparent !important;
+    transition-property: all;
+    transition-duration: 150ms;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    height: 48px;
+}
+
+/* حالت hover */
+[data-slot="input-wrapper"]:hover {
+    background-color: transparent !important;
+}
+
+/* حالت focus */
+[data-slot="input-wrapper"]:focus {
+    border-color: #0ea5e9 !important;
+    background-color: transparent !important;
+}
+
+
 @layer base {
   html {
     @apply !bg-gray-100;

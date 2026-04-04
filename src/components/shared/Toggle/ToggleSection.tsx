@@ -26,11 +26,11 @@ const ToggleSection: FC<Props> = ({
 
   return (
     <div
-      className={`w-full flex flex-col justify-between border border-slate-200 p-2.5 ${
+      className={`w-full flex flex-col justify-between border border-slate-200 px-2 ${
         subtitle ? "py-2" : ""
-      } rounded-xl`}
+      } rounded-lg`}
     >
-      <div className="flex items-center justify-between text-gray-700">
+      <div className="flex items-center justify-between text-gray-700 h-[48px]">
         <div className="flex flex-col">
           <p className="text-gray-700">{title}</p>
           {subtitle ? (
@@ -45,7 +45,7 @@ const ToggleSection: FC<Props> = ({
       </div>
 
       {shouldShowChildren && (
-        <div className={`${children ? "mt-4" : ""}`}>{children}</div>
+        <div className={`${children ? "mt-2 pb-4 px-2" : ""}`}>{children}</div>
       )}
     </div>
   );

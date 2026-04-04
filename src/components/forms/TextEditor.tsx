@@ -31,7 +31,7 @@ export default function TextEditor({
           tinymceScriptSrc="/tinymce/tinymce/tinymce.min.js"
           init={{
             language: "fa",
-            height: 500,
+            height: 700,
             directionality: "rtl",
             content_style: `
             @font-face {

@@ -39,67 +39,71 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({
         showIconInActionSlot: true,
       }}
     >
-      {/* کد رهگیری */}
-      <InfoRow
-        label="کد رهگیری"
-        value={payment?.tracking_code ? `#${payment.tracking_code}` : "—"}
-        hoverable={disabled}
-      />
-
-      {/* مبلغ */}
-      <InfoRow
-        label="مبلغ پرداخت"
-        value={payment?.amount ? price(payment.amount) : "—"}
-        isActiveBg={disabled}
-      />
-
-      {/* روش پرداخت */}
-      <InfoRow
-        label="روش پرداخت"
-        value={
-          payment
-            ? payment?.payment_method === "online"
-              ? "آنلاین"
-              : "کارت به کارت"
-            : "—"
-        }
-      />
-
-      {/* درگاه پرداخت */}
-      <InfoRow
-        label="درگاه پرداخت"
-        value={payment?.gateway ? getGatewayName(payment.gateway) : "—"}
-        isActiveBg={disabled}
-      />
-
-      {/* تاریخ واریز */}
-      <InfoRow
-        label="تاریخ واریز"
-        value={payment?.deposit_date ? toPersianUTC(payment.deposit_date) : "—"}
-      />
-
-      <InfoRow
-        label="وضعیت پرداخت"
-        value={payment ? getPaymentStatusText(payment?.status) : "—"}
-        isActiveBg={disabled}
-      />
-
-      {/* شماره کارت فرستنده */}
-      {payment?.payment_method === "card_to_card" && (
+      <div className="!space-y-2">
+        {/* کد رهگیری */}
         <InfoRow
-          label="شماره کارت فرستنده"
-          value={payment?.sender_card_number || "—"}
+          label="کد رهگیری"
+          value={payment?.tracking_code ? `#${payment.tracking_code}` : "—"}
+          hoverable={disabled}
         />
-      )}
 
-      {/* یادداشت ادمین */}
-      {payment?.admin_note && (
+        {/* مبلغ */}
         <InfoRow
-          label="یادداشت ادمین"
-          value={payment.admin_note}
+          label="مبلغ پرداخت"
+          value={payment?.amount ? price(payment.amount) : "—"}
           isActiveBg={disabled}
         />
-      )}
+
+        {/* روش پرداخت */}
+        <InfoRow
+          label="روش پرداخت"
+          value={
+            payment
+              ? payment?.payment_method === "online"
+                ? "آنلاین"
+                : "کارت به کارت"
+              : "—"
+          }
+        />
+
+        {/* درگاه پرداخت */}
+        <InfoRow
+          label="درگاه پرداخت"
+          value={payment?.gateway ? getGatewayName(payment.gateway) : "—"}
+          isActiveBg={disabled}
+        />
+
+        {/* تاریخ واریز */}
+        <InfoRow
+          label="تاریخ واریز"
+          value={
+            payment?.deposit_date ? toPersianUTC(payment.deposit_date) : "—"
+          }
+        />
+
+        <InfoRow
+          label="وضعیت پرداخت"
+          value={payment ? getPaymentStatusText(payment?.status) : "—"}
+          isActiveBg={disabled}
+        />
+
+        {/* شماره کارت فرستنده */}
+        {payment?.payment_method === "card_to_card" && (
+          <InfoRow
+            label="شماره کارت فرستنده"
+            value={payment?.sender_card_number || "—"}
+          />
+        )}
+
+        {/* یادداشت ادمین */}
+        {payment?.admin_note && (
+          <InfoRow
+            label="یادداشت ادمین"
+            value={payment.admin_note}
+            isActiveBg={disabled}
+          />
+        )}
+      </div>
     </BaseCard>
   ) : (
     ""
