@@ -2,44 +2,34 @@
 FROM node:20-bookworm AS builder
 WORKDIR /app
 
-# تنظیم میرور NPM لیارا برای دسترسی آفلاین
-RUN npm config set registry https://package-mirror.liara.ir/repository/npm/ --global
+RUN npm config set registry https://package-mirror.liara.ir/repository/npm/
 
-# نصب وابستگی‌ها
 COPY package*.json ./
 RUN npm ci
 
-# کد پروژه
 COPY . .
-ARG NEXT_PUBLIC_BASE_URL
-ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NODE_ENV=production
 
-# مطمئن شوید که next.config.js شما output: 'standalone' نداشته باشد
 RUN npm run build
 
 # ---------- runtime ----------
-FROM node:20-bookworm-slim
+FROM node:20-bookworm-slim AS runner
 WORKDIR /app
 
-# تنظیمات محیط اجرا
+RUN npm config set registry https://package-mirror.liara.ir/repository/npm/
+
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# نصب وابستگی‌های تولیدی
-COPY package*.json ./
-RUN npm ci --omit=dev
-
-# === بخش حیاتی: کپی کردن فایل‌های بیلد استاندارد ===
-# به جای /app/.next/standalone، ما خود /app/.next را کپی می‌کنیم
+# فقط خروجی‌ها + node_modules مرحلهٔ build را کپی می‌کنیم
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-# فایل next.config.js برای اجرای سرور next start نیاز است
-COPY --from=builder /app/next.config.js ./next.config.js
+COPY --from=builder /app/next.config.mjs ./next.config.mjs
 
 EXPOSE 3000
 
-# === بخش حیاتی: تغییر دستور اجرا ===
-# به جای "node standalone/server.js"، ما از "next start" استفاده می‌کنیم
 CMD ["npm", "start"]
