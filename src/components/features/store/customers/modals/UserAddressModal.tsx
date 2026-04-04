@@ -51,10 +51,32 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     useUpdateUserAddress();
 
   useEffect(() => {
-    if (defaultData) {
-      setForm(defaultData);
-    }
+    setFormHandler();
   }, [defaultData]);
+
+  const handleSubmit = () => {
+    const payload = {
+      ...form,
+      recipient_name: form.is_self ? null : form.recipient_name,
+    };
+
+    if (defaultData && updateAddressMutation) {
+      return handleMutation(
+        () =>
+          updateAddressMutation({
+            data: payload,
+            addressId: defaultData.id || 0,
+          }),
+        {
+          resetForm,
+        },
+      );
+    } else {
+      return handleMutation(() => addAddressMutation(payload), {
+        resetForm,
+      });
+    }
+  };
 
   const resetForm = () => {
     setForm({
@@ -72,49 +94,29 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     });
   };
 
-  const handleSubmit = () => {
-    const payload = {
-      ...form,
-      recipient_name: form.is_self ? null : form.recipient_name,
-    };
-
-    if (defaultData && updateAddressMutation) {
-      return handleMutation(
-        () =>
-          updateAddressMutation({
-            data: payload,
-            addressId: defaultData.id || 0,
-          }),
-        {
-          resetForm,
-        }
-      );
-    } else {
-      return handleMutation(() => addAddressMutation(payload), {
-        resetForm,
-      });
+  const setFormHandler = () => {
+    if (defaultData) {
+      setForm(defaultData);
     }
   };
 
   return (
     <BaseModal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      triggerProps={{
+        title: "+ افزودن",
+        className: "bg-secondary-light text-secondary",
+      }}
+      onCancel={() => {
+        !userId ? resetForm() : setFormHandler();
+      }}
       title={defaultData ? "ویرایش آدرس" : "ثبت آدرس جدید"}
       confirmText={defaultData ? "بروزرسانی" : "ثبت آدرس"}
       cancelText="لغو"
       onConfirm={handleSubmit}
-      onCancel={resetForm}
       size="lg"
-      triggerProps={
-        isOpen === undefined
-          ? {
-              title: "+ افزودن",
-              className: "bg-secondary-light text-secondary",
-            }
-          : null
-      }
       trigger={isOpen === undefined ? btnAdd : undefined}
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
       icon={<LuMapPinHouse />}
       isConfirmDisabled={isPendingCreate || isPendingUpdate}
     >
