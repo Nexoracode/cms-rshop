@@ -52,18 +52,14 @@ const BrandSelect: React.FC<Props> = ({
           options.length ? options : [{ id: 0, title: "آیتمی موجود نیست" }]
         }
         selectedId={value ? String(value) : ""}
-        onChange={(val) => {
-          console.log("#$$$$$$$$$$$",val);
-          
-          onChange(val ?? null)
-        }}
+        onChange={(val) => onChange(val ?? null)}
         isRequired={isRequired}
         searchKey="brand"
         syncSearchToUrl
         errorMessage={errorMessage}
       />
 
-      {withAddModal && <AddNewBrandModal />}
+      {withAddModal && <div className="mb-1"><AddNewBrandModal /></div>}
     </div>
   );
 };

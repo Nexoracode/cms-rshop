@@ -62,7 +62,11 @@ const CategorySelect: React.FC<Props> = ({
         errorMessage={errorMessage ?? ""}
       />
 
-      {withAddModal && <AddNewCategoryModal />}
+      {withAddModal && (
+        <div className="mb-1">
+          <AddNewCategoryModal />
+        </div>
+      )}
     </div>
   );
 };

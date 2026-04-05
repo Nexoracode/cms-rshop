@@ -57,7 +57,11 @@ const SizeGuideSelect: React.FC<SizeGuideSelectProps> = ({
         syncSearchToUrl
       />
 
-      {withAddModal && <AddNewSizeGuideModal />}
+      {withAddModal && (
+        <div className="mb-1">
+          <AddNewSizeGuideModal />
+        </div>
+      )}
     </div>
   );
 };

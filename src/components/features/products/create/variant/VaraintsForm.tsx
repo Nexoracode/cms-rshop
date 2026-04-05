@@ -55,7 +55,7 @@ const VaraintsForm: React.FC<VaraintsFormProps> = ({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mb-6">
+      <div className="grid grid-cols-1 gap-6 mb-6">
         {variantsList.map((variant, index) => (
           <VariantEditorCard
             key={variant.id ?? index}

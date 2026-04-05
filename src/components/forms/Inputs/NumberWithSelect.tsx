@@ -122,7 +122,7 @@ const NumberWithSelect: FC<Props> = ({
               onChange={(e) => handleSelectChange(e.target.value)}
               classNames={{
                 trigger:
-                  "!border-0 !pr-6",
+                  "!border-0 !pr-6 !bg-transparent",
               }}
             >
               {options.length ? (
