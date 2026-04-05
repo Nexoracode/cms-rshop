@@ -48,7 +48,7 @@ const initialProductForm: CreateProductRequest = {
   weight_unit: "کیلوگرم",
   is_same_day_shipping: false,
   requires_preparation: false,
-  preparation_days: 0,
+  preparation_days: 1,
   description: "",
   order_limit: 0,
   is_visible: false,
