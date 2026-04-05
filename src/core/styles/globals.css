@@ -7,54 +7,31 @@
 
 :root {
   /* 🌗 Backgrounds */
-  --color-bg: #FFFFFF;            /* اصلی */
-  --color-surface: #F5F5F4;       /* پس زمینه کمی روشن */
-  
+  --color-bg: #ffffff; /* اصلی */
+  --color-surface: #f5f5f4; /* پس زمینه کمی روشن */
+
   /* ⚪ Neutral / Gray */
-  --color-gray-lightest: #F8FAFC; /* خاکستری خیلی روشن */
-  --color-gray-lighter: #EAEBED;  /* خاکستری کم رنگ */
-  
+  --color-gray-lightest: #f8fafc; /* خاکستری خیلی روشن */
+  --color-gray-lighter: #eaebed; /* خاکستری کم رنگ */
+
   /* 🎨 Primary (Purple) */
   --color-primary: #9333ea;
-  --color-primary-light: #F3E8FF;
+  --color-primary-light: #f3e8ff;
 
   /* 🌤️ Secondary (Sky Blue) */
   --color-secondary: #0284c7;
-  --color-secondary-light: #E0F2FE;
+  --color-secondary-light: #e0f2fe;
 
   /* 🖋 Text */
-  --color-text-primary: #1F1F1F;
-  --color-text-secondary: #4B5563;
-  --color-text-muted: #6B7280;
+  --color-text-primary: #1f1f1f;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #6b7280;
 
   /* 🔘 Border */
-  --color-border: #E5E7EB;
+  --color-border: #e5e7eb;
 
-  --error: #FEE7EF;
+  --error: #fee7ef;
 }
-
-
-[data-slot="input-wrapper"] {
-    background-color: transparent !important;
-    transition-property: all;
-    transition-duration: 150ms;
-    box-shadow: none;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
-    height: 48px;
-}
-
-/* حالت hover */
-[data-slot="input-wrapper"]:hover {
-    background-color: transparent !important;
-}
-
-/* حالت focus */
-[data-slot="input-wrapper"]:focus {
-    border-color: #0ea5e9 !important;
-    background-color: transparent !important;
-}
-
 
 @layer base {
   html {
@@ -63,11 +40,13 @@
     scroll-behavior: smooth;
   }
 
- :where(*):not(.ltr, .ltr *) { direction: rtl; }
+  :where(*):not(.ltr, .ltr *) {
+    direction: rtl;
+  }
 
- *{
-  font-family: Dana-DemiBold !important
- }
+  * {
+    font-family: Dana-DemiBold !important;
+  }
 
   body {
     @apply max-w-[1120px] mx-auto p-0 m-0 box-border min-h-[100vh] h-full font-[Dana-DemiBold] bg-gray-100 text-sm;
@@ -75,41 +54,39 @@
   }
 
   input:focus {
-    @apply outline-none
+    @apply outline-none;
   }
 
- /* Scrollbar Global Styles */
+  /* Scrollbar Global Styles */
   ::-webkit-scrollbar {
     width: 5px;
     height: 6px;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: #c9c9c9;
     border-radius: 4px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: #b1b1b1;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: #f0f0f0;
   }
-
 }
 
 @layer utilities {
-
   .is-loading {
-    @apply animate-pulse cursor-default pointer-events-none select-none
+    @apply animate-pulse cursor-default pointer-events-none select-none;
   }
 
   /* کلاس والد */
   .hover-reveal-parent {
     @apply relative;
   }
-  
+
   /* کلاس فرزند: دکمه حذف یا هر المان دیگری که روی هاور ظاهر شود */
   .hover-reveal-child {
     @apply absolute top-2.5 left-2.5 z-50 opacity-0 pointer-events-none transition-all duration-200;
@@ -121,11 +98,10 @@
   }
 
   .deselect-icon {
-    @apply hover-reveal-child bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all
+    @apply hover-reveal-child bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all;
   }
 
   .deselect-icon-show {
-    @apply bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all
+    @apply bg-slate-100 rounded-full text-xl p-1.5 hover:bg-red-50 hover:text-red-600 transition-all;
   }
-
 }

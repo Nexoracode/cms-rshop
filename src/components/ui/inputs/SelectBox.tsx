@@ -87,13 +87,6 @@ const SelectBox: React.FC<Props> = ({
       }
       description={description}
       className={className}
-      classNames={{
-        selectorIcon: "!text-slate-400 w-5 h-5",
-        value: `!text-slate-700 !text-[13px]`,
-        label: "text-right !-mt-2 !text-[13px] !text-slate-700",
-        trigger:
-          "!bg-transparent !transition-all shadow-none border border-slate-200 rounded-lg h-[48px] hover:!bg-transparent focus:!border-sky-500 focus:!bg-transparent",
-      }}
     >
       {options.length ? (
         options.map((o: any) => (

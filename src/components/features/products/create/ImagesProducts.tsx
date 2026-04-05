@@ -94,10 +94,10 @@ const ImagesProducts = ({
     <Card className="w-full shadow-none rounded-none">
       <CardBody className="px-0 py-1">
         <div
-          className={`p-4 ${
+          className={`p-4 rounded-lg ${
             errorMessage
-              ? "border-1.5 border-red-300 rounded-xl"
-              : "border border-slate-300 rounded-xl"
+              ? "border-1.5 border-red-300"
+              : "border border-slate-200"
           }`}
         >
           {mediasUrl.length > 0 && (

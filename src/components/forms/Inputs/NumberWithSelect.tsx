@@ -120,6 +120,10 @@ const NumberWithSelect: FC<Props> = ({
               placeholder="مقداری را وارد کنید"
               selectedKeys={[selectedKey]}
               onChange={(e) => handleSelectChange(e.target.value)}
+              classNames={{
+                trigger:
+                  "!border-0 !pr-6",
+              }}
             >
               {options.length ? (
                 options.map((opt) => (

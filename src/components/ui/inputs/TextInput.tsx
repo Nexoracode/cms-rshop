@@ -131,12 +131,10 @@ export default function TextInput({
       //
       autoComplete="off"
       classNames={{
-        input: `${inputTextAlignClass} placeholder:!text-slate-400 !text-slate-700 text-[13px]`,
-        label: "text-right !-mt-2 !text-[13px] !text-slate-700",
+        input: `${inputTextAlignClass}`,
         helperWrapper: `w-full ${helperTextAlignClass}`,
         errorMessage: helperTextAlignClass,
         description: helperTextAlignClass,
-        inputWrapper: "rtl:direction-rtl bg-transparent !transition-all px-4 shadow-none border border-slate-200 rounded-lg h-[48px] hover:!bg-transparent focus-within:border-sky-500 focus-within:!bg-transparent",
       }}
     />
   );
