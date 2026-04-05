@@ -30,7 +30,7 @@ export function HelpTooltip({
       offset={8}
       className={className}
     >
-      <PopoverTrigger>
+      <PopoverTrigger className="!border-none !h-fit">
         <div>
           <IconBadge
             icon={PiQuestion}
