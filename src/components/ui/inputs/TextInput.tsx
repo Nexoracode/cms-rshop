@@ -6,7 +6,7 @@ import { sanitizeInput } from "@/core/utils/sanitizeInput";
 import { ReactNode } from "react";
 
 type Props = {
-  label: any;
+  label?: any;
   value: string;
   onChange: (val: string) => void;
   readOnly?: boolean;

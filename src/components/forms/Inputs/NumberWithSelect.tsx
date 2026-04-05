@@ -144,6 +144,9 @@ const NumberWithSelect: FC<Props> = ({
             <FieldErrorText error={errorMessage} />
           ) : undefined
         }
+        classNames={{
+          inputWrapper: "!pl-0"
+        }}
       />
     </div>
   );

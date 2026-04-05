@@ -9,6 +9,7 @@ type Props = {
   onValueChange: (val: number) => void;
   selectedKey?: DiscountType;
   onSelectChange: (val: DiscountType) => void;
+  label?: string;
 };
 
 const DiscountInput = ({
@@ -16,10 +17,11 @@ const DiscountInput = ({
   onValueChange,
   selectedKey = "percent",
   onSelectChange,
+  label = "تخفیف",
 }: Props) => {
   return (
     <NumberWithSelect
-      label="تخفیف"
+      label={label}
       placeholder="10"
       value={value}
       maxValue={selectedKey === "percent" ? 100 : undefined}

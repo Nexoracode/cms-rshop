@@ -34,22 +34,31 @@ const VariantRowEditor: React.FC<Props> = ({
       className="w-full transition-all"
       bodyClassName="flex flex-col gap-4 p-4"
     >
-      <div className="cursor-auto text-center text-gray-600 mb-2 p-2.5 px-6 border rounded-xl">
+      <div className="cursor-auto text-center text-gray-600 mb-2 p-2.5 px-6 bg-slate-100 rounded-xl">
         {value?.name ?? `واریانت ${index + 1}`}
       </div>
 
-      <TextInput
-        label="کد انبار"
-        inputAlign="left"
-        placeholder="مثلاً SKU12345"
-        className="bg-white rounded-xl text-right"
-        value={value.sku}
-        onChange={(val) => onChange(index, { sku: val })}
-        errorMessage={errors.sku}
-        allowSpecialChars
-      />
+      <div className="grid sm:grid-cols-2 gap-2">
+        <TextInput
+          inputAlign="left"
+          placeholder="کد انبار"
+          className="bg-white rounded-xl text-right"
+          value={value.sku}
+          onChange={(val) => onChange(index, { sku: val })}
+          errorMessage={errors.sku}
+          allowSpecialChars
+        />
+        <NumberInput
+          placeholder="مثلاً 100"
+          suffix="عدد موجود"
+          min={0}
+          value={value.stock}
+          onChange={(stock) => onChange(index, { stock })}
+        />
+      </div>
 
       <DiscountedPriceInput
+        disabledLabel
         price={value.price}
         discount_amount={value.discount_amount ?? 0}
         discount_percent={value.discount_percent ?? 0}
@@ -62,17 +71,8 @@ const VariantRowEditor: React.FC<Props> = ({
               : { discount_percent: +val, discount_amount: 0 },
           )
         }
-        style="flex flex-col gap-4"
+        style="flex gap-2"
         errorMessage={errors.price}
-      />
-
-      <NumberInput
-        label="موجودی"
-        placeholder="مثلاً 100"
-        suffix="عدد"
-        min={0}
-        value={value.stock}
-        onChange={(stock) => onChange(index, { stock })}
       />
     </BaseCard>
   );

@@ -13,6 +13,7 @@ type Props = {
   onDiscountChange: (type: Discount, value: number) => void;
   style?: string;
   errorMessage?: string;
+  disabledLabel?: boolean;
 };
 
 const DiscountedPriceInput: FC<Props> = ({
@@ -23,6 +24,7 @@ const DiscountedPriceInput: FC<Props> = ({
   onDiscountChange,
   style,
   errorMessage,
+  disabledLabel = false,
 }) => {
   const [discountType, setDiscount] = useState<Discount>("percent");
   const [discountValue, setDiscountValue] = useState(0);
@@ -49,7 +51,7 @@ const DiscountedPriceInput: FC<Props> = ({
     <div className={!style ? "flex flex-col md:flex-row gap-4" : style}>
       <div className="w-full flex flex-col items-start">
         <NumberInput
-          label="قیمت"
+          label={!disabledLabel ? "قیمت" : ""}
           placeholder="10,000"
           suffix="تومان"
           min={0}
@@ -69,6 +71,7 @@ const DiscountedPriceInput: FC<Props> = ({
 
       <div className="flex flex-col gap-2 w-full">
         <DiscountInput
+          label={!disabledLabel ? "تخفیف" : ""}
           value={discountValue}
           onValueChange={(val) => {
             const v = val ?? 0;
