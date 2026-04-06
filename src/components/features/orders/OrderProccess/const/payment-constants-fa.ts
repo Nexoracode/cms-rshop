@@ -144,7 +144,7 @@ export const getFullPaymentInfo = (payment: PaymentInfo) => {
 };
 
 export const getPaymentStatusText = (payment: PaymentInfo): string => {
-  if (!payment) return "پرداخت نشده";
+  //if (!payment) return "پرداخت نشده";
 
   const { payment_method, gateway, status, card_to_card_status } = payment;
 
