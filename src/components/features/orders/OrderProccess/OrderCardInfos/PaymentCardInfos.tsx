@@ -83,7 +83,7 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({
 
         <InfoRow
           label="وضعیت پرداخت"
-          value={payment ? getPaymentStatusText(payment?.status) : "—"}
+          value={payment ? getPaymentStatusText(payment) : "—"}
           isActiveBg={disabled}
         />
 
