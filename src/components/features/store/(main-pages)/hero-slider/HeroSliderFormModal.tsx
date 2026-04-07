@@ -171,7 +171,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
             placeholder="عنوان اسلایدر را وارد کنید"
             value={form.title}
             errorMessage={errors.title}
-            isRequired
             onChange={(val) => handleFieldChange("title", val)}
             allowEnglishOnly={false}
           />
@@ -194,7 +193,6 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
-          isRequired
           errorMessage={errors.description}
         />
 

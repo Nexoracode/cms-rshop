@@ -49,11 +49,11 @@ const HeroTemplate: React.FC<HeroTemplateProps> = ({
       />
 
       <div
-        className={`hover-reveal-parent w-full h-full flex items-center px-5 ${
-          !slider.image_url ? `rounded-2xl` : "bg-black/80"
+        className={`hover-reveal-parent w-full h-full flex items-center px-5 rounded-2xl ${
+          slider.title || slider.description ? "bg-black/80" : ""
         }`}
         style={{
-          backgroundColor: !slider.image_url
+          backgroundColor: !slider.title || !slider.description
             ? slider.background_color || "gray"
             : "",
         }}
@@ -112,7 +112,7 @@ const HeroTemplate: React.FC<HeroTemplateProps> = ({
             alt={slider.title}
             fill
             priority
-            className="object-cover absolute inset-0 z-0 opacity-40"
+            className={`object-cover absolute inset-0 z-0 ${slider.title || slider.description ? "opacity-40" : ""}`}
           />
         ) : (
           ""
