@@ -10,14 +10,15 @@ type IconsSelectionContextType = {
   setIcons: (icons: Icon[]) => void;
 };
 
-const IconsSelectionContext =
-  createContext<IconsSelectionContextType | null>(null);
+const IconsSelectionContext = createContext<IconsSelectionContextType | null>(
+  null,
+);
 
 export const useIconsSelection = () => {
   const context = useContext(IconsSelectionContext);
   if (!context)
     throw new Error(
-      "useIconsSelection must be used within IconsSelectionProvider"
+      "useIconsSelection must be used within IconsSelectionProvider",
     );
   return context;
 };
@@ -34,7 +35,7 @@ export const IconsSelectionProvider: React.FC<{
       setSelectedIcons(initialIcons);
     }
   }, [initialIcons]);
-  
+
   const addIcon = (icon: Icon) => {
     setSelectedIcons((prev) => {
       if (singleSelect) {

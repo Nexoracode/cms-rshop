@@ -37,7 +37,10 @@ const Categories = () => {
 
   return (
     <>
-      <IconsSelectionProvider initialIcons={editCategory?.icon} singleSelect>
+      <IconsSelectionProvider
+        initialIcons={editCategory?.icon ? [editCategory.icon] : undefined}
+        singleSelect
+      >
         <AddNewCategoryModal
           categoryId={editCategory?.id || 1}
           defaultValues={editCategory}

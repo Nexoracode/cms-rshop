@@ -21,14 +21,13 @@ const InnerSelectableIconsBox: React.FC<{
 }> = ({ onChange, error, classNameIconsWrapper }) => {
   const { selectedIcons, removeIcon } = useIconsSelection();
   const isFirstRender = useRef(true);
-  console.log(selectedIcons);
 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-
+    
     onChange?.(selectedIcons.map((u) => u.id));
   }, [selectedIcons]);
 
@@ -45,7 +44,7 @@ const InnerSelectableIconsBox: React.FC<{
       >
         {selectedIcons?.map((icon: any) => (
           <IconCard
-            key={icon.id}
+            key={icon?.id}
             showDeselectIcon
             disableAction
             icon={icon}

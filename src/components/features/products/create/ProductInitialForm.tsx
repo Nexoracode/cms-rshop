@@ -48,7 +48,7 @@ const initialProductForm: CreateProductRequest = {
   weight_unit: "کیلوگرم",
   is_same_day_shipping: false,
   requires_preparation: false,
-  preparation_days: 1,
+  preparation_days: null,
   description: "",
   order_limit: 0,
   is_visible: false,
@@ -266,7 +266,6 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         <SizeGuideSelect
           value={form.helper_id}
           onChange={(val) => {
-            console.log("EEEEEEEEEE", val);
             handleFieldChange("helper_id", val == -1 ? null : val);
           }}
           withAddModal
@@ -323,7 +322,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
               hideStepper
               placeholder="3"
               minValue={1}
-              value={form.preparation_days ?? 0}
+              value={form.preparation_days ?? 1}
               onValueChange={(val) =>
                 handleFieldChange("preparation_days", +val)
               }
