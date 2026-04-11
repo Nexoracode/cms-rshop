@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useGetBrands } from "@/core/hooks/api/useBrand";
-import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { useGetAllBrands } from "@/core/hooks/api/useBrand";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import AddNewBrandModal from "./AddNewBrandModal";
 
@@ -21,23 +20,20 @@ const BrandSelect: React.FC<Props> = ({
   withAddModal = false,
   isRequired = false,
 }) => {
-  const { search } = useListQueryParams({
+/*   const { search } = useListQueryParams({
     searchKey: "brand",
-  });
+  }); */
 
-  const { data: brands } = useGetBrands({
-    page: 1,
-    search,
-  });
-
+  const { data: brands } = useGetAllBrands()
+  
   const options = useMemo(() => {
     return (
-      brands?.data?.items?.map((brand: any) => ({
+      brands?.data?.map((brand: any) => ({
         id: String(brand.id),
         title: brand.name,
       })) ?? []
     );
-  }, [brands?.data?.items]);
+  }, [brands?.data]);
 
   return (
     <div

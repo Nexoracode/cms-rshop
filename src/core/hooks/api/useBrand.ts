@@ -27,6 +27,17 @@ export const useGetBrands = (params: UseGetBrandsParams = {}) => {
   });
 };
 
+export const useGetAllBrands = () => {
+  return useQuery({
+    queryKey: ["all-brands"],
+    queryFn: () =>
+      fetcher({
+        route: "/brand/all",
+        isActiveToast: false,
+      }),
+  });
+};
+
 export const useCreateBrand = () => {
   const queryClient = useQueryClient();
 

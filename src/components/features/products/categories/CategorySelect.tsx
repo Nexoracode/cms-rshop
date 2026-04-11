@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useGetCategories } from "@/core/hooks/api/categories/useCategory";
-import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
+import { useGetAllCategories } from "@/core/hooks/api/categories/useCategory";
 import { flattenCategories } from "@/core/utils/flattenCategories";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import AddNewCategoryModal from "./AddNewCategoryModal";
@@ -24,17 +23,14 @@ const CategorySelect: React.FC<Props> = ({
   isRequired = false,
   isDisabled = false,
 }) => {
-  const { search } = useListQueryParams({
+/*   const { search } = useListQueryParams({
     searchKey: "category",
-  });
+  }); */
 
-  const { data: categoriesData } = useGetCategories({
-    page: 1,
-    search,
-  });
+  const { data: categoriesData } = useGetAllCategories()
 
   const options = useMemo(() => {
-    const flat = flattenCategories(categoriesData?.data?.items) || [];
+    const flat = flattenCategories(categoriesData?.data) || [];
 
     return flat.map((cat: any) => ({
       id: String(cat.id),
