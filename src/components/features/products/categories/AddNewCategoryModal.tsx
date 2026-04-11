@@ -46,7 +46,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 }) => {
   const [isParent, setIsParent] = useState(true);
 
-  console.log("Category", defaultValues);
+  console.log("Category iD", categoryId);
 
   const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
@@ -69,6 +69,8 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   });
 
   useEffect(() => {
+    console.log("defaultValues =>", defaultValues);
+    
     setFormHandler();
   }, [defaultValues]);
 
