@@ -33,7 +33,7 @@ const initialForm = {
   slug: "product-categories",
   description: "",
   section_type: "category_based",
-  /*  promotion_id: null, */
+  promotion_id: null,
   display_style: "carousel",
   products_limit: 10,
   show_view_all_button: true,
@@ -75,13 +75,13 @@ const StaticSectionModal: React.FC<Props> = ({
       slug:
         sectionType === "category_based"
           ? `product-categories-${Math.floor(Math.random() * 100) + 1}`
-          : sectionType === "featured"
+          : sectionType === "promotion_based"
             ? "featured-offers"
             : "most-popular",
       title:
         sectionType === "category_based"
           ? "محصولات بر اساس دسته‌بندی"
-          : sectionType === "featured"
+          : sectionType === "promotion_based"
             ? "پیشنهاد ویژه"
             : "محصولات پرطرفدار",
     },
@@ -91,24 +91,26 @@ const StaticSectionModal: React.FC<Props> = ({
       runValidationOnChange: true,
     },
   );
+
   /* 
-{
+      {
       ...initialForm,
       section_type: sectionType,
       slug:
         sectionType === "category_based"
           ? `product-categories-${Math.floor(Math.random() * 100) + 1}`
-          : sectionType === "promotion_based"
+          : sectionType === "featured"
             ? "featured-offers"
             : "most-popular",
       title:
         sectionType === "category_based"
           ? "محصولات بر اساس دسته‌بندی"
-          : sectionType === "promotion_based"
+          : sectionType === "featured"
             ? "پیشنهاد ویژه"
             : "محصولات پرطرفدار",
     },
-*/
+  */
+
   useEffect(() => {
     setFormHandler();
   }, [defaultValues]);
@@ -137,7 +139,7 @@ const StaticSectionModal: React.FC<Props> = ({
       section_type,
       start_date,
       end_date,
-      /*    ...(form?.promotion_id ? { promotion_id: form.promotion_id } : {}), */
+      ...(form?.promotion_id ? { promotion_id: form.promotion_id } : {}),
       ...(showCategoryField ? { category_id } : {}),
     };
 
@@ -260,7 +262,7 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        {/*  {sectionType === "promotion_based" ? (
+        {sectionType === "promotion_based" ? (
           <FlashDealSelect
             value={form.promotion_id}
             onChange={(val) => handleFieldChange("promotion_id", Number(val))}
@@ -269,8 +271,8 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         ) : (
           ""
-        )} */}
-        {sectionType === "featured" ? (
+        )}
+        {sectionType === "promotion_based" ? (
           <IsoDatePicker
             label="بازه اعتبار"
             enableRange

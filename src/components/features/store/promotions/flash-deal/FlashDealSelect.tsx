@@ -64,13 +64,11 @@ const FlashDealSelect: React.FC<Props> = ({
         syncSearchToUrl
         errorMessage={errorMessage}
       />
-      <div className="flex items-center gap-4">
-        <OptionButton
-          title="افزودن"
-          href="/admin/store/promotions/flash-deal/products"
-          className="py-5 rounded-xl"
-        />
-      </div>
+      <OptionButton
+        title="افزودن"
+        href="/admin/store/promotions/flash-deal/products"
+        className="rounded-md px-4 mb-2"
+      />
     </div>
   );
 };
