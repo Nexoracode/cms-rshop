@@ -24,14 +24,16 @@ const ImageBoxUploader: React.FC<Props> = ({
   defaultImg,
   errorMessage,
 }) => {
-  const { imageFile, inputRef, handleImageClick, handleImageChange } = useImageUploader({
-    onFile,
-    changeStatusFile,
-    defaultImg,
-  });
+  const { imageFile, inputRef, handleImageClick, handleImageChange } =
+    useImageUploader({
+      onFile,
+      changeStatusFile,
+      defaultImg,
+    });
 
   return (
     <div className="w-full">
+      <p className="text-slate-700 mb-3.5">{title}</p>
       <div
         className={`w-full flex items-center gap-4 rounded-xl p-2 border-1.5 ${
           errorMessage?.length ? "border border-red-300" : "border-slate-300"

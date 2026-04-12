@@ -11,10 +11,11 @@ import { TiSocialLinkedin } from "react-icons/ti";
 import { validateInfos } from "./infos-validation";
 import { useInfosCreate } from "@/core/hooks/api/useSeting";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlinePhoneIncoming } from "react-icons/hi";
 import EmailInput from "@/components/shared/EmailInput";
 import PhoneInput from "@/components/shared/PhoneInput";
+import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 
 const initialInfos = {
   shop_card_number: "",
@@ -42,6 +43,8 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   const router = useRouter();
   const { mutate: createInfos } = useInfosCreate();
 
+  const [logo, setLogo] = useState<File | null | string>(null);
+
   const { form, errors, setForm, submit, handleFieldChange } = useForm(
     initialInfos,
     {
@@ -49,6 +52,10 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
       runValidationOnChange: true,
     },
   );
+
+  useEffect(() => {
+    if (logo as File) handleUploadLogo();
+  }, [logo]);
 
   useEffect(() => {
     if (data?.length) {
@@ -93,6 +100,10 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
     }));
   };
 
+  const handleUploadLogo = () => {
+    
+  }
+
   return (
     <BaseCard
       CardHeaderProps={{
@@ -105,6 +116,15 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
       wrapperContents
       isLoading={isLoading}
     >
+      <ImageBoxUploader
+        textBtn={logo ? "تغییر لوگو" : "+ افزودن لوگو"}
+        title="لوگوی وبسایت"
+        changeStatusFile={logo}
+        defaultImg={logo}
+        onFile={setLogo}
+        errorMessage={errors.logo}
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           label="نام کامل دارنده کارت"
@@ -293,7 +313,7 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
           allowSpecialChars
           placeholder="لینک کامل واتساپ"
           type="text"
-         /*  endContent={
+          /*  endContent={
             <div className="pointer-events-none flex items-center pr-4">
               <span className="text-default-400 text-sm">
                 https://whatsapp.com
