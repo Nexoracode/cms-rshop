@@ -49,7 +49,6 @@ const AttributeBox: React.FC<AttributeBoxProps> = ({
       const bLabel = b.name || b.value || "";
       return getMatchScore(bLabel, search) - getMatchScore(aLabel, search);
     });
-  console.log(sortedAttr);
 
   return (
     <div className="p-2">
