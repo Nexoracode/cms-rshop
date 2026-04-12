@@ -34,6 +34,7 @@ import { mapAPIToLocalProduct } from "./product-helpers";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import SizeGuideSelect from "../size-guide/SizeGuideSelect";
 import { IconsSelectionProvider } from "../../store/icons/SelectableIconBox/IconsSelectionContext";
+import toast from "react-hot-toast";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -93,7 +94,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     data && setForm(mapAPIToLocalProduct(data));
   }, [data]);
 
-  const handleSubmit = submit(async (changed) => {
+  const handleSubmit = submit(async () => {
     const {
       brand_id,
       category_id,
@@ -141,6 +142,9 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     }
   });
 
+  const handleChangeMeddiaPinnedID = (id: any) =>
+    updateProduct({ media_pinned_id: id });
+
   return (
     <>
       {id ? (
@@ -171,6 +175,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           }}
           onMedia_pinned_id={(id) => {
             handleFieldChange("media_pinned_id", id);
+            handleChangeMeddiaPinnedID(id);
           }}
           initialMedias={data?.medias || []}
           initialPinnedId={form.media_pinned_id}
