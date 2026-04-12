@@ -15,7 +15,6 @@ import { staticSectionValidation } from "./static-section-validation";
 import CategorySelect from "@/components/features/products/categories/CategorySelect";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { LuPlus } from "react-icons/lu";
-import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import FlashDealSelect from "../../../promotions/flash-deal/FlashDealSelect";
 
 type Props = {
@@ -184,8 +183,8 @@ const StaticSectionModal: React.FC<Props> = ({
       /* ...(defaultValues?.promotion_id
         ? { promotion_id: defaultValues.promotion_id }
         : {}), */
-      start_date,
-      end_date,
+      /* start_date,
+      end_date, */
       ...(showCategoryField ? { category_id: category?.id } : {}),
     });
   };
@@ -272,7 +271,7 @@ const StaticSectionModal: React.FC<Props> = ({
         ) : (
           ""
         )}
-        {sectionType === "promotion_based" ? (
+        {/* {sectionType === "promotion_based" ? (
           <IsoDatePicker
             label="بازه اعتبار"
             enableRange
@@ -290,7 +289,7 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         ) : (
           ""
-        )}
+        )} */}
 
         {showCategoryField ? (
           <CategorySelect

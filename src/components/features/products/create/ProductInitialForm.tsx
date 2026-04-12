@@ -34,7 +34,6 @@ import { mapAPIToLocalProduct } from "./product-helpers";
 import SearchFilterCard from "@/components/common/Card/SearchFilterCard";
 import SizeGuideSelect from "../size-guide/SizeGuideSelect";
 import { IconsSelectionProvider } from "../../store/icons/SelectableIconBox/IconsSelectionContext";
-import toast from "react-hot-toast";
 
 const initialProductForm: CreateProductRequest = {
   name: "",
@@ -173,9 +172,9 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           onMedia_ids={(datas) => {
             handleFieldChange("media_ids", datas);
           }}
-          onMedia_pinned_id={(id) => {
-            handleFieldChange("media_pinned_id", id);
-            handleChangeMeddiaPinnedID(id);
+          onMedia_pinned_id={(pinId) => {
+            handleFieldChange("media_pinned_id", pinId);
+            id && handleChangeMeddiaPinnedID(pinId);
           }}
           initialMedias={data?.medias || []}
           initialPinnedId={form.media_pinned_id}
