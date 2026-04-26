@@ -88,7 +88,7 @@ export function BasePromotionForm({
   }, [initialData, formType]);
 
   useEffect(() => {
-    reset();
+    (resetSignal ?? 0 > 0) && setForm(initialPromotionForm);
   }, [resetSignal]);
 
   const handleSubmit = submit(async () => {

@@ -83,14 +83,14 @@ const ShopInfosCard = () => {
           color="text-green-700"
         />
 
-        <BoxLink
+       {/*  <BoxLink
           key="store/finance"
           title="گزارشات مالی"
           icon={<TbReportAnalytics className="text-2xl" />}
           routeName="store/finance"
           parentStyle="bg-white shadow-md"
           color="text-purple-700"
-        />
+        /> */}
 
         <BoxLink
           key="store/promotions"

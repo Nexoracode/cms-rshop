@@ -114,7 +114,7 @@ const PromotionCard: React.FC<Props> = ({ item, disableAction = false }) => {
 
   const promotionsRedirects = () => {
     const urlBase = "/admin/store/promotions";
-    
+
     if ((!conditions || conditions.length === 0) && type === "coupon")
       return `${urlBase}/coupon/create?edit_id=${id}`;
     let mood = "create";
