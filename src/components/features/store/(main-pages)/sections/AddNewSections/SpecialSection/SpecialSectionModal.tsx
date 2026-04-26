@@ -174,8 +174,8 @@ const SpecialSectionModal: React.FC<Props> = ({
             label="عنوان"
             placeholder="عنوان بخش را وارد کنید"
             value={form.title}
-            errorMessage={errors.title}
-            isRequired
+/*             errorMessage={errors.title}
+            isRequired */
             onChange={(val) => handleFieldChange("title", val)}
             allowEnglishOnly={false}
           />
@@ -216,7 +216,6 @@ const SpecialSectionModal: React.FC<Props> = ({
             placeholder="10"
             suffix="عدد"
             min={0}
-            max={30}
             value={form.products_limit}
             onChange={(limit) => handleFieldChange("products_limit", limit)}
             isRequired
@@ -242,11 +241,11 @@ const SpecialSectionModal: React.FC<Props> = ({
 
         <Textarea
           label="توضیحات"
-          isRequired
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
-          errorMessage={errors.description}
+/*           isRequired
+          errorMessage={errors.description} */
         />
 
         <ToggleSection

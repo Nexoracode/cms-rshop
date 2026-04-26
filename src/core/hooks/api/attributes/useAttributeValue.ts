@@ -72,9 +72,7 @@ export const useUpdateAttributeOrderValue = () => {
         route: `/attribute-value/${id}/order`,
         method: "PATCH",
         body: { display_order, product_id },
-        isActiveToast: true,
-        successText: "جایگاه مقدار ویژگی با موفقیت بروزرسانی شد",
-        loadingText: "درحال بروزرسانی جایگاه مقدار ویژگی...",
+        isActiveToast: false,
       });
     },
     onSuccess: (_data) => {

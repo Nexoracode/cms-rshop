@@ -3,13 +3,13 @@ export function validateSpecialSection(data: any) {
 
   const hasLogo = !data.file && !data?.image;
 
-  if (!data.title || data.title.trim() === "") {
+/*   if (!data.title || data.title.trim() === "") {
     errors.title = "لطفاً عنوان بخش را وارد کنید.";
   }
 
   if (!data.description || data.description.trim() === "") {
     errors.description = "لطفاً توضیحات بخش را وارد کنید.";
-  }
+  } */
 
   if (!data.product_ids || !data.product_ids.length) {
     errors.product_ids = "انتخاب محصول الزامی است.";

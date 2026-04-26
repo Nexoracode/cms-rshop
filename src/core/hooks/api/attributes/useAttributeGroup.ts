@@ -51,9 +51,7 @@ export const useUpdateAttributeOrderGroup = () => {
         route: `/attribute-group/${id}/order`,
         method: "PATCH",
         body: { display_order, product_id },
-        isActiveToast: true,
-        successText: "با موفقیت بروزرسانی شد",
-        loadingText: "درحال بروزرسانی...",
+        isActiveToast: false,
       });
     },
     onSuccess: () => {
