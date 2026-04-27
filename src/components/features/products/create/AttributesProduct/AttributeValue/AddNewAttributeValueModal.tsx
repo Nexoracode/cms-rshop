@@ -71,11 +71,18 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     if (selecteds.attrId) {
       handleFieldChange("attribute_id", selecteds.attrId);
     }
-  }, [selecteds.attrGroupId, selecteds.attrId, form.attribute_id, form.group_id]);
+  }, [
+    selecteds.attrGroupId,
+    selecteds.attrId,
+    form.attribute_id,
+    form.group_id,
+  ]);
 
   const defaultDatas = attrs.values?.length
     ? (attrs.values?.find((v) => v.id === selectedAttrEdit) as any)
     : undefined;
+
+  console.log(form);
 
   const optionsAttrGroup: SelectOption[] = useMemo(() => {
     return (

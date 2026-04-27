@@ -63,9 +63,9 @@ const AddNewAttributeModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (selecteds.attrGroupId) {
-      handleFieldChange("group_id", selecteds.attrGroupId)
+      handleFieldChange("group_id", selecteds.attrGroupId);
     }
-  }, [selecteds.attrGroupId])
+  }, [selecteds.attrGroupId, form.group_id]);
 
   const defaultDatas = attrs.attr?.length
     ? (attrs.attr?.find((a) => a.id === selectedAttrEdit) as Attribute)
