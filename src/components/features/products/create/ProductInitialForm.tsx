@@ -83,7 +83,6 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     setForm,
     handleMultipleFieldsChange,
     submit,
-    getChangedFields,
   } = useForm(initialProductForm, {
     onValidate: validateProduct,
     runValidationOnChange: true,
@@ -174,6 +173,8 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           }}
           onMedia_pinned_id={(pinId) => {
             handleFieldChange("media_pinned_id", pinId);
+            console.log("id =>", id);
+            
             id && handleChangeMeddiaPinnedID(pinId);
           }}
           initialMedias={data?.medias || []}
