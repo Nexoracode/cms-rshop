@@ -234,7 +234,7 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div className={`grid grid-cols-1 ${sectionType !== "promotion_based" ? "md:grid-cols-2 gap-2" : ""}`}>
           <NumberInput
             label="تعداد محدودیت نمایش"
             placeholder="10"
@@ -245,20 +245,24 @@ const StaticSectionModal: React.FC<Props> = ({
             onChange={(limit) => handleFieldChange("products_limit", limit)}
             errorMessage={errors.products_limit}
           />
-          <TextInput
-            label="لینک"
-            placeholder="path/to/1"
-            value={form.view_all_link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            isRequired
-            errorMessage={errors.view_all_link}
-            onChange={(val) => {
-              handleFieldChange("view_all_link", val);
-            }}
-            inputAlign="left"
-            allowSpaces={false}
-          />
+          {sectionType !== "promotion_based" ? (
+            <TextInput
+              label="لینک"
+              placeholder="path/to/1"
+              value={form.view_all_link}
+              allowSpecialChars
+              allowedSpecialChars={["/", "-"]}
+              isRequired
+              errorMessage={errors.view_all_link}
+              onChange={(val) => {
+                handleFieldChange("view_all_link", val);
+              }}
+              inputAlign="left"
+              allowSpaces={false}
+            />
+          ) : (
+            ""
+          )}
         </div>
 
         {sectionType === "promotion_based" ? (
