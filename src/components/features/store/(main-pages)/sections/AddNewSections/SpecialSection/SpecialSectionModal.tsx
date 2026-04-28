@@ -75,14 +75,9 @@ const SpecialSectionModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (!defaultValues) return;
-    
-    setFormHandler()
-  }, [defaultValues]);
 
-  useEffect(() => {
-    console.log("**************", form);
-    
-  }, [form])
+    setFormHandler();
+  }, [defaultValues]);
 
   const handleSubmit = submit(async () => {
     let finalMediaId = form.file || form.image;
@@ -134,6 +129,7 @@ const SpecialSectionModal: React.FC<Props> = ({
   const resetForm = () => {
     setForm({
       ...initialForm,
+      ...defaultValues,
     });
   };
 
