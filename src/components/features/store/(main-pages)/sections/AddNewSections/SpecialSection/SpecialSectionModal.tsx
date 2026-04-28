@@ -16,7 +16,6 @@ import {
 } from "@/core/hooks/api/adminHome/useHomeSections";
 import { validateSpecialSection } from "./special-section-validation";
 import { handleMutation } from "@/core/utils/mutationHelper";
-import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 import ProductSelectionBox from "@/components/features/products/SelectableProduct/Product/ProductSelectionBox";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
@@ -59,7 +58,7 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: uploadSliderImages, isPending: isUploading } =
     useUploadSliderImages();
   //
-  const { setSelectedProducts } = useProductsSelection();
+  //const { setSelectedProducts } = useProductsSelection();
 
   const {
     form,
@@ -76,12 +75,14 @@ const SpecialSectionModal: React.FC<Props> = ({
 
   useEffect(() => {
     if (!defaultValues) return;
-
-    setForm({
-      ...initialForm,
-      ...defaultValues,
-    });
+    
+    setFormHandler()
   }, [defaultValues]);
+
+  useEffect(() => {
+    console.log("**************", form);
+    
+  }, [form])
 
   const handleSubmit = submit(async () => {
     let finalMediaId = form.file || form.image;
@@ -131,7 +132,9 @@ const SpecialSectionModal: React.FC<Props> = ({
   ];
 
   const resetForm = () => {
-    reset();
+    setForm({
+      ...initialForm,
+    });
   };
 
   const setFormHandler = () => {
@@ -174,7 +177,7 @@ const SpecialSectionModal: React.FC<Props> = ({
             label="عنوان"
             placeholder="عنوان بخش را وارد کنید"
             value={form.title}
-/*             errorMessage={errors.title}
+            /*             errorMessage={errors.title}
             isRequired */
             onChange={(val) => handleFieldChange("title", val)}
             allowEnglishOnly={false}
@@ -244,7 +247,7 @@ const SpecialSectionModal: React.FC<Props> = ({
           value={form.description}
           onChange={(val) => handleFieldChange("description", val)}
           placeholder="توضیحات را وارد کنید"
-/*           isRequired
+          /*           isRequired
           errorMessage={errors.description} */
         />
 

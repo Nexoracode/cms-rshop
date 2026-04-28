@@ -11,7 +11,7 @@ export function validateSpecialSection(data: any) {
     errors.description = "لطفاً توضیحات بخش را وارد کنید.";
   } */
 
-  if (!data.product_ids || !data.product_ids.length) {
+  if (!data?.product_ids?.length) {
     errors.product_ids = "انتخاب محصول الزامی است.";
   }
 

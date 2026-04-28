@@ -15,7 +15,7 @@ import { useListQueryParams } from "@/core/hooks/common/useListQueryParams";
 import { IconsSelectionProvider } from "@/components/features/store/icons/SelectableIconBox/IconsSelectionContext";
 
 const Categories = () => {
-  const { page, sortBy, search, filter, isFilteredView } =
+  const { page, sortBy, search, filter } =
     useListQueryParams<CategorySortBy[number]>();
 
   const { data: categories, isLoading } = useGetCategories({
@@ -34,6 +34,9 @@ const Categories = () => {
     setEditCategory(category);
     setIsEditOpen(true);
   };
+
+  console.log("categories =>", categories);
+  
 
   return (
     <>
