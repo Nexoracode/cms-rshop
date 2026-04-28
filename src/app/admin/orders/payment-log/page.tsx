@@ -17,8 +17,6 @@ const Orders = () => {
   const { data: payments, isLoading } = useGetPaymentLogs({ page });
   const isExistItems = !!payments?.data?.items?.length;
 
-  console.log("payments =>", payments, "isExistItems =>", isExistItems);
-
   const statItems =
     !isLoading && isExistItems
       ? [

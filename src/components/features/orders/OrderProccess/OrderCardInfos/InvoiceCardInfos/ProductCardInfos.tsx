@@ -11,8 +11,6 @@ type ProductCardDetailProps = {
 const ProductCardInfos: React.FC<ProductCardDetailProps> = ({ item }) => {
   const { product, variants, discount, quantity, line_total } = item;
 
-  console.log("item =>", item);
-
   return (
     <BaseCard
       bodyClassName="cursor-auto"

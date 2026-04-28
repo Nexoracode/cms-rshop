@@ -57,7 +57,7 @@ const StaticSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
 
-  console.log("", initialForm);
+  console.log("||||||||||||||||||||||||||", defaultValues);
 
   const {
     form,
@@ -180,6 +180,7 @@ const StaticSectionModal: React.FC<Props> = ({
       title,
       slug,
       section_type,
+      promotion_id: defaultValues?.promotion_id ,
       /* ...(defaultValues?.promotion_id
         ? { promotion_id: defaultValues.promotion_id }
         : {}), */
@@ -234,7 +235,9 @@ const StaticSectionModal: React.FC<Props> = ({
           />
         </div>
 
-        <div className={`grid grid-cols-1 ${sectionType !== "promotion_based" ? "md:grid-cols-2 gap-2" : ""}`}>
+        <div
+          className={`grid grid-cols-1 ${sectionType !== "promotion_based" ? "md:grid-cols-2 gap-2" : ""}`}
+        >
           <NumberInput
             label="تعداد محدودیت نمایش"
             placeholder="10"

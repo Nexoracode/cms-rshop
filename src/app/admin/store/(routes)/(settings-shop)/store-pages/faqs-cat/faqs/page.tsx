@@ -10,8 +10,6 @@ import FaqCard from "@/components/features/store/store-page/faqs-cat/faqs/FaqCar
 const FaqsPage = () => {
   const { data: faqs, isLoading } = useGetFaqs();
 
-  console.log(faqs);
-
   const isExistItems = !!faqs?.data?.length;
 
   const [editFaq, setEditFaq] = useState<any | null>(null);

@@ -19,8 +19,6 @@ const AdminReviews = () => {
   });
 
   const isExistItems = !!reviews?.data?.items?.length;
-  console.log(reviews);
-
   return (
     <UnifiedCard
       searchFilter={<ReviewsFilter />}

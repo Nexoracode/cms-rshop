@@ -31,8 +31,6 @@ const SizeGuidePage = () => {
     setIsEditOpen(true);
   };
 
-  console.log(size?.data);
-
   return (
     <>
       <AddNewSizeGuideModal

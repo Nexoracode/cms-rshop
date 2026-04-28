@@ -23,6 +23,9 @@ const FlashDealSelect: React.FC<Props> = ({
     searchKey: "promotion",
   });
 
+  console.log(value);
+  
+
   const { data: promotions } = FlashDealHooks.useGetList({
     page: 1,
     search,

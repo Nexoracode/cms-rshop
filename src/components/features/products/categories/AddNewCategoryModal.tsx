@@ -70,7 +70,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
   useEffect(() => {
     setFormHandler();
-  }, [defaultValues]);
+  }, [defaultValues, isOpen]);
 
   const handleSubmit = submit(async () => {
     let finalMediaId = form.mediaId;
@@ -121,6 +121,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
       defaultValues;
 
     setForm({
+      ...initialCategoryForm,
       title,
       slug,
       discount,

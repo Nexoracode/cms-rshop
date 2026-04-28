@@ -33,10 +33,7 @@ const Categories = () => {
   const handleEditCategory = (category: any) => {
     setEditCategory(category);
     setIsEditOpen(true);
-  };
-
-  console.log("categories =>", categories);
-  
+  };  
 
   return (
     <>
