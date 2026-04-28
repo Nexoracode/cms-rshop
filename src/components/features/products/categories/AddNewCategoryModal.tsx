@@ -18,6 +18,7 @@ import FieldErrorText from "@/components/forms/FieldErrorText";
 import CategorySelect from "./CategorySelect";
 import { handleMutation } from "@/core/utils/mutationHelper";
 import SelectableIconsBox from "../../store/icons/SelectableIconBox/SelectableIconsBox";
+import { useIconsSelection } from "../../store/icons/SelectableIconBox/IconsSelectionContext";
 
 const initialCategoryForm = {
   title: "",
@@ -45,6 +46,8 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
   onOpenChange,
 }) => {
   const [isParent, setIsParent] = useState(true);
+
+  const { setIcons } = useIconsSelection();
 
   console.log("defaultValues =>", defaultValues);
 
@@ -106,11 +109,13 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
   const resetForm = () => {
     reset();
+    setIcons([]);
     //setForm(initialCategoryForm);
-    setIsParent(false);
+    //setIsParent(false);
   };
 
   const setFormHandler = () => {
+    setIcons([]);
     if (!defaultValues) {
       setForm(initialCategoryForm);
       setIsParent(true);
@@ -136,6 +141,8 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
     setIsParent(level === 1);
   };
 
+  console.log("isParent =>", isParent, "form.level =>", form.level);
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -151,7 +158,11 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
             }
       }
       onCancel={() => {
-        !categoryId ? resetForm() : setFormHandler();
+        if (!categoryId) {
+          resetForm();
+        } else {
+          setFormHandler();
+        }
       }}
       title={categoryId ? "ویرایش دسته‌بندی" : "افزودن دسته‌بندی جدید"}
       confirmText={categoryId ? "ویرایش دسته‌بندی" : "ایجاد دسته‌بندی"}
