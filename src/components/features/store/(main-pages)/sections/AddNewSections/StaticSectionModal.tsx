@@ -57,8 +57,6 @@ const StaticSectionModal: React.FC<Props> = ({
   const { mutateAsync: updateSection, isPending: isUpdating } =
     useUpdateHomeSection(defaultValues?.id ?? 0);
 
-  console.log("||||||||||||||||||||||||||", defaultValues);
-
   const {
     form,
     errors,

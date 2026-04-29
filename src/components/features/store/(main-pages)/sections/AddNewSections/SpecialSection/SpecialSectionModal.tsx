@@ -22,6 +22,7 @@ import IsoDatePicker from "@/components/forms/Inputs/IsoDatePicker";
 import { useUploadSliderImages } from "@/core/hooks/api/adminHome/useUploadSliderImages";
 import { ActionButton } from "@/components/ui/buttons/ActionButton";
 import { LuPlus } from "react-icons/lu";
+import { useProductsSelection } from "@/components/features/products/SelectableProduct/ProductsSelectionContext";
 
 type Props = {
   defaultValues?: any;
@@ -58,7 +59,7 @@ const SpecialSectionModal: React.FC<Props> = ({
   const { mutateAsync: uploadSliderImages, isPending: isUploading } =
     useUploadSliderImages();
   //
-  //const { setSelectedProducts } = useProductsSelection();
+  const { setSelectedProducts } = useProductsSelection();
 
   const {
     form,
@@ -74,10 +75,8 @@ const SpecialSectionModal: React.FC<Props> = ({
   });
 
   useEffect(() => {
-    if (!defaultValues) return;
-
     setFormHandler();
-  }, [defaultValues]);
+  }, [defaultValues, isOpen]);
 
   const handleSubmit = submit(async () => {
     let finalMediaId = form.file || form.image;
@@ -127,17 +126,22 @@ const SpecialSectionModal: React.FC<Props> = ({
   ];
 
   const resetForm = () => {
-    setForm({
-      ...initialForm,
-      ...defaultValues,
-    });
+    reset();
+    setSelectedProducts([]);
   };
 
   const setFormHandler = () => {
+    if (!defaultValues) {
+      setForm(initialForm);
+      return;
+    }
+
     setForm({
       ...initialForm,
-      ...defaultValues,
+      ...defaultValues
     });
+
+    setSelectedProducts(defaultValues.products)
   };
 
   return (
@@ -149,7 +153,7 @@ const SpecialSectionModal: React.FC<Props> = ({
       }
       triggerProps={null}
       onCancel={() => {
-        !defaultValues ? resetForm() : setFormHandler();
+        !defaultValues?.id ? resetForm() : setFormHandler();
       }}
       title={defaultValues?.id ? "ویرایش بخش" : "افزودن بخش جدید"}
       confirmText={defaultValues?.id ? "ویرایش بخش" : "ایجاد بخش"}

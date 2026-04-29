@@ -27,7 +27,7 @@ const InnerSelectableIconsBox: React.FC<{
       isFirstRender.current = false;
       return;
     }
-    
+
     onChange?.(selectedIcons.map((u) => u.id));
   }, [selectedIcons]);
 

@@ -8,7 +8,6 @@ export function promoBannerValidation(data: any) {
   if (!data.link || !data.link.trim()) {
     errors.link = "لینک دکمه الزامی است";
   }
-  console.log("Data => ", data);
 
   if (data.useBackground) {
     if (!data.description || !data.description.trim()) {

@@ -49,8 +49,6 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
   const { setIcons } = useIconsSelection();
 
-  console.log("defaultValues =>", defaultValues);
-
   const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
   const { mutateAsync: updateCategory, isPending: isUpdating } =
@@ -140,8 +138,6 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
     setIsParent(level === 1);
   };
-
-  console.log("isParent =>", isParent, "form.level =>", form.level);
 
   return (
     <BaseModal
@@ -253,7 +249,9 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 
         {form.level === 1 && isParent ? (
           <SelectableIconsBox
-            onChange={(ids) => handleFieldChange("icon_id", ids[0] || null)}
+            onChange={(ids) => {
+              handleFieldChange("icon_id", ids[0] || null)
+            }}
           />
         ) : (
           ""

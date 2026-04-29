@@ -18,7 +18,7 @@ export const useProductsSelection = () => {
   const ctx = useContext(ProductsSelectionContext);
   if (!ctx)
     throw new Error(
-      "useProductsSelection must be used within ProductsSelectionProvider"
+      "useProductsSelection must be used within ProductsSelectionProvider",
     );
   return ctx;
 };
@@ -29,8 +29,11 @@ export const ProductsSelectionProvider: React.FC<{
 }> = ({ initialProducts = [], children }) => {
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
+  console.log("Context =>", initialProducts);
   useEffect(() => {
-    initialProducts.length && setSelectedProducts(initialProducts);
+    if (initialProducts?.length) {
+      setSelectedProducts(initialProducts);
+    }
   }, [initialProducts]);
 
   const addProduct = (product: Product) => {
@@ -46,7 +49,12 @@ export const ProductsSelectionProvider: React.FC<{
 
   return (
     <ProductsSelectionContext.Provider
-      value={{ selectedProducts, addProduct, removeProduct, setSelectedProducts }}
+      value={{
+        selectedProducts,
+        addProduct,
+        removeProduct,
+        setSelectedProducts,
+      }}
     >
       {children}
     </ProductsSelectionContext.Provider>

@@ -31,6 +31,8 @@ export const IconsSelectionProvider: React.FC<{
   const [selectedIcons, setSelectedIcons] = useState<Icon[]>([]);
 
   useEffect(() => {
+    console.log("Context =>", initialIcons);
+    
     if (initialIcons?.length) {
       setSelectedIcons(initialIcons);
     }

@@ -46,11 +46,15 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
     );
   };
 
+  console.log("Parent =>", editSection?.products);
+
   return (
     <>
       {editSection && (
         <ProductsSelectionProvider
-          initialProducts={editSection?.products || []}
+          initialProducts={
+            editSection?.products ?? undefined
+          }
         >
           <SpecialSectionModal
             isOpen={isOpen}

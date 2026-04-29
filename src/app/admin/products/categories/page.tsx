@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UnifiedCard from "@/components/common/Card/UnifiedCard";
 import { TbCategory2 } from "react-icons/tb";
 import AddNewCategoryModal from "@/components/features/products/categories/AddNewCategoryModal";
@@ -33,7 +33,12 @@ const Categories = () => {
   const handleEditCategory = (category: any) => {
     setEditCategory(category);
     setIsEditOpen(true);
-  };  
+  };
+
+  console.log(
+    "Parent =>",
+    editCategory?.icon ? [editCategory.icon] : undefined,
+  );
 
   return (
     <>
