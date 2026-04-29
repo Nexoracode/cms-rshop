@@ -165,63 +165,18 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
       isConfirmDisabled={isCreating || isUpdating || isUploading}
     >
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <TextInput
-            label="عنوان"
-            placeholder="عنوان اسلایدر را وارد کنید"
-            value={form.title}
-            errorMessage={errors.title}
-            onChange={(val) => handleFieldChange("title", val)}
-            allowEnglishOnly={false}
-          />
-          <TextInput
-            label="لینک"
-            isRequired
-            placeholder="/page/path/1"
-            value={form.button_link || ""}
-            errorMessage={errors.button_link}
-            allowSpecialChars
-            allowedSpecialChars={["/", "-"]}
-            onChange={(val) => handleFieldChange("button_link", val)}
-            inputAlign="left"
-            allowSpaces={false}
-          />
-        </div>
-
-        <Textarea
-          label="توضیحات"
-          value={form.description}
-          onChange={(val) => handleFieldChange("description", val)}
-          placeholder="توضیحات را وارد کنید"
-          errorMessage={errors.description}
+        <TextInput
+          label="لینک"
+          isRequired
+          placeholder="/page/path/1"
+          value={form.button_link || ""}
+          errorMessage={errors.button_link}
+          allowSpecialChars
+          allowedSpecialChars={["/", "-"]}
+          onChange={(val) => handleFieldChange("button_link", val)}
+          inputAlign="left"
+          allowSpaces={false}
         />
-
-        <ToggleSection
-          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
-          initialMode={form.is_active}
-          onChange={(val) => handleFieldChange("is_active", val)}
-        />
-
-        <ToggleSection
-          title={"نمایش دکمه"}
-          initialMode={showButtonFields}
-          onChange={(val) => {
-            setShowButtonFields(val);
-            if (!val) {
-              handleFieldChange("button_text", "");
-            }
-          }}
-        >
-          <TextInput
-            label=""
-            placeholder="عنوان دکمه را وارد کنید"
-            value={form.button_text || ""}
-            isRequired
-            errorMessage={errors.button_text}
-            onChange={(val) => handleFieldChange("button_text", val)}
-            allowEnglishOnly={false}
-          />
-        </ToggleSection>
 
         <DualToggleSection
           mode2Title="پس‌زمینه بدون عکس"
@@ -267,6 +222,7 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
                   });
                 }}
                 widthFull
+                className="!h-30"
               />
               <ToggleSection
                 title={`تم پس‌زمینه ${form.is_dark ? "تاریک" : "روشن"}`}
@@ -275,6 +231,50 @@ const HeroSliderFormModal: React.FC<HeroSliderFormModalProps> = ({
               />
             </div>
           }
+        />
+
+        <ToggleSection
+          title={"نمایش متن روی پس زمینه"}
+          initialMode={showButtonFields}
+          onChange={(val) => {
+            setShowButtonFields(val);
+            if (!val) {
+              handleFieldChange("button_text", "");
+            }
+          }}
+        >
+          <div className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <TextInput
+                label="عنوان اسلایدر"
+                placeholder="عنوان اسلایدر را وارد کنید"
+                value={form.title}
+                onChange={(val) => handleFieldChange("title", val)}
+                allowEnglishOnly={false}
+                errorMessage={errors.title}
+              />
+              <TextInput
+                label="عنوان دکمه"
+                placeholder="عنوان دکمه را وارد کنید"
+                value={form.button_text || ""}
+                onChange={(val) => handleFieldChange("button_text", val)}
+                allowEnglishOnly={false}
+              />
+            </div>
+            <Textarea
+              label="توضیحات"
+              value={form.description}
+              onChange={(val) => handleFieldChange("description", val)}
+              placeholder="توضیحات را وارد کنید"
+              errorMessage={errors.description}
+            />
+          </div>
+        </ToggleSection>
+
+        <ToggleSection
+          title={`وضعیت نمایش ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>

@@ -5,11 +5,11 @@ export function validateHeroSlider(data: any, showButtonFields: boolean) {
     errors.button_link = "لطفاً لینک را وارد کنید.";
   }
 
-  if (
-    showButtonFields &&
-    (!data.button_text || data.button_text.trim() === "")
-  ) {
-    errors.button_text = "لطفاً عنوان دکمه را وارد کنید.";
+  if (showButtonFields && data.title.trim() === "") {
+    errors.title = "لطفاً عنوان را وارد کنید.";
+  }
+  if (showButtonFields && data.description.trim() === "") {
+    errors.description = "لطفاً توضیحات را وارد کنید.";
   }
 
   if (
