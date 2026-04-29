@@ -20,6 +20,7 @@ import { handleMutation } from "@/core/utils/mutationHelper";
 import SelectableIconsBox from "../../store/icons/SelectableIconBox/SelectableIconsBox";
 import { useIconsSelection } from "../../store/icons/SelectableIconBox/IconsSelectionContext";
 
+
 const initialCategoryForm = {
   title: "",
   slug: "",
@@ -47,7 +48,7 @@ const AddNewCategoryModal: React.FC<AddNewCategoryModalProps> = ({
 }) => {
   const [isParent, setIsParent] = useState(true);
 
-  const { setIcons } = useIconsSelection();
+  const {setIcons} = useIconsSelection();
 
   const { mutateAsync: createCategory, isPending: isCreating } =
     useCreateCategory();
