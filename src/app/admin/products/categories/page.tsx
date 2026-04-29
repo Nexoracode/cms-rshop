@@ -35,11 +35,6 @@ const Categories = () => {
     setIsEditOpen(true);
   };
 
-  console.log(
-    "Parent =>",
-    editCategory?.icon ? [editCategory.icon] : undefined,
-  );
-
   return (
     <>
       <IconsSelectionProvider

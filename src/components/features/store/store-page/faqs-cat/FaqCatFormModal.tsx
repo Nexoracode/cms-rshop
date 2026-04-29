@@ -47,7 +47,6 @@ const FaqCatFormModal: React.FC<Props> = ({
   const { mutateAsync: createCategory } = useCreateFaqCategory();
 
   useEffect(() => {
-    console.log("defaultValues --->", defaultValues);
     setFormHandler();
   }, [defaultValues]);
 

@@ -12,9 +12,7 @@ type SizeGuideCardProps = {
 };
 
 const SizeGuideCard: React.FC<SizeGuideCardProps> = ({ size, onEdit }) => {
-  const { mutate: deleteSize } = useDeleteSizeGuide();
-  console.log(size);
-  
+  const { mutate: deleteSize } = useDeleteSizeGuide();  
   return (
     <BaseCard
       //className="cursor-auto shadow-md rounded-2xl border w-[250px] xs:w-full"

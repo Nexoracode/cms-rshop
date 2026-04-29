@@ -29,8 +29,6 @@ const VariantRowEditor: React.FC<Props> = ({
   onChange,
   errors = {},
 }) => {
-  console.log(value.attributes[0].values.display_order);
-
   return (
     <BaseCard
       className="w-full transition-all"

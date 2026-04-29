@@ -82,8 +82,6 @@ const AddNewAttributeValueModal: React.FC<Props> = ({
     ? (attrs.values?.find((v) => v.id === selectedAttrEdit) as any)
     : undefined;
 
-  console.log(form);
-
   const optionsAttrGroup: SelectOption[] = useMemo(() => {
     return (
       getAllAttributeGroup?.data?.map((attrGroup: any) => ({

@@ -28,14 +28,7 @@ const ReservationTimesModal: React.FC<ReservationTimesModalProps> = ({
 
   const [currentValue, setCurrentValue] = useState("70");
 
-  useEffect(() => {
-    console.log("@@@@@@@@@@@@@@@@", currentValue);
-    
-  }, [currentValue])
-
-  useEffect(() => {
-    console.log("DDDDDDDDDDDDDDDDDDDDDDDD");
-    
+  useEffect(() => {    
     if (reservationOrder?.data?.value)
       setCurrentValue(reservationOrder?.data?.value);
   }, [reservationOrder?.data]);

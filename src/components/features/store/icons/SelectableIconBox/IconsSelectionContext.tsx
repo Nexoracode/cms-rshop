@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Icon } from "../icon-types";
+import toast from "react-hot-toast";
 
 type IconsSelectionContextType = {
   selectedIcons: Icon[];
@@ -17,9 +18,7 @@ const IconsSelectionContext = createContext<IconsSelectionContextType | null>(
 export const useIconsSelection = () => {
   const context = useContext(IconsSelectionContext);
   if (!context)
-    throw new Error(
-      "useIconsSelection must be used within IconsSelectionProvider",
-    );
+    toast.error("useIconsSelection must be used within IconsSelectionProvider")
   return context;
 };
 
@@ -30,9 +29,7 @@ export const IconsSelectionProvider: React.FC<{
 }> = ({ initialIcons = [], children, singleSelect = false }) => {
   const [selectedIcons, setSelectedIcons] = useState<Icon[]>([]);
 
-  useEffect(() => {
-    console.log("Context =>", initialIcons);
-    
+  useEffect(() => {    
     if (initialIcons?.length) {
       setSelectedIcons(initialIcons);
     }

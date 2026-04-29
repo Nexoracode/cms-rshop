@@ -29,7 +29,6 @@ export const ProductsSelectionProvider: React.FC<{
 }> = ({ initialProducts = [], children }) => {
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
-  console.log("Context =>", initialProducts);
   useEffect(() => {
     if (initialProducts?.length) {
       setSelectedProducts(initialProducts);

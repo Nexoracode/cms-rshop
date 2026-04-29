@@ -29,7 +29,6 @@ const ProductCard: React.FC<Props> = ({
   const id = product.id;
 
   const { mutate: productUpdate } = useProductUpdate(id);
-  console.log(product);
 
   return (
     <BaseCard

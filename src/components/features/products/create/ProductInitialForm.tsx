@@ -172,9 +172,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             handleFieldChange("media_ids", datas);
           }}
           onMedia_pinned_id={(pinId) => {
-            handleFieldChange("media_pinned_id", pinId);
-            console.log("id =>", id);
-            
+            handleFieldChange("media_pinned_id", pinId);            
             id && handleChangeMeddiaPinnedID(pinId);
           }}
           initialMedias={data?.medias || []}

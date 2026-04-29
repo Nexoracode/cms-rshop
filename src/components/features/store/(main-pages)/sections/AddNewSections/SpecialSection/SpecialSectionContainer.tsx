@@ -46,8 +46,6 @@ const SpecialSectionContainer: React.FC<PopularSectionContainerProps> = ({
     );
   };
 
-  console.log("Parent =>", editSection?.products);
-
   return (
     <>
       {editSection && (

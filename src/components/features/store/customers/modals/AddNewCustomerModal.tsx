@@ -45,7 +45,6 @@ const AddNewCustomerModal: React.FC = () => {
       email: form.email ? form.email.trim() : undefined,
       role: form.role
     };
-    console.log(newUser);
     return handleMutation(() => addNewUser(newUser), { resetForm });
   };
 

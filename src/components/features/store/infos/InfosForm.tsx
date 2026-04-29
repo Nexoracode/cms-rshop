@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { HiOutlinePhoneIncoming } from "react-icons/hi";
 import EmailInput from "@/components/shared/EmailInput";
 import PhoneInput from "@/components/shared/PhoneInput";
-import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 
 const initialInfos = {
   shop_card_number: "",
@@ -69,8 +68,6 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
   const handleSubmit = submit(async () => {
     const payload = formObjectToApiArray(form);
 
-    console.log("Payload =>", payload);
-
     createInfos(payload, {
       onSuccess: (res: any) => {
         if (res?.ok) router.push("/admin/store");
@@ -116,14 +113,14 @@ const InfosForm: React.FC<InfosFormProps> = ({ isLoading, data }) => {
       wrapperContents
       isLoading={isLoading}
     >
-      <ImageBoxUploader
+      {/* <ImageBoxUploader
         textBtn={logo ? "تغییر لوگو" : "+ افزودن لوگو"}
         title="لوگوی وبسایت"
         changeStatusFile={logo}
         defaultImg={logo}
         onFile={setLogo}
         errorMessage={errors.logo}
-      />
+      /> */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput

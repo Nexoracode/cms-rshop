@@ -77,7 +77,6 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
   );
 
   useEffect(() => {
-    console.log(info);
     info && setForm(info);
   }, [info]);
 
@@ -107,8 +106,6 @@ const UserProfileForm: React.FC<MyProfileFormProps> = ({
       email: !email?.length ? null : email,
       is_active,
     };
-
-    console.log(dataToSend);
 
     if (roles.role && roles.role !== "user") {
       updateStaff(
