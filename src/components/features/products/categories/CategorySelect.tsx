@@ -5,6 +5,7 @@ import { useGetAllCategories } from "@/core/hooks/api/categories/useCategory";
 import { flattenCategories } from "@/core/utils/flattenCategories";
 import AutocompleteInput from "@/components/ui/inputs/AutocompleteInput";
 import AddNewCategoryModal from "./AddNewCategoryModal";
+import { IconsSelectionProvider } from "../../store/icons/SelectableIconBox/IconsSelectionContext";
 
 type Props = {
   value?: string | number | null;
@@ -23,11 +24,11 @@ const CategorySelect: React.FC<Props> = ({
   isRequired = false,
   isDisabled = false,
 }) => {
-/*   const { search } = useListQueryParams({
+  /*   const { search } = useListQueryParams({
     searchKey: "category",
   }); */
 
-  const { data: categoriesData } = useGetAllCategories()
+  const { data: categoriesData } = useGetAllCategories();
 
   const options = useMemo(() => {
     const flat = flattenCategories(categoriesData?.data) || [];
@@ -60,7 +61,9 @@ const CategorySelect: React.FC<Props> = ({
 
       {withAddModal && (
         <div className="mb-1">
-          <AddNewCategoryModal />
+          <IconsSelectionProvider singleSelect>
+            <AddNewCategoryModal />
+          </IconsSelectionProvider>
         </div>
       )}
     </div>

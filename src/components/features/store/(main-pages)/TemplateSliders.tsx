@@ -38,6 +38,10 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
   } = allSections ?? {};
 
   useEffect(() => {
+    if (!sections.length) {
+      return
+    }
+    
     const findedFeatured = sections.find(
       (section) => section.section_type === "promotion_based",
     );
