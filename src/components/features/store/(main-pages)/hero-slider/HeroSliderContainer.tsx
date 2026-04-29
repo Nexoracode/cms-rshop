@@ -11,18 +11,14 @@ type Props = {
 };
 
 const HeroSliderContainer: React.FC<Props> = ({ sliders = [], layoutType }) => {
-  const sortedSliders = [...sliders].sort(
-    (a, b) => a.display_order - b.display_order
-  );
-
   return (
     <div className="w-full rounded-2xl overflow-hidden">
-      {sortedSliders.length ? (
+      {sliders.length ? (
         <Slider
-          items={sortedSliders}
+          items={sliders}
           className="w-full"
           renderItem={(slider) => (
-            <HeroTemplate slider={slider} sliders={sortedSliders} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
+            <HeroTemplate slider={slider} sliders={sliders} className={layoutType === "stacked" ? "!relative h-72 w-full" : ""}/>
           )}
         />
       ) : (

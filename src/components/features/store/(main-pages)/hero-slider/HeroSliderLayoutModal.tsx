@@ -36,6 +36,9 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
     );
   };
 
+  console.log("sliders =>", sliders);
+  
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -50,8 +53,6 @@ const HeroSliderLayoutModal: React.FC<HeroSliderLayoutModalProps> = ({
     >
       <div className="flex items-center gap-1 mx-auto mb-8 my-6">
         {sliders
-          .slice()
-          .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
           .map((slider) => {
             const textColor = !slider.image_url
               ? !slider.is_dark
