@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BaseModal from "@/components/ui/modals/BaseModal";
 import ImageBoxUploader from "@/components/media/ImageBoxUploader";
 import {
@@ -224,21 +224,11 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* وضعیت نمایش */}
-          <ToggleSection
-            title={`وضعیت نمایش: ${form.is_active ? "فعال" : "غیرفعال"}`}
-            initialMode={form.is_active}
-            onChange={(val) => handleFieldChange("is_active", val)}
-          />
-
-          {/* قابلیت بستن توسط کاربر */}
-          <ToggleSection
+        {/*           <ToggleSection
             title={`قابل بستن توسط کاربر: ${form.is_closable ? "بله" : "خیر"}`}
             initialMode={form.is_closable}
             onChange={(val) => handleFieldChange("is_closable", val)}
-          />
-        </div>
+          /> */}
 
         <DualToggleSection
           title="پس‌زمینه بدون عکس"
@@ -316,6 +306,11 @@ const PromoBannerFormModal: React.FC<PromoBannerFormModalProps> = ({
               errorMessage={errors.image_url}
             />
           }
+        />
+        <ToggleSection
+          title={`وضعیت نمایش: ${form.is_active ? "فعال" : "غیرفعال"}`}
+          initialMode={form.is_active}
+          onChange={(val) => handleFieldChange("is_active", val)}
         />
       </div>
     </BaseModal>
