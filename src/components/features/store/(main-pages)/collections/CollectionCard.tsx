@@ -12,14 +12,16 @@ type CollectionCardProps = {
   collection: any;
   wrapper?: React.ReactNode;
   contentCollection?: React.ReactNode;
+  onEdit: () => void;
 };
 
 const CollectionCard: React.FC<CollectionCardProps> = ({
   collection,
   wrapper,
   contentCollection,
+  onEdit,
 }) => {
-  const { mutate: deleteCollection } = useDeleteHomeSection();
+  const { mutate: deleteHomeSection } = useDeleteHomeSection();
 
   // بررسی آیا تاریخ پایان در آینده است یا خیر
   const isActive = collection.is_active;
@@ -28,17 +30,13 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   const content = (
     <BaseCard
       bodyClassName="p-0 rounded-xl hover-reveal-parent group overflow-hidden"
-      redirect={
-        !contentCollection
-          ? `/admin/store/home-builder/collections/create?edit_id=${collection.id}`
-          : ""
-      }
+      onClick={() => !contentCollection && onEdit()}
     >
       {contentCollection}
 
       {!contentCollection ? (
         <div className="hover-reveal-child">
-          <DeleteButton onDelete={() => deleteCollection(collection.id)} />
+          <DeleteButton onDelete={() => deleteHomeSection(collection.id)} />
         </div>
       ) : (
         ""
