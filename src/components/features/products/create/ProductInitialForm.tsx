@@ -47,8 +47,8 @@ const initialProductForm: CreateProductRequest = {
   weight: 0,
   weight_unit: "کیلوگرم",
   is_same_day_shipping: false,
-  requires_preparation: false,
-  preparation_days: null,
+  requires_preparation: true,
+  preparation_days: 1,
   description: "",
   order_limit: 0,
   is_visible: false,
@@ -121,7 +121,10 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
       ...other,
     };
 
-    if (!id) {
+    console.log("Result =>", result);
+    
+
+   /*  if (!id) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
@@ -137,7 +140,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           }
         },
       });
-    }
+    } */
   });
 
   const handleChangeMeddiaPinnedID = (id: any) =>
@@ -312,12 +315,14 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
         <DualToggleSection
           title="می‌خواهم محصول ارسال امروز داشته باشد"
           mode2Title="محصول نیاز به زمان آماده‌سازی دارد"
-          value={form.requires_preparation}
-          onChange={(isPreparation: any) => {
+          value={form.is_same_day_shipping}
+          onChange={(val: any) => {
+            console.log("isPreparation => ", val);
+            
             handleMultipleFieldsChange({
-              requires_preparation: isPreparation,
-              preparation_days: isPreparation ? form.preparation_days || 1 : 0,
-              is_same_day_shipping: isPreparation,
+              requires_preparation: !val,
+              preparation_days: !val ? form.preparation_days || 1 : null,
+              is_same_day_shipping: val,
             });
           }}
           mode2Children={
