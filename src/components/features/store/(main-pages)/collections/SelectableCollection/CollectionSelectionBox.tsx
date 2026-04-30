@@ -37,7 +37,7 @@ const InnerCollectionVariantSelectionBox: React.FC<{
       modal={<CollectionsModal />}
       error={error}
     >
-      <div className="flex flex-col gap-4">
+     {/*  <div className="flex flex-col gap-4">
         {selectedCollections.map((selectedCollection) => (
           <CollectionCard
             key={selectedCollection.id}
@@ -51,7 +51,7 @@ const InnerCollectionVariantSelectionBox: React.FC<{
             }
           />
         ))}
-      </div>
+      </div> */}
     </EmptyStateContainer>
   );
 };
