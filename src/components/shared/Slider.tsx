@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 type SliderProps<T> = {
@@ -26,7 +26,6 @@ function Slider<T>({
 
   const isMultiRow = rows > 1;
 
-  // فقط وقتی لازم باشه group می‌کنیم
   const groupedItems = useMemo(() => {
     if (!isMultiRow) return items;
 
@@ -41,6 +40,14 @@ function Slider<T>({
     ? Math.max(0, (groupedItems as T[][]).length - itemsPerView)
     : Math.max(0, items.length - itemsPerView);
 
+  const activeIndex = Math.min(currentIndex, maxIndex);
+
+  useEffect(() => {
+    if (currentIndex !== activeIndex) {
+      setCurrentIndex(activeIndex);
+    }
+  }, [activeIndex, currentIndex]);
+
   const next = () => {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
@@ -51,14 +58,11 @@ function Slider<T>({
 
   const visibleSlides = useMemo(() => {
     if (!isMultiRow) {
-      return items.slice(currentIndex, currentIndex + itemsPerView);
+      return items.slice(activeIndex, activeIndex + itemsPerView);
     }
 
-    return (groupedItems as T[][]).slice(
-      currentIndex,
-      currentIndex + itemsPerView
-    );
-  }, [items, groupedItems, currentIndex, itemsPerView, isMultiRow]);
+    return (groupedItems as T[][]).slice(activeIndex, activeIndex + itemsPerView);
+  }, [items, groupedItems, activeIndex, itemsPerView, isMultiRow]);
 
   if (!items?.length) {
     return <div className="relative group w-full h-full" />;
@@ -77,18 +81,16 @@ function Slider<T>({
           gridTemplateColumns: `repeat(${itemsPerView}, 1fr)`,
         }}
       >
-        {/* حالت ساده (row = 1) */}
         {!isMultiRow &&
           (visibleSlides as T[]).map((item, index) => (
             <div
               key={index}
               className={`relative w-full h-full flex justify-center items-center ${childClassName}`}
             >
-              {renderItem(item, currentIndex + index)}
+              {renderItem(item, activeIndex + index)}
             </div>
           ))}
 
-        {/* حالت multi-row */}
         {isMultiRow &&
           (visibleSlides as T[][]).map((group, slideIndex) => (
             <div
@@ -97,8 +99,7 @@ function Slider<T>({
               style={{ gridTemplateRows: rowTemplate }}
             >
               {group.map((item, itemIndex) => {
-                const realIndex =
-                  (currentIndex + slideIndex) * rows + itemIndex;
+                const realIndex = (activeIndex + slideIndex) * rows + itemIndex;
 
                 return (
                   <div
