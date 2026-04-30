@@ -49,6 +49,7 @@ const CollectionSelector: React.FC<Props> = ({
     <CollectionCard
       collection={collection}
       wrapper={collectionWrapper}
+      onEdit={() => {}}
     />
   );
 };
