@@ -124,7 +124,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     console.log("Result =>", result);
     
 
-   /*  if (!id) {
+    if (!id) {
       createProduct(result, {
         onSuccess: (res) => {
           if (res.ok) {
@@ -140,7 +140,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           }
         },
       });
-    } */
+    }
   });
 
   const handleChangeMeddiaPinnedID = (id: any) =>
