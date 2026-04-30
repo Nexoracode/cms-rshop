@@ -82,7 +82,7 @@ const PromoBannerTemplate: React.FC<PromoBannerProps> = ({
             alt={"gif"}
             fill
             priority
-            className="absolute inset-0 z-10 !h-[64px]"
+            className="absolute inset-0 z-10 !h-[64px] object-cover rounded-lg"
           />
         ) : (
           ""
