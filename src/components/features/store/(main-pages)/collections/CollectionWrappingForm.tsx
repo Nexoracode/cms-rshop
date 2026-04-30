@@ -148,7 +148,6 @@ const CollectionWrappingForm: React.FC<GiftWrappingFormProps> = ({
       }}
       wrapperContents
       isLoading={isLoading}
-      bodyClassName="pointer-events-none select-none opacity-90"
     >
       <ImageBoxUploader
         title="تصویر مجموعه"

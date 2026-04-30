@@ -7,10 +7,8 @@ import { HiOutlineCollection } from "react-icons/hi";
 
 const Collections = () => {
   const { data: collections, isLoading: isLoading } = useGetHomeSections();
-
-  const isExistItems = !!collections?.data?.length;
-
-  const specialProducts  = collections?.data?.filter((coll:any) => coll.section_type === "special_products")
+  
+  const sections  = collections?.data?.filter((coll:any) => coll.section_type !== "promotion_based")
 
   return (
     <UnifiedCard
@@ -20,11 +18,11 @@ const Collections = () => {
         redirect: "/admin/store/home-builder/collections/create"
       }}
       isLoading={isLoading}
-      isExistItems={isExistItems}
+      isExistItems={sections?.length}
       searchInp={false}
       childrenClassName="grid grid-cols-1 sm:grid-cols-2"
     >
-      {specialProducts?.map((coll: any, index: number) => (
+      {sections?.map((coll: any, index: number) => (
         <CollectionCard key={index} collection={coll}/>
       ))}
     </UnifiedCard>
