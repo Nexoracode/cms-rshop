@@ -164,9 +164,11 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
         <ProvinceCitySelector
           provinceId={form.province}
           cityId={form.city}
-          onChange={({ province, city }) =>
-            setForm((prev) => ({ ...prev, province, city }))
-          }
+          onChange={({ province, city }) => {
+            console.log(city, province);
+
+            setForm((prev) => ({ ...prev, province, city }));
+          }}
         />
 
         <div className="flex items-center gap-2">

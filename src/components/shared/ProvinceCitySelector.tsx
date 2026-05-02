@@ -1,42 +1,59 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import AutocompleteInput, {
-  Option,
-} from "@/components/ui/inputs/AutocompleteInput";
-import { regions } from "@/core/constants/regions";
+import AutocompleteInput, { Option } from "@/components/ui/inputs/AutocompleteInput";
+import { useGetProvinces, useGetCities } from "@/core/hooks/api/useLocation";
 
 type Props = {
-  provinceId?: string;
-  cityId?: string;
-  onChange: (values: { province: string; city: string }) => void;
+  provinceId?: string;          // شناسه استان (ورودی از والد)
+  cityId?: string;              // شناسه شهر (ورودی از والد)
+  onChange: (values: { province: string; city: string }) => void; // خروجی: عنوان استان و شهر
 };
 
 const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
-  const [selectedProvince, setSelectedProvince] = useState(provinceId || "");
-  const [selectedCity, setSelectedCity] = useState(cityId || "");
-
-  // لیست استان‌ها (Option[]) برای ورودی بالا
-  const provinceOptions: Option[] = useMemo(
-    () =>
-      regions.map((r: any) => ({
-        id: r.province,
-        title: r.province,
-      })),
-    [],
+  const [selectedProvinceId, setSelectedProvinceId] = useState<number | undefined>(
+    provinceId ? Number(provinceId) : undefined
+  );
+  const [selectedCityId, setSelectedCityId] = useState<number | undefined>(
+    cityId ? Number(cityId) : undefined
   );
 
-  // بر اساس استان انتخاب‌شده، شهرها رو فیلتر کن
-  const cityOptions: Option[] = useMemo(() => {
-    const found = regions.find((r) => r.province === selectedProvince);
-    if (!found) return [];
-    return found.cities.map((c) => ({ id: c, title: c }));
-  }, [selectedProvince]);
+  const { data: provincesData, isLoading: provincesLoading } = useGetProvinces();
+  const { data: citiesData, isLoading: citiesLoading } = useGetCities(selectedProvinceId);
 
-  // هر تغییری رخ داد، به والد بفرست
+  const provinceOptions: Option[] = useMemo(() => {
+    if (!provincesData?.data) return [];
+    return provincesData.data.map((province: any) => ({
+      id: String(province.id),
+      title: province.title,
+    }));
+  }, [provincesData]);
+
+  const cityOptions: Option[] = useMemo(() => {
+    if (!citiesData?.data) return [];
+    return citiesData.data.map((city: any) => ({
+      id: String(city.id),
+      title: city.title,
+    }));
+  }, [citiesData]);
+
+  // اطلاع‌رسانی به والد با ارسال عنوان به جای شناسه
   useEffect(() => {
-    onChange({ province: selectedProvince, city: selectedCity });
-  }, [selectedProvince, selectedCity]);
+    // پیدا کردن عنوان استان متناسب با selectedProvinceId
+    const provinceTitle = selectedProvinceId !== undefined
+      ? provinceOptions.find(opt => opt.id === String(selectedProvinceId))?.title || ""
+      : "";
+    
+    // پیدا کردن عنوان شهر متناسب با selectedCityId
+    const cityTitle = selectedCityId !== undefined
+      ? cityOptions.find(opt => opt.id === String(selectedCityId))?.title || ""
+      : "";
+
+    onChange({
+      province: provinceTitle,
+      city: cityTitle,
+    });
+  }, [selectedProvinceId, selectedCityId, provinceOptions, cityOptions]);
 
   return (
     <div className="flex gap-2">
@@ -44,10 +61,11 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
         label="استان"
         placeholder="انتخاب استان"
         options={provinceOptions}
-        selectedId={selectedProvince}
-        onChange={(id: any) => {
-          setSelectedProvince(id);
-          setSelectedCity("");
+        selectedId={selectedProvinceId !== undefined ? String(selectedProvinceId) : undefined}
+        onChange={(id: string | null) => {
+          const numId = id ? Number(id) : undefined;
+          setSelectedProvinceId(numId);
+          setSelectedCityId(undefined); // ریست شهر هنگام تغییر استان
         }}
       />
 
@@ -55,8 +73,11 @@ const ProvinceCitySelector = ({ provinceId, cityId, onChange }: Props) => {
         label="شهر"
         placeholder="انتخاب شهر"
         options={cityOptions}
-        selectedId={selectedCity}
-        onChange={(id: any) => setSelectedCity(id)}
+        selectedId={selectedCityId !== undefined ? String(selectedCityId) : undefined}
+        onChange={(id: string | null) => {
+          const numId = id ? Number(id) : undefined;
+          setSelectedCityId(numId);
+        }}
       />
     </div>
   );
