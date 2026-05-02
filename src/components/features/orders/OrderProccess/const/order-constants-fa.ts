@@ -23,7 +23,7 @@ export const getOrderStatusText = (status?: OrderStatusType): string => {
     case OrderStatus.REJECTED:
       return "رد شده";
     case OrderStatus.REFUNDED:
-      return "عودت وجه";
+      return "مرجوع شده";
     case OrderStatus.PAYMENT_FAILED:
       return "پرداخت ناموفق";
     case OrderStatus.PROCESSING:

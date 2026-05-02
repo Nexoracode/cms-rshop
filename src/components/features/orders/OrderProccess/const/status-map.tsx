@@ -106,7 +106,7 @@ export const statusMap: Record<
     borderColor: "border-red-200",
   },
   refunded: {
-    title: "عودت وجه",
+    title: "مرجوع شده",
     icon: <FaUndo />,
     color: "text-purple-600",
     bgColor: "bg-purple-50",

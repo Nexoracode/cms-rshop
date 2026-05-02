@@ -31,6 +31,8 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({
 
   const disabled = !disableActiveBg;
 
+  console.log(payment.deposit_date);
+
   return payment ? (
     <BaseCard
       CardHeaderProps={{

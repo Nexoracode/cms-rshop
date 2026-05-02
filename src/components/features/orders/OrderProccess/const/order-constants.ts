@@ -30,7 +30,7 @@ export const orderStatusOptions: { key: StatusOrder; title: string }[] = [
   { key: "not_delivered", title: "تحویل نشده" },
   { key: "expired", title: "منقضی شده" },
   { key: "rejected", title: "رد شده" },
-  { key: "refunded", title: "عودت وجه" },
+  { key: "refunded", title: "مرجوع شده" },
   { key: "payment_failed", title: "پرداخت ناموفق" },
   { key: "processing", title: "درحال پردازش" },
   { key: "cancelled", title: "لغو شده" },
