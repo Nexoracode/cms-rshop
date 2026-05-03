@@ -79,7 +79,7 @@ const TemplateSliders: React.FC<TemplateSlidersProps> = ({ allSections }) => {
         )}
       </div>
 
-      <FeaturedOffersSection featuredSection={featuredSection} />
+      {/* <FeaturedOffersSection featuredSection={featuredSection} /> */}
 
       <CategoriesSliderContainer categories={categories} />
 

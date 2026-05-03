@@ -92,14 +92,14 @@ const ShopInfosCard = () => {
           color="text-purple-700"
         /> */}
 
-        <BoxLink
+        {/* <BoxLink
           key="store/promotions"
           title="پروموشن‌ها"
           icon={<GrAnnounce className="text-2xl" />}
           routeName="store/promotions"
           parentStyle="bg-white shadow-md"
           color="text-pink-700"
-        />
+        /> */}
 
         <BoxLink
           key="store/customers"
