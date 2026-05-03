@@ -55,6 +55,10 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
     setFormHandler();
   }, [defaultData]);
 
+  useEffect(() => {
+    console.log("form =>", form);
+  }, [form]);
+
   const handleSubmit = () => {
     const payload = {
       ...form,
@@ -164,11 +168,14 @@ const UserAddressModal: React.FC<UserAddressModalProps> = ({
         )}
 
         <ProvinceCitySelector
-          provinceId={form.province}
+          province={form.province}
           city={form.city}
+          cityId={form.city_id}
           onChange={({ province, city }) => {
-            console.log("FFFFFFFFFFFFFFFFFFFFFFFFF",city, province);
-            setForm((prev) => ({ ...prev, province, city }));
+            if (province.length && city.length) {
+              console.log("HHHHHH =>", province, city);
+              setForm((prev) => ({ ...prev, province, city }));
+            }
           }}
           onCityId={(id) => setForm({ ...form, city_id: id })}
         />

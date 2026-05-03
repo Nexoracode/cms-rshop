@@ -7,29 +7,44 @@ import AutocompleteInput, {
 import { useGetProvinces, useGetCities } from "@/core/hooks/api/useLocation";
 
 type Props = {
-  provinceId?: string; // شناسه استان (ورودی از والد)
+  province?: string; // شناسه استان (ورودی از والد)
   onCityId?: (id: number) => void; // شناسه شهر (ورودی از والد)
+  cityId?: number;
   city?: string;
   onChange: (values: { province: string; city: string }) => void; // خروجی: عنوان استان و شهر
 };
 
 const ProvinceCitySelector = ({
-  provinceId,
+  province,
   city,
   onCityId,
   onChange,
 }: Props) => {
   const [selectedProvinceId, setSelectedProvinceId] = useState<
     number | undefined
-  >(provinceId ? Number(provinceId) : undefined);
-  const [selectedCityId, setSelectedCityId] = useState<number | undefined>(
-    city ? Number(city) : undefined,
+  >(undefined);
+  const [selectedCityId, setSelectedCityId] = useState<string | undefined>(
+    city ? city : undefined,
   );
 
   const { data: provincesData, isLoading: provincesLoading } =
     useGetProvinces();
   const { data: citiesData, isLoading: citiesLoading } =
     useGetCities(selectedProvinceId);
+
+  useEffect(() => {
+    if (!provincesData?.data) {
+      return;
+    }
+
+    const findedProvince: Record<string, any> = provincesData?.data.find(
+      (prov: any) => prov.title === province,
+    );
+
+    if (findedProvince) {
+      setSelectedProvinceId(Number(findedProvince?.id));
+    }
+  }, [province, provincesData]);
 
   const provinceOptions: Option[] = useMemo(() => {
     if (!provincesData?.data) return [];
@@ -95,7 +110,7 @@ const ProvinceCitySelector = ({
           selectedCityId !== undefined ? String(selectedCityId) : undefined
         }
         onChange={(id: string | null) => {
-          const numId = id ? Number(id) : undefined;
+          const numId = id ? id : undefined;
           setSelectedCityId(numId);
           onCityId?.(Number(id));
         }}
