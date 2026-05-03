@@ -141,8 +141,10 @@ const ProvinceCitySelector = ({
           const numId = id ? id : undefined;
 
           const findedCity = citiesData?.data.find(
-            (city: any) => city.id === Number(id),
+            (city: any) => city.city_id === Number(id),
           );
+          console.log("DDDDDDDDDDDD", findedCity);
+
           setSelectedCity(String(numId));
           onCityId?.(Number(findedCity?.city_id));
         }}
