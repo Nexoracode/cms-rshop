@@ -43,6 +43,9 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
 
   const [localSearch, setLocalSearch] = useState<string>(debounced.value ?? "");
 
+  console.log("^^^^^^^^^^^^^^^^^^^^^", selectedId, options);
+  
+
   useEffect(() => {
     if (!syncSearchToUrl) return;
     if (!selectedId) setLocalSearch(debounced.value ?? "");
@@ -106,8 +109,8 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       }
     >
       {options.length ? (
-        options.map((opt) => (
-          <AutocompleteItem key={opt.id} textValue={opt.title}>
+        options.map((opt: any) => (
+          <AutocompleteItem key={opt?.city_id ?? opt.id} textValue={opt.title}>
             {opt.title}
           </AutocompleteItem>
         ))

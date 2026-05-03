@@ -75,7 +75,7 @@ const ProvinceCitySelector = ({
   const cityOptions: Option[] = useMemo(() => {
     if (!citiesData?.data) return [];
     return citiesData.data.map((city: any) => ({
-      id: String(city.id),
+      id: String(city.city_id),
       title: city.title,
     }));
   }, [citiesData]);
@@ -102,7 +102,15 @@ const ProvinceCitySelector = ({
     });
   }, [selectedProvinceId, selectedCity, provinceOptions, cityOptions]);
 
-  console.log("selectedCity ^^^^^^^^^^^^^^", selectedCity);
+  console.log("selectedCityId =>", selectedCityId);
+
+  if (provincesLoading || citiesLoading) {
+    return (
+      <div className="flex items-center justify-center gap-4 h-30 w-full bg-slate-100 animate-pulse rounded-lg p-6">
+        درحال لود...
+      </div>
+    );
+  }
 
   return (
     <div className="flex gap-2">
