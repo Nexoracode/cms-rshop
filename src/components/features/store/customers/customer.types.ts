@@ -7,13 +7,14 @@ export type Customer = {
   avatar_url?: string;
   is_active: boolean;
   is_phone_verified?: boolean;
-  role: string
+  role: string;
 };
 
 export type CreateCustomer = Omit<Customer, "id">;
 
 export type UserAddress = {
   id?: number;
+  city_id: number;
   city: string;
   province: string;
   address_line: string;
