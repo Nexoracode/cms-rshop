@@ -19,12 +19,16 @@ const ProvinceCitySelector = ({
   city,
   onCityId,
   onChange,
+  cityId,
 }: Props) => {
   const [selectedProvinceId, setSelectedProvinceId] = useState<
     number | undefined
   >(undefined);
-  const [selectedCityId, setSelectedCityId] = useState<string | undefined>(
+  const [selectedCity, setSelectedCity] = useState<string | undefined>(
     city ? city : undefined,
+  );
+  const [selectedCityId, setSelectedCityId] = useState<number | undefined>(
+    cityId ? cityId : undefined,
   );
 
   const { data: provincesData, isLoading: provincesLoading } =
@@ -45,6 +49,20 @@ const ProvinceCitySelector = ({
       setSelectedProvinceId(Number(findedProvince?.id));
     }
   }, [province, provincesData]);
+
+  useEffect(() => {
+    if (!cityId || !citiesData?.data) {
+      return;
+    }
+
+    const findedCity = citiesData?.data.find(
+      (city: any) => city.city_id === cityId,
+    );
+
+    if (findedCity) {
+      setSelectedCityId(Number(findedCity?.city_id));
+    }
+  }, [cityId, citiesData]);
 
   const provinceOptions: Option[] = useMemo(() => {
     if (!provincesData?.data) return [];
@@ -71,10 +89,10 @@ const ProvinceCitySelector = ({
             ?.title || ""
         : "";
 
-    // پیدا کردن عنوان شهر متناسب با selectedCityId
+    // پیدا کردن عنوان شهر متناسب با selectedCity
     const cityTitle =
-      selectedCityId !== undefined
-        ? cityOptions.find((opt) => opt.id === String(selectedCityId))?.title ||
+      selectedCity !== undefined
+        ? cityOptions.find((opt) => opt.id === String(selectedCity))?.title ||
           ""
         : "";
 
@@ -82,7 +100,9 @@ const ProvinceCitySelector = ({
       province: provinceTitle,
       city: cityTitle,
     });
-  }, [selectedProvinceId, selectedCityId, provinceOptions, cityOptions]);
+  }, [selectedProvinceId, selectedCity, provinceOptions, cityOptions]);
+
+  console.log("selectedCity ^^^^^^^^^^^^^^", selectedCity);
 
   return (
     <div className="flex gap-2">
@@ -98,7 +118,7 @@ const ProvinceCitySelector = ({
         onChange={(id: string | null) => {
           const numId = id ? Number(id) : undefined;
           setSelectedProvinceId(numId);
-          setSelectedCityId(undefined); // ریست شهر هنگام تغییر استان
+          setSelectedCity(undefined); // ریست شهر هنگام تغییر استان
         }}
       />
 
@@ -111,8 +131,12 @@ const ProvinceCitySelector = ({
         }
         onChange={(id: string | null) => {
           const numId = id ? id : undefined;
-          setSelectedCityId(numId);
-          onCityId?.(Number(id));
+
+          const findedCity = citiesData?.data.find(
+            (city: any) => city.id === Number(id),
+          );
+          setSelectedCity(String(numId));
+          onCityId?.(Number(findedCity?.city_id));
         }}
       />
     </div>
