@@ -80,15 +80,16 @@ export function BasePromotionForm({
   });
 
   useEffect(() => {
+    reset();
     if (initialData) {
       setForm(mapAPIToLocalForm(initialData, formType));
     } else if (formType === "first_order") {
       setForm((prev) => ({ ...prev, first_order: true }));
     }
-  }, [initialData, formType]);
+  }, [initialData, formType, resetSignal]);
 
   useEffect(() => {
-    (resetSignal ?? 0 > 0) && setForm(initialPromotionForm);
+    (resetSignal ?? 0) === 1 && setForm(initialPromotionForm);
   }, [resetSignal]);
 
   const handleSubmit = submit(async () => {
@@ -97,6 +98,7 @@ export function BasePromotionForm({
   });
 
   const handleResetLocal = () => {
+    reset();
     setForm(initialPromotionForm);
     onHandleReset?.();
   };
