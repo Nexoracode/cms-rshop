@@ -66,9 +66,9 @@ export const useDeleteHomeSection = () => {
         loadingText: "در حال حذف بخش...",
         successText: "بخش با موفقیت حذف شد",
       }),
-    onSuccess: (_data, id) => {
+    onSuccess: (_data) => {
       qc.invalidateQueries({ queryKey: ["home-sections"] });
-      qc.invalidateQueries({ queryKey: ["home-section", id] });
+      qc.invalidateQueries({ queryKey: ["home-section"] });
       qc.invalidateQueries({ queryKey: ["home"] });
     },
   });
