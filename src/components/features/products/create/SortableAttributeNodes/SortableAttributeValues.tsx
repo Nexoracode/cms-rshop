@@ -55,12 +55,13 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
       return;
     }
 
-    if (tab === "sort-variants") handleDeleteAttributeNode(id);
+    //if (tab === "sort-variants") handleDeleteAttributeNode(id);
+    if (tab === "sort-variants") toast.error("قابلیت حذف ندارد. فقط میتوانید موجودی آن را در صورت نیاز صفر کنید");
     else if (tab === "sort-attributes") handleDeleteAttributeNodeSimple(id);
     else toast.error("تب فعالی جهت پاک کردن این فرزند وجود ندارد");
   };
 
-  const handleDeleteAttributeNode = (valId: number) => {
+/*   const handleDeleteAttributeNode = (valId: number) => {
     const productId = searchParams.get("edit_id");
     if (!productId) return;
     deleteAttributeNode.mutate({
@@ -68,7 +69,7 @@ const SortableAttributeValues: React.FC<Props> = ({ attribute }) => {
       productId: +productId,
       valueId: valId,
     });
-  };
+  }; */
 
   const handleDeleteAttributeNodeSimple = (valId: number) => {
     const productId = searchParams.get("edit_id");
