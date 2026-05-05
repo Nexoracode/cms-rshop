@@ -11,7 +11,6 @@ import EmptyStateCard from "@/components/feedback/EmptyStateCard";
 export type UnifiedCardProps = {
   headerProps: CardHeaderProps;
   searchFilter?: React.ReactNode;
-  tabsComponent?: React.ReactNode;
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
@@ -21,13 +20,12 @@ export type UnifiedCardProps = {
   isExistItems?: boolean;
   searchInp?: boolean;
   childrenClassName?: string;
-  disableWrapperStyle?: boolean
+  disableWrapperStyle?: boolean;
 };
 
 const UnifiedCard: React.FC<UnifiedCardProps> = ({
   headerProps,
   searchFilter,
-  tabsComponent,
   children,
   footer,
   className = "",
@@ -37,47 +35,48 @@ const UnifiedCard: React.FC<UnifiedCardProps> = ({
   isExistItems = true,
   searchInp = false,
   childrenClassName = "",
-  disableWrapperStyle= false
+  disableWrapperStyle = false,
 }) => {
   return (
     <div className="flex flex-col gap-4">
       {/* Search / Filter */}
       {searchFilter && searchFilter}
 
-      <Card className={`w-full shadow-md ${disableWrapperStyle ? "shadow-none rounded-none" : ""} ${className}`}>
+      <Card
+        className={`w-full shadow-md ${disableWrapperStyle ? "shadow-none rounded-none" : ""} ${className}`}
+      >
         {/* Header */}
-        <CardHeader {...headerProps} className={disableWrapperStyle ? "!p-0 !pb-4 !rounded-none" : ""}/>
+        <CardHeader
+          {...headerProps}
+          className={disableWrapperStyle ? "!p-0 !pb-4 !rounded-none" : ""}
+        />
 
         {/* Body */}
         <CardBody
           dir="rtl"
           className={`flex flex-col gap-6 text-start ${disableWrapperStyle ? "!p-0" : ""} ${bodyClassName}`}
         >
-          {/* Tabs */}
-          {tabsComponent && <div>{tabsComponent}</div>}
-
           {/* محتوا یا حالت لودینگ / خالی */}
-          {!tabsComponent &&
-            (isLoading ? (
-              <LoadingApiCall />
-            ) : isExistItems ? (
-              <div
-                className={`flex flex-col justify-center items-center sm:items-stretch gap-4 ${childrenClassName}`}
-              >
-                {children}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-2xl text-gray-600 gap-2">
-                {searchInp ? (
-                  <EmptyStateCard
-                    message="جستجو شما نتیجه ای نداشت!!"
-                    icon={BiSearchAlt}
-                  />
-                ) : (
-                  <EmptyStateCard />
-                )}
-              </div>
-            ))}
+          {isLoading ? (
+            <LoadingApiCall />
+          ) : isExistItems ? (
+            <div
+              className={`flex flex-col justify-center items-center sm:items-stretch gap-4 ${childrenClassName}`}
+            >
+              {children}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-2xl text-gray-600 gap-2">
+              {searchInp ? (
+                <EmptyStateCard
+                  message="جستجو شما نتیجه ای نداشت!!"
+                  icon={BiSearchAlt}
+                />
+              ) : (
+                <EmptyStateCard />
+              )}
+            </div>
+          )}
         </CardBody>
 
         {/* Footer */}

@@ -19,7 +19,7 @@ export const useGetProducts = ({
   filter,
   search,
   sortBy,
-  limit = 40,
+  limit = 10,
 }: ListQueryParams) => {
   return useQuery({
     queryKey: ["all-products", page, filter, search, sortBy, limit],

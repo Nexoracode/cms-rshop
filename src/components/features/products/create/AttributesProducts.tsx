@@ -21,8 +21,8 @@ const AttributesProducts = () => {
   const page = +(sp.get("edit_id") ?? 1);
   const { setAttrInfos } = useAttributeContext();
 
-  const { data: productData } = useGetOneProduct(page);
-  
+  const { data: productData, isPending } = useGetOneProduct(page);
+
   // active tab + mounted for lazy render
   const [activeTab, setActiveTab] = useState<string | undefined>("variants");
   const [mounted, setMounted] = useState<Record<string, boolean>>({
@@ -47,18 +47,18 @@ const AttributesProducts = () => {
 
   useEffect(() => {
     let attrValues: any[] = [];
-    
+
     if (productData?.data?.attribute_nodes) {
       const nodeValues = productData.data.attribute_nodes.flatMap(
         (group: any) =>
-          group.attributes.flatMap((attr: any) => attr.values ?? [])
+          group.attributes.flatMap((attr: any) => attr.values ?? []),
       );
       attrValues = [...attrValues, ...nodeValues];
     }
-    
+
     if (productData?.data?.specifications) {
       const specValues = productData.data.specifications.flatMap((group: any) =>
-        group.attributes.flatMap((attr: any) => attr.values ?? [])
+        group.attributes.flatMap((attr: any) => attr.values ?? []),
       );
       attrValues = [...attrValues, ...specValues];
     }
@@ -115,7 +115,7 @@ const AttributesProducts = () => {
           ) : null,
       },
     ],
-    [mounted, productData]
+    [mounted, productData],
   );
 
   return (
@@ -134,22 +134,22 @@ const AttributesProducts = () => {
           ]}
         />
       }
+      isLoading={isPending}
       headerProps={{
         icon: <MdOutlineCategory className="text-xl" />,
         title: "ویژگی ها و تنوع محصولات",
         children: <AttributesModal />,
       }}
-      tabsComponent={
-        <BaseTabs
-          items={tabItems}
-          activeKey={activeTab}
-          variant="light"
-          onTabChange={(key) => handleTabChange(String(key))}
-          tabListClassName="flex-wrap md:flex-nowrap mb-4"
-          syncWithQuery
-        />
-      }
-    />
+    >
+      <BaseTabs
+        items={tabItems}
+        activeKey={activeTab}
+        variant="light"
+        onTabChange={(key) => handleTabChange(String(key))}
+        tabListClassName="flex-wrap md:flex-nowrap mb-4"
+        syncWithQuery
+      />
+    </UnifiedCard>
   );
 };
 
