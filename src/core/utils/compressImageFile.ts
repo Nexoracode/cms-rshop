@@ -1,57 +1,87 @@
 // src/utils/compressImageFile.ts
 "use client";
 
-import imageCompression from "browser-image-compression";
-
-const MAX_SIZE = 100 * 1024; // 100KB
-
-async function toWebp(blob: Blob, name: string): Promise<File> {
-  return new Promise((resolve) => {
-    const img = document.createElement("img");
-
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return resolve(new File([blob], name, { type: blob.type }));
-
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      ctx.drawImage(img, 0, 0);
-
-      canvas.toBlob(
-        (webpBlob) => {
-          if (!webpBlob) return resolve(new File([blob], name, { type: blob.type }));
-
-          resolve(
-            new File([webpBlob], name.replace(/\.(jpg|jpeg|png|webp)$/i, ".webp"), {
-              type: "image/webp",
-              lastModified: Date.now(),
-            })
-          );
-        },
-        "image/webp",
-        0.8
-      );
-    };
-
-    img.src = URL.createObjectURL(blob);
-  });
-}
+const MAX_TARGET_SIZE_KB = 350;
+const MAX_TARGET_SIZE_BYTES = MAX_TARGET_SIZE_KB * 1024;
 
 export async function compressImageFile(file: File): Promise<File> {
-  if (file.size <= MAX_SIZE && file.type === "image/webp") return file;
+  // اگر فایل از قبل WebP و کوچک‌تر از حد مجاز است، برگردان
+  if (file.type === "image/webp" && file.size <= MAX_TARGET_SIZE_BYTES) {
+    return file;
+  }
 
-  const options = {
-    maxSizeMB: 0.1, // حدود 100KB
-    maxWidthOrHeight: 800,
-    useWebWorker: true,
-  };
+  // تبدیل به WebP با کیفیت متعادل و سریع
+  return await fastCompressToWebP(file);
+}
 
-  const compressedBlob = await imageCompression(file, options);
-  const webpFile = await toWebp(compressedBlob, file.name);
-
-  if (webpFile.size > MAX_SIZE) return webpFile; // تصمیم نهایی با parent می‌مونه
-
-  return webpFile;
+async function fastCompressToWebP(file: File): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      URL.revokeObjectURL(url); // پاکسازی حافظه
+      
+      let { width, height } = img;
+      const maxSize = 1200; // حداکثر ابعاد (مناسب برای لوگو)
+      
+      // اگر ابعاد بزرگتر از حد بود، نسبت را حفظ کن
+      if (width > maxSize || height > maxSize) {
+        const ratio = Math.min(maxSize / width, maxSize / height);
+        width = width * ratio;
+        height = height * ratio;
+      }
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      
+      if (!ctx) {
+        resolve(file);
+        return;
+      }
+      
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // تنظیم کیفیت: شروع با 0.85
+      let quality = 0.85;
+      
+      const tryCompress = (currentQuality: number) => {
+        canvas.toBlob(
+          async (blob) => {
+            if (!blob) {
+              resolve(file);
+              return;
+            }
+            
+            if (blob.size <= MAX_TARGET_SIZE_BYTES || currentQuality <= 0.3) {
+              // حجم قابل قبول یا کیفیت خیلی کم شده
+              const webpFile = new File(
+                [blob],
+                file.name.replace(/\.(jpe?g|png|webp)$/i, '.webp'),
+                { type: 'image/webp', lastModified: Date.now() }
+              );
+              resolve(webpFile);
+            } else {
+              // کیفیت را کاهش بده و دوباره امتحان کن (حداکثر ۳ بار)
+              const newQuality = Math.max(currentQuality - 0.1, 0.3);
+              tryCompress(newQuality);
+            }
+          },
+          'image/webp',
+          currentQuality
+        );
+      };
+      
+      tryCompress(quality);
+    };
+    
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve(file);
+    };
+    
+    img.src = url;
+  });
 }
