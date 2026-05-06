@@ -264,10 +264,15 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
     );
   }
 
-  const conv = data.data;
+  let conv = data.data;
+  if (conv?.product_id) {
+    conv = { ...conv, messages: conv?.messages.slice(1) };
+  }
 
   return (
-    <div className={`w-full relative flex flex-col ${showBackBtn ? "max-h-[100vh]" : "h-[73vh]"} overflow-hidden`}>
+    <div
+      className={`w-full relative flex flex-col ${showBackBtn ? "max-h-[100vh]" : "h-[73vh]"} overflow-hidden`}
+    >
       <div className="flex items-center justify-between p-4 pb-3 bg border-b border-gray-100 bg-white">
         <div>
           <p className="text-[14px] text-gray-700 truncate">{conv.subject}</p>
