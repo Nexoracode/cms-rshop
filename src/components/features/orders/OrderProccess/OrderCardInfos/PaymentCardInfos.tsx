@@ -31,8 +31,6 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({
 
   const disabled = !disableActiveBg;
 
-  console.log(payment.deposit_date);
-
   return payment ? (
     <BaseCard
       CardHeaderProps={{
@@ -79,7 +77,7 @@ const PaymentCardInfos: React.FC<PaymentCardProps> = ({
         <InfoRow
           label="تاریخ واریز"
           value={
-            payment?.deposit_date ? toPersianUTC(payment.deposit_date) : "—"
+            payment?.deposit_date ? toPersianUTC(payment?.deposit_date) : "—"
           }
         />
 
