@@ -8,7 +8,7 @@ export function validateProduct(product: any) {
 
   const hasPinned = !!product.media_pinned_id;
   const hasName = !!product.name?.trim();
-  const hasPrice = Number(product.price) > 0;
+  const hasPrice = !product?.variants?.length ? true : Number(product.price) > 0;
   const hasCategory = Number(product.category_id) > 0;
   const hasWeight = Number(product.weight) > 0;
   const hasBrand = Number(product.brand_id) > 0;

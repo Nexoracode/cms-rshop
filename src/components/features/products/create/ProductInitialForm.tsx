@@ -108,21 +108,24 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
     } = form;
 
     const result: any = {
-      discount_percent: (discount_percent && +discount_percent) || 0,
-      discount_amount: (discount_amount && +discount_amount) || 0,
+      discount_percent: data.variants?.length
+        ? 0
+        : (discount_percent && +discount_percent) || 0,
+      discount_amount: data.variants?.length
+        ? 0
+        : (discount_amount && +discount_amount) || 0,
       helper_id: !helper_id ? null : +helper_id,
       ...(brand_id ? { brand_id: +brand_id } : {}),
       media_pinned_id,
       category_id: +category_id,
       order_limit: +order_limit,
       weight: +weight,
-      price: +price,
-      stock: +stock,
+      price: data?.variants?.length ? 0 : +price,
+      stock: data?.variants?.length ? 0 : +stock,
       ...other,
     };
 
     console.log("Result =>", result);
-    
 
     if (!id) {
       createProduct(result, {
@@ -175,7 +178,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             handleFieldChange("media_ids", datas);
           }}
           onMedia_pinned_id={(pinId) => {
-            handleFieldChange("media_pinned_id", pinId);            
+            handleFieldChange("media_pinned_id", pinId);
             id && handleChangeMeddiaPinnedID(pinId);
           }}
           initialMedias={data?.medias || []}
@@ -232,21 +235,36 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           />
         </div>
 
-        <DiscountedPriceInput
-          price={form.price}
-          discount_amount={form.discount_amount ?? 0}
-          discount_percent={form.discount_percent ?? 0}
-          onPriceChange={(price) => handleFieldChange("price", +price)}
-          onDiscountChange={(type, value) =>
-            handleFieldChange(
-              type === "amount" ? "discount_amount" : "discount_percent",
-              +value,
-            )
-          }
-          errorMessage={errors.price}
-        />
+        {!data?.variants?.length ? (
+          <DiscountedPriceInput
+            price={form.price}
+            discount_amount={form.discount_amount ?? 0}
+            discount_percent={form.discount_percent ?? 0}
+            onPriceChange={(price) => handleFieldChange("price", +price)}
+            onDiscountChange={(type, value) =>
+              handleFieldChange(
+                type === "amount" ? "discount_amount" : "discount_percent",
+                +value,
+              )
+            }
+            errorMessage={errors.price}
+          />
+        ) : (
+          ""
+        )}
 
         <div className="flex flex-col md:flex-row gap-4">
+          {data?.variants?.length ? (
+            <SizeGuideSelect
+              value={form.helper_id}
+              onChange={(val) => {
+                handleFieldChange("helper_id", val == -1 ? null : val);
+              }}
+              withAddModal
+            />
+          ) : (
+            ""
+          )}
           <TextInput
             label="کد انبار"
             placeholder="مثلاً SKU12345"
@@ -256,26 +274,33 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
             errorMessage={errors.sku}
             allowSpecialChars
           />
-
-          <NumberInput
-            label="موجودی"
-            hideStepper
-            placeholder="1"
-            minValue={0}
-            value={form.stock}
-            labelPlacement="outside"
-            onValueChange={(val) => handleFieldChange("stock", +val)}
-            endContent={"عدد"}
-          />
+          {!data?.variants?.length ? (
+            <NumberInput
+              label="موجودی"
+              hideStepper
+              placeholder="1"
+              minValue={0}
+              value={form.stock}
+              labelPlacement="outside"
+              onValueChange={(val) => handleFieldChange("stock", +val)}
+              endContent={"عدد"}
+            />
+          ) : (
+            ""
+          )}
         </div>
 
-        <SizeGuideSelect
-          value={form.helper_id}
-          onChange={(val) => {
-            handleFieldChange("helper_id", val == -1 ? null : val);
-          }}
-          withAddModal
-        />
+        {!data?.variants?.length ? (
+          <SizeGuideSelect
+            value={form.helper_id}
+            onChange={(val) => {
+              handleFieldChange("helper_id", val == -1 ? null : val);
+            }}
+            withAddModal
+          />
+        ) : (
+          ""
+        )}
 
         <TextEditor
           value={form.description ?? ""}
@@ -318,7 +343,7 @@ const ProductInitialForm: React.FC<ProductInitialFormProps> = ({
           value={form.is_same_day_shipping}
           onChange={(val: any) => {
             console.log("isPreparation => ", val);
-            
+
             handleMultipleFieldsChange({
               requires_preparation: !val,
               preparation_days: !val ? form.preparation_days || 1 : null,
