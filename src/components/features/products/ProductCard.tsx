@@ -229,7 +229,7 @@ const ProductCard: React.FC<Props> = ({
           <BaseCard
             key={index}
             bodyClassName="w-full flex-row items-center justify-between gap-6 px-3"
-            className={`!shadow-none ${variant.discount_percent && variant.stock > 10 ? "bg-transparent !border !border-orange-300" : variant.stock === 0 ? "bg-red-100 animate-pulse border-red-400" : variant.stock <= 10 ? "bg-yellow-50 border-yellow-400" : "bg-slate-50"} rounded-lg`}
+            className={`!shadow-none ${variant.discount_percent && variant.stock > 10 ? "bg-transparent !border !border-orange-300" : variant.stock === 0 ? "bg-red-100 animate-pulse border-red-400" : variant.stock <= 10 ? "bg-yellow-50 border-yellow-400" : variant.stock >= 200 ? "bg-sky-100 border-sky-400" : "bg-slate-50"} rounded-lg`}
           >
             <div className="text-sm text-gray-600 leading-7">
               {variant.name}
@@ -242,7 +242,7 @@ const ProductCard: React.FC<Props> = ({
                 ""
               )}
               <span
-                className={`text-[13px] ${variant.stock <= 10 && variant.stock > 0 ? "animate-bounce" : ""} ${variant.stock === 0 ? "text-red-600" : "text-gray-600"}`}
+                className={`text-[13px] ${variant.stock <= 10 && variant.stock > 0 ? "animate-bounce" : ""} ${variant.stock === 0 ? "text-red-600" : "text-gray-600"} ${variant.stock >= 200 ? "text-sky-600" : ""}`}
               >
                 {variant.stock} عدد
               </span>
