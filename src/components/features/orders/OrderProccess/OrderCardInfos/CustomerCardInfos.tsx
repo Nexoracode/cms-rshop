@@ -31,27 +31,27 @@ const CustomerCardInfos: React.FC<CustomerInfosCardProps> = ({ order }) => {
       <InfoRow
         label="سفارش برای"
         value={
-          address.is_self
+          address?.is_self
             ? "کاربر"
-            : `${address.recipient_name} (${
-                address.recipient_phone || "بدون شماره"
+            : `${address?.recipient_name} (${
+                address?.recipient_phone || "بدون شماره"
               })`
         }
         isActiveBg
         hoverable
       />
-      <InfoRow label="کد پستی" value={address.postal_code} hoverable />
+      <InfoRow label="کد پستی" value={address?.postal_code} hoverable />
       <InfoRow
         label="استان و شهر"
-        value={`${address.province}، ${address.city}`}
+        value={`${address?.province}، ${address?.city}`}
         isActiveBg
         hoverable
       />
       <InfoRow
         label="آدرس"
-        value={`${address.address_line} ${
-          address.plaque && `، پلاک ${address.plaque}`
-        } ${address.unit && `، واحد ${address.unit}`}`}
+        value={`${address?.address_line} ${
+          address?.plaque && `، پلاک ${address?.plaque}`
+        } ${address?.unit && `، واحد ${address?.unit}`}`}
         hoverable
         valueStyle="group-hover:relative group-hover:pb-3 group-hover:text-right"
       />
