@@ -15,10 +15,13 @@ import ConversationDetail from "@/components/features/store/support/Conversation
 import { TfiFullscreen } from "react-icons/tfi";
 import ScrollPagination from "@/core/hooks/system/InfiniteScrollPagination";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Products = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const chatID = searchParams.get("chat-id");
+
   const { page, sortBy, search, filter, isFilteredView } =
     useListQueryParams<SupportSortBy[number]>();
   const listRef = useRef<HTMLDivElement | null>(null);
@@ -67,13 +70,23 @@ const Products = () => {
         searchInp={isFilteredView}
         bodyClassName="p-0"
       >
-        <div className="flex flex-row gap-2">
-          <ConversationList
-            conversations={allItems}
-            className="max-h-[73vh]"
-            containerRef={listRef}
-          />
-          <ConversationDetail />
+        <div className="w-full flex flex-row gap-2">
+          {!chatID ? (
+            <ConversationList
+              conversations={allItems}
+              className="max-h-[73vh]"
+              containerRef={listRef}
+            />
+          ) : (
+            ""
+          )}
+          {chatID ? (
+            <ConversationDetail showBackBtn />
+          ) : (
+            <div className="hidden min-[640px]:flex w-full">
+              <ConversationDetail />
+            </div>
+          )}
         </div>
       </UnifiedCard>
       <ScrollPagination

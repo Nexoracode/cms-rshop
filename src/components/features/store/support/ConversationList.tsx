@@ -17,7 +17,7 @@ type ConversationListProps = {
 const ConversationList: React.FC<ConversationListProps> = ({
   conversations,
   className = "",
-  containerRef
+  containerRef,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -32,7 +32,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
   return (
     <aside
       ref={containerRef}
-      className={`min-w-64 max-w-64 border-l min-h-[73vh] overflow-y-auto rounded-md p-1 flex flex-col ${className}`}
+      className={`min-w-64 w-full min-[640px]:w-fit min-[640px]:border-l min-h-[73vh] overflow-y-auto rounded-md p-1 flex flex-col ${className}`}
     >
       {conversations?.map((conv, index) => {
         const selectedId = Number(searchParams.get("chat-id"));
